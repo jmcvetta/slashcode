@@ -11,6 +11,9 @@ Paypal button to subscribe to this site.
 	paypal_no_shipping		1=no ship address reqd
 	paypal_return			URL on successful subscribe
 	paypal_cancel_return		URL on cancelled subscribe
+	
+* gift	hashref passed if handling a gift subscription.  Should contain values
+        for keys uid, and puid (uid of user receiving subscription, uid of purchaser) 
 
 __title__
 
@@ -25,8 +28,14 @@ __template__
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="[% constants.paypal_business %]">
 <input type="hidden" name="undefined_quantity" value="1">
+[% IF gift %]
+<input type="hidden" name="item_name" value="[% constants.paypal_num_pages %]-Page Gift Subscription to [% constants.sitename %] for UID [% gift.uid %]">
+<input type="hidden" name="item_number" value="[% gift.uid %]">
+<input type="hidden" name="custom" value="[% gift.puid %]">
+[% ELSE %]
 <input type="hidden" name="item_name" value="[% constants.paypal_num_pages %]-Page Subscription to [% constants.sitename %]">
 <input type="hidden" name="item_number" value="[% user.uid %]">
+[% END %]
 <input type="hidden" name="amount" value="[% constants.paypal_amount %]">
 <input type="hidden" name="no_shipping" value="[% constants.paypal_no_shipping %]">
 <input type="hidden" name="return" value="[% constants.paypal_return %]">
@@ -38,4 +47,4 @@ __seclev__
 10000
 
 __version__
-$Id: paypalbut;subscribe;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: paypalbut;subscribe;default,v 1.4 2003/10/14 14:28:58 vroom Exp $

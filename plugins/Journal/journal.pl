@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.90 2004/11/18 06:37:14 pudge Exp $
+# $Id: journal.pl,v 1.91 2005/01/08 00:52:50 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -838,12 +838,22 @@ sub _printHead {
 	$data->{width} = '100%';
 	$data->{title} = $title;
 
+	my $user = getCurrentUser();
+
 	if ($edit_the_uid) {
 		my $reader = getObject('Slash::DB', { db_type => 'reader' });
 		my $useredit = $data->{uid}
 			? $reader->getUser($data->{uid})
-			: getCurrentUser();
+			: $user;
 		$data->{useredit} = $useredit;
+	}
+
+	local $user->{currentPage} = 'misc';
+
+	if ($user->{currentPage} eq 'misc') {
+		local $Slash::Utility::MAX_ERROR_LOG_LEVEL = 0;
+		use Data::Dumper;
+		errorLog(sprintf("currentPageBusted: %s\n", Dumper($user, getCurrentForm(), \%ENV)));
 	}
 
 	slashDisplay("journalhead", $data);

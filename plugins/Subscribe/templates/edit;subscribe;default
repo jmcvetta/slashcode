@@ -204,8 +204,9 @@ If your question is about your daily headlines email, you can edit that at
 For a list of subscriber-only benefits, see
 <A HREF="[% gSkin.rootdir %]/faq/subscriptions.shtml#ss1600">the FAQ</a>.
 
+
 __seclev__
 10000
 
 __version__
-$Id: edit;subscribe;default,v 1.27 2004/10/11 17:56:43 jamiemccarthy Exp $
+$Id: edit;subscribe;default,v 1.28 2005/01/17 16:33:17 tvroom Exp $

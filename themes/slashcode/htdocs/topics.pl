@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.9 2002/08/09 01:03:29 brian Exp $
+# $Id: topics.pl,v 1.10 2002/08/29 17:10:35 brian Exp $
 
 use strict;
 use Slash;
@@ -13,13 +13,12 @@ use Slash::Utility;
 sub main {
 	my $slashdb = getCurrentDB();
 	my $form    = getCurrentForm();
-	my $section = $slashdb->getSection();
 
 	header(getData('head'));
 	print createMenu('topics');
 
 	if ($form->{op} eq 'toptopics') {
-		topTopics($section);
+		topTopics();
 	} else {
 		listTopics();
 	}
@@ -29,12 +28,10 @@ sub main {
 
 #################################################################
 sub topTopics {
-	my($section) = @_;
 	my $slashdb = getCurrentDB();
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
-
-	$section->{issue} = 0;  # should this be local() ?  -- pudge
+	my $section = $slashdb->getSection();
 
 	my(@topics, $topics);
 	$topics = $slashdb->getTopNewsstoryTopics($form->{all});

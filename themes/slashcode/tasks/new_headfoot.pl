@@ -1,4 +1,8 @@
 #!/usr/bin/perl -w
+# This code is a part of Slash, and is released under the GPL.
+# Copyright 1997-2003 by Open Source Development Network. See README
+# and COPYING for more information, or see http://slashcode.com/.
+# $Id: new_headfoot.pl,v 1.14 2003/05/06 11:33:36 pudge Exp $
 
 use strict;
 use Slash;

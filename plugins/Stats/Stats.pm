@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.162 2005/01/25 15:42:26 tvroom Exp $
+# $Id: Stats.pm,v 1.163 2005/01/26 05:22:03 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -95,19 +95,21 @@ sub new {
 		$sth->execute();
 		my $rows = $sth->fetchrow_arrayref;
 		$self->{_table} = "accesslog_temp";
-		my $create_sql = $rows->[1];
 
-		# Now, munge the schema to do the two new tables, and execute it.
-		$create_sql =~ s/accesslog/accesslog_temp/;
-		$self->sqlDo($create_sql);
-		$create_sql =~ s/accesslog_temp/accesslog_temp_errors/;
-		$self->sqlDo($create_sql);
-		$create_sql =~ s/accesslog_temp_errors/accesslog_temp_other/;
-		$self->sqlDo($create_sql);
-		$create_sql =~ s/accesslog_temp_other/accesslog_temp_subscriber/;
-		$self->sqlDo($create_sql);
-		$create_sql =~ s/accesslog_temp_subscriber/accesslog_temp_rss/;
-		$self->sqlDo($create_sql);
+		# Munge the schema to do each of the new tables.
+		my $create_sql = $rows->[1];
+		$create_sql =~ s/accesslog/__TABLENAME__/;
+		for my $new_table (qw(
+			accesslog_temp
+			accesslog_temp_errors
+			accesslog_temp_other
+			accesslog_temp_subscriber
+			accesslog_temp_rss
+		)) {
+			my $new_sql = $create_sql;
+			$new_sql =~ s/__TABLENAME__/$new_table/;
+			$self->sqlDo($new_sql);
+		}
 
 		# Add in the indexes we need.
 		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid (uid)");
@@ -150,21 +152,21 @@ sub new {
 				"uid IN ($recent_subscriber_uidlist)",
 				3, 60);
 		}
-		my @PAGES;
+
+		my @pages;
 		if ($options->{other_no_op}) {
-			@PAGES = @{$options->{other_no_op}};
+			@pages = @{$options->{other_no_op}};
 		} else {
-			@PAGES = qw|index article search comments palm journal rss page users|;
-			push @PAGES, @{$constants->{op_extras_countdaily}};
+			@pages = qw|index article search comments palm journal rss page users|;
+			push @pages, @{$constants->{op_extras_countdaily}};
 		}
 
-		
-		my $page_list = join ',', map {$self->sqlQuote($_)} @PAGES;
+		my $page_list = join ',', map {$self->sqlQuote($_)} @pages;
 		return undef unless $self->_do_insert_select(
 			"accesslog_temp_other",
 			"*",
 			"accesslog_temp",
-			"op NOT in($page_list)",
+			"op NOT IN ($page_list)",
 			3, 60);
 		return undef unless $self->_do_insert_select(
 			"accesslog_temp_host_addr",
@@ -182,7 +184,6 @@ sub new {
 
 
 	}
-
 
 	return $self;
 }
@@ -1999,4 +2000,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.162 2005/01/25 15:42:26 tvroom Exp $
+$Id: Stats.pm,v 1.163 2005/01/26 05:22:03 jamiemccarthy Exp $

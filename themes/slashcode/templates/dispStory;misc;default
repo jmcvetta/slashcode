@@ -68,7 +68,7 @@ END %]
 				[% seen_topics.${topic.tid} = 1 %]
 				[% IF user.noicons %]
 					[ <A HREF="[% gSkin.rootdir %]/search.pl?topic=[% topic.tid %]"><B>[% topic.textname %]</B></A> ]<BR>
-				[% ELSE %]
+				[% ELSIF topic.image %]
 					<A HREF="[% gSkin.rootdir %]/search.pl?topic=[% topic.tid %]">
 						<IMG
 							SRC="[% constants.imagedir %]/topics/[% topic.image %]"
@@ -129,4 +129,4 @@ END -%]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.36 2004/07/02 00:13:56 pudge Exp $
+$Id: dispStory;misc;default,v 1.37 2004/09/28 16:13:41 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.135 2004/02/17 19:45:59 pudge Exp $
+# $Id: Stats.pm,v 1.136 2004/03/28 19:06:17 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.135 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -452,9 +452,9 @@ sub getDaysOfUnarchivedStories {
 ########################################################
 sub getAverageCommentCountPerStoryOnDay {
 	my($self, $day, $options) = @_;
-	my $col = "avg(commentcount)";
-	my $where = " date_format(time,'%Y-%m-%d') = '$day' ";
-	$where .= " and section = '$options->{section}' " if $options->{section};
+	my $col = "AVG(commentcount)";
+	my $where = " DATE_FORMAT(time,'%Y-%m-%d') = '$day' ";
+	$where .= " AND section = '$options->{section}' " if $options->{section};
 	return $self->sqlSelect($col, "stories", $where);
 }
 
@@ -468,9 +468,9 @@ sub getAverageHitsPerStoryOnDay {
 ########################################################
 sub getNumberStoriesPerDay {
 	my($self, $day, $options) = @_;
-	my $col = "count(*)";
-	my $where = " date_format(time,'%Y-%m-%d') = '$day' ";
-	$where .= " and section = '$options->{section}' " if $options->{section};
+	my $col = "COUNT(*)";
+	my $where = " DATE_FORMAT(time,'%Y-%m-%d') = '$day' ";
+	$where .= " AND section = '$options->{section}' " if $options->{section};
 	return $self->sqlSelect($col, "stories", $where);
 
 }
@@ -1684,4 +1684,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.135 2004/02/17 19:45:59 pudge Exp $
+$Id: Stats.pm,v 1.136 2004/03/28 19:06:17 jamiemccarthy Exp $

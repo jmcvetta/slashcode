@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.139 2004/04/13 14:52:27 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.140 2004/04/20 16:20:29 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2201,6 +2201,48 @@ sub getCidForDaysBack {
 		"cid > $startat_cid AND date > DATE_SUB(NOW(), INTERVAL $days DAY)");
 }
 
+sub getModderModdeeSummary {
+	my ($self, $options) = @_;
+	my $ac_uid = getCurrentStatic('anonymous_coward_uid');
+	$options ||= {};
+	my @where;
+	push @where, "ts > date_sub(NOW(),INTERVAL $options->{days_back} DAY)" if $options->{days_back};
+	push @where, "cuid != $ac_uid" if $options->{no_anon_comments};
+	push @where, "id >= $options->{start_at_id}" if $options->{start_at_id};
+	push @where, "id <= $options->{end_at_id}" if $options->{end_at_id};
+
+	my $where = join(" AND ", @where);
+
+	my $mods = $self->sqlSelectAllHashref(
+			[qw(uid cuid)],
+			"uid,cuid,count(*) as count",
+			"moderatorlog",
+			$where,
+			"group by uid, cuid");
+
+	return $mods;
+}
+
+sub getModderCommenterIPIDSummary {
+	my ($self, $options) = @_;
+	my $ac_uid = getCurrentStatic('anonymous_coward_uid');
+	$options ||= {};
+	my @where = ("moderatorlog.cid=comments.cid");
+	push @where, "ts > date_sub(NOW(),INTERVAL $options->{days_back} DAY)" if $options->{days_back};
+	push @where, "cuid != $ac_uid" if $options->{no_anon_comments};
+	push @where, "cuid = $ac_uid" if $options->{only_anon_comments};
+	push @where, "id >= $options->{start_at_id}" if $options->{start_at_id};
+	push @where, "id <= $options->{end_at_id}" if $options->{end_at_id};
+	my $where = join(" AND ", @where);
+	my $mods = $self->sqlSelectAllHashref(
+			[qw(uid ipid)],
+			"moderatorlog.uid as uid, comments.ipid as ipid, count(*) as count",
+			"moderatorlog,comments",
+			$where,
+			"group by uid, ipid");
+			
+	return $mods;
+}
 1;
 
 __END__

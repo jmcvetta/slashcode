@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.230 2004/08/19 14:16:35 cowboyneal Exp $
+# $Id: admin.pl,v 1.231 2004/08/27 14:51:49 cowboyneal Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1806,7 +1806,6 @@ sub updateStory {
 
 	my $tid_ref;
 	my $default_set = 0;
-	my $topic = $form->{tid};
 
 	$form->{dept} =~ s/ /-/g;
 
@@ -1814,6 +1813,7 @@ sub updateStory {
 		unless $form->{aid};
 
 	my($chosen_hr) = extractChosenFromForm($form);
+	my($topic) = $slashdb->getTopiclistFromChosen($chosen_hr);
 #use Data::Dumper; print STDERR "admin.pl updateStory chosen_hr: " . Dumper($chosen_hr) . "admin.pl updateStory form: " . Dumper($form);
 
 	my $time = findTheTime();

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.676 2004/09/08 21:05:25 tvroom Exp $
+# $Id: MySQL.pm,v 1.677 2004/09/09 21:23:03 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.676 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.677 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7098,19 +7098,30 @@ sub getStoriesEssentials {
 		$other .= " LIMIT $offset, " . ($limit + $limit_extra);
 	}
 
-	# Now do a COUNT() on how many rows in story_topics_rendered
-	# we are potentially looking at.  If that number is smaller
-	# than the gse_table_join_row_cutoff var, we do multiple
-	# SELECTs to pull out the data we need.  If larger, we let
-	# MySQL do the JOIN itself (so we don't pass an absurd amount
-	# of data over the wire, basically).
+	# Decide whether we're going to do two SELECTs or one.
+	my $separate_selects;
 
-	my $stoid_count = $self->sqlSelect(
-		"COUNT(DISTINCT stoid)",
-		"story_topics_rendered",
-		"$tid_in_where");
-	my $cutoff = $constants->{gse_table_join_row_cutoff} || 1000;
-	if ($stoid_count < $cutoff) {
+	if (!$min_stoid && $constants->{gse_skip_count_if_no_min_stoid}) {
+		$separate_selects = 0;
+	} else {
+
+		# Do a COUNT() on how many rows in story_topics_rendered
+		# we are potentially looking at.  If that number is smaller
+		# than the gse_table_join_row_cutoff var, we do multiple
+		# SELECTs to pull out the data we need.  If larger, we let
+		# MySQL do the JOIN itself (so we don't pass an absurd amount
+		# of data over the wire, basically).
+
+		my $stoid_count = $self->sqlSelect(
+			"COUNT(DISTINCT stoid)",
+			"story_topics_rendered",
+			"$tid_in_where");
+		my $cutoff = $constants->{gse_table_join_row_cutoff} || 1000;
+		$separate_selects = $stoid_count < $cutoff ? 1 : 0;
+
+	}
+
+	if ($separate_selects) {
 
 		# We're going to do separate SELECTs.  First we do the 1 or 2
 		# SELECTs on story_topics_rendered which determine for us the
@@ -7118,7 +7129,7 @@ sub getStoriesEssentials {
 		# exit this if clause, where the big ol' final SELECT will
 		# get the data we need.
 
-print STDERR "gSE $$ separate SELECTs, min_stoid=$min_stoid cutoff=$cutoff count=$stoid_count\n";
+print STDERR "gSE $$ separate SELECTs, min_stoid=$min_stoid\n";
 
 		my $stoids_ar = $self->sqlSelectColArrayref(
 			"DISTINCT stoid",
@@ -7176,7 +7187,7 @@ print STDERR "gSE $$ separate SELECTs, min_stoid=$min_stoid cutoff=$cutoff count
 		# big SELECT.  Prep the variables for the upcoming SELECT
 		# so it does the right thing.
 
-print STDERR "gSE $$ one SELECT, min_stoid=$min_stoid cutoff=$cutoff count=$stoid_count\n";
+print STDERR "gSE $$ one SELECT, min_stoid=$min_stoid\n";
 
 		# Need both tables.
 		$tables = "stories, story_topics_rendered";

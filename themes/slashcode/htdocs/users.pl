@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.182 2003/05/19 19:21:25 pudge Exp $
+# $Id: users.pl,v 1.183 2003/05/19 21:38:57 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -41,7 +41,8 @@ sub main {
 							# anyone with this seclev
 							# to change their own seclev
 			formname	=> $formname,
-			checks		=> [],
+			# just in case we need it for something else, we have it ...
+			checks		=> [ qw (generate_formkey) ],
 		},
 		userlogin	=>  {
 			function	=> \&showInfo,

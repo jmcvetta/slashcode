@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.231 2004/08/27 14:51:49 cowboyneal Exp $
+# $Id: admin.pl,v 1.232 2004/09/14 23:34:26 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -890,8 +890,13 @@ sub topicDelete {
 
 	$tid ||= $form->{tid};
 
-#	$slashdb->deleteTopic($tid, $form->{replacementtid});
+	my($success, $errmsg) = $slashdb->deleteTopic($tid, $form->{replacementtid});
 	$form->{tid} = '';
+
+	if (!$success) {
+		# we should dump this to the screen instead
+		warn $errmsg;
+	}
 }
 
 ##################################################################

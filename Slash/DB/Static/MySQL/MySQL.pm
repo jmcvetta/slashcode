@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.168 2004/07/23 16:03:34 tvroom Exp $
+# $Id: MySQL.pm,v 1.169 2004/07/27 22:14:41 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -890,7 +890,7 @@ sub getSkinInfo {
 				 AND in_trash = 'no' AND time < NOW()
 				 AND TO_DAYS(NOW()) - TO_DAYS(time) <= 2");
 			my $ds_hr = $self->displaystatusForStories($stoids);
-			$child_data{count_sectional} = scalar(grep { $ds_hr->{$_} == 0 } @$stoids);
+			$child_data{count_sectional} = scalar(grep { $ds_hr->{$_} == 1 } @$stoids);
 
 			$children{$child_tid} = \%child_data;
 			push @{$index{$skinname}}, $children{$child_tid};

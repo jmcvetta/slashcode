@@ -16,11 +16,11 @@ __template__
 [% fullsubtext = "";
    FOREACH submission = submissions;
 	PROCESS formatSub;
-	fullsubtext = fullsubtext _ "\n\n" _ subtext;
+	fullsubtext = fullsubtext _ "\n\n<h3>" _ submission.subj _ "</h3>\n\n" _ subtext;
    END;
 fullsubtext %]
 
 __seclev__
 10000
 __version__
-$Id: mergeSub;submit;default,v 1.1 2003/05/16 19:24:58 pudge Exp $
+$Id: mergeSub;submit;default,v 1.2 2003/08/04 19:07:47 pudge Exp $

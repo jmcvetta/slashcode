@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.54 2004/10/23 18:23:34 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.55 2004/10/29 22:51:03 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -232,7 +232,7 @@ $task{$me}{code} = sub {
 			my $this_skinname = $skinname eq 'mainpage' ? 'articles' : $skinname;
 			$filename = "$basedir/$this_skinname/$sid.shtml";
 			$args .= " section='$skinname'";
-			$logmsg = "$me updated $skinname:$sid ($title)";
+			$logmsg = "$me updated $stoid $skinname:$sid ($title)";
 			makeDir($basedir, $this_skinname, $sid);
 		} else {
 			$filename = "$basedir/$sid.shtml";

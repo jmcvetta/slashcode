@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.76 2002/10/08 20:19:28 jamie Exp $
+# $Id: Slash.pm,v 1.77 2002/10/15 14:27:44 jamie Exp $
 
 package Slash;
 
@@ -118,8 +118,9 @@ sub selectComments {
 		$C->{points}-- if length($C->{comment}) < $user->{clsmall}
 			&& $C->{points} > $min && $user->{clsmall};
 
-		# If the user is AC and we think AC's suck
-		$C->{points} = -1 if ($user->{anon_comments} && isAnon($C->{uid}));
+		# If the user is AC and we give AC's a penalty/bonus
+		$C->{points} += $user->{people_bonus_anonymous}
+			if isAnon($C->{uid}) && $user->{people_bonus_anonymous};
 
 		# If you don't trust new users
 		if ($user->{new_user_bonus} && $user->{new_user_percent}) {

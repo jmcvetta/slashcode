@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.14 2002/04/12 15:29:23 pudge Exp $
+# $Id: Install.pm,v 1.15 2002/04/12 18:20:19 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -106,7 +106,15 @@ sub readTemplateFile {
 		$val{$latch} .= $_ if $latch;
 	}
 	$val{'tpid'} = undef if $val{'tpid'};
-	for (qw| name page section lang seclev description title template |) {
+	{
+		# Make chomp() remove all newlines, not just 1.  These fields
+		# are used in ways sensitive to extraneous whitespace.
+		local $/ = "";
+		for (qw| name page section lang seclev |) {
+			chomp($val{$_}) if $val{$_};
+		}
+	}
+	for (qw| description title template |) {
 		chomp($val{$_}) if $val{$_};
 	}
 

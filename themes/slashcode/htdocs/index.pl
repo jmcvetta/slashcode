@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.69 2003/05/02 15:30:01 jamie Exp $
+# $Id: index.pl,v 1.70 2003/05/13 05:37:14 pater Exp $
 
 use strict;
 use Slash;
@@ -364,7 +364,7 @@ sub displayStories {
 				if $cc || $thresh;
 		}
 
-		if ($thissection ne $constants->{defaultsection} && !$form->{section}) {
+		if ($thissection ne $constants->{defaultsection} && (!$form->{section} || $form->{section} eq 'index')) {
 			my($section) = $reader->getSection($thissection);
 			push @links, getData('seclink', {
 				name	=> $thissection,

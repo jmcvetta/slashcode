@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.28 2002/09/24 17:16:31 brian Exp $
+# $Id: zoo.pl,v 1.29 2002/09/30 20:34:24 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -29,6 +29,11 @@ sub main {
 
 	# possible value of "op" parameter in form
 	my $ops = {
+		action		=> { 
+			check => $user_ok,		
+			formkey    => ['formkey_check', 'valid_check'],
+			function => \&action		
+		},
 		add		=> { 
 			check => $user_ok,		
 			formkey    => ['formkey_check', 'valid_check'],
@@ -403,7 +408,7 @@ sub action {
 		print getData("no_go");
 		return;
 	} else {
-		if (testSocialized($zoo, $constants, $user) && ($form->{op} ne 'delete' || $form->{op} ne 'neutral')) {
+		if (testSocialized($zoo, $constants, $user) && ($form->{type} ne 'neutral' || $form->{op} eq 'delete' )) {
 			print getData("no_go");
 			return 0;
 		}

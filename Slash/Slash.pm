@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.72 2002/09/03 21:27:21 brian Exp $
+# $Id: Slash.pm,v 1.73 2002/09/10 15:10:19 brian Exp $
 
 package Slash;
 
@@ -1217,31 +1217,31 @@ sub _hard_dispComment {
 	unless ($user->{is_anon} || isAnon($comment->{uid}) || $comment->{uid} == $user->{uid}) {
 		my $person = $comment->{uid};
 		if (!$user->{people}{FRIEND()}{$person} && !$user->{people}{FOE()}{$person} && !$user->{people}{FAN()}{$person} && !$user->{people}{FREAK()}{$person} && !$user->{people}{FOF()}{$person} && !$user->{people}{EOF()}{$person}) {
-				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;type=friend&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/neutral.gif" ALT="Alter Relationship" TITLE="Alter Relationship"></A>|;
+				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;type=friend&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/neutral.gif" ALT="Alter Relationship" TITLE="Alter Relationship"></A>|;
 		} else {
 			if ($user->{people}{FRIEND()}{$person}) {
 				my $title = $user->{people}{people_bonus_friend} ? "Friend ($user->{people}{people_bonus_friend})" : "Friend";
-				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/friend.gif" ALT="$title" TITLE="$title"></A>|;
+				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/friend.gif" ALT="$title" TITLE="$title"></A>|;
 			} 
 			if ($user->{people}{FOE()}{$person}) {
 				my $title = $user->{people}{people_bonus_foe} ? "Foe ($user->{people}{people_bonus_foe})" : "Foe";
-				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/foe.gif" ALT="$title" TITLE="$title"></A> |;
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/foe.gif" ALT="$title" TITLE="$title"></A> |;
 			} 
 			if ($user->{people}{FAN()}{$person}) {
 				my $title = $user->{people}{people_bonus_fan} ? "Fan ($user->{people}{people_bonus_fan})" : "Fan";
-				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/fan.gif" ALT="$title" TITLE="$title"></A> |;
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/fan.gif" ALT="$title" TITLE="$title"></A> |;
 			} 
 			if ($user->{people}{FREAK()}{$person}) {
 				my $title = $user->{people}{people_bonus_freak} ? "Freak ($user->{people}{people_bonus_freak})" : "Freak";
-				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/freak.gif" ALT="$title" TITLE="$title"></A> |;
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/freak.gif" ALT="$title" TITLE="$title"></A> |;
 			} 
 			if ($user->{people}{FOF()}{$person}) {
 				my $title = $user->{people}{people_bonus_friend} ? "Friend of a Friend ($user->{people}{people_bonus_fof})" : "Friend of a Friend";
-				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/fof.gif" ALT="$title" TITLE="$title"></A>|;
+				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/fof.gif" ALT="$title" TITLE="$title"></A>|;
 			} 
 			if ($user->{people}{EOF()}{$person}) {
 				my $title = $user->{people}{people_bonus_eof} ? "Foe of a Friend ($user->{people}{people_bonus_eof})" : "Foe of a Friend";
-				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" WIDTH="12" HEIGHT="12" SRC="$constants->{imagedir}/eof.gif" ALT="$title" TITLE="$title"></A> |;
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/eof.gif" ALT="$title" TITLE="$title"></A> |;
 			} 
 		}
 	}

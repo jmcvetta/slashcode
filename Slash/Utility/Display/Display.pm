@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.70 2003/09/10 22:45:47 pudge Exp $
+# $Id: Display.pm,v 1.71 2003/09/16 19:17:52 vroom Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1116,7 +1116,9 @@ sub createMenu {
 		if (@$items) {
 			$menu_text .= slashDisplay($menu,
 				{ items =>	$items,
-				  color =>	$color },
+				  color =>	$color,
+				  lightfontcolor => $options->{lightfontcolor} || ""
+				},
 				{ Return => 1, Page => 'menu' });
 		}
 	}
@@ -1600,4 +1602,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.70 2003/09/10 22:45:47 pudge Exp $
+$Id: Display.pm,v 1.71 2003/09/16 19:17:52 vroom Exp $

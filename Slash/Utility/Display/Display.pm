@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.19 2002/08/28 20:13:11 jamie Exp $
+# $Id: Display.pm,v 1.20 2002/09/12 23:28:50 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1004,7 +1004,7 @@ sub createMenu {
 	}
 
 	# default to "users" menu template
-	my $nm = $slashdb->getTemplateByName($menu, 0, 0, "menu");
+	my $nm = $slashdb->getTemplateByName($menu, 0, 0, "menu", "", 1);
 	$menu = "users" unless $nm->{page} eq "menu";
 
 	if (@$items) {
@@ -1144,4 +1144,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.19 2002/08/28 20:13:11 jamie Exp $
+$Id: Display.pm,v 1.20 2002/09/12 23:28:50 pudge Exp $

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.5 2000/06/12 19:38:37 pudge Exp $
+#  $Id: pollBooth.pl,v 1.6 2000/06/21 23:32:30 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -39,11 +39,6 @@ sub main {
 	}
 
 	header("$I{sitename} Poll", $I{F}{section});
-
-	if ($I{F}{qid} eq "gradschool") {
-		footer();
-		return;
-	}
 
 	if ($I{U}{aseclev} > 99) { 
 		print qq!<FONT SIZE="2">[ <A HREF="$ENV{SCRIPT_NAME}?op=edit">New Poll</A> ]!;

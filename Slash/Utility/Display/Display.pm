@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.48 2003/03/18 19:46:11 brian Exp $
+# $Id: Display.pm,v 1.49 2003/03/18 20:39:06 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1469,13 +1469,18 @@ sub _slashUser {
 sub _slashFile {
 	my($tokens, $token, $newtext) = @_;
 
+	my $id = $token->[1]{id};
+	my $title = $token->[1]{title};
+	my $text = $tokens->get_text("/slash");
+	$title ||= $text;
 	my $content = slashDisplay('fileLink', {
-		id    => $token->[1]{id},
-		title => $token->[1]{title},
+		id    => $id,
+		title => $title,
+		text => $text,
 	}, { Return => 1 });
 	$content ||= getData('SLASH-UKNOWN-FILE');
 
-	$$newtext =~ s/\Q$token->[3]\E/$content/;
+	$$newtext =~ s#\Q$token->[3]$text</SLASH>\E#$content#is;
 }
 
 sub _slashLink {
@@ -1553,4 +1558,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.48 2003/03/18 19:46:11 brian Exp $
+$Id: Display.pm,v 1.49 2003/03/18 20:39:06 brian Exp $

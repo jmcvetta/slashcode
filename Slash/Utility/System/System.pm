@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.7 2002/04/17 15:07:10 pudge Exp $
+# $Id: System.pm,v 1.8 2002/04/17 15:15:54 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -107,7 +107,7 @@ sub sendEmail {
 	my($addr, $subject, $content, $pr) = @_;
 	my $constants = getCurrentStatic();
 
-	# print errors under slashdb only if high level
+	# print errors to slashd.log under slashd only if high level
 	# of verbosity -- pudge
 	my $log_error = defined &main::verbosity ? main::verbosity() >= 3 : 1;
 
@@ -391,4 +391,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.7 2002/04/17 15:07:10 pudge Exp $
+$Id: System.pm,v 1.8 2002/04/17 15:15:54 pudge Exp $

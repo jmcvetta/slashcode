@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.455 2003/09/15 23:52:42 pudge Exp $
+# $Id: MySQL.pm,v 1.456 2003/09/16 22:23:02 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.455 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.456 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7319,6 +7319,7 @@ sub getUsersNicknamesByUID {
 sub getUser {
 	my($self, $id, $val) = @_;
 	my $answer;
+	my $id_q = $self->sqlQuote($id);
 
 	my $constants = getCurrentStatic();
 	my $start_time = Time::HiRes::time;
@@ -7376,7 +7377,7 @@ sub getUser {
 		chop($values);
 
 		for (sort keys %tables) {
-			$where .= "$_.uid=$id AND ";
+			$where .= "$_.uid=$id_q AND ";
 		}
 		$where =~ s/ AND $//;
 
@@ -7384,17 +7385,17 @@ sub getUser {
 		$answer = $self->sqlSelectHashref($values, $table, $where)
 			if $values;
 		for (@param) {
-			$answer->{$_} = $self->sqlSelect('value', 'users_param', "uid=$id AND name='$_'");
+			$answer->{$_} = $self->sqlSelect('value', 'users_param', "uid=$id_q AND name='$_'");
 		}
 
 	} elsif ($val) {
 		(my $clean_val = $val) =~ s/^-//;
 		my $table = $self->{$cache}{$clean_val};
 		if ($table) {
-			$answer = $self->sqlSelect($val, $table, "uid=$id");
+			$answer = $self->sqlSelect($val, $table, "uid=$id_q");
 		} else {
 			# First we try it as an acl param -acs
-			$answer = $self->sqlSelect('value', 'users_param', "uid=$id AND name='$val'");
+			$answer = $self->sqlSelect('value', 'users_param', "uid=$id_q AND name='$val'");
 		}
 
 	} else {
@@ -7424,7 +7425,7 @@ sub getUser {
 					@tables_thispass = @tables_ordered;
 				}
 				my $table = join(",", @tables_thispass);
-				my $where = join(" AND ", map { "$_.uid=$id" } @tables_thispass);
+				my $where = join(" AND ", map { "$_.uid=$id_q" } @tables_thispass);
 				if (!$answer) {
 					$answer = $self->sqlSelectHashref('*', $table, $where);
 				} else {
@@ -7438,11 +7439,11 @@ sub getUser {
 			}
 
 			my($append_acl, $append);
-			$append_acl = $self->sqlSelectColArrayref('acl', 'users_acl', "uid=$id");
+			$append_acl = $self->sqlSelectColArrayref('acl', 'users_acl', "uid=$id_q");
 			for (@$append_acl) {
 				$answer->{acl}{$_} = 1;
 			}
-			$append = $self->sqlSelectAll('name,value', 'users_param', "uid=$id");
+			$append = $self->sqlSelectAll('name,value', 'users_param', "uid=$id_q");
 			for (@$append) {
 				$answer->{$_->[0]} = $_->[1];
 			}

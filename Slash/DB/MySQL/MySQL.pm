@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.298 2003/01/20 16:47:26 pater Exp $
+# $Id: MySQL.pm,v 1.299 2003/01/20 19:38:23 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.298 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.299 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3194,6 +3194,7 @@ sub getNumCommPostedByUID {
 sub getUIDList {
 	my($self, $column, $id) = @_;
 
+	my @result = ( );
 	my $where = '';
 	$id = md5_hex($id) if length($id) != 32;
 	if ($column eq 'md5id') {
@@ -3204,7 +3205,13 @@ sub getUIDList {
 	} else {
 		return [ ];
 	}
-	return $self->sqlSelectAll("DISTINCT uid ", "comments", $where);
+
+	push @result, $self->sqlSelectAll("DISTINCT uid ", "submissions", $where);
+	push @result, $self->sqlSelectAll("DISTINCT uid ", "comments", $where);
+	push @result, $self->sqlSelectAll("DISTINCT uid ", "moderatorlog", $where);
+
+	# unique uids only, please
+	return [keys %{ { map { $_ => 1 } @result } } ];
 }
 
 ##################################################################

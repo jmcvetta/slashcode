@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_forget.pl,v 1.8 2004/04/02 00:43:06 pudge Exp $
+# $Id: daily_forget.pl,v 1.9 2004/06/01 23:39:18 pudge Exp $
 
 use strict;
 
@@ -15,10 +15,11 @@ $task{$me}{timespec_panic_1} = ''; # if panic, this can wait
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtualuser, $constants, $slashdb, $user) = @_;
-	my $forgotten1 = $slashdb->forgetCommentIPs();
-	my $forgotten2 = $slashdb->forgetSubmissionIPs();
-	my $forgotten3 = $slashdb->forgetOpenProxyIPs();
-	return "forgot approx $forgotten1 comment IPs, $forgotten2 submission IPs, $forgotten3 open proxy IPs";
+	my $forgotten1 = $slashdb->forgetCommentIPs;
+	my $forgotten2 = $slashdb->forgetSubmissionIPs;
+	my $forgotten3 = $slashdb->forgetOpenProxyIPs;
+	my $forgotten4 = $slashdb->forgetUsersLogtokens;
+	return "forgot approx $forgotten1 comment IPs, $forgotten2 submission IPs, $forgotten3 open proxy IPs, $forgotten4 logtokens";
 };
 
 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.151 2004/05/25 21:51:48 tvroom Exp $
+# $Id: MySQL.pm,v 1.152 2004/06/01 23:39:17 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -301,6 +301,15 @@ sub _deleteThread {
 #		);
 #	}
 #}
+
+########################################################
+# For daily_forget.pl
+sub forgetUsersLogtokens {
+	my($self) = @_;
+
+	return $self->sqlDelete("users_logtokens",
+		"DATE_ADD(expires, INTERVAL 1 MONTH) < NOW()");
+}
 
 ########################################################
 # For daily_forget.pl

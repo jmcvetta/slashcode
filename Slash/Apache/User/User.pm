@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.35 2002/09/11 23:41:04 jamie Exp $
+# $Id: User.pm,v 1.36 2002/09/17 19:54:43 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -107,7 +107,7 @@ sub handler {
 	my $uid;
 	my $op = $form->{op} || '';
 
-	if (($op eq 'userlogin' || $form->{'rlogin'}) && length($form->{upasswd}) > 1) {
+	if (($op eq 'userlogin' || $form->{rlogin}) && length($form->{upasswd}) > 1) {
 		my $tmpuid = $slashdb->getUserUID($form->{unickname});
 		($uid, my($newpass)) = userLogin($tmpuid, $form->{upasswd});
 
@@ -119,6 +119,8 @@ sub handler {
 			$form->{returnto} =~ s/%3F/?/;
 			$form->{returnto} = url2abs($newpass
 				? "$constants->{rootdir}/users.pl?op=changepasswd" .
+					# XXX This "note" field is ignored now...
+					# right?  - Jamie 2002/09/17
 				  "&note=Please+change+your+password+now!"
 				: $form->{returnto}
 					? $form->{returnto}

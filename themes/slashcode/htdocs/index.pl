@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.47 2002/08/28 20:13:11 jamie Exp $
+# $Id: index.pl,v 1.48 2002/09/17 19:54:43 jamie Exp $
 
 use strict;
 use Slash;
@@ -17,10 +17,15 @@ sub main {
 
 
 	my($stories, $Stories, $section);
-	if ($form->{op} eq 'userlogin' && !$user->{is_anon}) {
+	if ($form->{op} eq 'userlogin' && !$user->{is_anon}
+			# Any login attempt, successful or not, gets
+			# redirected to the homepage, to avoid keeping
+			# the password or nickname in the query_string of
+			# the URL (this is a security risk via "Referer")
+		|| $form->{upasswd} || $form->{unickname}
+	) {
 		my $refer = $form->{returnto} || $ENV{SCRIPT_NAME};
-		redirect($refer);
-		return;
+		redirect($refer); return;
 	}
 
 	# why is this commented out?  -- pudge

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.47 2002/04/30 19:06:31 brian Exp $
+# $Id: slashschema_create.sql,v 1.48 2002/05/10 19:00:59 brian Exp $
 #
 
 #
@@ -60,6 +60,7 @@ CREATE TABLE accesslog (
 	query_string varchar(50),
 	user_agent varchar(50),
 	section varchar(30) DEFAULT 'index' NOT NULL,
+	bytes mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	INDEX host_addr_part (host_addr(16)),
 	INDEX op_part (op(12)),
 	INDEX ts (ts),

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.23 2002/04/11 16:14:39 jamie Exp $
+# $Id: Stats.pm,v 1.24 2002/04/12 23:31:33 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -201,7 +201,7 @@ sub getAdminModsInfo {
 		$hr->{$nickname}{m2_text} = sprintf("\@ %5d fair, %5d un",
 			$nfair, $nunfair);
 		if ($nfair+$nunfair >= 20) { # this number is pretty arbitrary
-			$hr->{$nickname}{m2_text} .= sprintf(" (%6.2f%% un)",
+			$hr->{$nickname}{m2_text} .= sprintf(" (%5.1f%% un)",
 				$percent);
 		}
 		# Also calculate overall-week percentage.
@@ -211,7 +211,7 @@ sub getAdminModsInfo {
 			? $nunfair_wk*100/($nfair_wk+$nunfair_wk)
 			: 0;
 		if ($nfair_wk+$nunfair_wk >= 20) { # again, pretty arbitrary
-			$hr->{$nickname}{m2_text} .= sprintf(" (wk: %6.2f%%)",
+			$hr->{$nickname}{m2_text} .= sprintf(" (wk: %5.1f%%)",
 				$percent);
 		}
 		$hr->{$nickname}{m2_fair} = $nfair;

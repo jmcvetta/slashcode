@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.687 2004/09/23 19:14:50 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.688 2004/09/24 23:44:09 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.687 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.688 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3132,24 +3132,42 @@ sub saveTopic {
 	}
 
 
-	my @parents;
-	if ($topic->{_multi}{parent_topic} && ref($topic->{_multi}{parent_topic}) eq 'ARRAY') {
-		@parents = grep { $_ } @{$topic->{_multi}{parent_topic}};
-	} elsif ($topic->{parent_topic}) {
-		if (ref($topic->{parent_topic}) eq 'ARRAY') {
-			@parents = grep { $_ } @{$topic->{parent_topic}};
-		} else {
-			@parents = ($topic->{parent_topic});
-		}
-	}
-	my $parent_str = join ',', @parents;
+	for my $x (qw(parent child)) {
+		my %relations;
+		my $name = $x . '_topic';
+		if ($topic->{_multi}{$name} && ref($topic->{_multi}{$name}) eq 'ARRAY') {
+			%relations = map { $_ => undef } grep { $_ } @{$topic->{_multi}{$name}};
 
-	$self->sqlDelete('topic_parents', "tid=$tid AND parent_tid NOT IN ($parent_str)") if $parent_str;
-	for my $parent (@parents) {
-		$self->sqlInsert('topic_parents', {
-			tid		=> $tid,
-			parent_tid	=> $parent
-		}, { ignore => 1 });
+		} elsif ($topic->{$name}) {
+			if (ref($topic->{$name}) eq 'HASH') {
+				%relations = map { $_ => $topic->{$name}{$_} } grep { $_ } keys %{$topic->{$name}};
+			} elsif (ref($topic->{$name}) eq 'ARRAY') {
+				%relations = map { $_ => undef } grep { $_ } @{$topic->{$name}};
+			} else {
+				%relations = ($topic->{$name} => undef);
+			}
+		}
+
+		my $del_str = join ',', keys %relations;
+		if ($x eq 'parent') {
+			$self->sqlDelete('topic_parents', "tid=$tid AND parent_tid NOT IN ($del_str)") if $del_str;
+		} elsif ($x eq 'child') {
+			$self->sqlDelete('topic_parents', "parent_tid=$tid AND tid NOT IN ($del_str)") if $del_str;
+		}
+
+		for my $thistid (keys %relations) {
+			my %relation = (
+				tid		=> $tid,
+				parent_tid	=> $thistid,
+			);
+			$relation{min_weight} = $relations{$thistid} if defined $relations{$thistid};
+
+			if ($x eq 'child') {
+				@relation{qw(tid parent_tid)} = @relation{qw(parent_tid tid)};
+			}
+
+			$self->sqlInsert('topic_parents', \%relation, { ignore => 1 });
+		}
 	}
 
 	if ($topic->{nexus}) {

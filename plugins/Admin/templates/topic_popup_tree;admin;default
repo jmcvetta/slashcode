@@ -11,6 +11,7 @@ en_US
 __name__
 topic_popup_tree
 __template__
+[% name = name.0 %]
 <div id="[% name %]-outer" class="hpts-outer">
   <div class="hpts-title" id="[% name %]-title">[% title %]</div>
   <div class="hpts-inner">
@@ -59,4 +60,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_tree;admin;default,v 1.13 2004/09/15 20:37:26 pudge Exp $
+$Id: topic_popup_tree;admin;default,v 1.14 2004/09/24 23:44:11 pudge Exp $

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.24 2004/07/13 22:44:05 pudge Exp $
+# $Id: PLUGIN,v 1.25 2004/09/24 23:44:10 pudge Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
@@ -44,5 +44,6 @@ template=templates/topic_popup_css;admin;default
 template=templates/topic_popup_js;admin;default
 template=templates/topic_popup_tree;admin;default
 template=templates/topic_popup_ui;admin;default
+template=templates/topic_popup_ui_topiced;admin;default
 template=templates/varEdit;admin;default
 template=templates/topicEdit;admin;default

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.51 2003/07/28 16:21:35 jamie Exp $
+# $Id: Anchor.pm,v 1.52 2003/07/29 11:05:09 pater Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,13 +34,12 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
 	redirect
-	ssiHead
-	ssiFoot
+	ssiHeadFoot
 	prepAds
 	getAd
 );
@@ -155,7 +154,7 @@ sub header {
 	# ssi = 1 IS NOT THE SAME as ssi = 'yes'
 	# ...which is silly. - Jamie 2002/06/26
 	if ($form->{ssi} && $form->{ssi} eq 'yes') {
-		ssiHead($section, $options);
+		ssiHeadFoot('header', $section, $options);
 		# Since $form->{ssi} is set by freshenup.pl, we're being run
 		# from a task.  We do want to generate the rest of the page,
 		# so return true.
@@ -240,6 +239,12 @@ sub footer {
 
 	my $display;
 
+        if ($form->{ssi} && $form->{ssi} eq 'yes') {
+		my $section = $user->{currentSection} || $constants->{section};
+                ssiHeadFoot('footer', $section, $options);
+                return 1;
+        }
+
 	if ($user->{state}{adminheader}) {
 		$display = slashDisplay('footer-admin', '', { Return => $options->{Return}, Page => $options->{Page} });
 	} else {
@@ -295,7 +300,7 @@ sub redirect {
 
 #========================================================================
 
-=head2 ssiHead()
+=head2 ssiHeadFoot()
 
 Prints the head for server-parsed HTML pages.
 
@@ -313,8 +318,8 @@ The 'ssihead' template block.
 
 =cut
 
-sub ssiHead {
-	my($section, $options) = @_;
+sub ssiHeadFoot {
+	my($headorfoot, $section, $options) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $slashdb = getCurrentDB();
@@ -326,11 +331,13 @@ sub ssiHead {
 	# if there's a special .inc header for this page, use it, else it's
 	# business as usual.
 	$page = '' unless ($page ne 'misc' && $slashdb->existsTemplate({
-		name    => 'header',
+		name    => $headorfoot,
 	        section => $user->{currentSection},
 	        page    => $user->{currentPage} }));
 
-	slashDisplay('ssihead', {
+	my $ssiheadorfoot = 'ssi' . substr($headorfoot, 0, 4);
+
+	slashDisplay($ssiheadorfoot, {
 		dir	=> $dir,
 		section => $user->{currentSection} ? "$user->{currentSection}/" : "",
 		page    => $page,
@@ -593,4 +600,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.51 2003/07/28 16:21:35 jamie Exp $
+$Id: Anchor.pm,v 1.52 2003/07/29 11:05:09 pater Exp $

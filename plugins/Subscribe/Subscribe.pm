@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.27 2003/10/16 01:38:10 jamie Exp $
+# $Id: Subscribe.pm,v 1.28 2004/02/17 17:33:12 tvroom Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class) = @_;
@@ -328,7 +328,7 @@ sub getSubscriptionsForUser {
 		"ORDER BY spid",
 	);
 	$sp ||= [ ];
-	formatDate($sp, 0);
+	formatDate($sp, 0, 0, "%m-%d-%y @%I:%M %p");
 	return $sp;
 }
 
@@ -353,7 +353,7 @@ sub getSubscriptionsPurchasedByUser {
 		"ORDER BY spid",
 	);
 	$sp ||= [ ];
-	formatDate($sp, 0);
+	formatDate($sp, 0, 0, "%m-%d-%y @%I:%M %p");
 	return $sp;
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.80 2004/04/28 05:50:31 pudge Exp $
+# $Id: journal.pl,v 1.81 2004/05/07 21:49:27 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -140,6 +140,8 @@ sub displayFriends {
 
 	redirect("$constants->{rootdir}/search.pl?op=journals") 
 		if $user->{is_anon};
+
+	_validFormkey('generate_formkey') or return;
 
 	_printHead("mainhead") or return;
 
@@ -752,9 +754,16 @@ sub editArticle {
 
 sub _validFormkey {
 	my(@checks) = @_ ? @_ : qw(max_post_check interval_check formkey_check);
+	my $form = getCurrentForm();
 	my $error;
+
+	my $formname = 0;
+	my @caller = caller(1);
+	$formname = 'zoo' if $checks[0] eq 'generate_formkey'
+		&& $caller[3] =~ /\bdisplayFriends$/;
+
 	for (@checks) {
-		last if formkeyHandler($_, 0, 0, \$error);
+		last if formkeyHandler($_, $formname, 0, \$error);
 	}
 
 	if ($error) {
@@ -763,7 +772,7 @@ sub _validFormkey {
 		return 0;
 	} else {
 		# why does anyone care the length?
-		getCurrentDB()->updateFormkey(0, length(getCurrentForm()->{article}));
+		getCurrentDB()->updateFormkey(0, length($form->{article}));
 		return 1;
 	}
 }

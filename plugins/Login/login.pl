@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.6 2004/05/04 21:43:33 pudge Exp $
+# $Id: login.pl,v 1.7 2004/05/07 21:49:31 pudge Exp $
 
 use strict;
 use Email::Valid;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -373,9 +373,9 @@ sub _validFormkey {
 	$return = pop @checks if $checks[-1] eq '1';
 
 	# eventually change s/users/login/g
-	my $formname = $op =~ /^mailpasswd(?:form)?$/ ? 'users/mp'
-		     : $op =~ /^newuser(?:form)?$/ ? 'users/nu'
-		     : 'users'; 
+	my $formname = $op =~ /^mailpasswd(?:form)?$/ ? 'login/mp'
+		     : $op =~ /^newuser(?:form)?$/ ? 'login/nu'
+		     : 'login'; 
 
 	my $options = {};
 	if (   !$constants->{plugin}{HumanConf}
@@ -392,6 +392,7 @@ sub _validFormkey {
 	for (@checks) {
 		warn "$op: $formname: $_\n";
 		my $err = formkeyHandler($_, $formname, 0, \$error, $options);
+		last if $err || $error;
 	}
 
 	if ($error) {

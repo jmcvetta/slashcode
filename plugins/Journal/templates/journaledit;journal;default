@@ -19,7 +19,7 @@ __template__
 		<INPUT TYPE="hidden" NAME="id" VALUE="[% article.id %]">
 		<INPUT TYPE="hidden" NAME="state" VALUE="editing">
 		<INPUT TYPE="hidden" NAME="preview" VALUE="active">
-		<INPUT TYPE="hidden" NAME="formkey" VALUE="[% form.formkey %]">
+		[% PROCESS formkey_tag %]
 
 		[% PROCESS formLabel value => "Subject", comment => "This is required" %]
 		<INPUT TYPE="text" NAME="description" SIZE="60" MAXLENGTH="60" VALUE="[% article.description | strip_attribute %]">
@@ -65,4 +65,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.12 2004/03/06 00:34:01 pudge Exp $
+$Id: journaledit;journal;default,v 1.13 2004/05/07 21:49:30 pudge Exp $

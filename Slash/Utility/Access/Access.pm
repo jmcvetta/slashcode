@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.23 2004/04/13 16:03:54 pudge Exp $
+# $Id: Access.pm,v 1.24 2004/05/07 21:49:26 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -129,6 +129,8 @@ sub formkeyError {
 	my $form = getCurrentForm();
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
+
+	$formname =~ s|/\w+$||;  # remove /nu, /mp, etc.
 
 	my $abuse_reasons = { usedform => 1, invalid => 1, maxposts => 1,
 		invalidhc => 1 };
@@ -806,4 +808,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.23 2004/04/13 16:03:54 pudge Exp $
+$Id: Access.pm,v 1.24 2004/05/07 21:49:26 pudge Exp $

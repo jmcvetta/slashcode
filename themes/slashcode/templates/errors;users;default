@@ -34,7 +34,8 @@ __template__
 	Unable to save [% field %] [% id %] Admin settings
 
 [% CASE 'bad_op' %]
-	Hey! The opcode '[% op | strip_literal %]' is not a valid op! Quit messing around!
+	'[% op | strip_literal %]' is not a valid op.
+	Please try again, or notify the site admin.
 
 [% CASE 'bad_saveparam' %]
 	That user parameter is not valid.
@@ -183,4 +184,4 @@ whitespace and/or less repetition.
 __seclev__
 10000
 __version__
-$Id: errors;users;default,v 1.16 2004/05/04 21:43:33 pudge Exp $
+$Id: errors;users;default,v 1.17 2004/05/07 21:49:31 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.27 2002/10/24 17:36:14 pater Exp $
+# $Id: Display.pm,v 1.28 2002/10/27 15:45:35 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1031,7 +1031,8 @@ sub createMenu {
 	}
 
 	if (!$menu_items || !@$menu_items) {
-		return "<!-- createMenu($menu, $style, $color), no items -->\n"; # DEBUG
+		return "";
+#		return "<!-- createMenu($menu, $style, $color), no items -->\n"; # DEBUG
 	}
 
 	# Now convert each item in the list into a hashref that can
@@ -1066,7 +1067,7 @@ sub createMenu {
 	}
 
 	my $menu_text = "";
-	$menu_text .= "<!-- createMenu($menu, $style, $color), " . scalar(@$items) . " items -->\n"; # DEBUG
+#	$menu_text .= "<!-- createMenu($menu, $style, $color), " . scalar(@$items) . " items -->\n"; # DEBUG
 
 	if ($style eq 'tabbed') {
 		# All menus in the tabbed style use the same template.
@@ -1222,4 +1223,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.27 2002/10/24 17:36:14 pater Exp $
+$Id: Display.pm,v 1.28 2002/10/27 15:45:35 jamie Exp $

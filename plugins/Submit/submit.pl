@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.48 2002/01/08 17:22:09 pudge Exp $
+# $Id: submit.pl,v 1.49 2002/01/10 00:03:03 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -41,6 +41,7 @@ sub main {
 	$form->{from}   = strip_attribute($form->{from})  if $form->{from};
 	$form->{subj}   = strip_attribute($form->{subj})  if $form->{subj};
 	$form->{email}  = strip_attribute($form->{email}) if $form->{email};
+	$form->{name}   = strip_nohtml($form->{name})     if $form->{name};
 
 	# Show submission title on browser's titlebar.
 	my($tbtitle) = $form->{title};
@@ -417,6 +418,7 @@ sub saveSub {
 	}
 
 	$form->{story} = strip_html(url2html($form->{story}));
+	# Maybe $form->{story} = balanceTags($form->{story}) here?
 
 	my $uid ||= $form->{name}
 		? getCurrentUser('uid')

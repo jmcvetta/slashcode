@@ -18,9 +18,11 @@ __template__
 [% SWITCH value %]
 
 [% CASE 'no_user' %]
+	[% returnme.data_constant=1; %]
 	The user you requested does not exist, no matter how much you wish this might be the case.
 
 [% CASE 'all_sections' %]
+	[% returnme.data_constant=1; %]
 	All Sections
 
 [% END %]
@@ -28,4 +30,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;users;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: data;users;default,v 1.4 2003/08/05 16:06:40 vroom Exp $

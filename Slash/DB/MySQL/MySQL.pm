@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.522 2004/03/09 17:05:31 tvroom Exp $
+# $Id: MySQL.pm,v 1.523 2004/03/09 18:00:44 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.522 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.523 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4599,8 +4599,6 @@ sub countCommentsBySubnetID {
 sub countCommentsByIPID {
 	my($self, $ipid, $options) = @_;
 	return 0 if !$ipid;
-	use Data::Dumper;
-	print STDERR ($options);
 	return $self->countCommentsByGeneric("ipid='$ipid'", $options);
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.35 2003/02/07 20:55:24 brian Exp $
+# $Id: Zoo.pm,v 1.36 2003/02/08 00:12:12 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -82,17 +82,11 @@ sub getFriendsUIDs {
 sub setFriend {
 	my($self, $uid, $person) = @_;
 	_set(@_, 'friend', FRIEND);
-	my $data = $self->sqlSelectColArrayref('uid', 'people', "person=$uid AND type='friend'");
-	my $list = join (',', @$data);
-	$self->sqlDo("UPDATE users_info SET people_status='dirty' WHERE uid IN ($list)");
 }
 
 sub setFoe {
 	my($self, $uid, $person) = @_;
 	_set(@_, 'foe', FOE);
-	my $data = $self->sqlSelectColArrayref('uid', 'people', "person=$uid AND type='friend'");
-	my $list = join (',', @$data);
-	$self->sqlDo("UPDATE users_info SET people_status='dirty' WHERE uid IN ($list)");
 }
 
 sub _set {
@@ -110,12 +104,7 @@ sub _set {
 	} else {
 		$self->sqlInsert('people', { uid => $uid,  person => $person, type => $type });
 	}
-	my $people = $slashdb->getUser($uid, 'people');
-	# First we clean up, then we reapply
-	delete $people->{FRIEND()}{$person};
-
-	delete $people->{FOE()}{$person};
-	$people->{$const}{$person} = 1;
+	my $people = $self->rebuildUser($uid);
 	$slashdb->setUser($uid, { people => $people });
 
 	# Now we do the Fan/Foe
@@ -126,12 +115,11 @@ sub _set {
 	} else {
 		$self->sqlInsert('people', { uid => $person,  person => $uid, perceive => $s_type });
 	}
-	$people = $slashdb->getUser($person, 'people');
-	delete $people->{FAN()}{$uid};
-	delete $people->{FREAK()}{$uid};
-	$people->{$s_const}{$uid} = 1;
-	$slashdb->setUser($person, { people => $people })
 
+	my $data = $self->sqlSelectColArrayref('uid', 'people', "person=$uid AND type='friend'");
+	my $list = join (',', @$data);
+	push @$data, $person;
+	$self->sqlDo("UPDATE users_info SET people_status='dirty' WHERE uid IN ($list)");
 }
 
 
@@ -160,23 +148,14 @@ sub isFoe {
 # This just really neutrilzes the relationship.
 sub delete {
 	my($self, $uid, $person, $type) = @_;
-	$type ||= $self->sqlSelect('type', 'people', "uid=$uid AND person=$person");
 	$self->sqlDo("UPDATE people SET type=NULL WHERE uid=$uid AND person=$person");
 	my $slashdb = getCurrentDB();
-	my $people = $slashdb->getUser($uid, 'people');
-	if ($people) {
-		delete $people->{FRIEND()}{$person};
-		delete $people->{FOE()}{$person};
-		$slashdb->setUser($uid, { people => $people })
-	}
 	$self->sqlDo("UPDATE people SET perceive=NULL WHERE uid=$person AND person=$uid");
-	my $other_people = $slashdb->getUser($person, 'people');
-	if ($other_people) {
-		delete $other_people->{FAN()}{$uid};
-		delete $other_people->{FREAK()}{$uid};
-		$slashdb->setUser($person, { people => $other_people })
-	}
+	# Cleanup
+	my $people = $self->rebuildUser($uid);
+	$slashdb->setUser($uid, { people => $people });
 	my $data = $self->sqlSelectColArrayref('uid', 'people', "person=$uid AND type='friend'");
+	push @$data, $person;
 	my $list = join (',', @$data);
 	$self->sqlDo("UPDATE users_info SET people_status='dirty' WHERE uid IN ($list)");
 
@@ -293,7 +272,7 @@ sub rebuildUser {
 	}
 
 	my $list = join (',', @friends);
-	if ($list) {
+	if (scalar(@friends) && $list) {
 		$data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
 		for (@$data) {
 			if ($_->{type} eq 'friend') {

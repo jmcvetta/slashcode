@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.38 2003/02/05 16:18:39 jamie Exp $
+# $Id: zoo.pl,v 1.39 2003/02/08 00:12:12 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -662,18 +662,20 @@ sub check {
 	my (%mutual, @mutual);
 	if ($user->{people}{FOF()}{$uid}) {
 		for my $person (keys %{$user->{people}{FOF()}{$uid}}) {
+			next unless $person;
 			push @{$mutual{FOF()}}, $person;
 			push @mutual, $person;
 		}
 	}
 	if ($user->{people}{EOF()}{$uid}) {
 		for my $person (keys %{$user->{people}{EOF()}{$uid}}) {
+			next unless $person;
 			push @{$mutual{EOF()}}, $person;
 			push @mutual, $person;
 		}
 	}
 	my $uids_2_nicknames = $slashdb->getUsersNicknamesByUID(\@mutual)
-		if @mutual;
+		if scalar(@mutual);
 
 	my $type = $user->{people}{FOE()}{$uid} ? 'foe': ($user->{people}{FRIEND()}{$uid}? 'friend' :'neutral');
 	slashDisplay('confirm', { 

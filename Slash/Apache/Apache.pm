@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.62 2004/07/17 17:35:19 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.63 2004/07/17 18:05:39 cowboyneal Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -413,8 +413,8 @@ sub IndexHandler {
 				# to handle this situation at the moment, so
 				# instead I'm hardcoding in the solution for the
 				# most common problem. - Jamie 2004/07/17
-				if ($key eq "faq") {
-					$r->uri("/faq/index.shtml");
+				if ($key eq "faq" || $key eq "palm") {
+					$r->uri("/$key/index.shtml");
 				} else {
 					$r->uri("/$index_handler");
 				}

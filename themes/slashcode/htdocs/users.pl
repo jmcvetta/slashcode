@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.229 2004/03/16 17:54:25 jamiemccarthy Exp $
+# $Id: users.pl,v 1.230 2004/03/17 02:36:01 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -808,7 +808,7 @@ sub showInfo {
 	my $commentstruct = [];
 	my $requested_user = {};
 	my $time_period = $constants->{admin_comment_display_days} || 30;
-	my $cid_for_time_period = $reader->getVar("min_cid_for_$time_period\_days",'value', 1) || 0;
+	my $cid_for_time_period = $reader->getVar("min_cid_last_$time_period\_days",'value', 1) || 0;
 	my $admin_time_period_limit = $constants->{admin_daysback_commentlimit} || 100;
 	my $admin_non_time_limit    = $constants->{admin_comment_subsequent_pagesize} || 24;
 	

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.101 2003/08/19 01:38:47 pudge Exp $
+# $Id: Environment.pm,v 1.102 2003/09/23 22:12:53 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -75,6 +75,7 @@ use vars qw($VERSION @EXPORT);
 	slashProfInit
 	slashProfEnd
 
+	getOpAndDatFromStatusAndURI
 	createLog
 	errorLog
 	writeLog
@@ -1930,20 +1931,9 @@ sub writeLog {
 	$r->err_header_out(SLASH_LOG_DATA => $dat);
 }
 
-sub createLog {
-	my($uri, $dat, $status) = @_;
-	my $constants = getCurrentStatic();
-
-	# At this point, if we have short-circuited the
-	# "PerlAccessHandler  Slash::Apache::User"
-	# by returning an apache code like DONE before that processing
-	# could take place (which currently happens in Banlist.pm), then
-	# prepareUser() has not been called, thus the $user->{state}{dbs}
-	# table is not set up.  So to make sure we write to the proper
-	# logging DB (assuming there is one), we have to use the old-style
-	# arguments to getObject(), instead of passing in {db_type=>'log'}.
-	# - Jamie 2003/05/25
-	my $logdb = getObject('Slash::DB', { virtual_user => $constants->{log_db_user} });
+sub getOpAndDatFromStatusAndURI {
+	my($status, $uri, $dat) = @_;
+	$dat ||= "";
 
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
@@ -1996,19 +1986,36 @@ sub createLog {
 		if ($SECT = $reader->getSection($uri) ) {
 			my $handler = $SECT->{index_handler};
 			$handler =~ s|^(.*)\.pl$|$1|;
-			if ($handler eq $suspected_handler) {
-				$uri = $handler;
-			}
+			$uri = $handler if $handler eq $suspected_handler;
 		}
 	} elsif ($uri =~ /\.html$/) {
 		$uri =~ s|^/(.*)\.html$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
 	}
-	$logdb->createAccessLog($uri, $dat, $status);
-	if (getCurrentUser('is_admin')) {
-		$logdb->createAccessLogAdmin($uri, $dat, $status);
-	}
+	($uri, $dat);
+}
+
+sub createLog {
+	my($uri, $dat, $status) = @_;
+	my $constants = getCurrentStatic();
+
+	# At this point, if we have short-circuited the
+	# "PerlAccessHandler  Slash::Apache::User"
+	# by returning an apache code like DONE before that processing
+	# could take place (which currently happens in Banlist.pm), then
+	# prepareUser() has not been called, thus the $user->{state}{dbs}
+	# table is not set up.  So to make sure we write to the proper
+	# logging DB (assuming there is one), we have to use the old-style
+	# arguments to getObject(), instead of passing in {db_type=>'log'}.
+	# - Jamie 2003/05/25
+	my $logdb = getObject('Slash::DB', { virtual_user => $constants->{log_db_user} });
+
+	my($op, $new_dat) = getOpAndDatFromStatusAndURI($status, $uri, $dat);
+
+	$logdb->createAccessLog(	$op, $new_dat, $status);
+	$logdb->createAccessLogAdmin(	$op, $new_dat, $status)
+		if getCurrentUser('is_admin');
 }
 
 #========================================================================
@@ -2237,4 +2244,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.101 2003/08/19 01:38:47 pudge Exp $
+$Id: Environment.pm,v 1.102 2003/09/23 22:12:53 jamie Exp $

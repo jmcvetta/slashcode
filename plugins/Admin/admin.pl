@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.111 2002/12/10 00:31:01 brian Exp $
+# $Id: admin.pl,v 1.112 2002/12/11 01:33:24 brian Exp $
 
 use strict;
 use Image::Size;
@@ -286,6 +286,8 @@ sub templateEdit {
 	my($templatedelete_flag, $templateedit_flag, $templateform_flag) = 0;
 	my $pagehashref = {};
 	$title = getTitle('templateEdit-title', {}, 1);
+	#Just to punish those section only admins! -Brian
+	$form->{section} = $user->{section} if $user->{section};
 
 	if ($form->{templatenew} || $form->{templatepage} || $form->{templatesection}) {
 		$tpid = '';
@@ -469,6 +471,8 @@ sub blockEdit {
 	my($form, $slashdb, $user, $constants) = @_;
 
 	my($bid);
+	# Control for section editors when editing blocks -Brian
+	$form->{section} = $user->{section} if $user->{section};
 
 	if ($form->{blocksave} || $form->{blocksavedef}) {
 		blockSave($form->{thisbid});

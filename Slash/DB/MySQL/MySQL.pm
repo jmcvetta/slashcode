@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.742 2004/12/02 02:44:26 pudge Exp $
+# $Id: MySQL.pm,v 1.743 2004/12/07 17:09:57 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.742 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.743 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -96,6 +96,14 @@ my %descriptions = (
 
 	'non_nexus_topics'
 		=> sub { $_[0]->sqlSelectMany('topics.tid AS tid,textname', 'topics LEFT JOIN topic_nexus ON topic_nexus.tid=topics.tid', "topic_nexus.tid IS NULL") },
+	
+	'highlighted-topics-submittable'
+		=> sub { $_[0]->sqlSelectMany('topics.tid AS tid, IF(topic_nexus.tid IS NULL, textname, CONCAT("*",textname))', 'topics LEFT JOIN topic_nexus ON topic_nexus.tid=topics.tid', "submittable='yes'") },
+	
+	
+	'non_nexus_topics-submittable'
+		=> sub { $_[0]->sqlSelectMany('topics.tid AS tid,textname', 'topics LEFT JOIN topic_nexus ON topic_nexus.tid=topics.tid', "topic_nexus.tid IS NULL AND submittable='yes'") },
+	
 	
 	'non_nexus_topics-storypickable'
 		=> sub { $_[0]->sqlSelectMany('topics.tid AS tid,textname', 'topics LEFT JOIN topic_nexus ON topic_nexus.tid=topics.tid', "topic_nexus.tid IS NULL AND storypickable='yes'") },

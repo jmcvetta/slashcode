@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.8 2002/02/26 01:11:20 brian Exp $
+# $Id: YASS.pm,v 1.9 2002/02/26 01:47:41 jamie Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -51,7 +51,7 @@ sub success {
 sub setURL {
 	my ($self, $id, $url, $rdf) = @_;
 	my $hash->{url} = $url;
-	my $hash->{rdf} = $rdf;
+	$hash->{rdf} = $rdf;
 	$self->sqlUpdate($hash, "id = $id");
 }
 
@@ -80,10 +80,11 @@ sub getActive {
 
 	my $sid;
 
-	if($limit) {
+	my $order;
+	if ($limit) {
 		$order = "ORDER BY time DESC LIMIT $limit";
 	} else {
-		$order = "ORDER BY title ASC");
+		$order = "ORDER BY title ASC";
 	}
 	my $all = $self->sqlSelectAllHashrefArray(
 		"yass_sites.sid as sid, url, title", 

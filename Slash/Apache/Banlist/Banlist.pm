@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.18 2003/05/20 18:45:37 jamie Exp $
+# $Id: Banlist.pm,v 1.19 2003/10/21 17:17:18 jamie Exp $
 
 package Slash::Apache::Banlist;
 
@@ -16,7 +16,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -26,6 +26,9 @@ sub handler {
 	# Ok, this will make it so that we can reliably use Apache->request
 	Apache->request($r);
 	my $cur_ip = $r->connection->remote_ip;
+
+print STDERR scalar(localtime) . " Banlist.pm $$ $cur_ip " . $r->method . " " . $r->uri . "\n";
+
 	my $cur_ipid = md5_hex($cur_ip);
 	my $cur_subnet = $cur_ip;
 	$cur_subnet =~ s/^(\d+\.\d+\.\d+)\.\d+$/$1.0/;

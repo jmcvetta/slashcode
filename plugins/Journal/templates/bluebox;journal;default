@@ -29,7 +29,7 @@ __template__
 						<A HREF="[% gSkin.rootdir %]/search.pl?topic=[% diatribe.topic.tid %]">
 								<IMG SRC="[% constants.imagedir %]/topics/[% diatribe.topic.image %]" WIDTH="[% diatribe.topic.width %]"
 								HEIGHT="[% diatribe.topic.height %]" BORDER="0" ALIGN="RIGHT"
-								HSPACE="20" VSPACE="10" ALT="[% diatribe.topic.alttext %]"></A>
+								HSPACE="20" VSPACE="10" ALT="[% diatribe.topic.textname %]"></A>
 					</TD>
 				</TR>
 				[% IF diatribe.discussion %]
@@ -56,4 +56,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: bluebox;journal;default,v 1.14 2004/06/17 16:11:57 jamiemccarthy Exp $
+$Id: bluebox;journal;default,v 1.15 2004/09/13 19:37:02 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.10 2004/06/17 16:11:57 jamiemccarthy Exp $
+# $Id: login.pl,v 1.11 2004/09/13 19:37:02 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -60,6 +60,7 @@ sub newUserForm {
 
 	header(getData('newuserformhead')) or return;
 	slashDisplay('newUserForm', { note => $note });
+	footer();
 }
 
 #################################################################

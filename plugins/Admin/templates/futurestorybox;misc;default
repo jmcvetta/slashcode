@@ -20,7 +20,9 @@ __template__
    futuretime  = "";
    futurecolor = "#FFFFFF";
 
-   IF story.displaystatus > 0;
+   IF !story.displaystatus;
+        futurecolor = "#FFFFFF";
+   ELSIF story.displaystatus > 0;
 	futurecolor = "#CCCCCC";
    ELSIF story.displaystatus < 0;
 	futurecolor = "#999999";
@@ -64,4 +66,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: futurestorybox;misc;default,v 1.8 2004/06/17 16:11:53 jamiemccarthy Exp $
+$Id: futurestorybox;misc;default,v 1.9 2004/09/13 19:37:02 pudge Exp $

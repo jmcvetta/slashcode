@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.224 2004/10/05 18:54:53 tvroom Exp $
+# $Id: Slash.pm,v 1.225 2004/10/12 16:25:23 tvroom Exp $
 
 package Slash;
 
@@ -909,6 +909,8 @@ sub moderatorCommentLog {
 		}
 		@$mods = sort {
 			$a->{reason} <=> $b->{reason}
+				||
+			$b->{active} <=> $a->{active}
 				||
 			$a->{m2_identity} cmp $b->{m2_identity}
 		} @$mods;

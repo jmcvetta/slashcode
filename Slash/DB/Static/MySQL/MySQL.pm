@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.187 2004/10/08 01:24:27 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.188 2004/10/12 16:25:23 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.187 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.188 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -208,12 +208,15 @@ sub getArchiveList {
 	# That replaces "displaystatus > -1" - Jamie 2005/04
 	my $returnable = $self->sqlSelectAll(
 		'stories.stoid, sid, title',
-		'stories, story_text, story_topics_rendered',
+		'stories LEFT JOIN story_param
+		ON stories.stoid = story_param.stoid AND story_param.name="neverdisplay",
+		story_text, story_topics_rendered',
 		"stories.stoid=story_text.stoid
 		 AND stories.stoid = story_topics_rendered.stoid
 		 AND TO_DAYS(NOW()) - TO_DAYS(time) > $days_to_archive
 		 AND is_archived = 'no'
-		 AND story_topics_rendered.tid IN ($nexus_clause)",
+		 AND story_topics_rendered.tid IN ($nexus_clause)
+		 AND name IS NULL",
 		"GROUP BY stoid ORDER BY time $dir LIMIT $limit"
 	);
 

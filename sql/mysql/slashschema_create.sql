@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.175 2004/10/28 14:57:29 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.176 2004/11/03 01:57:40 jamiemccarthy Exp $
 #
 
 #
@@ -1145,7 +1145,8 @@ CREATE TABLE users_comments (
 	noscores tinyint DEFAULT '0' NOT NULL,
 	mode ENUM('flat', 'nested', 'nocomment', 'thread') DEFAULT 'thread' NOT NULL,
 	threshold tinyint DEFAULT '0' NOT NULL,
-	PRIMARY KEY (uid)
+	PRIMARY KEY (uid),
+	KEY points (points)
 ) TYPE=InnoDB;
 
 #
@@ -1229,7 +1230,8 @@ CREATE TABLE users_info (
 	people MEDIUMBLOB,
 	PRIMARY KEY (uid),
 	KEY (initdomain),
-	KEY (created_ipid)
+	KEY (created_ipid),
+	KEY tokens (tokens)
 ) TYPE=InnoDB;
 
 #

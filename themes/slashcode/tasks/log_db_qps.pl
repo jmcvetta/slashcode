@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.3 2004/08/10 18:14:14 tvroom Exp $
+# $Id: log_db_qps.pl,v 1.4 2004/08/10 19:06:03 tvroom Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -70,7 +70,11 @@ $task{$me}{code} = sub {
 	
 	$elapsed = $new_last_time - $last_time if $last_time;
 	if ($accesslog_last && $new_accesslog_last) {
-		$pages = $new_accesslog_last - $accesslog_last;
+		if ($constants->{accesslog_imageregex} eq 'NONE') {
+			$pages = $new_accesslog_last - $accesslog_last;
+		} else {
+			$pages = $logdb->sqlCount("accesslog", "id BETWEEN $accesslog_last and $new_accesslog_last and op!='image'");
+		}
 	}
 
 	if($elapsed and $elapsed > 0 ) {

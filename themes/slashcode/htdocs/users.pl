@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.176 2003/04/22 20:03:09 jamie Exp $
+# $Id: users.pl,v 1.177 2003/04/24 13:38:16 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2234,6 +2234,7 @@ sub saveComm {
 		no_spell	=> ($form->{no_spell}   ? 1 : undef),
 		sigdash		=> ($form->{sigdash} ? 1 : undef),
 		nobonus		=> ($form->{nobonus} ? 1 : undef),
+		nosubscriberbonus => ($form->{nosubscriberbonus} ? 1 : undef),
 		postanon	=> ($form->{postanon} ? 1 : undef),
 		new_user_percent => ($new_user_percent && $new_user_percent != 100
 					? $new_user_percent : undef),

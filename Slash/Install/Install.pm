@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.20 2002/06/10 22:50:18 brian Exp $
+# $Id: Install.pm,v 1.21 2002/06/18 17:06:49 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -345,16 +345,18 @@ sub _install {
 		for (@{$hash->{'template'}}) {
 			my $id;
 			my $template = $self->readTemplateFile("$hash->{'dir'}/$_");
+			if (!$template) {
+			    warn "Template file $hash->{'dir'}/$_ could not be opened: $!\n";
+			    next;
+			}
 			my $key = "$template->{name};$template->{page};$template->{section}";
 			if ($hash->{'no-template'} && ref($hash->{'no-template'}) eq 'ARRAY') {
 				next if (grep { $key eq $_ }  @{$hash->{'no-template'}} );
 			}
-			if ($template and ($id = $self->{slashdb}->existsTemplate($template))) {
+			if ($id = $self->{slashdb}->existsTemplate($template)) {
 				$self->{slashdb}->setTemplate($id, $template);
-			} elsif ($template) {
-				$self->{slashdb}->createTemplate($template);
 			} else {
-				warn "Can't open template file $_: $!";
+				$self->{slashdb}->createTemplate($template);
 			}
 		}
 	}

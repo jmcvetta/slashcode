@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.235 2002/10/11 17:16:21 brian Exp $
+# $Id: MySQL.pm,v 1.236 2002/10/11 17:27:02 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.235 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.236 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3055,8 +3055,8 @@ sub getAccessList {
 	$min ||= 0;
 	my $max = $min + 100;
 
-	my $where = "WHERE $flag = 1";
-	$self->sqlSelectAll("ts, uid, ipid, subnetid, formname, reason", "accesslist $where order by ts DESC limit $min, $max");
+	my $where = "$flag = 1";
+	$self->sqlSelectAll('ts, uid, ipid, subnetid, formname, reason', 'accesslist', $where, "ORDER BY ts DESC LIMIT $min, $max");
 }
 
 ##################################################################
@@ -3077,7 +3077,7 @@ sub getAbuses {
 		subnetid => "subnetid = '$id'",
 	};
 
-	$self->sqlSelectAll("ts,uid,ipid,subnetid,pagename,reason", "abusers WHERE $where->{$key} ORDER by ts DESC");
+	$self->sqlSelectAll('ts,uid,ipid,subnetid,pagename,reason', 'abusers',  "$where->{$key}", 'ORDER by ts DESC');
 
 }
 
@@ -3173,7 +3173,7 @@ sub setAccessList {
 	$insert_hashref->{reason} = $reason if $reason ne '';
 	$insert_hashref->{-ts} = 'now()';
 
-	$rows = $self->sqlSelect("count(*) FROM accesslist WHERE $where AND $column = 1");
+	$rows = $self->sqlSelect('count(*)', 'accesslist', " $where AND $column = 1");
 	$rows ||= 0;
 
 	if ($setflag == 0) {
@@ -3298,7 +3298,7 @@ sub getSubmissionsSections {
 
 	my $section_clause = $section? " AND section = '$section' " : ''; 
 
-	my $hash = $self->sqlSelectAll("section,note,count(*)", "submissions WHERE del=$del $section_clause GROUP BY section,note");
+	my $hash = $self->sqlSelectAll("section,note,count(*)", 'submissions', "del=$del $section_clause GROUP BY section,note");
 
 	return $hash;
 }
@@ -6636,14 +6636,7 @@ sub createMenuItem {
 # then make separate calls to getMenuItems. XXX - Jamie
 sub getMenuItems {
 	my($self, $script) = @_;
-	my $sql = "SELECT * FROM menus WHERE page=" . $self->sqlQuote($script) . " ORDER by menuorder";
-	my $sth = $self->{_dbh}->prepare($sql);
-	$sth->execute();
-	my(@menu, $row);
-	push(@menu, $row) while ($row = $sth->fetchrow_hashref);
-	$sth->finish;
-
-	return \@menu;
+	return $self->sqlSelectAllHashrefArray('*', 'menus', "page=" . $self->sqlQuote($script) , " ORDER by menuorder");
 }
 
 ########################################################

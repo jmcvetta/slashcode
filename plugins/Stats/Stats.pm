@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.47 2002/07/19 16:20:26 jamie Exp $
+# $Id: Stats.pm,v 1.48 2002/07/19 17:50:45 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -471,9 +471,12 @@ sub countDaily {
 		"GROUP BY op"
 	);
 	$returnable{total} = 0;
+	my %excl_countdaily = map { $_, 1 } @{$constants->{op_exclude_from_countdaily}};
 	for my $op (keys %$totals_op) {
-		$returnable{total} += $totals_op->{$op}{count}
-			unless grep /^\Q$op\E$/, $constants->{op_exclude_from_countdaily}; # doesn't count in total
+		# If this op is on the list of ops to exclude,
+		# don't add its count into the daily total.
+		next if $excl_countdaily{$op};
+		$returnable{total} += $totals_op->{$op}{count};
 	}
 
 	my $c = $self->sqlSelectMany("COUNT(*)", "accesslog",

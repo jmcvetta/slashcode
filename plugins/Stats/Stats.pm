@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.140 2004/04/15 14:30:53 cowboyneal Exp $
+# $Id: Stats.pm,v 1.141 2004/04/20 14:04:24 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -201,6 +201,15 @@ sub countMetamodLog {
 }
 
 ########################################################
+# Well this stat ends up being written as modlog_m2count_0
+# which is useless to date (2004-04-20) since it also counts
+# active mods which are un-m2able (under/overrated).  At the
+# 0 count level, it's including old mods.  (Of course, at
+# the 1 and above count levels, the un-m2able mods don't
+# show up, so that's fine.)  Question is, do we change the
+# stat now and just ignore all the old data, or do we create
+# a new stat to correctly track count=0, reason IN m2able?
+# - Jamie
 sub countUnmetamoddedMods {
 	my($self, $options) = @_;
 	my $active_clause = $options->{active_only} ? " AND active=1" : "";
@@ -1689,4 +1698,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.140 2004/04/15 14:30:53 cowboyneal Exp $
+$Id: Stats.pm,v 1.141 2004/04/20 14:04:24 jamiemccarthy Exp $

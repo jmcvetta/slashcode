@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.213 2004/06/18 20:51:50 tvroom Exp $
+# $Id: Slash.pm,v 1.214 2004/07/05 01:43:32 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1427,8 +1427,7 @@ sub displayStory {
 		&& (!$form->{ssi} || $form->{ssi} ne 'yes')
 		&& !$user->{noicons}
 		&& !$form->{issue}
-		&& $constants->{section} eq 'index'
-		&& $gSkin->{name} eq 'index'
+		&& $gSkin->{skid} == $constants->{mainpage_skid}
 		&& !$full
 		&& !$options->{is_future}	 # can $story->{is_future} ever matter?
 	) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.60 2002/08/30 23:00:13 jamie Exp $
+# $Id: MySQL.pm,v 1.61 2002/09/02 05:26:42 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -401,20 +401,59 @@ sub deleteDaily {
 
 ########################################################
 # For dailystuff
-# With users_hits now storing "lastclick", this gets a lot
-# easier. - Jamie XXX
-sub updateStamps {
+# If the Subscribe plugin is enabled and a certain var is set,
+# we're already writing "lastclick" to users_hits so this gets a
+# lot easier.  If not, we use the old method of a table scan on
+# accesslog.
+# Note that "lastaccess" is never guaranteed to be accurate if
+# the user has clicked today;  it will still probably show
+# yesterday.  It's only intended for longer-term tracking of who
+# has visited the site when.
+sub updateLastaccess {
 	my($self) = @_;
-	my $columns = "uid";
-	my $tables = "accesslog";
-	my $where = "to_days(now())-to_days(ts)=1 AND uid > 0";
-	my $other = "GROUP BY uid";
+	my $constants = getCurrentStatic();
 
-	my $E = $self->sqlSelectAll($columns, $tables, $where, $other);
-
-	for (@{$E}) {
-		my $uid = $_->[0];
-		$self->setUser($uid, {-lastaccess=>'now()'});
+	if ($constants->{subscribe} && !$constants->{subscribe_hits_only}) {
+		my @gmt = gmtime();
+		my $today = sprintf "%4d%02d%02d", $gmt[5] + 1900, $gmt[4] + 1, $gmt[3];
+		my $ar = $self->sqlSelectAll(
+			"uid, lastclick",
+			"users_hits",
+			"TO_DAYS(NOW()) - TO_DAYS(lastclick) <= 1"
+		);
+		my %uids_day = ( );
+		for my $uid_ar (@$ar) {
+			my($uid, $lastclick) = @$uid_ar;
+			my $lastclick_day = substr($lastclick, 0, 8);
+			$uids_day{$lastclick_day}{$uid} = 1;
+		}
+		for my $day (keys %uids_day) {
+			my @uids = sort keys %{$uids_day{$day}};
+			next unless @uids;
+			my $uids_in = join(",", @uids);
+			$self->sqlUpdate(
+				"users_info",
+				{ lastaccess => $day },
+				"uid IN ($uids_in)"
+			);
+print STDERR "lastaccess set from lastclick to $day for $uids_in\n";
+		}
+	} else {
+		my @gmt = gmtime(time-86400);
+		my $yesterday = sprintf "%4d%02d%02d", $gmt[5] + 1900, $gmt[4] + 1, $gmt[3];
+		my $uids_ar = $self->sqlSelectColArrayref(
+			"uid",
+			"accesslog",
+			"TO_DAYS(NOW()) - TO_DAYS(ts) <= 1",
+			"GROUP BY uid"
+		);
+		my $uids_in = join(",", sort @$uids_ar);
+		$self->sqlUpdate(
+			"users_info",
+			{ lastaccess => $yesterday },
+			"uid IN ($uids_in) AND lastaccess < '$yesterday'"
+		);
+print STDERR "lastaccess set from accesslog to $yesterday for $uids_in\n";
 	}
 }
 
@@ -715,9 +754,7 @@ sub stirPool {
 	$self->sqlTransactionFinish();
 	$cursor->finish;
 
-	# We aren't using this for Slashdot, feel free to turn this on if you
-	# wish to use it (the proper return value is: $revoked)
-	return 0;
+	return $revoked;
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.2 2002/02/15 14:27:39 jamie Exp $
+# $Id: Hof.pm,v 1.3 2002/02/17 22:29:08 cliff Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -67,13 +67,17 @@ sub countUsersIndexExboxesByBid {
 sub countStorySubmitters {
 	my($self) = @_;
 
-	my $ac_uid = getCurrentAnonymousCoward('uid');
+	# Sometimes getCurrentAnonymousCoward() is missing data when it is
+	# called, so we drop in an appropriate default.
+	my $ac_uid = getCurrentAnonymousCoward('uid') ||
+		     getCurrentStatic('anonymous_coward_uid');
 	my $uid = $self->sqlSelectColArrayref('uid', 'authors_cache');
-	push @$uid, $ac_uid;
-	my $in_list = join(",", @$uid);
+	my $in_list = join(',', @{$uid});
 
-	my $submitters = $self->sqlSelectAll('count(*) as c, users.nickname',
-		'stories, users', "users.uid=stories.submitter AND submitter NOT IN ($in_list)",
+	my $submitters = $self->sqlSelectAll(
+		'count(*) as c, users.nickname',
+		'stories, users', 
+		"users.uid=stories.submitter AND submitter NOT IN ($in_list)",
 		'GROUP BY users.uid ORDER BY c DESC LIMIT 10'
 	);
 

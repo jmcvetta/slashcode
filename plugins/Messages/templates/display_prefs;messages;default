@@ -48,12 +48,7 @@ Not all options are available for all message types.
       # this is not so bad, it is cached, but could be improved perhaps
       mcode = messages.getMessageCode(code);
 
-      IF userm.seclev < mcode.seclev;
-         NEXT;
-      END;
-
-      # should be userm.is_subscriber, but userm might not be current user
-      IF mcode.subscribe && !Slash.isSubscriber(userm);
+      UNLESS messages.checkMessageUser(code, userm);
          NEXT;
       END;
 
@@ -134,4 +129,4 @@ messages, disable it above.
 __seclev__
 500
 __version__
-$Id: display_prefs;messages;default,v 1.14 2003/03/04 19:07:59 pudge Exp $
+$Id: display_prefs;messages;default,v 1.15 2004/02/17 00:25:28 pudge Exp $

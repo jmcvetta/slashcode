@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.170 2004/02/10 20:06:22 tvroom Exp $
+# $Id: adminmail.pl,v 1.171 2004/02/17 00:25:28 pudge Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -840,9 +840,9 @@ EOT
 				day => $mod_data{day}
 			}, 'adminmail');
 			$mod_data{template_page} = 'modmail';
-			my $mod_message_users = $messages->getMessageUsers(MSG_CODE_ADMINMAIL);
+			my $mod_message_users = $messages->getMessageUsers(MSG_CODE_MODSTATS);
 			for (@$mod_message_users) {
-				$messages->create($_, MSG_CODE_ADMINMAIL, \%mod_data);
+				$messages->create($_, MSG_CODE_MODSTATS, \%mod_data);
 			}
 		}
 	}

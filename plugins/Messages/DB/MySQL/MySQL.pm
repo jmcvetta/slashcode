@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.22 2003/11/14 19:51:39 pudge Exp $
+# $Id: MySQL.pm,v 1.23 2004/02/17 00:25:28 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -60,7 +60,7 @@ sub getMessageCode {
 		return $self->{$cache}{$code};
 	}
 
-	my $row = $self->sqlSelectHashref('code,type,seclev,modes,send,subscribe',
+	my $row = $self->sqlSelectHashref('code,type,seclev,modes,send,subscribe,acl',
 		'message_codes', "code=$code");
 	$codeBank->{$code} = $row if $row;
 
@@ -446,20 +446,33 @@ sub _getMailingUsers {
 }
 
 sub _getMessageUsers {
-	my($self, $code, $seclev, $subscribe) = @_;
+	my($self, $code, $seclev, $subscribe, $acl) = @_;
 	return unless $code =~ /^-?\d+$/;
 	my $cols  = "users_messages.uid";
 	my $table = "users_messages";
 	my $where = "users_messages.code=$code AND users_messages.mode >= 0";
 
+	my @users;
 	if ($seclev && $seclev =~ /^-?\d+$/) {
 		$table .= ",users";
-		$where .= " AND users.uid = users_messages.uid AND seclev >= $seclev";
+		my $seclevw = "$where AND users.uid = users_messages.uid AND seclev >= $seclev";
+		my $seclevu = $self->sqlSelectColArrayref($cols, $table, $seclevw) || [];
+		push @users, @$seclevu;
 	}
 
-	my $users = $self->sqlSelectColArrayref($cols, $table, $where) || [];
-	$users = [ grep { isSubscriber($_) } @$users ] if $subscribe;
-	return $users;
+	if ($acl) {
+		my $acl_q = $self->sqlQuote($acl);
+		$table .= ",users_acl";
+		my $aclw = " users_acl.uid = users_messages.uid AND users_acl.acl=$acl_q";
+		my $aclu = $self->sqlSelectColArrayref($cols, $table, $aclw) || [];
+		push @users, @$aclu;
+	}
+
+
+	my %seen;
+	@users = grep { !$seen{$_}++     } @users;
+	@users = grep { isSubscriber($_) } @users if $subscribe;
+	return \@users;
 }
 
 1;

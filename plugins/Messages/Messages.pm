@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.24 2003/11/10 21:23:43 pudge Exp $
+# $Id: Messages.pm,v 1.25 2004/02/17 00:25:28 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -323,11 +323,26 @@ sub checkMessageCodes {
 	return \@newuids;
 }
 
+
+# verify user can receive message
+sub checkMessageUser {
+	my($self, $code, $userm) = @_;
+	my $coderef = $self->getMessageCode($code) or return [];
+	my $ok = ($userm->{seclev} >= $coderef->{seclev}
+		||
+	   ($coderef->{acl} && $userm->{acl}{ $coderef->{acl} })
+		||
+	   ($coderef->{subscribe} && isSubscriber($userm))
+	);
+	return $ok;
+}
+
+
 # must return an array ref
 sub getMessageUsers {
 	my($self, $code) = @_;
 	my $coderef = $self->getMessageCode($code) or return [];
-	my $users = $self->_getMessageUsers($code, $coderef->{seclev}, $coderef->{subscribe});
+	my $users = $self->_getMessageUsers($code, $coderef->{seclev}, $coderef->{subscribe}, $coderef->{acl});
 	return $users || [];
 }
 
@@ -340,10 +355,7 @@ sub getMode {
 	my $coderef = $self->getMessageCode($code) or return MSG_MODE_NOCODE;
 
 	# user not allowed to receive this message type
-	return MSG_MODE_NOCODE if
-		( $msg->{user}{seclev} < $coderef->{seclev} )
-			||
-		( $coderef->{subscribe} && !isSubscriber($msg->{user}) );
+	return MSG_MODE_NOCODE unless $self->checkMessageUser($code, $msg->{user});
 
 	# user has no delivery mode set
 	return MSG_MODE_NONE if	$mode == MSG_MODE_NONE
@@ -1082,4 +1094,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.24 2003/11/10 21:23:43 pudge Exp $
+$Id: Messages.pm,v 1.25 2004/02/17 00:25:28 pudge Exp $

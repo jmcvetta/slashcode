@@ -2,12 +2,11 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.59 2002/11/19 20:02:13 brian Exp $
+# $Id: search.pl,v 1.60 2003/01/15 13:37:35 pudge Exp $
 
 use strict;
 use Slash;
 use Slash::Display;
-use Slash::Search;
 use Slash::Utility;
 use Slash::XML;
 
@@ -60,7 +59,7 @@ sub main {
 		$searchDB = getObject('Slash::Search', $constants->{search_db_user});
 	} else {
 		$slashdb  = getCurrentDB();
-		$searchDB = Slash::Search->new(getCurrentVirtualUser());
+		$searchDB = getObject('Slash::Search');
 	}
 
 	# Set some defaults
@@ -848,7 +847,7 @@ main();
 #		$searchDB = getObject('Slash::Search', $constants->{search_db_user});
 #	} else {
 #		$slashdb  = getCurrentDB();
-#		$searchDB = Slash::Search->new(getCurrentVirtualUser());
+#		$searchDB = getObject('Slash::Search');
 #	}
 #	return($slashdb, $searchDB);
 #}

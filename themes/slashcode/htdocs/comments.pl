@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.137 2003/05/22 16:45:06 jamie Exp $
+# $Id: comments.pl,v 1.138 2003/05/30 14:48:31 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1135,7 +1135,7 @@ sub submitComment {
 		$pts = $maxScore if $pts > $maxScore;
 		$karma_bonus = 1 if $pts >= 1 && $user->{karma} > $constants->{goodkarma}
 			&& !$form->{nobonus};
-		$subscriber_bonus = 1 if $pts >= 1 && $user->{is_subscriber}
+		$subscriber_bonus = 1 if $user->{is_subscriber}
 			&& $form->{nosubscriberbonus} ne 'on';
 	}
 	# This is here to prevent posting to discussions that don't exist/are nd -Brian

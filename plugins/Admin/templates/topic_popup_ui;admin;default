@@ -45,19 +45,21 @@ __template__
 <option value="0">0 - Ignore Topic</option>
 </select>
 <br>
-<input type="button" value="Choose Topics"      onmouseup="[% name %]_show()" name="[% name %]_topic_toggle">
-<input type="button" value="Choose Topics - AB" onmouseup="[% name %]_show('ab')" name="[% name %]_ab_topic_toggle">
+<input type="button" value="Choose Topics"      onmouseup="[% name %]_show('[% user.st_tree_pref %]')" name="[% name %]_topic_toggle">
 <input type="button" value="Remove Topic"       onmouseup="[% name %]_remove()">
 <input type="button" value="Collapse All"       onmouseup="[% name %]_collapse_all()" name="[% name %]_topic_toggle_all">
-<input type="hidden" value="" name="[% name %]_saved_tree">
+[% mykey = name _ "_tree_pref" -%]
+<input type="hidden" value="[% user.$mykey %]" name="[% mykey %]">
+[% mykey = name _ "_saved_tree" -%]
+<input type="hidden" value="[% user.$mykey %]" name="[% mykey %]">
 
 <script language="javascript">
 	[% name %]_load_names();
-	var list = new Array ([% user.st_saved_tree %]);
+	var list = new Array ([% user.$mykey %]);
 	[% name %]_reset_saved_tree(list);
 </script>
 
 __seclev__
 10000
 __version__
-$Id: topic_popup_ui;admin;default,v 1.7 2004/10/15 05:43:36 pudge Exp $
+$Id: topic_popup_ui;admin;default,v 1.8 2004/10/19 00:18:02 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.48 2003/12/16 21:13:14 pudge Exp $
+# $Id: Apache.pm,v 1.49 2004/01/29 23:54:03 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -79,6 +79,7 @@ sub SlashVirtualUser ($$$) {
 			# Must not just copy the form_override info
 			$new_cfg->{form_override} = {}; 
 			$new_cfg->{absolutedir} = $_->{url};
+			$new_cfg->{absolutedir_secure} = set_rootdir($_->{url}, $cfg->{constants}{absolutedir_secure});
 			$new_cfg->{rootdir} = set_rootdir($_->{url}, $cfg->{constants}{rootdir});
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
 			$new_cfg->{defaultsubsection} = $_->{defaultsubsection} if $_->{defaultsubsection};
@@ -165,8 +166,9 @@ sub SlashSectionHost ($$$$) {
 			unless $_ eq 'form_override';
 	}
 	# Must not just copy the form_override info
-	$new_cfg->{form_override} = {}; 
+	$new_cfg->{form_override} = {};
 	$new_cfg->{absolutedir} = $url;
+	$new_cfg->{absolutedir_secure} = set_rootdir($url, $cfg->{constants}{absolutedir_secure});
 	$new_cfg->{rootdir} = set_rootdir($url, $cfg->{constants}{rootdir});
 	$new_cfg->{basedomain} = $hostname;
 	$new_cfg->{defaultsection} = $section;

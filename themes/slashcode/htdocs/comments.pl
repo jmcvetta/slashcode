@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: comments.pl,v 1.3 2000/05/17 18:32:54 cbwood Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -773,6 +773,9 @@ sub submitComment {
 		$pts = $I{U}{defaultpoints};
 		$pts-- if $I{U}{karma} < -10;
 		$pts++ if $I{U}{karma} > 25 and !$I{F}{nobonus}
+		# Enforce proper ranges on comment points.
+		$pts = -1 if $pts < -1;
+		$pts = 5 if $pts > 5;
 	}
 
 	$I{dbh}->do("LOCK TABLES comments WRITE");

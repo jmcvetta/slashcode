@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.93 2005/01/14 16:17:02 pudge Exp $
+# $Id: journal.pl,v 1.94 2005/02/07 22:24:54 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -851,7 +851,7 @@ sub _printHead {
 	if ($user->{currentPage} eq 'misc') {
 		local $Slash::Utility::MAX_ERROR_LOG_LEVEL = 0;
 		use Data::Dumper;
-		errorLog(sprintf("currentPageBusted: %s\n", Dumper([$user, getCurrentForm(), \%ENV])));
+		errorLog(sprintf("currentPageBusted: %s\n", Dumper([getCurrentForm(), \%ENV, $user])));
 	}
 
 	slashDisplay("journalhead", $data);

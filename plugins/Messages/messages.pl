@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.12 2002/11/15 16:49:57 pater Exp $
+# $Id: messages.pl,v 1.13 2003/01/17 01:32:06 jamie Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -210,6 +210,7 @@ sub display_prefs {
 		tab_selected => 'messages'
 	});
 	print createMenu('messages');
+	slashDisplay('journuserboxes');
 	slashDisplay('display_prefs', {
 		userm		=> $userm,
 		prefs		=> $prefs,
@@ -269,6 +270,7 @@ sub list_messages {
 		tab_selected => 'messages'
 	});
 	print createMenu('messages'); # [ Message Preferences | Inbox ]
+	slashDisplay('journuserboxes');
 	slashDisplay('list_messages', {
 		note		=> $note,
 		messagecodes	=> $messagecodes,

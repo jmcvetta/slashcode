@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.57 2005/01/04 21:08:03 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.58 2005/01/11 03:19:58 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -803,7 +803,7 @@ sub adjust_m2_freq {
 
 sub delete_old_mod_rows {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
-	$slashdb->deleteOldModRows();
+	$slashdb->deleteOldModRows({ sleep_between => 30 });
 }
 
 1;

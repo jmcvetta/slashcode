@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashd,v 1.2 2000/05/16 20:38:54 pudge Exp $
+#  $Id: slashd,v 1.3 2000/05/16 21:25:51 pudge Exp $
 ###############################################################################
 use sigtrap;
 use strict;
@@ -423,7 +423,7 @@ EOT
 }
 
 #################################
-sub newxml { huh(@_);
+sub newxml {
 	my $section = shift;
 	my $c = getBackendStories($section);
 
@@ -433,7 +433,7 @@ xmlns:backslash="$I{rootdir}/backslash.dtd">
 
 EOT
 
-	while(my $S = $c->fetchrow_hashref) {
+	while (my $S = $c->fetchrow_hashref) {
 		$x.= sprintf <<EOT, xmlEncodeStr($S->{title}), xmlEncodeStr($S->{dept});
 	<story>
 		<title>%s</title>

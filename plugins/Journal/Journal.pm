@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.7 2001/03/26 11:10:52 pudge Exp $
+# $Id: Journal.pm,v 1.8 2001/04/16 19:36:05 brian Exp $
 
 package Slash::Journal;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Slash::DB::Utility Slash::DB::MySQL);
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -43,9 +43,9 @@ sub set {
 }
 
 sub getsByUid {
-	my($self, $uid, $limit, $id) = @_;
+	my($self, $uid, $start, $limit, $id) = @_;
 	my $order = "ORDER BY date DESC";
-	$order .= " LIMIT $limit" if $limit;
+	$order .= " LIMIT $start, $limit" if $limit;
 	my $where = "uid = $uid AND journals.id = journals_text.id";
 	$where .= " AND journals.id = $id" if $id;
 
@@ -140,13 +140,18 @@ sub topFriends {
 	my($self, $limit) = @_;
 	$limit ||= 10;
 	my $sql;
-	$sql .= " SELECT count(friend) as c, nickname, friend, max(date) ";
-	$sql .= " FROM journal_friends, users, journals ";
+	$sql .= " SELECT count(friend) as c, nickname, friend ";
+	$sql .= " FROM journal_friends, users ";
 	$sql .= " WHERE friend=users.uid ";
 	$sql .= " GROUP BY nickname ";
 	$sql .= " ORDER BY c DESC ";
 	$self->sqlConnect;
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+	$sql = "SELECT max(date) FROM journals WHERE uid=";
+	for(@$losers) {
+		my $date = $self->{_dbh}->selectrow_array($sql . $_->[2]);
+		push @$_, $date;
+	}
 
 	return $losers;
 }

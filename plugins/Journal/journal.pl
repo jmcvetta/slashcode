@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.9 2001/04/09 20:07:51 pudge Exp $
+# $Id: journal.pl,v 1.10 2001/04/16 19:36:05 brian Exp $
 
 use strict;
 use Slash;
@@ -91,10 +91,13 @@ sub displayDefault {
 sub displayTop {
 	my($form, $journal, $constants) = @_;
 	my $journals;
+
 	$journals = $journal->top($constants->{journal_top});
 	slashDisplay('journaltop', { journals => $journals, type => 'top' });
+
 	$journals = $journal->topFriends($constants->{journal_top});
 	slashDisplay('journaltop', { journals => $journals, type => 'friend' });
+
 	$journals = $journal->topRecent($constants->{journal_top});
 	slashDisplay('journaltop', { journals => $journals, type => 'recent' });
 }
@@ -135,7 +138,7 @@ sub displayRSS {
 	);
 
 
-	my $articles = $journal->getsByUid($uid, $constants->{journal_default_display});
+	my $articles = $journal->getsByUid($uid, 0, $constants->{journal_default_display});
 	for my $article (@$articles) {
 			$rss->add_item(
 				title	=> xmlencode($article->[2]),
@@ -159,7 +162,8 @@ sub displayArticle {
 		$nickname = getCurrentUser('nickname');
 		$uid = getCurrentUser('uid');
 	}
-	my $articles = $journal->getsByUid($uid,
+	my $start = $form->{start} ? $form->{start} : 0;
+	my $articles = $journal->getsByUid($uid, $start,
 		$constants->{journal_default_display}, $form->{id}
 	);
 	my @sorted_articles;
@@ -191,6 +195,8 @@ sub displayArticle {
 	slashDisplay($theme, {
 		articles	=> \@sorted_articles,
 		uid		=> $form->{uid},
+		back => (($start > 0) ? ($start - $constants->{journal_default_display}) : -1),
+		forward => ((scalar(@$articles) == $constants->{journal_default_display}) ? ($start + $constants->{journal_default_display}) : 0),
 	});
 }
 

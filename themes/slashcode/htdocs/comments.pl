@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.140 2003/06/03 19:04:27 jamie Exp $
+# $Id: comments.pl,v 1.141 2003/07/08 20:34:54 vroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -749,7 +749,8 @@ sub editComment {
 		$form->{postersubj} = "Re:$form->{postersubj}";
 	}
 
-
+        my $gotmodwarning;
+        $gotmodwarning=1 if (($error_message eq getError("moderations to be lost")) or $form->{gotmodwarning});
 	slashDisplay('edit_comment', {
 		error_message 	=> $error_message,
 		label		=> $label,
@@ -757,6 +758,7 @@ sub editComment {
 		indextype	=> $form->{indextype},
 		preview		=> $preview,
 		reply		=> $reply,
+                gotmodwarning   => $gotmodwarning
 	});
 }
 
@@ -949,6 +951,11 @@ sub validateComment {
 			last;
 		}
 	}
+        if($constants->{allow_moderation} && $slashdb->sqlCount("moderatorlog","cuid=$user->{uid} and sid=$form->{sid}") && !$form->{gotmodwarning}){
+		$$error_message=getError("moderations to be lost");
+		$form_success=0;
+		return; 
+        }
 
 	$$error_message ||= '';
 	# Return false if error condition...

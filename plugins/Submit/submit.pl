@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.52 2002/04/25 18:13:11 brian Exp $
+# $Id: submit.pl,v 1.53 2002/04/25 18:38:42 cliff Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -255,15 +255,10 @@ sub submissionEd {
 		width		=> '100%',
 	});
 
-	my(@submissions, $submissions, %selection);
+	my($submissions, %selection);
 	$submissions = $slashdb->getSubmissionForUser();
 
-	for (@$submissions) {
-		my $sub = $submissions[@submissions] = {};
-		@{$sub}{qw(
-			subid subj time tid note email
-			name section comment uid karma weight
-		)} = @$_;
+	for my $sub (@$submissions) {
 		$sub->{name}  =~ s/<(.*)>//g;
 		$sub->{email} =~ s/<(.*)>//g;
 		$sub->{is_anon} = isAnon($sub->{uid});
@@ -279,7 +274,8 @@ sub submissionEd {
 		$sub->{ssection} = $sub->{section} ne $constants->{defaultsection}
 			? "&section=$sub->{section}" : '';
 		$sub->{stitle}  = '&title=' . fixparam($sub->{subj});
-		$sub->{section} = ucfirst($sub->{section}) unless $user->{is_admin};
+		$sub->{section} = ucfirst($sub->{section})
+			unless $user->{is_admin};
 	}
 
 	%selection = map { ($_, $_) }
@@ -296,12 +292,12 @@ sub submissionEd {
 		# Note, descending order. Is there a way to make this more
 		# flexible? A var that chooses between ascending or descending
 		# order?
-		@weighted = sort { $b->{$key} <=> $a->{$key} } @submissions;
+		@weighted = sort { $b->{$key} <=> $a->{$key} } @{$submissions};
 	}
 
 	my $template = $user->{is_admin} ? 'Admin' : 'User';
 	slashDisplay('subEd' . $template, {
-		submissions	=> \@submissions,
+		submissions	=> $submissions,
 		selection	=> \%selection,
 		weighted	=> \@weighted,
 	});

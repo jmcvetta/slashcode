@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: dailyStuff,v 1.5 2000/06/12 14:25:46 pudge Exp $
+#  $Id: dailyStuff,v 1.6 2000/06/12 15:11:51 capttofu Exp $
 ###############################################################################
 use strict;
 use vars '%I';
@@ -185,6 +185,8 @@ sub generateDailyMail {
 
 	my $r = "$I{sitename} Daily Headline Mailer\n\n";
 	$r .= getblock("emailsponsor");
+	# newlines after advert 
+	$r .= "\n\n";
 
 	return unless @$E;
 	for (@{$E}) {

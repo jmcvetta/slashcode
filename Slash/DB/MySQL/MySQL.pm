@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.246 2002/11/09 23:36:23 brian Exp $
+# $Id: MySQL.pm,v 1.247 2002/11/11 16:55:43 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.246 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.247 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -840,6 +840,8 @@ sub getModeratorCommentLog {
 	elsif ($type eq 'cuid') {	$where_clause = "moderatorlog.cuid=$vq AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq     AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'bsubnetid') {	$where_clause = "comments.subnetid=$vq AND comments.uid=users.uid"	}
+	elsif ($type eq 'bipid') {	$where_clause = "comments.ipid=$vq     AND comments.uid=users.uid"	}
 	return [ ] unless $where_clause;
 
 	my $comments = $self->sqlSelectMany("comments.sid AS sid,

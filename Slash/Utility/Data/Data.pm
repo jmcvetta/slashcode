@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.72 2003/01/20 17:57:23 jamie Exp $
+# $Id: Data.pm,v 1.73 2003/01/23 19:45:46 pater Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -2433,14 +2433,14 @@ sub vislenify {
 	if (ref $id_or_ref) {
 		if (ref($id_or_ref) eq 'HASH') {
 			my $hr = $id_or_ref;
-			for my $key (qw( ipid subnetid md5id )) {
+			for my $key (qw( ipid ipid2 subnetid md5id )) {
 				if ($hr->{$key}) {
 					$hr->{"${key}_vis"} = substr($hr->{$key}, 0, $len);
 				}
 			}
 		} elsif (ref($id_or_ref) eq 'ARRAY') {
 			for my $item_hr (@$id_or_ref) {
-				for my $key (qw( ipid subnetid md5id )) {
+				for my $key (qw( ipid ipid2 subnetid md5id )) {
 					if ($item_hr->{$key}) {
 						$item_hr->{"${key}_vis"} = substr($item_hr->{$key}, 0, $len);
 					}
@@ -2768,4 +2768,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.72 2003/01/20 17:57:23 jamie Exp $
+$Id: Data.pm,v 1.73 2003/01/23 19:45:46 pater Exp $

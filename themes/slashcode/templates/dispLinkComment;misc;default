@@ -26,14 +26,8 @@ __template__
 		}) %][% END %]
 
 		[% IF user.mode == 'parents' && !form.pid%]
-			|
-			[% Slash.linkComment({
-			sid	=> sid,
-			cid	=> cid,
-			pid	=> cid,
-			subject => 'View this thread',
-			subject_only => 1,
-		}) %][% END %]
+			| <a href="[% constants.rootdir %]comments.pl?sid=[% sid %]&amp;threshold=[% user.threshold %]&amp;commentsort=[% user.commentsort %]&amp;mode=[% user.mode %]&amp;cid=[% cid %]&amp;pid=[% cid %]">View this thread</a>
+		[% END %]
 
 		[% IF !(user.state.discussion_archived) && (original_pid || can_mod || user.is_admin) %] | [% END %]
 
@@ -66,4 +60,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.18 2003/11/17 16:46:25 pater Exp $
+$Id: dispLinkComment;misc;default,v 1.19 2003/11/17 17:17:39 pater Exp $

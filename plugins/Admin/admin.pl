@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.219 2004/07/15 04:58:37 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.220 2004/07/15 05:03:49 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1572,7 +1572,7 @@ sub extractChosenFromForm {
 			$chosen_hr->{$tid} =
 				$tid == $constants->{mainpage_nexus_tid}
 				? 30
-				: $constants->{admin_topic_default_weight} || 10;
+				: $constants->{topic_popup_defaultweight} || 10;
 			my $chosen_topic = $slashdb->getTopic($tid);
 			$chosen_names_hr->{$tid} = $chosen_topic->{textname}
 				if $chosen_topic && $chosen_topic->{tid};

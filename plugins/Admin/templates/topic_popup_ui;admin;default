@@ -56,8 +56,8 @@ __template__
 </td><td style="vertical-align:top">
 
 <img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-arrow-up.gif"   alt="up"     title="Move Item Up"       width="15" height="9"  onclick="[% name %]_move_item(1)"><br />
-<img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-remove.gif"     alt="remove" title="Remove Topic"       width="15" height="15" onclick="[% name %]_remove()" onmouseup="document.[% form_field_form %].[% name %]_main_select.focus()"><br />
-<img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-open.gif"       alt="open"   title="Open Topics Window" width="15" height="15" onclick="[% name %]_show('[% user.$mykey %]')" onmouseup="document.[% form_field_form %].[% name %]_main_select.focus()" name="[% name %]_topic_toggle"><br />
+<img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-remove.gif"     alt="remove" title="Remove Topic"       width="15" height="15" onmouseup="[% name %]_remove()" onmousedown="document.[% form_field_form %].[% name %]_main_select.focus()"><br />
+<img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-open.gif"       alt="open"   title="Open Topics Window" width="15" height="15" onmouseup="[% name %]_show('[% user.$mykey %]')" onmousedown ="document.[% form_field_form %].[% name %]_main_select.focus()" name="[% name %]_topic_toggle"><br />
 <img class="hpts-icon" src="[% constants.imagedir %]/admin-topic-arrow-down.gif" alt="down"   title="Move Item Down"     width="15" height="9"  onclick="[% name %]_move_item(-1)">
 
 </td><td>
@@ -67,4 +67,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_ui;admin;default,v 1.10 2004/10/25 22:52:19 pudge Exp $
+$Id: topic_popup_ui;admin;default,v 1.11 2004/11/09 20:25:12 pudge Exp $

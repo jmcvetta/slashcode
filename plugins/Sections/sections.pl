@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.16 2002/02/26 04:31:02 cliff Exp $
+# $Id: sections.pl,v 1.17 2002/02/26 05:07:48 cliff Exp $
 
 use strict;
 use Slash;
@@ -30,9 +30,12 @@ sub main {
 		$form->{"extraname_$1"} =~ s/\s//g;
 		next if !$form->{"extraname_$1"};
 
-		push @{$form->{section_extras}},
-			[$form->{"extraname_$1"},
-			 $form->{"extraval_$1"} || $form->{"extraname_$1"}]
+		push @{$form->{section_extras}}, [
+			# Field label
+			$form->{"extraval_$1"} || $form->{"extraname_$1"},
+			# Field name
+			$form->{"extraname_$1"}
+		];
 	}
 
 	header(getData('head'), 'admin');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.18 2004/11/09 20:28:10 pudge Exp $
+# $Id: RSS.pm,v 1.19 2004/11/10 17:56:03 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -446,9 +446,13 @@ sub rss_item_description {
 		if ($self->{rdfitemdesc} != 1) {
 			if (length($desc) > $self->{rdfitemdesc}) {
 				$desc = substr($desc, 0, $self->{rdfitemdesc});
-				$desc =~ s/\S+$//;
+				$desc =~ s/[\w'-]+$//;  # don't trim in middle of word
+				if ($self->{rdfitemdesc_html}) {
+					$desc =~ s/<[^>]*$//;
+					$desc = balanceTags($desc);
+				}
+				$desc =~ s/\s+$//;
 				$desc .= '...';
-				$desc = balanceTags($desc) if $self->{rdfitemdesc_html};
 			}
 		}
 
@@ -471,4 +475,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.18 2004/11/09 20:28:10 pudge Exp $
+$Id: RSS.pm,v 1.19 2004/11/10 17:56:03 pudge Exp $

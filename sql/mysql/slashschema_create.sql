@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.142 2004/02/12 05:11:08 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.143 2004/02/21 14:35:01 jamiemccarthy Exp $
 #
 
 #
@@ -151,6 +151,7 @@ CREATE TABLE backup_blocks (
 # Table structure for table 'badpasswords'
 #
 
+DROP TABLE IF EXISTS badpasswords;
 CREATE TABLE badpasswords (
 	uid mediumint(8) NOT NULL DEFAULT 0,
 	ip varchar(15) NOT NULL DEFAULT '',
@@ -1153,6 +1154,7 @@ CREATE TABLE users_info (
 # Table structure for table 'users_logtokens'
 #
 
+DROP TABLE IF EXISTS users_logtokens;
 CREATE TABLE users_logtokens (
 	lid MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	uid MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',

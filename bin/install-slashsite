@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.26 2002/12/29 18:58:50 jamie Exp $
+# $Id: install-slashsite,v 1.27 2003/01/15 18:47:49 pudge Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -528,6 +528,25 @@ sub apache_site_conf {
     # this directive will enable you to display user's pages
     # with /~username
     PerlTransHandler Slash::Apache::User::userdir_handler
+
+    # this can be used to preload your .pl scripts in the parent,
+    # saving both startup time and memory in the child
+    # add/remove scripts from \@pls (normally best to include only
+    # and all commonly used scripts)
+    PerlModule Apache::RegistryLoader;
+    <Perl>
+        # if you need to debug, temporarily turn this on
+        # \$Apache::Registry::Debug = 4;
+        my \@pls     = qw(index comments article users journal search metamod);
+        my \$vhost   = '\$host_noport';
+        my \$docroot = '\$prefix_site/\$sitename/htdocs';
+        my \$r       = Apache::RegistryLoader->new;
+
+        for my \$u (\@pls) {
+                my \$f = "\$docroot/\$u.pl";
+                \$r->handler("/\$u.pl", \$f, \$vhost) if -e \$f;
+        }
+    </Perl>
 
     DirectoryIndex index.pl index.shtml
     ErrorDocument 404 /404.pl

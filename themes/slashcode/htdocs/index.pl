@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.24 2002/02/10 20:20:00 brian Exp $
+# $Id: index.pl,v 1.25 2002/02/11 18:23:00 pudge Exp $
 
 use strict;
 use Slash;
@@ -330,7 +330,7 @@ sub displayStories {
 		# I added sid so that you could set up replies from the front page -Brian
 		$return .= slashDisplay($link_template, {
 			links	=> \@links,
-			sid => $sid,
+			sid	=> $sid,
 		}, { Return => 1});
 
 		my($w) = join ' ', (split m/ /, $time)[0 .. 2];

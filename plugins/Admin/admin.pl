@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.34 2002/02/08 22:57:49 patg Exp $
+# $Id: admin.pl,v 1.35 2002/02/11 18:22:13 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1316,7 +1316,7 @@ sub updateStory {
 		}
 		push @$tid_ref, $form->{tid} if !$default_set;
 	
-		$slashdb->setStoryTopics($form->{sid},$tid_ref);
+		$slashdb->setStoryTopics($form->{sid}, $tid_ref);
 	}
 
 	$slashdb->updateStory();
@@ -1368,7 +1368,7 @@ sub saveStory {
 		}
 		push @$tid_ref, $form->{tid} if !$default_set;
 	
-		$slashdb->setStoryTopics($sid,$tid_ref);
+		$slashdb->setStoryTopics($sid, $tid_ref);
 	}
 
 	if ($sid) {

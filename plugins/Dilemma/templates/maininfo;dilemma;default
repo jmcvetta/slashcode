@@ -29,7 +29,7 @@ __template__
 <p>[% PROCESS titlebar title => 'Species Status at Tick ' _ info.last_tick width='100%' %]
 <table cellspacing="1" border="0">
 <tr><th>Species<br>Name</th><th>Alive<br>Now</th><th>Alive<br>Ever</th></tr>
-[% FOREACH key = species.keys.nsort %]
+[% FOREACH key = species_order %]
 <tr><td align="left"><tt>[% species.${key}.name %]&nbsp;&nbsp;</tt></td>
 <td align="right"><tt>&nbsp;&nbsp;[% species.${key}.alivecount %]</tt></td>
 <td align="right"><tt>&nbsp;&nbsp;[% species.${key}.totalcount %]</tt></td></tr>
@@ -43,4 +43,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: maininfo;dilemma;default,v 1.3 2004/10/15 02:16:38 jamiemccarthy Exp $
+$Id: maininfo;dilemma;default,v 1.4 2004/10/15 14:26:22 jamiemccarthy Exp $

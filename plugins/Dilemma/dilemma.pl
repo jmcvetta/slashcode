@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.5 2004/10/15 14:12:30 jamiemccarthy Exp $
+# $Id: dilemma.pl,v 1.6 2004/10/15 14:26:22 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -82,7 +82,13 @@ sub main {
 	my $info = $dilemma_reader->getDilemmaInfo();
 	my $species_hr = $dilemma_reader->getDilemmaSpeciesInfo();
 	my $species_order = [
-		sort { $species_hr->{$b}{alivecount} <=> $species_hr->{$a}{alivecount} }
+		sort {
+			$species_hr->{$b}{alivecount} <=> $species_hr->{$a}{alivecount}
+			||
+			$species_hr->{$b}{totalcount} <=> $species_hr->{$a}{totalcount}
+			||
+			$a cmp $b
+		}
 		keys %$species_hr
 	];
 

@@ -37,7 +37,7 @@ Show only comments from section:
 	[% IF max.defined %]
 		<input type="hidden" name="max" value="[% max | strip_attribute %]">
 	[% END %]
-	<input type="hidden" name="primayskid" value="[% form.sid | strip_attribute %]">
+	<input type="hidden" name="primaryskid" value="[% form.primaryskid | strip_attribute %]">
 	<input type="hidden" name="sid" value="[% form.sid | strip_attribute %]">
 	<input type="hidden" name="startat" value="[% next_startat | strip_attribute %]">
 	<input type="submit" value="&lt;&lt; Next Comments">
@@ -116,4 +116,4 @@ constants.reasons, '', 1, 1) %]</td>
 __seclev__
 100
 __version__
-$Id: recent;admin;default,v 1.11 2004/09/20 15:37:18 tvroom Exp $
+$Id: recent;admin;default,v 1.12 2004/09/20 17:45:01 tvroom Exp $

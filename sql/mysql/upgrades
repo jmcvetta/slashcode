@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.676 2004/09/30 03:04:24 pudge Exp $
+# $Id: upgrades,v 1.677 2004/09/30 17:27:36 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2541,12 +2541,12 @@ INSERT INTO accesslist (uid, ipid, subnetid, ts, reason, now_nopost) values (__A
 # with skins.ac_uid, then add rows for those that should not be able to
 # post.  Yes, there will be an admin interface for this eventually.
 
-# SLASHCLUSTER LAST UPDATED HERE
-
 # End of T_2_5_0_27, Start of T_2_5_0_28 - 2004/09/21
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+# SLASHCLUSTER LAST UPDATED HERE
 
 # End of T_2_5_0_28, Start of T_2_5_0_29 - 2004/09/28

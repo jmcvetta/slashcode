@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.579 2004/05/25 15:40:12 tvroom Exp $
+# $Id: MySQL.pm,v 1.580 2004/05/25 17:59:51 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.579 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.580 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2078,6 +2078,9 @@ sub getCommentsByGeneric {
 	$options ||= {};
 	$min ||= 0;
 	my $limit = " LIMIT $min, $num " if $num;
+	my $force_index = "";
+	$force_index = " FORCE INDEX(uid_date) " if $options->{force_index};
+	
 	$where_clause = "($where_clause) AND date > DATE_SUB(NOW(), INTERVAL $options->{limit_days} DAY)"
 		if $options->{limit_days};
 	$where_clause .= " AND cid >= $options->{cid_at_or_after} " if $options->{cid_at_or_after};
@@ -2085,7 +2088,7 @@ sub getCommentsByGeneric {
 	my $sort_dir = $options->{sort_dir} || "DESC";
 
 	my $comments = $self->sqlSelectAllHashrefArray(
-		'*', 'comments', $where_clause,
+		'*', "comments $force_index", $where_clause,
 		"ORDER BY $sort_field $sort_dir $limit");
 
 	return $comments;
@@ -2094,6 +2097,9 @@ sub getCommentsByGeneric {
 #################################################################
 sub getCommentsByUID {
 	my($self, $uid, $num, $min, $options) = @_;
+	my $constants = getCurrentStatic();
+	$options ||= {};
+	$options->{force_index} = 1 if $constants->{user_comments_force_index};
 	return $self->getCommentsByGeneric("uid=$uid", $num, $min, $options);
 }
 

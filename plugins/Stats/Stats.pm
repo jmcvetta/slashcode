@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.153 2004/12/19 00:46:39 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.154 2005/01/04 17:42:42 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -918,6 +918,42 @@ sub countCommentsDaily {
 }
 
 ########################################################
+sub getSectionSummaryStats {
+	my ($self, $options) = @_;
+	my @where;
+	push @where, "skid IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{skids}}) . ")" if ref $options->{skids} eq "ARRAY";
+
+	my $no_op = $options->{no_op} || [ ];
+	$no_op = [ $no_op ] if $options->{no_op} && !ref($no_op);
+	if (@$no_op) {
+		my $op_not_in = join(",", map { $self->sqlQuote($_) } @$no_op);
+		push @where,  "op NOT IN ($op_not_in)";
+	}
+	
+	my $where_clause = join ' AND ', @where;
+	$self->sqlSelectAllHashref("skid", "skid, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where_clause, "GROUP BY skid");
+}
+
+########################################################
+sub getPageSummaryStats {
+	my ($self, $options) = @_;
+	my @where;
+	push @where, "op IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{ops}}) . ")" if ref $options->{ops} eq "ARRAY";
+	my $where_clause = join ' AND ', @where;
+	$self->sqlSelectAllHashref("op", "op, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where_clause, "GROUP BY op");
+
+}
+########################################################
+sub getSectionPageSummaryStats {
+	my ($self, $options) = @_;
+	my @where;
+	push @where, "op IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{ops}}) . ")" if ref $options->{ops} eq "ARRAY";
+	push @where, "skid IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{skids}}) . ")" if ref $options->{skids} eq "ARRAY";
+	my $where_clause = join ' AND ', @where;
+	$self->sqlSelectAllHashref(["skid","op"], "op, skid, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where_clause, "GROUP BY skid, op");
+}
+
+########################################################
 sub countBytesByPage {
 	my($self, $op, $options) = @_;
 
@@ -955,6 +991,14 @@ sub countUsersByPage {
 		if $options->{skid};
 	$where = "($where) AND $options->{extra_where_clause}"
 		if $options->{extra_where_clause};
+	my $no_op = $options->{no_op} || [ ];
+	$no_op = [ $no_op ] if $options->{no_op} && !ref($no_op);
+	if (@$no_op) {
+		my $op_not_in = join(",", map { $self->sqlQuote($_) } @$no_op);
+		$where .= " AND op NOT IN ($op_not_in)";
+	}
+		
+
 	$self->sqlSelect("COUNT(DISTINCT uid)", "accesslog_temp", $where);
 }
 
@@ -1024,6 +1068,14 @@ sub countDailyByPageDistinctIPID {
 		if $options->{skid};
 	$where .=" AND uid = $constants->{anonymous_coward_uid} " if $options->{user_type} eq "anonymous";
 	$where .=" AND uid != $constants->{anonymous_coward_uid} " if $options->{user_type} eq "logged-in";
+
+	my $no_op = $options->{no_op} || [ ];
+	$no_op = [ $no_op ] if $options->{no_op} && !ref($no_op);
+	if (@$no_op) {
+		my $op_not_in = join(",", map { $self->sqlQuote($_) } @$no_op);
+		$where .= " AND op NOT IN ($op_not_in)";
+	}
+	
 	$self->sqlSelect("COUNT(DISTINCT host_addr)", "accesslog_temp", $where);
 }
 
@@ -1780,4 +1832,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.153 2004/12/19 00:46:39 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.154 2005/01/04 17:42:42 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.45 2001/12/19 19:53:55 pudge Exp $
+# $Id: submit.pl,v 1.46 2001/12/21 17:47:21 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -437,14 +437,15 @@ sub saveSub {
 	my $messages = getObject('Slash::Messages');
 	if ($messages) {
 		my $users = $messages->getMessageUsers(MSG_CODE_NEW_SUBMISSION);
-
-		for (@$users) {
-			my $data  = {
-				template_name	=> 'messagenew',
-				subject		=> { template_name => 'messagenew_subj' },
-				submission	=> $submission,
-			};
-			$messages->create($_, MSG_CODE_NEW_SUBMISSION, $data);
+		if (ref($users) && ref($users) eq 'ARRAY') {
+			for (@$users) {
+				my $data  = {
+					template_name	=> 'messagenew',
+					subject		=> { template_name => 'messagenew_subj' },
+					submission	=> $submission,
+				};
+				$messages->create($_, MSG_CODE_NEW_SUBMISSION, $data);
+			}
 		}
 	}
 

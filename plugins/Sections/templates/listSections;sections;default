@@ -13,8 +13,8 @@ en_US
 __name__
 listSections
 __template__
-<B>[% FOREACH section = sections %][% IF section.1 %]
-<P><A HREF="[% env.script_name %]?section=[% section.0 %]&amp;op=editsection">[% section.0 %]</A> [% section.1 %]</P>[% END %]</B>
+[% FOREACH section = sections %][% IF section.1 %]
+<P><B><A HREF="[% env.script_name %]?section=[% section.0 %]&amp;op=editsection">[% section.0 %]</A></B> [% section.1 %]</P>[% END %]
 [% END %]
 
 <FORM ACTION="[% env.script_name %]">
@@ -24,4 +24,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: listSections;sections;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: listSections;sections;default,v 1.7 2004/02/11 16:53:08 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.66 2003/03/28 22:05:21 brian Exp $
+# $Id: search.pl,v 1.67 2003/03/28 22:17:16 brian Exp $
 
 use strict;
 use Slash;
@@ -338,6 +338,7 @@ sub pollSearch {
 	slashDisplay('searchform', {
 		op		=> $form->{op},
 		topics		=> _topics(),
+		sections	 => _sections(),
 		tref		=> $slashdb->getTopic($form->{tid}),
 		'sort'		=> _sort(),
 	});

@@ -63,10 +63,10 @@ moddable_items=0;
 		[% fp_userfield =  BLOCK; form.userfield | fixparam; END %]
 		[% fp_fieldname =  BLOCK; form.fieldname | fixparam; END %]
 		
-		[% IF type=="user";
+		[% IF type == "user";
 			returnto = constants.rootdir _ "/users.pl?op=userinfo&amp;userfield=" _ fp_userfield _ "&amp;fieldname=uid&amp;min_comment=" _ min_comment _ "&amp;no_time_restriction=" _ fp_no_time_restriction;
 		ELSIF type == "netid";
-				returnto = constants.rootdir _ "/users.pl?op=userinfo&amp;userfield=" _ fp_userfield _ "&amp;fieldname=" _ fp_fieldname _ "&amp;min_comment=" _ min_comment _ "&amp;no_time_restriction=" _ fp_no_time_restriction; 
+			returnto = constants.rootdir _ "/users.pl?op=userinfo&amp;userfield=" _ fp_userfield _ "&amp;fieldname=" _ fp_fieldname _ "&amp;min_comment=" _ min_comment _ "&amp;no_time_restriction=" _ fp_no_time_restriction; 
 		END %]
 		<INPUT TYPE="hidden" name="returnto" value="[% returnto | strip_attribute %]">
 	[% END %]
@@ -301,4 +301,4 @@ pct = "n/a";
 __seclev__
 10000
 __version__
-$Id: listComments;users;default,v 1.2 2004/02/25 16:19:10 tvroom Exp $
+$Id: listComments;users;default,v 1.3 2004/02/25 16:48:05 jamiemccarthy Exp $

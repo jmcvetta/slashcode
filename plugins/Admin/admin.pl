@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.188 2004/02/25 16:22:32 tvroom Exp $
+# $Id: admin.pl,v 1.189 2004/02/25 16:48:05 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1867,7 +1867,7 @@ sub moderate {
 		}
 	}
 	my $startat = $form->{startat} || 0;
-	if($form->{returnto}){
+	if ($form->{returnto}) {
 		print getData('moderate_recent_message_returnto', { returnto => $form->{returnto} });
 	} else {
 		print getData('moderate_recent_message', { startat => $startat });

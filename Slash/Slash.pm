@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.201 2004/03/02 02:58:07 tvroom Exp $
+# $Id: Slash.pm,v 1.202 2004/03/02 18:24:46 jamiemccarthy Exp $
 
 package Slash;
 
@@ -877,20 +877,22 @@ sub moderatorCommentLog {
 	my $this_user;
 	$this_user = $slashdb->getUser($value) if $type eq "uid";
 	my $cur_uid;
-	$cur_uid = $value if $type eq "uid" or $type eq "cuid";
-	
-	
+	$cur_uid = $value if $type eq "uid" || $type eq "cuid";
+
 	my $mod_ids = [keys %$seen_mods];
 	my $mods_to_m2s;
-	if ($constants->{show_m2s_with_mods} and $options->{show_m2s}) {
+	if ($constants->{show_m2s_with_mods} && $options->{show_m2s}) {
 		$mods_to_m2s = $slashdb->getMetamodsForMods($mod_ids, $constants->{m2_limit_with_mods});
 	}
 	
 	# Do the work to determine which moderations share the same m2s
-	if($type eq "cid" and $constants->{show_m2s_with_mods} and $constants->{m2_multicount} and $options->{show_m2s}){
-		foreach my $m(@$mods){
+	if ($type eq "cid"
+		&& $constants->{show_m2s_with_mods}
+		&& $constants->{m2_multicount}
+		&& $options->{show_m2s}){
+		foreach my $m (@$mods){
 			my $key = "$m->{reason}:";
-			foreach my $m2 (@{$mods_to_m2s->{$m->{id}}}){
+			foreach my $m2 (@{$mods_to_m2s->{$m->{id}}}) {
 				$key.="$m2->{uid} $m2->{val},";
 			}
 			$m->{m2_identity} = $key;

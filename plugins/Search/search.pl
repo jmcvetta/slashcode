@@ -2,13 +2,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.6 2001/04/23 16:14:43 brian Exp $
+# $Id: search.pl,v 1.7 2001/04/23 16:48:40 brian Exp $
 
 use strict;
 use Slash;
 use Slash::Display;
 use Slash::Search;
 use Slash::Utility;
+use XML::RSS;
 
 #################################################################
 sub main {
@@ -46,10 +47,11 @@ sub main {
 		$r->send_http_header;
 		$r->rflush;
 		if($ops_rss{$form->{op}}) {
-			$ops_rss{$form->{op}}->($form, $constants);
+			$r->print($ops_rss{$form->{op}}->($form, $constants));
 		} else {
-			$ops_rss{'stories'}->($form, $constants);
+			$r->print($ops_rss{'stories'}->($form, $constants));
 		}
+		$r->rflush;
 		$r->status(200);
 	} else {
 		header("$constants->{sitename}: Search $form->{query}", $form->{section});
@@ -245,7 +247,7 @@ sub commentSearchRSS {
 			my $time = timeCalc($entry->[8]);
 			$rss->add_item(
 				title	=> xmlencode("$entry->[5] ($time)"),
-				'link'	=> ($constants->{absolutedir} . "/comments.pl?sid=entry->[1]&amp;pid=entry->[4]#entry->[10]"),
+				'link'	=> xmlencode_plain($constants->{absolutedir} . "/comments.pl?sid=entry->[1]&pid=entry->[4]#entry->[10]"),
 			);
 	}
 	return $rss->as_string;

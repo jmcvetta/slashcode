@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.101 2004/02/25 10:18:18 pudge Exp $
+# $Id: User.pm,v 1.102 2004/03/06 00:33:42 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -182,6 +182,12 @@ sub handler {
 				? "$constants->{rootdir}/users.pl?op=changepasswd" .
 					# XXX This "note" field is ignored now...
 					# right?  - Jamie 2002/09/17
+					# YYY I made it so it is just a silly code,
+					# so it can be picked up by the form, and
+					# actual text is not passed in.
+					# For now, the code is just this text; later,
+					# I can change it to something else.
+					# -- pudge
 				  "&note=Please+change+your+password+now!&oldpass=" . fixparam($form->{upasswd})
 				: $form->{returnto}
 					? $form->{returnto}

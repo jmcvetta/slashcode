@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.204 2004/09/21 01:51:36 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.205 2004/09/21 02:09:37 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -403,6 +403,9 @@ sub editComment {
 	$form->{nosubscriberbonus} = $user->{is_subscriber} && $user->{nosubscriberbonus}
 						unless $form->{nosubscriberbonus_present};
 
+	if ($form->{lookup_sid}) {
+		slashHook('comment_reply_lookup_sid', {} );
+	}
 	# The sid param is only stripped down to A-Za-z0-9/._ by
 	# filter_params;  make sure it's numeric and exists.
 	my $sid = $form->{sid};

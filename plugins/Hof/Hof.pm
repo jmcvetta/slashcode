@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.6 2003/05/06 22:28:10 brian Exp $
+# $Id: Hof.pm,v 1.7 2004/03/14 04:28:36 jamiemccarthy Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -33,10 +33,16 @@ sub new {
 ########################################################
 sub countStories {
 	my($self) = @_;
+	my $dnc = getCurrentStatic("hof_do_not_count") || "";
+	my $dnc_clause = "";
+	my @dnc = map { $self->sqlQuote($_) } split / /, $dnc;
+	if (@dnc) {
+		$dnc_clause = " AND stories.sid NOT IN (" . join (",", @dnc) . ") ";
+	}
 	my $stories = $self->sqlSelectAll(
 		'stories.sid, stories.title, stories.section as section, stories.commentcount, nickname',
 		'stories, users, discussions',
-		'stories.uid=users.uid AND stories.discussion=discussions.id',
+		"stories.uid=users.uid AND stories.discussion=discussions.id $dnc_clause",
 		'ORDER BY commentcount DESC LIMIT 10'
 	);
 	return $stories;

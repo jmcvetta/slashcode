@@ -1,7 +1,8 @@
-# $Id: PLUGIN,v 1.3 2003/08/29 15:21:07 jamie Exp $
+# $Id: PLUGIN,v 1.4 2004/03/14 04:28:36 jamiemccarthy Exp $
 name=Hof
 description="High score stuff"
 htdoc=hof.pl
+mysql=mysql_dump.sql
 template=templates/data;hof;default
 template=templates/main;hof;default
 

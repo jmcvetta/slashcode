@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.5 2001/04/04 08:17:36 patg Exp $
+# $Id: admin.pl,v 1.6 2001/04/05 11:46:19 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1188,20 +1188,12 @@ sub listFilters {
 	my($header, $footer);
 
 	my $slashdb = getCurrentDB();
-	my $form = getCurrentForm();
-
-	# temporary
-	# $form->{form} ||= 'comments';
 
 	my $title = getTitle('listFilters-title');
 	my $filter_ref = $slashdb->getContentFilters();
 
-	my $form_list = $slashdb->getDescriptions('forms');
-	my $form_select = createSelect('form', $form_list, $form->{form},1);
-
 	slashDisplay('listFilters', { 
 		title		=> $title, 
-		form_select	=> $form_select,	
 		filter_ref	=> $filter_ref 
 	});
 }

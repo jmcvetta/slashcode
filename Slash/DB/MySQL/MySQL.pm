@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.7 2001/04/04 08:17:36 patg Exp $
+# $Id: MySQL.pm,v 1.8 2001/04/05 11:46:19 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -112,9 +112,6 @@ my %descriptions = (
 
 	'site_info'
 		=> sub { $_[0]->sqlSelectMany('name,value', 'site_info', "name != 'plugin'") },
-
-	'forms'
-		=> sub { $_[0]->sqlSelectMany('name,value', 'site_info', "name = 'form'") },
 
 );
 
@@ -311,11 +308,8 @@ sub unsetModeratorlog {
 
 ########################################################
 sub getContentFilters {
-	my($self,$form) = @_;
-
-	$form ||= getCurrentForm();
-
-	my $filters = $self->sqlSelectAll("*","content_filters","regex != '' and field != '' and form = '$form->{form}'");
+	my($self) = @_;
+	my $filters = $self->sqlSelectAll("*","content_filters","regex != '' and field != ''");
 	return $filters;
 }
 
@@ -416,7 +410,6 @@ sub setContentFilter {
 	$form ||= getCurrentForm();
 	$self->sqlUpdate("content_filters", {
 			regex		=> $form->{regex},
-			form		=> $form->{form},
 			modifier	=> $form->{modifier},
 			field		=> $form->{field},
 			ratio		=> $form->{ratio},
@@ -676,13 +669,10 @@ sub getCommentsByUID {
 #################################################################
 # Just create an empty content_filter
 sub createContentFilter {
-	my($self,$form) = @_;
-	
-	$form ||= getCurrentForm();
+	my($self) = @_;
 
 	$self->sqlInsert("content_filters", {
 		regex		=> '',
-		form		=> $form->{form},
 		modifier	=> '',
 		field		=> '',
 		ratio		=> 0,

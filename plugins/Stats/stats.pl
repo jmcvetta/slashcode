@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.7 2002/12/16 18:07:40 jamie Exp $
+# $Id: stats.pl,v 1.8 2003/01/14 23:35:06 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -126,7 +126,7 @@ sub _set_legend {
 sub _get_sections {
 	my $slashdb = getCurrentDB();
 	# don't modify the data, copy it
-	my %sections = %{$slashdb->getDescriptions('sections')};
+	my %sections = %{$slashdb->getDescriptions('sections-all')};
 	$sections{all} = 'All';
 	return \%sections;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.199 2004/06/17 16:12:21 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.200 2004/07/08 15:43:37 cowboyneal Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -163,17 +163,7 @@ sub main {
 
 	$form->{pid} ||= "0";
 
-	my $title = 'Comments';
-
-	if ($discussion && $constants->{ubb_like_forums}
-		&& ($discussion->{type} eq 'recycle')) {
-		$title = $constants->{sitename} . ": Forums - "
-			. $discussion->{'title'};
-	} elsif ($discussion) {
-		$title = $discussion->{'title'};
-	} elsif ((!$discussion) && $constants->{ubb_like_forums}) {
-		$title = 'Forums';
-	}
+	my $title = $discussion ? $discussion->{'title'} : 'Comments';
 
 	header($title, $section) or return;
 
@@ -403,12 +393,6 @@ sub editComment {
 		$form->{postersubj} = "Re:$form->{postersubj}";
 	}
 
-	my($sections, $section_select);
-	if ($constants->{ubb_like_forums} && $form->{section} && $form->{newdiscussion}) {
-		$sections = $slashdb->getDescriptions('forums');
-		$section_select = createSelect('section', $sections, $form->{section}, 1);
-	}
-
 	my $gotmodwarning;
 	$gotmodwarning = 1 if (($error_message eq getError("moderations to be lost")) || $form->{gotmodwarning});
 	slashDisplay('edit_comment', {
@@ -420,7 +404,6 @@ sub editComment {
 		reply		=> $reply,
 		gotmodwarning	=> $gotmodwarning,
 		newdiscussion	=> $form->{newdiscussion},
-		section_select  => $section_select,
 	});
 }
 

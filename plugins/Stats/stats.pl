@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.11 2003/03/10 19:09:23 pudge Exp $
+# $Id: stats.pl,v 1.12 2003/03/24 19:40:51 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -123,7 +123,7 @@ sub graph {
 
 	my($id, $day) = _get_graph_id($slashdb, $constants, $user, $form, $stats);
 
-	my $image   = {}; #$stats->getGraph({ day => $day, id => $id });
+	my $image   = $stats->getGraph({ day => $day, id => $id });
 	my $content = $image->{data};
 	my $type    = $image->{content_type} || 'image/png';
 

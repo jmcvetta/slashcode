@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.21 2003/08/05 21:29:20 pudge Exp $
+# $Id: Page.pm,v 1.22 2003/08/05 23:24:11 jamie Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -295,20 +295,25 @@ sub getLinksContent {
 	
 	if ($storyref->{section} ne $constants->{defaultsection} 
 		&& !$form->{section}) {
+
+		my $reader = getObject('Slash::DB', { db_type => 'reader' });
 		my $SECT = $reader->getSection($storyref->{section});
 		my $url;
 		if ($SECT->{rootdir}) {
-			my $url = $SECT->{rootdir} . '/';
+			$url = "$SECT->{rootdir}/";
 		} elsif ($user->{is_anon}) {
-			$url = $constants->{rootdir} . '/' . $story->{section} . '/';
+			$url = "$constants->{rootdir}/$storyref->{section}/";
 		} else {
-			$url = $constants->{rootdir} . '/index.pl?section=' . $story->{section};
+			$url = "$constants->{rootdir}/index.pl?section=$storyref->{section}";
 		}
 		push @links, [ $url, $SECT->{title} ];
 	}
 
 	if ($user->{seclev} >= 100) {
-		push @links, [ "$constants->{rootdir}/admin.pl?op=edit&sid=$story->{sid}", 'Edit' ];
+		push @links, [
+			"$constants->{rootdir}/admin.pl?op=edit&sid=$storyref->{sid}",
+			'Edit'
+		];
 	}
 
 	my $storycontent = 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.618 2004/07/13 17:57:08 tvroom Exp $
+# $Id: MySQL.pm,v 1.619 2004/07/13 21:32:22 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.618 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.619 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5543,12 +5543,12 @@ sub getStoryByTime {
 	$key .= "|$story->{stoid}";
 
 	if (!$topic && !$section) {
-		$where .= " AND stories_topics_rendered.tid NOT IN ($user->{extid})" if $user->{extid};
+		$where .= " AND story_topics_rendered.tid NOT IN ($user->{extid})" if $user->{extid};
 		$where .= " AND uid NOT IN ($user->{exaid})" if $user->{exaid};
 		# don't cache if user has own prefs -- pudge
 		$key = $user->{extid} || $user->{exaid} || $user->{exsect} ? '' : $key . '|';
 	} elsif ($topic) {
-		$where .= " AND stories_topics_rendered.tid = '$topic'";
+		$where .= " AND story_topics_rendered.tid = '$topic'";
 		$key .= "|$topic";
 	}
 

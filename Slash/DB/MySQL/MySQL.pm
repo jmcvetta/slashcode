@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.87 2002/02/21 02:59:13 brian Exp $
+# $Id: MySQL.pm,v 1.88 2002/02/21 21:44:57 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4149,6 +4149,10 @@ sub getSlashConf {
 			'Overrated',	# The last 2 are "Special"
 			'Underrated'
 		];
+
+	# See <http://www.iana.org/assignments/uri-schemes>
+	$conf{approved_url_schemes} = $fixup->($conf{approved_url_schemes}) ||
+		[qw( ftp http gopher mailto news nntp telnet wais https )];
 
 	$conf{badreasons} = 4 unless defined $conf{badreasons};
 

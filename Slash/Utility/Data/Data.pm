@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.11 2002/02/18 19:20:32 pudge Exp $
+# $Id: Data.pm,v 1.12 2002/02/21 21:44:57 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -1002,8 +1002,13 @@ The escaped data.
 
 =cut
 
+{
+# Use a closure so we only have to generate the regex once.
+my $scheme_regex = "";
 sub fudgeurl {
 	my($url) = @_;
+
+	my $constants = getCurrentStatic();
 
 	# Remove quotes and whitespace (we will expect some at beginning and end,
 	# probably)
@@ -1020,18 +1025,18 @@ sub fudgeurl {
 	$url = fixHref($url) || $url;
 
 	my $uri = new URI $url;
-	if ($uri && $uri->can('scheme') && $uri->scheme eq 'about') {
-		# Fix broken MSIE which allows arbitrary tags
-		# in about: URLs.  I really hate how broken Microsoft
-		# is, over and over again in just about everything.
+	my $scheme = undef;
+	$scheme = $uri->scheme if $uri && $uri->can("scheme");
+	if (!$scheme_regex) {
+		$scheme_regex = join("|", map { lc } @{$constants->{approved_url_schemes}});
+		$scheme_regex = qr{^(?:$scheme_regex)$};
+	}
 
-		# we could try to use URI class methods to deal with it,
-		# but we have to deal with opaque vs. fragment etc.;
-		# fuggedaboudit. -- pudge
+	if ($scheme && $scheme !~ $scheme_regex) {
 
-		$url =~ s/^about://;
+		$url =~ s/^$scheme://i;
 		$url =~ tr/A-Za-z0-9-//cd; # allow only a few chars
-		$url = 'about:' . $url;
+		$url = "$scheme:$url";
 
 	} elsif (1) {
 		# Strip the authority, if any.
@@ -1060,6 +1065,7 @@ sub fudgeurl {
 	# we don't like SCRIPT at the beginning of a URL
 	my $decoded_url = decode_entities($url);
 	return $decoded_url =~ /^[\s\w]*script\b/i ? undef : $url;
+}
 }
 
 #========================================================================
@@ -1753,4 +1759,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.11 2002/02/18 19:20:32 pudge Exp $
+$Id: Data.pm,v 1.12 2002/02/21 21:44:57 jamie Exp $

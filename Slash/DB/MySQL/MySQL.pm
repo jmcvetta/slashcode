@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.736 2004/11/25 00:05:27 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.737 2004/11/25 04:03:45 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.736 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.737 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5708,6 +5708,7 @@ sub getAccessList {
 ##################################################################
 sub countSubmissionsFromUID {
 	my($self, $uid, $options) = @_;
+	return 0 if !$uid || isAnon($uid);
 	my $constants = getCurrentStatic();
 	my $days_back = $options->{days_back} || $constants->{submission_count_days};
 	my $uid_q = $self->sqlQuote($uid);
@@ -5718,6 +5719,7 @@ sub countSubmissionsFromUID {
 
 sub countSubmissionsWithEmaildomain {
 	my($self, $emaildomain, $options) = @_;
+	return 0 if !$emaildomain;
 	my $constants = getCurrentStatic();
 	my $days_back = $options->{days_back} || $constants->{submission_count_days};
 	my $emaildomain_q = $self->sqlQuote($emaildomain);

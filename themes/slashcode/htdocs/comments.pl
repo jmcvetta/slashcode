@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.51 2002/02/15 21:15:17 brian Exp $
+# $Id: comments.pl,v 1.52 2002/02/18 19:21:09 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -966,7 +966,7 @@ sub submitComment {
 		# reply to journal
 		if ($messages && $discussion->{url} =~ /\bjournal\b/) {
 			my $users  = $messages->checkMessageCodes(MSG_CODE_JOURNAL_REPLY, [$discussion->{uid}]);
-			if (@$users && !$users{$users->[0]}) {
+			if (@$users && !$users{$users->[0]} && $users->[0] != $user->{uid}) { # don't msg yourself
 				my $data  = {
 					template_name	=> 'journrep',
 					subject		=> { template_name => 'journrep_subj' },

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.136 2004/09/10 17:19:01 cowboyneal Exp $
+# $Id: Environment.pm,v 1.137 2004/09/12 14:42:00 cowboyneal Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1381,15 +1381,6 @@ sub prepareUser {
 	$user->{state}{post}	= $method eq 'POST' ? 1 : 0;
 	@{$user}{qw[ipid subnetid classbid hostip]} = get_ipids($hostip);
 
-        # stats for clampe - remove when research done
-        if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME} =~ /comments/
-	  && defined $form->{'savechanges'}
-          && !$user->{is_anon}) {
-		my $fname = catfile('clampe', $user->{ipid});
-                my $savelog = "IPID: $user->{ipid} UID: $user->{uid} NewThresh: $form->{threshold} NewDispmode: $form->{dispmode} NewSort: $form->{commentsort} OldThresh: $user->{threshold} OldDispmode: $user->{dispmode} OldSort: $user->{commentsort}";
-                doClampeLog($fname, [$savelog]);
-         }
-
 	my @defaults = (
 		['mode', 'thread'], qw[
 		savechanges commentsort threshold
@@ -2581,4 +2572,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.136 2004/09/10 17:19:01 cowboyneal Exp $
+$Id: Environment.pm,v 1.137 2004/09/12 14:42:00 cowboyneal Exp $

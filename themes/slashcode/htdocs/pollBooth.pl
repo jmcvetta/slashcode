@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.25 2002/02/27 22:09:05 brian Exp $
+# $Id: pollBooth.pl,v 1.26 2002/03/04 17:33:04 pudge Exp $
 
 use strict;
 use Slash;
@@ -159,10 +159,10 @@ sub savepoll {
 			});
 		} elsif ($poll->{discussion}) {
 			# Yep, this is lazy -Brian
-			$slashdb->setDiscussion($poll->{discussion}, { 
-				title => $form->{question}, 
-				topic => $form->{topic} 
-				});
+			$slashdb->setDiscussion($poll->{discussion}, {
+				title => $form->{question},
+				topic => $form->{topic}
+			});
 		}
 		# if it already has a discussion (so $discussion is not set),
 		# or discussion ID is unchanged, don't bother setting

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.181 2003/11/25 06:18:09 vroom Exp $
+# $Id: Slash.pm,v 1.182 2003/11/25 20:33:53 pudge Exp $
 
 package Slash;
 
@@ -770,18 +770,18 @@ sub moderatorCommentLog {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 
-
-
 	my $seclev = getCurrentUser('seclev');
 	my $mod_admin = $seclev >= $constants->{modviewseclev} ? 1 : 0;
 
 	my $asc_desc = $type eq 'cid' ? 'ASC' : 'DESC';
 	my $limit = $type eq 'cid' ? 0 : 100;
-	my $both_mods = (($type =~ /ipid/) || ($type =~ /subnetid/) || ($type =~/global/)) ? 1 : 0;
+	my $both_mods = (($type =~ /ipid/) || ($type =~ /subnetid/) || ($type =~ /global/)) ? 1 : 0;
 	my $mods = $slashdb->getModeratorCommentLog($asc_desc, $limit,
 		$type, $value);
 
-	my $timestamp_hr = exists $options->{hr_hours_back} ? $slashdb->getTime({ add_secs => -3600 * $options->{hr_hours_back}}) : ""; 
+	my $timestamp_hr = exists $options->{hr_hours_back}
+		? $slashdb->getTime({ add_secs => -3600 * $options->{hr_hours_back} })
+		: "";
 
 	if (!$mod_admin) {
 		# Eliminate inactive moderations from the list.

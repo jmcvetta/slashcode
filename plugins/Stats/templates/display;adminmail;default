@@ -106,9 +106,9 @@ Top Relocated URLS
 [% END %]
 
 -----------------------
-[% FOREACH section = sections -%]
+[% FOREACH section = skins -%]
 [% IF section.pages < 1 ; NEXT ; END %]
-For [% section.section_name %]
+For [% section.skin_name %]
                   Pages      IPs   Bandwidth    Users
         total: [% section.pages %] [% section.ipids %] [% section.bytes %] [% section.site_users %]
 [% IF section.index.pages > 0 -%]
@@ -193,4 +193,4 @@ Count  Nickname
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.75 2004/06/17 16:12:02 jamiemccarthy Exp $
+$Id: display;adminmail;default,v 1.76 2004/06/23 20:26:05 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.32 2003/02/27 22:25:21 pudge Exp $
+# $Id: Install.pm,v 1.33 2003/03/04 18:38:52 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -108,10 +108,11 @@ sub readTemplateFile {
 	}
 	$val{'tpid'} = undef if $val{'tpid'};
 	{
-		# Make chomp() remove all newlines, not just 1.  These fields
-		# are used in ways sensitive to extraneous whitespace.
+		# Make chomp() remove all newlines, not just 1.  These
+		# fields are used in ways that may be sensitive to
+		# extraneous whitespace.
 		local $/ = "";
-		for (qw| name page section lang seclev |) {
+		for (qw| name page section lang seclev version |) {
 			chomp($val{$_}) if $val{$_};
 		}
 	}
@@ -126,8 +127,8 @@ sub writeTemplateFile {
 	my($self, $filename, $template) = @_;
 	my $fh = gensym;
 	open($fh, "> $filename\0") or die "Can't open $filename to write to: $!";
-	for (qw(section description title page lang name template seclev)) { #(keys %$template) {
-		next if ($_ eq 'tpid');
+	for (qw(section description title page lang name template seclev version)) { #(keys %$template) {
+		next if $_ eq 'tpid';
 		print $fh "__${_}__\n";
 		$template->{$_} =~ s/\015\012/\n/g;
 		print $fh "$template->{$_}\n";

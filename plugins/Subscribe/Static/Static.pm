@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.4 2003/05/15 04:43:56 jamie Exp $
+# $Id: Static.pm,v 1.5 2003/10/28 18:00:04 vroom Exp $
 
 package Slash::Subscribe::Static;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $vuser) = @_;
@@ -99,7 +99,7 @@ sub getSubscriberList {
 		 method, transaction_id, data, memo,
 		 nickname, realemail, seclev, author,
 		 karma, m2fair, m2unfair, upmods, downmods, created_at,
-		 users_hits.hits as hits, hits_bought, hits_paidfor",
+		 users_hits.hits as hits, hits_bought, hits_paidfor, payment_type, puid",
 		"subscribe_payments, users, users_info, users_hits",
 		"ts BETWEEN '$start' AND '$end'
 		 AND subscribe_payments.uid = users.uid

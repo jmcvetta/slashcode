@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.41 2004/04/02 00:43:05 pudge Exp $
+# $Id: slashd,v 1.42 2004/04/06 02:31:02 pudge Exp $
 
 ############################################################
 #
@@ -197,7 +197,7 @@ sub update_static {
 	if (!$last_static_update
 		or $my_time > $last_static_update + 30) {
 		my $old_panic = $constants->{panic} || 0;
-		sleep 5 until dbAvailable();
+		sleep 5 until dbAvailable() && $slashdb->{_dbh}->ping;
 		createCurrentStatic($slashdb->getSlashConf());
 		$constants = getCurrentStatic();
 		$last_static_update = $my_time;

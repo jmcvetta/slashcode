@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.9 2000/06/12 19:38:38 pudge Exp $
+#  $Id: users.pl,v 1.10 2000/06/13 14:44:54 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -234,9 +234,6 @@ sub newUser {
 
 	my($cnt) = sqlSelect(
 		"matchname","users",
-		"matchname=" . $I{dbh}->quote($matchname)
-	) || sqlSelect(
-		"matchname","authors",
 		"matchname=" . $I{dbh}->quote($matchname)
 	) || sqlSelect(
 		"realemail","users",

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.28 2002/07/22 19:47:01 pudge Exp $
+# $Id: Install.pm,v 1.29 2002/07/26 20:52:04 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -366,7 +366,7 @@ sub _install {
 	}
 
 	unless ($is_plugin) {
-		my (%templates, @no_templates);
+		my(%templates, @no_templates);
 		for my $name (@{$hash->{'include_theme'}}) {
 			my $slash_prefix = $self->get('base_install_directory')->{value};
 			_parseFilesForTemplates("$slash_prefix/themes/$name/THEME", \%templates, \@no_templates);

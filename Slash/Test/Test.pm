@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+# $Id: Test.pm,v 1.7 2002/07/26 20:52:04 pudge Exp $
 
 package Slash::Test;
 
@@ -38,6 +38,10 @@ just use the Slash API in your one-liners.
 It is recommended that you change the hardcoded default to whatever
 Virtual User you use most.
 
+You can also pass in a UID to use instead of anonymous coward:
+
+	% perl -MSlash::Test=virtualuser,2 -e 'print Dumper $user'
+
 =head1 EXPORTED FUNCTIONS
 
 =cut
@@ -54,7 +58,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -72,6 +76,7 @@ Slash::Test->export_to_level(1, '', @EXPORT);
 # allow catching of virtual user in import list
 sub import {
     slashTest($_[1] || 'slash');
+    createCurrentUser($::user = $::slashdb->getUser($_[2])) if $_[2];
 }
 
 #========================================================================
@@ -113,8 +118,9 @@ $form, $constants, and $slashdb into current namespace.
 sub slashTest {
 	my($VirtualUser, $noerr) = @_;
 
-	die "No virtual user" unless defined $VirtualUser and $VirtualUser ne "";
-	eval { createEnvironment($VirtualUser) };
+	die 'No virtual user' unless defined $VirtualUser and $VirtualUser ne '';
+	push @ARGV, 'virtual_user=' . $VirtualUser;
+	eval { createEnvironment() };
 	die $@ if $@ && !$noerr;
 
 	$::slashdb   = getCurrentDB();
@@ -173,4 +179,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+$Id: Test.pm,v 1.7 2002/07/26 20:52:04 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.36 2002/07/19 14:22:58 pudge Exp $
+# $Id: Environment.pm,v 1.37 2002/07/26 20:52:04 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1638,9 +1638,9 @@ sub createEnvironment {
 			$new_cfg->{absolutedir} = $_->{url};
 			$new_cfg->{rootdir} = $_->{url};
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
-			# Isolate no longer exists -Brian
-			#$new_cfg->{real_rootdir} = $_->{url} if $_->{isolate};  # you gotta keep 'em separated, unh!
 			$new_cfg->{defaultsection} = $_->{section};
+# this is in Apache, but not here?  should it be here?  -- pudge
+#			$new_cfg->{section} = $_->{section};
 			$new_cfg->{basedomain} = $_->{hostname};
 			$new_cfg->{static_section} = $_->{section};
 			$new_cfg->{index_handler} = $_->{index_handler};
@@ -1698,4 +1698,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.36 2002/07/19 14:22:58 pudge Exp $
+$Id: Environment.pm,v 1.37 2002/07/26 20:52:04 pudge Exp $

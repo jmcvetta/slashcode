@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.31 2002/07/19 01:27:47 jamie Exp $
+# $Id: Apache.pm,v 1.32 2002/07/26 20:52:04 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -84,7 +84,6 @@ sub SlashVirtualUser ($$$) {
 			$new_cfg->{absolutedir} = $_->{url};
 			$new_cfg->{rootdir} = set_rootdir($_->{url}, $cfg->{constants}{rootdir});
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
-			$new_cfg->{real_rootdir} = $_->{url} if $_->{isolate};  # you gotta keep 'em separated, unh!
 			$new_cfg->{defaultsection} = $_->{section};
 			$new_cfg->{section} = $_->{section};
 			$new_cfg->{basedomain} = $_->{hostname};

@@ -9,9 +9,10 @@ page
 __lang__
 en_US
 __name__
-data
+storylink
 __template__
+
 __seclev__
 10000
 __version__
-$Id: storylink;page;default,v 1.1 2004/03/11 21:16:52 pudge Exp $
+$Id: storylink;page;default,v 1.2 2004/03/25 18:50:03 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.9 2003/02/01 05:48:32 pudge Exp $
+# $Id: message_delivery.pl,v 1.10 2003/02/11 16:28:58 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -38,7 +38,7 @@ $task{$me}{code} = sub {
 	my $count = $constants->{message_process_count} || 10;
 
 	my $msgs;
-	if ($last_deferred ne $now) {
+	if ($constants->{task_options}{all} || $last_deferred ne $now) {
 		$msgs = $messages->gets();  # do it all, baby
 		$slashdb->setVar('message_last_deferred', $now);
 	} else {

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.4 2000/06/09 17:07:40 pudge Exp $
+#  $Id: pollBooth.pl,v 1.5 2000/06/12 19:38:37 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -157,7 +157,7 @@ sub savepoll {
 
 		} else {
 			$I{dbh}->do("DELETE from pollanswers WHERE 
-				qid=" . $I{dbh}->quote($qid) . " and aid=$x"); 
+				qid=" . $I{dbh}->quote($I{F}{qid}) . " and aid=$x"); 
 		}
 	}
 }

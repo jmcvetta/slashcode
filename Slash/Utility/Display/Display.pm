@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.88 2004/06/23 20:06:25 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.89 2004/07/16 16:40:19 cowboyneal Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -895,7 +895,7 @@ sub portalbox {
 		url	=> $url,
 	}, { Return => 1, Nocomm => 1 });
 
-	if (($user->{exboxes} && $getblocks eq 'index') ||
+	if (($user->{exboxes} && $getblocks == $constants->{mainpage_skid}) ||
 		($user->{exboxes} && $constants->{slashbox_sections})) {
 		$title = slashDisplay('portalmap', {
 			title	=> $title,
@@ -1652,4 +1652,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.88 2004/06/23 20:06:25 jamiemccarthy Exp $
+$Id: Display.pm,v 1.89 2004/07/16 16:40:19 cowboyneal Exp $

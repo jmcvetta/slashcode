@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.563 2004/04/20 19:01:57 pudge Exp $
+# $Id: MySQL.pm,v 1.564 2004/04/23 22:28:05 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.563 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.564 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7148,17 +7148,12 @@ sub getTime {
 }
 
 ##################################################################
-# Should this really be in here? -- krow
-# dunno ... sigh, i am still not sure this is best
-# (see getStories()) -- pudge
-# As of now, getDay is only used in Slash.pm getOlderStories() - Jamie
 # And if a webserver had a date that is off... -Brian
 # ...it wouldn't matter; "today's date" is a timezone dependent concept.
 # If you live halfway around the world from whatever timezone we pick,
 # this will be consistently off by hours, so we shouldn't spend an SQL
 # query to worry about minutes or seconds - Jamie
 sub getDay {
-#	my($now) = $self->sqlSelect('to_days(now())');
 	my($self, $days_back) = @_;
 	$days_back ||= 0;
 	my $day = timeCalc(scalar(localtime(time-86400*$days_back)), '%Y%m%d'); # epoch time, %Q

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.94 2004/04/20 19:25:13 pudge Exp $
+# $Id: index.pl,v 1.95 2004/04/23 22:28:25 pudge Exp $
 
 use strict;
 use Slash;
@@ -497,9 +497,19 @@ sub displayStories {
 		$tmpreturn .= slashDisplay('storylink', {
 			links	=> \@links,
 			sid	=> $story->{sid},
-		}, { Return => 1});
+		}, { Return => 1 });
 
 		$return .= $tmpreturn;
+	}
+
+	unless ($constants->{index_no_prev_next_day}) {
+		my($today, $tomorrow, $yesterday, $week_ago) = getOlderDays($form->{issue});
+		$return .= slashDisplay('next_prev_issue', {
+			today		=> $today,
+			tomorrow	=> $tomorrow,
+			yesterday	=> $yesterday,
+			week_ago	=> $week_ago,
+		}, { Return => 1 });
 	}
 
 	return $return;

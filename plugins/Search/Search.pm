@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.38 2002/07/22 21:12:16 patg Exp $
+# $Id: Search.pm,v 1.39 2002/07/24 13:38:30 pudge Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -500,7 +500,7 @@ sub findDiscussion {
 		if $form->{approved};
 	
 	$other .= " LIMIT $start, $limit" if $limit;
-	print STDERR "select $columns from $tables where $where $other\n";
+#	print STDERR "select $columns from $tables where $where $other\n";
 	my $stories = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other );
 
 	return $stories;

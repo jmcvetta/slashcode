@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.201 2002/07/22 21:12:16 patg Exp $
+# $Id: MySQL.pm,v 1.202 2002/07/24 13:38:30 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.201 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2416,10 +2416,9 @@ sub resetFormkey {
 
 	my $constants = getCurrentStatic();
 
-
 	my $update_ref = {
 		-value          => 0,
-		-idcount        => '(idcount -1)',
+		-idcount        => '(idcount-1)',
 		ts              => time(),
 		submit_ts       => '0',
 	};

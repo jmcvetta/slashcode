@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.23 2002/11/22 00:12:07 brian Exp $
+# $Id: Zoo.pm,v 1.24 2002/11/22 00:47:32 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -449,6 +449,7 @@ sub deleteZooJobs {
 	} else {
 		$self->{_dbh}->rollback; 
 	}
+	$self->{_dbh}->{AutoCommit} = 1; 
 }
 
 sub getZooJobs {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.262 2002/11/20 21:38:28 jamie Exp $
+# $Id: MySQL.pm,v 1.263 2002/11/22 00:47:32 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.262 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.263 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1642,6 +1642,9 @@ sub existsEmail {
 
 #################################################################
 # Replication issue. This needs to be a two-phase commit.
+# Ok, this is now a transaction. This means that if we lose the DB
+# while this is going on, we won't end up with a half created user.
+# -Brian
 sub createUser {
 	my($self, $matchname, $email, $newuser) = @_;
 	return unless $matchname && $email && $newuser;
@@ -1650,6 +1653,8 @@ sub createUser {
 		"uid", "users",
 		"matchname=" . $self->sqlQuote($matchname)
 	))[0] || $self->existsEmail($email);
+
+	$self->{_dbh}->{AutoCommit} = 0;
 
 	$self->sqlInsert("users", {
 		uid		=> '',
@@ -1660,9 +1665,11 @@ sub createUser {
 		passwd		=> encryptPassword(changePassword())
 	});
 
-# This is most likely a transaction problem waiting to
-# bite us at some point. -Brian
 	my $uid = $self->getLastInsertId('users', 'uid');
+	unless ($uid) {
+		$self->{_dbh}->rollback;
+		$self->{_dbh}->{AutoCommit} = 1;
+	}
 	return unless $uid;
 	$self->sqlInsert("users_info", {
 		uid 			=> $uid,
@@ -1673,7 +1680,6 @@ sub createUser {
 	$self->sqlInsert("users_comments", { uid => $uid });
 	$self->sqlInsert("users_index", { uid => $uid });
 	$self->sqlInsert("users_hits", { uid => $uid });
-	$self->sqlInsert("users_count", { uid => $uid });
 
 	# All param fields should be set here, as some code may not behave
 	# properly if the values don't exist.
@@ -1699,6 +1705,11 @@ sub createUser {
 		'user_expiry_days'	=> $constants->{min_expiry_days},
 #		'emaildisplay'		=> 2,
 	});
+
+	$self->{_dbh}->commit;
+	$self->{_dbh}->{AutoCommit} = 1;
+
+	$self->sqlInsert("users_count", { uid => $uid });
 
 	return $uid;
 }

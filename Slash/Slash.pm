@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.187 2003/12/05 02:54:11 jamie Exp $
+# $Id: Slash.pm,v 1.188 2003/12/09 04:21:55 vroom Exp $
 
 package Slash;
 
@@ -791,8 +791,11 @@ sub moderatorCommentLog {
 	my $asc_desc = $type eq 'cid' ? 'ASC' : 'DESC';
 	my $limit = $type eq 'cid' ? 0 : 100;
 	my $both_mods = (($type =~ /ipid/) || ($type =~ /subnetid/) || ($type =~ /global/)) ? 1 : 0;
+	my $gmcl_opts = {};
+	$gmcl_opts->{hours_back} = $options->{hours_back} if $options->{hours_back};
+
 	my $mods = $slashdb->getModeratorCommentLog($asc_desc, $limit,
-		$type, $value);
+		$type, $value, $gmcl_opts);
 
 	my $timestamp_hr = exists $options->{hr_hours_back}
 		? $slashdb->getTime({ add_secs => -3600 * $options->{hr_hours_back} })
@@ -1375,8 +1378,7 @@ sub displayStory {
 		$return = dispStory($story, $author, $topic, $full, $options);
 
 	}
-
-	my $df = $user->{mode} eq "archive" ? $constants->{archive_dateformat} : "";
+	my $df = ($user->{mode} eq "archive" or $story->{writestatus} eq "archived") ? $constants->{archive_dateformat} : "";
 	my $storytime = timeCalc($story->{'time'}, $df);
 	my $atstorytime;
 	if ($options->{is_future} && !($user->{author} || $user->{is_admin})) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.102 2003/03/11 05:21:41 pater Exp $
+# $Id: Stats.pm,v 1.103 2003/03/13 22:08:22 brian Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -1001,16 +1001,13 @@ sub getTopReferers {
 		$where = "";
 	} else {
 		my $constants = getCurrentStatic();
-		my $regexp = $constants->{basedomain};
-		$regexp =~ s/\./[.]/g;
-		$regexp = "^https?://([a-z]*[.])?$regexp";
-		$where = " AND referer NOT REGEXP '$regexp'";
+		$where = " AND referer NOT REGEXP '$constants->{basedomain}'";
 	}
 
 	return $self->sqlSelectAll(
-		"referer, COUNT(*) AS c",
+		"distinct SUBSTRING_INDEX(referer,'/',3) as referer, COUNT(id) AS c",
 		"accesslog_temp",
-		"LENGTH(referer) > 0 $where",
+		"referer IS NOT NULL AND LENGTH(referer) > 0 AND referer REGEXP '^http' $where ",
 		"GROUP BY referer ORDER BY c DESC, referer LIMIT $count"
 	);
 }
@@ -1211,4 +1208,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.102 2003/03/11 05:21:41 pater Exp $
+$Id: Stats.pm,v 1.103 2003/03/13 22:08:22 brian Exp $

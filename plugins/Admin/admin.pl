@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.135 2003/03/10 00:59:27 brian Exp $
+# $Id: admin.pl,v 1.136 2003/03/13 22:08:22 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -24,6 +24,7 @@ sub main {
 	my $op = lc($form->{op});
 
 	my($tbtitle);
+
 
 	my $ops = {
 		slashd		=> {
@@ -1242,6 +1243,8 @@ sub editStory {
 		}
 		$story_copy{introtext} = parseSlashizedLinks($story_copy{introtext});
 		$story_copy{bodytext} =  parseSlashizedLinks($story_copy{bodytext});
+		$story_copy{introtext} = cleanSlashTags($story_copy{introtext}, {});
+		$story_copy{bodytext} = cleanSlashTags($story_copy{bodytext}, {});
 		$story_copy{introtext} = processSlashTags($story_copy{introtext}, {});
 		$story_copy{bodytext} = processSlashTags($story_copy{bodytext}, {});
 		my $author = $slashdb->getAuthor($storyref->{uid});
@@ -1661,6 +1664,8 @@ sub updateStory {
 		$form->{introtext} = $reloDB->href2SlashTag($form->{introtext}, $form->{sid});
 		$form->{bodytext} = $reloDB->href2SlashTag($form->{bodytext}, $form->{sid});
 	}
+	$form->{introtext} = cleanSlashTags($form->{introtext});
+	$form->{bodytext} = cleanSlashTags($form->{bodytext});
 
 	my $data = {
 		uid		=> $form->{uid},

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: SOAP.pm,v 1.1 2002/12/08 08:30:58 brian Exp $
+# $Id: SOAP.pm,v 1.2 2003/01/16 22:59:01 brian Exp $
 
 package Slash::Search::SOAP;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # As a note I will be adding support for sort later.
 # I want to make it easy for people just to pass in a string
@@ -22,25 +22,9 @@ sub MAX_NUM {
 	return 15;
 }
 
-#################################################################
-sub new {
-	my($class, $user) = @_;
-	my $self = {};
-
-	my $slashdb = getCurrentDB();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{'Search'};
-
-	bless($self, $class);
-	$self->{virtual_user} = $user;
-	$self->sqlConnect();
-
-	return $self;
-}
-
 ####################################################################################
 sub findComments {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -58,7 +42,7 @@ sub findComments {
 
 ####################################################################################
 sub findUsers {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -76,7 +60,7 @@ sub findUsers {
 
 ####################################################################################
 sub findStory {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -94,7 +78,7 @@ sub findStory {
 
 ####################################################################################
 sub findJournalEntry {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -112,7 +96,7 @@ sub findJournalEntry {
 
 ####################################################################################
 sub findPollQuestion {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -130,7 +114,7 @@ sub findPollQuestion {
 
 ####################################################################################
 sub findSubmission {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -148,7 +132,7 @@ sub findSubmission {
 
 ####################################################################################
 sub findRSS {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
@@ -166,7 +150,7 @@ sub findRSS {
 
 ####################################################################################
 sub findDiscussion {
-	my($query, $options) = @_;
+	my($self, $query, $options) = @_;
 	$options->{query} = $query;
 
 	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();

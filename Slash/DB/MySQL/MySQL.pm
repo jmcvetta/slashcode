@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.705 2004/10/08 01:24:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.706 2004/10/08 01:27:56 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.705 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.706 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7662,7 +7662,7 @@ sub _gse_sectioncollapse {
 	my %tid_x = ( );
 	%tid_x = map {( $_, 1 )} @$tid_x_ar if $tid_x_ar;
 	my @all = sort { $a <=> $b }
-		grep !$tid_x{$_}
+		grep { !$tid_x{$_} }
 		keys %nexuses;
 	return \@all;
 }

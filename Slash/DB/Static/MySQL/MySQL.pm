@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.203 2004/11/14 23:18:08 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.204 2004/11/21 03:51:02 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2631,10 +2631,14 @@ sub getAccesslogPPS {
 	while ($retries-- > 0) {
 		my $lookback_id = $max_id - $rowsback;
 		$lookback_id = 1 if $lookback_id < 1;
+		# We don't count images, and we only count rss hits if
+		# they are dynamic.
 		my($count, $time) = $self->sqlSelect(
 			"COUNT(*), UNIX_TIMESTAMP(MAX(ts)) - UNIX_TIMESTAMP(MIN(ts))",
 			"accesslog",
-			"id >= $lookback_id AND op != 'image'");
+			"id >= $lookback_id
+			 AND op != 'image'
+			 AND (op != 'rss' OR static = 'no')");
 		if (!$count || $count < 10) {
 			# Very small count;  site is almost unused.
 			$pps = "slow";

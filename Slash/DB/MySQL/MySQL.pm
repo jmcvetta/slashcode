@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.92 2002/02/26 07:14:40 patg Exp $
+# $Id: MySQL.pm,v 1.93 2002/03/03 12:34:03 cliff Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1747,6 +1747,7 @@ sub savePollQuestion {
 			question	=> $poll->{question},
 			voters		=> $poll->{voters},
 			topic		=> $poll->{topic},
+			section		=> $poll->{section},
 			sid		=> $poll->{sid},
 			-date		=>'now()'
 		}, "qid	= $qid_quoted");
@@ -1755,6 +1756,7 @@ sub savePollQuestion {
 			question	=> $poll->{question},
 			voters		=> $poll->{voters},
 			topic		=> $poll->{topic},
+			section		=> $poll->{section},
 			sid		=> $poll->{sid},
 			uid		=> getCurrentUser('uid'),
 			-date		=>'now()'
@@ -3022,7 +3024,7 @@ sub getModeratorLogRandom {
 ########################################################
 sub countUsers {
 	my($self) = @_;
-	my($users) = $self->sqlSelect("count(*)", "users_count");
+	my($users) = $self->sqlCount('users_count');
 	return $users;
 }
 
@@ -4304,7 +4306,7 @@ sub _saveExtras {
 
 	# Update main-page write status if saved story is marked 
 	# "Always Display" or "Never Display".
-	$self->setVar('writestatus', 'dirty') if $story->{writestatus} < 1;
+	$self->setVar('writestatus', 'dirty') if $story->{displaystatus} < 1;
 
 	my $extras = $self->getSectionExtras($story->{section});
 	return unless $extras;

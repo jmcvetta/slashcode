@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.49 2002/01/04 15:21:06 pudge Exp $
+# $Id: users.pl,v 1.50 2002/01/05 17:56:17 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -313,7 +313,7 @@ sub main {
 			$slashdb->updateFormkey($formkey, length($ENV{QUERY_STRING}));
 		}
 		$op = $error_flag ? 'changepasswd' : 'userinfo';
-		$form->{userfield} = $form->{uid};
+		$form->{userfield} = $user->{uid};
 	}
 
 	header(getMessage('user_header'), $form->{section});

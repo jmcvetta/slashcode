@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.82 2002/12/20 18:53:29 jamie Exp $
+# $Id: Stats.pm,v 1.83 2002/12/20 19:43:46 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -787,6 +787,26 @@ sub getDurationByStaticLocaladdr {
 }
 
 ########################################################
+# Note, we are carrying the misspelling of "referrer" over from
+# the HTTP spec.
+sub getTopReferers {
+	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
+
+	my $count = $options->{count} || 10;
+	my $where = $options->{include_local}
+		? ""
+		: "AND referer NOT LIKE " . $self->sqlQuote($constants->{absolutedir} . "%");
+
+	return $self->sqlSelectAll(
+		"referer, COUNT(*) AS c",
+		"accesslog_temp",
+		"LENGTH(referer) > 0 $where",
+		"GROUP BY referer ORDER BY c DESC, referer LIMIT $count"
+	);
+}
+
+########################################################
 sub countSfNetIssues {
 	my($self, $group_id) = @_;
 	my $constants = getCurrentStatic();
@@ -884,4 +904,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.82 2002/12/20 18:53:29 jamie Exp $
+$Id: Stats.pm,v 1.83 2002/12/20 19:43:46 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.32 2002/11/25 23:06:06 brian Exp $
+# $Id: Display.pm,v 1.33 2002/11/28 21:25:10 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -944,11 +944,12 @@ sub linkComment {
 		$comment->{$_} = '' unless exists $comment->{$_};
 	}
 
+	$comment->{pid} = $comment->{original_pid} || $comment->{pid};
+
 	slashDisplay('linkComment', {
 		%$comment, # defaults
 		adminflag	=> $adminflag,
 		date		=> $date,
-		pid		=> $comment->{original_pid},
 			# $comment->{threshold}? Hmm. I'm not sure what it
 			# means for a comment to have a threshold. If it's 0,
 			# does the following line do the right thing? - Jamie
@@ -999,14 +1000,14 @@ sub createMenu {
 
 	# The style of menu desired.  While we're "evolving" the way we do
 	# menus, createMenu() handles several different styles.
-	my $style = $options->{style};
-	$style = 'oldstyle' unless $style =~ /^tabbed$/;
+	my $style = $options->{style} || "";
+	$style = 'oldstyle' unless $style eq 'tabbed';
 
 	# Use the colored background, for tabs that sit on top of the
 	# colored titlebar, or use the white background, for tabs that sit
 	# on top of the page below ("within" the colored titlebar)?
-	my $color = $options->{color};
-	$color = 'colored' unless $color =~ /^white$/;
+	my $color = $options->{color} || "";
+	$color = 'colored' unless $color eq 'white';
 
 	# Get the list of menu items from the "menus" table.  Then add in
 	# any special ones passed in.
@@ -1198,7 +1199,7 @@ sub _hard_linkComment {
 	if ($printcomment) {
 		$display .= "&amp;cid=$comment->{cid}";
 	} else {
-		$display .= "&amp;pid=" . $comment->{original_pid};
+		$display .= "&amp;pid=" . ($comment->{original_pid} || $comment->{pid});
 		$display .= "#$comment->{cid}" if $comment->{cid};
 	}
 
@@ -1226,4 +1227,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.32 2002/11/25 23:06:06 brian Exp $
+$Id: Display.pm,v 1.33 2002/11/28 21:25:10 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.32 2001/12/06 23:39:22 brian Exp $
+# $Id: MySQL.pm,v 1.33 2001/12/07 23:36:02 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4593,8 +4593,7 @@ sub setUser {
 	}
 
 	# Power to the People
-	if (exists $hashref->{people}) {
-		# get rid of newpasswd if defined in DB
+	if ($hashref->{people}) {
 		$hashref->{people} = freeze $hashref->{people};
 	}
 

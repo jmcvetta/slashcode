@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.5 2000/05/31 20:10:04 capttofu Exp $
+#  $Id: admin.pl,v 1.6 2000/06/01 11:56:34 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -37,7 +37,7 @@ sub main {
 	header("backSlash $I{U}{tzcode} $I{U}{offset}", 'admin');
 
 	# Admin Menu
-	print "<P>&nbsp;<\P>" unless $I{U}{aseclev};
+	print "<P>&nbsp;</P>" unless $I{U}{aseclev};
 
 	my $op = $I{F}{op};
 	if (!$I{U}{aseclev}) {

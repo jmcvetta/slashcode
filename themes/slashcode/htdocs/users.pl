@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.93 2002/08/01 14:52:56 jamie Exp $
+# $Id: users.pl,v 1.94 2002/08/01 18:24:12 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -366,22 +366,28 @@ sub main {
 	}
 
 	if ($constants->{admin_formkeys} || $user->{seclev} < 100) {
-                my $options = {};
-		if ($op eq 'newuserform' && !$constants->{hc_sw_newuser}
-			|| $op eq 'mailpasswdform' && !$constants->{hc_sw_mailpasswd}
-			|| !$user->{is_anon}
-				&& $user->{karma} > $constants->{hc_maxkarma}) {
-			$options->{no_hc} = 1;
-		}
 
                 my $done = 0;
 		$done = 1 if $op eq 'savepasswd'; # special case
 		$formname = $ops->{$op}{formname};
-		if ($formname eq 'users/nu' && !$constants->{hc_sw_newuser}) {
-			$options->{no_hc} = 1;
-		} elsif ($formname eq 'users/mp' && !$constants->{hc_sw_mailpasswd}) {
+
+		# No need for HumanConf if the constant for it is not
+		# switched on, or if the user's karma is high enough
+		# to get out of it.  (But for "newuserform," the current
+		# user's karma doesn't get them out of having to prove
+		# they're a human for creating a *new* user.)
+                my $options = {};
+		if (	   !$constants->{hc_sw_newuser}
+			   	&& ($formname eq 'users/nu' || $op eq 'newuserform')
+			|| !$constants->{hc_sw_mailpasswd}
+			   	&& ($formname eq 'users/mp' || $op eq 'mailpasswdform')
+			|| $user->{karma} > $constants->{hc_maxkarma}
+				&& !$user->{is_anon}
+				&& !($op eq 'newuser' || $op eq 'newuserform')
+		) {
 			$options->{no_hc} = 1;
 		}
+
                 DO_CHECKS: while (!$done) {
                         for my $check (@{$ops->{$op}{checks}}) {
                                 $ops->{$op}{update_formkey} = 1 if $check eq 'formkey_check';

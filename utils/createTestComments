@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.8 2002/06/16 13:46:41 jamie Exp $
+# $Id: createTestComments,v 1.9 2002/06/28 17:11:08 jamie Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -132,7 +132,7 @@ $werder = new Silly::Werder;
 		$num_werds += 200 if rand(1) < 0.1;
 		$num_werds += 300 if rand(1) < 0.1;
 		my $comment = make_werds($num_werds, 0.1);
-		$comment = strip_mode($comment, 2); # HTML mode
+		$comment = strip_html($comment); # HTML mode
 		$comment = balanceTags($comment, $constants->{nesting_maxdepth});
 		$comment = addDomainTags($comment);
 

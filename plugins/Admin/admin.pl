@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.149 2003/04/25 01:04:02 brian Exp $
+# $Id: admin.pl,v 1.150 2003/04/26 14:13:12 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1642,7 +1642,7 @@ sub updateStory {
 		}
 	}
 
-	unless($slashdb->updateStory($form->{sid}, $data)) {
+	if (!$slashdb->updateStory($form->{sid}, $data)) {
 		titlebar('100%', getTitle('story_update_failed'));
 		editStory(@_);
 	} else {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.131 2003/04/26 13:38:03 jamie Exp $
+# $Id: comments.pl,v 1.132 2003/04/26 14:13:12 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1015,19 +1015,19 @@ sub previewForm {
 		if $user->{is_subscriber} && $form->{nosubscriberbonus} ne 'on';
 
 	my $preview = {
-		nickname	=> $form->{postanon}
-					? getCurrentAnonymousCoward('nickname')
-					: $user->{nickname},
-		pid		=> $form->{pid},
-		uid		=> $form->{postanon} ? '' : $user->{uid},
-		homepage	=> $form->{postanon} ? '' : $user->{homepage},
-		fakeemail	=> $form->{postanon} ? '' : $user->{fakeemail},
-		journal_last_entry_date => $user->{journal_last_entry_date} || '',
-		'time'		=> $slashdb->getTime(),
-		subject		=> $tempSubject,
-		comment		=> $tempComment,
-		sig		=> $sig,
-		subscriber_bonus => $subscriber_bonus,
+		nickname		=> $form->{postanon}
+						? getCurrentAnonymousCoward('nickname')
+						: $user->{nickname},
+		pid			=> $form->{pid},
+		uid			=> $form->{postanon} ? '' : $user->{uid},
+		homepage		=> $form->{postanon} ? '' : $user->{homepage},
+		fakeemail		=> $form->{postanon} ? '' : $user->{fakeemail},
+		journal_last_entry_date	=> $user->{journal_last_entry_date} || '',
+		'time'			=> $slashdb->getTime(),
+		subject			=> $tempSubject,
+		comment			=> $tempComment,
+		sig			=> $sig,
+		subscriber_bonus	=> $subscriber_bonus,
 	};
 
 	my $tm = $user->{mode};

@@ -24,7 +24,7 @@ mistake...well, you should have used the 'Preview' button!<P>
 [% IF metamod_elig %]
 For [% constants.sitename %]'s moderation system to properly function,
 we need as many users as possible to
-<A href="[% constants.rootdir %]/metamod.pl">Meta-Moderate</A>.
+<A HREF="[% constants.rootdir %]/metamod.pl">Meta-Moderate</A>.
 You are currently eligible... why not hop over and help?
 [% END %]
 
@@ -44,4 +44,4 @@ You are currently eligible... why not hop over and help?
 __seclev__
 1000
 __version__
-$Id: comment_submit;comments;default,v 1.8 2003/04/24 04:47:26 jamie Exp $
+$Id: comment_submit;comments;default,v 1.9 2003/04/26 14:13:12 pudge Exp $

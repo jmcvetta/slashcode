@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.56 2003/04/25 19:30:11 brian Exp $
+# $Id: Display.pm,v 1.57 2003/04/26 14:13:12 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1433,11 +1433,11 @@ sub _slashImage {
 	my($tokens, $token, $newtext) = @_;
 
 	my $content = slashDisplay('imageLink', {
-		id    => $token->[1]{id},
-		title => $token->[1]{title},
-		align => $token->[1]{align},
-		width => $token->[1]{width},
-		height => $token->[1]{height},
+		id	=> $token->[1]{id},
+		title	=> $token->[1]{title},
+		align	=> $token->[1]{align},
+		width	=> $token->[1]{width},
+		height	=> $token->[1]{height},
 	}, { Return => 1 });
 	$content ||= getData('SLASH-UNKNOWN-IMAGE');
 
@@ -1534,4 +1534,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.56 2003/04/25 19:30:11 brian Exp $
+$Id: Display.pm,v 1.57 2003/04/26 14:13:12 pudge Exp $

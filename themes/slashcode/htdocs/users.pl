@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.177 2003/04/24 13:38:16 jamie Exp $
+# $Id: users.pl,v 1.178 2003/04/26 14:13:12 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2212,40 +2212,40 @@ sub saveComm {
 	# This has NO BEARING on the table the data goes into now.
 	# setUser() does the right thing based on the key name.
 	my $users_comments_table = {
-		clsmall		=> $form->{clsmall},
-		clsmall_bonus	=> $clsmall_bonus,
-		clbig		=> $form->{clbig},
-		clbig_bonus	=> $clbig_bonus,
-		commentlimit	=> $form->{commentlimit},
-		commentsort	=> $form->{commentsort},
-		commentspill	=> $form->{commentspill},
-		domaintags	=> ($form->{domaintags} != 2 ? $form->{domaintags} : undef),
-		emaildisplay	=> $form->{emaildisplay} ? $form->{emaildisplay} : undef,
-		fakeemail	=> $new_fakeemail,
-		highlightthresh	=> $form->{highlightthresh},
-		maxcommentsize	=> $form->{maxcommentsize},
-		mode		=> $form->{umode},
-		posttype	=> $form->{posttype},
-		threshold	=> $form->{uthreshold},
-		nosigs		=> ($form->{nosigs}     ? 1 : 0),
-		reparent	=> ($form->{reparent}   ? 1 : 0),
-		noscores	=> ($form->{noscores}   ? 1 : 0),
-		hardthresh	=> ($form->{hardthresh} ? 1 : 0),
-		no_spell	=> ($form->{no_spell}   ? 1 : undef),
-		sigdash		=> ($form->{sigdash} ? 1 : undef),
-		nobonus		=> ($form->{nobonus} ? 1 : undef),
-		nosubscriberbonus => ($form->{nosubscriberbonus} ? 1 : undef),
-		postanon	=> ($form->{postanon} ? 1 : undef),
-		new_user_percent => ($new_user_percent && $new_user_percent != 100
-					? $new_user_percent : undef),
-		new_user_bonus	=> ($new_user_bonus
-					? $new_user_bonus : undef),
-		karma_bonus	=> $karma_bonus,
-		subscriber_bonus => $subscriber_bonus,
-		textarea_rows	=> ($form->{textarea_rows} != $constants->{textarea_rows}
-					? $form->{textarea_rows} : undef),
-		textarea_cols	=> ($form->{textarea_cols} != $constants->{textarea_cols}
-					? $form->{textarea_cols} : undef),
+		clsmall			=> $form->{clsmall},
+		clsmall_bonus		=> $clsmall_bonus,
+		clbig			=> $form->{clbig},
+		clbig_bonus		=> $clbig_bonus,
+		commentlimit		=> $form->{commentlimit},
+		commentsort		=> $form->{commentsort},
+		commentspill		=> $form->{commentspill},
+		domaintags		=> ($form->{domaintags} != 2 ? $form->{domaintags} : undef),
+		emaildisplay		=> $form->{emaildisplay} ? $form->{emaildisplay} : undef,
+		fakeemail		=> $new_fakeemail,
+		highlightthresh		=> $form->{highlightthresh},
+		maxcommentsize		=> $form->{maxcommentsize},
+		mode			=> $form->{umode},
+		posttype		=> $form->{posttype},
+		threshold		=> $form->{uthreshold},
+		nosigs			=> ($form->{nosigs}     ? 1 : 0),
+		reparent		=> ($form->{reparent}   ? 1 : 0),
+		noscores		=> ($form->{noscores}   ? 1 : 0),
+		hardthresh		=> ($form->{hardthresh} ? 1 : 0),
+		no_spell		=> ($form->{no_spell}   ? 1 : undef),
+		sigdash			=> ($form->{sigdash} ? 1 : undef),
+		nobonus			=> ($form->{nobonus} ? 1 : undef),
+		nosubscriberbonus	=> ($form->{nosubscriberbonus} ? 1 : undef),
+		postanon		=> ($form->{postanon} ? 1 : undef),
+		new_user_percent	=> ($new_user_percent && $new_user_percent != 100
+						? $new_user_percent : undef),
+		new_user_bonus		=> ($new_user_bonus
+						? $new_user_bonus : undef),
+		karma_bonus		=> $karma_bonus,
+		subscriber_bonus	=> $subscriber_bonus,
+		textarea_rows		=> ($form->{textarea_rows} != $constants->{textarea_rows}
+						? $form->{textarea_rows} : undef),
+		textarea_cols		=> ($form->{textarea_cols} != $constants->{textarea_cols}
+						? $form->{textarea_cols} : undef),
 	};
 
 	my @reasons = ( );

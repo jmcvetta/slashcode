@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.84 2003/04/25 01:04:02 brian Exp $
+# $Id: Data.pm,v 1.85 2003/04/26 14:13:12 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2823,7 +2823,7 @@ sub createStoryTopicData {
 	my $loop_protection = 0;
 	for my $tid (@tids) {
 		my $new_tid = $slashdb->sqlSelect("parent_topic", "topics", "tid = $tid");
-		push @tids, $new_tid if $new_tid && grep(!/$new_tid/,@tids);
+		push @tids, $new_tid if $new_tid && grep(!/$new_tid/, @tids);
 		#This is here to kill some runaway logic loop
 		$loop_protection++;
 		last if $loop_protection > 30;
@@ -2833,7 +2833,7 @@ sub createStoryTopicData {
 	for my $tid (@tids) {
 		# Jump to the next tid if it is zero
 		next unless $tid;
-		$tid_ref{$tid} =  scalar(grep(/^$tid$/,@original))  ? 'no' : 'yes' ;
+		$tid_ref{$tid} = scalar(grep(/^$tid$/, @original)) ? 'no' : 'yes' ;
 	}
 
 	return \%tid_ref;
@@ -2851,4 +2851,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.84 2003/04/25 01:04:02 brian Exp $
+$Id: Data.pm,v 1.85 2003/04/26 14:13:12 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.733 2004/11/21 21:31:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.734 2004/11/21 23:00:24 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.733 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.734 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9571,7 +9571,8 @@ sub getStoriesData {
 			grep { !exists $retval->{$_} }
 			@$stoids;
 		if (!@stoids_needed) {
-			print STDERR scalar(localtime) . " $$ logic error no stoids_needed, stoids '@$stoids'\n";
+			print STDERR scalar(localtime) . " $$ logic error (possibly mispointed nexus?) no stoids_needed, stoids '@$stoids'\n";
+			return { };
 		}
 		$stoid_clause = "stoid IN ("
 			. join(",", @stoids_needed)

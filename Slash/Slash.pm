@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.159 2003/08/05 15:07:04 pater Exp $
+# $Id: Slash.pm,v 1.160 2003/08/05 15:41:21 vroom Exp $
 
 package Slash;
 
@@ -1479,9 +1479,6 @@ sub getData {
 	my($value, $hashref, $page) = @_;
 	my $cache=getCurrentCache();
 	_dataCacheRefresh($cache);
-	
-	use Data::Dumper;
-	print STDERR "CACHE: ".Dumper($cache->{getdata})."\n";
 	
 	$hashref ||= {};
 	$hashref->{value} = $value;

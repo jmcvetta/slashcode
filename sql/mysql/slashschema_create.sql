@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.90 2003/01/16 14:22:42 jamie Exp $
+# $Id: slashschema_create.sql,v 1.91 2003/01/30 00:27:40 brian Exp $
 #
 
 #
@@ -42,6 +42,7 @@ CREATE TABLE accesslist (
 	reason varchar(120), 
 	wasbanned tinyint unsigned DEFAULT 0 NOT NULL,
 	wasreadonly tinyint unsigned DEFAULT 0 NOT NULL,
+	isproxy enum("no","yes") DEFAULT "no" NOT NULL,
 	PRIMARY KEY id (id), 
 	key uid (uid), 
 	key ipid (ipid), 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.79 2003/01/16 01:25:08 jamie Exp $
+# $Id: MySQL.pm,v 1.80 2003/01/30 00:27:40 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -611,23 +611,6 @@ sub randomBlock {
 
 }
 
-########################################################
-# For portald
-# ugly method name
-sub getAccesslogCountTodayAndYesterday {
-	my($self) = @_;
-	my $c = $self->sqlSelectMany("count(*), to_days(now()) - to_days(ts) as d",
-		"accesslog",
-		"",
-		"GROUP by d order by d asc");
-
-	my($today) = $c->fetchrow;
-	my($yesterday) = $c->fetchrow;
-	$c->finish;
-
-	return ($today, $yesterday);
-
-}
 
 ########################################################
 # For portald

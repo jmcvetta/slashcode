@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.319 2003/02/04 17:24:45 brian Exp $
+# $Id: MySQL.pm,v 1.320 2003/02/04 17:59:07 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.319 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.320 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1713,9 +1713,10 @@ sub getCommentsByIPIDOrSubnetID {
 # get list of DBs, never cache
 sub getDBs {
 	my($self) = @_;
-	my $dbs = $self->sqlSelectAllHashref('id', '*', 'db');
+	my $dbs = $self->sqlSelectAllHashref('id', '*', 'dbs');
 	my %databases;
 
+	# rearrange to list by "type"
 	for (keys %$dbs) {
 		my $db = $dbs->{$_};
 		$databases{$db->{type}} ||= [];

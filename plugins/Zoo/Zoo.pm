@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.20 2002/09/04 22:52:40 brian Exp $
+# $Id: Zoo.pm,v 1.21 2002/09/12 23:34:12 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -245,7 +245,7 @@ sub _set {
 }
 
 sub addFof {
-	my($self, $uid, $person) = @_;
+	my($self, $uid, $person, $original) = @_;
 	my $slashdb = getCurrentDB();
 
 	# First we do the main person
@@ -256,12 +256,12 @@ sub addFof {
 	}
 	my $people = $slashdb->getUser($uid, 'people');
 	# First we clean up, then we reapply
-	$people->{FOF()}{$person} += 1;
+	$people->{FOF()}{$person}{$original} = 1;
 	$slashdb->setUser($uid, { people => $people });
 }
 
 sub addEof {
-	my($self, $uid, $person) = @_;
+	my($self, $uid, $person, $original) = @_;
 	my $slashdb = getCurrentDB();
 
 	# First we do the main person
@@ -272,12 +272,12 @@ sub addEof {
 	}
 	my $people = $slashdb->getUser($uid, 'people');
 	# First we clean up, then we reapply
-	$people->{EOF()}{$person} += 1;
+	$people->{EOF()}{$person}{$original} = 1;
 	$slashdb->setUser($uid, { people => $people });
 }
 
 sub deleteFof {
-	my($self, $uid, $person) = @_;
+	my($self, $uid, $person, $original) = @_;
 	my $slashdb = getCurrentDB();
 
 	# First we do the main person
@@ -288,17 +288,16 @@ sub deleteFof {
 		$self->sqlUpdate('people', { -fof => "fof - 1" }, "uid = $uid AND person = $person");
 	}
 	my $people = $slashdb->getUser($uid, 'people');
-	# First we clean up, then we reapply
-	if ($people->{FOF()}{$person} >= 1) {
-		$people->{FOF()}{$person} -= 1;
-	} else {
-		delete $people->{FOF()}{$person};
-	}
+	# First we clean up
+	delete $people->{FOF()}{$person}{$original};
+	# Now delete the hash if there are no longer people pointing to it
+	delete $people->{FOF()}{$person}
+		unless (keys %{$people->{FOF()}{$person}});
 	$slashdb->setUser($uid, { people => $people });
 }
 
 sub deleteEof {
-	my($self, $uid, $person) = @_;
+	my($self, $uid, $person, $original) = @_;
 	my $slashdb = getCurrentDB();
 
 	# First we do the main person
@@ -309,12 +308,11 @@ sub deleteEof {
 		$self->sqlUpdate('people', { '-eof' => "eof - 1" }, "uid = $uid AND person = $person");
 	}
 	my $people = $slashdb->getUser($uid, 'people');
-	# First we clean up, then we reapply
-	if ($people->{EOF()}{$person} >= 1) {
-		$people->{EOF()}{$person} -= 1;
-	} else {
-		delete $people->{EOF()}{$person};
-	}
+	# First we clean up
+	delete $people->{EOF()}{$person}{$original};
+	# Now delete the hash if there are no longer people pointing to it
+	delete $people->{EOF()}{$person}
+		unless (keys %{$people->{EOF()}{$person}});
 	$slashdb->setUser($uid, { people => $people });
 }
 

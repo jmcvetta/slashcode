@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.103 2003/01/30 18:44:34 jamie Exp $
+# $Id: Slash.pm,v 1.104 2003/01/30 18:50:48 pater Exp $
 
 package Slash;
 
@@ -609,6 +609,7 @@ sub moderatorCommentLog {
 
 	for my $mod (@$mods) {
 		vislenify($mod); # add $mod->{ipid_vis}
+		$mod->{ts} = substr($mod->{ts}, 5, -3);
 		$mod->{nickname2} = $slashdb->getUser($mod->{uid2},
 			'nickname') if $both_mods; # need to get 2nd nick
 		next unless $mod->{active};

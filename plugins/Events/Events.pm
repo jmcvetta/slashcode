@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.2 2002/02/23 05:14:14 patg Exp $
+# $Id: Events.pm,v 1.3 2002/03/19 01:18:17 brian Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -67,6 +67,16 @@ sub getDayNext {
 sub setDates {
 	my ($self, $sid, $begin, $end) = @_;
 	$self->sqlDo("INSERT INTO event_dates (sid,begin,end) VALUES ('$sid', '$begin', '$end')");
+}
+
+sub minDate {
+	my ($self, $sid) = @_;
+	return $self->sqlSelect("MIN(begin)", 'event_dates', "sid = '$sid'" );
+}
+
+sub maxDate {
+	my ($self, $sid) = @_;
+	return $self->sqlSelect("MAX(end)", 'event_dates', "sid = '$sid'" );
 }
 
 sub deleteDates {

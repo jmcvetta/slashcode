@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.215 2002/08/30 05:38:59 jamie Exp $
+# $Id: MySQL.pm,v 1.216 2002/08/31 05:30:30 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.215 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.216 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5745,6 +5745,8 @@ sub getVar {
 sub setUser {
 	my($self, $uid, $hashref, $options) = @_;
 #use Data::Dumper; print STDERR "setUser params: " . Dumper([ $uid, $hashref, $options ]) if $options;
+	return 0 unless $uid;
+
 	my(@param, %update_tables, $cache);
 	my $tables = [qw(
 		users users_comments users_index

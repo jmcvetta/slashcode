@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.39 2002/08/28 19:29:28 cliff Exp $
+# $Id: pollBooth.pl,v 1.40 2002/08/31 05:30:30 jamie Exp $
 
 use strict;
 use Slash;
@@ -104,7 +104,7 @@ sub editpoll {
 	my($form, $slashdb, $constants) = @_;
 
 	my($qid) = $form->{'qid'};
-	unless ($constants->{is_admin}) {
+	unless (getCurrentUser('is_admin')) {
 		default(@_);
 		return;
 	}

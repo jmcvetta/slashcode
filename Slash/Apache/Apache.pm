@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.2 2001/03/20 20:22:20 brian Exp $
+# $Id: Apache.pm,v 1.3 2001/04/09 20:07:51 pudge Exp $
 
 package Slash::Apache;
 
@@ -16,7 +16,7 @@ use vars qw($REVISION $VERSION @ISA);
 
 @ISA		= qw(DynaLoader);
 $VERSION	= '2.000000';	# v2.0.0
-($REVISION)	= ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache $VERSION;
 
@@ -51,19 +51,28 @@ sub SlashVirtualUser ($$$) {
 
 sub IndexHandler {
 	my($r) = @_;
-	if ($r->uri eq '/') {
-		# cookie data will begin with word char or %
-		if ($r->header_in('Cookie') =~ /\b(?:user)=[%\w]/) {
-			$r->filename($r->document_root . '/index.pl');
+
+	my $constants = getCurrentStatic();
+	my $uri = $r->uri;
+	if ($constants->{rootdir}) {
+		my $path = URI->new($constants->{rootdir})->path;
+		$uri =~ s/^\Q$path//;
+	}
+
+	if ($uri eq '/') {
+		my $filename  = $r->filename;
+		my $basedir   = $constants->{basedir};
+
+		# cookie data will begin with word char or %,
+		# some "empty" cookies will have three characters
+		# to denote null, "%00"
+		if ($r->header_in('Cookie') =~ /\b(?:user)=[%\w]/) { # {4,}
+			$r->uri('/index.pl');
+			$r->filename("$basedir/index.pl");
 			return OK;
 		} else {
-		# We should fix this at some point since
-		# technically this would break if somone
-		# setup slash in a subdirectory (and its
-		# only a theory that it even would work
-		# since I don't think anyone has tried 
-		# it). -Brian
-			$r->filename($r->document_root . '/index.shtml');
+			$r->uri('/index.shtml');
+			$r->filename("$basedir/index.shtml");
 			writeLog('shtml');
 			return OK;
 		}
@@ -72,8 +81,7 @@ sub IndexHandler {
 	return DECLINED;
 }
 
-sub DESTROY {
-}
+sub DESTROY { }
 
 
 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.2 2001/03/20 20:22:20 brian Exp $
+# $Id: User.pm,v 1.3 2001/04/09 20:07:51 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -20,7 +20,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES);
 
 @ISA		= qw(DynaLoader);
 $VERSION	= '2.000000';	# v2.0.0
-($REVISION)	= ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -224,13 +224,8 @@ sub userLogin {
 sub userdir_handler {
 	my($r) = @_;
 
-	my $cfg = Apache::ModuleConfig->get($r);
-
-	my $dbcfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
-	my $constants = $dbcfg->{constants};
-
+	my $constants = getCurrentStatic();
 	my $uri = $r->uri;
-
 	if ($constants->{rootdir}) {
 		my $path = URI->new($constants->{rootdir})->path;
 		$uri =~ s/^\Q$path//;
@@ -238,7 +233,7 @@ sub userdir_handler {
 
 	if ($uri =~ m[^/~(.*)]) {
 		my $clean = $1;
-		$clean =~ s/\///g;
+		$clean =~ s|\/.*$||;
 		$r->args("nick=$clean");
 		$r->uri('/users.pl');
 		$r->filename($constants->{basedir} . '/users.pl');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.25 2003/04/29 20:27:11 brian Exp $
+# $Id: topics.pl,v 1.26 2003/05/13 19:32:12 brian Exp $
 
 use strict;
 use Slash;
@@ -14,7 +14,8 @@ sub main {
 	my $form    = getCurrentForm();
 	my $user    = getCurrentUser();
 
-	header(getData('head'), $form->{section});
+	my $data = ($form->{op} eq 'hierarchy') ? { admin => 1, adminmenu => 'info', tab_selected => 'hierarchy' } : {};
+	header(getData('head'), $form->{section}, $data);
 	
 	print createMenu('topics');
 

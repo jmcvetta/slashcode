@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.7 2001/11/19 22:29:07 brian Exp $
+# $Id: Utility.pm,v 1.8 2001/12/07 23:35:15 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -480,7 +480,7 @@ sub sqlSelectAllHashrefArray {
 sub sqlUpdate {
 	my($self, $table, $data, $where) = @_;
 	my $sql = "UPDATE $table SET ";
-	foreach (keys %$data) {
+	for (keys %$data) {
 		if (/^-/) {
 			s/^-//;
 			$sql .= "\n  $_ = $data->{-$_},";
@@ -517,7 +517,7 @@ sub sqlInsert {
 	# Its an ANSI sql comment I believe -Brian
 	$delayed = $delayed ? " /*! DELAYED */" : "";
 
-	foreach (keys %$data) {
+	for (keys %$data) {
 		if (/^-/) {
 			$values .= "\n  $data->{$_},";
 			s/^-//;

@@ -13,10 +13,7 @@ messagenew
 __template__
 [% IF msg.mode == 1 %]
 
-<P>
-<A HREF="[% constants.rootdir %]/~[% journal.nickname | fixparam %]/">[% journal.nickname %]</A> has posted a new journal entry,
-<B><A HREF="[% constants.rootdir %]/~[% journal.nickname | fixparam %]/journal/[% journal.id %]">[% journal.description %]</A></B>.
-</P>
+<URL:[% constants.rootdir %]/~[% journal.nickname | fixparam %]/journal/[% journal.id %]>
 
 [% ELSE %]
 
@@ -30,4 +27,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: messagenew;journal;default,v 1.6 2003/03/14 19:08:20 pudge Exp $
+$Id: messagenew;journal;default,v 1.7 2003/04/11 14:03:11 pudge Exp $

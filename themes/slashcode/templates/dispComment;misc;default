@@ -84,7 +84,8 @@ on [% Slash.timeCalc(time) %]
 		sid	=> sid,
 		cid	=> cid,
 		pid	=> cid,
-		subject	=> 'Read the rest of this comment...'
+		subject	=> 'Read the rest of this comment...',
+		subject_only => 1
 	}, 1) %]
 	<P><B>[% linkComment %]</B>
 [% END %]
@@ -100,5 +101,5 @@ on [% Slash.timeCalc(time) %]
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.23 2003/07/22 19:41:43 vroom Exp $
+$Id: dispComment;misc;default,v 1.24 2003/10/13 16:08:27 vroom Exp $
 

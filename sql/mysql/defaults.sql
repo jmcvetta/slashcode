@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.199 2004/09/20 14:32:12 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.200 2004/09/29 17:54:54 jamiemccarthy Exp $
 #
 
 #
@@ -871,7 +871,6 @@ INSERT INTO vars (name, value, description) VALUES ('moderatord_catchup_sleep','
 INSERT INTO vars (name, value, description) VALUES ('moderatord_debug_info', '1', 'Add in more detailed information into slashd.log for moderation task info. This WILL increase the size by slashd.log quite a bit, so use only if you need to.');
 INSERT INTO vars (name, value, description) VALUES ('moderatord_lag_threshold','100000','The number of updates replication must be within before moderatord will run using the replicated handle. If this threshold isn\'t met, moderatord will not run.');
 INSERT INTO vars (name, value, description) VALUES ('modviewseclev','100','Minimum seclev to see moderation totals on a comment');
-INSERT INTO vars (name, value, description) VALUES ('multitopics_enabled','0','whether or not to allow stories to have multiple topics');
 INSERT INTO vars (name, value, description) VALUES ('nesting_maxdepth','3','Maximum depth to which <BLOCKQUOTE>-type tags can be nested');
 INSERT INTO vars (name, value, description) VALUES ('newsletter_body','0','Print bodytext, not merely introtext, in newsletter.');
 INSERT INTO vars (name, value, description) VALUES ('nick_chars', ' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$_.+!*\'(),-', 'Characters allowed in user nicknames');

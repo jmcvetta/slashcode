@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.18 2002/01/21 15:26:42 pudge Exp $
+# $Id: User.pm,v 1.19 2002/01/22 17:52:01 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -354,7 +354,7 @@ sub userdir_handler {
 	# returning the data. -- pudge
 	if ($uri =~ m[^/~(.+)]) {
 		# this won't work if the nick has a "/" in it ...
-		my($nick, $op) = split /\//, $1, 3;
+		my($nick, $op, $extra) = split /\//, $1, 4;
 		my $slashdb = getCurrentDB();
 		my $uid = $slashdb->getUserUID($nick);
 		$nick = fixparam($nick);	# make safe to pass back to script
@@ -376,7 +376,11 @@ sub userdir_handler {
 			$r->filename($constants->{basedir} . '/users.pl');
 
 		} elsif ($op eq 'journal') {
-			$r->args("op=display&nick=$nick&uid=$uid");
+			my $args = "op=display&nick=$nick&uid=$uid";
+			if ($extra && $extra =~ /^\d+$/) {
+				$args .= "&id=$extra";
+			}
+			$r->args($args);
 			$r->uri('/journal.pl');
 			$r->filename($constants->{basedir} . '/journal.pl');
 

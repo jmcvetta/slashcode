@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.728 2004/11/14 23:18:06 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.729 2004/11/15 20:46:26 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.728 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.729 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1962,6 +1962,13 @@ sub createAccessLog {
 	);
 	$status ||= $r->status;
 	my $skid = $reader->getSkidFromName($skin_name);
+
+	my $query_string = $ENV{QUERY_STRING} || 'none';
+	my $referrer     = $r->header_in("Referer");
+	if (!$referrer && $query_string =~ /\bfrom=(\w+)\b/) {
+		$referrer = $1;
+	}
+
 	my $insert = {
 		host_addr	=> $ipid,
 		subnetid	=> $subnetid,
@@ -1971,13 +1978,13 @@ sub createAccessLog {
 		bytes		=> $bytes,
 		op		=> $op,
 		-ts		=> 'NOW()',
-		query_string	=> $ENV{QUERY_STRING} || 'none',
+		query_string	=> $query_string,
 		user_agent	=> $ENV{HTTP_USER_AGENT} || 'undefined',
 		duration	=> $duration,
 		local_addr	=> $local_addr,
 		static		=> $user->{state}{_dynamic_page} ? 'no' : 'yes',
 		secure		=> $user->{state}{ssl} || 0,
-		referer		=> $r->header_in("Referer"),
+		referer		=> $referrer,
 		status		=> $status,
 	};
 	return if !$user->{is_admin} && $constants->{accesslog_disable};

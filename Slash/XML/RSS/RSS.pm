@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.20 2004/11/10 21:47:01 pudge Exp $
+# $Id: RSS.pm,v 1.21 2004/11/15 20:46:30 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -300,7 +300,11 @@ sub create {
 						$encoded_item->{$key} = $desc if $desc;
 					}
 				} else {
-					$encoded_item->{$key} = $self->encode($item->{$key}, $key);
+					my $data = $item->{$key};
+					if ($key eq 'link') {
+						$data = _tag_link($data);
+					}
+					$encoded_item->{$key} = $self->encode($data, $key);
 				}
 			}
 
@@ -366,8 +370,10 @@ sub rss_story {
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
-	$encoded_item->{'link'} = $self->encode("$channel->{'link'}article.pl?sid=$story->{sid}", 'link')
-		if $story->{sid};
+	$encoded_item->{'link'} = $self->encode(
+		_tag_link("$channel->{'link'}article.pl?sid=$story->{sid}"),
+		'link'
+	) if $story->{sid};
 
 	if ($version >= 0.91) {
 		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
@@ -471,6 +477,15 @@ sub rss_item_description {
 	return $desc;
 }
 
+sub _tag_link {
+	my($link) = @_;
+	if ($link =~ /\?/) {
+		$link .= '&from=rss';
+	} else {
+		$link .= '?from=rss';
+	}
+}
+
 1;
 
 __END__
@@ -482,4 +497,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.20 2004/11/10 21:47:01 pudge Exp $
+$Id: RSS.pm,v 1.21 2004/11/15 20:46:30 pudge Exp $

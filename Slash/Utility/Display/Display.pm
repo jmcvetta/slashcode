@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.40 2003/03/10 00:59:27 brian Exp $
+# $Id: Display.pm,v 1.41 2003/03/10 02:58:25 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -56,6 +56,58 @@ use vars qw($VERSION @EXPORT);
 	selectTopic
 	titlebar
 );
+
+#========================================================================
+
+=head2 getData(VALUE [, PARAMETERS, PAGE])
+
+Returns snippets of data associated with a given page.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item VALUE
+
+The name of the data-snippet to process and retrieve.
+
+=item PARAMETERS
+
+Data stored in a hashref which is to be passed to the retrieved snippet.
+
+=item PAGE
+
+The name of the page to which VALUE is associated.
+
+=back
+
+=item Return value
+
+Returns data snippet with all necessary data interpolated.
+
+=item Dependencies
+
+Gets little snippets of data, determined by the value parameter, from
+a data template. A data template is a colletion of data snippets
+in one template, which are grouped together for efficiency. Each
+script can have it's own data template (specified by the PAGE
+parameter). If PAGE is unspecified, snippets will be retrieved from
+the last page visited by the user as determined by Slash::Apache::User.
+
+=back
+
+=cut
+
+sub getData {
+	my($value, $hashref, $page) = @_;
+	$hashref ||= {};
+	$hashref->{value} = $value;
+	my %opts = ( Return => 1, Nocomm => 1 );
+	$opts{Page} = $page || 'NONE' if defined $page;
+	return slashDisplay('data', $hashref, \%opts);
+}
 
 #========================================================================
 
@@ -1386,4 +1438,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.40 2003/03/10 00:59:27 brian Exp $
+$Id: Display.pm,v 1.41 2003/03/10 02:58:25 brian Exp $

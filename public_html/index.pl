@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: index.pl,v 1.5 2000/06/22 19:40:48 cbwood Exp $
+#  $Id: index.pl,v 1.6 2000/07/05 18:49:36 cbwood Exp $
 ###############################################################################
 # pre stories cache update
 use strict;
@@ -60,7 +60,7 @@ sub main {
 
 	eval $execme;
 
-	print "\n<H1>Error:$@</H1>\n" if $@;
+	print "\n<H1>Error in 'index' block: $@</H1>\n" if $@;
 
 	footer();
 

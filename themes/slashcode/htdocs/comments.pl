@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.15 2000/06/23 19:29:19 cbwood Exp $
+#  $Id: comments.pl,v 1.16 2000/07/05 18:49:36 cbwood Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -319,7 +319,7 @@ EOT
 
 	my $checked = $I{F}{nobonus} ? ' CHECKED' : '';
 	print qq!\t\t<INPUT TYPE="CHECKBOX"$checked NAME="nobonus"> No Score +1 Bonus\n!
-		if $I{U}{karma} > 25 and $I{U}{uid} > 0;
+		if $I{U}{karma} > $I{goodkarma} and $I{U}{uid} > 0;
 
         if ($I{allow_anonymous}) {
 	    $checked = $I{F}{postanon} ? ' CHECKED' : '';
@@ -650,8 +650,8 @@ sub submitComment {
 
 	if($I{U}{uid} > 0 && !$I{F}{postanon} ) {
 		$pts = $I{U}{defaultpoints};
-		$pts-- if $I{U}{karma} < $I{badkarma_limit};
-		$pts++ if $I{U}{karma} > $I{goodkarma_limit} and !$I{F}{nobonus};
+		$pts-- if $I{U}{karma} < $I{badkarma};
+		$pts++ if $I{U}{karma} > $I{goodkarma} and !$I{F}{nobonus};
 		# Enforce proper ranges on comment points.
 		$pts = $I{comment_minscore} if $pts < $I{comment_minscore};
 		$pts = $I{comment_maxscore} if $pts > $I{comment_maxscore};

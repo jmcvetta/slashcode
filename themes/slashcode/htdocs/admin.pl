@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.14 2000/06/29 20:29:58 pudge Exp $
+#  $Id: admin.pl,v 1.15 2000/07/05 18:49:36 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -843,7 +843,7 @@ EOT
 
 		if (@available_images) {
 			print qq|<SELECT name="image">|;
-			qq|<OPTION value="">Select an image</OPTION>| if $I{F}{topicnew};
+			print qq|<OPTION value="">Select an image</OPTION>| if $I{F}{topicnew};
 			for(@available_images) {
 				my ($selected);
 				$selected = "SELECTED" if ($_ eq $image);

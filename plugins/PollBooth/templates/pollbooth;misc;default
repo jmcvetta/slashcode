@@ -41,7 +41,7 @@ __template__
 
 	<P><EM>[% IF has_voted %](You've already voted.)[% ELSIF !poll_open %](Poll is closed.)[% END %]</EM><BR>
 	[ <A HREF="[% gSkin.rootdir %]/pollBooth.pl?qid=[% qid %]&amp;aid=-1"><B>Results</B></A> |
-	<A HREF="[% gSkin.rootdir %]/pollBooth.pl?"><B>Polls</B></A> ] <BR>
+	<A HREF="[% gSkin.rootdir %]/pollBooth.pl"><B>Polls</B></A> ] <BR>
 	Comments:<B>[% comments %]</B> | Votes:<B>[% voters %]</B>
 
 [% ELSE %]
@@ -73,5 +73,5 @@ __template__
 __seclev__
 10000
 __version__
-$Id: pollbooth;misc;default,v 1.10 2004/06/17 16:12:00 jamiemccarthy Exp $
+$Id: pollbooth;misc;default,v 1.11 2004/07/03 19:00:40 jamiemccarthy Exp $
 

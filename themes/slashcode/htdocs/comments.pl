@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.90 2002/08/28 20:13:11 jamie Exp $
+# $Id: comments.pl,v 1.91 2002/08/28 22:19:19 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1295,6 +1295,7 @@ sub moderateCid {
 		subject => $comment->{subject},
 		reason	=> $reason,
 		points	=> $user->{points},
+		reasons	=> $slashdb->getReasons(),
 	};
 
 	unless ($superAuthor) {
@@ -1505,6 +1506,7 @@ sub send_mod_msg {
 				value	=> $val,
 				reason	=> $reason,
 			},
+			reasons		=> $slashdb->getReasons(),
 		};
 		$messages->create($users->[0],
 			MSG_CODE_COMMENT_MODERATE, $data

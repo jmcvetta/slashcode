@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.7 2001/11/03 03:05:02 brian Exp $
+# $Id: sections.pl,v 1.8 2001/12/17 17:54:48 pudge Exp $
 
 use strict;
 use Slash;
@@ -17,15 +17,15 @@ sub main {
 	my $op = $form->{op};
 	my $seclev = $user->{seclev};
 
-	header(getData('head'), 'admin');
-
 	if ($seclev < 100) {
-		print getData('notadmin');
-		footer();
+		my $rootdir = getCurrentStatic('rootdir');
+		redirect("$rootdir/users.pl");
 		return;
 	}
 
-	if ($op eq 'rmsub' && $seclev > 99) {  # huh?
+	header(getData('head'), 'admin');
+
+	if ($op eq 'rmsub' && $seclev >= 100) {  # huh?
 
 	} elsif ($form->{addsection}) {
 		titlebar('100%', getData('addhead'));

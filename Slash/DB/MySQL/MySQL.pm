@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.530 2004/03/15 18:33:31 tvroom Exp $
+# $Id: MySQL.pm,v 1.531 2004/03/16 14:26:22 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.530 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.531 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -851,6 +851,8 @@ sub getModeratorCommentLog {
 	my $select_extra = (($t =~ /ipid/) || ($t =~ /subnetid/) || ($t =~ /global/))
 		? ", comments.uid AS uid2, comments.ipid AS ipid2"
 		: "";
+
+	$select_extra .= ", comments.karma as karma" if $t eq "cid";
 
 	my $vq = $self->sqlQuote($value);
 	my $where_clause = "";

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.39 2002/05/06 07:16:32 brian Exp $
+# $Id: search.pl,v 1.40 2002/05/13 18:45:25 pudge Exp $
 
 use strict;
 use Slash;
@@ -52,7 +52,7 @@ sub main {
 		}
 	}
 
-	my ($slashdb, $searchDB);
+	my($slashdb, $searchDB);
 	if ($constants->{search_db_user}) {
 		$slashdb  = getObject('Slash::DB', $constants->{search_db_user});
 		$searchDB = getObject('Slash::Search', $constants->{search_db_user});

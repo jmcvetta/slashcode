@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.17 2003/06/19 15:01:12 jamie Exp $
+# $Id: createTestComments,v 1.18 2003/07/15 17:17:31 jamie Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -318,8 +318,8 @@ sub make_werds {
         } else {
                 $werder->set_werds_num($werds, $werds);
         }
-	my $min_syl = int(rand(3)+1);
-	$werder->set_syllables_num($min_syl, $min_syl + int(rand(4)+1));
+	my $min_syl = int(rand(2)+1);
+	$werder->set_syllables_num($min_syl, $min_syl + int(rand(5)+1));
 	my @links = qw(
 		http://slashdot.org/            http://www.brunching.com/
 		http://www.newsforge.com        http://osdn.com

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.120 2004/10/15 22:56:53 jamiemccarthy Exp $
+# $Id: index.pl,v 1.121 2004/11/04 15:15:56 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -186,10 +186,9 @@ my $start_time = Time::HiRes::time;
 	my $title = getData('head', { skin => $skin_name });
 	header({ title => $title, link => $linkrel }) or return;
 
-	if ($form->{op} eq 'remark'
+	if ($form->{remark}
 		&& $user->{is_subscriber}
-		&& $form->{sid}
-		&& $form->{remark})
+		&& $form->{sid})
 	{
 		my $sid = $form->{sid};
 		my $story = $slashdb->getStory($sid);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.128 2003/05/06 05:11:56 jamie Exp $
+# $Id: Slash.pm,v 1.129 2003/05/08 01:54:59 jamie Exp $
 
 package Slash;
 
@@ -526,10 +526,14 @@ sub printComments {
 	# Get the Comments
 	my $sco = { force_read_from_master => $options->{force_read_from_master} || 0 };
 	$sco->{one_cid_only} = 1 if $cidorpid && (
-		   $user->{mode} eq 'flat'
-		|| $user->{mode} eq 'nocomment'
+		   $user->{mode} eq 'nocomment'
+		|| ( $user->{mode} eq 'flat' && $user->{commentsort} > 3 )
 		|| $options->{just_submitted}
 	);
+	# For now, until we are able to pull hitparade into discussions so we can
+	# read it here, don't use the one_cid_only optimization feature.
+	$sco->{one_cid_only} = 0;
+
 	my($comments, $count) = selectComments($discussion, $cidorpid, $sco);
 
 	if ($cidorpid && !exists($comments->{$cidorpid})) {

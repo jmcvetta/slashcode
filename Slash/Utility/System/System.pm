@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.5 2002/03/20 03:07:34 jamie Exp $
+# $Id: System.pm,v 1.6 2002/04/15 15:24:24 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -107,8 +107,13 @@ sub sendEmail {
 	my($addr, $subject, $content, $pr) = @_;
 	my $constants = getCurrentStatic();
 
+	# print errors under slashdb only if high level
+	# of verbosity -- pudge
+	my $log_error = defined &verbosity ? verbosity() >= 3 : 1;
+
 	unless (Email::Valid->rfc822($addr)) {
-		errorLog("Can't send mail '$subject' to $addr: Invalid address");
+		errorLog("Can't send mail '$subject' to $addr: Invalid address")
+			if $log_error;
 		return 0;
 	}
 
@@ -130,7 +135,8 @@ sub sendEmail {
 	if (sendmail(%data)) {
 		return 1;
 	} else {
-		errorLog("Can't send mail '$subject' to $addr: $Mail::Sendmail::error");
+		errorLog("Can't send mail '$subject' to $addr: $Mail::Sendmail::error")
+			if $log_error;
 		return 0;
 	}
 }
@@ -385,4 +391,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.5 2002/03/20 03:07:34 jamie Exp $
+$Id: System.pm,v 1.6 2002/04/15 15:24:24 pudge Exp $

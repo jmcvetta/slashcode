@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.35 2002/07/12 13:16:55 jamie Exp $
+# $Id: Search.pm,v 1.36 2002/07/17 16:04:56 patg Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -296,6 +296,8 @@ sub findStory {
 			$where .= " AND stories.section = " . $self->sqlQuote($section->{section});
 		}
 	}
+	
+	$where .= " AND sections.isolate != 1 " unless $constants->{sectional_site};
 
 	if (ref($form->{_multi}{tid}) eq 'ARRAY') {
 		$where .= " AND tid IN (" . join(",", @{$form->{_multi}{tid}}) . ") "; 
@@ -477,7 +479,7 @@ sub findDiscussion {
 	my $other;
 	if ($form->{query} && $sort == 2) {
 		$other = " ORDER BY score DESC";
-	} elsif ($form->{query} && $sort == 3) {
+	} elsif ($sort == 3) {
 		$other = " ORDER BY last_update DESC";
 	} else {
 		$other = " ORDER BY ts DESC";
@@ -492,8 +494,12 @@ sub findDiscussion {
 		if $form->{type};
 	$where .= " AND topic=" . $self->sqlQuote($form->{tid})
 		if $form->{tid};
+	$where .= " AND section=" . $self->sqlQuote($form->{section})
+		if $form->{section};
 	$where .= " AND uid=" . $self->sqlQuote($form->{uid})
 		if $form->{uid};
+	$where .= " AND approved = $form->{approved}"
+		if $form->{approved};
 	
 	$other .= " LIMIT $start, $limit" if $limit;
 	my $stories = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other );

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Plugin.pm,v 1.4 2001/11/03 03:08:48 brian Exp $
+# $Id: Plugin.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $
 
 package Slash::Display::Plugin;
 
@@ -21,7 +21,8 @@ Slash::Display::Plugin - Template Toolkit plugin for Slash
 
 Call available exported functions from Slash and Slash::Utility
 from within your template.  Also call methods from Slash::DB
-with the C<db> method.  Invoke with C<[% USE Slash %]>.
+with the C<db> method.  Constants from Slash::Constants are
+available.  Invoke with C<[% USE Slash %]>.
 
 C<[% Slash.version %]> gives the version of Slash.
 C<[% Slash.VERSION %]> (note case) gives the version
@@ -32,10 +33,11 @@ of this Slash Template plugin.
 use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Slash ();
+use Slash::Constants ();
 use Slash::Utility ();
 use base qw(Template::Plugin);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Forget your stupid theme park!  I'm gonna make my own!
 # With hookers!  And blackjack!  In fact, forget the theme park!
@@ -49,6 +51,13 @@ sub _populate {
 		@subs{@{"${pkg}::EXPORT"}} =
 			map { *{"${pkg}::$_"}{CODE} } @{"${pkg}::EXPORT"};
 	}
+
+	# all constants in EXPORT_OK
+	for my $pkg (qw(Slash::Constants)) {
+		@subs{@{"${pkg}::EXPORT_OK"}} =
+			map { *{"${pkg}::$_"}{CODE} } @{"${pkg}::EXPORT_OK"};
+	}
+
 	$subs{version} = sub { Slash->VERSION };
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.24 2001/11/10 00:31:18 jamie Exp $
+# $Id: MySQL.pm,v 1.25 2001/11/15 15:46:09 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4618,8 +4618,8 @@ sub setUser {
 		if ($_->[0] eq "acl") {
 			$self->sqlReplace('users_acl', {
 				uid	=> $uid,
-				name	=> $_->[1]->{name},
-				value	=> $_->[1]->{value},
+				name	=> $_->[1]{name},
+				value	=> $_->[1]{value},
 			});
 		} else {
 			$self->sqlReplace('users_param', {

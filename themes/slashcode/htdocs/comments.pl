@@ -2,17 +2,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.31 2001/11/07 01:21:28 brian Exp $
+# $Id: comments.pl,v 1.32 2001/11/15 15:46:09 pudge Exp $
 
 use strict;
-#use Date::Manip;  # is this needed?  -- pudge
 use HTML::Entities;
-use Slash;
+use Slash 2.003;	# require Slash 2.3.x
+use Slash::Constants qw(:messages);
 use Slash::Display;
 use Slash::Utility;
-
-use constant MSG_CODE_COMMENT_MODERATE	=> 3;
-use constant MSG_CODE_COMMENT_REPLY	=> 4;
 
 ##################################################################
 sub main {

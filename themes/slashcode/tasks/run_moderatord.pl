@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.2 2001/11/03 03:05:02 brian Exp $
+# $Id: run_moderatord.pl,v 1.3 2001/11/15 15:46:09 pudge Exp $
 
 use strict;
 
+use Slash 2.003;	# require Slash 2.3.x
+use Slash::Constants qw(:messages);
 use Slash::DB;
 use Slash::Utility;
-
-use constant MSG_CODE_M2 => 2;
 
 use vars qw( %task $me );
 

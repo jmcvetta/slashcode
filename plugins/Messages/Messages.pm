@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.2 2001/11/03 03:19:29 brian Exp $
+# $Id: Messages.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
 
 package Slash::Messages;
 
@@ -37,16 +37,12 @@ use strict;
 use base qw(Slash::Messages::DB::MySQL);
 use vars qw($VERSION);
 use Email::Valid;
-use Slash 2.001;	# require Slash 2.1
+use Slash 2.003;	# require Slash 2.3.x
+use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
-
-use constant MSG_MODE_NOCODE => -2;
-use constant MSG_MODE_NONE   => -1;
-use constant MSG_MODE_EMAIL  =>  0;
-use constant MSG_MODE_WEB    =>  1;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -293,11 +289,10 @@ List of UIDs from UIDS that are set to receive messages for CODE.
 sub checkMessageCodes {
 	my($self, $code, $uids) = @_;
 	my @newuids;
-	$code = "messagecodes_$code";
 	for my $uid (@$uids) {
-		my $user = $self->getUser($uid, ['deliverymodes', $code]);
+		my $prefs = $self->getPrefs($uid);
 		push @newuids, $uid
-			if $user->{deliverymodes} >= 0 && $user->{$code};
+			if defined $prefs->{$code} && $prefs->{$code} >= 0;
 	}
 	return \@newuids;
 }
@@ -312,22 +307,20 @@ sub getMessageUsers {
 
 sub getMode {
 	my($self, $msg) = @_;
-	my $mode = $msg->{user}{deliverymodes};
 	my $code = $msg->{code};
+	my $mode = $msg->{user}{prefs}{$code};
 
 	my $coderef = $self->getMessageCode($code) or return MSG_MODE_NOCODE;
 
 	# user not allowed to receive this message type
-	return MSG_MODE_NOCODE if
-		!$msg->{user}{"messagecodes_$code"} ||
-		$msg->{user}{seclev} < $coderef->{seclev};
+	return MSG_MODE_NOCODE if $msg->{user}{seclev} < $coderef->{seclev};
 
 	# user has no delivery mode set
 	return MSG_MODE_NONE if	$mode == MSG_MODE_NONE
 		|| !defined($mode) || $mode eq '' || $mode =~ /\D/;
 
 	# if sending to someone outside the system, must be email
-	# delivery mode (for now)
+	# delivery mode (for now) -- CHANGE FOR JABBER
 	$mode = MSG_MODE_EMAIL if $msg->{altto};
 
 	# Can only get mail sent if registered is set
@@ -683,9 +676,10 @@ sub render {
 	my($self, $msg, $notemplate) = @_;
 	my $slashdb = getCurrentDB();
 
-	$msg->{user}  = $slashdb->getUser($msg->{user});
-	$msg->{fuser} = $msg->{fuser} ? $slashdb->getUser($msg->{fuser}) : 0;
-	$msg->{type}  = $self->getDescription('messagecodes', $msg->{code});
+	$msg->{user}		= $slashdb->getUser($msg->{user});
+	$msg->{user}{prefs}	= $self->getPrefs($msg->{user}{uid});
+	$msg->{fuser}		= $msg->{fuser} ? $slashdb->getUser($msg->{fuser}) : 0;
+	$msg->{type}		= $self->getDescription('messagecodes', $msg->{code});
 
 	# optimize these calls for getDescriptions ... ?
 	# they are cached already, but ...
@@ -886,4 +880,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.2 2001/11/03 03:19:29 brian Exp $
+$Id: Messages.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $

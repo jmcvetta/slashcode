@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.4 2001/11/10 00:19:49 jamie Exp $
+# $Id: Data.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -28,12 +28,12 @@ use strict;
 use Date::Format qw(time2str);
 use Date::Language;
 use Date::Parse qw(str2time);
-#use Date::Manip qw(DateCalc UnixDate Date_Init);
 use Digest::MD5 'md5_hex';
 use HTML::Entities;
 use HTML::FormatText;
 use HTML::TreeBuilder;
 use Safe;
+use Slash::Constants qw(:strip);
 use Slash::Utility::Environment;
 use URI;
 use XML::Parser;
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -83,16 +83,6 @@ use vars qw($VERSION @EXPORT);
 # 	stripBadHtml
 # 	stripByMode
 # );
-
-use constant NOTAGS	=> -3;
-use constant ATTRIBUTE	=> -2;
-use constant LITERAL	=> -1;
-use constant NOHTML	=> 0;
-use constant PLAINTEXT	=> 1;
-use constant HTML	=> 2;
-use constant EXTRANS	=> 3;
-use constant CODE	=> 4;
-use constant ANCHOR	=> 5;
 
 #========================================================================
 
@@ -1750,4 +1740,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.4 2001/11/10 00:19:49 jamie Exp $
+$Id: Data.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $

@@ -2,20 +2,18 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.1 2001/11/06 03:42:54 brian Exp $
+# $Id: zoo.pl,v 1.2 2001/11/15 15:46:09 pudge Exp $
 
 use strict;
-use Slash 2.001;	# require Slash 2.1
+use Slash 2.003;	# require Slash 2.3.x
+use Slash::Constants qw(:web);
 use Slash::Display;
 use Slash::Utility;
 use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
-
-use constant ALLOWED	=> 0;
-use constant FUNCTION	=> 1;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');

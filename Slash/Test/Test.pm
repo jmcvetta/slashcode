@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.2 2001/11/03 03:08:48 brian Exp $
+# $Id: Test.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
 
 package Slash::Test;
 
@@ -27,8 +27,9 @@ Slash::Test - Command-line Slash testing
 =head1 DESCRIPTION
 
 Will export everything from Slash, Slash::Utility, Slash::Display,
-Slash::XML, and Data::Dumper into the current namespace.  Will export $user,
-$form, $constants, and $slashdb as global variables into the current namespace.
+Slash::Constants, Slash::XML, and Data::Dumper into the current namespace.
+Will export $user, $form, $constants, and $slashdb as global variables into
+the current namespace.
 
 So use it one of three ways (use the default Virtual User,
 or pass it in via the import list, or pass in with slashTest()), and then
@@ -43,6 +44,7 @@ Virtual User you use most.
 
 BEGIN { $ENV{TZ} = 'GMT' }
 use Slash;
+use Slash::Constants ':all';
 use Slash::Display;
 use Slash::Utility;
 use Slash::XML;
@@ -51,9 +53,10 @@ use Data::Dumper;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT $vuser);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
+	@Slash::Constants::EXPORT_OK,
 	@Slash::Display::EXPORT,
 	@Slash::Utility::EXPORT,
 	@Slash::XML::EXPORT,
@@ -155,4 +158,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.2 2001/11/03 03:08:48 brian Exp $
+$Id: Test.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $

@@ -2,16 +2,15 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.40 2001/11/03 03:05:02 brian Exp $
+# $Id: submit.pl,v 1.41 2001/11/15 15:46:09 pudge Exp $
 
 use strict;
-use Slash;
+use Slash 2.003;	# require Slash 2.3.x
+use Slash::Constants qw(:messages);
 use Slash::Display;
 use Slash::Utility;
 use Slash::XML;
 use URI;
-
-use constant MSG_CODE_NEW_SUBMISSION => 6;
 
 #################################################################
 sub main {
@@ -435,7 +434,7 @@ sub saveSub {
 	# $slashdb->formSuccess($form->{formkey}, 0, length($form->{subj}));
 
 	# fix getMessageUsers before enabling again -- pudge
-	my $messages = 0; #getObject('Slash::Messages');
+	my $messages = getObject('Slash::Messages');
 	if ($messages) {
 		my $users = $messages->getMessageUsers(MSG_CODE_NEW_SUBMISSION);
 

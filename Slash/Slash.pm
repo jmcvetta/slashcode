@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.223 2004/09/12 18:43:30 cowboyneal Exp $
+# $Id: Slash.pm,v 1.224 2004/10/05 18:54:53 tvroom Exp $
 
 package Slash;
 
@@ -1200,17 +1200,18 @@ The 'dispComment' template block.
 =cut
 
 sub dispComment {
-	my($comment) = @_;
+	my($comment, $options) = @_;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 	my $gSkin = getCurrentSkin();
+	my $maxcommentsize = $options->{maxcommentsize} || $user->{maxcommentsize};
 
 	my($comment_shrunk, %reasons);
 
 	if ($form->{mode} ne 'archive'
-		&& $comment->{len} > $user->{maxcommentsize}
+		&& $comment->{len} > $maxcommentsize
 		&& $form->{cid} ne $comment->{cid})
 	{
 		$comment_shrunk = 1;

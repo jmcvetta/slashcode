@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.73 2003/07/29 17:56:40 pudge Exp $
+# $Id: journal.pl,v 1.74 2003/08/04 17:30:22 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -680,11 +680,16 @@ sub editArticle {
 	my $article = {};
 	my $posttype;
 
+	$article = $journal->get($form->{id}) if $form->{id};
+	# you go now!
+	if ($article->{uid} && $article->{uid} != $user->{uid}) {
+		return displayFriends(@_);
+	}
+
 	unless ($nohead) {
 		_printHead("mainhead") or return;
 	}
 
-	$article = $journal->get($form->{id}) if $form->{id};
 	if ($form->{state}) {
 		$article->{date}	||= localtime;
 		$article->{article}	= $form->{article};

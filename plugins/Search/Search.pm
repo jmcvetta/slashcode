@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.43 2002/10/01 19:55:13 brian Exp $
+# $Id: Search.pm,v 1.44 2002/10/01 20:34:08 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -392,7 +392,7 @@ sub findSubmission {
 	my $constants = getCurrentStatic();
 
 	my $query = $self->sqlQuote($form->{query});
-	my $columns = "subid, subj, time, story";
+	my $columns = "*";
 	$columns .= ", TRUNCATE( " . $self->_score('subj,story', $form->{query}, $constants->{search_method}) . ", 1) as score "
 		if $form->{query};
 	my $tables = "submissions";

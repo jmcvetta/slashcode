@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.32 2002/07/26 20:52:04 pudge Exp $
+# $Id: Apache.pm,v 1.33 2002/08/09 01:01:13 brian Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -89,7 +89,9 @@ sub SlashVirtualUser ($$$) {
 			$new_cfg->{basedomain} = $_->{hostname};
 			$new_cfg->{static_section} = $_->{section};
 			$new_cfg->{index_handler} = $_->{index_handler};
-			$new_cfg->{form_override}{section} = $_->{section};
+
+# Should no longer be needed -Brian
+			#$new_cfg->{form_override}{section} = $_->{section};
 			$cfg->{site_constants}{$_->{hostname}} = $new_cfg;
 		}
 	}
@@ -168,7 +170,8 @@ sub SlashSectionHost ($$$$) {
 	$new_cfg->{basedomain} = $hostname;
 	$new_cfg->{defaultsection} = $section;
 	$new_cfg->{static_section} = $section;
-	$new_cfg->{form_override}{section} = $section;
+	# Should no longer be needed -Brian
+	#$new_cfg->{form_override}{section} = $section;
 	$cfg->{site_constants}{$hostname} = $new_cfg;
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.105 2002/03/18 22:26:47 brian Exp $
+# $Id: MySQL.pm,v 1.106 2002/03/19 01:56:37 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -505,8 +505,7 @@ sub getModeratorCommentLog {
 				"moderatorlog, users, comments",
 				"$where_clause
 				 AND moderatorlog.cid=comments.cid",
-				"ORDER BY ts $asc_desc",
-				$limit
+				"ORDER BY ts $asc_desc $limit"
 	);
 	my(@comments, $comment);
 	push @comments, $comment while ($comment = $comments->fetchrow_hashref);

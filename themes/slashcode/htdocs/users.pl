@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.97 2002/08/29 21:56:28 jamie Exp $
+# $Id: users.pl,v 1.98 2002/08/30 02:30:21 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1615,6 +1615,8 @@ sub saveUserAdmin {
 		$user_edits_table->{section} = $form->{section};
 		$user_edits_table->{author} = $form->{author} ? 1 : 0 ;
 		$user_edits_table->{defaultpoints} = $form->{defaultpoints};
+		$user_edits_table->{tokens} = $form->{tokens};
+		$user_edits_table->{m2info} = $form->{m2info};
 
 		my $was_author = ($slashdb->getAuthor($id)->{author}) ? 1 : 0;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.50 2002/10/21 15:28:13 pudge Exp $
+# $Id: Environment.pm,v 1.51 2002/10/26 23:23:14 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1433,13 +1433,14 @@ sub setUserDate {
 
 	my $timezones     = $slashdb->getTZCodes;
 	my $tz            = $timezones->{ $user->{tzcode} };
+	$user->{off_set}  = $tz->{off_set};  # we need for calculation
 
 	my $is_dst = 0;
 	if ($user->{dst} eq "on") {  # manual on ("on")
 		$is_dst = 1;
 
 	} elsif (!$user->{dst}) { # automatic (calculate on/off) ("")
-		$is_dst = isDST($tz->{dst_region});
+		$is_dst = isDST($tz->{dst_region}, $user);
 
 	} # manual off ("off")
 
@@ -1462,7 +1463,7 @@ sub setUserDate {
 
 #========================================================================
 
-=head2 isDST(REGION [, TIME, OFFSET])
+=head2 isDST(REGION [, USER, TIME, OFFSET])
 
 Returns boolean for whether given time, for given user, is in Daylight
 Savings Time.
@@ -1477,6 +1478,10 @@ Savings Time.
 
 The name of the current DST region (e.g., America, Europe, Australia).
 It must match the C<region> column of the C<dst> table.
+
+=item USER
+
+You will get better results if you pass in the USER, but it is optional.
 
 =item TIME
 
@@ -1513,9 +1518,9 @@ my %last = (
 # oh well, unless someone has a solution.
 
 sub isDST {
-	my($region, $unixtime, $off_set) = @_;
+	my($region, $user, $unixtime, $off_set) = @_;
 	my $slashdb = getCurrentDB();
-	my $user    = getCurrentUser();
+	$user     ||= getCurrentUser();
 
 	my $regions = $slashdb->getDSTRegions;
 
@@ -1891,4 +1896,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.50 2002/10/21 15:28:13 pudge Exp $
+$Id: Environment.pm,v 1.51 2002/10/26 23:23:14 pudge Exp $

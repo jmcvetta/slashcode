@@ -32,7 +32,7 @@ cur_time = Slash.db.getTime();
 [% admin_link_ipid = admin_flag && !useredit.ipid %]
 [% IF submissions.size > 0 %]
 	[% PROCESS titlebar width="100%" title = title -%]
-	<TABLE width=100% border=0 cellpadding=3 cellspacing=0 bgcolor="[% user.colors.bg_2 %]">
+	<TABLE width="100%" border=0 cellpadding=3 cellspacing=0 bgcolor="[% user.colors.bg_2 %]">
 		<TR bgcolor="[% user.colors.bg_3 %]">
 			<TH ALIGN="LEFT"><FONT SIZE=-1 COLOR="[% user.colors.fg_3 %]">Title</FONT></TH>
 			<TH ALIGN="LEFT"><FONT SIZE=-1 COLOR="[% light_text_color %]">[% IF admin_link_user %]User[% END %]</FONT></TH>
@@ -103,5 +103,5 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listSubmissions;users;default,v 1.6 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: listSubmissions;users;default,v 1.7 2004/09/18 17:53:01 jamiemccarthy Exp $
 

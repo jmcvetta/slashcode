@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.688 2004/09/24 23:44:09 pudge Exp $
+# $Id: MySQL.pm,v 1.689 2004/09/27 23:12:50 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.688 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.689 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3131,7 +3131,8 @@ sub saveTopic {
 		}
 	}
 
-
+	my %dirty_topics;
+	##### check for recursives?
 	for my $x (qw(parent child)) {
 		my %relations;
 		my $name = $x . '_topic';
@@ -3150,12 +3151,17 @@ sub saveTopic {
 
 		my $del_str = join ',', keys %relations;
 		if ($x eq 'parent') {
+			my $tids = $self->sqlSelectColArrayref("parent_tid", "topic_parents", "tid=$tid");
+			$dirty_topics{$_}++ for @$tids;
 			$self->sqlDelete('topic_parents', "tid=$tid AND parent_tid NOT IN ($del_str)") if $del_str;
 		} elsif ($x eq 'child') {
+			my $tids = $self->sqlSelectColArrayref("tid", "topic_parents", "parent_tid=$tid");
+			$dirty_topics{$_}++ for @$tids;
 			$self->sqlDelete('topic_parents', "parent_tid=$tid AND tid NOT IN ($del_str)") if $del_str;
 		}
 
 		for my $thistid (keys %relations) {
+			$dirty_topics{$thistid}++;
 			my %relation = (
 				tid		=> $tid,
 				parent_tid	=> $thistid,
@@ -3176,7 +3182,7 @@ sub saveTopic {
 		$self->sqlDelete('topic_nexus', "tid=$tid");
 	}
 
-	$self->setVar('topic_tree_lastchange', time());
+	$self->markTopicsDirty([ $tid, keys %dirty_topics ]);
 
 	return $tid;
 }

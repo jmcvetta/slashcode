@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.25 2001/12/18 21:41:32 pudge Exp $
+# $Id: Slash.pm,v 1.26 2001/12/19 04:37:40 brian Exp $
 
 package Slash;
 
@@ -114,9 +114,9 @@ sub selectComments {
 
 		# Keep your friends close but your enemies closer.
 		# Or ignore them, we don't care.
-		$C->{points} += $user->{friend_bonus}
+		$C->{points} += $user->{people_bonus_friend}
 			if ($user->{people}{$C->{uid}} == FRIEND);
-		$C->{points} += $user->{foe_bonus}
+		$C->{points} += $user->{people_bonus_foe}
 			if ($user->{people}{$C->{uid}} == FOE);
 
 		# fix points in case they are out of bounds

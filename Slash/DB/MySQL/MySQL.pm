@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.202 2002/07/24 13:38:30 pudge Exp $
+# $Id: MySQL.pm,v 1.203 2002/07/24 20:14:46 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3021,12 +3021,15 @@ sub getSubmissionsPending {
 	my($self, $uid) = @_;
 	my $submissions;
 
-	if ($uid) {
-		$submissions = $self->sqlSelectAll("time, subj, section, tid, del", "submissions", "uid=$uid");
-	} else {
-		$uid = getCurrentUser('uid');
-		$submissions = $self->sqlSelectAll("time, subj, section, tid, del", "submissions", "uid=$uid");
-	}
+	$uid ||= getCurrentUser('uid');
+
+	$submissions = $self->sqlSelectAll(
+		"time, subj, section, tid, del",
+		"submissions",
+		"uid=$uid",
+		"ORDER BY time ASC"
+	);
+
 	return $submissions;
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.82 2003/05/23 20:42:20 jamie Exp $
+# $Id: submit.pl,v 1.83 2003/07/08 19:37:16 vroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -196,6 +196,31 @@ sub previewForm {
 		last_sid	=> '',
 	}) if $user->{is_admin};
 
+	my $num_sim = $constants->{similarstorynumshow} || 5;
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+        my $storyref={title=>$sub->{subj},introtext=>$sub->{story}};
+	my $similar_stories = $reader->getSimilarStories($storyref, $num_sim);
+	# Truncate that data to a reasonable size for display.
+
+
+       	if ($similar_stories && @$similar_stories) {
+		for my $sim (@$similar_stories) {
+			# Display a max of five words reported per story.
+			$#{$sim->{words}} = 4 if $#{$sim->{words}} > 4;
+			for my $word (@{$sim->{words}}) {
+				# Max of 12 chars per word.
+				$word = substr($word, 0, 12);
+			}
+			if (length($sim->{title}) > 35) {
+				# Max of 35 char title.
+				$sim->{title} = substr($sim->{title}, 0, 30);
+				$sim->{title} =~ s/\s+\S+$//;
+				$sim->{title} .= "...";
+			}
+		}
+	}
+
+
 	slashDisplay('previewForm', {
 		submission	=> $sub,
 		submitter	=> $sub->{uid},
@@ -208,6 +233,7 @@ sub previewForm {
 		lockTest	=> lockTest($sub->{subj}),
 		section		=> $form->{section} ||
 				   $constants->{defaultsection},
+                similar_stories => $similar_stories
 	});
 }
 

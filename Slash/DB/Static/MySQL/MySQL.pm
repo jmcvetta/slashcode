@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.146 2004/05/18 16:22:42 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.147 2004/05/18 23:16:13 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -108,22 +108,6 @@ sub getBackendStories {
 	}
 
 	return $returnable;
-}
-
-########################################################
-# This is only called if ssi is set
-# 
-# Deprecated code as this is now handled in the tasks!
-# - Cliff 10/11/01
-sub updateCommentTotals {
-	my($self, $sid, $comments) = @_;
-	my $hp = join ',', @{$comments->{0}{totals}};
-	$self->sqlUpdate("stories", {
-			hitparade	=> $hp,
-			writestatus	=> 'ok',
-			commentcount	=> $comments->{0}{totals}[0]
-		}, 'sid=' . $self->{_dbh}->quote($sid)
-	);
 }
 
 ########################################################
@@ -2242,22 +2226,6 @@ sub getHeadFootPages {
 }
 
 ########################################################
-# Was once used in template-tool's check_site_templates()
-# but is now deprecated. Left here in case another 
-# application has need of it, but can be removed if
-# necessary.   	- Cliff 2002-09-10
-sub getAllTemplateIds {
-	my($self, $min, $max) = @_;
-	my $where;
-
-	return if $min =~ /\D/ or $max =~ /\D/;
-
-	$where = "tpid BETWEEN $min AND $max" if $min || $max;
-	$self->sqlSelectColArrayref(
-		'tpid', 'templates', $where, 'ORDER BY tpid'
-	);
-}
-
 sub getCidForDaysBack {
 	my($self, $days, $startat_cid) = @_;
 	$days ||= 0;
@@ -2268,6 +2236,7 @@ sub getCidForDaysBack {
 		"cid > $startat_cid AND date > DATE_SUB(NOW(), INTERVAL $days DAY)");
 }
 
+########################################################
 sub getModderModdeeSummary {
 	my ($self, $options) = @_;
 	my $ac_uid = getCurrentStatic('anonymous_coward_uid');
@@ -2291,6 +2260,7 @@ sub getModderModdeeSummary {
 	return $mods;
 }
 
+########################################################
 sub getModderCommenterIPIDSummary {
 	my ($self, $options) = @_;
 	my $ac_uid = getCurrentStatic('anonymous_coward_uid');

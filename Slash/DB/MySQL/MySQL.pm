@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.576 2004/05/18 22:29:17 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.577 2004/05/18 23:16:10 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.576 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.577 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3185,28 +3185,6 @@ sub getPollAnswers {
 
 	return $answers;
 }
-
-# Deprecated -Brian
-#########################################################
-#sub getPollQuestions {
-## This may go away. Haven't finished poll stuff yet
-##
-#	my($self, $limit) = @_;
-#
-#	$limit = 25 if (!defined($limit));
-#
-#	my $poll_hash_ref = {};
-#	my $sql = "SELECT qid,question FROM pollquestions ORDER BY date DESC ";
-#	$sql .= " LIMIT $limit " if $limit;
-#	my $sth = $self->{_dbh}->prepare_cached($sql);
-#	$sth->execute;
-#	while (my($id, $desc) = $sth->fetchrow) {
-#		$poll_hash_ref->{$id} = $desc;
-#	}
-#	$sth->finish;
-#
-#	return $poll_hash_ref;
-#}
 
 ########################################################
 sub deleteStory {
@@ -7046,16 +7024,12 @@ sub getSlashConf {
 		}
 	}
 
-	if ($conf{email_domains_invalid}) {
-		my $regex = sprintf('[^\w-](?:%s)$',
-			join '|', map quotemeta, split ' ', $conf{email_domains_invalid});
-		$conf{email_domains_invalid} = qr{$regex};
-	}
-
-	if ($conf{submit_domains_invalid}) {
-		my $regex = sprintf('[^\w-](?:%s)$',
-                        join '|', map quotemeta, split ' ', $conf{submit_domains_invalid});
-                $conf{submit_domains_invalid} = qr{$regex};
+	for my $var (qw(email_domains_invalid submit_domains_invalid)) {
+		if ($conf{$var}) {
+			my $regex = sprintf('[^\w-](?:%s)$',
+				join '|', map quotemeta, split ' ', $conf{$var});
+			$conf{$var} = qr{$regex};
+		}
 	}
 
 	if ($conf{comment_nonstartwordchars}) {

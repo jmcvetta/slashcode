@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.90 2003/04/01 06:02:30 pater Exp $
+# $Id: MySQL.pm,v 1.91 2003/04/03 16:58:06 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -578,9 +578,9 @@ sub getTop10Comments {
 	my $num_top10_comments = 0;
 
 	while (1) {
-                # Select the latest comments with high scores.  If we
-                # can't get 10 of them, our standards are too high;
-                # lower our minimum score requirement and re-SELECT.
+		# Select the latest comments with high scores.  If we
+		# can't get 10 of them, our standards are too high;
+		# lower our minimum score requirement and re-SELECT.
 		$cids = $self->sqlSelectAll(
 			'cid',
 			'comments',

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.654 2004/08/02 15:57:53 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.655 2004/08/02 20:01:08 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.654 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.655 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7359,6 +7359,7 @@ sub updateStory {
 
 }
 
+########################################################
 sub _getSlashConf_rawvars {
 	my($self) = @_;
 	my $vu = $self->{virtual_user};
@@ -9986,8 +9987,11 @@ sub _genericSet {
 		# need for a fully sql92 database.
 		# transactions baby, transactions... -Brian
 		for (@param)  {
-			$self->sqlReplace($param_table,
-				{ $table_prime => $id, name => $_->[0], value => $_->[1] });
+			$self->sqlReplace($param_table, {
+				$table_prime => $id,
+				name         => $_->[0],
+				value        => $_->[1]
+			});
 		}
 	} else {
 		$ok = $self->sqlUpdate($table, $value, $table_prime . '=' . $self->sqlQuote($id));
@@ -10226,8 +10230,11 @@ sub _genericGets {
 				if ($self->{$cache}{$clean_val}) {
 					push @$get_values, $_;
 				} else {
-					my $val = $self->sqlSelectAll("$table_prime, name, value",
-						$param_table, "name='$_'");
+					my $val = $self->sqlSelectAll(
+						"$table_prime, name, value",
+						$param_table,
+						"name='$_'"
+					);
 					for my $row (@$val) {
 						push @$params, $row;
 					}
@@ -10253,8 +10260,11 @@ sub _genericGets {
 				$qlid = $self->_querylog_start('SELECT', $table);
 				$sth = $self->sqlSelectMany($values, $table);
 			} else {
-				my $val = $self->sqlSelectAll("$table_prime, name, value",
-					$param_table, "name=$values");
+				my $val = $self->sqlSelectAll(
+					"$table_prime, name, value",
+					$param_table,
+					"name=$values"
+				);
 				for my $row (@$val) {
 					push @$params, $row;
 				}
@@ -10437,7 +10447,7 @@ sub getMenus {
 sub sqlReplace {
 	my($self, $table, $data) = @_;
 	my($names, $values);
- 
+
 	for (keys %$data) {
 		if (/^-/) {
 			$values .= "\n  $data->{$_},";
@@ -10447,10 +10457,10 @@ sub sqlReplace {
 		}
 		$names .= "$_,";
 	}
- 
+
 	chop($names);
 	chop($values);
- 
+
 	my $sql = "REPLACE INTO $table ($names) VALUES($values)\n";
 	$self->sqlConnect();
 	my $qlid = $self->_querylog_start('REPLACE', $table);

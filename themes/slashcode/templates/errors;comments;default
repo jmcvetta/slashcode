@@ -56,6 +56,11 @@ CASE "anonymous disallowed" %]
 Sorry, anonymous posting has been turned off.
 Please <A HREF="[% constants.rootdir %]/users.pl">register and log in</A>.
 
+[% # POST ANON OPTION DISABLED.
+CASE "postanon_option_disabled" %]
+The post anonymously option you are attempting to use is one that isn't
+available to your user.  
+
 [% # NO BODY.
 CASE "no body" %]
 Cat got your tongue? (something important seems to be missing from your
@@ -236,4 +241,4 @@ An unexpected error has occurred.<BR><B>[% value %]</B><BR>
 __seclev__
 1000
 __version__
-$Id: errors;comments;default,v 1.26 2004/05/02 18:54:10 tvroom Exp $
+$Id: errors;comments;default,v 1.27 2004/05/11 18:20:57 tvroom Exp $

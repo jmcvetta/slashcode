@@ -22,13 +22,12 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.19 2000/07/10 21:37:42 pudge Exp $
+#  $Id: submit.pl,v 1.20 2000/07/11 11:45:01 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
 use vars '%I';
 use Slash;
-use HTML::Entities;
 
 #################################################################
 sub main {

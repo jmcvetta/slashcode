@@ -21,14 +21,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.16 2000/07/07 12:35:48 pudge Exp $
+#  $Id: admin.pl,v 1.17 2000/07/11 11:45:01 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
 use vars '%I';
 use Image::Size;
 use Slash;
-use HTML::Entities;
 
 sub main {
 	*I = getSlashConf();

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: search.pl,v 1.8 2000/06/30 16:51:56 cbwood Exp $
+#  $Id: search.pl,v 1.9 2000/07/11 11:45:01 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -58,7 +58,7 @@ sub main {
 
 	searchForm();
 
-	if		($I{F}{op} eq "comments")	{ commentSearch()	}
+	if	($I{F}{op} eq "comments")	{ commentSearch()	}
 	elsif	($I{F}{op} eq "users")		{ userSearch()		}
 	elsif	($I{F}{op} eq "stories")	{ storySearch()		}
 	else	{
@@ -412,7 +412,7 @@ EOT
 #	Counting has been removed (see comment at top).
 #	my $remaining = $I{F}{hitcount} - $I{F}{'last'};
 	print "<P>", linkSearch({
-		'link'	=> "<B>More Articles</B>",
+		'link'	=> "<B>More Articles...</B>",
 		min	=> $I{F}{'last'}
 	}) unless !$x || $x < $I{F}{max};
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.50 2002/07/19 19:05:29 jamie Exp $
+# $Id: Stats.pm,v 1.51 2002/07/20 13:11:17 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -120,6 +120,51 @@ sub getSlaveDBLagCount {
 	$count = 0 if $count < 0;
 	$count = 2**30 if $count > 2**30;
 	return $count;
+}
+
+########################################################
+sub getRepeatMods {
+	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
+	my $ac_uid = $constants->{anonymous_coward_uid};
+
+	my $within = $options->{within_hours} || 96;
+	my $limit = $options->{limit} || 50;
+	my $min_count = $options->{min_count}
+		|| $constants->{mod_stats_min_repeat}
+		|| 2;
+
+	my $hr = $self->sqlSelectAllHashref(
+		[qw( val orguid destuid )],
+		"usersorg.uid AS orguid,
+		 usersorg.nickname AS orgnick,
+		 COUNT(*) AS c, val,
+		 MAX(ts) AS latest,
+		 usersdest.uid AS destuid,
+		 usersdest.nickname AS destnick,
+		 usersdesti.karma AS destkarma",
+		"users AS usersorg,
+		 moderatorlog,
+		 users AS usersdest,
+		 users_info AS usersdesti
+		 LEFT JOIN users_param
+			ON usersorg.uid=users_param.uid
+			   AND users_param.name='rtbl'",
+		"usersorg.uid=moderatorlog.uid
+		 AND usersorg.seclev < 100
+		 AND moderatorlog.cuid=usersdest.uid
+		 AND usersdest.uid=usersdesti.uid
+		 AND (
+			   users_param.value IS NULL
+			OR users_param.value = 0
+		 ) AND usersdest.uid != $ac_uid",
+		"GROUP BY usersorg.uid, usersdest.uid, val
+		 HAVING c >= $min_count
+			AND latest >= DATE_SUB(NOW(), INTERVAL $within HOUR)
+		 ORDER BY c DESC, orguid
+		 LIMIT $limit"
+	);
+	return $hr;
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.58 2002/01/25 16:39:58 patg Exp $
+# $Id: MySQL.pm,v 1.59 2002/01/26 01:27:17 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -608,23 +608,6 @@ sub getSectionExtras {
 	return $answer;
 }
 
-########################################################
-sub setFeatureStory {
-	my ($self, $section, $sid) = @_;
-
-	$self->sqlUpdate('sections', { feature_story => $sid }, 
-				"section = '$section'"
-	);
-}
-    
-########################################################
-sub isFeatureStory {
-	my ($self, $section, $sid) = @_;
-
-	my($rows) = $self->sqlSelect('count(*)', 'sections', "feature_story = '$sid' AND section = '$section'");
-
-	return($rows);
-}
 ########################################################
 sub getContentFilters {
 	my($self, $formname, $field) = @_;

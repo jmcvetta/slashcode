@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.9 2002/05/31 00:55:43 brian Exp $
+# $Id: runtask,v 1.10 2002/06/03 16:21:27 pudge Exp $
 
 use sigtrap;
 use strict;
@@ -29,7 +29,7 @@ use vars qw(
 	$virtual_user $constants $slashdb $user $dir
 );
 
-(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -44,14 +44,14 @@ if ($opts{'A'}) {
 	my @users;
 	while (<$fh>) {
 		next if /^#/; 
-		my ($user) = split /:/;
+		my($user) = split /:/;
 		push @users, $user;
 	}
-	for(@users) {
+	for (@users) {
 		print "Running $_\n";
 		my $pid = fork();
 		if (!defined $pid) {
-				die "error: cannot fork : $!" ;
+			die "error: cannot fork : $!";
 		} elsif ($pid == 0) {
 			$opts{'u'} = $_;
 			main();

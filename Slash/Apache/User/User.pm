@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.9 2001/11/07 16:54:41 pudge Exp $
+# $Id: User.pm,v 1.10 2001/11/29 18:31:00 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -293,8 +293,12 @@ sub userdir_handler {
 				$r->args("op=personal_index");
 				$r->uri('/comments.pl');
 				$r->filename($constants->{basedir} . '/comments.pl');
-			} elsif ($op eq 'messages' or $op eq 'inbox') {
+			} elsif ($op eq 'inbox') {
 				$r->args("op=list");
+				$r->uri('/messages.pl');
+				$r->filename($constants->{basedir} . '/messages.pl');
+			} elsif ($op eq 'messages') {
+				$r->args("op=display_prefs");
 				$r->uri('/messages.pl');
 				$r->filename($constants->{basedir} . '/messages.pl');
 			} elsif ($op eq 'friends') {
@@ -309,11 +313,24 @@ sub userdir_handler {
 				$r->args("op=fans");
 				$r->uri('/zoo.pl');
 				$r->filename($constants->{basedir} . '/zoo.pl');
-			} elsif ($op eq 'faultfinders') {
-				$r->args("op=faultfinders");
+			} elsif ($op eq 'freaks') {
+				$r->args("op=freaks");
 				$r->uri('/zoo.pl');
 				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($op eq 'comments') {
+				$r->args("op=editcomm");
+				$r->uri('/users.pl');
+				$r->filename($constants->{basedir} . '/users.pl');
+			} elsif ($op eq 'homepage') {
+				$r->args("op=edithome");
+				$r->uri('/users.pl');
+				$r->filename($constants->{basedir} . '/users.pl');
+			} elsif ($op eq 'password') {
+				$r->args("op=changepasswd");
+				$r->uri('/users.pl');
+				$r->filename($constants->{basedir} . '/users.pl');
 			} else {
+				$r->args("op=edituser");
 				$r->uri('/users.pl');
 				$r->filename($constants->{basedir} . '/users.pl');
 			}
@@ -341,6 +358,8 @@ sub userdir_handler {
 		# $r->args($ops{$op}[1] . "&nick=$nick");
 		# $r->uri($ops{$op}[0]);
 		# $r->filename($constants->{basedir} . $ops{$op}[0]);
+		# Not against it, or something like it. This is getting a bit long. 
+    # I would rather prefer it did not turn out like ops have though. -Brian
 
 		if ($op eq 'journal') {
 			$r->args("op=display&nick=$nick");
@@ -356,6 +375,16 @@ sub userdir_handler {
 			$r->args("nick=$nick");
 			$r->uri('/pubkey.pl');
 			$r->filename($constants->{basedir} . '/pubkey.pl');
+
+		} elsif ($op eq 'submissions') {
+			$r->args("nick=$nick&op=usersubmissions");
+			$r->uri('/users.pl');
+			$r->filename($constants->{basedir} . '/users.pl');
+
+		} elsif ($op eq 'comments') {
+			$r->args("nick=$nick&op=usercomments");
+			$r->uri('/users.pl');
+			$r->filename($constants->{basedir} . '/users.pl');
 
 		} elsif ($op eq 'friends') {
 			$r->args("op=friends&nick=$nick");

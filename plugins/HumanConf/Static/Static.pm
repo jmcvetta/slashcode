@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.4 2002/05/16 00:04:33 jamie Exp $
+# $Id: Static.pm,v 1.5 2002/05/16 04:56:56 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -180,7 +180,7 @@ sub deleteOldFromPool {
 				"humanconf_pool",
 				"hcpid IN ($hcpids_list)"
 			);
-			if ($new_delrows != scalar(keys %$pool_hr)) {
+			if ($new_delrows != $remaining_to_delete) {
 				warn "HumanConf warning: deleted number"
 					. " of rows '$new_delrows'"
 					. " not equal to attempted number to delete"

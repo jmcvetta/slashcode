@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.23 2004/09/02 00:52:26 tvroom Exp $
+# $Id: convertDBto200406,v 1.24 2004/09/15 14:59:26 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -717,9 +717,8 @@ DROP TABLE IF EXISTS story_topics_rendered_new;
 CREATE TABLE story_topics_rendered_new (
 	stoid MEDIUMINT UNSIGNED NOT NULL,
 	tid SMALLINT(5) UNSIGNED NOT NULL,
-	weight FLOAT UNSIGNED DEFAULT 1 NOT NULL,
 	UNIQUE story_topic (stoid, tid),
-	INDEX tid (tid)
+	INDEX tid_stoid (tid, stoid)
 ) TYPE=InnoDB;
 EOT
 
@@ -947,6 +946,7 @@ EOT
 
 #
 # Convert story_files
+# (only relevant if Blob plugin used, if not, ignore errors here)
 #
 
 print <<EOT;

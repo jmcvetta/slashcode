@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: metamod.shtml,v 1.3 2003/05/26 16:29:11 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: metamod.shtml,v 1.4 2003/06/10 13:47:57 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <TABLE>
@@ -68,14 +68,14 @@
 <H2>Who can M2?</H2>
 
 	<P>In order to be a metamoderator, your account has to be one of the 
-	oldest 90% of accounts on the system. This means that once you've 
+	oldest 92.5% of accounts on the system. This means that once you've 
 	created your account, you'll have to wait for several months,
 	depending on the rate at which new accounts are being created.
 	
 	<BR><BR>
 	<I><SMALL>
 	Answered by: <A HREF="mailto:jamie@slashdot.org">Jamie</A> <BR>
-	Last Modified: 5/21/03 <BR>
+	Last Modified: 6/10/03 <BR>
 	</SMALL></I>
 
 <A NAME="mm400">

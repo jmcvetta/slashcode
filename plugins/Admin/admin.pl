@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.229 2004/08/18 18:49:23 pudge Exp $
+# $Id: admin.pl,v 1.230 2004/08/19 14:16:35 cowboyneal Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2135,7 +2135,7 @@ sub saveStory {
 	$form->{dept} =~ s/ /-/g;
 
 	my($chosen_hr) = extractChosenFromForm($form);
-	my $tids = $slashdb->getTopiclistFromChosen($chosen_hr);
+	my($tids) = $slashdb->getTopiclistFromChosen($chosen_hr);
 
 	my $story_text = "$form->{title} $form->{bodytext} $form->{introtext}";
 	$form->{relatedtext} = getRelated($story_text, $tids)

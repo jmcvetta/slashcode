@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.62 2001/02/16 11:06:01 pudge Exp $
+#  $Id: Slash.pm,v 1.63 2001/03/20 16:46:23 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1445,8 +1445,14 @@ sub fixurl {
 		$url = fixHref($url) || $url;
 		if ($stripauth) {
 			my $uri = new URI $url;
-			if ($uri && $uri->can('host')) {
-				$uri->authority($uri->host);
+			if ($uri && $uri->can('host') && $uri->can('authority')) {
+				# don't need to print the port if we
+				# already have the correct port
+				my $host = $uri->can('host_port') &&
+					$uri->port != $uri->default_port
+					? $uri->host_port
+					: $uri->host;
+				$uri->authority($host);
 				$url = $uri->as_string;
 			}
 		}

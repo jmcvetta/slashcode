@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.163 2005/03/11 19:58:00 pudge Exp $
+# $Id: Environment.pm,v 1.164 2005/03/23 18:33:48 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2612,6 +2612,9 @@ EOT
 	printf STDERR <<"EOT", "PID", "what", "time", "pct";
 %-6.6s: %-64.64s % 6.6s $unit (%6.6s%%)
 EOT
+	printf STDERR <<"EOT", $$, 'total', $total, '100.00';
+%-6d: %-64.64s % 6d $unit (%6.6s%%)
+EOT
 	for (sort { $totals{$b} <=> $totals{$a} } keys %totals) {
 		my $p = $totals{$_} / $total * 100;
 		my $s = sprintf('%.2f', $p);
@@ -2705,4 +2708,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.163 2005/03/11 19:58:00 pudge Exp $
+$Id: Environment.pm,v 1.164 2005/03/23 18:33:48 pudge Exp $

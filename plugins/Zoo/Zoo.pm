@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.25 2003/01/20 19:07:18 brian Exp $
+# $Id: Zoo.pm,v 1.26 2003/01/20 19:15:07 jamie Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -259,11 +259,13 @@ SQL
 }
 
 sub getZooUsersForProcessing {
-	my ($self, $time) = @_;
+	my($self, $time) = @_;
+	my $slashdb = getCurrentDB();
+
 	my $people = $slashdb->sqlSelectAll('uid', 'people', "last_update > '$time' ");
 	my $people2 = $slashdb->sqlSelectAll('uid', 'people_nthdegree', "last_update > '$time' ");
 
-	my %people;
+	my %people = ( );
 
 	for (@$people) {
 		$people{$_->[0]} = 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.31 2001/11/24 21:01:36 jamie Exp $
+# $Id: MySQL.pm,v 1.32 2001/12/06 23:39:22 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -10,12 +10,13 @@ use HTML::Entities;
 use Time::HiRes;
 use Date::Format qw(time2str);
 use Slash::Utility;
+use Storable qw(thaw freeze);
 use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -929,6 +930,7 @@ sub deleteUser {
 		newpasswd	=> '',
 		homepage	=> '',
 		passwd		=> '',
+		people		=> '',
 		sig		=> '',
 		seclev		=> 0
 	});
@@ -4583,11 +4585,17 @@ sub setUser {
 		users_info users_prefs
 	)];
 
-	# special cases for password, exboxes
+	# special cases for password, exboxes, people
 	if (exists $hashref->{passwd}) {
 		# get rid of newpasswd if defined in DB
 		$hashref->{newpasswd} = '';
 		$hashref->{passwd} = encryptPassword($hashref->{passwd});
+	}
+
+	# Power to the People
+	if (exists $hashref->{people}) {
+		# get rid of newpasswd if defined in DB
+		$hashref->{people} = freeze $hashref->{people};
 	}
 
 	# hm, come back to exboxes later; it works for now
@@ -4689,6 +4697,8 @@ sub getUser {
 				$answer->{$_} = $val;
 			}
 		}
+		$answer->{'people'} = thaw $answer->{'people'} 
+			if ($answer->{'people'});
 
 	} elsif ($val) {
 		(my $clean_val = $val) =~ s/^-//;
@@ -4700,6 +4710,8 @@ sub getUser {
 			$answer = $self->sqlSelect('value', 'users_acl', "uid=$id AND name='$val'");
 			$answer = $self->sqlSelect('value', 'users_param', "uid=$id AND name='$val'") if !$answer;
 		}
+		$answer = thaw $answer
+			if ($val eq 'people');
 
 	} else {
 
@@ -4746,7 +4758,13 @@ sub getUser {
 		for (@$append) {
 			$answer->{$_->[0]} = $_->[1];
 		}
+		# Why is this here? We keep biz logic out of this layer.
+		# getUser() returns the user info, not an actual user hash
+		# which has the is_admin stuff in it and such.
+		# -Brian
 		$answer->{is_anon} = isAnon($id);
+		$answer->{'people'} = thaw $answer->{'people'} 
+			if ($answer->{'people'});
 	}
 
 	return $answer;

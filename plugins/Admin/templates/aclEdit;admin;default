@@ -37,10 +37,10 @@ __template__
 	<BR>(It will be assigned to you, for starters, after which you will
 	be able to assign it to other users by editing them in users.pl.
 	To delete a category, simply remove it from all users.)
-	<BR>Recognized ACL category: <tt>modpoints_always candelcomments_always</tt>
+	<BR>Recognized ACL categories so far: <tt>candelcomments_always modpoints_always stats</tt>
 </FORM>
 
 __seclev__
 500
 __version__
-$Id: aclEdit;admin;default,v 1.2 2003/12/01 22:22:06 jamie Exp $
+$Id: aclEdit;admin;default,v 1.3 2003/12/06 12:54:18 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.518 2004/03/02 03:04:02 tvroom Exp $
+# $Id: MySQL.pm,v 1.519 2004/03/02 15:34:18 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.518 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.519 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5634,7 +5634,7 @@ sub getStoriesBySubmitter {
 sub countStoriesBySubmitter {
 	my($self, $id) = @_;
 
-	my $count = $self->sqlCount('stories', "submitter='$id'  AND time < NOW() AND (writestatus = 'ok' OR writestatus = 'dirty') and displaystatus >= 0");
+	my $count = $self->sqlCount('stories', "submitter='$id'  AND time < NOW() AND (writestatus = 'ok' OR writestatus = 'dirty' OR writestatus='archived') and displaystatus >= 0");
 
 	return $count;
 }
@@ -6523,6 +6523,27 @@ sub getSlashConf {
 
 	if ($conf{x_forwarded_for_trust_regex}) {
 		$conf{x_forwarded_for_trust_regex} = qr{$conf{x_forwarded_for_trust_regex}};
+	}
+
+	if ($conf{approvedtags_attr}) {
+		my $approvedtags_attr = $conf{approvedtags_attr};
+		$conf{approvedtags_attr} = {};
+		my @tags = split(/\s+/, $approvedtags_attr);
+		foreach my $tag(@tags){
+			my ($tagname,$attr_info) = $tag=~/([^:]*):(.*)$/;
+			my @attrs = split( ",", $attr_info );
+			my $ord=1;
+			foreach my $attr(@attrs){
+				my($at,$extra) = split( /_/, $attr );
+				$at = uc($at);
+				$tagname = uc($tagname);
+				$conf{approvedtags_attr}->{$tagname}{$at}{ord}=$ord;
+				$conf{approvedtags_attr}->{$tagname}{$at}{req}=1 if $extra=~/R/;
+				$conf{approvedtags_attr}->{$tagname}{$at}{url}=1 if $extra=~/U/;
+				$ord++
+			}
+		}   
+
 	}
 
 	# for fun ... or something

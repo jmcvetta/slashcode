@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.114 2004/02/27 20:36:02 pudge Exp $
+# $Id: Data.pm,v 1.115 2004/03/02 15:34:19 tvroom Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1478,30 +1478,38 @@ sub approveTag {
 	if (!$approved{$t_uc}) {
 		return "";
 	}
+	
+	# These are now stored in a var approvedtags_attr
+	#
+	# A string in the format below:
+	# a:href_RU img:src_RU,alt,width,height,longdesc_U
+	# 
+	# Is decoded into the following data structure for attribute
+	# approval
+	#
+	# {
+	#	A =>	{ HREF =>	{ ord => 1, req => 1, url => 1 } },
+	#	IMG =>	{ SRC =>	{ ord => 1, req => 1, url => 1 },
+	#		  ALT =>	{ ord => 2                     },
+	#		  WIDTH =>	{ ord => 3                     },
+	#		  HEIGHT =>	{ ord => 4                     },
+	#		  LONGDESC =>	{ ord => 5,           url => 1 }, },
+	# }
+	# this is decoded in Slash/DB/MySQL.pm geSlashConf
 
-	# Some tags allow attributes, or require attributes to be useful.
-	# These tags go through a secondary, fancier approval process.
-	# Note that approvedtags overrides what is/isn't allowed here.
-	# (At some point we should put this hash into a var, maybe
-	# like "a:href_RU img:src_RU,alt,width,height,longdesc_U"?)
-	my %attr = (
-		A =>	{ HREF =>	{ ord => 1, req => 1, url => 1 } },
-		IMG =>	{ SRC =>	{ ord => 1, req => 1, url => 1 },
-			  ALT =>	{ ord => 2                     },
-			  WIDTH =>	{ ord => 3                     },
-			  HEIGHT =>	{ ord => 4                     },
-			  LONGDESC =>	{ ord => 5,           url => 1 }, },
-	);
+	my $attr = getCurrentStatic("approvedtags_attr") || {};
+
+
 	if ($slash) {
 
 		# Close-tags ("</A>") never get attributes.
 		$wholetag = "/$t";
 
-	} elsif ($attr{$t_uc}) {
+	} elsif ($attr->{$t_uc}) {
 
 		# This is a tag with attributes, verify them.
 
-		my %allowed = %{$attr{$t_uc}};
+		my %allowed = %{$attr->{$t_uc}};
 		my %required =
 			map  { $_, $allowed{$_}  }
 			grep { $allowed{$_}{req} }
@@ -3248,4 +3256,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.114 2004/02/27 20:36:02 pudge Exp $
+$Id: Data.pm,v 1.115 2004/03/02 15:34:19 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.317 2003/01/31 17:29:17 jamie Exp $
+# $Id: MySQL.pm,v 1.318 2003/02/04 01:01:29 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.317 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.318 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1706,6 +1706,31 @@ sub getCommentsByIPIDOrSubnetID {
 	my($self, $id, $min) = @_;
 	return $self->getCommentsByGeneric(
 		"ipid='$id' OR subnetid='$id'", $min);
+}
+
+
+#################################################################
+# get list of DBs, never cache
+sub getDBs {
+	my($self) = @_;
+	my $dbs = $self->sqlSelectAllHashref('id', '*', 'db');
+	my %databases;
+
+	for (keys %$dbs) {
+		my $db = $dbs->{$_};
+		$databases{$db->{type}} ||= [];
+		push @{$databases{$db->{type}}}, $db;
+	}
+
+	return \%databases;
+}
+
+#################################################################
+# get list of DBs, never cache
+sub getClasses {
+	my($self) = @_;
+	my $classes = $self->sqlSelectAllHashref('class', '*', 'classes');
+	return $classes;
 }
 
 #################################################################

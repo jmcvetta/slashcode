@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.3 2002/02/17 22:29:08 cliff Exp $
+# $Id: Hof.pm,v 1.4 2002/06/03 20:42:19 pudge Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -72,7 +72,7 @@ sub countStorySubmitters {
 	my $ac_uid = getCurrentAnonymousCoward('uid') ||
 		     getCurrentStatic('anonymous_coward_uid');
 	my $uid = $self->sqlSelectColArrayref('uid', 'authors_cache');
-	my $in_list = join(',', @{$uid});
+	my $in_list = join(',', @{$uid}, $ac_uid);
 
 	my $submitters = $self->sqlSelectAll(
 		'count(*) as c, users.nickname',

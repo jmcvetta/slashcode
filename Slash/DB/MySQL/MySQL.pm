@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.468 2003/10/28 19:12:19 jamie Exp $
+# $Id: MySQL.pm,v 1.469 2003/11/05 18:36:14 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.468 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.469 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6238,6 +6238,12 @@ sub getMCDStats {
 	my($self) = @_;
 	my $mcd = $self->getMCD();
 	return undef unless $mcd;
+
+	# Right now (11/04/2003) this depends on a custom patch to
+	# Cache::Memcached.  I hope to have that in the CPAN version
+	# soon.  Until it is, unless you have my patch, this isn't
+	# going to work, sorry. - Jamie
+	return undef unless $mcd->can("stats");
 
 	my $stats = $mcd->stats();
 	for my $server (keys %{$stats->{hosts}}) {

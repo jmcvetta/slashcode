@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.674 2004/09/02 03:46:55 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.675 2004/09/03 13:09:03 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.674 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.675 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1343,14 +1343,18 @@ sub deleteRelatedLink {
 
 ########################################################
 sub getNexusExtras {
-	my($self, $tid) = @_;
+	my($self, $tid, $options) = @_;
 	return [ ] unless $tid;
-
+	$options ||= {};
+	
+	my $content_type = $options->{content_type} || "story";
+	my $content_type_q = $self->sqlQuote($content_type);
+	
 	my $tid_q = $self->sqlQuote($tid);
 	my $answer = $self->sqlSelectAll(
 		'extras_textname, extras_keyword, type',
 		'topic_nexus_extras', 
-		"tid = $tid_q"
+		"tid = $tid_q AND content_type = $content_type_q "
 	);
 
 	return $answer;
@@ -1371,14 +1375,16 @@ sub getNexuslistFromChosen {
 # returned.  If 2 or more nexuses have the same extras_keyword,
 # that keyword should only be returned once.
 sub getNexusExtrasForChosen {
-	my($self, $chosen_hr) = @_;
+	my($self, $chosen_hr, $options) = @_;
 	return [ ] unless $chosen_hr;
+	$options ||= {};
+	$options->{content_type} ||= "story";
 
 	my $nexuses = $self->getNexuslistFromChosen($chosen_hr);
 	my $seen_extras = {};
 	my $extras = [ ];
 	for my $nexusid (@$nexuses) {
-		my $ex_ar = $self->getNexusExtras($nexusid);
+		my $ex_ar = $self->getNexusExtras($nexusid, $options);
 		foreach my $extra (@$ex_ar) {
 			unless ($seen_extras->{$extra->[1]}) {
 				push @$extras, $extra;

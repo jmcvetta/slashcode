@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.165 2002/06/23 23:51:53 jamie Exp $
+# $Id: MySQL.pm,v 1.166 2002/06/24 15:54:05 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4551,7 +4551,7 @@ sub getSlashConf {
 			       . '[' . join("", @chars) . ']'
 			       . '|&#(?:' . join("|", @entities) . ');'
 		       . ')';
-		my $regex = '^(\s+' . "$dotchar+" . ')\S';
+		my $regex = '(\s+)' . "($dotchar+)" . '(\S)';
 		$conf{comment_nonstartwordchars_regex} = qr{$regex}i;
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.164 2005/03/23 18:33:48 pudge Exp $
+# $Id: Environment.pm,v 1.165 2005/03/29 22:22:46 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1512,16 +1512,18 @@ sub prepareUser {
 			$user->{state}{page_buying} = $subscribe->buyingThisPage($r, $user);
 			$user->{state}{page_adless} = $subscribe->adlessPage($r, $user);
 		}
-	} elsif ($constants->{daypass}) {
+	}
+	if (!$user->{is_subscriber} && $constants->{daypass}) {
 		# If the user is not a subscriber, they may still be
 		# _effectively_ a subscriber if they have a daypass.
 		my $daypass_db = getObject('Slash::Daypass', { db_type => 'reader' });
 		if ($daypass_db->userHasDaypass($user)) {
-			$user->{is_subscriber} = 1;
+#			$user->{is_subscriber} = 1;
 			$user->{has_daypass} = 1;
 			$user->{state}{page_plummy} = 1;
 			$user->{state}{page_buying} = 0;
 			$user->{state}{page_adless} = 0;
+print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=$constants->{subscribe} is=$user->{is_subscriber} cd=$constants->{daypass}\n";
 		}
 	}
 
@@ -2708,4 +2710,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.164 2005/03/23 18:33:48 pudge Exp $
+$Id: Environment.pm,v 1.165 2005/03/29 22:22:46 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.22 2001/11/07 01:21:27 brian Exp $
+# $Id: MySQL.pm,v 1.23 2001/11/09 05:44:28 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4681,14 +4681,50 @@ sub getUser {
 		}
 
 	} else {
-		my($where, $table, $append_acl, $append);
-		for (@$tables) {
-			$where .= "$_.uid=$id AND ";
-		}
-		$where =~ s/ AND $//;
 
-		$table = join ',', @$tables;
-		$answer = $self->sqlSelectHashref('*', $table, $where);
+		# The five-way join is causing us some pain.  For testing, let's
+		# use a var to decide whether to do it that way, or a new way
+		# where we do multiple SELECTs.  Let the var decide how many
+		# SELECTs we do, and if more than 1, the first tables we'll pull
+		# off separately are Rob's suspicions:  users_prefs and
+		# users_comments.
+
+my $start_time = Time::HiRes::time;
+my $sql_time = 0;
+		my $n = getCurrentStatic('num_users_selects') || 1;
+		my @tables_ordered = qw( users users_index users_info
+			users_comments users_prefs );
+		while ($n > 0) {
+			my @tables_thispass = ( );
+			if ($n > 1) {
+				# Grab the columns from the last table still
+				# on the list.
+				@tables_thispass = pop @tables_ordered;
+			} else {
+				# This is the last SELECT we'll be doing, so
+				# join all remaining tables.
+				@tables_thispass = @tables_ordered;
+			}
+			my $table = join(",", @tables_thispass);
+			my $where = join(" AND ", map { "$_.uid=$id" } @tables_thispass);
+			if (!$answer) {
+$sql_time -= Time::HiRes::time;
+				$answer = $self->sqlSelectHashref('*', $table, $where);
+$sql_time += Time::HiRes::time;
+			} else {
+$sql_time -= Time::HiRes::time;
+				my $moreanswer = $self->sqlSelectHashref('*', $table, $where);
+$sql_time += Time::HiRes::time;
+				for (keys %$moreanswer) {
+					$answer->{$_} = $moreanswer->{$_};
+				}
+			}
+			$n--;
+printf STDERR "U %d %.4f %.4f %d %s %s\n",
+$n, Time::HiRes::time-$start_time, $sql_time, scalar(keys %$answer), $table, $where;
+		}
+
+		my($append_acl, $append);
 		$append_acl = $self->sqlSelectAll('name,value', 'users_acl', "uid=$id");
 		for (@$append_acl) {
 			$answer->{$_->[0]} = $_->[1];

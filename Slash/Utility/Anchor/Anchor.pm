@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.38 2002/11/06 19:57:00 brian Exp $
+# $Id: Anchor.pm,v 1.39 2002/11/06 21:18:19 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -77,13 +77,15 @@ currentSection constant, too.
 
 =item OPTIONS
 
-A Hash with different options (it includes the abiltity to pass along slashDisplay() parameters).
+A Hash with different options (it includes the abiltity to pass along
+slashDisplay() parameters).
 
 =back
 
 =item Return value
 
-None, unless the Return option has value. In this case it will return the output instad of printing standard out.
+None, unless the Return option has value. In this case it will return
+the output instad of printing standard out.
 
 =item Side effects
 
@@ -148,7 +150,7 @@ sub header {
 	# ssi = 1 IS NOT THE SAME as ssi = 'yes'
 	# ...which is silly. - Jamie 2002/06/26
 	if ($form->{ssi} eq 'yes') {
-		ssiHead($section,  $options);
+		ssiHead($section, $options);
 		return;
 	}
 
@@ -213,7 +215,8 @@ Collection of options that can be used to change the behavior of templates
 
 =item Return value
 
-None, unless the Return option has value. In this case it will return the output instad of printing standard out.
+None, unless the Return option has value. In this case it will return the
+output instad of printing standard out.
 
 =item Dependencies
 
@@ -224,13 +227,13 @@ The 'footer' template block.
 =cut
 
 sub footer {
-	my ($options) = @_;
+	my($options) = @_;
 	my $user = getCurrentUser();
 
 	my $display;
 
 	if ($user->{state}{adminheader}) {
-		$display = slashDisplay('footer-admin', '',  { Return => $options->{Return}, Page => $options->{Page} });
+		$display = slashDisplay('footer-admin', '', { Return => $options->{Return}, Page => $options->{Page} });
 	} else {
 		$display = slashDisplay('footer', '', { Return => $options->{Return}, Page => $options->{Page} });
 	}
@@ -303,7 +306,7 @@ The 'ssihead' template block.
 =cut
 
 sub ssiHead {
-	my ($section,  $options) = @_;
+	my($section,  $options) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $slashdb = getCurrentDB();
@@ -553,4 +556,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.38 2002/11/06 19:57:00 brian Exp $
+$Id: Anchor.pm,v 1.39 2002/11/06 21:18:19 pudge Exp $

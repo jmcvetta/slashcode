@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.13 2001/12/18 19:09:00 brian Exp $
+# $Id: slashschema_create.sql,v 1.14 2002/01/07 20:27:48 jamie Exp $
 #
 
 #
@@ -728,7 +728,7 @@ CREATE TABLE users_count (
 ) TYPE = myisam;
 
 #
-# Table structure for table 'users_index'
+# Table structure for table 'users_hits'
 #
 
 DROP TABLE IF EXISTS users_hits;

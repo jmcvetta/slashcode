@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.686 2004/09/21 18:57:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.687 2004/09/23 19:14:50 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.686 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.687 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8712,7 +8712,6 @@ sub getStoidFromSidOrStoid {
 sub getStoidFromSid {
 	my($self, $sid) = @_;
 	if (my $stoid = $self->{_sid_conversion_cache}{$sid}) {
-#print STDERR "getStoidFromSid $$ returning from cache $sid=$stoid\n";
 		return $stoid;
 	}
 	my($mcd, $mcdkey);
@@ -8720,7 +8719,6 @@ sub getStoidFromSid {
 		$mcdkey = "$self->{_mcd_keyprefix}:sid:";
 		if (my $answer = $mcd->get("$mcdkey$sid")) {
 			$self->{_sid_conversion_cache}{$sid} = $answer;
-#print STDERR "getStoidFromSid $$ returning from memcached $sid=$answer\n";
 			return $answer;
 		}
 	}
@@ -8728,7 +8726,6 @@ sub getStoidFromSid {
 	my $stoid = $self->sqlSelect("stoid", "stories", "sid=$sid_q");
 	$self->{_sid_conversion_cache}{$sid} = $stoid;
 	$mcd->set("$mcdkey$sid", $stoid, 7 * 86400) if $mcd;
-#print STDERR "getStoidFromSid $$ returning from db $sid=$stoid\n";
 	return $stoid;
 }
 
@@ -8913,6 +8910,7 @@ sub getStory {
 
 	# Accept either a stoid or a sid.
 	my $stoid = $self->getStoidFromSidOrStoid($id);
+	return undef unless $stoid;
 
 	# Go grab the data if we don't have it, or if the caller
 	# demands that we grab it anyway.

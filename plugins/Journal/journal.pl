@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.77 2004/02/17 00:02:06 pudge Exp $
+# $Id: journal.pl,v 1.78 2004/03/02 19:35:49 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -32,7 +32,9 @@ sub main {
 				}
 				$user->{state}{packagename} = __PACKAGE__;
 				return SOAP::Transport::HTTP::Apache->dispatch_to
-					('Slash::Journal::SOAP')->handle;
+					('Slash::Journal::SOAP')->handle(
+						Apache->request->pnotes('filterobject')
+					);
 			}
 		}
 	}

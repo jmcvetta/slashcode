@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.76 2002/07/01 22:14:56 brian Exp $
+# $Id: admin.pl,v 1.77 2002/07/11 14:51:54 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -732,7 +732,7 @@ sub topicEdit {
 
 	if (!$form->{topicdelete}) {
 		if (!$form->{topicnew} && $form->{nexttid}) {
-			$topic = $slashdb->getTopic($form->{nexttid});
+			$topic = $slashdb->getTopic($form->{nexttid}, 0, 1);
 		} else {
 			$topic = {};
 		}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rebuildPeople,v 1.12 2003/02/02 19:06:43 brian Exp $
+# $Id: rebuildPeople,v 1.13 2003/02/02 20:14:23 brian Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Slash::Constants ':people';
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -26,6 +26,23 @@ $opts{'u'} ||= 'slash';
 createEnvironment($opts{u});
 $slashdb = getCurrentDB();
 $constants = getCurrentStatic();
+
+# First clean up fans/freaks
+$slashdb->sqlDo("UPDATE people SET perceive=NULL";
+$slashdb->sqlDo("DELETE FROM people WHERE type IS NULL");
+
+# Put in blanks
+$slashdb->sqlDo("CREATE TEMPORARY TABLE people_select SELECT person,uid FROM people WHERE type IS NOT NULL");
+$slashdb->sqlDo("INSERT IGNORE INTO people (uid,person) SELECT * from people_select");
+$slashdb->sqlDo("DROP TABLE people_select");
+
+# Put back fans
+$slashdb->sqlDo(qq|SELECT CONCAT("UPDATE people SET perceive='fan' WHERE uid =", person, ";") INTO OUTFILE '/tmp/rebuildpeople.sql' FROM people WHERE type='friend'|);
+$slashdb->sqlDo("source /tmp/rebuildpeople.sql");
+
+# Put back freaks
+$slashdb->sqlDo(qq|SELECT CONCAT("UPDATE people SET perceive='freak' WHERE uid =", person, ";") INTO OUTFILE '/tmp/rebuildpeople.sql' FROM people WHERE type='foe'|);
+$slashdb->sqlDo("source /tmp/rebuildpeople.sql");
 
 $slashdb->sqlDo("TRUNCATE people_nthdegree");
 print "Cleaned nthdegree!\n";

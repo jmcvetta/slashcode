@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.32 2003/02/02 19:06:43 brian Exp $
+# $Id: Zoo.pm,v 1.33 2003/02/02 20:14:23 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -296,7 +296,7 @@ sub rebuildUser {
 		}
 		if ($_->{perceive} eq 'fan') {
 			$people->{FAN()}{$_->{person}} = 1;
-		} elsif ($_->{type} eq 'freak') {
+		} elsif ($_->{perceive} eq 'freak') {
 			$people->{FREAK()}{$_->{person}} = 1;
 		}
 	}

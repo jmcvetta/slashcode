@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.195 2004/03/30 20:08:44 tvroom Exp $
+# $Id: admin.pl,v 1.196 2004/03/30 20:11:52 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1832,7 +1832,7 @@ sub moderate {
 
 	titlebar("100%", "Moderating...");
 	if(!dbAvailable("write_comments")){
-		print getData("comments_db_down");
+		print getData("comment_db_down");
 		return;
 	}
 	for my $key (sort keys %{$form}) {

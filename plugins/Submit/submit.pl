@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.53 2002/04/25 18:38:42 cliff Exp $
+# $Id: submit.pl,v 1.54 2002/04/25 18:44:14 cliff Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -271,8 +271,9 @@ sub submissionEd {
 		$strs[0] .= '...' if length($sub->{subj}) > 35;
 		$sub->{strs} = \@strs;
 
-		$sub->{ssection} = $sub->{section} ne $constants->{defaultsection}
-			? "&section=$sub->{section}" : '';
+		$sub->{ssection} =
+			$sub->{section} ne $constants->{defaultsection} ?
+				"&section=$sub->{section}" : '';
 		$sub->{stitle}  = '&title=' . fixparam($sub->{subj});
 		$sub->{section} = ucfirst($sub->{section})
 			unless $user->{is_admin};
@@ -310,12 +311,9 @@ sub displayRSS {
 	$submissions = $slashdb->getSubmissionForUser();
 
 	for (@$submissions) {
-		my($subid, $subj, $time, $tid, $note, $email, $name,
-		   $section, $comment, $uid, $karma, $weight) = @$_;
-
 		# title should be cleaned up
 		push(@items, {
-			title	=> $subj,
+			title	=> $_->{subj},
 			'link'	=> "$constants->{absolutedir}/submit.pl?op=viewsub&subid=$subid",
 		});
 	}

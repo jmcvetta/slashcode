@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.19 2002/02/26 07:14:40 patg Exp $
+# $Id: sections.pl,v 1.20 2002/02/27 16:36:15 pudge Exp $
 
 use strict;
 use Slash;
@@ -164,7 +164,7 @@ sub editSection {
 		issue		=> $issue,
 		blocks		=> \@blocks,
 		topics		=> $slashdb->getDescriptions(
-		'topics_section', $section
+			'topics_section', $section
 		),
 		extras		=> $extras,
 	});
@@ -179,7 +179,7 @@ sub saveSection {
 	# Non alphanumerics are not allowed in the section key.
 	# And I don't see a reason for underscores either, but
 	# dashes should be allowed.
-	($section  = $form->{section}) =~ s/[^A-Za-z0-9\-]//g;
+	($section = $form->{section}) =~ s/[^A-Za-z0-9\-]//g;
 
 	# Before we insert, give some reasonable defaults.
 	$form->{url} 	  ||= '';

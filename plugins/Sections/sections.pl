@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.18 2002/02/26 06:31:39 cliff Exp $
+# $Id: sections.pl,v 1.19 2002/02/26 07:14:40 patg Exp $
 
 use strict;
 use Slash;
@@ -164,7 +164,7 @@ sub editSection {
 		issue		=> $issue,
 		blocks		=> \@blocks,
 		topics		=> $slashdb->getDescriptions(
-			'topics_section', $section
+		'topics_section', $section
 		),
 		extras		=> $extras,
 	});

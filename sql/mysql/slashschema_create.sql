@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.27 2002/02/21 03:01:24 brian Exp $
+# $Id: slashschema_create.sql,v 1.28 2002/02/26 07:14:40 patg Exp $
 #
 
 #
@@ -655,6 +655,7 @@ CREATE TABLE templates (
 	PRIMARY KEY (tpid),
 	UNIQUE true_template (name,page,section,lang)
 ) TYPE = myisam;
+
 #
 # Table structure for table 'topics'
 #

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.4 2001/04/23 17:31:54 pudge Exp $
+# $Id: MySQL.pm,v 1.5 2001/04/24 14:39:35 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -11,12 +11,13 @@ package Slash::DB::Static::MySQL;
 #
 #####################################################################
 use strict;
+use DBIx::Password;
+use Slash::DB::Utility;
 use Slash::Utility;
 use URI ();
 use vars qw($VERSION);
-use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Bite my shiny, metal ass! 
 

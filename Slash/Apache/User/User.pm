@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.14 2001/12/17 21:00:39 brian Exp $
+# $Id: User.pm,v 1.15 2001/12/18 16:32:51 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -68,15 +68,12 @@ sub handler {
 		$uri =~ s/^\Q$path//;
 	}
 
-	unless ($cfg->{auth}) {
-		#unless ($uri =~ m[(?:^/$)|(?:\.pl$)])
-		unless ($uri =~ m[(?:\.pl$)]) {
-			$r->subprocess_env(SLASH_USER => $constants->{anonymous_coward_uid});
-			createCurrentUser();
-			createCurrentForm();
-			createCurrentCookie();
-			return OK;
-		}
+	if (!$cfg->{auth} && $uri !~ /\.pl$/) {
+		$r->subprocess_env(SLASH_USER => $constants->{anonymous_coward_uid});
+		createCurrentUser();
+		createCurrentForm();
+		createCurrentCookie();
+		return OK;
 	}
 
 	$slashdb->sqlConnect;

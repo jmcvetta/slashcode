@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.24 2002/02/27 21:56:48 brian Exp $
+# $Id: pollBooth.pl,v 1.25 2002/02/27 22:09:05 brian Exp $
 
 use strict;
 use Slash;
@@ -29,7 +29,12 @@ sub main {
 		undef $form->{'aid'};
 	}
 
-	header(getData('title'), $form->{section});
+	if ($form->{qid}) {
+		my $section = $slashdb->getPollQuestion($form->{qid}, 'section');
+		header(getData('title'), $section);
+	} else {
+		header(getData('title'), $form->{section});
+	}
 
 	$op = 'default' unless $ops{$form->{op}};
 	$ops{$op}->($form);

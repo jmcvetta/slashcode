@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.18 2002/01/08 17:22:09 pudge Exp $
+# $Id: metamod.pl,v 1.19 2002/02/27 22:09:05 brian Exp $
 
 use strict;
 use Slash;
@@ -16,8 +16,9 @@ sub main {
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 	my $op = getCurrentForm('op');
+	my $section = $slashdb->getSection($form->{section});
 
-	header(getData('header'));
+	header(getData('header'), $section->{section});
 
 	my $ineligible = $user->{is_anon} || $user->{rtbl} ||
 			 !$slashdb->checkForMetaModerator($user);		

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: authors.pl,v 1.7 2002/01/08 17:22:09 pudge Exp $
+# $Id: authors.pl,v 1.8 2002/02/27 22:09:05 brian Exp $
 
 use strict;
 use Slash;
@@ -13,8 +13,8 @@ sub main {
 	my $slashdb   = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
-
 	my $section = $slashdb->getSection($form->{section});
+
 	my $list    = $slashdb->getAuthorDescription();
 
 	header("$constants->{sitename}: Authors", $section->{section});

@@ -14,7 +14,7 @@ __template__
 [% USE Slash %]
 <P>[% Slash.horizmenu() %]
 
-<P><A HREF="[% constants.rootdir %]/[% Slash.sitename2filename(user.currentSection) %].rss">RSS</A>
+<P><A HREF="[% PROCESS rsslink %]">RSS</A>
 
 <FORM METHOD="GET" ACTION="[% constants.rootdir %]/search.pl">
   <INPUT TYPE="TEXT" NAME="query" VALUE="" SIZE="20">
@@ -33,4 +33,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: footer;misc;light,v 1.8 2003/09/05 17:25:49 jamie Exp $
+$Id: footer;misc;light,v 1.9 2004/01/29 23:51:35 pudge Exp $

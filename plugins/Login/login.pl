@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.14 2004/10/05 21:14:47 pudge Exp $
+# $Id: login.pl,v 1.15 2004/11/09 20:15:24 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -216,7 +216,7 @@ sub mailPasswd {
 	my $user_send = $reader->getUser($uid);
 
 	if (!$error) {
-		if ($reader->checkReadOnly) {
+		if ($reader->checkReadOnly(nopost => { ipid => $user->{ipid} })) {
 			push @note, getData('mail_readonly');
 			$error = 1;
 

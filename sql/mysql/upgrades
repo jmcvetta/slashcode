@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.679 2004/10/01 15:13:52 jamiemccarthy Exp $
+# $Id: upgrades,v 1.680 2004/10/05 20:44:35 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2486,8 +2486,8 @@ INSERT INTO vars (name,value,description) SELECT 'm1_pointgrant_factor_downfairr
 INSERT INTO vars (name, value, description) VALUES ('top10comm_days','1','Look back (n) days to display the Top 10 Comments slashbox');
 INSERT INTO vars (name, value, description) VALUES ('dbs_revive_seconds','30','After a DB goes from isalive=no to yes, ramp up accesses to it over how many seconds?');
 
-
-# Only run these on your search db
+# Only run these on your search db.  If the latter throws a
+# "Duplicate key" error, that's fine.
 ALTER TABLE submissions TYPE=MyISAM;
 ALTER TABLE submissions ADD FULLTEXT subj (subj,story);
 

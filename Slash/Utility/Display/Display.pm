@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.6 2002/01/14 23:52:55 brian Exp $
+# $Id: Display.pm,v 1.7 2002/01/18 22:35:18 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1065,6 +1065,7 @@ sub _hard_linkStory {
 	    $link .= qq[">$story_link->{link}</A>];
 	    return $link;
 	} else {
+	    # this looks wrong ... tid=$tid won't have much effect on .shtml -- pudge
 	    return qq[<A HREF="$constants->{rootdir}/$story_link->{section}/$story_link->{sid}.shtml?tid=$story_link->{tid}">$story_link->{link}</A>];
 	}
 }
@@ -1082,23 +1083,23 @@ sub _hard_linkComment {
 		: $comment->{subject};
 
 	my $display = qq|<A HREF="$constants->{rootdir}/comments.pl?sid=$comment->{sid}|;
-	$display .= "&op=$comment->{op}" if $comment->{op};
+	$display .= "&amp;op=$comment->{op}" if $comment->{op};
 		# $comment->{threshold}? Hmm. I'm not sure what it
 		# means for a comment to have a threshold. If it's 0,
 		# does the following line do the right thing? - Jamie
 		# You know, I think this is a bug that comes up every so often. But in 
 		# theory when you go to the comment link "threshhold" should follow 
 		# with you. -Brian
-	$display .= "&threshold=" . ($comment->{threshold} || $user->{threshold});
-	$display .= "&commentsort=$user->{commentsort}";
-	$display .= "&tid=$user->{state}{tid}" if $user->{state}{tid};
-	$display .= "&mode=$user->{mode}";
-	$display .= "&startat=$comment->{startat}" if $comment->{startat};
+	$display .= "&amp;threshold=" . ($comment->{threshold} || $user->{threshold});
+	$display .= "&amp;commentsort=$user->{commentsort}";
+	$display .= "&amp;tid=$user->{state}{tid}" if $user->{state}{tid};
+	$display .= "&amp;mode=$user->{mode}";
+	$display .= "&amp;startat=$comment->{startat}" if $comment->{startat};
 
 	if ($printcomment) {
-		$display .= "&cid=$comment->{cid}";
+		$display .= "&amp;cid=$comment->{cid}";
 	} else {
-		$display .= "&pid=" . ($comment->{realpid} || $comment->{pid});
+		$display .= "&amp;pid=" . ($comment->{realpid} || $comment->{pid});
 		$display .= "#$comment->{cid}" if $comment->{cid};
 	}
 
@@ -1122,4 +1123,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.6 2002/01/14 23:52:55 brian Exp $
+$Id: Display.pm,v 1.7 2002/01/18 22:35:18 pudge Exp $

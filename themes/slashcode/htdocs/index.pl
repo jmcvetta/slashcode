@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.19 2002/01/14 23:00:50 brian Exp $
+# $Id: index.pl,v 1.20 2002/01/18 22:35:44 pudge Exp $
 
 use strict;
 use Slash;
@@ -275,7 +275,7 @@ sub displayStories {
 				if ($user->{threshold} > -1 && $cc ne $thresh) {
 					$cclink[0] = linkStory({
 						sid		=> $sid,
-						tid	=> $tid,
+						tid		=> $tid,
 						threshold	=> $user->{threshold},
 						'link'		=> $thresh,
 						section		=> $thissection
@@ -285,7 +285,7 @@ sub displayStories {
 
 			$cclink[1] = linkStory({
 				sid		=> $sid,
-				tid	=> $tid,
+				tid		=> $tid,
 				threshold	=> -1,
 				'link'		=> $cc || 0,
 				section		=> $thissection

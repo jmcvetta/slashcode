@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.52 2002/01/15 00:35:39 patg Exp $
+# $Id: users.pl,v 1.53 2002/01/18 22:35:44 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1601,8 +1601,8 @@ sub saveUser {
 	$homepage = fudgeurl($homepage);
 	$homepage = URI->new_abs($homepage, $constants->{absolutedir})
 			->canonical
-			->as_string;
-	$homepage = substr($homepage, 0, 100) if $homepage;
+			->as_string if $homepage ne '';
+	$homepage = substr($homepage, 0, 100) if $homepage ne '';
 
 	# for the users table
 	my $user_edits_table = {

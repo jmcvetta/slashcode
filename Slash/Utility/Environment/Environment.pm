@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.10 2002/01/17 18:56:53 brian Exp $
+# $Id: Environment.pm,v 1.11 2002/01/18 22:35:18 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -966,6 +966,12 @@ sub setCookie {
 	my $cookiedomain = $constants->{cookiedomain};
 	my $cookiepath   = $constants->{cookiepath};
 
+	# note that domain is not a *host*, it is a *domain*,
+	# so "slashdot.org" is an invalid domain, but
+	# ".slashdot.org" is OK.  the only way to set a cookie
+	# to a *host* is to leave the domain blank, which is
+	# why we set the first cookie with no domain. -- pudge
+
 	# domain must start with a '.' and have one more '.'
 	# embedded in it, else we ignore it
 	my $domain = ($cookiedomain && $cookiedomain =~ /^\..+\./)
@@ -987,8 +993,8 @@ sub setCookie {
 	);
 
 	$cookie->expires('+1y') unless $session;
-
 	$cookie->bake;
+
 	if ($domain) {
 		$cookie->domain($domain);
 		$cookie->bake;
@@ -1549,4 +1555,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.10 2002/01/17 18:56:53 brian Exp $
+$Id: Environment.pm,v 1.11 2002/01/18 22:35:18 pudge Exp $

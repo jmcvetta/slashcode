@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.606 2004/06/28 20:16:15 tvroom Exp $
+# $Id: MySQL.pm,v 1.607 2004/07/01 18:05:18 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.606 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.607 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1142,15 +1142,17 @@ sub undoModeration {
 # If no tid is given, returns the whole tree.  Otherwise,
 # returns the data for the topic with that numeric id.
 sub getTopicTree {
-	my($self, $tid) = @_;
+	my($self, $tid_wanted, $options) = @_;
 	my $constants = getCurrentStatic();
 
 	my $table_cache		= "_topictree_cache";
 	my $table_cache_time	= "_topictree_cache_time";
-	_genericCacheRefresh($self, 'topictree', $constants->{block_expire});
+	_genericCacheRefresh($self, 'topictree',
+		$options->{no_cache} ? -1 : $constants->{block_expire}
+	);
 	if ($self->{$table_cache_time}) {
-		if ($tid) {
-			return $self->{$table_cache}{$tid} || undef;
+		if ($tid_wanted) {
+			return $self->{$table_cache}{$tid_wanted} || undef;
 		} else {
 			return $self->{$table_cache};
 		}
@@ -1201,8 +1203,8 @@ sub getTopicTree {
 
 	$self->{$table_cache} = $tree_ref;
 	$self->{$table_cache_time} = time;
-	if ($tid) {
-		return $tree_ref->{$tid} || undef;
+	if ($tid_wanted) {
+		return $tree_ref->{$tid_wanted} || undef;
 	} else {
 		return $tree_ref;
 	}

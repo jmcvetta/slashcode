@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.45 2004/06/17 16:12:18 jamiemccarthy Exp $
+# $Id: slashd,v 1.46 2004/07/01 18:05:22 jamiemccarthy Exp $
 
 ############################################################
 #
@@ -951,6 +951,11 @@ sub PRINT {
 sub PRINTF {
 	my($fh, $format, @args) = @_;
 	main::slashdLog(sprintf($format, @args));
+}
+
+sub FILENO {
+	my($fh) = @_;
+	return fileno($fh);
 }
 
 1;

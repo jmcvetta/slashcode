@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.209 2004/06/25 06:45:43 pudge Exp $
+# $Id: admin.pl,v 1.210 2004/07/01 18:05:21 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -82,7 +82,6 @@ sub main {
 		},
 		colors 		=> {	# colored,colorpreview,colorsave,colorrevert,
 					# colororig,colorsavedef,
-
 			function 	=> \&colorEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
@@ -112,23 +111,25 @@ sub main {
 			adminmenu	=> 'info',
 			tab_selected	=> 'site',
 		},
-
+		topictree	=> {
+			function 	=> \&topicTree,
+			seclev		=> 100,
+			adminmenu	=> 'info',
+			tab_selected	=> 'topictree',
+		},
 		templates 	=> {
 			function 	=> \&templateEdit,
 			seclev		=> 500,
 			adminmenu	=> 'config',
 			tab_selected	=> 'templates',
 		},
-
 		topics 		=> {	# topiced,topicnew,topicsave,topicdelete
-
 			function 	=> \&topicEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
 			tab_selected	=> 'topics',
 		},
 		vars 		=> {	# varsave, varedit
-
 			function 	=> \&varEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
@@ -331,6 +332,13 @@ sub siteInfo {
 		site_info	=> $site_info,
 	});
 
+}
+
+##################################################################
+sub topicTree {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	slashDisplay('topicTree');
 }
 
 ##################################################################

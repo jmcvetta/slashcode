@@ -112,7 +112,6 @@ gstatic total:        -          -    [% ints(stats_data.grand_total_static) %]
       PROCESS graphs gtitle => 'Pages';
       PROCESS graphs gtitle => 'Hits';
       PROCESS graphs gtitle => 'Comment Scores';
-      PROCESS graphs gtitle => 'Page Bytes';
       PROCESS graphs gtitle => 'Total Bytes';
       PROCESS graphs gtitle => 'Section Pages';
       END;
@@ -207,4 +206,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.24 2003/05/12 18:14:14 pudge Exp $
+$Id: report;stats;default,v 1.25 2003/05/12 23:05:50 pudge Exp $

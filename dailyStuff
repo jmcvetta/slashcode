@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: dailyStuff,v 1.7 2000/08/14 21:17:10 pudge Exp $
+#  $Id: dailyStuff,v 1.8 2000/09/22 15:25:18 pudge Exp $
 ###############################################################################
 use strict;
 use vars '%I';
@@ -218,8 +218,9 @@ sub mailingList {
 		sendEmail($_->[0], "24 Hours of $I{sitename} Headlines For $_->[2]", <<EOT);
       $p
       You are getting this message because you subscribed to it.
-      If you want to unsubscribe from this, go to $I{rootdir}/users.pl
-      You can login as $_->[2] and disable the mailing from there.
+      If you want to unsubscribe from this, go to
+           $I{absolutedir}/users.pl
+      You can login as "$_->[2]" and disable the mailing from there.
 EOT
 	}
 }

@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.14 2000/08/14 21:17:10 pudge Exp $
+#  $Id: slashdotrc.pl,v 1.15 2000/09/22 15:25:19 pudge Exp $
 ###############################################################################
 require URI;
 
@@ -132,6 +132,7 @@ my %my_conf = (
 
 # these keys dependent on values set above
 $my_conf{rootdir}	= "http://$my_conf{basedomain}";
+$my_conf{absolutedir}	= "http://$my_conf{basedomain}";
 $my_conf{basedir}	= $my_conf{datadir} . "/public_html";
 $my_conf{imagedir}	= "$my_conf{rootdir}/images";
 $my_conf{rdfimg}	= "$my_conf{imagedir}/topics/topicslash.gif";

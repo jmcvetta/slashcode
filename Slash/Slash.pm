@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.119 2003/03/21 04:27:36 jamie Exp $
+# $Id: Slash.pm,v 1.120 2003/03/21 14:34:00 jamie Exp $
 
 package Slash;
 
@@ -176,9 +176,26 @@ sub selectComments {
 	if ($user->{threshold} <= $min) {
 		@cids_over_thresh = keys %$comments;
 	} else {
-		@cids_over_thresh =
-			grep { $comments->{$_}{points} >= $user->{threshold} }
-			keys %$comments;
+		if ($user->{is_anon}) {
+			# Only load comment text for comments scored at or
+			# above our threshold, plus the one comment we
+			# specifically asked for.
+			@cids_over_thresh = grep {
+				$comments->{$_}{points} >= $user->{threshold}
+				||
+				$_ == $cid
+			} keys %$comments;
+		} else {
+			# Load comments text for those, plus any comments
+			# posted by us no matter what their score or cid.
+			@cids_over_thresh = grep {
+				$comments->{$_}{points} >= $user->{threshold}
+				||
+				$comments->{$_}{uid} == $user->{uid}
+				||
+				$_ == $cid
+			} keys %$comments;
+		}
 	}
 	my $comment_text_hr = $slashdb->getCommentTextOld(\@cids_over_thresh);
 	for my $cid (@cids_over_thresh) {

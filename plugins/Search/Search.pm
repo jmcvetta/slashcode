@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.34 2002/07/12 00:25:37 jamie Exp $
+# $Id: Search.pm,v 1.35 2002/07/12 13:16:55 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -120,7 +120,7 @@ sub findComments {
 	} else {
 		if ($section->{type} eq 'collected') {
 			$where .= " AND discussions.section IN ('" . join("','", @{$section->{contained}}) . "')" 
-				if (@{$section->{contained}});
+				if $section->{contained} && @{$section->{contained}};
 		} else {
 			$where .= " AND discussions.section = " . $self->sqlQuote($section->{section});
 		}
@@ -272,7 +272,10 @@ sub findStory {
 	if ($form->{section}) {
 		if ($form->{section} ne $constants->{section}) {
 			if ($section->{type} eq 'collected') {
-				if ((scalar(@{$section->{contained}}) == 0) || (grep { $form->{section} eq $_ } @{$section->{contained}})) {
+				if (!$section->{contained}
+					|| scalar(@{$section->{contained}}) == 0
+					|| (grep { $form->{section} eq $_ } @{$section->{contained}})
+				) {
 					$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
 				} else {
 					# Section doesn't belong to this contained section

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.106 2004/12/13 17:46:14 jamiemccarthy Exp $
+# $Id: submit.pl,v 1.107 2005/01/11 18:42:21 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -208,9 +208,13 @@ sub previewForm {
 	}) if $user->{is_admin};
 
 	my $num_from_uid = 0;
+	my $accepted_from_uid = 0;
 	my $num_with_emaildomain = 0;
+	my $accepted_from_emaildomain = 0;
 	if ($user->{is_admin}) {
+		$accepted_from_uid = $slashdb->countSubmissionsFromUID($sub->{uid}, { del => 2 });
 		$num_from_uid = $slashdb->countSubmissionsFromUID($sub->{uid});
+		$accepted_from_emaildomain = $slashdb->countSubmissionsWithEmaildomain($sub->{emaildomain}, { del => 2 });
 		$num_with_emaildomain = $slashdb->countSubmissionsWithEmaildomain($sub->{emaildomain});
 	}
 
@@ -243,18 +247,20 @@ sub previewForm {
 	}
 
 	slashDisplay('previewForm', {
-		submission	=> $sub,
-		submitter	=> $reader->getUser($sub->{uid}),
-		subid		=> $form->{subid},
-		topic		=> $topic,
-		ipid		=> $sub->{ipid},
-		ipid_vis	=> $sub->{ipid_vis},
-		admin_flag 	=> $admin_flag,
-		extras 		=> $extracolumns,
-		lockTest	=> lockTest($sub->{subj}),
-		similar_stories	=> $similar_stories,
-		num_from_uid	=> $num_from_uid,
-		num_with_emaildomain => $num_with_emaildomain,
+		submission			=> $sub,
+		submitter			=> $reader->getUser($sub->{uid}),
+		subid				=> $form->{subid},
+		topic				=> $topic,
+		ipid				=> $sub->{ipid},
+		ipid_vis			=> $sub->{ipid_vis},
+		admin_flag 			=> $admin_flag,
+		extras 				=> $extracolumns,
+		lockTest			=> lockTest($sub->{subj}),
+		similar_stories			=> $similar_stories,
+		num_from_uid			=> $num_from_uid,
+		num_with_emaildomain 		=> $num_with_emaildomain,
+		accepted_from_uid 	  	=> $accepted_from_uid,
+		accepted_from_emaildomain 	=> $accepted_from_emaildomain
 	});
 }
 

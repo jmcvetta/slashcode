@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.86 2004/11/21 02:14:45 jamiemccarthy Exp $
+# $Id: search.pl,v 1.87 2004/12/01 23:32:37 pudge Exp $
 
 use strict;
 use Slash;
@@ -40,7 +40,12 @@ sub main {
 	my $searchDB  = getObject('Slash::Search', { db_type => 'search' });
 
 	# Backwards compatibility, we now favor tid over topic 
-	$form->{tid} ||= $form->{topic};
+	if ($form->{topic}) {
+		if ($form->{topic} =~ s/^([+-]?[\d.]+).*$/$1/s) {
+			$form->{tid} ||= $form->{topic};
+		}
+		delete $form->{topic};
+	}
 
 	# Set some defaults
 	$form->{query}		||= '';
@@ -144,7 +149,7 @@ sub _buildargs {
 	my($form) = @_;
 	my $uri;
 
-	for (qw[threshold query author op topic tid section sort journal_only]) {
+	for (qw[threshold query author op tid section sort journal_only]) {
 		my $x = "";
 		$x =  $form->{$_} if defined $form->{$_} && $x eq "";
 		$x =~ s/ /+/g;

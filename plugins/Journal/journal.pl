@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.42 2002/06/04 18:13:40 pudge Exp $
+# $Id: journal.pl,v 1.43 2002/06/05 16:22:45 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -484,9 +484,7 @@ sub saveArticle {
 		return 0;
 	}
 
-	unless ($ws) {
-		return 0 unless _validFormkey();
-	}
+	return 0 unless _validFormkey($ws ? qw(max_post_check interval_check) : ());
 
 	if ($form->{id}) {
 		my %update;
@@ -662,10 +660,11 @@ sub editArticle {
 }
 
 sub _validFormkey {
+	my(@checks) = @_ ? @_ : qw(max_post_check interval_check formkey_check);
 	my $error;
 	# this is a hack, think more on it, OK for now -- pudge
 	Slash::Utility::Anchor::getSectionColors();
-	for (qw(max_post_check interval_check formkey_check)) {
+	for (@checks) {
 		last if formkeyHandler($_, 0, 0, \$error);
 	}
 
@@ -734,6 +733,7 @@ sub add_entry {
 
 	no strict 'refs';
 	my $saveArticle = *{ $user->{state}{packagename} . '::saveArticle' };
+	$slashdb->createFormkey('journal');
 	my $id = $saveArticle->($journal, $constants, $user, $form, $slashdb, 1);
 	return $id;
 }

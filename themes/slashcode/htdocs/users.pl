@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.65 2002/04/17 15:39:25 jamie Exp $
+# $Id: users.pl,v 1.66 2002/04/17 16:33:00 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -290,6 +290,8 @@ sub main {
 		# If www.foo.com really thinks it's unsafe to redirect the
 		# user to a URL at foo.com, they need to change this logic
 		# (or find a new web host!) -- Jamie
+		# So you're saying SourceForge.net domains are
+		# messed up?  :)  -- pudge
 
 		my $site_domain = $constants->{basedomain};
 		$site_domain =~ s/^www\.//;

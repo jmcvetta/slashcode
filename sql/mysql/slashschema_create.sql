@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.183 2004/11/24 06:31:15 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.184 2004/11/25 04:01:45 jamiemccarthy Exp $
 #
 
 #
@@ -979,7 +979,8 @@ CREATE TABLE submissions (
 	KEY ipid (ipid),
 	KEY subnetid (subnetid),
 	KEY primaryskid_tid (primaryskid, tid),
-	KEY tid (tid)
+	KEY tid (tid),
+	KEY time_emaildomain (time, emaildomain)
 ) TYPE=InnoDB;
 
 

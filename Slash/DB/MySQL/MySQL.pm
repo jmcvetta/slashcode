@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.153 2002/05/10 18:58:41 brian Exp $
+# $Id: MySQL.pm,v 1.154 2002/05/14 15:44:09 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5605,11 +5605,11 @@ sub _genericGets {
 		if ($param_table) {
 			my $cache = _genericGetCacheName($self, $table);
 			for (@$values) {
-				(my $clean_val = $values) =~ s/^-//;
+				(my $clean_val = $_) =~ s/^-//;
 				if ($self->{$cache}{$clean_val}) {
 					push @$get_values, $_;
 				} else {
-					my $val = $self->sqlSelectAll('$table_prime, name, value', $param_table, "name='$_'");
+					my $val = $self->sqlSelectAll("$table_prime, name, value", $param_table, "name='$_'");
 					for my $row (@$val) {
 						push @$params, $row;
 					}
@@ -5618,9 +5618,11 @@ sub _genericGets {
 		} else {
 			$get_values = $values;
 		}
-		my $val = join ',', @$get_values;
-		$val .= ",$table_prime" unless grep $table_prime, @$get_values;
-		$sth = $self->sqlSelectMany($val, $table);
+		if ($get_values) {
+			my $val = join ',', @$get_values;
+			$val .= ",$table_prime" unless grep $table_prime, @$get_values;
+			$sth = $self->sqlSelectMany($val, $table);
+		}
 	} elsif ($values) {
 		if ($param_table) {
 			my $cache = _genericGetCacheName($self, $table);
@@ -5669,6 +5671,7 @@ sub _genericGets {
 # This is only called by Slash/DB/t/story.t and it doesn't even serve much purpose
 # there...I assume we can kill it?  - Jamie
 # Actually, we should keep it around since it is a generic method -Brian
+# I am using it for something on OSDN.com
 sub getStories {
 	my $answer = _genericGets('stories', 'sid', 'story_param', @_);
 	return $answer;

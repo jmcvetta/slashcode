@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.384 2003/05/01 00:46:52 brian Exp $
+# $Id: MySQL.pm,v 1.385 2003/05/02 15:30:01 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.384 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.385 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4816,7 +4816,13 @@ sub getStoriesEssentials {
 	my $constants = getCurrentStatic();
 	$section ||= $constants->{section};
 
+	# Default limit value
 	$limit ||= 15;
+	# Make sure that, however many stories the caller wants to display,
+	# there are some left over for the "Older Stories" box, if any.
+	# (It's the caller's responsibility to display only as many stories
+	# as it wants to.)
+	$limit += 15;
 
 	my($column_time, $where_time) = $self->_stories_time_clauses({
 		try_future => 1, must_be_subscriber => 0

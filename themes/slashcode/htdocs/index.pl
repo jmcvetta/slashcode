@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.68 2003/05/01 03:50:10 jamie Exp $
+# $Id: index.pl,v 1.69 2003/05/02 15:30:01 jamie Exp $
 
 use strict;
 use Slash;
@@ -40,12 +40,17 @@ sub main {
 
 	$section = $reader->getSection($form->{section});
 
-	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
-
-	my $limit = $artcount;
+	# Decide what our limit is going to be.
+	my $limit;
 	if ($form->{issue}) {
-		$limit *= 7;
-	} elsif ($section->{type} eq 'collected') {
+		if ($user->{is_anon}) {
+			$limit = $section->{artcount} * 7;
+		} else {
+			$limit = $user->{maxstories} * 7;
+		}
+	} elsif ($user->{is_anon} && $section->{type} ne 'collected') {
+		$limit = $section->{artcount};
+	} else {
 		$limit = $user->{maxstories};
 	}
 

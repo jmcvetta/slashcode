@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.126 2003/04/24 04:47:47 jamie Exp $
+# $Id: Slash.pm,v 1.127 2003/05/02 15:30:01 jamie Exp $
 
 package Slash;
 
@@ -1316,12 +1316,15 @@ sub getOlderStories {
 
 	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
 
+	# The template won't display all of what's passed to it (by default
+	# only the first $section->{artcount}).  "start" is just an offset
+	# that gets incremented.
 	slashDisplay('getOlderStories', {
 		stories		=> $newstories,
 		section		=> $section,
 		cur_time	=> time,
 		yesterday	=> $yesterday,
-		start		=> int($artcount/3) + $form->{start} + scalar(@$stories),
+		start		=> int($artcount/3) + $form->{start},
 	}, 1);
 }
 

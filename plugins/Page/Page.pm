@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.15 2003/04/16 20:38:19 brian Exp $
+# $Id: Page.pm,v 1.16 2003/05/02 15:30:01 jamie Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -181,6 +181,12 @@ sub displayStories {
 		$storystruct->[$i]{essentials} = $story 
 			if $other->{retrieve_essentials};
 		$storystruct->[$i++]{sid} = $sid;
+
+		# getStoriesEssentials may have returned more than we
+		# asked for, in case we wanted to display the rest in
+		# the Older Stories slashbox.  Abort once we reach the
+		# number we asked for.
+		last if $i >= $limit;
 	}
 
 	return($storystruct);

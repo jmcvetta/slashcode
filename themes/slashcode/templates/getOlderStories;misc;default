@@ -26,6 +26,7 @@ getOlderStories
 __template__
 [% today = '';
    c = 0;
+   max_older_stories = section.artcount / 2 || 15;
    FOREACH story = stories;
 	IF today != "$story.w $story.m $story.d";
 		today = "$story.w $story.m $story.d";
@@ -45,7 +46,7 @@ __template__
 		[% END;
 	END %]
 	&middot; [% story.link %] ([% story.commentcount %])<BR>
-	[% c = c + 1; LAST IF c >= section.artcount %]
+	[% start = start + 1; c = c + 1; LAST IF c >= max_older_stories %]
 [% END %]
 
 [% IF !section or section.section == 'index' %]
@@ -66,4 +67,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getOlderStories;misc;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: getOlderStories;misc;default,v 1.10 2003/05/02 15:30:01 jamie Exp $

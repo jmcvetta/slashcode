@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.14 2003/08/26 15:10:35 jamie Exp $
+# $Id: message_delivery.pl,v 1.15 2004/02/25 10:18:44 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -85,8 +85,11 @@ $task{$me}{code} = sub {
 			if ($constants->{message_delivery_debug} > 0) {
 				use Data::Dumper;
 				foreach my $m (@$coll) {
+					delete $m->{user}{people};
 					messagedLog("Empty message: " . Dumper($m))
 						unless $m->{message};
+					messagedLog("Good message: " . Dumper($m))
+						if $m->{message};
 				}
 			}
 			

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.73 2002/06/05 15:26:07 pudge Exp $
+# $Id: admin.pl,v 1.74 2002/06/20 14:49:02 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -1048,6 +1048,8 @@ sub editStory {
 				$storyref->{$field});
 			$storyref->{$field} = parseSlashizedLinks(
 				$storyref->{$field});
+			$storyref->{$field} = balanceTags(
+				$storyref->{$field});
 		}
 
 		$topic = $slashdb->getTopic($storyref->{tid});
@@ -1455,6 +1457,8 @@ sub updateStory {
 	}
 	$form->{introtext} = slashizeLinks($form->{introtext});
 	$form->{bodytext} =  slashizeLinks($form->{bodytext});
+	$form->{introtext} = balanceTags($form->{introtext});
+	$form->{bodytext} =  balanceTags($form->{bodytext});
 
 	my $data = {
 		uid		=> $form->{uid},
@@ -1533,6 +1537,8 @@ sub saveStory {
 	) . otherLinks($edituser->{nickname}, $form->{tid}, $edituser->{uid});
 	$form->{introtext} = slashizeLinks($form->{introtext});
 	$form->{bodytext} =  slashizeLinks($form->{bodytext});
+	$form->{introtext} = balanceTags($form->{introtext});
+	$form->{bodytext} =  balanceTags($form->{bodytext});
 
 	my $time = ($form->{fastforward})
 		? $slashdb->getTime()

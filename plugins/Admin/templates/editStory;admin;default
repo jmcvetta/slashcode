@@ -13,7 +13,7 @@ en_US
 __name__
 editStory
 __template__
-<form action="[% gSkin.rootdir %]/admin.pl" method="POST" enctype="multipart/form-data" name="slashstoryform" onsubmit="return false;">
+<form action="[% gSkin.rootdir %]/admin.pl" method="POST" enctype="multipart/form-data" name="slashstoryform">
 [% IF form.subid %]
 	<INPUT TYPE="HIDDEN" NAME="subid" VALUE="[% form.subid | strip_attribute %]">
 [% END %]
@@ -270,4 +270,4 @@ storyref.bodytext_wordcount %] word[% IF storyref.bodytext_wordcount != 1; "s"; 
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.54 2004/10/15 05:43:36 pudge Exp $
+$Id: editStory;admin;default,v 1.55 2004/10/15 20:12:18 pudge Exp $

@@ -12,19 +12,19 @@ __name__
 editbuttons
 __template__
 [% IF newarticle %]
-<input type="button" name="op" value="save"    onclick="st_submit()">
+<input type="submit" name="op" value="save"    onclick="st_submit()">
 [% END %]
 
-<input type="button" name="op" value="preview" onclick="st_submit()">
+<input type="submit" name="op" value="preview" onclick="st_submit()">
 
 [% IF ! newarticle %]
-<input type="button" name="op" value="update"  onclick="st_submit()">
+<input type="submit" name="op" value="update"  onclick="st_submit()">
 [%- IF user.seclev >= 10000 %]
-<input type="button" name="op" value="delete"  onclick="st_submit()">
+<input type="submit" name="op" value="delete"  onclick="st_submit()">
 [%- END -%]
 [% END %]
 
 __seclev__
 500
 __version__
-$Id: editbuttons;admin;default,v 1.10 2004/10/15 05:43:36 pudge Exp $
+$Id: editbuttons;admin;default,v 1.11 2004/10/15 20:12:18 pudge Exp $

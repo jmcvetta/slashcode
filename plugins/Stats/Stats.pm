@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.57 2002/09/20 19:13:30 brian Exp $
+# $Id: Stats.pm,v 1.58 2002/09/20 19:38:18 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -72,7 +72,8 @@ sub countModeratorLog {
 	my($self) = @_;
 
 	my $used = $self->sqlCount(
-		'moderatorlog'
+		'moderatorlog',
+		"ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'"
 	);
 }
 
@@ -413,7 +414,7 @@ sub countModeratorLogHour {
 		"val",
 		"val, COUNT(*) AS count",
 		"moderatorlog",
-		"",
+		"ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'",
 		"GROUP BY val"
 	);
 	
@@ -447,7 +448,8 @@ sub countCommentsDaily {
 	my $comments = $self->sqlSelect(
 		"COUNT(*)",
 		"comments",
-		"$cid_limit_clause $section_where"
+		"$cid_limit_clause $section_where
+		 date BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'"
 	);
 
 	return $comments; 

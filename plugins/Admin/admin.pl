@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.87 2002/07/18 19:44:21 brian Exp $
+# $Id: admin.pl,v 1.88 2002/07/19 14:28:59 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -173,7 +173,7 @@ sub varEdit {
 	my $vars_select = createSelect('name', $vars, $name, 1);
 
 	if ($name) {
-		$varsref = $slashdb->getVar($name,'',1);
+		$varsref = $slashdb->getVar($name, '', 1);
 	}
 
 	slashDisplay('varEdit', {
@@ -188,7 +188,7 @@ sub varSave {
 	my($form, $slashdb, $user, $constants) = @_;
 
 	if ($form->{thisname}) {
-		my $value = $slashdb->getVar($form->{thisname},'',1);
+		my $value = $slashdb->getVar($form->{thisname}, '', 1);
 		if ($value) {
 			$slashdb->setVar($form->{thisname}, {
 				value		=> $form->{value},

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.66 2002/07/18 16:26:20 slashteam Exp $
+# $Id: submit.pl,v 1.67 2002/07/19 14:24:49 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -95,15 +95,25 @@ sub main {
 
 	my $op = lc($form->{op});
 	$op ||= 'default';
-	$op = 'default' if ( ($user->{seclev} < $ops->{$op}{seclev}) || ! $ops->{$op}{function});
+	$op = 'default' if (
+		($user->{seclev} < $ops->{$op}{seclev})
+			||
+		! $ops->{$op}{function}
+	);
 
-	header(getData('header', { tbtitle => $tbtitle }), $section, { admin => 1 });
+	header(
+		getData('header', { tbtitle => $tbtitle } ),
+		$section, { admin => 1 }
+	);
 
 	if ($user->{seclev} < 100) {
 		if ($ops->{$op}{checks}) {
 			for my $check (@{$ops->{$op}{checks}}) {
-				$ops->{$op}{update_formkey} = 1 if ($check eq 'formkey_check');
-				$error_flag = formkeyHandler($check, $formname, $formkey);
+				$ops->{$op}{update_formkey} = 1
+					if ($check eq 'formkey_check');
+				$error_flag = formkeyHandler(
+					$check, $formname, $formkey
+				);
 				last if $error_flag;
 			}
 		}

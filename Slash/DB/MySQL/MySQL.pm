@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.617 2004/07/12 20:56:49 pudge Exp $
+# $Id: MySQL.pm,v 1.618 2004/07/13 17:57:08 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.617 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.618 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8192,6 +8192,7 @@ sub getTemplateByName {
 	}               
 
 	my $constants = getCurrentStatic();
+	my $user = getCurrentUser();
 	_genericCacheRefresh($self, 'templates', $constants->{block_expire});
 
 	my $table_cache      = '_templates_cache';
@@ -8214,7 +8215,8 @@ sub getTemplateByName {
 		$page ||= 'misc';
 	}
 	unless ($skin) {
-		$skin = getCurrentSkin('name');
+		$skin = "light" if $user->{light};
+		$skin ||= getCurrentSkin('name');
 		$skin ||= 'default';
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.114 2003/01/27 21:58:30 pudge Exp $
+# $Id: comments.pl,v 1.115 2003/01/31 00:43:09 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1139,7 +1139,7 @@ sub submitComment {
 	} else {
 		slashDisplay('comment_submit') if ! $form->{newdiscussion};
 		undoModeration($id);
-		printComments($discussion, $maxCid, $maxCid) if ! $form->{newdiscussion};
+		printComments($discussion, $maxCid, $maxCid, { use_writer => 1}) if ! $form->{newdiscussion};
 
 		my $tc = $slashdb->getVar('totalComments', 'value', 1);
 		$slashdb->setVar('totalComments', ++$tc);

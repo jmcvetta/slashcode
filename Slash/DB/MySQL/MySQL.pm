@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.713 2004/10/19 18:25:53 tvroom Exp $
+# $Id: MySQL.pm,v 1.714 2004/10/20 04:11:44 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.713 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.714 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10484,6 +10484,14 @@ sub getSkins {
 		my $url_skid   = $skins_ref->{$skid}{url}      ? $skid : $constants->{mainpage_skid};
 		my $color_skid = $colors->{$skid}              ? $skid : $constants->{mainpage_skid};
 
+		# Blank index_handler defaults to index.pl.
+		$skins_ref->{$skin}{index_handler} ||= 'index.pl';
+
+		# Adjust min and max and warn if wacky value.
+		$skins_ref->{$skin}{artcount_max} = $skins_ref->{$skin}{artcount_min}
+			if $skins_ref->{$skin}{artcount_max} < $skins_ref->{$skin}{artcount_min};
+		warn "skin $skid has artcount_max of 0" if !$skins_ref->{$skin}{artcount_max};
+
 		# Convert an index_handler of foo.pl to an index_static of
 		# foo.shtml, for convenience.
 		($skins_ref->{$skid}{index_static} = $skins_ref->{$skid}{index_handler}) =~ s/\.pl$/.shtml/;
@@ -10496,7 +10504,8 @@ sub getSkins {
 
 		$skins_ref->{$skid}{basedomain} = $skins_ref->{$host_skid}{hostname};
 
-		$skins_ref->{$skid}{absolutedir} = $skins_ref->{$url_skid}{url} || "http://$skins_ref->{$skid}{basedomain}";
+		$skins_ref->{$skid}{absolutedir} = $skins_ref->{$url_skid}{url}
+			|| "http://$skins_ref->{$skid}{basedomain}";
 		$skins_ref->{$skid}{absolutedir} =~ s{/+$}{};
 
 		my $rootdir_uri = URI->new($skins_ref->{$skid}{absolutedir});

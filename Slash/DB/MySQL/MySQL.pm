@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.683 2004/09/20 22:55:03 pudge Exp $
+# $Id: MySQL.pm,v 1.684 2004/09/21 01:51:49 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.683 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.684 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1198,7 +1198,11 @@ sub getTopicTree {
 	}
 	for my $tp_hr (@$topic_param) {
 		my($tid, $name, $value) = @{$tp_hr}{qw( tid name value )};
-		$tree_ref->{$tid}{$name} = $value if $tree_ref->{$tid} && !$tree_ref->{$tid}{$name};
+		if ($tree_ref->{$tid} && !$tree_ref->{$tid}{$name}) {
+			$tree_ref->{$tid}{$name} = $value;
+			$tree_ref->{$tid}{topic_param_keys} ||= [ ];
+			push @{ $tree_ref->{$tid}{topic_param_keys} }, $name;
+		}
 	}
 	for my $tid (keys %$tree_ref) {
 		next unless exists $tree_ref->{$tid}{child};
@@ -6632,6 +6636,10 @@ sub getCommentMostCommonReason {
 ########################################################
 sub getCommentReply {
 	my($self, $sid, $pid) = @_;
+
+	# If we're not replying to anything, we already know the answer.
+	return { } if !$pid;
+
 	my $sid_quoted = $self->sqlQuote($sid);
 	my $reply = $self->sqlSelectHashref(
 		"date,date as time,subject,comments.points as points,comments.tweak as tweak,

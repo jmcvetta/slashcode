@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.234 2004/09/20 15:37:18 tvroom Exp $
+# $Id: admin.pl,v 1.235 2004/09/21 01:51:49 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -851,7 +851,12 @@ sub topicEdit {
 	my $topic_param = [];
 	if (!$form->{topicdelete}) {
 		if (!$form->{topicnew} && $form->{nexttid}) {
-			$topic = $slashdb->getTopicTree($form->{nexttid}, { no_cache => 1 });
+			my $tree = $slashdb->getTopicTree(undef, { no_cache => 1 });
+			$topic = $tree->{ $form->{nexttid} };
+			# We could get this by reading $topic->{topic_param_keys}
+			# but getTopicParamsForTid() works too.  For that matter,
+			# the topicEdit template could read it directly out of
+			# $topic, no need to create it separately... oh well :)
 			$topic_param = $slashdb->getTopicParamsForTid($form->{nexttid});
 		} else {
 			$topic = {};

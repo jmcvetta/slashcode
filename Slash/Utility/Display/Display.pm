@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.29 2002/11/09 03:14:59 brian Exp $
+# $Id: Display.pm,v 1.30 2002/11/11 17:14:28 pater Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1203,7 +1203,8 @@ sub _hard_linkComment {
 	}
 
 	$display .= qq!">$subject</A>!;
-	$display .= qq| by $comment->{nickname} <FONT SIZE="-1">(Score:$comment->{points})</FONT> |
+	$display .= qq| by $comment->{nickname}|;
+	$display .= qq| <FONT SIZE="-1">(Score:$comment->{points})</FONT> |
 		if !$user->{noscores} && $comment->{points};
 	$display .= qq| <FONT SIZE="-1">| . timeCalc($comment->{date}) . qq| </FONT>| if $date;
 	$display .= "\n";
@@ -1222,4 +1223,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.29 2002/11/09 03:14:59 brian Exp $
+$Id: Display.pm,v 1.30 2002/11/11 17:14:28 pater Exp $

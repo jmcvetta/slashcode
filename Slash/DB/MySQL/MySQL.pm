@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.151 2002/05/03 19:29:23 pudge Exp $
+# $Id: MySQL.pm,v 1.152 2002/05/07 22:09:27 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4398,8 +4398,10 @@ sub getSlashConf {
 	my $confdata = $self->sqlSelectAll('name, value', 'vars');
 	return if !defined $confdata;
 	my %conf = map { $_->[0], $_->[1] } @{$confdata};
-	# This allows you to do stuff like constant.plugin.Zoo in a template and know that the plugin is installed -Brian
-	my $plugindata = $self->sqlSelectColArrayref('value', 'site_info', "name='plugin'");
+	# This allows you to do stuff like constant.plugin.Zoo in a template
+	# and know that the plugin is installed -Brian
+	my $plugindata = $self->sqlSelectColArrayref('value', 'site_info',
+		"name='plugin'");
 	for (@$plugindata) {
 		$conf{plugin}{$_} = 1;
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.424 2003/07/15 22:49:32 pudge Exp $
+# $Id: MySQL.pm,v 1.425 2003/07/17 01:14:11 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.424 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.425 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5605,6 +5605,14 @@ sub getSlashConf {
 			servers =>	[ @servers ],
 			debug =>	$conf{memcached_debug} > 1 ? 1 : 0,
 		});
+		if ($conf{memcached_keyprefix}) {
+			$self->{_mcd}{keyprefix} = $conf{memcached_keyprefix};
+		} else {
+			# If no keyprefix defined in vars, use the first and
+			# last letter from the sitename.
+			$conf{sitename} =~ /([A-Za-z]).*(\w)/;
+			$self->{_mcd}{keyprefix} = ($2 ? lc("$1$2") : ($1 ? lc($1) : ""));
+		}
 	}
 
 	return \%conf;

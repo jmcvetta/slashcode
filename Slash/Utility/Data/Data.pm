@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.125 2004/06/17 16:11:48 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.126 2004/06/26 14:03:04 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2641,7 +2641,6 @@ sub _link_to_slashlink {
 	# virtual user, thus "urlavu".
 	my $urlavu = $urla{$virtual_user};
 
-use Data::Dumper; print STDERR "_link_to_slashlink vu '$virtual_user' gskid '$gSkin->{skid}' url, abs: " . Dumper([$url, $abs]);
 	my $canon_url = URI->new_abs($url, $abs)->canonical;
 	my $frag = $canon_url->fragment() || "";
 
@@ -3419,4 +3418,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.125 2004/06/17 16:11:48 jamiemccarthy Exp $
+$Id: Data.pm,v 1.126 2004/06/26 14:03:04 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.14 2002/02/07 05:42:37 jamie Exp $
+# $Id: Environment.pm,v 1.15 2002/02/08 15:39:31 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1221,6 +1221,7 @@ sub filter_params {
 		ordernum pid posttype ratio retrieve
 		seclev start startat threshold uid
 		uthreshold voters width
+		textarea_rows textarea_cols
 	);
 
 	# fields that have ONLY a-zA-Z0-9_
@@ -1572,4 +1573,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.14 2002/02/07 05:42:37 jamie Exp $
+$Id: Environment.pm,v 1.15 2002/02/08 15:39:31 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.55 2002/01/29 01:57:20 jamie Exp $
+# $Id: users.pl,v 1.56 2002/02/08 15:40:36 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1729,6 +1729,8 @@ sub saveComm {
 		hardthresh	=> ($form->{hardthresh} ? 1 : 0),
 		anon_comments	=> ($form->{anon_comments} ? 1 : 0),
 		sigdash		=> ($form->{sigdash} ? 1 : 0),
+		textarea_rows	=> $form->{textarea_rows} || $constants->{textarea_rows},
+		textarea_cols	=> $form->{textarea_cols} || $constants->{textarea_cols},
 	};
 
 	my($min, $max) = ($constants->{comment_minscore}, 

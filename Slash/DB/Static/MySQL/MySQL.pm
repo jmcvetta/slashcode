@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.36 2002/05/07 22:47:23 jamie Exp $
+# $Id: MySQL.pm,v 1.37 2002/05/19 20:34:32 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -103,18 +103,25 @@ sub updateCommentTotals {
 
 ########################################################
 # For slashd
-# "LIMIT 10" chosen arbitrarily, actually could be LIMIT 5 but doesn't
-# hurt much to kick in some more in case the caller has been changed to
-# want more.
 sub getNewStoryTopic {
 	my($self) = @_;
 
+	my $constants = getCurrentStatic();
+	my $needed = $constants->{recent_topic_img_count} || 5;
+	$needed = $constants->{recent_topic_txt_count}
+		if ($constants->{recent_topic_txt_count} || 0) > $needed;
+	# There may be duplicate topics, which we'll handle in perl;
+	# here in SQL we just need to be sure we get enough (but not so
+	# many we snarf down the whole table).  This guesstimate should
+	# work for all sites except those that post tons of duplicate
+	# topic stories.
+	$needed = $needed*3 + 5;
 	my $sth = $self->sqlSelectMany(
 		'alttext, image, width, height, stories.tid as tid',
 		'stories, topics',
 		"stories.tid=topics.tid AND displaystatus = 0
 		AND writestatus != 'delete' AND time < NOW()",
-		'ORDER BY time DESC LIMIT 10'
+		"ORDER BY time DESC LIMIT $needed"
 	);
 
 	return $sth;

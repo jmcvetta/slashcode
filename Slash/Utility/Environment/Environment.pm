@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.124 2004/06/17 16:11:49 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.125 2004/06/17 17:39:52 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2357,7 +2357,7 @@ sub determineCurrentSkin {
 	} else {
 		my $form = getCurrentForm();
 		$skin   = $reader->getSkidFromName($form->{section}) if $form->{section};
-		$skin ||= $reader->getSkidFromNexus(getCurrentStatic('mainpage_skid'));
+		$skin ||= $reader->getCurrentStatic('mainpage_skid');
 	}
  
 	# this should never happen
@@ -2496,4 +2496,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.124 2004/06/17 16:11:49 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.125 2004/06/17 17:39:52 jamiemccarthy Exp $

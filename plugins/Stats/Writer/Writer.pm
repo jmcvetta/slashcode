@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Writer.pm,v 1.3 2003/03/04 19:56:32 pudge Exp $
+# $Id: Writer.pm,v 1.4 2003/05/02 16:33:02 jamie Exp $
 
 package Slash::Stats::Writer;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -31,6 +31,7 @@ sub new {
 	$self->{virtual_user} = $user;
 	my @time = localtime();
 	$self->{_day} = $options->{day} ? $options->{day} : sprintf "%4d-%02d-%02d", $time[5] + 1900, $time[4] + 1, $time[3];
+	$self->{_overwrite} = 1 if $options->{overwrite};
 	$self->sqlConnect;
 
 	return $self;
@@ -42,16 +43,29 @@ sub createStatDaily {
 	$value = 0 unless $value;
 	$options ||= {};
 
+	my $section = $options->{section} || undef;
 	my $insert = {
 		'day'	=> $self->{_day},
 		'name'	=> $name,
 		'value'	=> $value,
 	};
+	$insert->{section} = $section || 'all';
 
-	$insert->{section} = $options->{section} if $options->{section};
-	$insert->{section} ||= 'all';
+	my $overwrite = $self->{_overwrite} || $options->{overwrite};
+	if ($overwrite) {
+		my $where = "day=" . $self->sqlQuote($self->{_day})
+			. " AND name=" . $self->sqlQuote($name);
+		$where .= " AND section=" . $self->sqlQuote($section) if $section;
+		$self->{_dbh}{AutoCommit} = 0;
+		$self->sqlDelete('stats_daily', $where);
+	}
 
 	$self->sqlInsert('stats_daily', $insert, { ignore => 1 });
+
+	if ($overwrite) {
+		$self->{_dbh}->commit;
+		$self->{_dbh}{AutoCommit} = 1;
+	}
 }
 
 ########################################################

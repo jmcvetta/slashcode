@@ -34,11 +34,12 @@ and try again.</P>
 Thanks for meta-moderating some of [% constants.sitename %]'s many moderations.
 This gives our moderators feedback and helps the whole system work!
 <p>You probably want to go
-<A HREF="[% constants.rootdir %]/">home</A> now.
+<A HREF="[% constants.rootdir %]/">home</A> now, or maybe to
+<A HREF="[% constants.rootdir %]/users.pl">your user page</A>.
 
 [% END %]
 
 __seclev__
 1000
 __version__
-$Id: data;metamod;default,v 1.10 2003/05/19 13:21:29 pudge Exp $
+$Id: data;metamod;default,v 1.11 2003/05/19 16:59:53 jamie Exp $

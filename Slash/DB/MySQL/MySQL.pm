@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.374 2003/04/22 21:48:54 brian Exp $
+# $Id: MySQL.pm,v 1.375 2003/04/22 23:44:13 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.374 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.375 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6518,7 +6518,7 @@ sub setUser {
 	$cache = _genericGetCacheName($self, $tables);
 
 	for (keys %$hashref) {
-	(my $clean_val = $_) =~ s/^-//;
+		(my $clean_val = $_) =~ s/^-//;
 		my $key = $self->{$cache}{$clean_val};
 		if ($key) {
 			push @{$update_tables{$key}}, $_;
@@ -6558,7 +6558,7 @@ sub setUser {
 			$rows += $self->sqlDelete('users_param', 
 				"uid = $uid AND name = " . $self->sqlQuote($_->[0]));
 		} elsif ($_->[0] eq "acl") {
-			my (@delete, @add);
+			my(@delete, @add);
 			my $acls = $_->[1];
 			for my $key (keys(%$acls)) {
 				if ($acls->{$key}) {

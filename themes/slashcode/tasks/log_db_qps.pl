@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.5 2004/08/10 21:54:05 jamiemccarthy Exp $
+# $Id: log_db_qps.pl,v 1.6 2004/09/07 22:21:34 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -62,7 +62,7 @@ $task{$me}{code} = sub {
 	my $accesslog_last = $slashdb->getVar('db_questions_accesslog_last','value', 1);
 	my $new_accesslog_last =
 		$save_vars->{db_questions_accesslog_last} =
-			$logdb->sqlSelect("MAX(id)", "accesslog");
+			$logdb->sqlSelect("MAX(id)", "accesslog") || 1;
 	$save_vars->{db_questions_lasttime} = $new_last_time;
 
 	my $time = $slashdb->getTime();	

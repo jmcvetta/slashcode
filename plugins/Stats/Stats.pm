@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.73 2002/12/02 20:43:46 pudge Exp $
+# $Id: Stats.pm,v 1.74 2002/12/04 23:12:13 jamie Exp $
 
 package Slash::Stats;
 
@@ -16,12 +16,13 @@ use DBIx::Password;
 use Slash;
 use Slash::Utility;
 use Slash::DB::Utility;
+use LWP::UserAgent;
 
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -690,6 +691,35 @@ sub countDaily {
 	return \%returnable;
 }
 
+sub countSfNetIssues {
+	my($self, $group_id) = @_;
+	my $constants = getCurrentStatic();
+	my $url = "http://sf.net/export/projhtml.php?group_id=$group_id&mode=full&no_table=1";
+	my $ua = new LWP::UserAgent;
+	my $request = new HTTP::Request('GET', $url);
+        $ua->proxy(http => $constants->{http_proxy}) if $constants->{http_proxy};
+        $ua->timeout(30);
+        my $result = $ua->request($request);
+	my $content = $result->is_success ? $result->content : "";
+	if (!$content) {
+		return { };
+	}
+	my $hr = { };
+	while ($content =~ m{
+		>
+		([\w\s]+)
+		</A>
+		\s*
+		\( \s* <B>
+		(\d+) \s+ open \s* / \s* (\d+) \s* total
+		</B> \s* \)
+	}gx) {
+		my($tracker, $open, $total) = ($1, $2, $3);
+		$hr->{$tracker}{open} = $open;
+		$hr->{$tracker}{total} = $total;
+	}
+	return $hr;
+}
 
 ########################################################
 sub getAllStats {
@@ -747,4 +777,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.73 2002/12/02 20:43:46 pudge Exp $
+$Id: Stats.pm,v 1.74 2002/12/04 23:12:13 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.270 2002/12/03 20:49:47 pudge Exp $
+# $Id: MySQL.pm,v 1.271 2002/12/04 23:12:13 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.270 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.271 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -563,7 +563,6 @@ sub _convertModsToComments {
 		);
 	}
 
-	my $consensus = $constants->{m2_consensus};
 	my $mods_text = join(",", @mods);
 
 	# We can and probably should get the cid/reason data in
@@ -5171,6 +5170,7 @@ sub getSlashConf {
 		op_exclude_from_countdaily =>   [qw( rss )],
 		mod_stats_reports =>		[ $conf{adminmail_mod} ],
 		stats_reports =>		[ $conf{adminmail} ],
+		stats_sfnet_groupids =>		[ 4421 ],
 		submit_categories =>		[ ],
 	);
 	my %conf_fixup_hashes = (

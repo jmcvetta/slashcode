@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.110 2003/04/22 21:48:54 brian Exp $
+# $Id: slashschema_create.sql,v 1.111 2003/05/16 01:25:35 brian Exp $
 #
 
 #
@@ -761,6 +761,8 @@ CREATE TABLE stories (
 	qid MEDIUMINT UNSIGNED DEFAULT NULL,
 	subsection SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
 	last_update timestamp,
+	body_length MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,
+	word_count MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,
 	PRIMARY KEY (sid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	FOREIGN KEY (tid) REFERENCES topics(tid),

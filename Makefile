@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.22 2003/03/04 19:56:31 pudge Exp $
+# $Id: Makefile,v 1.23 2003/03/27 22:25:45 brian Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -257,6 +257,7 @@ clean:
 	(cd Slash; if [ ! -f Makefile ]; then perl Makefile.PL; fi; make clean)
 	(rm Slash/Apache/Apache.xs Slash/Apache/User/User.xs)
 	(cd plugins; make clean)
+	find ./ | grep \# | xargs rm
 
 dist: $(DISTVNAME).tar$(SUFFIX)
 

@@ -57,6 +57,19 @@ __template__
 											[% END %]
 										</LI>
 									[% END %]
+									[% IF topic.child %]
+										<UL>
+											[% FOREACH topic = topic.child %]
+												<LI>
+													[% IF user.is_admin %]
+														<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
+													[% ELSE %]
+														[% topic.alttext %]
+													[% END %]
+												</LI>
+											[% END %]
+										</UL>
+									[% END %]
 								</UL>
 							[% END %]
 						[% END %]
@@ -71,4 +84,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: hierarchy;topics;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: hierarchy;topics;default,v 1.4 2003/03/27 22:25:45 brian Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.77 2003/03/25 18:27:06 brian Exp $
+# $Id: Environment.pm,v 1.78 2003/03/27 22:25:45 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -141,8 +141,8 @@ sub getCurrentMenu {
 		@menus = @{$cfg->{menus}{$menu}};
 	} else {
 		# Load menus direct from the database.
-		my $slashdb = getCurrentDB();
-		my $menus = $slashdb->getMenus();
+		my $reader = getObject('Slash::DB', { db_type => 'reader' });
+		my $menus = $reader->getMenus();
 
 		@menus = @{$menus->{$menu}} if exists $menus->{$menu};
 	}
@@ -1615,10 +1615,10 @@ my %last = (
 
 sub isDST {
 	my($region, $user, $unixtime, $off_set) = @_;
-	my $slashdb = getCurrentDB();
-	$user     ||= getCurrentUser();
 
-	my $regions = $slashdb->getDSTRegions;
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	$user     ||= getCurrentUser();
+	my $regions = $reader->getDSTRegions;
 
 	return 0 unless $region;
 	my $start = $regions->{$region}{start} or return 0;
@@ -2103,4 +2103,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.77 2003/03/25 18:27:06 brian Exp $
+$Id: Environment.pm,v 1.78 2003/03/27 22:25:45 brian Exp $

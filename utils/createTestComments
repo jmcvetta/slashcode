@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.13 2003/03/04 19:56:33 pudge Exp $
+# $Id: createTestComments,v 1.14 2003/03/27 22:25:45 brian Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -355,7 +355,7 @@ sub make_werds {
                 } else {
                         $new_werds = $werder->sentence;
                 }
-		if ($link_prob and rand(1) < $link_prob) {
+		if (1) {
 			my @new_werds = split / /, $new_werds;
 			my $a_href = q{<a href="} . $links[rand @links] . q{">} . (rand(1)<0.1?" ":"");
 			my $close_a = (rand(1)<0.1?" ":"") . "</a>";

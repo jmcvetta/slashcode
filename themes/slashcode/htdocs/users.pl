@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.114 2002/10/17 16:48:28 jamie Exp $
+# $Id: users.pl,v 1.115 2002/10/18 21:15:49 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1243,7 +1243,6 @@ sub tildeEd {
 		$section_descref->{$bid}{title} = $title;
 	}
 
-	my $tilded_customize_msg = getMessage('tilded_customize_msg');
 	my $tilded_box_msg = getMessage('tilded_box_msg');
 	$tilde_ed = slashDisplay('tildeEd', {
 		title			=> $title,

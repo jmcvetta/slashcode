@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: SOAP.pm,v 1.1 2002/12/06 19:23:37 pudge Exp $
+# $Id: SOAP.pm,v 1.2 2002/12/09 16:27:21 pudge Exp $
 
 package Slash::SOAP;
 
@@ -14,7 +14,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 =head1 NAME
 
@@ -52,6 +52,8 @@ sub returnError {
 	return $error || $Slash::SOAP::ERROR || 'Unknown error';
 }
 
+{
+my %loaded;
 
 # all these error messages will be put into templates later, don't worry ...
 sub handleMethod {
@@ -95,14 +97,21 @@ sub handleMethod {
 
 	return unless $self->validFormkey($class, $method, $data->{formkeys});
 
-	# this is temporary; we probably handle this differntly later
+	# attempt to load module ourselves
+	# exists $loaded{"$file.pm"} true if we TRIED to load,
+	# so we don't keep retrying on failure
 	(my $file = $class) =~ s|::|/|g;
-	eval "require $class" unless exists $INC{"$file.pm"};
+	if (!exists $loaded{"$file.pm"} && !exists $INC{"$file.pm"}) {
+		eval "require $class";
+		$loaded{"$file.pm"} = 1;
+	}
 
 	# all good!
 	return $newaction;
 }
+}
 
+# needs caching
 sub getClassMethod {
 	my($self, $class, $method) = @_;
 
@@ -164,4 +173,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: SOAP.pm,v 1.1 2002/12/06 19:23:37 pudge Exp $
+$Id: SOAP.pm,v 1.2 2002/12/09 16:27:21 pudge Exp $

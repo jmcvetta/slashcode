@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.224 2004/12/21 17:00:25 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.225 2005/02/01 20:44:52 tvroom Exp $
 #
 
 #
@@ -617,6 +617,7 @@ INSERT INTO vars (name, value, description) VALUES ('admin_story_lookahead_mainp
 INSERT INTO vars (name, value, description) VALUES ('admin_timeout','30','time in minutes before idle admin session ends');
 INSERT INTO vars (name, value, description) VALUES ('adminmail','admin@example.com','All admin mail goes here');
 INSERT INTO vars (name, value, description) VALUES ('adminmail_ban','admin@example.com','All admin mail about users being banned goes here');
+INSERT INTO vars (name, value, description) VALUES ('adminmail_check_replication', 0, 'Check replication if is caught up before starting adminmail');
 INSERT INTO vars (name, value, description) VALUES ('adminmail_mod','admin@example.com','All admin mail about moderation goes here');
 INSERT INTO vars (name, value, description) VALUES ('adminmail_post','admin@example.com','All admin mail about comment posting goes here');
 INSERT INTO vars (name, value, description) VALUES ('allow_anonymous','1','allow anonymous posters');

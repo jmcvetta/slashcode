@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.186 2005/01/26 04:59:49 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.187 2005/02/01 20:45:08 tvroom Exp $
 #
 
 #
@@ -1129,7 +1129,7 @@ CREATE TABLE users (
 	fakeemail varchar(75),
 	homepage varchar(100),
 	passwd char(32) DEFAULT '' NOT NULL,
-	sig varchar(160),
+	sig varchar(200),
 	seclev mediumint UNSIGNED DEFAULT '0' NOT NULL,	/* This is set to 0 as a safety factor */
 	matchname varchar(20),
 	newpasswd varchar(8),

@@ -138,7 +138,7 @@ __template__
 					<INPUT TYPE="checkbox" NAME="accesslist_proxy" [% accesslist.proxy | strip_attribute %]>&nbsp;Proxy &nbsp;
 				[% END %]
 				[% IF !useredit.nonuid %]
-					<-- INPUT TYPE="checkbox" NAME="accesslist_expired" [% accesslist.expired | strip_attribute %]&nbsp;Expired &nbsp; -->
+					<!-- INPUT TYPE="checkbox" NAME="accesslist_expired" [% accesslist.expired | strip_attribute %]&nbsp;Expired &nbsp; -->
 				[% END %]
 				<BR><INPUT TYPE="TEXT" SIZE="40" MAXLENGTH="255" NAME="accesslist_reason" VALUE="[% accesslist.reason | strip_attribute %]">
 				<BR>
@@ -241,4 +241,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.42 2003/03/24 16:02:30 jamie Exp $
+$Id: getUserAdmin;users;default,v 1.43 2003/03/28 01:33:33 jamie Exp $

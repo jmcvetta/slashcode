@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.94 2002/09/15 15:35:56 jamie Exp $
+# $Id: comments.pl,v 1.95 2002/09/17 03:41:57 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1450,7 +1450,8 @@ sub moderateCid {
 		# appropriate tables directly, to be atomic and all
 		# that good stuff.  Faster too. XXX - Jamie 2002/09/13
 		if ($comment->{uid} != $constants->{anonymous_coward_uid}) {
-			my $cuser = $slashdb->getUser($comment->{uid}, [ qw| downmods upmods karma | ]);
+			my $cuser = $slashdb->getUser($comment->{uid},
+				[ qw| downmods upmods karma tokens | ]);
 			my $newkarma = $cuser->{karma} + $val;
 			$cuser->{tokens}-- if $val < 0;
 			$cuser->{downmods}++ if $val < 0;

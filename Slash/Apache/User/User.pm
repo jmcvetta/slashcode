@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.89 2003/09/02 20:13:18 jamie Exp $
+# $Id: User.pm,v 1.90 2003/09/02 20:36:40 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -113,7 +113,8 @@ sub handler {
 		}
 
 		my $newpass;
-		if ($read_only) {
+		if ($read_only || !$tmpuid) {
+			# We know we can't log in, don't even try.
 			$uid = 0;
 		} else {
 			($uid, $newpass) = userLogin($tmpuid, $form->{upasswd});
@@ -159,8 +160,11 @@ sub handler {
 
 	} elsif ($cookies->{user} and $cookies->{user}->value) {
 		my($tmpuid, $password) = eatUserCookie($cookies->{user}->value);
-		($uid, my($cookpasswd)) =
-			$slashdb->getUserAuthenticate($tmpuid, $password);
+		my $cookpasswd;
+		if ($tmpuid && $tmpuid > 0 && $tmpuid != $constants->{anonymous_coward_uid}) {
+			($uid, $cookpasswd) =
+				$slashdb->getUserAuthenticate($tmpuid, $password);
+		}
 
 		if ($uid) {
 			# set cookie every time, in case session_login
@@ -334,14 +338,13 @@ sub authors {
 
 ########################################################
 sub userLogin {
-	my($uid, $passwd) = @_;
-	my $r = Apache->request;
+	my($uid_try, $passwd) = @_;
 	my $slashdb = getCurrentDB();
 
 	# Do we want to allow logins with encrypted passwords? -- pudge
 #	$passwd = substr $passwd, 0, 20;
 	my($uid, $cookpasswd, $newpass) =
-		$slashdb->getUserAuthenticate($uid, $passwd); #, 1
+		$slashdb->getUserAuthenticate($uid_try, $passwd); #, 1
 
 	if (!isAnon($uid)) {
 		setCookie('user', bakeUserCookie($uid, $cookpasswd),

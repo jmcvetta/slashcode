@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.445 2003/09/02 20:13:18 jamie Exp $
+# $Id: MySQL.pm,v 1.446 2003/09/02 20:36:40 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.445 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.446 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1577,7 +1577,7 @@ sub getUserAuthenticate {
 			$self->sqlUpdate('users', {
 				newpasswd	=> '',
 				passwd		=> $cryptpasswd
-			}, "uid=$uid_try_db");
+			}, "uid=$uid_try_q");
 			$newpass = 1;
 
 			$uid_verified = $pass[$UID];
@@ -1598,11 +1598,11 @@ sub getUserAuthenticate {
 ########################################################
 # Log a bad password in a login attempt.
 sub createBadPasswordLog {
-	my($uid, $password_wrong) = @_;
+	my($self, $uid, $password_wrong) = @_;
 	my $constants = getCurrentStatic();
 
 	# Failed login attempts as the anonymous coward don't count.
-	return if $uid == $constants->{anonymous_coward_uid};
+	return if !$uid || $uid == $constants->{anonymous_coward_uid};
 
 	# Bad passwords that don't come through the web,
 	# we don't bother to log.
@@ -1612,7 +1612,7 @@ sub createBadPasswordLog {
 	my $hostip = $r->connection->remote_ip;
 	my $subnet = $hostip;
 	$subnet =~ s/(\d+\.\d+\.\d+)\.\d+/$1\.0/;
-	$slashdb->sqlInsert("badpasswords", {
+	$self->sqlInsert("badpasswords", {
 		uid =>          $uid,
 		password =>     $password_wrong,
 		ip =>           $hostip,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $
+# $Id: Data.pm,v 1.6 2001/11/24 18:16:16 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -879,8 +879,14 @@ sub approveTag {
 	if ($tag =~ /^URL:(.+)$/is) {
 		my $url = fudgeurl($1);
 		return qq!<A HREF="$url">$url</A>!;
-	} elsif ($tag =~ /href\s*=(.+)$/is) {
-		my $url = fudgeurl($1);
+	} elsif ($tag =~ /href\s*=\s*(.+)$/is) {
+		my $url_raw = $1;
+		# Try to get a little closer to the URL we want, and in
+		# particular, don't strip '<a href="foo" target="bar">'
+		# to the URL 'footarget=bar'.
+		$url_raw = $1 if $url_raw =~ /^"([^"]+)"/;
+		$url_raw =~ s/\s+target=.+//;
+		my $url = fudgeurl($url_raw);
 		return qq!<A HREF="$url">!;
 	}
 
@@ -1740,4 +1746,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $
+$Id: Data.pm,v 1.6 2001/11/24 18:16:16 jamie Exp $

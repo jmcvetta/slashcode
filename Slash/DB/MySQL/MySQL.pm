@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.502 2004/02/03 21:29:12 tvroom Exp $
+# $Id: MySQL.pm,v 1.503 2004/02/04 17:41:54 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.502 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.503 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2053,19 +2053,23 @@ sub createUser {
 
 
 ########################################################
-# Do not like this method -Brian
 sub setVar {
 	my($self, $name, $value) = @_;
+	my $name_q = $self->sqlQuote($name);
+	my $retval;
 	if (ref $value) {
-		$self->sqlUpdate('vars', {
-			value		=> $value->{'value'},
-			description	=> $value->{'description'}
-		}, 'name=' . $self->sqlQuote($name));
+		my $update = { };
+		for my $k (qw( value description )) {
+			$update->{$k} = $value->{$k} if defined $value->{$k};
+		}
+		return 0 unless $update;
+		$retval = $self->sqlUpdate('vars', $update, "name=$name_q");
 	} else {
-		$self->sqlUpdate('vars', {
+		$retval = $self->sqlUpdate('vars', {
 			value		=> $value
-		}, 'name=' . $self->sqlQuote($name));
+		}, "name=$name_q");
 	}
+	return $retval;
 }
 
 ########################################################

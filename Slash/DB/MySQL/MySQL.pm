@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.327 2003/02/10 21:15:27 pater Exp $
+# $Id: MySQL.pm,v 1.328 2003/02/11 17:52:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.327 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.328 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7070,6 +7070,25 @@ sub sqlShowStatus {
 #
 #	return $newsid;
 #}
+
+
+########################################################
+sub DESTROY {
+	my($self) = @_;
+
+	# flush accesslog insert cache
+	if (@{$self->{_accesslog_insert_cache}}) {
+		$self->sqlDo("SET AUTOCOMMIT=0");
+		while (my $hr = shift @{$self->{_accesslog_insert_cache}}) {
+			$self->sqlInsert('accesslog', $hr, { delayed => 1 });
+		}
+		$self->sqlDo("commit");
+		$self->sqlDo("SET AUTOCOMMIT=1");
+	}
+
+	$self->SUPER::DESTROY; # up up up
+}
+
 
 1;
 

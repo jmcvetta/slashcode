@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.174 2002/07/03 23:57:04 brian Exp $
+# $Id: MySQL.pm,v 1.175 2002/07/05 18:14:14 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.174 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.175 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5291,10 +5291,10 @@ sub getSection {
 	my($self, $section, $value) = @_;
 	$section ||= getCurrentStatic('section');
 	my $answer = _genericGet({
-		table => 'sections',
-		table_prime => 'section',
-		arguments => [($self, $section, $value)],
-		col_table => { label => 'contained', table => 'sections_contained', table_index => 'container', key => 'section'},
+		table		=> 'sections',
+		table_prime	=> 'section',
+		arguments	=> [($self, $section, $value)],
+		col_table 	> { label => 'contained', table => 'sections_contained', table_index => 'container', key => 'section'},
 	});
 	return $answer;
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.2 2001/11/19 23:48:04 brian Exp $
+# $Id: Zoo.pm,v 1.3 2001/11/21 07:07:36 brian Exp $
 
 package Slash::Zoo;
 
@@ -10,12 +10,13 @@ use DBIx::Password;
 use Slash;
 use Slash::Utility;
 use Slash::DB::Utility;
+use Storable qw(thaw freeze);
 
 use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -67,7 +68,7 @@ sub _getOpposite {
 	my($self, $uid, $type) = @_;
 
 	my $people = $self->sqlSelectAll(
-		'people.person, nickname, journal_last_entry_date',
+		'people.uid, nickname, journal_last_entry_date',
 		'people, users',
 		"person = $uid AND type =\"$type\" AND users.uid = people.uid"
 	);
@@ -75,15 +76,23 @@ sub _getOpposite {
 }
 
 sub setFriend {
+	my($self, $uid) = @_;
 	_set(@_, 'friend');
 }
 
 sub setFoe {
+	my($self, $uid) = @_;
 	_set(@_, 'foe');
 }
 
 sub _set {
 	my($self, $uid, $person, $type) = @_;
+
+	# This is the incremental rebuild we do
+	my $slashdb = getCurrentDB();
+	my ($store, $bonus) = thaw($slashdb->getUser($uid, qw[people $type_bonus]));
+	$store->{$person} = $bonus;
+	$slasbdb->setUser($uid, { people => freeze($store) });
 
 	$self->sqlDo("REPLACE INTO people (uid,person,type) VALUES ($uid, $person, $type)");
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.9 2002/03/14 13:57:23 jamie Exp $
+# $Id: Stats.pm,v 1.10 2002/03/18 21:22:41 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -149,6 +149,39 @@ sub countCommentsDaily {
 	);
 
 	return $comments; 
+}
+
+########################################################
+sub countDailyComments {
+	my($self, $yesterday) = @_;
+	$self->sqlSelect("count(*)", "accesslog",
+		"op='comments' AND BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59' GROUP BY op");
+}
+
+########################################################
+sub countDailyArticles {
+	my($self, $yesterday) = @_;
+	$self->sqlSelect("count(*)", "accesslog",
+		"op='comments' AND BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
+	 'GROUP BY op');
+}
+
+########################################################
+sub countDailyCommentsByDistinctIPID {
+	my($self, $yesterday) = @_;
+	$self->sqlSelect("count(*)", "accesslog",
+		"op='comments' AND BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'", 
+		'GROUP BY op',
+		{distinct => 1});
+}
+
+########################################################
+sub countDailyArticlesByDistinctIPID {
+	my($self, $yesterday) = @_;
+	$self->sqlSelect("count(*)", "accesslog",
+		"op='comments' AND BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
+		'GROUP BY op',
+		{distinct => 1});
 }
 
 ########################################################

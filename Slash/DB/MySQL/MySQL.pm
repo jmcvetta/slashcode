@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.511 2004/02/12 19:47:22 pudge Exp $
+# $Id: MySQL.pm,v 1.512 2004/02/13 17:48:47 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.511 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.512 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1361,6 +1361,8 @@ sub createAccessLog {
 	my $duration;
 	if ($Slash::Apache::User::request_start_time) {
 		$duration = Time::HiRes::time - $Slash::Apache::User::request_start_time;
+		$Slash::Apache::User::request_start_time = 0;
+		$duration = 0 if $duration < 0; # sanity check
 	} else {
 		$duration = 0;
 	}
@@ -4009,13 +4011,20 @@ sub getAbuses {
 		subnetid => "subnetid = '$id'",
 	};
 
-	$self->sqlSelectAll('ts,uid,ipid,subnetid,pagename,reason', 'abusers',  "$where->{$key}", 'ORDER by ts DESC');
+	$self->sqlSelectAll('ts,uid,ipid,subnetid,pagename,reason',
+		'abusers',  "$where->{$key}", 'ORDER by ts DESC');
 
 }
 
 ##################################################################
 # grabs the number of rows in the last X rows of accesslog, in order
 # to get an idea of recent hits
+# If called wanting a scalar, just returns the total number of
+# hits.
+# If called wanting an array, returns an array whose first
+# item is the total number of hits, and whose next 5 items
+# (indexed 1 thru 5 of course) are the number of hits with
+# status codes 1xx, 2xx, 3xx, 4xx and 5xx respectively.
 sub countAccessLogHitsInLastX {
 	my($self, $field, $check, $x) = @_;
 	$x ||= 10000;
@@ -4035,7 +4044,23 @@ sub countAccessLogHitsInLastX {
 
 	$where .= "AND id BETWEEN $min AND $max";
 
-	return $self->sqlCount("accesslog", $where);
+	if (wantarray) {
+		my $hr = $self->sqlSelectAllHashref(
+			"statusxx",
+			"FLOOR(status/100)*100 AS statusxx, COUNT(*) AS c",
+			"accesslog",
+			$where,
+			"GROUP BY statusxx");
+		my @retval = ( 0 );
+		for my $statusxx (qw( 100 200 300 400 500 )) {
+			my $c = $hr->{$statusxx}{c} || 0;
+			$retval[0] += $c;
+			push @retval, $c;
+		}
+		return @retval;
+	} else {
+		return $self->sqlCount("accesslog", $where);
+	}
 }
 
 ##################################################################

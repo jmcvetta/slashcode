@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.21 2004/01/27 23:06:54 pudge Exp $
+# $Id: Banlist.pm,v 1.22 2004/02/13 17:48:47 jamiemccarthy Exp $
 
 package Slash::Apache::Banlist;
 
@@ -16,12 +16,14 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
 
 	return DECLINED unless $r->is_main;
+
+	$Slash::Apache::User::request_start_time ||= Time::HiRes::time;
 
 	# Ok, this will make it so that we can reliably use Apache->request
 	Apache->request($r);
@@ -51,6 +53,7 @@ print STDERR scalar(localtime) . " Banlist.pm $$ $hostip " . $r->method . " " . 
 	if ($banlist->{$cur_ipid} || $banlist->{$cur_subnetid}) {
 		# Send a special "you are banned" page if the user is
 		# hitting RSS.
+print STDERR scalar(localtime) . " Banlist.pm $$ $hostip " . $r->method . " " . $r->uri . " returning FORBIDDEN for ipid '$banlist->{$cur_ipid}'\n";
 		return _send_rss($r, 'ban') if $is_rss;
 		# Send our usual "you are banned" page, whether the user
 		# is on palm or not.  It's mostly text so palm users

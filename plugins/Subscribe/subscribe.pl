@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.24 2003/05/12 18:21:40 pudge Exp $
+# $Id: subscribe.pl,v 1.25 2003/05/13 01:20:33 jamie Exp $
 
 use strict;
 
@@ -184,10 +184,10 @@ sub makepayment {
 	}
 
 	my @keys = qw( uid email payment_gross payment_net
-		method transaction_id data );
+		method transaction_id data memo );
 	my $payment = { };
 	for my $key (@keys) {
-		$payment->{$key} = $form->{$key};
+		$payment->{$key} = $form->{$key} || '';
 	}
 	if (!defined($payment->{payment_net})) {
 		$payment->{payment_net} = $payment->{payment_gross};

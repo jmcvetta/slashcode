@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.23 2003/05/06 22:28:10 brian Exp $
+# $Id: Subscribe.pm,v 1.24 2003/05/13 01:20:33 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class) = @_;
@@ -243,6 +243,7 @@ sub convertPagesToDollars {
 #	transaction_id	(optional) any ID you'd use to identify this payment
 #	method		(optional) string representing payment method
 #	data		(optional) any additional data
+#	memo		(optional) subscriber's memo
 sub insertPayment {
 	my($self, $payment) = @_;
 	my $slashdb = getCurrentDB();

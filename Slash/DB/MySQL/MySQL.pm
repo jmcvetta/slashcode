@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.414 2003/06/12 18:35:49 jamie Exp $
+# $Id: MySQL.pm,v 1.415 2003/06/16 17:14:40 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.414 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.415 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6305,7 +6305,7 @@ sub getTopics {
 
 ########################################################
 sub getTopicImage {
-	my $answer = _genericgetcache({
+	my $answer = _genericGetCache({
 		table		=> 'topic_images',
 		table_prime	=> 'id',
 		arguments	=> \@_,

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.16 2000/06/10 20:53:58 cbwood Exp $
+#  $Id: Slash.pm,v 1.17 2000/06/10 21:17:35 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -2280,6 +2280,8 @@ EOT
 ########################################################
 sub dispStory {
 	my($S, $A, $T, $full) = @_;
+	my($rootdir) = $I{rootdir};
+	$rootdir .= '/' if $rootdir;
 	my $title = $S->{title};
 	if (!$full && index($S->{title}, ':') == -1
 		&& $S->{section} ne $I{defaultsection}
@@ -2288,7 +2290,7 @@ sub dispStory {
 		# Need Header
 		my $SECT = getSection($S->{section});
 		$title =
-			"<A HREF=\"$S->{section}/\"><FONT COLOR=\"$I{fg}->[0]\">$SECT->{title}</FONT></A>: $S->{title}";
+			"<A HREF=\"$rootdir$S->{section}/\"><FONT COLOR=\"$I{fg}->[3]\">$SECT->{title}</FONT></A>: $S->{title}";
 	}
 
 	titlebar($I{titlebar_width}, $title);

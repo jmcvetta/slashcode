@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.30 2001/01/16 19:30:11 patg Exp $
+#  $Id: comments.pl,v 1.31 2001/01/22 12:30:52 patg Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -542,8 +542,8 @@ EOT
 	# replace with spaces, easier to run compress test on
 	my $compress_comment = $I{F}{postercomment};
         $compress_comment =~ s/<br><br>/\n/ig;
-        $compress_comment =~ s/<p>/\s/ig;
-        $compress_comment =~ s/\&nbsp\;/\s/ig;  
+        $compress_comment =~ s/<p>/ /ig;
+        $compress_comment =~ s/\&nbsp\;/ /ig;  
 
 	# Ok, one list ditch effort to skew out the trolls!
 	if (length($compress_comment) >= 10) {

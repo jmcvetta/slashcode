@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.199 2005/01/27 15:51:39 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.200 2005/02/01 20:24:30 tvroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -14,7 +14,7 @@ use vars qw( %task $me );
 # GMT if you installed everything correctly.  So 6:07 AM GMT is a good
 # sort of midnightish time for the Western Hemisphere.  Adjust for
 # your audience and admins.
-$task{$me}{timespec} = '30 3 * * *';
+$task{$me}{timespec} = '50 4 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, dailyStuff can wait
 $task{$me}{resource_locks} = { log_slave => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;

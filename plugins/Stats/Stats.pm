@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.164 2005/01/31 15:56:54 tvroom Exp $
+# $Id: Stats.pm,v 1.165 2005/02/01 20:24:26 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -54,7 +54,7 @@ sub new {
 		if (getCurrentStatic('adminmail_check_replication')) {
 			my $wait_sec = 600;
 			my $num_try = 0;
-			my $max_tries = 20;
+			my $max_tries = 12;
 			
 			my $caught_up = 0;
 			while (!$caught_up) {
@@ -2005,4 +2005,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.164 2005/01/31 15:56:54 tvroom Exp $
+$Id: Stats.pm,v 1.165 2005/02/01 20:24:26 tvroom Exp $

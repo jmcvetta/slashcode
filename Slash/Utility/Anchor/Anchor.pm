@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.29 2002/09/30 14:46:01 pater Exp $
+# $Id: Anchor.pm,v 1.30 2002/10/01 20:07:12 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -110,7 +110,7 @@ sub header {
 	unless ($form->{ssi}) {
 		my $r = Apache->request;
 
-		$r->content_type('text/html');
+		$r->content_type($constants->{content_type_webpage} || 'text/html');
 
 		# Caching used to be Cache-Control: private but that doesn't
 		# seem to be correct; let's hope switching to no-cache
@@ -243,10 +243,11 @@ The 'html-redirect' template block.
 
 sub redirect {
 	my($url) = @_;
+	my $constants = getCurrentStatic();
 	$url = url2abs($url);
 	my $r = Apache->request;
 
-	$r->content_type('text/html');
+	$r->content_type($constants->{content_type_webpage} || 'text/html');
 	$r->header_out(Location => $url);
 	$r->status(302);
 	$r->send_http_header;
@@ -523,4 +524,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.29 2002/09/30 14:46:01 pater Exp $
+$Id: Anchor.pm,v 1.30 2002/10/01 20:07:12 jamie Exp $

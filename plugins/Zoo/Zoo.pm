@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.12 2002/02/14 20:45:13 pudge Exp $
+# $Id: Zoo.pm,v 1.13 2002/03/28 21:36:10 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -67,7 +67,8 @@ sub getAll {
 	my $people = $self->sqlSelectAll(
 		'users.uid, nickname',
 		'people, users',
-		"people.uid = $uid AND person = users.uid"
+		"people.uid = $uid AND person = users.uid",
+		" ORDER BY nickname "
 	);
 	return $people;
 }
@@ -93,7 +94,8 @@ sub _get {
 	my $people = $self->sqlSelectAll(
 		'users.uid, nickname, journal_last_entry_date',
 		'people, users',
-		"people.uid = $uid AND type =\"$type\" AND person = users.uid"
+		"people.uid = $uid AND type =\"$type\" AND person = users.uid",
+		" ORDER BY nickname "
 	);
 	return $people;
 }
@@ -131,7 +133,8 @@ sub _getOpposite {
 	my $people = $self->sqlSelectAll(
 		'people.uid, nickname, journal_last_entry_date',
 		'people, users',
-		"person = $uid AND type =\"$type\" AND users.uid = people.uid"
+		"person = $uid AND type =\"$type\" AND users.uid = people.uid",
+		" ORDER BY nickname "
 	);
 	return $people;
 }

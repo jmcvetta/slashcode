@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.1 2000/04/12 21:27:18 capttofu Exp $
+#  $Id: pollBooth.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -114,7 +114,7 @@ EOT
 		$x++;
 		print <<EOT;
 	<INPUT TYPE="text" NAME="aid$x" VALUE="" SIZE="40">
-	<INPUT TYPE="text" NAME="votes$x" VALUE="0" SIZE="5"><BR>";
+	<INPUT TYPE="text" NAME="votes$x" VALUE="0" SIZE="5"><BR>
 EOT
 	}
 
@@ -213,7 +213,7 @@ EOT
 	while (my($answer, $votes) = $a->fetchrow) {
 		my $imagewidth	= $maxvotes ? int (350 * $votes / $maxvotes) + 1 : 0;
 		my $percent	= $totalvotes ? int (100 * $votes / $totalvotes) : 0;
-		Slash::pollItem($answer, $imagewidth, $votes, $percent);
+		pollItem($answer, $imagewidth, $votes, $percent);
 	}
 
 	$a->finish;

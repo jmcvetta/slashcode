@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: article.pl,v 1.1 2000/04/12 21:27:18 capttofu Exp $
+#  $Id: article.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -85,7 +85,7 @@ sub main {
 	# Display this section's Section Block (if Found)
 	fancybox(200, $SECT->{title}, getblock($SECT->{section}));
 
-	print qq!</TD></TR><TR><TD COLSPAN="2">\n!;
+	print qq!</TD></TR><TR><TD COLSPAN="3">\n!;
 
 	printComments($I{F}{sid});
 	writelog($SECT->{section}, $I{F}{sid}) unless $I{F}{ssi};

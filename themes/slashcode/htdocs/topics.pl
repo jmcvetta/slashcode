@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: topics.pl,v 1.1 2000/04/12 21:27:19 capttofu Exp $
+#  $Id: topics.pl,v 1.2 2000/05/16 20:43:34 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -113,7 +113,7 @@ sub listTopics {
 					 FROM topics
 				     ORDER BY alttext");
 
-	titlebar("99%", "Current Topic Catagories");
+	titlebar("99%", "Current Topic Categories");
 	my $x = 0;
 	$cursor->execute;
 

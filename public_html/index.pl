@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: index.pl,v 1.1 2000/04/12 21:27:18 capttofu Exp $
+#  $Id: index.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
 ###############################################################################
 # pre stories cache update
 use strict;
@@ -55,8 +55,8 @@ sub main {
 	header($title, $SECT->{section});
 	checkForM2(); # if $I{U}{uid}==1;
 		
-	my $block = Slash::getEvalBlock("index");
-	my $execme = Slash::prepEvalBlock($block);
+	my $block = getEvalBlock("index");
+	my $execme = prepEvalBlock($block);
 
 	eval $execme;
 

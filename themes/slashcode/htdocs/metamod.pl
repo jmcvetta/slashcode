@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.1 2000/04/12 21:27:18 capttofu Exp $
+#  $Id: metamod.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -189,7 +189,7 @@ EOT
 	
 	$I{U}{noscores} = 1; # Keep Things Impartial
 
-	my $c=sqlSelectMany("comments.cid,".Slash::getDateFormat("date","time").",
+	my $c = sqlSelectMany("comments.cid," . getDateFormat("date","time") . ",
 		subject,comment,nickname,homepage,fakeemail,realname,
 		users.uid as uid,sig,comments.points as points,pid,comments.sid as sid,
 		moderatorlog.id as id,title,moderatorlog.reason as modreason,
@@ -261,7 +261,7 @@ sub isEligible {
 		"uid=$I{U}{uid}"
 	);
 
-	if ($lastmm == 0) {
+	if ($lastmm eq "0") {
 		print "You have recently meta moderated.";
 		return 0;
 	}

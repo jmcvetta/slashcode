@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.274 2002/12/11 04:34:46 jamie Exp $
+# $Id: MySQL.pm,v 1.275 2002/12/12 21:50:34 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.274 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.275 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -104,7 +104,8 @@ my %descriptions = (
 				} else {
 					$where = " section = " . $_[0]->sqlQuote($SECT->{section});
 				}
-				$_[0]->sqlSelectMany('topics.tid,topics.alttext', 'topics, section_topics', "$where AND section_topics.tid=topics.tid") 
+				$where .= " AND " if $where;
+				$_[0]->sqlSelectMany('topics.tid,topics.alttext', 'topics, section_topics', "$where section_topics.tid=topics.tid") 
 			},
 
 	'topics_section_type'
@@ -2447,7 +2448,7 @@ sub getPollQuestionList {
 		if $other->{exclude_section} && @{$other->{section}};
 
 	my $questions = $self->sqlSelectAll(
-		'qid, question, date',
+		'qid, question, date, voters',
 		'pollquestions',
 		$where,
 		"ORDER BY date DESC LIMIT $offset,20"

@@ -26,6 +26,9 @@ __template__
 [% CASE 'mailPassword_email_title' %]
 	[% constants.sitename %] user password for [% nickname %]
 
+[% CASE 'reset_acct_email_title' %]
+	Verify your [% constants.sitename %] account for user [% nickname %]
+
 [% CASE 'userInfo_main_title' %]
 	Welcome back [% nick %] ([% uid %])
 
@@ -82,4 +85,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: titles;users;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: titles;users;default,v 1.10 2004/05/11 18:31:53 tvroom Exp $

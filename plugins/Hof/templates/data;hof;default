@@ -18,6 +18,7 @@ __template__
 [% SWITCH value %]
 
 [% CASE 'head' %]
+	[% returnme.data_constant = 1 %]
 	[% constants.sitename %]: Hall of Fame
 
 [% END %]
@@ -25,4 +26,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;hof;default,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: data;hof;default,v 1.6 2003/08/06 04:50:12 jamie Exp $

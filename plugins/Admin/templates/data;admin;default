@@ -18,9 +18,11 @@ __template__
 [% SWITCH value %]
 
 [% CASE 'keywordDelete-message' %]
+	[% returnme.data_constant = 1 %]
 	Keyword has been deleted
 
 [% CASE 'keywordSave-message' %]
+	[% returnme.data_constant = 1 %]
 	Keyword has been saved
 
 [% CASE 'varSave-message' %]
@@ -110,4 +112,4 @@ Saved [% form.thisname %]<BR>
 __seclev__
 10000
 __version__
-$Id: data;admin;default,v 1.5 2003/03/04 19:07:58 pudge Exp $
+$Id: data;admin;default,v 1.6 2003/08/06 04:50:12 jamie Exp $

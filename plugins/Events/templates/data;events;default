@@ -19,6 +19,7 @@ __template__
 [% SWITCH value %]
 
 [% CASE 'notfound' %]
+	[% returnme.data_constant = 1 %]
 	That was not found.
 
 [% END %]
@@ -26,4 +27,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;events;default,v 1.1 2003/06/20 15:19:44 jamie Exp $
+$Id: data;events;default,v 1.2 2003/08/06 04:50:12 jamie Exp $

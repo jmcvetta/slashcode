@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.194 2004/01/27 18:39:23 tvroom Exp $
+# $Id: Slash.pm,v 1.195 2004/02/10 05:27:05 cowboyneal Exp $
 
 package Slash;
 
@@ -107,8 +107,10 @@ sub selectComments {
 	# and such.
 	for my $C (@$thisComment) {
 		# By setting pid to zero, we remove the threaded
-		# relationship between the comments
+		# relationship between the comments. Don't ignore threads
+		# in forums, or when viewing a single comment (cid > 0)
 		$C->{pid} = 0 if $user->{commentsort} > 3
+			&& $cid == 0
 			&& $user->{mode} ne 'parents'; # Ignore Threads
 
 		# I think instead we want something like this... (not this

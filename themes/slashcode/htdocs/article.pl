@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.34 2003/03/06 03:54:59 jamie Exp $
+# $Id: article.pl,v 1.35 2003/03/06 03:56:30 jamie Exp $
 
 use strict;
 use Slash;
@@ -126,14 +126,6 @@ sub main {
 	} else {
 		writeLog($form->{sid});
 	}
-}
-
-sub getError {
-	my($value, $hashref, $nocomm) = @_;
-	$hashref ||= {};
-	$hashref->{value} = $value;
-	return slashDisplay('errors', $hashref,
-		{ Return => 1, Nocomm => $nocomm });
 }
 
 createEnvironment();

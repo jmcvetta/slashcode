@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.11 2002/06/02 14:33:20 jamie Exp $
+# $Id: System.pm,v 1.12 2002/06/14 00:18:39 jamie Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -321,6 +321,7 @@ sub prog2file {
 
 	# Two ways of handling data from child programs yet we maintain
 	# backwards compatibility.
+	# Need an alarm() around these.
 	if (! $handle_err) {
 		$data = `$exec`;
 	} else {
@@ -398,4 +399,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.11 2002/06/02 14:33:20 jamie Exp $
+$Id: System.pm,v 1.12 2002/06/14 00:18:39 jamie Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.158 2004/08/06 14:27:20 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.159 2004/08/06 22:21:36 pudge Exp $
 #
 
 #
@@ -1000,6 +1000,20 @@ CREATE TABLE topic_nexus_extras (
 	type ENUM('text', 'list'),
 	PRIMARY KEY (extras_id),
 	UNIQUE tid_keyword (tid, extras_keyword)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'topic_param'
+#
+
+DROP TABLE IF EXISTS topic_param;
+CREATE TABLE topic_param (
+	param_id mediumint UNSIGNED NOT NULL auto_increment,
+	tid SMALLINT UNSIGNED NOT NULL,
+	name varchar(32) DEFAULT '' NOT NULL,
+	value text DEFAULT '' NOT NULL,
+	UNIQUE topic_key (tid,name),
+	PRIMARY KEY (param_id)
 ) TYPE=InnoDB;
 
 #

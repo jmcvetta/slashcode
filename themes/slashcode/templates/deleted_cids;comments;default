@@ -16,7 +16,7 @@ __name__
 deleted_cids
 __template__
 The following
-[% IF count > 1 %][% count %] comments[% ELSE %]comment[% END %] were deleted from [% sid%]:
+[% IF count > 1 %][% count %] comments were[% ELSE %]comment was[% END %] deleted from [% sid%]:
 [% FOR c = comments_deleted %]
 #[% c %][% UNLESS c == comments_deleted.last %], [% END %]
 [% END %]
@@ -24,4 +24,4 @@ The following
 __seclev__
 1000
 __version__
-$Id: deleted_cids;comments;default,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: deleted_cids;comments;default,v 1.6 2003/12/20 06:36:19 jamie Exp $

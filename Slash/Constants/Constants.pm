@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.6 2002/01/08 17:22:08 pudge Exp $
+# $Id: Constants.pm,v 1.7 2002/01/10 03:57:30 brian Exp $
 
 package Slash::Constants;
 
@@ -30,7 +30,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw();
 
 =head2 messages
@@ -124,13 +124,17 @@ These constants are used to define different constants in the people system.
 	FRIEND
 	FOE
 	FOF
+	EOF
 
 =cut
 
 my @people = qw(
 	FRIEND
 	FOE
+	FAN
+	FREAK
 	FOF
+	EOF
 );
 
 @EXPORT_OK = (@messages, @web, @strip, @people);
@@ -181,8 +185,11 @@ BEGIN {
 
 	# people
 	use constant FRIEND	=> 1;
+	use constant FREAK	=> 1;
+	use constant FAN	=> 1;
 	use constant FOE	=> 2;
 	use constant FOF	=> 3;
+	use constant EOF	=> 4;
 }
 
 1;
@@ -201,4 +208,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.6 2002/01/08 17:22:08 pudge Exp $
+$Id: Constants.pm,v 1.7 2002/01/10 03:57:30 brian Exp $

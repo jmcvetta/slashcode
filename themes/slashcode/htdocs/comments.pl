@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.85 2002/07/24 15:52:09 pudge Exp $
+# $Id: comments.pl,v 1.86 2002/07/26 18:24:09 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -441,10 +441,6 @@ sub commentIndexUserCreated {
 			$back = -1;
 		}
 
-		my $title = getData('user_discussions');
-
-		$title .= ": " . $slashdb->getTopic($form->{tid}, 'alttext') . " ($form->{tid})" if $form->{tid};
-	
 		slashDisplay('udiscuss_list', {
 			discussions	=> $discussions,
 			'label'		=> $label,

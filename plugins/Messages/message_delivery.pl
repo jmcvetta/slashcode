@@ -2,11 +2,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.3 2002/01/08 17:22:09 pudge Exp $
+# $Id: message_delivery.pl,v 1.4 2002/06/16 13:48:19 jamie Exp $
 
 use strict;
 use File::Spec::Functions;
 use Slash::Utility;
+use Slash::Constants ':slashd';
 
 my $me = 'message_delivery.pl';
 
@@ -14,6 +15,7 @@ use vars qw( %task );
 
 $task{$me}{timespec} = '5-59/5 * * * *';
 $task{$me}{timespec_panic_1} = '5-59/15 * * * *'; # less often
+$task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 

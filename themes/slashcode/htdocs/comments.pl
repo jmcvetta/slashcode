@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.126 2003/03/14 19:08:20 pudge Exp $
+# $Id: comments.pl,v 1.127 2003/04/17 16:55:18 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -514,8 +514,8 @@ sub commentIndexUserCreated {
 	} else {
 		print getData('nodiscussions');
 		slashDisplay('edit_comment', {
-			newdiscussion => 1,
-			label => $label,
+			newdiscussion	=> 1,
+			label		=> $label,
 		}) if $user->{seclev} >= $constants->{discussion_create_seclev};
 	}
 }

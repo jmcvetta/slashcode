@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.37 2002/03/04 17:38:22 pudge Exp $
+# $Id: journal.pl,v 1.38 2002/03/05 01:49:50 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -749,9 +749,8 @@ sub get_entry {
 	my $entry = $journal->get($id);
 	return unless $entry->{id};
 
-	my $nickname = $slashdb->getUser($entry->{uid}, 'nickname');
-
-	$entry->{url} = "$constants->{absolutedir}/~" . fixparam($nickname) . "/journal/$entry->{id}";
+	$entry->{nickname} = $slashdb->getUser($entry->{uid}, 'nickname');
+	$entry->{url} = "$constants->{absolutedir}/~" . fixparam($entry->{nickname}) . "/journal/$entry->{id}";
 	$entry->{discussion_id} = delete $entry->{'discussion'};
 	$entry->{discussion_url} = "$constants->{absolutedir}/comments.pl?sid=$entry->{discussion_id}"
 		if $entry->{discussion_id};

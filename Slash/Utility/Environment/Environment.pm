@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.98 2003/07/15 23:35:17 jamie Exp $
+# $Id: Environment.pm,v 1.99 2003/08/05 17:46:49 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1273,10 +1273,14 @@ sub prepareUser {
 
 	# This is here so when user selects "6 ish" it
 	# "posted by xxx around 6 ish" instead of "on 6 ish"
+	## this does not call Slash::getData right now because
+	## it is just so early in the code that the AC user does
+	## not even exist yet in static mode, and it causes problems
+	## with slashDisplay.  -- pudge
 	if ($user->{'format'} eq '%l ish') {	# %i
-		$user->{aton} = 'around'; # getData('atonish');
+		$user->{aton} = 'around'; # Slash::getData('atonish');
 	} else {
-		$user->{aton} = 'on'; # getData('aton');
+		$user->{aton} = 'on'; # Slash::getData('aton');
 	}
 
 	if ($uri =~ m[^/$]) {
@@ -2232,4 +2236,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.98 2003/07/15 23:35:17 jamie Exp $
+$Id: Environment.pm,v 1.99 2003/08/05 17:46:49 pudge Exp $

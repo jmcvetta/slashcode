@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.81 2003/05/16 19:24:58 pudge Exp $
+# $Id: submit.pl,v 1.82 2003/05/23 20:42:20 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -527,7 +527,7 @@ sub saveSub {
 		title		=> 'Saving',
 		width		=> '100%',
 		missingemail	=> length($form->{email}) < 3,
-		anonsubmit	=> isAnon($uid), #length($form->{name}) < 3,
+		anonsubmit	=> isAnon($uid) && length($form->{name}) < 3 && length($form->{email}) < 3,
 	});
 	yourPendingSubmissions(@_);
 

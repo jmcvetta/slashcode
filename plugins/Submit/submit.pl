@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.34 2000/11/29 20:19:57 pudge Exp $
+#  $Id: submit.pl,v 1.35 2000/12/01 21:00:24 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -142,7 +142,7 @@ sub previewForm {
 		sqlSelect("subid,email,name,subj,tid,story,time,comment",
 		"submissions", "subid=$subid_dbi");
 
-	$introtext = processSub($email, $name, $introtext);
+	($introtext, $email) = processSub($email, $name, $introtext);
 
 	if ($comment && $admin) {
 		# This probably should be a block.
@@ -588,7 +588,7 @@ sub processSub {
 
 	}
 
-	return $introtext;
+	return wantarray ? ($introtext, $email) : $introtext;
 }
 
 #################################################################

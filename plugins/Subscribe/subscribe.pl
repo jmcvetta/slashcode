@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.11 2002/03/01 16:15:47 jamie Exp $
+# $Id: subscribe.pl,v 1.12 2002/03/01 16:58:14 jamie Exp $
 
 use strict;
 
@@ -38,6 +38,12 @@ sub main {
 			seclev		=> 1,
 		},
 	};
+
+	if ($user->{is_anon}) {
+		my $rootdir = getCurrentStatic('rootdir');
+		redirect("$rootdir/users.pl");
+		return;
+	}
 
 	$op = 'default' unless $ops->{$op};
 

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.57 2000/12/18 13:07:15 pudge Exp $
+#  $Id: Slash.pm,v 1.58 2000/12/18 13:29:45 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1423,7 +1423,7 @@ sub fixurl {
 	# here from submit.pl changes (different number of
 	# calling functions), then this will break; that's
 	# why it is temporary -- pudge
-	my $stripauth = (caller(4))[1] =~ /submit.pl/;
+	my $stripauth = (caller(4))[1] =~ /submit\.pl/;
 
 	if ($parameter) {
 		$url =~ s/([^$URI::unreserved])/$URI::Escape::escapes{$1}/oge;

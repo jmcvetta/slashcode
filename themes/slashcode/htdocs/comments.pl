@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.187 2004/04/02 00:43:05 pudge Exp $
+# $Id: comments.pl,v 1.188 2004/04/12 19:51:22 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1236,11 +1236,11 @@ sub submitComment {
 	my $pts = 0;
 	my $karma_bonus = 0;
 	my $subscriber_bonus = 0;
-
+	my $tweak = 0;
 	if (!$user->{is_anon} && !$form->{postanon}) {
 		$pts = $user->{defaultpoints};
-		$pts-- if $user->{karma} < 0;
-		$pts-- if $user->{karma} < $constants->{badkarma};
+		$tweak-- if $user->{karma} < 0;
+		$tweak-- if $user->{karma} < $constants->{badkarma};
 		# Enforce proper ranges on comment points.
 		my($minScore, $maxScore) =
 			($constants->{comment_minscore}, $constants->{comment_maxscore});
@@ -1273,6 +1273,8 @@ sub submitComment {
 		subnetid	=> $user->{subnetid},
 		uid		=> $posters_uid,
 		points		=> $pts,
+		tweak		=> $tweak,
+		tweak_orig	=> $tweak,
 		karma_bonus	=> $karma_bonus ? 'yes' : 'no',
 	};
 	if ($constants->{plugin}{Subscribe}) {

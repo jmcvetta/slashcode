@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.761 2005/02/01 20:40:36 tvroom Exp $
+# $Id: upgrades,v 1.762 2005/02/02 23:20:25 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2841,3 +2841,5 @@ INSERT INTO vars (name, value, description) VALUES ('adminmail_check_replication
 DROP TABLE IF EXISTS accesslog_build_unique_host_addr;
 
 ALTER TABLE users MODIFY sig varchar(200);
+
+# End of T_2_5_0_46, Start of T_2_5_0_47 - 2005/02/02

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.7 2004/08/24 23:47:33 pudge Exp $
+# $Id: PopupTree.pm,v 1.8 2004/09/09 15:17:24 tvroom Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -76,7 +76,13 @@ sub getPopupTree {
 	for my $tid (map  { $_->[0] }
 	             sort { $a->[1] cmp $b->[1] }
 	             map  { [ $_, lc $tree->{$_}{textname} ] } keys %$tree) {
-		next unless $tid; # just in case someone added a bad tid
+		next unless $tid && $tid < 10000; # just in case someone added a bad tid.  
+		                                  # We also filter out tids 10000
+						  # Currently these are special tids in the
+						  # system that we don't want available in
+						  # the editor.  Should probably make this
+						  # more configurable with a var or something
+						  # in the future.
 		my $top = $tree->{$tid};
 		@{$topics{$tid}}{qw(value label height width image open)} = (
 			$tid, @{$top}{qw(textname height width image)},
@@ -157,4 +163,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.7 2004/08/24 23:47:33 pudge Exp $
+$Id: PopupTree.pm,v 1.8 2004/09/09 15:17:24 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Dilemma.pm,v 1.5 2004/09/09 17:02:45 jamiemccarthy Exp $
+# $Id: Dilemma.pm,v 1.6 2004/10/16 15:38:56 jamiemccarthy Exp $
 
 package Slash::Dilemma;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # ZOIDBERG: Friends! Help! A guinea pig tricked me!
 
@@ -47,7 +47,7 @@ sub getDilemmaSpeciesInfo {
 	my $species = $self->getDilemmaSpecies();
 	my $count = $self->sqlSelectAllHashref(
 		[qw( dsid alive )],
-		"dsid, alive, COUNT(*) AS c",
+		"dsid, alive, COUNT(*) AS c, SUM(food) AS sumfood",
 		"dilemma_agents",
 		"",
 		"GROUP BY dsid, alive");
@@ -55,6 +55,7 @@ sub getDilemmaSpeciesInfo {
 	for my $dsid (keys %$species) {
 		$species_info->{$dsid}{name} = $species->{$dsid}{name};
 		$species_info->{$dsid}{code} = $species->{$dsid}{code};
+		$species_info->{$dsid}{sumfood} = $species-{$dsid}{sumfood};
 		$species_info->{$dsid}{alivecount} = $count->{$dsid}{yes}{c} || 0;
 		$species_info->{$dsid}{totalcount} = ($count->{$dsid}{yes}{c}
 			+ $count->{$dsid}{no}{c}) || 0;
@@ -235,15 +236,21 @@ sub doTickHousekeeping {
 	}
 	my $last_tick = $self->getDilemmaInfo()->{last_tick};
 
-	# Write count info for the species into dilemma_stats.
+	# Write count and food info for the species into dilemma_stats.
 	my $species = $self->getDilemmaSpeciesInfo();
 	for my $dsid (keys %$species) {
-		# Should this be an sqlReplace instead?
+		# Should these be sqlReplace instead?
 		$self->sqlInsert("dilemma_stats", {
 			tick => $last_tick,
 			dsid => $dsid,
 			name => "num_alive",
 			value => $species->{$dsid}{alivecount} || 0,
+		}, { ignore => 1 });
+		$self->sqlInsert("dilemma_stats", {
+			tick => $last_tick,
+			dsid => $dsid,
+			name => "sumfood",
+			value => $species->{$dsid}{sumfood} || 0,
 		}, { ignore => 1 });
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.79 2003/03/17 15:30:23 jamie Exp $
+# $Id: Data.pm,v 1.80 2003/03/17 20:09:54 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -119,12 +119,13 @@ rootdir variable, converted to absolute with proper protocol.
 =cut
 
 sub root2abs {
-	my $rootdir = getCurrentStatic('rootdir');
-	my $is_ssl = Slash::Apache::ConnectionIsSSL();
-	if ($rootdir =~ m|^//|) {
-		$rootdir = ($is_ssl ? 'https:' : 'http:') . $rootdir;
+	my $user = getCurrentUser();
+
+	if ($user->{state}{ssl}) {
+		return getCurrentStatic('absolutedir_secure');
+	} else {
+		return getCurrentStatic('absolutedir');
 	}
-	return $rootdir;
 }
 
 #========================================================================
@@ -197,9 +198,7 @@ sub url2abs {
 	my $newurl;
 
 	# set base only if not already set, and rootdir exists
-	if (!$base && getCurrentStatic('rootdir')) {
-		$base = root2abs($url);
-	}
+	$base ||= root2abs();
 
 	if ($base) {
 		$newurl = URI->new_abs($url, $base)->canonical->as_string;
@@ -2815,4 +2814,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.79 2003/03/17 15:30:23 jamie Exp $
+$Id: Data.pm,v 1.80 2003/03/17 20:09:54 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.62 2003/03/13 02:38:38 jamie Exp $
+# $Id: User.pm,v 1.63 2003/03/17 20:09:54 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -121,14 +121,18 @@ sub handler {
 		if ($method eq 'GET' && $uid && ! isAnon($uid)) {
 			$form->{returnto} =~ s/%3D/=/;
 			$form->{returnto} =~ s/%3F/?/;
-			$form->{returnto} = url2abs($newpass
+			my $absolutedir = $is_ssl
+				? $constants->{absolutedir_secure}
+				: $constants->{absolutedir};
+			$form->{returnto} = url2abs(($newpass
 				? "$constants->{rootdir}/users.pl?op=changepasswd" .
 					# XXX This "note" field is ignored now...
 					# right?  - Jamie 2002/09/17
 				  "&note=Please+change+your+password+now!"
 				: $form->{returnto}
 					? $form->{returnto}
-					: $uri
+					: $uri),
+				$absolutedir
 			);
 			# not working ... move out into users.pl and index.pl
 			# I may know why this is the case, we may need
@@ -208,6 +212,7 @@ sub handler {
 	# "_dynamic_page" or any hash key name beginning with _ or .
 	# cannot be accessed from templates -- pudge
 	$user->{state}{_dynamic_page} = 1;
+	$user->{state}{ssl} = $is_ssl;
 	createCurrentUser($user);
 	createCurrentForm($form);
 

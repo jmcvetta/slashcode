@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.179 2003/11/19 16:24:19 pater Exp $
+# $Id: Slash.pm,v 1.180 2003/11/24 18:34:46 pater Exp $
 
 package Slash;
 
@@ -182,9 +182,8 @@ sub selectComments {
 		$comments->{0}{totals}[$x] += $comments->{0}{totals}[$x + 1];
 	}
 
-	# get the total visible kids for each comment (the 0 means start
-	# pid 0, or top level comments.	--Pater
-	countTotalVisibleKids(0, $comments);
+	# get the total visible kids for each comment --Pater
+	countTotalVisibleKids($comments);
 
 	_print_cchp($header, $count, $comments->{0}{totals});
 

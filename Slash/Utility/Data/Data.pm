@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.66 2002/12/16 23:00:05 jamie Exp $
+# $Id: Data.pm,v 1.67 2002/12/18 21:30:16 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -2611,9 +2611,13 @@ sub findWords {
 			)
 		}gxi;
 		for my $word (@words) {
-			# Ignore all words less than 4 chars.
-			next unless length($word) > 3;
-			$wordcount->{lc $word}{weight} += $weight_factor;
+			my $cap = $word =~ /^[A-Z]/ ? 1 : 0;
+			# Ignore all uncapitalized words less than 4 chars.
+			next if length($word) < 4 && !$cap;
+			# Ignore *all* words less than 3 chars.
+			next if length($word) < 3;
+			my $ww = $weight_factor * ($cap ? 1.3 : 1);
+			$wordcount->{lc $word}{weight} += $ww;
 		}
 		my %uniquewords = map { ( lc($_), 1 ) } @words;
 		for my $word (keys %uniquewords) {
@@ -2681,4 +2685,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.66 2002/12/16 23:00:05 jamie Exp $
+$Id: Data.pm,v 1.67 2002/12/18 21:30:16 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.10 2003/02/11 16:28:58 pudge Exp $
+# $Id: message_delivery.pl,v 1.11 2003/02/21 20:40:37 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -32,7 +32,7 @@ $task{$me}{code} = sub {
 	$time[4] += 1;
 	my $date = sprintf "%04d%02d%02d%02d%02d%02d", @time[5, 4, 3, 2, 1, 0];
 	my $now  = sprintf "%04d-%02d-%02d", @time[5, 4, 3];
-	my $last_deferred = $slashdb->getVar('message_last_deferred', 'value') || 0;
+	my $last_deferred = $slashdb->getVar('message_last_deferred', 'value', 1) || 0;
 
 	my($successes, $failures) = (0, 0);
 	my $count = $constants->{message_process_count} || 10;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.116 2003/01/31 03:13:11 jamie Exp $
+# $Id: comments.pl,v 1.117 2003/01/31 07:46:47 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1140,7 +1140,7 @@ sub submitComment {
 		slashDisplay('comment_submit') if ! $form->{newdiscussion};
 		undoModeration($id);
 		printComments($discussion, $maxCid, $maxCid,
-			{ force_read_from_master => 1}
+			{ force_read_from_master => 1 }
 		) if !$form->{newdiscussion};
 
 		my $tc = $slashdb->getVar('totalComments', 'value', 1);
@@ -1332,7 +1332,8 @@ sub moderate {
 			comment_count	=> $slashdb->countCommentsBySid($sid),
 		});
 	}
-	printComments($discussion, $form->{pid}, $form->{cid});
+	printComments($discussion, $form->{pid}, $form->{cid},
+		{ force_read_from_master => 1 } );
 
 	if ($was_touched) {
 		# This is for stories. If a sid is only a number

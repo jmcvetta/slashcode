@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.3 2001/04/09 20:07:51 pudge Exp $
+# $Id: Apache.pm,v 1.4 2001/04/11 18:04:08 pudge Exp $
 
 package Slash::Apache;
 
@@ -16,7 +16,7 @@ use vars qw($REVISION $VERSION @ISA);
 
 @ISA		= qw(DynaLoader);
 $VERSION	= '2.000000';	# v2.0.0
-($REVISION)	= ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache $VERSION;
 
@@ -63,10 +63,8 @@ sub IndexHandler {
 		my $filename  = $r->filename;
 		my $basedir   = $constants->{basedir};
 
-		# cookie data will begin with word char or %,
-		# some "empty" cookies will have three characters
-		# to denote null, "%00"
-		if ($r->header_in('Cookie') =~ /\b(?:user)=[%\w]/) { # {4,}
+		# cookie data will begin with word char or %
+		if ($r->header_in('Cookie') =~ /\b(?:user)=[%\w]/) {
 			$r->uri('/index.pl');
 			$r->filename("$basedir/index.pl");
 			return OK;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.746 2004/12/14 19:47:43 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.747 2004/12/15 18:49:26 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.746 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.747 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9911,11 +9911,11 @@ sub getSimilarStories {
 			my $word_weight = 0;
 			my $wr = qr{(?i:\b\Q$word\E)};
 			my $m = log(length $word);
-			$word_weight *= 1.5 if $text_words->{$word}{is_url};
-			$word_weight *= 2.5 if $text_words->{$word}{is_url_with_path};
 			$word_weight += 2.0*$m * (() = $s->{title} =~     m{$wr}g);
 			$word_weight += 1.0*$m * (() = $s->{introtext} =~ m{$wr}g);
 			$word_weight += 0.5*$m * (() = $s->{bodytext} =~  m{$wr}g);
+			$word_weight *= 1.5 if $text_words->{$word}{is_url};
+			$word_weight *= 2.5 if $text_words->{$word}{is_url_with_path};
 			$s->{word_hr}{$word} = $word_weight if $word_weight > 0;
 			$s->{weight} += $word_weight;
 		}

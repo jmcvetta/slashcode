@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.40 2004/06/17 16:12:18 jamiemccarthy Exp $
+# $Id: portald,v 1.41 2004/06/23 17:59:56 pudge Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -32,10 +32,10 @@ use Slash::Utility;
 use Slash::Display;
 
 my $virtual_user = $ARGV[0];
-setCurrentSkin(determineCurrentSkin());
-createEnvironment($ARGV[0]);
+createEnvironment($virtual_user);
 my $constants = getCurrentStatic();
 my $slashdb = getCurrentDB();
+setCurrentSkin(determineCurrentSkin());
 my $gSkin = getCurrentSkin();
 my $totalChangedStories = 1;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.41 2002/06/16 13:59:55 jamie Exp $
+# $Id: MySQL.pm,v 1.42 2002/06/19 14:48:42 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -451,7 +451,7 @@ sub getTop10Comments {
 		# can't get 10 of them, our standards are too high;
 		# lower our minimum score requirement and re-SELECT.
 		my $c = $self->sqlSelectMany(
-			"stories.sid, title, cid, subject, date, nickname, comments.points",
+			"stories.sid, title, cid, subject, date, nickname, comments.points, comments.reason",
 			"comments, stories, users",
 			"stories.time >= DATE_SUB(NOW(), INTERVAL $archive_delay DAY)
 				AND comments.points >= $max_points

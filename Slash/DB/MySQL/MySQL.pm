@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.336 2003/02/19 19:02:03 brian Exp $
+# $Id: MySQL.pm,v 1.337 2003/02/21 15:35:06 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.336 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.337 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3631,7 +3631,7 @@ sub setAccessList {
 
 #################################################################
 sub checkIsProxy {
-	my($self, $ipid);
+	my($self, $ipid) = @_;
 
 	my $rows = $self->sqlSelect('COUNT(*)', 'accesslist', "ipid='$ipid' AND isproxy='yes'");
 	$rows ||= 0;
@@ -3641,7 +3641,7 @@ sub checkIsProxy {
 
 #################################################################
 sub setIsProxy {
-	my($self, $ipid, $isproxy);
+	my($self, $ipid, $isproxy) = @_;
 
 	if ($isproxy ne 'yes' && $isproxy ne 'no') {
 		$isproxy = $isproxy ? 'yes' : 'no';

@@ -2,10 +2,9 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.71 2002/07/08 22:01:57 pudge Exp $
+# $Id: comments.pl,v 1.72 2002/07/11 16:07:39 pudge Exp $
 
 use strict;
-use HTML::Entities;
 use Slash 2.003;	# require Slash 2.3.x
 use Slash::Constants qw(:messages :strip);
 use Slash::Display;

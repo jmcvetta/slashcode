@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.2 2002/07/03 03:19:15 cliff Exp $
+# $Id: email.pl,v 1.3 2002/07/11 16:07:39 pudge Exp $
 
 # Slash::Email - web script
 # 
@@ -15,10 +15,9 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':messages';
 use Email::Valid;
-use HTML::Entities;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think

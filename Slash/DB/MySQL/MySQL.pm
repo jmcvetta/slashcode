@@ -1,12 +1,11 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.179 2002/07/09 18:14:40 pudge Exp $
+# $Id: MySQL.pm,v 1.180 2002/07/11 16:07:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
 use Digest::MD5 'md5_hex';
-use HTML::Entities;
 use Time::HiRes;
 use Date::Format qw(time2str);
 use Slash::Utility;
@@ -16,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 

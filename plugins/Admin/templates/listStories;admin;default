@@ -30,7 +30,7 @@ __template__
 	</TR>
 		[% END %]
 
-[% IF storylistref && storylistref.count > 0;
+[% IF storylistref && storylistref.size > 0;
 storiestoday = 0;
 FOREACH story = storylistref %]
 
@@ -132,4 +132,4 @@ END %]
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.18 2003/06/27 15:48:36 pudge Exp $
+$Id: listStories;admin;default,v 1.19 2003/06/28 00:16:45 pudge Exp $

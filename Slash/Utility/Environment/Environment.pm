@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.52 2002/11/07 05:10:30 pudge Exp $
+# $Id: Environment.pm,v 1.53 2002/11/20 00:36:00 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1839,7 +1839,11 @@ sub createEnvironment {
 			$new_cfg->{absolutedir} = $_->{url};
 			$new_cfg->{rootdir} = $_->{url};
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
-			$new_cfg->{defaultsection} = $_->{section};
+			$new_cfg->{defaultsubsection} = $_->{defaultsubsection} if $_->{defaultsubsection};
+			$new_cfg->{defaulttopic} = $_->{defaulttopic} if $_->{defaulttopic};
+			$new_cfg->{defaultdisplaystatus} = $_->{defaultdisplaystatus} if $_->{defaultdisplaystatus};
+			$new_cfg->{defaultcommentstatus} = $_->{defaultcommentstatus} if $_->{defaultcommentstatus};
+			$new_cfg->{defaultsection} = $_->{defaultsection} || $_->{section};
 			$new_cfg->{section} = $_->{section};
 			$new_cfg->{basedomain} = $_->{hostname};
 			$new_cfg->{static_section} = $_->{section};
@@ -1897,4 +1901,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.52 2002/11/07 05:10:30 pudge Exp $
+$Id: Environment.pm,v 1.53 2002/11/20 00:36:00 brian Exp $

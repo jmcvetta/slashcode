@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.78 2002/11/19 18:21:28 jamie Exp $
+# $Id: slashschema_create.sql,v 1.79 2002/11/20 00:36:00 brian Exp $
 #
 
 #
@@ -514,7 +514,6 @@ CREATE TABLE sections (
 	title varchar(64),
 	qid mediumint,
 	issue tinyint DEFAULT '0' NOT NULL,
-	extras mediumint DEFAULT '0',
 	url char(128) DEFAULT '' NOT NULL,
 	hostname char(128) DEFAULT '' NOT NULL,
 	cookiedomain char(128) DEFAULT '' NOT NULL,
@@ -522,9 +521,15 @@ CREATE TABLE sections (
 	writestatus ENUM("ok","dirty") DEFAULT 'ok' NOT NULL,
 	type ENUM("contained", "collected") DEFAULT 'contained' NOT NULL,
 	rewrite mediumint UNSIGNED DEFAULT '3600' NOT NULL,
+	defaultdisplaystatus TINYINT DEFAULT '0' NOT NULL,
+	defaultcommentstatus TINYINT DEFAULT '0' NOT NULL,
+	defaulttopic TINYINT DEFAULT '1' NOT NULL,
+	defaultsection VARCHAR(30),  /* Only set in collected sections */
+	defaultsubsection SMALLINT UNSIGNED,
 	last_update timestamp,
 	UNIQUE (section),
 	FOREIGN KEY (qid) REFERENCES pollquestions(qid),
+	FOREIGN KEY (subsection) REFERENCES subsections(id),
 	PRIMARY KEY (id)
 ) TYPE = myisam;
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.59 2002/04/30 16:15:57 pudge Exp $
+# $Id: submit.pl,v 1.60 2002/04/30 18:55:15 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -456,7 +456,7 @@ sub saveSub {
 	if ($extras && @$extras) {
 		for (@$extras) {
 			my $key = $_->[1];
-			$submission->{$key} = $form->{$key} if $form->{$key};
+			$submission->{$key} = strip_nohtml($form->{$key}) if $form->{$key};
 		}
 	}
 	$submission->{subid} = $slashdb->createSubmission($submission);

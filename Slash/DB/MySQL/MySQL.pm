@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.695 2004/09/30 14:19:14 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.696 2004/10/01 04:10:27 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.695 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.696 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9244,6 +9244,12 @@ sub setCommonStoryWords {
 }
 
 ########################################################
+sub getUncommonStoryWords {
+	my($self) = @_;
+	return $self->sqlSelectColArrayref("word", "uncommonstorywords") || [ ];
+}
+
+########################################################
 sub getSimilarStories {
 	my($self, $story, $max_wanted) = @_;
 	$max_wanted ||= 100;
@@ -9267,13 +9273,12 @@ sub getSimilarStories {
 	my $text_words = findWords($data);
 	# Load up the list of words in recent stories (the only ones we
 	# need to concern ourselves with looking for).
-	my @recent_uncommon_words = split " ",
-		($self->getVar("uncommonstorywords", "value") || "");
+	my $recent_uncommon_words = $self->getUncommonStoryWords();
 	my %common_words = map { $_ => 1 } split " ", ($self->getVar("common_story_words", "value", 1) || "");
-	@recent_uncommon_words = grep {!$common_words{$_}} @recent_uncommon_words;
+	$recent_uncommon_words = [ grep { !$common_words{$_} } @$recent_uncommon_words ];
 
 	# If we don't (yet) know the list of uncommon words, return now.
-	return [ ] unless @recent_uncommon_words;
+	return [ ] unless @$recent_uncommon_words;
 	# Find the intersection of this story and recent stories.
 	my @text_uncommon_words =
 		sort {
@@ -9283,7 +9288,7 @@ sub getSimilarStories {
 		}
 		grep { $text_words->{$_}{count} }
 		grep { length($_) > 3 }
-		@recent_uncommon_words;
+		@$recent_uncommon_words;
 #print STDERR "text_words: " . Dumper($text_words);
 #print STDERR "uncommon intersection: '@text_uncommon_words'\n";
 	# If there is no intersection, return now.

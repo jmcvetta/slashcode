@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.180 2004/09/27 15:59:33 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.181 2004/10/01 04:10:34 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2131,8 +2131,15 @@ sub refreshUncommonStoryWords {
 	if (length($uncommon_words) == $maxlen) {
 		$uncommon_words =~ s/\s+\S+\Z//;
 	}
+	@uncommon_words = split / /, $uncommon_words;
 
-	$self->setVar("uncommonstorywords", $uncommon_words);
+	$self->sqlDo("LOCK TABLE uncommonstorywords");
+	$self->sqlDelete("uncommonstorywords");
+	for my $word (@uncommon_words) {
+		$self->sqlInsert("uncommonstorywords", { word => $word },
+			{ delayed => 1 });
+	}
+	$self->sqlDo("UNLOCK TABLE uncommonstorywords");
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.150 2004/11/03 19:48:15 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.151 2004/11/09 17:59:13 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1807,9 +1807,6 @@ sub _testExStr {
 # fix parameter input that should be integers
 sub fixint {
 	my($int) = @_;
-# allow + ... should be OK ... ?  -- pudge
-# 	$int =~ s/^\+//;
-# 	$int =~ s/^(-?[\d.]+).*$/$1/s or return;
 	$int =~ s/^([+-]?[\d.]+).*$/$1/s or return;
 	return $int;
 }
@@ -2660,4 +2657,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.150 2004/11/03 19:48:15 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.151 2004/11/09 17:59:13 jamiemccarthy Exp $

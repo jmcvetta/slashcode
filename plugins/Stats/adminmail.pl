@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.171 2004/02/17 00:25:28 pudge Exp $
+# $Id: adminmail.pl,v 1.172 2004/02/17 17:36:48 tvroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -771,8 +771,12 @@ EOT
 	my $relocate = getObject('Slash::Relocate');
 
 	if($relocate){
-		my $rls = $logdb->getRelocatedLinksSummary();
-		my $sum = $stats->getRelocatedLinkHitsByType($rls);
+		my $rls      = $logdb->getRelocatedLinksSummary();
+		my $sum      = $stats->getRelocatedLinkHitsByType($rls);
+		my $rls_tu   = $logdb->getRelocatedLinksSummary({ limit => 10});
+
+		$data{top_relocated_urls} = $logdb->getRelocatedLinkHitsByUrl($rls_tu);
+
 		my $total;
 		foreach my $type (keys %$sum){
 			my $label = $type eq "" ? "relocate_other" : "relocate_$type";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.38 2002/05/26 22:10:35 jamie Exp $
+# $Id: MySQL.pm,v 1.39 2002/06/11 16:15:05 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -285,11 +285,12 @@ sub forgetCommentIPs {
 	my $maxcid = 0;
 	my $min_remember_sid = $self->sqlSelect("MIN(id)",
 		"discussions",
-		"ts > DATE_SUB(NOW(), INTERVAL $hours1 HOUR)");
+		"ts > DATE_SUB(NOW(), INTERVAL $hours1 HOUR)
+		 AND commentcount > 0");
 	if ($min_remember_sid) {
 		$maxcid = $self->sqlSelect("MIN(cid)",
 			"comments",
-			"sid=$min_remember_sid");
+			"sid=$min_remember_sid") || 0;
 	}
 	if ($maxcid < $mincid) {
 		# Shouldn't happen, but just in case

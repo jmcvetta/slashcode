@@ -26,7 +26,7 @@ __template__
 	<TR><TD BGCOLOR="[% user.colors.bg_3 %]" ALIGN="CENTER">
 		<FONT SIZE="2" COLOR="[% user.colors.fg_3 %]">
 [% IF title %]
-		<A HREF="[% link %]"><FONT COLOR="[% user.colors.fg_3 %]">[% title %]</FONT></A>
+		<A HREF="[% link | strip_urlattr %]"><FONT COLOR="[% user.colors.fg_3 %]">[% title %]</FONT></A>
 [% ELSE %]
 	[% Slash.linkComment({
 		sid	=> sid,
@@ -120,4 +120,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.20 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: printCommentsMain;misc;default,v 1.21 2004/10/01 19:49:03 jamiemccarthy Exp $

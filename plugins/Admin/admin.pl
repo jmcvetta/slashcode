@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.201 2004/05/01 00:48:33 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.202 2004/05/13 16:36:24 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1068,6 +1068,7 @@ sub getRelated {
 	# label; otherwise just use the A content.
 	while ($story_content =~ m|<a\s+(.*?)>(.*?)</a>|sgi) {
 		my($a_attr, $label) = ($1, $2);
+		next unless $a_attr =~ /\bhref\s*=\s*["']/si;
 		if ($a_attr =~ m/(\btitle\s*=\s*(["'])(.*?)\2)/si) {
 			$label = $3;
 			$a_attr =~ s/\Q$1\E//;

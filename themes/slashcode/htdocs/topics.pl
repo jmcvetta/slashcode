@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.29 2003/07/29 18:45:25 vroom Exp $
+# $Id: topics.pl,v 1.30 2003/07/29 19:19:46 pudge Exp $
 
 use strict;
 use Slash;
@@ -71,6 +71,7 @@ sub topTopics {
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
 	my $user      = getCurrentUser();
+
 	my $section   = $user->{currentSection};
         $section ||= $constants->{section};
 	my $limit = $form->{limit}
@@ -79,10 +80,10 @@ sub topTopics {
 			? 0
 			: -1;  # use default
 	my $topics;
-	if($section ne "polls"){ 
-		$topics = $reader->getTopNewsstoryTopics($limit,$section);
+	if ($section ne "polls") { 
+		$topics = $reader->getTopNewsstoryTopics($limit, $section);
 	} else {
-		$topics = $reader->getTopPollTopics($limit,$section);
+		$topics = $reader->getTopPollTopics($limit, $section);
 	}
 
 
@@ -93,12 +94,12 @@ sub topTopics {
 				? 3
 				: $topic->{count};
 
-		if($section ne "polls"){
+		if ($section ne "polls") {
 			my $stories = $reader->getStoriesEssentials($limit, $section, $topic->{tid});
 			$#{$stories} = $limit - 1;
 			$topic->{stories} = $stories;
 		} else {
-			my $polls = $reader->getPollQuestionList(0, {limit => $limit, topic => $topic->{tid} });
+			my $polls = $reader->getPollQuestionList(0, { limit => $limit, topic => $topic->{tid} });
  			$topic->{polls} = $polls;
 		}
 	}

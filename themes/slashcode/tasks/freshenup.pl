@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.30 2003/07/30 21:28:35 jamie Exp $
+# $Id: freshenup.pl,v 1.31 2003/08/05 22:36:15 jamie Exp $
 
 use File::Path;
 use File::Temp;
@@ -280,7 +280,7 @@ sub _read_and_unlink_cchp_file {
 		($constants->{maxscore}-$constants->{minscore}+1));
 
 	# Now we extract what we need from the file we created
-	sleep 3;
+	Time::HiRes::sleep(0.5); # let filesystem settle
 	if (!open(my $cchp_fh, "<", $cchp_file)) {
 		warn "cannot open $cchp_file for reading, $!";
 	} else {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.174 2004/10/26 20:23:04 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.175 2004/10/28 14:57:29 jamiemccarthy Exp $
 #
 
 #
@@ -648,10 +648,12 @@ CREATE TABLE related_links (
 
 DROP TABLE IF EXISTS remarks;
 CREATE TABLE remarks (
+	rid mediumint UNSIGNED NOT NULL auto_increment,
 	uid mediumint UNSIGNED NOT NULL,
 	stoid MEDIUMINT UNSIGNED NOT NULL,
 	time DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
 	remark varchar(100),
+	PRIMARY KEY (rid),
 	INDEX uid (uid),
 	INDEX stoid (stoid),
 	INDEX time (time)

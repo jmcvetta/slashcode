@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.720 2004/10/26 14:52:43 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.721 2004/10/28 14:57:26 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.720 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.721 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8485,14 +8485,25 @@ sub createRemark {
 }
 
 ########################################################
-sub getRemarksSince {
-	my($self, $since) = @_;
-	return [ ] unless $since;
-	my $since_q = $self->sqlQuote($since);
+sub getRemarksStarting {
+	my($self, $starting) = @_;
+	return [ ] unless $starting;
+	$starting ||= 0;
+	my $starting_q = $self->sqlQuote($starting);
 	return $self->sqlSelectAllHashrefArray(
-		"stoid, uid, remark",
+		"rid, stoid, remarks.uid, remark, karma",
+		"remarks, users_info",
+		"remarks.uid=users_info.uid AND rid >= $starting_q");
+}
+
+########################################################
+sub getUserRemarkCount {
+	my($self, $uid, $secs_back) = @_;
+	return 0 unless $uid && $secs_back;
+	return $self->sqlCount(
 		"remarks",
-		"time > $since_q");
+		"uid = $uid
+		 AND time >= DATE_SUB(NOW(), INTERVAL $secs_back SECOND)");
 }
 
 ########################################################

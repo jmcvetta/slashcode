@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: soap.pl,v 1.1 2002/05/23 20:33:28 brian Exp $
+# $Id: soap.pl,v 1.2 2002/05/26 22:10:35 jamie Exp $
 
 use strict;
 use Slash;
@@ -24,7 +24,7 @@ sub main {
 			if ($user->{state}{post}) {
 				$r->method('POST');
 			}
-			# Do some secutiry checking here
+			# Do some security checking here
 			$user->{state}{packagename} = __PACKAGE__;
 			return SOAP::Transport::HTTP::Apache->dispatch_to
 				($action)->handle;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.55 2002/04/22 19:35:32 pudge Exp $
+# $Id: Slash.pm,v 1.56 2002/05/26 22:10:35 jamie Exp $
 
 package Slash;
 
@@ -198,6 +198,8 @@ sub selectComments {
 	
 		# If we are refreshing, PRINT the totals so freshenup/archive 
 		# tasks can update without having to redo all of the work.
+		push @{$comments->{0}{totals}}, 0
+			while scalar(@{$comments->{0}{totals}}) < $max-$min;
 		my $hp = join ',', @{$comments->{0}{totals}};
 		print STDERR "count $count, hitparade $hp\n";
 	}
@@ -912,7 +914,12 @@ sub displayStory {
 	# well, also, dispStory needs a story reference, not an SID,
 	# though that could be changed -- pudge
 
+	# And now we're also calling parseSlashizedLinks. - 2002/05/24 Jamie
+
 	$story->{storytime} = timeCalc($story->{'time'});
+
+	$story->{introtext} = parseSlashizedLinks($story->{introtext});
+	$story->{bodytext} =  parseSlashizedLinks($story->{bodytext});
 
 	# get extra data from section table for this story
 	# (if exists)

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.20 2002/05/14 20:27:44 pudge Exp $
+# $Id: article.pl,v 1.21 2002/05/26 22:10:35 jamie Exp $
 
 use strict;
 use Slash;
@@ -19,7 +19,8 @@ sub main {
 	my $story;
 
 	#Yeah, I am being lazy and paranoid  -Brian
-	if (!($user->{author} or $user->{is_admin}) and !$slashdb->checkStoryViewable($form->{sid})) {
+	if (!($user->{author} || $user->{is_admin})
+		&& !$slashdb->checkStoryViewable($form->{sid})) {
 		$story = '';
 	} else {
 		$story = $slashdb->getStory($form->{sid});
@@ -30,6 +31,9 @@ sub main {
 		my $title = $SECT->{isolate} ?
 			"$SECT->{title} | $story->{title}" :
 			"$constants->{sitename} | $story->{title}";
+		$story->{introtext} = parseSlashizedLinks($story->{introtext});
+		$story->{bodytext} =  parseSlashizedLinks($story->{bodytext});
+
 		my $authortext;
 		if ($user->{is_admin} ) {
 			my $future = $slashdb->getStoryByTimeAdmin('>', $story, "3");

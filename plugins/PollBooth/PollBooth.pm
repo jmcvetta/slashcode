@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PollBooth.pm,v 1.4 2004/04/02 00:43:04 pudge Exp $
+# $Id: PollBooth.pm,v 1.5 2004/06/21 16:30:28 tvroom Exp $
 
 package Slash::PollBooth;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #Right, this is not needed at the moment but will be in the near future
 sub new {
@@ -37,12 +37,12 @@ sub createAutoPollFromStory {
 	my ($options) = @_;
 	my $slashdb = getCurrentDB();
 	my $story = $options->{story};
-	my $qid = $slashdb->sqlSelect('qid', 'auto_poll', "section = '$story->{section}'");
+	my $qid = $slashdb->sqlSelect('qid', 'auto_poll', "primaryskid = '$story->{primaryskid}'");
 	if ($qid) {
 		my $question = $slashdb->getPollQuestion($qid, 'question');
 		my $answers = $slashdb->getPollAnswers($qid, [ qw| answer | ]);
 		my $newpoll = {
-			section => $story->{section},
+			primaryskid => $story->{primaryskid},
 			topic => $story->{tid},
 			question  => $question,
 			autopoll => 'yes',

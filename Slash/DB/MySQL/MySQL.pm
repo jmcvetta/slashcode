@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.693 2004/09/28 22:29:17 pudge Exp $
+# $Id: MySQL.pm,v 1.694 2004/09/28 23:25:26 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.693 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.694 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3234,6 +3234,7 @@ sub saveTopic {
 	my $rows = $self->sqlCount('topics', "tid=$tid");
 
 	my $image = $topic->{image2} || $topic->{image};
+	my $submittable = $topic->{submittable} || 'no';
 
 	my $data = {
 		keyword		=> $topic->{keyword},
@@ -3242,7 +3243,7 @@ sub saveTopic {
 		image		=> $image,
 		width		=> $topic->{width} || '',
 		height		=> $topic->{height} || '',
-		submittable	=> $topic->{submittable} eq 'no' ? 'no' : 'yes',
+		submittable	=> $submittable eq 'no' ? 'no' : 'yes',
 	};
 
 	if ($rows == 0) {

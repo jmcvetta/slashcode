@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.152 2002/05/07 22:09:27 jamie Exp $
+# $Id: MySQL.pm,v 1.153 2002/05/10 18:58:41 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -955,6 +955,7 @@ sub createAccessLog {
 	my $form = getCurrentForm();
 	my $r = Apache->request;
 	my $hostip = $r->connection->remote_ip; 
+	my $bytes = $r->bytes_sent; 
 
 	my $uid;
 	if ($ENV{SLASH_USER}) {
@@ -982,6 +983,7 @@ sub createAccessLog {
 		dat		=> $dat,
 		uid		=> $uid,
 		section		=> $section,
+		bytes		=> $bytes,
 		op		=> $op,
 		-ts		=> 'NOW()',
 		query_string	=> $ENV{QUERY_STRING} || '0',

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.187 2005/02/01 20:45:08 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.188 2005/02/08 18:00:25 tvroom Exp $
 #
 
 #
@@ -688,6 +688,7 @@ CREATE TABLE remarks (
 	stoid MEDIUMINT UNSIGNED NOT NULL,
 	time DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
 	remark varchar(100),
+	type ENUM("system","user") DEFAULT "user",
 	PRIMARY KEY (rid),
 	INDEX uid (uid),
 	INDEX stoid (stoid),

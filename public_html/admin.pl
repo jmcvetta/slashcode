@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.22 2000/07/24 22:14:45 pudge Exp $
+#  $Id: admin.pl,v 1.23 2000/07/26 13:53:54 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -281,7 +281,7 @@ sub authorEdit {
 	}
 
 	for ($quote, $copy) {
-		$_ = stripByMode($_, 'literal');
+		$_ = stripByMode($_, 'literal', 1);
 	}
 
 	print <<EOT;
@@ -483,8 +483,8 @@ EOT
 	my($block, $bseclev, $type, $description) =
 		sqlSelect('block,seclev,type,description', 'blocks', "bid='$bid'") if $bid;
 
-	my $description_ta = stripByMode($description, 'literal');
-	$block = stripByMode($block, 'literal');
+	my $description_ta = stripByMode($description, 'literal', 1);
+	$block = stripByMode($block, 'literal', 1);
 
 	# main table
 	print <<EOT;
@@ -1221,8 +1221,8 @@ EOT
 	my @extracolumns = sqlSelectColumns($S->{section})
 		if sqlTableExists($S->{section});
 
-	my $introtext = stripByMode($S->{introtext}, 'literal');
-	my $bodytext  = stripByMode($S->{bodytext}, 'literal');
+	my $introtext = stripByMode($S->{introtext}, 'literal', 1);
+	my $bodytext  = stripByMode($S->{bodytext}, 'literal', 1);
 	my $SECT = getSection($S->{section});
 
 	print '<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0">';
@@ -1495,7 +1495,7 @@ EOT
 			"content_filters","filter_id=$filter_id");
 
 	# this has to be here - it really screws up the block editor
-	$err_message = stripByMode($err_message, 'literal');
+	$err_message = stripByMode($err_message, 'literal', 1);
 	my $textarea = <<EOT;
 <TEXTAREA NAME="err_message" COLS="50" ROWS="2">$err_message</TEXTAREA>
 EOT

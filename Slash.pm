@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.40 2000/07/24 20:37:31 cbwood Exp $
+#  $Id: Slash.pm,v 1.41 2000/07/26 13:53:54 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1199,10 +1199,10 @@ sub sqlConnect {
 
 ########################################################
 sub stripByMode {
-	my $str = shift;
-	my $fmode = shift || 'nohtml';
+	my($str, $fmode, $no_white_fix) = @_;
+	$fmode ||= 'nohtml';
 
-	$str =~ s/(\S{90})/$1 /g;
+	$str =~ s/(\S{90})/$1 /g unless $no_white_fix;
 	if ($fmode eq 'literal' || $fmode eq 'exttrans' || $fmode eq 'attribute') {
 		# Encode all HTML tags
 		$str =~ s/&/&amp;/g;

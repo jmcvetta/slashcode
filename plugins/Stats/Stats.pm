@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.20 2002/03/23 06:13:52 jamie Exp $
+# $Id: Stats.pm,v 1.21 2002/03/26 15:01:03 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -188,8 +188,12 @@ sub getAdminModsInfo {
 			: 0;
 		# Add the m2 data for this admin.
 		$hr->{$nickname}{uid} = $uid;
-		$hr->{$nickname}{m2_text} = sprintf("was judged %5d fair, %5d un (%6.2f%% un)",
-			$nfair, $nunfair, $percent);
+		$hr->{$nickname}{m2_text} = sprintf("\@ %5d fair, %5d un",
+			$nfair, $nunfair);
+		if ($nfair+$nunfair >= 20) { # this number is pretty arbitrary
+			$hr->{$nickname}{m2_text} .= sprintf(" (%6.2f%% un)",
+				$percent);
+		}
 		$hr->{$nickname}{m2_fair} = $nfair;
 		$hr->{$nickname}{m2_unfair} = $nunfair;
 		# If this admin had m2 activity today but no m1 activity,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.37 2002/07/17 21:27:37 jamie Exp $
+# $Id: Search.pm,v 1.38 2002/07/22 21:12:16 patg Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -477,7 +477,7 @@ sub findDiscussion {
 	my $other;
 	if ($form->{query} && $sort == 2) {
 		$other = " ORDER BY score DESC";
-	} elsif ($form->{query} && $sort == 3) {
+	} elsif ($sort == 3) {
 		$other = " ORDER BY last_update DESC";
 	} else {
 		$other = " ORDER BY ts DESC";
@@ -492,10 +492,15 @@ sub findDiscussion {
 		if $form->{type};
 	$where .= " AND topic=" . $self->sqlQuote($form->{tid})
 		if $form->{tid};
+	$where .= " AND section=" . $self->sqlQuote($form->{section})
+		if $form->{section};
 	$where .= " AND uid=" . $self->sqlQuote($form->{uid})
 		if $form->{uid};
+	$where .= " AND approved = $form->{approved}"
+		if $form->{approved};
 	
 	$other .= " LIMIT $start, $limit" if $limit;
+	print STDERR "select $columns from $tables where $where $other\n";
 	my $stories = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other );
 
 	return $stories;

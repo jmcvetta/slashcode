@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.200 2002/07/19 20:34:24 jamie Exp $
+# $Id: MySQL.pm,v 1.201 2002/07/22 21:12:16 patg Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.200 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.201 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2412,17 +2412,23 @@ sub updateFormkeyVal {
 # use this in case the function you call fails prior to updateFormkey
 # but after updateFormkeyVal
 sub resetFormkey {
-	my($self, $formkey) = @_;
+	my($self, $formkey, $formname) = @_;
 
 	my $constants = getCurrentStatic();
 
+
+	my $update_ref = {
+		-value          => 0,
+		-idcount        => '(idcount -1)',
+		ts              => time(),
+		submit_ts       => '0',
+	};
+	$update_ref->{formname} = $formname if $formname;
+	
 	# reset the formkey to 0, and reset the ts
-	my $updated = $self->sqlUpdate("formkeys", {
-		-value		=> 0,
-		-idcount	=> '(idcount -1)',
-		ts		=> time(),
-		submit_ts	=> '0',
-	}, "formkey=" . $self->sqlQuote($formkey));
+	my $updated = $self->sqlUpdate("formkeys", 
+		$update_ref, 
+		"formkey=" . $self->sqlQuote($formkey));
 
 	print STDERR "RESET formkey $updated\n" if $constants->{DEBUG};
 	return($updated);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.25 2002/07/18 08:20:58 slashteam Exp $
+# $Id: Anchor.pm,v 1.26 2002/07/22 21:12:16 patg Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -158,11 +158,13 @@ sub header {
 	#	$adhtml = getAd(1);
 	# }
 
+	# pass section - otherwise, static pages will get 'index' as the section 
+	# PMG 7/12/02
 	if ($options->{admin} && $user->{is_admin}) {
 		$user->{state}{adminheader} = 1;
-		slashDisplay('header-admin', $title);
+		slashDisplay('header-admin', { title => $title, section => $section});
 	} else {
-		slashDisplay('header', $title);
+		slashDisplay('header', { title => $title, section => $section} );
 	}
 
 	if ($constants->{admin_check_clearpass}
@@ -527,4 +529,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.25 2002/07/18 08:20:58 slashteam Exp $
+$Id: Anchor.pm,v 1.26 2002/07/22 21:12:16 patg Exp $

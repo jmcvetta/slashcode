@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.207 2004/11/24 23:51:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.208 2004/12/09 04:41:38 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.207 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.208 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -223,7 +223,6 @@ sub getArchiveList {
 	return $returnable;
 }
 
-
 ########################################################
 # For balance_readers.pl
 sub deleteOldDBReaderStatus {
@@ -241,6 +240,8 @@ sub getDBsReaderStatus {
 		"dbid",
 		"dbid,
 		 MIN(IF(was_alive='yes',1,0)) AS was_alive,
+		 MIN(IF(was_reachable='yes',1,0)) AS was_reachable,
+		 MIN(IF(was_running='yes',1,0)) AS was_running,
 		 AVG(slave_lag_secs) AS lag,
 		 AVG(query_bog_secs) AS bog",
 		"dbs_readerstatus",

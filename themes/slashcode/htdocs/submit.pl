@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.41 2001/11/15 15:46:09 pudge Exp $
+# $Id: submit.pl,v 1.42 2001/12/12 01:32:53 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -379,6 +379,7 @@ sub displayForm {
 		username	=> $form->{name} || $username,
 		fakeemail	=> processSub($fakeemail, $known),
 		section		=> $form->{section} || $section || $constants->{defaultsection},
+		uid	=> $user->{uid},
 		topic		=> $topic,
 		width		=> '100%',
 		title		=> $title,

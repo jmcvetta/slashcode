@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: moderatord,v 1.7 2002/07/18 19:44:21 brian Exp $
+# $Id: moderatord,v 1.8 2002/09/23 19:11:36 jamie Exp $
 
 ###############################################################################
 # moderatord - the moderation "daemon". Calculates moderation information and
@@ -58,7 +58,7 @@ sub comments2tokens {
 	moderatordLog(getData('moderatord_tokenmsg', {
 		new_comments	=> $comments,
 		stirredpoints	=> $stirredpoints,
-		last_user	=> $read_db->getLastUser(),
+		last_user	=> $read_db->countUsers({ max => 1}),
 		tokenpool	=> $tokenpool,
 		eligible	=> $eligible,
 		st		=> $st,

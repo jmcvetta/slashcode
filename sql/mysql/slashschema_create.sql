@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.69 2002/09/20 20:10:14 brian Exp $
+# $Id: slashschema_create.sql,v 1.70 2002/09/23 19:11:36 jamie Exp $
 #
 
 #
@@ -924,12 +924,12 @@ CREATE TABLE users_info (
 	realname varchar(50),
 	bio text,
 	tokens mediumint DEFAULT '0' NOT NULL,
-	lastgranted date DEFAULT '0000-00-00' NOT NULL,
+	lastgranted datetime DEFAULT '0000-00-00 00:00' NOT NULL,
 	m2info varchar(64) DEFAULT '' NOT NULL,
 	karma mediumint DEFAULT '0' NOT NULL,
 	maillist tinyint DEFAULT '0' NOT NULL,
 	totalcomments mediumint UNSIGNED DEFAULT '0',
-	lastmm date DEFAULT '0000-00-00' NOT NULL,
+	lastmm datetime DEFAULT '0000-00-00 00:00' NOT NULL,
 	mods_saved varchar(120) DEFAULT '' NOT NULL,
 	lastaccess date DEFAULT '0000-00-00' NOT NULL,
 	m2fair mediumint UNSIGNED DEFAULT '0' NOT NULL,
@@ -938,6 +938,7 @@ CREATE TABLE users_info (
 	m2unfairvotes mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	upmods mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	downmods mediumint UNSIGNED DEFAULT '0' NOT NULL,
+	stirred mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	session_login tinyint DEFAULT '0' NOT NULL,
 	registered tinyint UNSIGNED DEFAULT '1' NOT NULL,
 	reg_id char(32) DEFAULT '' NOT NULL,

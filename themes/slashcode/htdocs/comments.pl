@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.96 2002/09/20 19:00:04 jamie Exp $
+# $Id: comments.pl,v 1.97 2002/09/23 19:11:36 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1442,11 +1442,16 @@ sub moderateCid {
 		# First, update values for the moderator.
 		my $changes = { };
 		$changes->{-points} = "GREATEST(points-1, 0)";
-		my $tcost = $constants->{mod_unm2able_token_cost};
-		$changes->{-tokens} = "tokens - $tcost" if $tcost
-			&& !$reasons->{$reason}{m2able};
+		my $tcost = $constants->{mod_unm2able_token_cost} || 0;
+		$tcost = 0 if $reasons->{$reason}{m2able};
+		$changes->{-tokens} = "tokens - $tcost" if $tcost;
 		$changes->{-totalmods} = "totalmods + 1";
 		$slashdb->setUser($user->{uid}, $changes);
+
+		# Update stats.
+		if ($tcost and my $statsSave = getObject('Slash::Stats::Writer')) {
+			$statsSave->addStatDaily("mod_tokens_lost_unm2able", $tcost);
+		}
 
 		# Next, adjust the appropriate values for the user who
 		# posted the comment.
@@ -1463,6 +1468,10 @@ sub moderateCid {
 					. "$constants->{maxkarma}, karma + 1)";
 			}
 			$slashdb->setUser($comment->{uid}, $cu_changes);
+			# Update stats.
+			if ($val < 0 and my $statsSave = getObject('Slash::Stats::Writer')) {
+				$statsSave->addStatDaily("mod_tokens_lost_downmod", 1);
+			}
 		}
 
 		# Make sure our changes get propagated back to the comment.

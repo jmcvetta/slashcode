@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.11 2002/08/31 05:30:30 jamie Exp $
+# $Id: createTestComments,v 1.12 2002/09/23 19:11:36 jamie Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -57,7 +57,7 @@ $werder = new Silly::Werder;
 # main program logic (in braces to offset nicely)
 {
 	# Determine user list size (for -R)
-	my $max_uid = $slashdb->getLastUser();
+	my $max_uid = $slashdb->countUsers({ max => 1});
 	my $min_uid = $slashdb->sqlSelect("MIN(uid)", "users");
 
 	my $story_id = $opts{I} || "";

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMetamods,v 1.9 2002/09/17 19:55:29 jamie Exp $
+# $Id: createTestMetamods,v 1.10 2002/09/23 19:11:36 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Data::Dumper;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -164,7 +164,7 @@ sub getRandomUID {
 
 	if (!$uid_list) {
 		my $max_uid = int(
-			$slashdb->getLastUser() *
+			$slashdb->countUsers({ max => 1}) *
 			$constants->{m2_userpercentage}
 		);
 		$uid_list = $slashdb->sqlSelectAll(

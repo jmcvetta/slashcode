@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMods,v 1.5 2002/08/28 20:13:11 jamie Exp $
+# $Id: createTestMods,v 1.6 2002/09/23 19:11:36 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Benchmark;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -195,7 +195,7 @@ sub getRandomUserID {
 #
 #		}
 	}
-	$max_uid ||= $slashdb->getLastUser();
+	$max_uid ||= $slashdb->countUsers({ max => 1});
 	$min_uid ||= $slashdb->sqlSelect('MIN(uid)', 'users');
 	my $ret = $min_uid + int(rand($max_uid - $min_uid + 1));  
 	for (@{$exception_list{$val->{sid}}}) {

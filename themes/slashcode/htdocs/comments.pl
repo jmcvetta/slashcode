@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.97 2002/09/23 19:11:36 jamie Exp $
+# $Id: comments.pl,v 1.98 2002/09/27 21:10:51 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1447,6 +1447,7 @@ sub moderateCid {
 		$changes->{-tokens} = "tokens - $tcost" if $tcost;
 		$changes->{-totalmods} = "totalmods + 1";
 		$slashdb->setUser($user->{uid}, $changes);
+		$user->{points}-- if $user->{points} > 0;
 
 		# Update stats.
 		if ($tcost and my $statsSave = getObject('Slash::Stats::Writer')) {

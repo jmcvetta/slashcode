@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.22 2003/07/25 17:40:27 pudge Exp $
+# $Id: stats.pl,v 1.23 2004/01/27 19:29:10 tvroom Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -218,9 +218,30 @@ sub list {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
 	my $stats_data = {};
+	my ($stats_name,$sep_name_select,$stats_name_pre,$days);
+	my $days = $form->{stats_days} || 1;
+	
+	#############################################################
+	# Using this 2 select method with the new index 
+	# should be fast for all date ranges and much faster at 
+	# a high number of days.  If it turns out to be slower at
+	# the small-sized date ranges we could just use this method
+	# for days > 7 or 14 for instance also remeber that days<0 
+	# refers to forever if we do this.    --vroom 2004/01/27
+	##############################################################
+
+	
+	$stats_name 	 = $form->{stats_name};
+	$stats_name_pre  = $form->{stats_name_pre};
+	# only do a separate select if we are limiting the names of the data coming back
+	$sep_name_select = ($form->{stats_name_pre} || $form->{stats_name});
+
 	$stats_data = $stats->getAllStats({
-		section	=> $form->{stats_section},
-		days	=> $form->{stats_days} || 1,
+		section	 		=> $form->{stats_section},
+		days	 		=> $form->{stats_days} || 1,
+		name	 		=> $stats_name,
+		name_pre 		=> $stats_name_pre,
+		separate_name_select 	=> $sep_name_select 
 	}) unless $form->{type} eq 'graphs';
 
 	slashDisplay('list', {

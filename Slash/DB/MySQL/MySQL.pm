@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.95 2002/03/06 20:16:55 brian Exp $
+# $Id: MySQL.pm,v 1.96 2002/03/09 00:27:58 cliff Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1795,12 +1795,17 @@ sub deletePoll {
 	my($self, $qid) = @_;
 
 	my $qid_quoted = $self->sqlQuote($qid);
-	my $did = $self->sqlSelect('discussion', 'pollquestions',
-		"qid=$qid_quoted");
-	$self->deleteDiscussion($did);
-	$self->sqlDo("DELETE FROM pollanswers WHERE qid=$qid_quoted");
+	my $did = $self->sqlSelect(
+		'discussion', 
+		'pollquestions',
+		"qid=$qid_quoted"
+	);
+
+	$self->deleteDiscussion($did) if $did;
+
+	$self->sqlDo("DELETE FROM pollanswers   WHERE qid=$qid_quoted");
 	$self->sqlDo("DELETE FROM pollquestions WHERE qid=$qid_quoted");
-	$self->sqlDo("DELETE FROM pollvoters WHERE qid=$qid_quoted");
+	$self->sqlDo("DELETE FROM pollvoters    WHERE qid=$qid_quoted");
 }
 
 ########################################################

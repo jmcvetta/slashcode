@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.108 2002/12/03 20:31:24 brian Exp $
+# $Id: comments.pl,v 1.109 2002/12/03 21:27:24 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -312,6 +312,10 @@ sub displayComments {
 	}
 
 	if ($form->{cid}) {
+		# Here is the deal, if a user who has a mode of nocomment asks for a 
+		# comment we give it to them and assume the default mode (which 
+		# according to the schema is 'thread'). -Brian
+		$user->{mode} = 'thread' if $user->{mode} eq 'nocomment';
 		printComments($discussion, $form->{cid}, $form->{cid});
 	} elsif ($form->{sid}) {
 		printComments($discussion, $form->{pid});

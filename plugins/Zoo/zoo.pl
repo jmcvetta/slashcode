@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.8 2001/12/18 18:51:19 brian Exp $
+# $Id: zoo.pl,v 1.9 2002/01/04 07:04:25 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -290,13 +290,13 @@ sub action {
 sub check {
 	my($zoo, $constants, $user, $form, $slashdb) = @_;
 
-	if ($form->{uid} && $form->{type}) {
+	_printHead("mainhead");
+	if ($form->{uid}) {
 		if ($zoo->count() > $constants->{people_max}) {
-			_printHead("mainhead");
 			print getData("over_socialized");
+			return 0;
 		}
 		
-		_printHead("mainhead");
 		if ($form->{uid} == $user->{uid} || $form->{uid} == $constants->{anonymous_coward_uid}  ) {
 			print getData("no_go");
 			return 0;
@@ -308,7 +308,7 @@ sub check {
 			uid => $form->{uid},
 			nickname => $nickname,
 			type => $type,
-			 });
+		});
 	} 
 }
 

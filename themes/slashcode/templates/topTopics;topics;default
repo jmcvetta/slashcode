@@ -30,16 +30,22 @@ __template__
 			HEIGHT="[% image.height %]"></A>
 	</TD><TD BGCOLOR="[% user.bg.2 %]" VALIGN="TOP">
 	[% FOREACH story = topic.stories %]
-		[% Slash.linkStory({
-			section	=> story.section,
-			tid	=> story.tid,
-			sid	=> story.sid,
-			'link'	=> story.title
-		}) %]
-		<FONT SIZE="-1">
-			([% story.commentcount %] comments) - [% Slash.timeCalc(story.time, '%B %o, %Y') %]
-		</FONT>
-		<BR>
+		[% IF story.sid %]
+			[% Slash.linkStory({
+				section	=> story.section,
+				tid	=> story.tid,
+				sid	=> story.sid,
+				'link'	=> story.title
+			}) %]
+			<FONT SIZE="-1">
+				([% story.commentcount %] comments) - [% Slash.timeCalc(story.time, '%B %o, %Y') %]
+			</FONT>
+			<BR>
+		[% END %]
+	[% END %]
+	[% FOREACH question = topic.polls %]
+                                <A HREF="[% constants.rootdir %]/pollBooth.pl?qid=[% question.0 %]">[% question.1 %]</A> on [%
+ Slash.timeCalc(question.2, '%B %o, %Y') %] with [% question.3 %] votes and [% question.4 %] comments.<BR>
 	[% END %]
 	</TD></TR>
 [% END %]
@@ -50,4 +56,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topTopics;topics;default,v 1.7 2003/05/23 14:13:13 pudge Exp $
+$Id: topTopics;topics;default,v 1.8 2003/07/29 14:49:43 vroom Exp $

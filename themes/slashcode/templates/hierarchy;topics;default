@@ -23,7 +23,7 @@ __template__
 	[% IF user.is_admin %]
 		<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
 	[% ELSE %]
-		[% topic.alttext %]
+		<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A>
 	[% END %]
 	<BR>
 	[% IF topic.child %]
@@ -33,7 +33,7 @@ __template__
 					[% IF user.is_admin %]
 						<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
 					[% ELSE %]
-						[% topic.alttext %]
+						<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A>
 					[% END %]
 				</LI>
 				[% IF topic.child %]
@@ -43,7 +43,7 @@ __template__
 								[% IF user.is_admin %]
 									<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
 								[% ELSE %]
-									[% topic.alttext %]
+									<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A>
 								[% END %]
 							</LI>
 							[% IF topic.child %]
@@ -53,7 +53,7 @@ __template__
 											[% IF user.is_admin %]
 												<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
 											[% ELSE %]
-												[% topic.alttext %]
+												<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A>
 											[% END %]
 										</LI>
 									[% END %]
@@ -64,7 +64,7 @@ __template__
 													[% IF user.is_admin %]
 														<A HREF="[% constants.rootdir %]/admin.pl?op=topics&amp;nexttid=[% topic.tid %]">[% topic.alttext %]</A>
 													[% ELSE %]
-														[% topic.alttext %]
+														<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A>
 													[% END %]
 												</LI>
 											[% END %]
@@ -84,4 +84,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: hierarchy;topics;default,v 1.4 2003/03/27 22:25:45 brian Exp $
+$Id: hierarchy;topics;default,v 1.5 2003/07/29 14:49:43 vroom Exp $

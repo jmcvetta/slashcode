@@ -16,10 +16,10 @@ __template__
 [% DEFAULT title="$constants.sitename: $constants.slogan" %]
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML><HEAD><TITLE>[% title | strip_notags %]</TITLE>
-<META NAME="KEYWORDS" CONTENT="[% PROCESS metakeywordsd %]">
+<META NAME="Description" CONTENT="[% constants.sitename %] [% PROCESS metakeywordsd %]">
 
 __seclev__
 10000
 __version__
-$Id: html-header;index;default,v 1.2 2003/07/22 22:38:40 pudge Exp $
+$Id: html-header;index;default,v 1.3 2003/07/29 14:49:43 vroom Exp $
 

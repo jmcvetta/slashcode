@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.5 2000/05/31 17:56:35 capttofu Exp $
+#  $Id: Slash.pm,v 1.6 2000/05/31 19:21:52 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use CGI ();
@@ -1552,7 +1552,7 @@ sub footer {
 	if ($I{U}{aseclev}) {
 		$motd .= currentAdminUsers();
 	} else {
-		$motd .= blockCache('motd') . "<TD>&nbsp;</TD>";
+		$motd .= blockCache('motd');
 	}
 
 	my $vertmenu = blockCache('mainmenu');
@@ -1882,8 +1882,7 @@ EOT
 		<FONT COLOR="$I{fg}[3]" SIZE="${\( $I{fontbase} + 2 )}">
 EOT
 	
-		print blockCache('commentswarning'),
-			"<BR>( Beta is only a state of mind )</FONT></FORM></TD></TR>";
+		print blockCache('commentswarning'), "</FONT></FORM></TD></TR>";
 
 		if ($I{U}{mode} eq 'nocomment') {
 			print "</TABLE>";

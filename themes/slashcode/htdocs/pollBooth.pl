@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: pollBooth.pl,v 1.3 2000/05/31 19:23:05 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -164,7 +164,10 @@ sub savepoll {
 sub vote {
 	my($qid, $aid) =@_;
 	my $notes = "Displaying poll results $aid";
-	if ($aid > 0) {
+	if ($I{U}{uid} == -1 && ! $I{allow_anonymous}) {
+		$notes = "You may not vote anonymously.  " .
+		    qq[Please <A HREF="$I{rootdir}/users.pl">log in</A>.];
+	} elsif ($aid > 0) {
 		my($id) = sqlSelect("id","pollvoters",
 			"qid=" . $I{dbh}->quote($qid)." AND 
 			 id="  . $I{dbh}->quote($ENV{REMOTE_ADDR} . $ENV{HTTP_X_FORWARDED_FOR}) . " AND

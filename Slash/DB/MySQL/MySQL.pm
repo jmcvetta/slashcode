@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.663 2004/08/10 21:54:03 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.664 2004/08/10 23:26:27 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.663 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.664 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8562,12 +8562,9 @@ sub getStoriesData {
 			'stoid, name, value',
 			'story_param',
 			$stoid_clause);
-		for my $key (keys %$append) {
-			$answer->{$key} = $append->{$key};
-		}
 		for my $append_stoid (keys %$append) {
 			for my $name (keys %{$append->{$append_stoid}}) {
-				my $value = $append->{$append_stoid}{$name};
+				my $value = $append->{$append_stoid}{$name}{value};
 				$answer->{$append_stoid}{$name} = $value;
 			}
 		}
@@ -8640,7 +8637,7 @@ sub getStory {
 				$self->_write_stories_cache($answer);
 				$is_in_local_cache = 1;
 				$got_it_from_memcached = 1;
-#print STDERR "getStory $$ A2 id=$id mcd=$mcd try=$try_memcached answer='" . join(" ", sort keys %$answer) . "'\n";
+#print STDERR "getStory $$ A2 id=$id mcd=$mcd try=$try_memcached answer: " . Dumper($answer);
 			}
 		}
 #print STDERR "getStory $$ A3 id=$id mcd=$mcd try=$try_memcached keyprefix=$self->{_mcd_keyprefix} stoid=$stoid\n";
@@ -8692,9 +8689,10 @@ sub getStory {
 			$retval = $hr->{$val};
 		}
 	} else {
-		# Caller asked for multiple return values.  It really doesn't
-		# matter what specifically they asked for, we always return
-		# the same thing:  a hashref with all the values.
+		# Caller asked for multiple return values, or maybe the
+		# whole thing.  It really doesn't matter what specifically
+		# they asked for, we always return the same thing:
+		# a hashref with all the values.
 		my %return = %$hr;
 		$retval = \%return;
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.548 2004/04/02 17:26:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.549 2004/04/06 02:44:47 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.548 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.549 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6724,6 +6724,8 @@ sub getSlashConf {
 		approvedtags_break =>		[qw( P LI OL UL BR BLOCKQUOTE DIV HR DL DT DD)],
 		charrefs_bad_entity =>		[qw( zwnj zwj lrm rlm )],
 		charrefs_bad_numeric =>		[qw( 8204 8205 8206 8207 8236 8237 8238 )],
+		charrefs_good_entity =>		[qw( amp lt gt euro )],
+		charrefs_good_numeric =>	[ ],
 		lonetags =>			[qw( P LI BR IMG DT DD)],
 		fixhrefs =>			[ ],
 		hc_possible_fonts =>		[ ],

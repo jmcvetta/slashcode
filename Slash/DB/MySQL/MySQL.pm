@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.562 2004/04/20 18:39:01 tvroom Exp $
+# $Id: MySQL.pm,v 1.563 2004/04/20 19:01:57 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.562 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.563 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1148,11 +1148,11 @@ sub undoModeration {
 		my $points = $adjust > 0
 			? "LEAST($max_score, points $adjust)"
 			: "GREATEST($min_score, points $adjust)";
-		my $reason = $self->getCommentMostCommonReason($cid)
+		my $new_reason = $self->getCommentMostCommonReason($cid)
 			|| 0; # no active moderations? reset reason to empty
 		my $comm_update = {
 			-points =>	$points,
-			reason =>	$reason,
+			reason =>	$new_reason,
 		};
 		$self->sqlUpdate("comments", $comm_update, "cid=$cid");
 

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.157 2004/08/06 03:16:43 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.158 2004/08/06 14:27:20 jamiemccarthy Exp $
 #
 
 #
@@ -266,7 +266,8 @@ CREATE TABLE comments (
 	KEY subnetid (subnetid),
 	KEY theusual (sid,uid,points,cid),
 	KEY countreplies (pid,sid),
-	KEY uid_date (uid,date)
+	KEY uid_date (uid,date),
+	KEY date_sid (date,sid)
 ) TYPE=MyISAM;
 
 #
@@ -501,7 +502,8 @@ CREATE TABLE moderatorlog (
 	KEY subnetid (subnetid),
 	KEY uid (uid),
 	KEY cuid (cuid),
-	KEY m2stat_act (m2status,active)
+	KEY m2stat_act (m2status,active),
+	KEY ts_uid_sid (ts,uid,sid)
 ) TYPE=InnoDB;
 
 #
@@ -799,7 +801,8 @@ CREATE TABLE stories (
 	INDEX time (time),
 	INDEX submitter (submitter),
 	INDEX day_published (day_published),
-	INDEX skidtid (primaryskid, tid)
+	INDEX skidtid (primaryskid, tid),
+	INDEX discussion_stoid (discussion, stoid)
 ) TYPE=InnoDB;
 
 #

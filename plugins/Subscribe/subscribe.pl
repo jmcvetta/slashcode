@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.15 2002/04/01 23:06:24 jamie Exp $
+# $Id: subscribe.pl,v 1.16 2002/04/12 03:54:45 jamie Exp $
 
 use strict;
 
@@ -29,7 +29,7 @@ sub main {
 			function	=> \&save,
 			seclev		=> 1,
 		},
-		paypal		=> {
+		paypal		=> {	# left in for historical reasons
 			function	=> \&makepayment,
 			seclev		=> 1,
 		},
@@ -166,7 +166,8 @@ sub makepayment {
 		print "<p>Payment rejected, wrong secretword\n";
 	}
 
-	my @keys = qw( uid email payment_gross payment_net transaction_id data );
+	my @keys = qw( uid email payment_gross payment_net
+		method transaction_id data );
 	my $payment = { };
 	for my $key (@keys) {
 		$payment->{$key} = $form->{$key};

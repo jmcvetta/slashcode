@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.12 2002/03/11 21:29:54 jamie Exp $
+# $Id: Subscribe.pm,v 1.13 2002/04/12 03:54:45 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -165,6 +165,7 @@ sub convertPagesToDollars {
 #	payment_net	payment received by site after fees
 #	pages		number of pages user will receive
 #	transaction_id	(optional) any ID you'd use to identify this payment
+#	method		(optional) string representing payment method
 #	data		(optional) any additional data
 sub insertPayment {
 	my($self, $payment) = @_;
@@ -219,7 +220,8 @@ sub getSubscriberList {
 		"spid",
 		"spid,
 		 subscribe_payments.uid as uid,
-		 email, ts, payment_gross, payment_net, pages, transaction_id, data,
+		 email, ts, payment_gross, payment_net, pages, 
+		 method, transaction_id, data,
 		 nickname, realemail, seclev, author,
 		 karma, m2fair, m2unfair, upmods, downmods, created_at,
 		 users_hits.hits as hits, hits_bought, hits_paidfor",

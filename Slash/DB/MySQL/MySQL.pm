@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.341 2003/03/04 01:19:02 jamie Exp $
+# $Id: MySQL.pm,v 1.342 2003/03/04 18:47:02 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.341 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.342 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1897,6 +1897,8 @@ sub setPollQuestion {
 sub setTemplate {
 	# Instructions don't get passed to the DB.
 	delete $_[2]->{instructions};
+	# Nor does a version (yet).
+	delete $_[2]->{version};
 
 	for (qw| page name section |) {
 		next unless $_[2]->{$_};
@@ -7079,6 +7081,8 @@ sub createTemplate {
 	}
 	# Instructions field does not get passed to the DB.
 	delete $hash->{instructions};
+	# Neither does the version field (for now).
+	delete $hash->{version};
 
 	$self->sqlInsert('templates', $hash);
 	my $tpid  = $self->getLastInsertId('templates', 'tpid');

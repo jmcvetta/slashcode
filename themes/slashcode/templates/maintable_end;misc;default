@@ -45,7 +45,9 @@ WHILE num_loops && need_another_row;
 	min_rows = 999;
 	FOR rowcheck = user.state.mt.cols;
 		NEXT IF loop.first;
-		need_another_row = 1 IF rowcheck < num_rows;
+		IF rowcheck < num_rows;
+			need_another_row = 1;
+		END;
 		IF rowcheck < min_rows;
 			min_rows = rowcheck;
 			user.state.mt.curcol = loop.index;
@@ -81,4 +83,4 @@ END;
 __seclev__
 10000
 __version__
-$Id: maintable_end;misc;default,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: maintable_end;misc;default,v 1.6 2004/05/01 06:58:42 pudge Exp $

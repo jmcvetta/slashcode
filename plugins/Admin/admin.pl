@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.186 2004/01/27 19:02:11 tvroom Exp $
+# $Id: admin.pl,v 1.187 2004/02/10 20:08:32 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1879,9 +1879,10 @@ sub displayRecentMods {
 
 sub displayRecent {
 	my($form, $slashdb, $user, $constants) = @_;
-	my($min, $max) = (undef, undef);
+	my($min, $max, $sid) = (undef, undef, undef);
 	$min = $form->{min} if defined($form->{min});
 	$max = $form->{max} if defined($form->{max});
+	$sid = $form->{sid} if defined($form->{sid});
 	my $startat = $form->{startat} || undef;
 
 	my $max_cid = $slashdb->sqlSelect("MAX(cid)", "comments");
@@ -1890,6 +1891,8 @@ sub displayRecent {
 		max	=> $max,
 		startat	=> $startat,
 		num	=> 100,
+		sid	=> $sid
+		
 	}) || [ ];
 
 	my $subj_vislen = 30;
@@ -1905,6 +1908,7 @@ sub displayRecent {
 		recent_comments	=> $recent_comments,
 		min		=> $min,
 		max		=> $max,
+		sid		=> $sid
 	});
 }
 

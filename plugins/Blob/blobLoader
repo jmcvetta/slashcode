@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: blobLoader,v 1.1 2003/02/21 19:49:35 brian Exp $
+# $Id: blobLoader,v 1.2 2003/02/21 20:23:20 brian Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Slash::Constants ':people';
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -40,7 +40,7 @@ while (<$file>) {
 close($file);
 my $id = $blobs->create({ 
 												 seclev => $opts{s},
-												 mime_type => $opts{c},
+												 content_type => $opts{c},
 												 data => $data,
 												 });
 print "Stored in $id\n";

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.39 2004/02/04 18:04:19 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.40 2004/03/24 05:31:03 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -34,6 +34,7 @@ $task{$me}{code} = sub {
 	update_modlog_ids($virtual_user, $constants, $slashdb, $user);
 	give_out_points($virtual_user, $constants, $slashdb, $user);
 	reconcile_m2($virtual_user, $constants, $slashdb, $user);
+	adjust_m2_freq($virtual_user, $constants, $slashdb, $user);
 	update_modlog_ids($virtual_user, $constants, $slashdb, $user);
 
 	return ;
@@ -361,6 +362,14 @@ sub reconcile_m2 {
 			{ m2info => $new_m2info }
 		) if $new_m2info ne $old_m2info;
 
+		# Now update the moderator's tally of csq bonuses/penalties.
+		my $csqtc = $csq->{csq_token_change}{num};
+		my $val = sprintf("csq_bonuses %+0.3f", $csqtc);
+		$slashdb->setUser(
+			$mod_hr->{uid},
+			{ -csq_bonuses => $val },
+		) if $csqtc;
+
 		# Now update the tokens of each M2'er.
 		for my $m2 (@$m2_ar) {
 			if (!$m2->{uid}) {
@@ -593,6 +602,15 @@ sub reconcile_stats {
 	$statsSave->updateStatDaily(
 		"m2_${reason_name}_${nfair}_${nunfair}",
 		"value + 1");
+}
+
+############################################################
+
+sub adjust_m2_freq {
+	my($virtual_user, $constants, $slashdb, $user) = @_;
+
+	my $cur_freq = $slashdb->getVar('m2_freq', 'value', 1);
+	
 }
 
 1;

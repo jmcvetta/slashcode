@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_forget.pl,v 1.6 2003/07/22 20:26:32 jamie Exp $
+# $Id: daily_forget.pl,v 1.7 2004/03/24 05:31:03 jamiemccarthy Exp $
 
 use strict;
 
@@ -17,7 +17,8 @@ $task{$me}{code} = sub {
 	my($virtualuser, $constants, $slashdb, $user) = @_;
 	my $forgotten1 = $slashdb->forgetCommentIPs();
 	my $forgotten2 = $slashdb->forgetSubmissionIPs();
-	return "forgot approx $forgotten1 comment IPs, $forgotten2 submission IPs";
+	my $forgotten3 = $slashdb->forgetOpenProxyIPs();
+	return "forgot approx $forgotten1 comment IPs, $forgotten2 submission IPs, $forgotten3 open proxy IPs";
 };
 
 1;

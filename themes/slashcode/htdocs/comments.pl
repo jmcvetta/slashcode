@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.175 2004/03/16 17:54:25 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.176 2004/03/24 05:31:03 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -857,6 +857,24 @@ sub validateComment {
 		$form_success = 0;
 		# editComment('', $$error_message), return unless $preview;
 		return;
+	}
+
+	# New check (March 2004):  if someone is posting anonymously,
+	# we scan the IP they're coming from to see if we can use
+	# some commonly-used proxy ports to access our own site.
+	# If we can, they're coming from an open HTTP proxy, which
+	# we probably don't want to allow to post.
+	if ($user->{is_anon} && $constants->{comments_portscan_anon_for_proxy}) {
+		my $is_proxy = $slashdb->checkForOpenProxy();
+print STDERR scalar(localtime) . " comments.pl cfop returned '$is_proxy'\n";
+		if ($is_proxy) {
+			$$error_message = getError('open proxy', {
+				unencoded_ip	=> $ENV{REMOTE_ADDR},
+				port		=> $is_proxy,
+			});
+			$form_success = 0;
+			return;
+		}
 	}
 
 	# New check (July 2002):  there is a max number of posts per 24-hour

@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.67 2004/03/23 15:04:11 tvroom Exp $
+# $Id: THEME,v 1.68 2004/03/24 05:31:03 jamiemccarthy Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -71,6 +71,7 @@ htdoc=htdocs/slashguide.shtml
 htdoc=htdocs/index.pl
 htdoc=htdocs/metamod.pl
 htdoc=htdocs/moderation.shtml
+htdoc=htdocs/ok.txt
 htdoc=htdocs/topics.pl
 htdoc=htdocs/users.pl
 mysql_dump=sql/mysql/datadump.sql

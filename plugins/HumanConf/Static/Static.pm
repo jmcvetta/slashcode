@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.21 2005/03/08 22:12:31 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.22 2005/03/08 22:16:35 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -66,8 +66,7 @@ sub deleteOldFromPool {
 		# way to do this at the moment.  Eventually we'll have
 		# DB-based timespecs and we can read that...
 		my $runs_per_hour = 2;
-		$want_delete_fraction = 1/($runs_per_hour*2.4)
-#		$want_delete_fraction = 1/($runs_per_hour*24)
+		$want_delete_fraction = 1/($runs_per_hour*24)
 	}
 	my $want_delete = int($cursize*$want_delete_fraction);
 		# Don't delete so many that the pool will get too empty,

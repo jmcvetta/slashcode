@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.88 2003/09/02 02:22:29 vroom Exp $
+# $Id: User.pm,v 1.89 2003/09/02 20:13:18 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -334,25 +334,20 @@ sub authors {
 
 ########################################################
 sub userLogin {
-	my($name, $passwd) = @_;
+	my($uid, $passwd) = @_;
 	my $r = Apache->request;
 	my $slashdb = getCurrentDB();
 
 	# Do we want to allow logins with encrypted passwords? -- pudge
 #	$passwd = substr $passwd, 0, 20;
 	my($uid, $cookpasswd, $newpass) =
-		$slashdb->getUserAuthenticate($name, $passwd); #, 1
+		$slashdb->getUserAuthenticate($uid, $passwd); #, 1
 
 	if (!isAnon($uid)) {
 		setCookie('user', bakeUserCookie($uid, $cookpasswd),
 			$slashdb->getUser($uid, 'session_login'));
 		return($uid, $newpass);
 	} else {
-		my $hostip = $r->connection->remote_ip;
-		my $subnet = $hostip;
-		$subnet =~ s/(\d+\.\d+\.\d+)\.\d+/$1\.0/;
-		my $name_uid = $slashdb->getUserUID($name);
-		$slashdb->sqlInsert("badpasswords", { uid => $name, password => $passwd, subnet => $subnet, ip => $hostip } );
 		return getCurrentStatic('anonymous_coward_uid');
 	}
 }

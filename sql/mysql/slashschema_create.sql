@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.126 2003/08/26 18:11:10 jamie Exp $
+# $Id: slashschema_create.sql,v 1.127 2003/09/02 20:13:18 jamie Exp $
 #
 
 #
@@ -136,6 +136,21 @@ CREATE TABLE backup_blocks (
 	bid varchar(30) DEFAULT '' NOT NULL,
 	block text,
 	PRIMARY KEY (bid)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'badpasswords'
+#
+
+CREATE TABLE badpasswords (
+	uid mediumint(8) NOT NULL DEFAULT 0,
+	ip varchar(15) NOT NULL DEFAULT '',
+	subnet varchar(15) NOT NULL DEFAULT '',
+	password varchar(20) NOT NULL DEFAULT '',
+	ts timestamp(14) NOT NULL,
+	INDEX uid (uid),
+	INDEX ip (ip),
+	INDEX subnet (subnet)
 ) TYPE=InnoDB;
 
 #

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.4 2001/12/18 21:41:33 pudge Exp $
+# $Id: Access.pm,v 1.5 2002/01/04 14:21:15 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -450,8 +450,8 @@ sub filterOk {
 	for my $f (@$filters) {
 		my $number_match	= '';
 		my $regex		= $f->[2];
-		my $modifier		= 'g' if $f->[3] =~ /g/;
-		my $case		= 'i' if $f->[3] =~ /i/;
+		my $modifier		= $f->[3] =~ /g/ ? 'g' : '';
+		my $case		= $f->[3] =~ /i/ ? 'i' : '';
 		my $field		= $f->[4];
 		my $ratio		= $f->[5];
 		my $minimum_match	= $f->[6];
@@ -754,4 +754,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.4 2001/12/18 21:41:33 pudge Exp $
+$Id: Access.pm,v 1.5 2002/01/04 14:21:15 pudge Exp $

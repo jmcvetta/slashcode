@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.150 2003/09/15 18:43:51 vroom Exp $
+# $Id: comments.pl,v 1.151 2003/09/15 20:04:15 vroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1495,8 +1495,8 @@ sub undoModeration {
 
 	for my $mod (@$removed) {
 		$mod->{val} =~ s/^(\d)/+$1/;  # put "+" in front if necessary
-		use Slash::Messages;
-		Slash::Messages::send_mod_msg({
+		$messages = getObject('Slash::Messages');
+		$messages->send_mod_msg({
 			type	=> 'unmod_msg',
 			sid	=> $sid,
 			cid	=> $mod->{cid},

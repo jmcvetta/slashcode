@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.22 2003/09/15 18:38:48 vroom Exp $
+# $Id: Messages.pm,v 1.23 2003/09/15 20:04:15 vroom Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -996,9 +996,7 @@ sub messagedLog {
 # could use it
 
 sub send_mod_msg {
-	my($mod) = @_;
-
-	my $messages	= getObject('Slash::Messages') or return;
+	my($self, $mod) = @_;
 
 	my $constants	= getCurrentStatic();
 	my $slashdb	= getCurrentDB();
@@ -1012,7 +1010,7 @@ sub send_mod_msg {
 	my $comment	= $mod->{comment} || $slashdb->getComment($cid);
 
 	my $comm	= $slashdb->getCommentReply($sid, $cid);
-	my $users	= $messages->checkMessageCodes(
+	my $users	= $self->checkMessageCodes(
 		MSG_CODE_COMMENT_MODERATE, [$comment->{uid}]
 	);
 
@@ -1048,7 +1046,7 @@ sub send_mod_msg {
 			},
 			reasons		=> $slashdb->getReasons(),
 		};
-		$messages->create($users->[0],
+		$self->create($users->[0],
 			MSG_CODE_COMMENT_MODERATE, $data, 0, '', 'collective'
 		);
 	}
@@ -1065,4 +1063,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.22 2003/09/15 18:38:48 vroom Exp $
+$Id: Messages.pm,v 1.23 2003/09/15 20:04:15 vroom Exp $

@@ -177,6 +177,9 @@ Your [% item %] violated the "[% ratio %]" compression filter. Try less
 whitespace and/or less repetition.
 <B>Saving [% item %] aborted.</B>
 
+[% CASE 'editHome_too_many_disabled' %]
+<b>Error</b>: You disabled too many options.  Nothing saved.  Please try again.
+
 [% CASE DEFAULT %]
 	-- MISSING USER MESSAGE SEGMENT -- [[% value %]] block not found.<BR>
 
@@ -184,4 +187,4 @@ whitespace and/or less repetition.
 __seclev__
 10000
 __version__
-$Id: errors;users;default,v 1.18 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: errors;users;default,v 1.19 2004/12/07 00:12:56 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.174 2003/04/08 18:51:44 jamie Exp $
+# $Id: users.pl,v 1.175 2003/04/11 18:43:20 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1574,11 +1574,14 @@ sub editUser {
 
 	$title = getTitle('editUser_title', { user_edit => $user_edit});
 
+	my $editkey = "";
+	$editkey = editKey($user_edit->{uid}) if $fieldkey eq 'uid' && $plugins->{PubKey};
+
 	slashDisplay('editUser', {
 		useredit 		=> $user_edit,
 		admin_flag		=> $admin_flag,
 		title			=> $title,
-		editkey 		=> $plugins->{'PubKey'} ? editKey($user_edit->{uid}) : '',
+		editkey 		=> $editkey,
 		admin_block		=> $admin_block,
 		note			=> $note,
 	});

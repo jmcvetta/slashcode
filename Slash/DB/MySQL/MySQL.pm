@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.166 2002/06/24 15:54:05 jamie Exp $
+# $Id: MySQL.pm,v 1.167 2002/06/25 14:08:50 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4110,7 +4110,7 @@ sub getSubmissionForUser {
 		if $form->{section};
 	
 	my $submissions = $self->sqlSelectAllHashrefArray(
-		'submissions.*',
+		'submissions.*, karma',
 		'submissions,users_info',
 		join(' AND ', @where),
 		'ORDER BY time'

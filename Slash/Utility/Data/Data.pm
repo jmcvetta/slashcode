@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.130 2004/09/20 14:32:26 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.131 2004/09/29 16:57:40 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2417,32 +2417,31 @@ sub _slashlink_to_link {
 	}
 	my $frag = delete $attr{frag} || "";
 	# Generate the return value.
-	my $retval = q{<A HREF="};
+	my $url = "";
 	if ($sn eq 'comments') {
-		$retval .= qq{$skin_root/comments.pl?};
-		$retval .= join("&",
+		$url .= qq{$skin_root/comments.pl?};
+		$url .= join("&",
 			map { qq{$_=$attr{$_}} }
 			sort keys %attr);
-		$retval .= qq{#$frag} if $frag;
+		$url .= qq{#$frag} if $frag;
 	} elsif ($sn eq 'article') {
 		# Different behavior here, depending on whether we are
 		# outputting for a dynamic page, or a static one.
 		# This is the main reason for doing slashlinks at all!
 		if ($ssi) {
-			$retval .= qq{$skin_root/};
-			$retval .= qq{$skin_name/$attr{sid}.shtml};
-			$retval .= qq{?tid=$attr{tid}} if $attr{tid};
-			$retval .= qq{#$frag} if $frag;
+			$url .= qq{$skin_root/};
+			$url .= qq{$skin_name/$attr{sid}.shtml};
+			$url .= qq{?tid=$attr{tid}} if $attr{tid};
+			$url .= qq{#$frag} if $frag;
 		} else {
-			$retval .= qq{$skin_root/article.pl?};
-			$retval .= join("&",
+			$url .= qq{$skin_root/article.pl?};
+			$url .= join("&",
 				map { qq{$_=$attr{$_}} }
 				sort keys %attr);
-			$retval .= qq{#$frag} if $frag;
+			$url .= qq{#$frag} if $frag;
 		}
 	}
-	$retval .= q{">};
-	return $retval;
+	return q{<A HREF="} . strip_urlattr($url) . q{">};
 }
 
 #========================================================================
@@ -3477,4 +3476,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.130 2004/09/20 14:32:26 jamiemccarthy Exp $
+$Id: Data.pm,v 1.131 2004/09/29 16:57:40 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.3 2003/03/18 02:08:13 brian Exp $
+# $Id: Relocate.pm,v 1.4 2003/08/29 19:56:28 pudge Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -79,32 +79,32 @@ sub href2SlashTag {
 			# Go on and test to see if URL's have changed
 			if ($token->[0] eq 'slash') {
 				#Skip non HREF links
-				next unless $token->[1]->{href};
-				if (!$token->[1]->{id}) {
-					my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
-					my $href = strip_attribute($token->[1]->{href});
-					my $title = strip_attribute($token->[1]->{title});
+				next unless $token->[1]{href} && $token->[1]{type} eq 'link';
+				if (!$token->[1]{id}) {
+					my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
+					my $href = strip_attribute($token->[1]{href});
+					my $title = strip_attribute($token->[1]{title});
 					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
 				} else {
-					my $url = $self->get($token->[1]->{id}, 'url');
-					next if $url eq $token->[1]->{href};
-					my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
-					my $href = strip_attribute($token->[1]->{href});
-					my $title = strip_attribute($token->[1]->{title});
+					my $url = $self->get($token->[1]{id}, 'url');
+					next if $url eq $token->[1]{href};
+					my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
+					my $href = strip_attribute($token->[1]{href});
+					my $title = strip_attribute($token->[1]{title});
 					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
 				}
 			# New links to convert!!!!
 			} else {
 				# We ignore some types of href
-				next if $token->[1]->{name};
-				next if $token->[1]->{href} eq '__SLASHLINK__';
-				next if ($token->[1]->{href} =~ /^mailto/i);
+				next if $token->[1]{name};
+				next if $token->[1]{href} eq '__SLASHLINK__';
+				next if ($token->[1]{href} =~ /^mailto/i);
 				#This allows you to have a link bypass this system
-				next if ($token->[1]->{FORCE} && $user->{is_admin});
-				my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
+				next if ($token->[1]{FORCE} && $user->{is_admin});
+				my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
 				my $data = $tokens->get_text("/a");
-				my $href = strip_attribute($token->[1]->{href});
-				my $title = strip_attribute($token->[1]->{title});
+				my $href = strip_attribute($token->[1]{href});
+				my $title = strip_attribute($token->[1]{title});
 				$text =~ s#\Q$token->[3]$data</a>\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">$data</SLASH>#is;
 			}
 		}

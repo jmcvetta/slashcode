@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.12 2000/06/22 03:28:43 pudge Exp $
+#  $Id: users.pl,v 1.13 2000/06/22 03:36:13 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -226,7 +226,7 @@ sub newUser {
 	# Check if User Exists
 
 	$I{F}{newuser} =~ s/\s+/ /g;
-	$I{F}{newuser} =~ s/[^ 0-9a-zA-Z$_.+!*'(),-]+//g;
+	$I{F}{newuser} =~ s/[^ a-zA-Z0-9\$_.+!*'(),-]+//g;
 	$I{F}{newuser} = substr($I{F}{newuser}, 0, 20);
 
 	(my $matchname = lc $I{F}{newuser}) =~ s/[^a-zA-Z0-9]//g;
@@ -1005,7 +1005,7 @@ EOT1
 EOT2
 
 	print <<EOT;
-	(Note: only the characters <TT>0-9a-zA-Z$_.+!*'(),-</TT>, plus space,
+	(Note: only the characters <TT>0-9a-zA-Z_.+!*'(),-$</TT>, plus space,
 	are allowed in nicknames, and all others will be stripped out.)
 
 	<INPUT TYPE="TEXT" NAME="newuser" SIZE="20" MAXLENGTH="20" VALUE="$I{F}{newuser}">

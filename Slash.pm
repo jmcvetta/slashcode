@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.44 2000/08/14 21:17:10 pudge Exp $
+#  $Id: Slash.pm,v 1.45 2000/08/17 20:25:54 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -42,7 +42,7 @@ BEGIN {
 
 	require Exporter;
 	use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS %I $CRLF);
-	$VERSION = '1.0.7';
+	$VERSION = '1.0.8';
 	@ISA	 = 'Exporter';
 	@EXPORT  = qw(
 		sqlSelectMany sqlSelect sqlSelectHash sqlSelectAll approveTag
@@ -93,7 +93,7 @@ sub getSlashConf {
 	# %%%%%% For stuff that NEEDS to be defined, check and define it here.
 
 	# Maximum karma. If it's not defined, things break.
-	$I{maxkarma} = 999 if !defined($I{maxkarma});
+	$I{maxkarma} = 999 if ! defined $I{maxkarma};
 	# Sanity check- ASSERT: MAXKARMA >= M2_MAXBONUS.
 	$I{m2_maxbonus} = $I{maxkarma}
 		if !$I{m2_maxbonus} || $I{m2_maxbonus} > $I{maxkarma};

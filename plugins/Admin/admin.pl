@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.124 2003/01/17 01:31:23 jamie Exp $
+# $Id: admin.pl,v 1.125 2003/01/20 17:56:53 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1742,6 +1742,11 @@ sub displayRecentRequests {
 ##################################################################
 sub displayRecentSubs {
 	my($form, $slashdb, $user, $constants) = @_;
+
+	if (!$constants->{subscribe}) {
+		listStories();
+		return;
+	}
 
 	my $admindb = getObject("Slash::Admin",
 		$constants->{backup_db_user} || $constants->{log_db_user});

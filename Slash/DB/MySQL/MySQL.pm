@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.212 2002/08/28 20:13:11 jamie Exp $
+# $Id: MySQL.pm,v 1.213 2002/08/28 22:22:04 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -664,6 +664,7 @@ sub getMetamodsForUserRaw {
 	$max_old = 0 if !$max_old;
 	my $min_new = $max_old+1;
 	my($max_new) = $self->sqlSelect("MAX(id)", "moderatorlog");
+	$max_new = 0 if !$max_new;
 	$min_new = $max_new if $min_new > $max_new;
 	my $old_range = $max_old-$min_old; $old_range = 1 if $old_range < 1;
 	my $new_range = $max_new-$min_new; $new_range = 1 if $new_range < 1;

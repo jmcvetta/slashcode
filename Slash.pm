@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.19 2000/06/12 19:38:36 pudge Exp $
+#  $Id: Slash.pm,v 1.20 2000/06/12 20:07:54 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -122,7 +122,7 @@ sub getSlash {
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
-		last next time artcount bseclev cid clbig clsmall
+		last next artcount bseclev cid clbig clsmall
 		commentlimit commentsort commentspill commentstatus
 		del displaystatus filter_id hardthresh height
 		highlightthresh isolate issue light maillist max

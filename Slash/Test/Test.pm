@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
+# $Id: Test.pm,v 1.4 2001/12/10 17:34:09 pudge Exp $
 
 package Slash::Test;
 
@@ -50,10 +50,11 @@ use Slash::Utility;
 use Slash::XML;
 use Data::Dumper;
 
+use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT $vuser);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -120,6 +121,19 @@ sub slashTest {
 	$::constants = getCurrentStatic();
 	$::user      = getCurrentUser();
 	$::form      = getCurrentForm();
+
+	# auto-create plugin variables ... bwahahaha
+	my $plugins = $::slashdb->getDescriptions('plugins');
+	local $Slash::Utility::NO_ERROR_LOG = 1;
+
+	for my $plugin (grep { /^\w+$/ } keys %$plugins) {
+		my $name = lc $plugin;
+		my $object = getObject("Slash::$plugin");
+		if ($object) {
+			no strict 'refs';
+			${"main::$name"} = $object;
+		}
+	}
 }
 
 #========================================================================
@@ -158,4 +172,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
+$Id: Test.pm,v 1.4 2001/12/10 17:34:09 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.4 2001/12/04 01:49:28 pudge Exp $
+# $Id: Environment.pm,v 1.5 2001/12/10 17:34:09 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1313,6 +1313,9 @@ sub getObject {
 	}
 
 	if ($objects->{$class}) {
+		# we've been here before, and it didn't work last time ...
+		# what, you think you can try it again and it will work
+		# magically this time?  you think you're better than me?
 		if ($objects->{$class} eq 'NA') {
 			return undef;
 		} else {
@@ -1322,18 +1325,26 @@ sub getObject {
 		$user ||= getCurrentVirtualUser();
 		return undef unless $user;
 
-		eval "require $class";
+		# clean up dangerous characters
+		$class =~ s/[^\w:]+//g;
+
+		# see if module has been loaded in already ...
+		(my $file = $class) =~ s|::|/|g;
+		# ... because i really hate eval
+		eval "require $class" unless exists $INC{"$file.pm"};
+
 		if ($@) {
 			errorLog($@);
-			$objects->{$class} = 'NA';
-			return undef;
 		} elsif (!$class->can("new")) {
-			errorLog("Class $class is not working properly.  Try " .
+			errorLog("Class $class is not returning an object.  Try " .
 				"`perl -M$class -le '$class->new'` to see why.\n");
-			$objects->{$class} = 'NA';
-			return undef;
+		} else {
+			my $object = $class->new($user, @args);
+			return $objects->{$class} = $object if $object;
 		}
-		return $objects->{$class} = $class->new($user, @args);
+
+		$objects->{$class} = 'NA';
+		return undef;
 	}
 }
 
@@ -1534,4 +1545,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.4 2001/12/04 01:49:28 pudge Exp $
+$Id: Environment.pm,v 1.5 2001/12/10 17:34:09 pudge Exp $

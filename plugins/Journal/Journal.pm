@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.15 2001/11/15 15:46:09 pudge Exp $
+# $Id: Journal.pm,v 1.16 2001/12/10 17:33:51 pudge Exp $
 
 package Slash::Journal;
 
@@ -10,14 +10,13 @@ use DBIx::Password;
 use Slash;
 use Slash::Constants qw(:messages);
 use Slash::Utility;
-use Slash::DB::Utility;
 
 use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian

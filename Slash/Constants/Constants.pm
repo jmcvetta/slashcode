@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.4 2001/12/07 21:59:15 brian Exp $
+# $Id: Constants.pm,v 1.5 2001/12/10 17:34:09 pudge Exp $
 
 package Slash::Constants;
 
@@ -30,7 +30,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw();
 
 =head2 messages
@@ -51,6 +51,8 @@ These constants are for message delivery modes and message type codes.
 	MSG_CODE_COMMENT_REPLY
 	MSG_CODE_JOURNAL_FRIEND
 	MSG_CODE_NEW_SUBMISSION
+	MSG_CODE_JOURNAL_REPLY
+	MSG_CODE_NEW_COMMENT
 
 =cut
 
@@ -69,6 +71,8 @@ my @messages = qw(
 	MSG_CODE_COMMENT_REPLY
 	MSG_CODE_JOURNAL_FRIEND
 	MSG_CODE_NEW_SUBMISSION
+	MSG_CODE_JOURNAL_REPLY
+	MSG_CODE_NEW_COMMENT
 );
 
 =head2 web
@@ -155,6 +159,8 @@ BEGIN {
 	use constant MSG_CODE_COMMENT_REPLY	=>  4;
 	use constant MSG_CODE_JOURNAL_FRIEND	=>  5;
 	use constant MSG_CODE_NEW_SUBMISSION	=>  6;
+	use constant MSG_CODE_JOURNAL_REPLY	=>  7;
+	use constant MSG_CODE_NEW_COMMENT	=>  8;
 
 
 	# web
@@ -174,15 +180,20 @@ BEGIN {
 	use constant ANCHOR	=> 5;
 
 	# people
-	use constant FRIEND => 1;
-	use constant FOE => 2;
-	use constant FOF => 3;
+	use constant FRIEND	=> 1;
+	use constant FOE	=> 2;
+	use constant FOF	=> 3;
 }
 
 1;
 
 __END__
 
+=head1 TODO
+
+Consider allowing some constants, like MSG_CODE_* constants,
+be defined dynamically.  Scary, though, with cross-dependencies
+in modules, etc.
 
 =head1 SEE ALSO
 
@@ -190,4 +201,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.4 2001/12/07 21:59:15 brian Exp $
+$Id: Constants.pm,v 1.5 2001/12/10 17:34:09 pudge Exp $

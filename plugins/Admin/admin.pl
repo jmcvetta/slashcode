@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.240 2004/10/12 15:01:11 tvroom Exp $
+# $Id: admin.pl,v 1.241 2004/10/12 19:01:03 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1999,8 +1999,7 @@ sub updateStory {
 #print STDERR "admin.pl before render data: " . Dumper($data);
 	my $rendered_hr = $slashdb->renderTopics($chosen_hr);
 	$data->{primaryskid} = $slashdb->getPrimarySkidFromRendered($rendered_hr);
-	my $extracolumns = $slashdb->getNexusExtras(
-		$slashdb->getNexusFromSkid($data->{primaryskid}) );
+	my $extracolumns = $slashdb->getNexusExtrasForChosen($chosen_hr);
 #print STDERR "admin.pl extracolumns '@$extracolumns'\n";
 	if ($extracolumns && @$extracolumns) {
 		for my $ex_ar (@$extracolumns) {
@@ -2312,8 +2311,7 @@ sub saveStory {
 	my $extras = $slashdb->getNexusExtrasForChosen($chosen_hr);
 	for my $extra_ar (@$extras) {
 		my($textname, $keyword, $type) = @$extra_ar;
-		# type 'list' not really supported
-		next unless $type eq 'text';
+		next unless $type eq 'text' || $type eq "textarea" || $type eq "list";
 		$data->{$keyword} = $form->{$keyword};
 	}
 

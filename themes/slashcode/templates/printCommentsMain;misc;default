@@ -90,7 +90,7 @@ __template__
 
 		Threshold: [%
 			Slash.selectThreshold(comments.0.totals);
-			IF user.mode != 'parents';
+			IF user.mode != 'parents' && user.mode != 'child';
 			  Slash.selectMode(user.mode);
 			END;
 			Slash.selectSortcode(user.commentsort) %]
@@ -120,4 +120,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.16 2003/11/10 17:27:52 pater Exp $
+$Id: printCommentsMain;misc;default,v 1.17 2003/11/19 22:31:25 pater Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.191 2005/01/06 20:24:17 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.192 2005/01/07 06:05:49 tvroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -496,7 +496,7 @@ EOT
 			$statsSave->createStatDaily("${op}_ipids", $uniq, { skid => $skid});
 			$statsSave->createStatDaily("${op}_bytes", $bytes, { skid => $skid});
 			$statsSave->createStatDaily("${op}_page", $pages, { skid => $skid});
-			$statsSave->createStatDaily("${op}_user", $users, { skid => $skid});
+			$statsSave->createStatDaily("${op}_user", $uids, { skid => $skid});
 		}
 
 		$statsSave->createStatDaily( "page_from_rss", $stats_from_rss->{$skid}{cnt}, {skid => $skid});

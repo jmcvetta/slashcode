@@ -73,8 +73,16 @@ __template__
 <INPUT TYPE="HIDDEN" NAME="op" VALUE="savepasswd">
 <INPUT TYPE="SUBMIT" VALUE="Change Password">
 </FORM>
-
+[% IF admin_flag %]
+<P>
+<B>Verify Inactive or Possible Robot Accounts</B>
+<FORM ACTION="[% constants.rootdir %]/users.pl" METHOD="POST">
+<INPUT TYPE="HIDDEN" NAME="uid" VALUE="[% useredit.uid %]">
+<INPUT TYPE="HIDDEN" NAME="op" VALUE="force_acct_verify">
+<INPUT TYPE="SUBMIT" VALUE="Force User to Verify Account">
+</FORM>
+[% END %]
 __seclev__
 500
 __version__
-$Id: changePasswd;users;default,v 1.20 2004/01/29 02:02:16 pudge Exp $
+$Id: changePasswd;users;default,v 1.21 2004/05/11 18:28:05 tvroom Exp $

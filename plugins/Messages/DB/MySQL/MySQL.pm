@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.4 2001/11/26 17:35:24 pudge Exp $
+# $Id: MySQL.pm,v 1.5 2001/12/02 04:52:12 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -343,7 +343,7 @@ sub _delete_all {
 	$self->sqlDo("DELETE FROM $table WHERE 1=1");
 }
 
-sub _getMailingUsers {
+sub _getMailingUsersRaw {
 	my($self, $code) = @_;
 	return unless $code =~ /^-?\d+$/;
 
@@ -356,6 +356,14 @@ users_messages.code=$code AND users_messages.mode=$mode AND users.realemail != '
 SQL
 
 	my $users  = $self->sqlSelectColArrayref($cols, $table, $where);
+	return $users;
+}
+
+sub _getMailingUsers {
+	my($self, $code) = @_;
+	return unless $code =~ /^-?\d+$/;
+	
+	my $users = $self->_getMailingUsersRaw($code);
 	my $fields = ['realemail', 'exsect', 'extid', 'exaid', 'sectioncollapse']; # 'nickname', 
 	$users     = { map { $_ => $self->getUser($_, $fields) } @$users };
 	return $users;
@@ -380,4 +388,3 @@ sub _getMessageUsers {
 1;
 
 __END__
-

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.7 2001/11/07 01:21:27 brian Exp $
+# $Id: slashschema_create.sql,v 1.8 2001/12/02 04:53:28 pudge Exp $
 #
 
 #
@@ -723,7 +723,7 @@ CREATE TABLE users_index (
 	uid mediumint UNSIGNED NOT NULL,
 	extid varchar(255),
 	exaid varchar(100),
-	exsect varchar(100),
+	exsect varchar(255),
 	exboxes varchar(255),
 	maxstories tinyint UNSIGNED DEFAULT '30' NOT NULL,
 	noboxes tinyint DEFAULT '0' NOT NULL,

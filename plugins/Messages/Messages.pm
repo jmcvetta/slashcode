@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
+# $Id: Messages.pm,v 1.4 2001/12/02 04:52:12 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -350,6 +350,16 @@ sub getHeadlineUsers {
 	return $self->_getMailingUsers(1);
 }
 
+sub getNewsletterUsersCount {
+	my($self) = @_;
+	return scalar @{$self->_getMailingUsersRaw(0)};
+}
+
+sub getHeadlineUsersCount {
+	my($self) = @_;
+	return scalar @{$self->_getMailingUsersRaw(1)};
+}
+
 # takes message ref or message ID
 sub send {
 	my($self, $msg) = @_;
@@ -472,11 +482,12 @@ sub bulksend {
 	($code, my($type)) = $self->getDescription('messagecodes', $code);
 	$code = -1 unless defined $code;
 
+	my $uid = 0;
 	my $msg = {
 		id		=> 0,
 		fuser		=> 0,
 		altto		=> '',
-		user		=> 0,
+		user		=> $uid,
 		subject		=> $subj,
 		message		=> $message,
 		code		=> $code,
@@ -494,7 +505,7 @@ sub bulksend {
 	} else {
 		messagedLog(getData("send mail error", {
 			addr	=> "[bulk]",
-			uid	=> $msg->{user}{uid},
+			uid	=> $uid,
 			error	=> "unknown error",
 		}, "messages"));
 		return 0;
@@ -880,4 +891,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.3 2001/11/15 15:46:09 pudge Exp $
+$Id: Messages.pm,v 1.4 2001/12/02 04:52:12 pudge Exp $

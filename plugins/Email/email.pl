@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.4 2003/03/04 19:56:32 pudge Exp $
+# $Id: email.pl,v 1.5 2003/03/07 17:56:42 brian Exp $
 
 # Slash::Email - web script
 # 
@@ -17,7 +17,7 @@ use Slash::Constants ':messages';
 use Email::Valid;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think
@@ -256,10 +256,10 @@ sub removeOptoutForm {
 }
 
 sub removeOptout {
-	my($slashdb, $constants, $user, $form, $Email) = @_;
+	my($slashdb, $constants, $user, $form, $Plugins) = @_;
 
 	my $email = decode_entities($form->{email});
-	my $rc = $Email->removeFromOptoutList($form->{email});
+	my $rc = $Plugins->{Email}->removeFromOptoutList($form->{email});
 	print getData('optout_removed', { result => $rc });
 
 	removeOptoutForm(@_);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.44 2003/07/30 21:28:57 jamie Exp $
+# $Id: Utility.pm,v 1.45 2003/08/08 03:40:48 jamie Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -367,14 +367,45 @@ sub _querylog_finish {
 	my $elapsed = sprintf("%.6f",
 		Time::HiRes::time - $self->{_querylog}{start_time});
 
-	# Smart thing here would be to save up 5-10 of these and insert them
-	# all at once with prepare and the ? format.  We'd want a DESTROY
-	# handler that writes anything left.
-	$self->{_querylog}{db}{_dbh}->do("INSERT INTO querylog VALUES"
+	# Prepare the insert.  If we're in a daemon or command line utility,
+	# go ahead and write it now.  If we're in an httpd, push it onto a
+	# queue for writing all together.  (We trust that apache processes
+	# will run for a relatively long time, so we don't much care when
+	# logging occurs, but tasks and other processes should log every
+	# query immediately.)
+	my $insert = "INSERT /* DELAYED */ INTO querylog VALUES"
 		. " (NULL, '$self->{_querylog}{type}', '$self->{_querylog}{tables}', NULL,"
 		. " '$self->{_querylog}{package}' , '$self->{_querylog}{line}' ,"
 		. " '$self->{_querylog}{package1}', '$self->{_querylog}{line1}',"
-		. " $elapsed)");
+		. " $elapsed)";
+	if (!$ENV{GATEWAY_INTERFACE}) {
+		$self->{_querylog}{db}{_dbh}->do($insert);
+		return ;
+	}
+
+	push @{$self->{_querylog}{cache}}, $insert;
+
+	# We flush the cache to disk if we have more than 8 items in it.
+	# Why 8?  I had to pick some number.  Anyway we can't go looking
+	# in $constants because this is a lower level and constants may
+	# not exist yet.
+	if (scalar(@{$self->{_querylog}{cache}}) >= 8) {
+		$self->_querylog_writecache;
+	}
+}
+
+sub _querylog_writecache {
+	my($self) = @_;
+	return unless ref($self->{_querylog}{cache})
+		&& @{$self->{_querylog}{cache}};
+	my $dbh = $self->{_querylog}{db}{_dbh};
+	return unless $dbh;
+	$dbh->do("SET AUTOCOMMIT=0");
+	while (my $sql = shift @{$self->{_querylog}{cache}}) {
+		$dbh->do($sql);
+	}
+	$dbh->do("COMMIT");
+	$dbh->do("SET AUTOCOMMIT=1");
 }
 
 ########################################################

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_recent_topics.pl,v 1.12 2004/06/17 16:12:23 jamiemccarthy Exp $
+# $Id: set_recent_topics.pl,v 1.13 2004/11/02 16:20:56 cowboyneal Exp $
 
 # This task (and its associated templates and other changes)
 # was rewritten almost in its entirety, by Shane Zatezalo
@@ -56,11 +56,11 @@ sub updateRecentTopics {
 				);
 			}
 			$html .= slashDisplay('setrectop_img', {
-				id	=> $cur_tid,
-				image	=> $cur_story->{image},
-				width	=> $cur_story->{width},
-				height	=> $cur_story->{height},
-				alttext => $cur_story->{alttext},
+				id	 => $cur_tid,
+				image	 => $cur_story->{image},
+				width	 => $cur_story->{width},
+				height	 => $cur_story->{height},
+				textname => $cur_story->{alttext},
 			}, 1);
 		}
 #		if ($num_stories <= $constants->{recent_topic_txt_count}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.113 2004/02/25 18:43:10 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.114 2004/02/27 20:36:02 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1733,6 +1733,9 @@ sub fudgeurl {
 
 	my $constants = getCurrentStatic();
 
+	### should we just escape spaces, quotes, apostrophes, and <> instead
+	### of removing them? -- pudge
+
 	# Remove quotes and whitespace (we will expect some at beginning and end,
 	# probably)
 	$url =~ s/["\s]//g;
@@ -3245,4 +3248,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.113 2004/02/25 18:43:10 jamiemccarthy Exp $
+$Id: Data.pm,v 1.114 2004/02/27 20:36:02 pudge Exp $

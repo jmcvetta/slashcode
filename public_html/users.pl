@@ -21,12 +21,11 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.17 2000/07/31 17:16:26 pudge Exp $
+#  $Id: users.pl,v 1.18 2000/07/31 17:30:14 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
 use vars '%I';
-use Email::Valid;
 use Slash;
 
 #################################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.20 2002/02/25 15:50:55 pudge Exp $
+# $Id: Search.pm,v 1.21 2002/03/01 18:54:53 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -94,9 +94,10 @@ sub findComments {
 
 	if ($form->{section}) {
 		$where .= " AND discussions.section = '$form->{section}'"
-	} else {
-		$tables .= ", sections";
-		$where .= " AND sections.section = discussions.section AND sections.isolate != 1 ";
+# Bad code, kills Slashdot's Search database -Brian
+#	} else {
+#		$tables .= ", sections";
+#		$where .= " AND sections.section = discussions.section AND sections.isolate != 1 ";
 	}
 
 	my $other;
@@ -227,7 +228,7 @@ sub findStory {
 
 	my $query = $self->sqlQuote($form->{query});
 	my $columns = "users.nickname, stories.title, stories.sid as sid, time, commentcount, stories.section";
-	$columns .= ", TRUNCATE((((MATCH (stories.title) AGAINST($query) + (MATCH (introtext,bodytext) AGAINST($query)))) / 2), 1) as score "
+	$columns .= ", TRUNCATE((((MATCH (stories.title) AGAINST($query) + (MATCH (introtext,bodytext) AGAINST($query)))) / 2), 1) as score, stories.tid "
 		if ($form->{query} && $sort == 2);
 
 	my $tables = "stories,users";

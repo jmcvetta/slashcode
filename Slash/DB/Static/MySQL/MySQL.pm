@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.56 2002/08/29 21:56:28 jamie Exp $
+# $Id: MySQL.pm,v 1.57 2002/08/30 03:51:28 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -646,7 +646,7 @@ sub convert_tokens_to_points {
 	my $tokentrade = $pointtrade * $tokperpt;
 	$tokentrade = $maxtokens if $tokentrade > $maxtokens; # sanity check
 
-	my @uids = $self->sqlSelectColArrayref(
+	my $uids = $self->sqlSelectColArrayref(
 		"uid",
 		"users_info",
 		"tokens >= $tokentrade",
@@ -657,7 +657,7 @@ sub convert_tokens_to_points {
 	# update all at once on just one table and since we're using
 	# + and - instead of using absolute values. - Jamie 2002/08/08
 
-	for my $uid (@uids) {
+	for my $uid (@$uids) {
 		my($tokens, $points);
 
 		$self->setUser($uid, {
@@ -678,7 +678,7 @@ sub convert_tokens_to_points {
 		"points > $maxpoints"
 	);
 	$self->sqlUpdate(
-		"users_comments",
+		"users_info",
 		{ tokens => $maxtokens },
 		"tokens > $maxtokens"
 	);

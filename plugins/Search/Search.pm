@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.76 2004/08/30 02:27:22 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.77 2004/08/31 21:20:12 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -165,7 +165,7 @@ sub findStory {
 		$columns .= ", TRUNCATE((( " . $self->_score('title', $form->{query}, $constants->{search_method}) . "  + " .  $self->_score('introtext,bodytext', $form->{query}, $constants->{search_method}) .") / 2), 1) AS score "
 	}
 
-	my $tables = "stories, story_text LEFT JOIN story_param ON stories.stoid=story_param.stoid";
+	my $tables = "stories, story_text LEFT JOIN story_param ON stories.stoid=story_param.stoid AND story_param.name='neverdisplay'";
 
 	my $other = '';
 	$other .= " HAVING score > 0 "
@@ -183,7 +183,7 @@ sub findStory {
 	# which depending on search_method could be the same
 	# thing, so it might not matter. - Jamie 2004/04/06
 	my $where = "stories.stoid = story_text.stoid ";
-	$where .= " AND story_param.name='neverdisplay' AND story_param.name IS NULL";
+	$where .= " story_param.name IS NULL";
 	$where .= " AND ( MATCH (title) AGAINST ($query)
 		OR MATCH (introtext,bodytext) AGAINST ($query) ) "
 		if $form->{query};

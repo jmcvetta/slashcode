@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.7 2002/06/18 17:41:59 pudge Exp $
+# $Id: RSS.pm,v 1.8 2002/10/23 14:56:07 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -196,7 +196,7 @@ sub create {
 		my($item) = @{$param->{items}};
 		$rss->add_module(
 			prefix  => 'slash',
-			uri     => 'http://slashcode.com/rss/1.0/modules/Slash/',
+			uri     => 'http://purl.org/rss/1.0/modules/slash/',
 		) if $item->{story};
 
 	} elsif ($version >= 0.91) {
@@ -444,4 +444,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.7 2002/06/18 17:41:59 pudge Exp $
+$Id: RSS.pm,v 1.8 2002/10/23 14:56:07 pudge Exp $

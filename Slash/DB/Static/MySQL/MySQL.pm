@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.124 2004/02/04 18:04:14 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.125 2004/02/05 17:28:48 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2032,9 +2032,8 @@ sub getTopRecentRealemailDomains {
 	my $min_uid = $self->getFirstUIDCreatedDaysBack($daysback, $yesterday);
 	return [ ] unless $min_uid;
 	return $self->sqlSelectAllHashrefArray(
-		"SUBSTRING(realemail, LOCATE('\@', realemail)+1) AS domain,
-		 COUNT(*) AS c",
-		"users",
+		"initdomain, COUNT(*) AS c",
+		"users_info",
 		"uid >= $min_uid",
 		"GROUP BY domain ORDER BY c DESC, domain LIMIT $num");
 }

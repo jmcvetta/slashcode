@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.79 2004/04/02 00:43:03 pudge Exp $
+# $Id: journal.pl,v 1.80 2004/04/28 05:50:31 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -824,6 +824,8 @@ sub modify_entry {
 	my $user      = getCurrentUser();
 	my $slashdb   = getCurrentDB();
 
+	$id =~ s/\D+//g;
+
 	return if $user->{is_anon};
 
 	my $entry = $journal->get($id);
@@ -870,6 +872,8 @@ sub delete_entry {
 	my $journal   = getObject('Slash::Journal');
 	my $user      = getCurrentUser();
 
+	$id =~ s/\D+//g;
+
 	return if $user->{is_anon};
 	return $journal->remove($id);
 }
@@ -879,6 +883,8 @@ sub get_entry {
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
 	my $slashdb   = getCurrentDB();
+
+	$id =~ s/\D+//g;
 
 	my $entry = $journal->get($id);
 	return unless $entry->{id};
@@ -900,9 +906,13 @@ sub get_entries {
 	my $user      = getCurrentUser();
 	my $slashdb   = getCurrentDB();
 
+	$uid =~ s/\D+//g;
+	$num =~ s/\D+//g;
+
 	$user		= $slashdb->getUser($uid, ['nickname']) if $uid;
 	$uid		= $uid || $user->{uid};
 	my $nickname	= $user->{nickname};
+
 	return unless $uid;
 
 	my $articles = $journal->getsByUid($uid, 0, $num || 15);
@@ -922,7 +932,7 @@ sub get_entries {
 # SOAP working (this will be in the Search SOAP API, i think)
 sub get_uid_from_nickname {
 	my($self, $nick) = @_;
-	return getCurrentDB->getUserUID($nick);
+	return getCurrentDB()->getUserUID($nick);
 }
 
 sub _save_params {
@@ -949,6 +959,7 @@ sub _save_params {
 	}
 
 	$form{journal_discuss} = 'discuss' if $form{journal_discuss} == 1;
+	$form{tid} =~ s/\D+//g;
 
 	return \%form;
 }

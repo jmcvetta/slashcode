@@ -20,8 +20,7 @@ __template__
 		<TD BGCOLOR="[% user.fg.4 %]"><B>UID</B></TD>
 		<TD BGCOLOR="[% user.fg.4 %]"><B>IPID</B></TD>
 		<TD BGCOLOR="[% user.fg.4 %]"><B>SubnetID</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>Page</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>Reason</B></TD>
+		<TD BGCOLOR="[% user.fg.4 %]"><B>Now</B></TD>
 	</TR>
 [% FOR abuse = abuses %]
 	<TR>
@@ -30,7 +29,6 @@ __template__
 		<TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.2 %]">[% abuse.2 %]</TD>
 		<TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.3 %]">[% abuse.3 %]</TD>
 		<TD>[% abuse.4 %]</TD>
-		<TD>[% abuse.5 %]</TD>
 	</TR>
 [% END %]
 </TABLE>
@@ -42,4 +40,4 @@ No abuses for this user
 __seclev__
 100
 __version__
-$Id: listAbuses;admin;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: listAbuses;admin;default,v 1.4 2003/03/14 16:11:44 jamie Exp $

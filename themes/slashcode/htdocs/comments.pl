@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.124 2003/03/06 06:13:15 jamie Exp $
+# $Id: comments.pl,v 1.125 2003/03/14 16:11:44 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -782,7 +782,7 @@ sub validateComment {
 		# We skip the UID test for anonymous users.
 		next if $_ eq 'uid' && $user->{is_anon};
 		# Otherwise we perform the specific read-only test.
-		$read_only = $slashdb->checkReadOnly('comments', {
+		$read_only = $slashdb->checkReadOnly('nopost', {
         	        $_ => $user->{$_},
 	        });
 		# Bail if a specific test returns TRUE

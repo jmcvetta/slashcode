@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.13 2004/10/05 14:07:19 tvroom Exp $
+# $Id: login.pl,v 1.14 2004/10/05 21:14:47 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -68,8 +68,7 @@ sub newUser {
 	my($slashdb, $reader, $constants, $user, $form) = @_;
 
 	if (my $error =	_validFormkey(qw(max_post_check valid_check formkey_check), 1)) {
-		newUserForm(@_, $error);
-		return;
+		return newUserForm(@_, $error);
 	}
 
 	my $plugins = $slashdb->getDescriptions('plugins');
@@ -189,8 +188,7 @@ sub mailPasswd {
 	my($slashdb, $reader, $constants, $user, $form) = @_;
 
 	if (my $error =	_validFormkey(qw(max_post_check valid_check interval_check formkey_check), 1)) {
-		mailPasswdForm(@_, $error);
-		return;
+		return mailPasswdForm(@_, $error);
 	}
 
 	my $error = 0;
@@ -401,7 +399,8 @@ sub _validFormkey {
 		} else {
 			header() or return;
 			print $error;
-			return 0;
+			footer();
+			return;
 		}
 	} else {
 		if (!$options->{no_hc}) {

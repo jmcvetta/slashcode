@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.4 2004/07/13 21:19:10 pudge Exp $
+# $Id: PopupTree.pm,v 1.5 2004/07/13 22:44:05 pudge Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -126,8 +126,8 @@ sub _output_generate {
 	$param->{stid}        = $self->{stid};
 	$param->{stid_names}  = $self->{stid_names};
 
-	$self->{_template_options}{type} = 'tree' if
-		!$self->{_template_options}{type} || $self->{_template_options}{type} !~ /^tree|js|css$/;
+	$self->{_template_options}{type} = 'ui' if
+		!$self->{_template_options}{type} || $self->{_template_options}{type} !~ /^tree|js|css|ui$/;
 
 	my $template_name = sprintf('topic_popup_%s', $self->{_template_options}{type});
 	my $nocomm = $self->{_template_options}{Nocomm} || 0;
@@ -154,4 +154,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.4 2004/07/13 21:19:10 pudge Exp $
+$Id: PopupTree.pm,v 1.5 2004/07/13 22:44:05 pudge Exp $

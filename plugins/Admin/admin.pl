@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.216 2004/07/12 23:23:56 pudge Exp $
+# $Id: admin.pl,v 1.217 2004/07/13 22:44:05 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1581,7 +1581,7 @@ sub getDescForTopicsRendered {
 					[$val, $_]
 				} @story_nexuses;
 
-	my $remove = qq{[<a href="javascript:st_main_add_really(%d,'%s',0)"><font color="$user->{colors}{fg_3}">x</font></a>]};
+	my $remove = qq{[<a href="javascript:st_main_add_really(%d,'%s',0,1)"><font color="$user->{colors}{fg_3}">x</font></a>]};
 
 	my $desc;
 	if (!@sorted_nexuses) {

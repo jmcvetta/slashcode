@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: topic_popup_static.pl,v 1.2 2004/06/29 17:18:50 pudge Exp $
+# $Id: topic_popup_static.pl,v 1.3 2004/07/13 22:44:05 pudge Exp $
 
 use strict;
 
@@ -22,6 +22,13 @@ $task{$me}{code} = sub {
 	for my $type ('css', 'js') {
 		my $new = Slash::Admin::PopupTree::getPopupTree({}, {}, { type => $type, Nocomm => 1 });
 		next unless $new;
+
+		if ($type eq 'js') {
+			my $tree = Slash::Admin::PopupTree::getPopupTree({}, {}, { type => 'tree', Nocomm => 1 });
+			$tree =~ s/'/\\'/g;
+			$tree =~ s/\n/\\n/g;
+			$new .= "\n\ndocument.write('$tree');\n\n";
+		}
 
 		my $file = catfile($constants->{basedir}, "admin-topic-popup.$type");
 		save2file($file, $new);

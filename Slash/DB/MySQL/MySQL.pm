@@ -1,10 +1,11 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.273 2002/12/10 00:31:01 brian Exp $
+# $Id: MySQL.pm,v 1.274 2002/12/11 04:34:46 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
+use Socket;
 use Digest::MD5 'md5_hex';
 use Time::HiRes;
 use Date::Format qw(time2str);
@@ -15,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.273 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.274 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1325,6 +1326,15 @@ sub createAccessLog {
 #		);
 	}
 
+	my $duration;
+	if ($Slash::Apache::User::request_start_time) {
+		$duration = Time::HiRes::time - $Slash::Apache::User::request_start_time;
+	} else {
+		$duration = 0;
+	}
+	my $local_addr = inet_ntoa(
+		( unpack_sockaddr_in($r->connection()->local_addr()) )[1]
+	);
 	$self->sqlInsert('accesslog', {
 		host_addr	=> $ipid,
 		subnetid	=> $subnetid,
@@ -1336,6 +1346,8 @@ sub createAccessLog {
 		-ts		=> 'NOW()',
 		query_string	=> $ENV{QUERY_STRING} || '0',
 		user_agent	=> $ENV{HTTP_USER_AGENT} || '0',
+		duration	=> $duration,
+		local_addr	=> $local_addr,
 	}, { delayed => 1 });
 }
 

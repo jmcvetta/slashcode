@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.131 2002/12/10 20:37:31 brian Exp $
+# $Id: users.pl,v 1.132 2002/12/11 04:34:46 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1045,6 +1045,7 @@ sub showInfo {
 			admin_block		=> $admin_block,
 			netid			=> $netid,
 			netid_vis		=> $netid_vis,
+			reasons			=> $slashdb->getReasons(),
 		});
 
 	} else {

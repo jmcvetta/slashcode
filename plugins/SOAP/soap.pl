@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: soap.pl,v 1.4 2002/12/09 16:26:27 pudge Exp $
+# $Id: soap.pl,v 1.5 2002/12/11 04:34:46 jamie Exp $
 
 # NOTE: package Slash::SOAP will be in its own .pm file later,
 # the SQL at the bottom will be in the schema and dump files,
@@ -37,5 +37,7 @@ sub main {
 }
 
 main();
+
+1 if $Slash::SOAP::ERROR;
 
 1;

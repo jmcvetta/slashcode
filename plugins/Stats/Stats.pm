@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.74 2002/12/04 23:12:13 jamie Exp $
+# $Id: Stats.pm,v 1.75 2002/12/11 04:34:46 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -276,6 +276,45 @@ sub getModM2Ratios {
 	);
 
 	return $hr;
+}
+
+sub getModReverses {
+	my($self, $options) = @_;
+
+	# Double-check that options are numeric because we're going to
+	# drop them directly into the SQL.
+	for my $key (keys %$options) {
+		$options->{$key} =~ s/[^\d.-]+//g;
+	}
+
+	my $down5 =     0.5;	$down5 = $options->{down5} if defined $options->{down5};
+	my $upmax =     0  ;	$upmax = $options->{upmax} if defined $options->{upmax};
+	my $upsub =     3  ;	$upsub = $options->{upsub} if defined $options->{upsub};
+	my $upmul =     2  ;	$upmul = $options->{upmul} if defined $options->{upmul};
+	my $unm2able =  0.5;	$unm2able = $options->{unm2able} if defined $options->{unm2able};
+	my $denomadd =  4  ;	$denomadd = $options->{denomadd} if defined $options->{denomadd};
+	my $limit =    30  ;	$limit = $options->{limit} if defined $options->{limit};
+
+	my $reasons = $self->getReasons();
+	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
+	my $reasons_m2able = join(",", @reasons_m2able);
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"moderatorlog.uid AS muid,
+		 nickname, tokens, karma,
+		 ( SUM( IF( moderatorlog.val=-1,
+				IF(points=5, $down5, 0),
+				IF(points<=$upmax, $upsub-points*$upmul, 0) ) )
+		  +SUM( IF( moderatorlog.reason IN ($reasons_m2able), 0, $unm2able ) )
+		 )/(COUNT(*)+$denomadd) AS score",
+		"moderatorlog, comments, users, users_info",
+		"comments.cid=moderatorlog.cid
+		 AND users.uid=moderatorlog.uid
+		 AND users_info.uid=moderatorlog.uid
+		 AND moderatorlog.active",
+		"GROUP BY muid ORDER BY score DESC, karma, tokens, muid LIMIT $limit",
+	);
+
+	return $ar;
 }
 
 ########################################################
@@ -777,4 +816,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.74 2002/12/04 23:12:13 jamie Exp $
+$Id: Stats.pm,v 1.75 2002/12/11 04:34:46 jamie Exp $

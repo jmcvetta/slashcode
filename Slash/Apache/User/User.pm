@@ -1,11 +1,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.40 2002/10/22 18:15:30 jamie Exp $
+# $Id: User.pm,v 1.41 2002/12/11 04:34:46 jamie Exp $
 
 package Slash::Apache::User;
 
 use strict;
+use Time::HiRes;
 use Apache;
 use Apache::Constants qw(:common M_GET REDIRECT);
 use Apache::Cookie;
@@ -17,11 +18,11 @@ use DynaLoader ();
 use Slash::Apache ();
 use Slash::Utility;
 use URI ();
-use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
+use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -48,6 +49,8 @@ sub handler {
 	my($r) = @_;
 
 	return DECLINED unless $r->is_main;
+
+	$request_start_time = Time::HiRes::time;
 
 	# Ok, this will make it so that we can reliably use Apache->request
 	Apache->request($r);

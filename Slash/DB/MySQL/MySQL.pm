@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.291 2003/01/14 20:29:28 jamie Exp $
+# $Id: MySQL.pm,v 1.292 2003/01/15 19:36:58 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.291 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.292 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2939,6 +2939,20 @@ sub checkMaxPosts {
 		(my $formname_main = $formname) =~ s{/.*}{};
 		if ($constants->{"max_${formname_main}_allowed"}) {
 			$maxposts = $constants->{"max_${formname_main}_allowed"};
+		}
+	}
+
+	if ($formname eq 'comments') {
+		my $user = getCurrentUser();
+		if (!isAnon($user)) {
+			my($num_comm, $sum_mods) = getNumCommPostedByUID();
+			if ($sum_mods > 0) {
+				$maxposts += $sum_mods;
+			} elsif ($sum_mods < 0) {
+				my $min = int($maxposts/2);
+				$maxposts += $sum_mods;
+				$maxposts = $min if $maxposts < $min;
+			}
 		}
 	}
 

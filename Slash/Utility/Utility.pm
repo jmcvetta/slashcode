@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.7 2001/04/23 09:57:57 pudge Exp $
+# $Id: Utility.pm,v 1.8 2001/04/24 16:37:24 pudge Exp $
 
 package Slash::Utility;
 
@@ -39,7 +39,7 @@ use XML::Parser;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(
@@ -1381,8 +1381,6 @@ Optional separate "From" address instead of "mailfrom" constant.
 
 Optional, set to "bulk" for "bulk" precedence.  Not standard,
 but widely supported.
-
-=item
 
 =back
 

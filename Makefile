@@ -1,14 +1,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.6 2001/04/24 14:39:35 pudge Exp $
+# $Id: Makefile,v 1.7 2001/04/24 16:37:24 pudge Exp $
 
 ##
 ##  Makefile -- Current one for Slash
 ##
 
 #   the used tools
-VERSION = 2.0.0-pre1
+VERSION = 2.0.0-pre2
 DISTNAME = slash
 DISTVNAME = $(DISTNAME)-$(VERSION)
 

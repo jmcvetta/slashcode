@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.596 2004/06/22 23:20:49 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.597 2004/06/22 23:34:30 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.596 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.597 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1315,7 +1315,7 @@ sub getNexusChildrenTids {
 		@cur_children = keys %grandchildren;
 	}
 	delete $all_children{$start_tid};
-	return sort { $a <=> $b } keys %all_children;
+	return [ sort { $a <=> $b } keys %all_children ];
 }
 
 ########################################################
@@ -8673,25 +8673,21 @@ sub getSkins {
 
 	my $skins_ref = $self->sqlSelectAllHashref(    "skid",        "*", "skins");
 	my $colors    = $self->sqlSelectAllHashref([qw( skid name )], "*", "skin_colors", "", "GROUP BY skid, name");
-	for my $skid (keys %$colors) {
-		if (!defined($skins_ref->{$skid})) {
-			errorLog("skin_colors row but no skins row for skid '$skid'");
-			next;
-		}
-		# Massage the skin_colors data into this hashref in an
-		# appropriate place.
-		for my $name (keys %{$colors->{$skid}}) {
-			$skins_ref->{$skid}{hexcolors}{$name} = $colors->{$skid}{$name}{hexcolor};
-		}
-	}
 	for my $skid (keys %$skins_ref) {
+		# Set rootdir etc., based on hostname/url, or mainpage's if none
+		my $host_skid  = $skins_ref->{$skid}{hostname} ? $skid : $constants->{mainpage_skid};
+		my $url_skid   = $skins_ref->{$skid}{url}      ? $skid : $constants->{mainpage_skid};
+		my $color_skid = $colors->{$skid}              ? $skid : $constants->{mainpage_skid};
+
 		# Convert an index_handler of foo.pl to an index_static of
 		# foo.shtml, for convenience.
 		($skins_ref->{$skid}{index_static} = $skins_ref->{$skid}{index_handler}) =~ s/\.pl$/.shtml/;
 
-		# Set rootdir etc., based on hostname/url, or mainpage's if none
-		my $host_skid = $skins_ref->{$skid}{hostname} ? $skid : $constants->{mainpage_skid};
-		my $url_skid  = $skins_ref->{$skid}{url}      ? $skid : $constants->{mainpage_skid};
+		# Massage the skin_colors data into this hashref in an
+		# appropriate place.
+		for my $name (keys %{$colors->{$color_skid}}) {
+			$skins_ref->{$skid}{hexcolors}{$name} = $colors->{$color_skid}{$name}{hexcolor};
+		}
 
 		$skins_ref->{$skid}{basedomain} = $skins_ref->{$host_skid}{hostname};
 

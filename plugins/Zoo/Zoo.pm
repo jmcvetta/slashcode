@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.13 2002/03/28 21:36:10 brian Exp $
+# $Id: Zoo.pm,v 1.14 2002/08/22 18:59:06 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -157,6 +157,7 @@ sub _set {
 	} else {
 		$self->sqlInsert('people', { uid => $uid,  person => $person, type => $type });
 	}
+	$self->sqlInsert('people_log', { uid => $uid,  person => $person, type => $type, action => 'add' });
 	my $people = $slashdb->getUser($uid, 'people');
 	# First we clean up, then we reapply
 	delete $people->{FRIEND()}{$person};
@@ -280,7 +281,9 @@ sub isFoe {
 # This just really neutrilzes the relationship.
 sub delete {
 	my($self, $uid, $person) = @_;
+	my $type = $self->sqlSelect('type', 'people', "uid=$uid AND person=$person");
 	$self->sqlDo("UPDATE people SET type=NULL WHERE uid=$uid AND person=$person");
+	$self->sqlInsert('people_log', { uid => $uid,  person => $person, type => $type, action => 'delete' });
 	my $slashdb = getCurrentDB();
 	my $people = $slashdb->getUser($uid, 'people');
 	if ($people) {

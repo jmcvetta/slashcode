@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Dilemma.pm,v 1.6 2004/10/16 15:38:56 jamiemccarthy Exp $
+# $Id: Dilemma.pm,v 1.7 2004/10/17 22:42:02 jamiemccarthy Exp $
 
 package Slash::Dilemma;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # ZOIDBERG: Friends! Help! A guinea pig tricked me!
 
@@ -55,7 +55,7 @@ sub getDilemmaSpeciesInfo {
 	for my $dsid (keys %$species) {
 		$species_info->{$dsid}{name} = $species->{$dsid}{name};
 		$species_info->{$dsid}{code} = $species->{$dsid}{code};
-		$species_info->{$dsid}{sumfood} = $species-{$dsid}{sumfood};
+		$species_info->{$dsid}{sumfood} = $species->{$dsid}{sumfood};
 		$species_info->{$dsid}{alivecount} = $count->{$dsid}{yes}{c} || 0;
 		$species_info->{$dsid}{totalcount} = ($count->{$dsid}{yes}{c}
 			+ $count->{$dsid}{no}{c}) || 0;

@@ -86,15 +86,15 @@ __template__
 
 [% CASE 'defaultskin' %]
 	[% returnme.data_constant = 1 %]
-	All Sections
+	All
 
 [% CASE 'defaultnote' %]
 	[% returnme.data_constant = 1 %]
-	Unclassified
+	None
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;submit;default,v 1.10 2004/06/17 16:12:02 jamiemccarthy Exp $
+$Id: data;submit;default,v 1.11 2004/10/07 05:03:20 cowboyneal Exp $

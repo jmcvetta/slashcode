@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.16 2001/05/07 17:59:57 pudge Exp $
+# $Id: MySQL.pm,v 1.17 2001/05/09 14:32:09 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -256,7 +256,7 @@ sub getMetamodComments {
 	my $comments = [];
 	while (my $comment = $sth->fetchrow_hashref) {
 		# Anonymize comment that is to be metamoderated.
-		@{$comment}{qw(nickname uid points)} = ('-', -1, 0);
+		@{$comment}{qw(nickname uid points sig)} = ('-', -1, 0, '');
 		push @$comments, $comment;
 	}
 	$sth->finish;
@@ -1761,7 +1761,7 @@ sub setCommentCleanup {
 		unless $user->{seclev} >= 100 && $constants->{authors_unlimited};
 
 	if ($val ne "+0" && $self->sqlDo($strsql)) {
-		$self->setModeratorLog($cid, $sid, $user->{uid}, $modreason, $val);
+		$self->setModeratorLog($cid, $sid, $user->{uid}, $val, $modreason);
 
 		# Adjust comment posters karma
 		if ($cuid != $constants->{anonymous_coward}) {

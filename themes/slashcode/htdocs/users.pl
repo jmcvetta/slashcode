@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.31 2001/04/16 16:46:41 pudge Exp $
+# $Id: users.pl,v 1.32 2001/05/09 14:32:10 pudge Exp $
 
 use strict;
 use Date::Manip;
@@ -573,6 +573,12 @@ sub saveUser {
 		session_login	=> $form->{session_login},
 	};
 
+	# don't want undef, want to be empty string so they
+	# will overwrite the existing record
+	for (keys %$users_table) {
+		$users_table->{$_} = '' unless defined $users_table->{$_};
+	}
+
 	if ($user->{seclev} >= 100) {
 		$users_table->{seclev} = $form->{seclev}; 
 		$users_table->{author} = $author_flag; 
@@ -721,7 +727,7 @@ sub saveHome {
 		$users_index_table->{dfid}   = $form->{tzformat};
 	}
 
-	$users_index_table->{mylinks} = $form->{mylinks} if $form->{mylinks};
+	$users_index_table->{mylinks} = $form->{mylinks} || '';
 
 	# If a user is unwilling to moderate, we should cancel all points, lest
 	# they be preserved when they shouldn't be.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.3 2001/05/07 17:59:57 pudge Exp $
+# $Id: Display.pm,v 1.4 2001/05/09 14:32:10 pudge Exp $
 
 package Slash::Display;
 
@@ -48,7 +48,7 @@ use Slash::Display::Provider ();
 use Slash::Utility;
 use Template;
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 
@@ -100,27 +100,33 @@ Boolean for whether to include (false) or not include (true)
 HTML comments surrounding template, stating what template
 block this is.  Default is to include comments.
 
-=item Section (REWRTIE)
+=item Section
 
-All templates named NAME may be overriden by a template named
-"SECTION_NAME" (e.g., the "header" template, may be overridden
-in the "tacohell" section with a template named "tacohell_header").
+Each template is assigned to a section.  This section may be
+a section defined as a site section, or some arbitrary section
+name.  By default, the section that is used is whatever section
+the user is in, but it can be overridden by setting this parameter.
+If a template in the current section is not found, it defaults
+to section "default".
 
-By default, that section will be determined by whatever the current
-section is (or "light" if the user is in light mode).  However,
-the default can be overriden by the Section option.  Also, a Section
-value of "NONE" will cause no section to be used.
+Section will also default first to "light" if the user is in light
+mode (and fall back to "default," again, if no template for the
+"light" section exists).
 
-=item Page (REWRTIE)
+A Section value of "NONE" will cause no section to be defined, so
+"default" will be used.
 
-All templates named NAME may be overriden by a template named
-"SECTION_NAME" (e.g., the "header" template, may be overridden
-in the "tacohell" section with a template named "tacohell_header").
+=item Page
 
-By default, that section will be determined by whatever the current
-section is (or "light" if the user is in light mode).  However,
-the default can be overriden by the Section option.  Also, a Section
-value of "NONE" will cause no section to be used.
+Similarly to sections, each template is assigned to a page.
+This section may be a page defined in the site, or some arbitrary
+page name.  By default, the page that is used is whatever page
+the user is on (such as "users" for "users.pl"), but it can be
+overridden by setting this parameter.  If a template in the current
+page is not found, it defaults to page "misc".
+
+A Page value of "NONE" will cause no page to be defined, so
+"misc" will be used.
 
 =back
 

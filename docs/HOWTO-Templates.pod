@@ -98,6 +98,10 @@ with a much better answer. If the theme or plugin is one not included with
 the Slash distribution, you should contact the theme's or plugin's creator
 directly.
 
+=head1 SEE ALSO
+
+Slash::Display(3).
+
 =head1 VERSION
 
-$Id: HOWTO-Templates.pod,v 1.3 2001/03/21 13:19:11 brian Exp $
+$Id: HOWTO-Templates.pod,v 1.4 2001/05/09 14:32:10 pudge Exp $

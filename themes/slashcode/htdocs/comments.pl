@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.14 2000/06/22 18:49:21 cbwood Exp $
+#  $Id: comments.pl,v 1.15 2000/06/23 19:29:19 cbwood Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -650,8 +650,8 @@ sub submitComment {
 
 	if($I{U}{uid} > 0 && !$I{F}{postanon} ) {
 		$pts = $I{U}{defaultpoints};
-		$pts-- if $I{U}{karma} < -10;
-		$pts++ if $I{U}{karma} > 25 and !$I{F}{nobonus};
+		$pts-- if $I{U}{karma} < $I{badkarma_limit};
+		$pts++ if $I{U}{karma} > $I{goodkarma_limit} and !$I{F}{nobonus};
 		# Enforce proper ranges on comment points.
 		$pts = $I{comment_minscore} if $pts < $I{comment_minscore};
 		$pts = $I{comment_maxscore} if $pts > $I{comment_maxscore};

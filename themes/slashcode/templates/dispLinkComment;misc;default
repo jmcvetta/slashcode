@@ -31,7 +31,7 @@ __template__
 			subject_only => 1,
 		}) %][% END %]
 
-		[% IF user.mode == 'parents' && !form.pid %][% should this be in a template? -- pudge %]
+		[% IF user.mode == 'parents' && !form.pid %][%# should this be in a template? -- pudge %]
 			| <a href="[% constants.rootdir %]/comments.pl?sid=[% sid %]&amp;threshold=[% user.threshold %]&amp;commentsort=[% user.commentsort %]&amp;mode=[% user.mode %]&amp;cid=[% cid %]&amp;pid=[% cid %]">View this thread</a>
 		[% END %]
 
@@ -67,4 +67,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.22 2003/12/01 22:22:06 jamie Exp $
+$Id: dispLinkComment;misc;default,v 1.23 2003/12/02 23:19:35 pudge Exp $

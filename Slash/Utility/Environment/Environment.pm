@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.142 2004/09/27 23:12:54 pudge Exp $
+# $Id: Environment.pm,v 1.143 2004/10/01 16:53:40 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -721,21 +721,6 @@ MEMBER is passed in then only its value will be returned.
 
 sub getCurrentStatic {
 	my($value) = @_;
-
-	# This is for testing and debugging.  Some values of data
-	# were moved from $constants into $current_skin, and anything that
-	# used to call getCurrentStatic('foo') now needs to call
-	# getCurrentSkin('foo').  Throw an error on those values:
-	for my $badval (qw(
-		absolutedir rootdir cookiedomain defaulttopic
-		defaultdisplaystatus defaultcommentstatus
-		basedomain index_handler absolutedir_secure
-		defaultsubsection defaultsection static_section
-	)) {
-		next unless $value eq $badval;
-		errorLog("getCurrentStatic('$value') called - should call getCurrentSkin");
-		last;
-	}
 
 	my $constants;
 
@@ -2641,4 +2626,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.142 2004/09/27 23:12:54 pudge Exp $
+$Id: Environment.pm,v 1.143 2004/10/01 16:53:40 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.177 2003/11/10 17:27:52 pater Exp $
+# $Id: Slash.pm,v 1.178 2003/11/10 22:30:48 pudge Exp $
 
 package Slash;
 
@@ -444,7 +444,7 @@ sub _can_mod {
 		) || (
 		       $user->{acl}{alwaysmodpoints}
 		) );
-use Data::Dumper; print STDERR "_can_mod returning '$retval' for: " . Dumper($user);
+
 	return $retval;
 }
 

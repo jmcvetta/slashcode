@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.62 2003/01/16 23:42:19 brian Exp $
+# $Id: search.pl,v 1.63 2003/02/03 19:36:47 pater Exp $
 
 use strict;
 use Slash;
@@ -178,13 +178,20 @@ sub commentSearch {
 
 	my $start = $form->{start} || 0;
 	my $comments = $searchDB->findComments($form, $start, $constants->{search_default_display} + 1, $form->{sort});
+
+	my $formats = $slashdb->getDescriptions('threshcodes');
+	my $threshold_select = createSelect(
+		'threshold', $formats, $form->{threshold}, 1
+	);
+
 	slashDisplay('searchform', {
-		sections	=> _sections(),
-		topics		=> _topics(),
-		tref		=> $slashdb->getTopic($form->{tid}),
-		op		=> $form->{op},
-		'sort'		=> _sort(),
-		threshhold 	=> 1,
+		sections	 => _sections(),
+		topics		 => _topics(),
+		tref		 => $slashdb->getTopic($form->{tid}),
+		op		 => $form->{op},
+		'sort'		 => _sort(),
+		threshhold 	 => 1,
+		threshold_select => $threshold_select,
 	});
 
 	if ($comments && @$comments) {

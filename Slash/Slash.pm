@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.44 2002/02/08 20:25:54 brian Exp $
+# $Id: Slash.pm,v 1.45 2002/02/15 21:39:44 jamie Exp $
 
 package Slash;
 
@@ -715,6 +715,18 @@ EOT
 		$comment->{ipid_display} = "";
 	}
 
+	# we need a display-friendly fakeemail string
+	$comment->{fakeemail_vis} = $comment->{fakeemail};
+	my $mel = $constants->{comments_max_email_len};
+	if (length($comment->{fakeemail}) > $mel) {
+		my $mel2 = int(($mel-5)/2);
+		$comment->{fakeemail_vis} =
+			substr($comment->{fakeemail}, 0, $mel2)
+			. " ... "
+			. substr($comment->{fakeemail}, -$mel2, $mel2)
+			if $mel2 > 3;
+	}
+
 	return _hard_dispComment(
 		$comment, $constants, $user, $form, $comment_shrunk,
 		$can_mod, \%reasons
@@ -1095,10 +1107,10 @@ sub _hard_dispComment {
 		# This is wrong, must be fixed before we ship -Brian
 		# i think it is right now -- pudge
 		if ($comment->{fakeemail}) {
-			my $mail_literal = strip_literal($comment->{fakeemail});
+			my $mail_literal = strip_literal($comment->{fakeemail_vis});
 			my $mail_param = fixparam($comment->{fakeemail});
 			my $nick_literal = strip_literal($comment->{nickname});
-			$user_to_display = qq| <A HREF="mailto:$mail_param">$nick_literal</A> (<B><FONT SIZE="2">$mail_literal)</FONT></B>|;
+			$user_to_display = qq| <A HREF="mailto:$mail_param">$nick_literal</A> (<B><FONT SIZE="2">$mail_literal</FONT></B>)|;
 		} else {
 			$user_to_display = strip_literal($comment->{nickname});
 		}

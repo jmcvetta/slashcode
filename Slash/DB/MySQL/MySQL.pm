@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.79 2002/02/15 21:15:17 brian Exp $
+# $Id: MySQL.pm,v 1.80 2002/02/19 16:42:09 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3124,13 +3124,12 @@ sub getCommentsForUser {
 		$sql .= "	)";
 	}
 
-	if ($user->{commentsort} == 1 || $user->{commentsort} == 5 || $user->{commentsort} == 3) {
-		$sql .= "	  ORDER BY ";
-		$sql .= "comments.points DESC, " if $user->{commentsort} == 3;
-		$sql .= " cid ";
-		$sql .= 'DESC' 
-			if ($user->{commentsort} == 1 || $user->{commentsort} == 5);
-	}
+	$sql .= "         ORDER BY ";
+	$sql .= "comments.points DESC, " if $user->{commentsort} eq '3';
+	$sql .= " cid ";
+	$sql .= ($user->{commentsort} == 1 || $user->{commentsort} == 5) ?
+			'DESC' : 'ASC';
+
 
 	my $thisComment = $self->{_dbh}->prepare_cached($sql) or errorLog($sql);
 	$thisComment->execute or errorLog($sql);

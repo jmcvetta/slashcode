@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.64 2002/09/24 17:16:31 brian Exp $
+# $Id: Stats.pm,v 1.65 2002/09/25 18:56:31 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -29,6 +29,7 @@ sub new {
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;
+	$self->sqlConnect;
 
 	# The default _day is yesterday.  (86400 seconds = 1 day)
 	my @yest_lt = localtime(time - 86400);
@@ -36,17 +37,18 @@ sub new {
 		? $options->{day}
 		: sprintf("%4d-%02d-%02d", $yest_lt[5] + 1900, $yest_lt[4] + 1, $yest_lt[3]);
 
-	$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp");
-	my $sth = $self->{_dbh}->prepare("SHOW CREATE TABLE accesslog");
-	$sth->execute();
-	my $rows = $sth->fetchrow_arrayref;
-	$rows->[1] =~ s/accesslog/accesslog_temp/;
-	$self->{_table} = "accesslog_temp";
-	$self->sqlDo($rows->[1]);
-	$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid(uid)");
-	$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX section(section)");
-	$self->sqlDo("INSERT INTO accesslog_temp SELECT * FROM accesslog WHERE ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'");
-	$self->sqlConnect;
+	unless ($options->{use_current}) {
+		$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp");
+		my $sth = $self->{_dbh}->prepare("SHOW CREATE TABLE accesslog");
+		$sth->execute();
+		my $rows = $sth->fetchrow_arrayref;
+		$rows->[1] =~ s/accesslog/accesslog_temp/;
+		$self->{_table} = "accesslog_temp";
+		$self->sqlDo($rows->[1]);
+		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid(uid)");
+		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX section(section)");
+		$self->sqlDo("INSERT INTO accesslog_temp SELECT * FROM accesslog WHERE ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'");
+	}
 
 	return $self;
 }

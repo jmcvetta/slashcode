@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.149 2003/01/30 17:18:58 pater Exp $
+# $Id: users.pl,v 1.150 2003/02/03 15:50:53 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2114,6 +2114,8 @@ sub saveComm {
 	# Take care of the lists
 	# Enforce Ranges for variables that need it
 	$form->{commentlimit} = 0 if $form->{commentlimit} < 1;
+	my $cl_max = $constants->{comment_commentlimit} || 0;
+	$form->{commentlimit} = $cl_max if $cl_max > 0 and $form->{commentlimit} > $cl_max;
 	$form->{commentspill} = 0 if $form->{commentspill} < 1;
 
 	my $max = $constants->{comment_maxscore} - $constants->{comment_minscore};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.30 2002/01/07 22:12:58 brian Exp $
+# $Id: Slash.pm,v 1.31 2002/01/07 22:34:09 brian Exp $
 
 package Slash;
 
@@ -124,7 +124,7 @@ sub selectComments {
 	}
 
 	# If we are sorting by highest score we resort to figure in bonuses
-	@$thisComment = sort {$b->{points} == $a->{points} ? $b->{cid} <=> $a->{cid} : $b->{points} <=> $a->{points} } @$thisComment
+	@$thisComment = sort { $b->{points} <=> $a->{points} || $a->{cid} <=> $b->{cid} } @$thisComment
 		if $user->{commentsort} == 3;
 
 	# This loop mainly takes apart the array and builds 

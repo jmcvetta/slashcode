@@ -15,12 +15,12 @@ main
 __template__
 
 <p>When done viewing our ad, you may
-<a href="/daypass.pl?dpk=[% dpk | strip_attribute %]&amp;adnum=[% adnum | strip_attribute %]">continue</a>
-with your honorary subscription for the day.
+<a href="[% gSkin.rootdir %]/daypass.pl?dpk=[% dpk | strip_attribute %]&amp;adnum=[% adnum | strip_attribute %]">continue</a>
+with your honorary subscription for the day.</p>
 
-<p>[% Slash.getAd(adnum) %]
+<p>[% Slash.getAd(adnum) %]</p>
 
 __seclev__
 10000
 __version__
-$Id: main;daypass;default,v 1.2 2005/03/29 22:22:47 jamiemccarthy Exp $
+$Id: main;daypass;default,v 1.3 2005/03/29 22:52:28 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.13 2002/05/13 18:38:52 pudge Exp $
+# $Id: MySQL.pm,v 1.14 2002/05/14 20:26:52 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -314,8 +314,8 @@ sub deleteMessages {
 		if ($_->[1] > $webmx) {
 			my $c = $_->[1] - $webmx;
 			my $delids = $self->sqlSelectColArrayref(
-				"id", "message_web", "user=$_->[0]",
-				"ORDER BY date DESC LIMIT $c"
+				$prime, $table, "user=$_->[0]",
+				"ORDER BY date ASC LIMIT $c"
 			);
 			$self->_delete_web($_, 0, 1) for @$delids;
 		}

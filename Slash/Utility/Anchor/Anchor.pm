@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.64 2004/03/05 20:22:18 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.65 2004/03/23 20:13:08 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -209,7 +209,7 @@ sub header {
 
 #========================================================================
 
-=head http_send(OPTIONS)
+=head2 http_send(OPTIONS)
 
 Prints an HTTP header like L<header>, but more generic, and then optionally
 prints content.
@@ -217,6 +217,8 @@ prints content.
 =over 4
 
 =item Parameters
+
+=over 4
 
 =item OPTIONS
 
@@ -699,4 +701,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.64 2004/03/05 20:22:18 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.65 2004/03/23 20:13:08 pudge Exp $

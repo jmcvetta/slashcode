@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.25 2004/07/19 20:17:09 pudge Exp $
+# $Id: System.pm,v 1.26 2004/08/05 15:04:51 cowboyneal Exp $
 
 package Slash::Utility::System;
 
@@ -40,12 +40,13 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
 	sendEmail
 	doLog
+	doClampeLog
 	doLogInit
 	doLogPid
 	doLogExit
@@ -329,6 +330,35 @@ sub doLog {
 	close $fh;
 }
 
+# this is a temporary function needed to log to an arbitrary directory for
+# stats gathering. It can probably be deleted once clampe's research is done
+# but is needed for now, since I don't want to hack up doLog() just for some
+# temporary stats. --Pater
+sub doClampeLog {
+        my($fname, $msg, $stdout, $sname) = @_;
+        my @msg;
+        if (ref($msg) && ref($msg) eq 'ARRAY') {
+                @msg = @$msg;
+        } else {
+                @msg = ( $msg );
+        }       
+        chomp(@msg);
+                
+        $sname    ||= '';
+        $sname     .= ' ' if $sname;
+        my $fh      = gensym();
+        my $dir     = getCurrentStatic('clampe_stats_dir') || '/var/local/logs';
+        my $file    = catfile($dir, "$fname.log");
+        my $log_msg = scalar(localtime) . " $sname@msg\n";
+
+        open $fh, ">> $file\0" or die "Can't append to $file: $!\nmsg: @msg\n";
+        flock($fh, LOCK_EX);
+        seek($fh, 0, SEEK_END);
+        print $fh $log_msg;
+        print     $log_msg if $stdout;
+        close $fh;
+}
+
 # Originally from open_backend.pl
 # will write out any data to a given file, but first check to see
 # if the data has changed, so clients don't
@@ -494,4 +524,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.25 2004/07/19 20:17:09 pudge Exp $
+$Id: System.pm,v 1.26 2004/08/05 15:04:51 cowboyneal Exp $

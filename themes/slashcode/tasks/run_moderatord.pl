@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.52 2004/05/28 18:25:39 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.53 2004/08/10 21:54:05 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -206,8 +206,8 @@ sub give_out_tokens {
 	my $eligible = scalar @eligible_uids;
 
 	# Chop off the least and most clicks.
-	my $start = int($eligible * $constants->{m1_pointgrant_start});
-	my $end   = int($eligible * $constants->{m1_pointgrant_end});
+	my $start = int(($eligible-1) * $constants->{m1_pointgrant_start});
+	my $end   = int(($eligible-1) * $constants->{m1_pointgrant_end});
 	@eligible_uids = @eligible_uids[$start..$end];
 
 	# Pull off some useful data for logging tidbits.
@@ -223,7 +223,8 @@ sub give_out_tokens {
 	# If the appropriate vars are set, give tokens preferentially to
 	# users who are better-qualified to have them.
 	my $wtf = { };
-	$wtf->{fairratio} = $constants->{m1_pointgrant_factor_fairratio} || 0;
+	$wtf->{upfairratio} = $constants->{m1_pointgrant_factor_upfairratio} || 0;
+	$wtf->{downfairratio} = $constants->{m1_pointgrant_factor_downfairratio} || 0;
 	$wtf->{fairtotal} = $constants->{m1_pointgrant_factor_fairtotal} || 0;
 	$wtf->{stirratio} = $constants->{m1_pointgrant_factor_stirratio} || 0;
 	if ($wtf->{fairratio} || $wtf->{fairtotal} || $wtf->{stirratio}) {

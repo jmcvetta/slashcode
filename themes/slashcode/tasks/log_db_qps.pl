@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.4 2004/08/10 19:06:03 tvroom Exp $
+# $Id: log_db_qps.pl,v 1.5 2004/08/10 21:54:05 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -28,7 +28,8 @@ $task{$me}{code} = sub {
 
 	my $stats = getObject('Slash::Stats::Writer');
 	my $vus = $slashdb->getDBVirtualUsers();
-	push @$vus, $slashdb->{virtual_user} unless scalar grep { $_ eq $slashdb->{virtual_user} } @$vus;
+	push @$vus, $slashdb->{virtual_user}
+		unless scalar grep { $_ eq $slashdb->{virtual_user} } @$vus;
 
 	my @dbs = ();
 	
@@ -59,25 +60,29 @@ $task{$me}{code} = sub {
 	
 	my $logdb = getObject('Slash::DB', { db_type => "log" });
 	my $accesslog_last = $slashdb->getVar('db_questions_accesslog_last','value', 1);
-	my $new_accesslog_last = $save_vars->{db_questions_accesslog_last} = $logdb->sqlSelect("MAX(id)", "accesslog");
+	my $new_accesslog_last =
+		$save_vars->{db_questions_accesslog_last} =
+			$logdb->sqlSelect("MAX(id)", "accesslog");
 	$save_vars->{db_questions_lasttime} = $new_last_time;
-	
+
 	my $time = $slashdb->getTime();	
 	my ($hour) = $time =~/^\d{4}-\d{2}-\d{2} (\d{2}):\d{2}:\d{2}/;
-	
+
 	my $elapsed = 0;
 	my $pages = 0;
-	
+
 	$elapsed = $new_last_time - $last_time if $last_time;
 	if ($accesslog_last && $new_accesslog_last) {
 		if ($constants->{accesslog_imageregex} eq 'NONE') {
 			$pages = $new_accesslog_last - $accesslog_last;
 		} else {
-			$pages = $logdb->sqlCount("accesslog", "id BETWEEN $accesslog_last and $new_accesslog_last and op!='image'");
+			$pages = $logdb->sqlCount("accesslog",
+				"id BETWEEN $accesslog_last AND $new_accesslog_last
+				 AND op != 'image'");
 		}
 	}
 
-	if($elapsed and $elapsed > 0 ) {
+	if ($elapsed && $elapsed > 0) {
 		for my $db (@dbs) {
 			my $vu = $db->{vu};
 			my $last = $slashdb->getVar("db_questions_last_$vu", "value", 1 );
@@ -91,14 +96,15 @@ $task{$me}{code} = sub {
 		}
 	}
 	
-	foreach (keys %$save_vars) {
-		my $cur_val = $slashdb->getVar($_, 'value', 1);
+	foreach my $varname (keys %$save_vars) {
+		my $cur_val = $slashdb->getVar($varname, 'value', 1);
 		if (!defined $cur_val) {
-			$slashdb->createVar($_, $save_vars->{$_});
+			$slashdb->createVar($varname, $save_vars->{$varname});
 		} else {
-			$slashdb->setVar($_, $save_vars->{$_});
+			$slashdb->setVar($varname, $save_vars->{$varname});
 		}
 	}
+
 	my $qpp = 0;
 	if ($pages > 0) {
 		$qpp = $queries / $pages;

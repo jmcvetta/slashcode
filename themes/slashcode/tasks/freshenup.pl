@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.45 2004/08/08 14:19:22 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.46 2004/08/10 21:54:05 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -98,7 +98,7 @@ $task{$me}{code} = sub {
 			Slash::Utility::Anchor::getSkinColors();
 
 			$rendered = displayStory($stoid,
-				'', { get_cacheable => 1 });
+				'', { force_cache_freshen => 1 });
 		}
 		$story_set{$stoid}{rendered} = $rendered;
 		$story_set{$stoid}{writestatus} = 'dirty';

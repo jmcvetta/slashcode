@@ -50,11 +50,11 @@ Summary:&nbsp;
 [% IF summary.1 > 0 %]
 <p>Note: grousing about rejected submissions is Offtopic and usually
 gets moderated that way.
-<a href="http://slashdot.org/faq/editorial.shtml#ed200">It happens</a>,
+<a href="[% constants.real_rootdir $]/faq/editorial.shtml#ed200">It happens</a>,
 don't take it personally.
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: yourPendingSubs;submit;default,v 1.7 2003/03/04 19:07:59 pudge Exp $
+$Id: yourPendingSubs;submit;default,v 1.8 2003/03/18 05:48:13 pater Exp $

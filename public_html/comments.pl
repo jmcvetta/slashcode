@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.22 2000/09/14 23:26:18 cbwood Exp $
+#  $Id: comments.pl,v 1.23 2000/10/23 13:16:40 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -672,6 +672,7 @@ sub submitComment {
 	# with other comment's pid
 	if ($I{F}{pid} >= $maxCid || $I{F}{pid} < 0) {
 		print "Don't you have anything better to do with your life?";
+		$I{dbh}->do("UNLOCK TABLES");
 		return;
 	}
 

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.50 2000/10/02 13:43:32 pudge Exp $
+#  $Id: Slash.pm,v 1.51 2000/10/23 13:16:40 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -42,7 +42,7 @@ BEGIN {
 
 	require Exporter;
 	use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS %I $CRLF);
-	$VERSION = '1.0.8';
+	$VERSION = '1.0.9';
 	@ISA	 = 'Exporter';
 	@EXPORT  = qw(
 		sqlSelectMany sqlSelect sqlSelectHash sqlSelectAll approveTag

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Writer.pm,v 1.5 2003/05/16 14:17:51 jamie Exp $
+# $Id: Writer.pm,v 1.6 2003/08/29 17:00:50 vroom Exp $
 
 package Slash::Stats::Writer;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -42,10 +42,11 @@ sub createStatDaily {
 	my($self, $name, $value, $options) = @_;
 	$value = 0 unless $value;
 	$options ||= {};
+	my $day = $options->{day} || $self->{_day};
 
 	my $section = $options->{section} || 'all';
 	my $insert = {
-		'day'	=> $self->{_day},
+		'day'	=> $day,
 		'name'	=> $name,
 		'value'	=> $value,
 	};
@@ -53,7 +54,7 @@ sub createStatDaily {
 
 	my $overwrite = $self->{_overwrite} || $options->{overwrite};
 	if ($overwrite) {
-		my $where = "day=" . $self->sqlQuote($self->{_day})
+		my $where = "day=" . $self->sqlQuote($day)
 			. " AND name=" . $self->sqlQuote($name);
 		$where .= " AND section=" . $self->sqlQuote($section);
 		$self->{_dbh}{AutoCommit} = 0;

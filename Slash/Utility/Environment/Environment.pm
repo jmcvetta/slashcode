@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.8 2001/12/13 17:42:37 jamie Exp $
+# $Id: Environment.pm,v 1.9 2001/12/18 16:00:38 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -576,7 +576,7 @@ Returns the current anonymous corward (or value from that object).
 
 =item MEMBER
 
-A member from the AC redcord to be returned.
+A member from the AC record to be returned.
 
 =back
 
@@ -1546,4 +1546,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.8 2001/12/13 17:42:37 jamie Exp $
+$Id: Environment.pm,v 1.9 2001/12/18 16:00:38 jamie Exp $

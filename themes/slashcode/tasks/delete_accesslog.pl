@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: delete_accesslog.pl,v 1.9 2004/05/07 14:01:44 jamiemccarthy Exp $
+# $Id: delete_accesslog.pl,v 1.10 2004/11/09 17:52:49 jamiemccarthy Exp $
 
 use strict;
 
@@ -48,6 +48,7 @@ $task{$me}{code} = sub {
 			$total += $rows;
 			last if $rows eq "0E0";
 			slashdLog("deleted so far $total of $limit rows");
+			sleep 10;
 		}
 		my $err = "";
 		if ( $counter >= $failures || !($err = $logdb->sqlError()) ) {

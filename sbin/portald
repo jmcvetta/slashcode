@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.17 2002/04/06 08:12:41 jamie Exp $
+# $Id: portald,v 1.18 2002/04/06 21:44:01 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -92,7 +92,7 @@ EOT
 
 #################################################################
 sub getSlashdotPoll {
-	setblock("poll", pollbooth("", 1));
+	setblock("poll", pollbooth('_currentqid', 1));
 }
 
 

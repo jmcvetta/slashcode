@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.26 2002/02/22 03:10:29 cliff Exp $
+# $Id: index.pl,v 1.27 2002/04/06 21:44:02 jamie Exp $
 
 use strict;
 use Slash;
@@ -206,7 +206,7 @@ sub displayStandardBlocks {
 			$return .= portalbox(
 				$constants->{fancyboxwidth},
 				$boxBank->{$bid}{title},
-				pollbooth('', 1),
+				pollbooth('_currentqid', 1),
 				$boxBank->{$bid}{bid},
 				$boxBank->{$bid}{url}
 			);

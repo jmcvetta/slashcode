@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.61 2002/06/23 14:27:03 jamie Exp $
+# $Id: Slash.pm,v 1.62 2002/07/16 23:51:30 brian Exp $
 
 package Slash;
 
@@ -1057,11 +1057,7 @@ sub getOlderStories {
 
 	$form->{start} ||= 0;
 
-	my $artcount = $section->{artcount} / 3;
-	if ($section->{section} eq 'index') {
-		# XXX Fake it...
-		$artcount = $section->{artcount} = 15;
-	}
+	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
 
 	slashDisplay('getOlderStories', {
 		stories		=> $newstories,

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.60 2002/07/08 23:51:05 cliff Exp $
+# $Id: slashschema_create.sql,v 1.61 2002/07/16 23:51:30 brian Exp $
 #
 
 #
@@ -467,7 +467,6 @@ CREATE TABLE sections (
 	artcount mediumint UNSIGNED DEFAULT '30' NOT NULL,
 	title varchar(64),
 	qid mediumint,
-	isolate tinyint DEFAULT '0' NOT NULL,
 	issue tinyint DEFAULT '0' NOT NULL,
 	extras mediumint DEFAULT '0',
 	url char(128) DEFAULT '' NOT NULL,

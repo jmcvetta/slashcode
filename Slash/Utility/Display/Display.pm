@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.14 2002/07/16 17:06:45 pudge Exp $
+# $Id: Display.pm,v 1.15 2002/07/16 23:51:30 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -493,10 +493,10 @@ sub pollbooth {
 	my($qid, $no_table, $center) = @_;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
-	my $sect = getCurrentUser('currentSection');
+	my $sect = $slashdb->getSection();
 
 	# This special qid means to use the current (sitewide) poll.
-	$qid = $slashdb->getVar('currentqid', 'value') if $qid eq '_currentqid';
+	$qid = $sect->{qid} if $qid eq '_currentqid';
 	# If no qid (or no sitewide poll), short-circuit out.
 	return "" if $qid eq "";
 
@@ -1122,4 +1122,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.14 2002/07/16 17:06:45 pudge Exp $
+$Id: Display.pm,v 1.15 2002/07/16 23:51:30 brian Exp $

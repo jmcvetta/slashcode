@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.81 2002/07/16 22:06:18 pudge Exp $
+# $Id: admin.pl,v 1.82 2002/07/16 23:51:30 brian Exp $
 
 use strict;
 use Image::Size;
@@ -144,7 +144,7 @@ sub main {
 		? " $gmt_ts"
 		: " $local_ts $user->{tzcode} = $gmt_ts GMT";
 	# "backSlash" needs to be in a template or something -- pudge
-	header("backSlash$time_remark$tbtitle", 'admin');
+	header("backSlash$time_remark$tbtitle", '', { admin => 1 });
 	# admin menu is printed from within the 'header' template
 
 	# it'd be nice to have a legit retval

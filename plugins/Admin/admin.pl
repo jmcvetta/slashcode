@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.94 2002/08/07 19:25:21 cliff Exp $
+# $Id: admin.pl,v 1.95 2002/08/13 12:31:39 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1030,7 +1030,7 @@ sub editStory {
 			my $temp_body;
 			$form->{bodytext} = '';
 			my $fh = $upload->fh;
-			while(<$fh>) {
+			while (<$fh>) {
 				$form->{bodytext} .= $_;
 			}
 		}
@@ -1214,9 +1214,9 @@ sub editStory {
 	$shortcuts_check	= 'CHECKED' if $form->{shortcuts};
 
 	$slashdb->setSession($user->{uid}, {
-		lasttitle => $storyref->{title},
-		last_sid  => $sid,
-		last_subid=> '',
+		lasttitle	=> $storyref->{title},
+		last_sid	=> $sid,
+		last_subid	=> '',
 	});
 
 	my $ispell_comments = {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.5 2001/03/21 13:45:49 brian Exp $
+# $Id: 404.pl,v 1.6 2001/03/26 09:44:32 pudge Exp $
 
 use strict;
 use Slash;
@@ -12,6 +12,12 @@ use Slash::Utility;
 sub main {
 	my $constants = getCurrentStatic();
 	$ENV{REQUEST_URI} ||= '';
+
+	# catch old .shtml links ... need to check for other schemes, too?
+        if ($ENV{REQUEST_URI} =~ m|^/?\w+/(\d\d/\d\d/\d\d/\d+)\.shtml$|) {
+		redirect("$constants->{rootdir}/article.pl?sid=$1");
+		return;
+        }
 
 	my $url = strip_literal(substr($ENV{REQUEST_URI}, 1));
 	my $admin = $constants->{adminmail};

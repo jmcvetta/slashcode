@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.4 2001/03/23 19:54:04 pudge Exp $
+# $Id: journal.pl,v 1.5 2001/03/26 09:44:32 pudge Exp $
 
 use strict;
 use Slash;
@@ -170,7 +170,9 @@ sub displayArticle {
 		$nickname = getCurrentUser('nickname');
 		$uid = getCurrentUser('uid');
 	}
-	my $articles = $journal->getsByUid($uid, $constants->{journal_default_display});
+	my $articles = $journal->getsByUid($uid,
+		$constants->{journal_default_display}, $form->{id}
+	);
 	my @sorted_articles;
 	my $date;
 	my $collection = {};
@@ -212,6 +214,7 @@ sub listArticle {
 		articles	=> $list,
 		default		=> $theme,
 		themes		=> $themes,
+		uid		=> $form->{uid},
 	});
 }
 

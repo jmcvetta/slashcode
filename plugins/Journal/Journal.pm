@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.5 2001/03/23 19:54:04 pudge Exp $
+# $Id: Journal.pm,v 1.6 2001/03/26 09:44:32 pudge Exp $
 
 package Slash::Journal;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Slash::DB::Utility Slash::DB::MySQL);
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -44,10 +44,16 @@ sub set {
 }
 
 sub getsByUid {
-	my($self, $uid, $limit) = @_;
+	my($self, $uid, $limit, $id) = @_;
 	my $order = "ORDER BY date DESC";
-	$order .= " LIMIT $limit" if $limit; 
-	my $answer = $self->sqlSelectAll('date, article, description, journals.id', 'journals, journals_text', "uid = $uid AND journals.id = journals_text.id", $order);
+	$order .= " LIMIT $limit" if $limit;
+	my $where = "uid = $uid AND journals.id = journals_text.id";
+	$where .= " AND journals.id = $id" if $id;
+
+	my $answer = $self->sqlSelectAll(
+		'date, article, description, journals.id',
+		'journals, journals_text', $where, $order
+	);
 	return $answer;
 }
 

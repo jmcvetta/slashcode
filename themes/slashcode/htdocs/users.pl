@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.259 2004/10/11 17:01:18 jamiemccarthy Exp $
+# $Id: users.pl,v 1.260 2004/10/12 06:08:45 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1836,10 +1836,10 @@ sub editHome {
 	$formats = $slashdb->getDescriptions('dateformats');
 	$tzformat_select = createSelect('tzformat', $formats, $user_edit->{dfid}, 1);
 
-	my $l_check = $user_edit->{light}		? $constants->{markup_checked_attribute} : '';
-	my $b_check = $user_edit->{noboxes}		? $constants->{markup_checked_attribute} : '';
-	my $i_check = $user_edit->{noicons}		? $constants->{markup_checked_attribute} : '';
-	my $w_check = $user_edit->{willing}		? $constants->{markup_checked_attribute} : '';
+	my $l_check = $user_edit->{light}	? $constants->{markup_checked_attribute} : '';
+	my $b_check = $user_edit->{noboxes}	? $constants->{markup_checked_attribute} : '';
+	my $i_check = $user_edit->{noicons}	? $constants->{markup_checked_attribute} : '';
+	my $w_check = $user_edit->{willing}	? $constants->{markup_checked_attribute} : '';
 
 	my $tilde_ed = tildeEd($user_edit);
 

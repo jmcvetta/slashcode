@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.54 2002/08/02 20:45:14 pudge Exp $
+# $Id: Data.pm,v 1.55 2002/08/05 19:43:05 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -1835,13 +1835,13 @@ The parsed HTML.
 =cut
 
 sub parseSlashizedLinks {
-	my($html) = @_;
+	my($html, $options) = @_;
 	$html =~ s{
 		<A[ ]HREF="__SLASHLINK__"
 		([^>]+)
 		>
 	}{
-		_slashlink_to_link($1)
+		_slashlink_to_link($1, $options)
 	}gxe;
 	return $html;
 }
@@ -1849,7 +1849,7 @@ sub parseSlashizedLinks {
 # This function mirrors the behavior of _link_to_slashlink.
 
 sub _slashlink_to_link {
-	my($sl) = @_;
+	my($sl, $options) = @_;
 	my $ssi = getCurrentForm('ssi') || 0;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
@@ -1863,6 +1863,10 @@ sub _slashlink_to_link {
 	my $sect = delete $attr{sect} || "";
 	my $section = $sect ? $slashdb->getSection($sect) : {};
 	my $sect_root = $section->{rootdir} || $root;
+	if ($options && $options->{absolute}) {
+		$sect_root = URI->new_abs($sect_root, $options->{absolute})
+			->as_string;
+	}
 	my $frag = delete $attr{frag} || "";
 	# Generate the return value.
 	my $retval = q{<A HREF="};
@@ -2604,4 +2608,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.54 2002/08/02 20:45:14 pudge Exp $
+$Id: Data.pm,v 1.55 2002/08/05 19:43:05 jamie Exp $

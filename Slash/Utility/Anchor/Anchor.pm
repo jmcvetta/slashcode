@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.68 2004/06/17 16:11:47 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.69 2004/07/08 18:03:31 jamiemccarthy Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -49,6 +49,8 @@ use vars qw($VERSION @EXPORT);
 
 # really, these should not be used externally, but we leave them
 # here for reference as to what is in the package
+# The above sentence is a very old comment;  still true, or is it
+# OK to export these? - Jamie 2004/07/08
 # @EXPORT_OK = qw(
 # 	getSectionBlock
 # 	getSkinColors
@@ -678,6 +680,8 @@ sub getSectionBlock {
 # else (which happens pretty rarely, but still).
 # This is here for reverse compatibility only, we hope it
 # will go away eventually. - Jamie 2004/06
+# Also, it's kinda misnamed, since it only returns success/failure,
+# the actual color data is put into $user->{colors}
 sub getSkinColors {
 	my $user = getCurrentUser();
 
@@ -721,4 +725,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.68 2004/06/17 16:11:47 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.69 2004/07/08 18:03:31 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.212 2004/07/07 20:43:21 pudge Exp $
+# $Id: admin.pl,v 1.213 2004/07/08 18:03:31 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1374,6 +1374,9 @@ sub editStory {
 	if ($storyref->{title}) {
 		my $oldskin = $gSkin->{skid};
 		setCurrentSkin($storyref->{primaryskid});
+		# Do we want to
+		# Slash::Utility::Anchor::getSkinColors()
+		# here?
 		my $reloDB = getObject("Slash::Relocate");
 		my %story_copy = %$storyref;
 		if ($reloDB) {
@@ -1419,6 +1422,7 @@ sub editStory {
 			  topiclist => $topiclist,
 			  preview => $preview });
 		setCurrentSkin($oldskin);
+		# (and here? see comment above, Slash::Utility::Anchor::getSkinColors)
 	}
 
 	for (@{$extracolumns}) {
@@ -1670,6 +1674,15 @@ sub get_ispell_comments {
 sub listStories {
 	my($form, $slashdb, $user, $constants) = @_;
 
+	my $section = $form->{section} || '';
+	if ($section) {
+		my $new_skid = $slashdb->getSkidFromName($section);
+		if ($new_skid) {
+			setCurrentSkin($new_skid);
+			Slash::Utility::Anchor::getSkinColors();
+		}
+	}
+
 	my($first_story, $num_stories) = ($form->{'next'} || 0, 40);
 	my($count, $storylist) = $slashdb->getStoryList($first_story, $num_stories);
 
@@ -1695,10 +1708,14 @@ sub listStories {
 		$story->{tbtitle} = fixparam($story->{title});
 	}
 
+	my %unique_tds = map { ($_->{td}, 1) } @$storylist;
+	my $ndays_represented = scalar(keys %unique_tds);
+
 	slashDisplay('listStories', {
 		storylistref	=> $storylist,
 		'x'		=> $i + $first_story,
 		left		=> $count - ($i + $first_story),
+		ndays_represented => $ndays_represented,
 	});
 }
 

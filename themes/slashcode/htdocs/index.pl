@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.33 2002/05/03 13:35:18 pudge Exp $
+# $Id: index.pl,v 1.34 2002/05/03 18:04:17 jamie Exp $
 
 use strict;
 use Slash;
@@ -153,7 +153,7 @@ sub displayStandardBlocks {
 	# two variants of box cache: one for index with portalmap,
 	# the other for any other section, or without portalmap
 
-	if ($user->{exboxes} && ($getblocks eq 'index' || $constants->{slashbox_sections}) {
+	if ($user->{exboxes} && ($getblocks eq 'index' || $constants->{slashbox_sections})) {
 		@boxes = getUserBoxes();
 		$boxcache = $cache->{slashboxes}{index_map}{$user->{light}} ||= {};
 	} else {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.11 2001/12/10 17:33:34 pudge Exp $
+# $Id: install-slashsite,v 1.12 2001/12/18 19:09:00 brian Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -23,7 +23,7 @@ use vars qw(
 	$dirname
 );
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -555,7 +555,7 @@ To restart apache do:
 
 Have fun with your new site. You should also consider registering it:
 
-	http://slashcode.com/sites.shtml
+	http://slashcode.com/sites.pl
 
 
 |;

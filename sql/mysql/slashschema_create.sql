@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.12 2001/12/17 16:53:21 brian Exp $
+# $Id: slashschema_create.sql,v 1.13 2001/12/18 19:09:00 brian Exp $
 #
 
 #
@@ -32,7 +32,7 @@ CREATE TABLE abusers (
 DROP TABLE IF EXISTS accesslist; 
 CREATE TABLE accesslist ( 
 	id mediumint NOT NULL auto_increment, 
-	uid mediumint UNSIGNED,
+	uid mediumint UNSIGNED NOT NULL,
 	ipid char(32),
 	subnetid char(32),
 	formname varchar(20) DEFAULT '' NOT NULL,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+# $Id: Access.pm,v 1.3 2001/12/18 19:09:00 brian Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -257,7 +257,7 @@ sub intervalString {
 sub formkeyHandler {
 	# ok, I know we don't like refs, but I don't wanna rewrite the 
 	# whole damned system
-	my($formkey_op, $formname, $formkey, $message_ref) = @_;
+	my ($formkey_op, $formname, $formkey, $message_ref) = @_;
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
 	my $slashdb = getCurrentDB();
@@ -754,4 +754,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+$Id: Access.pm,v 1.3 2001/12/18 19:09:00 brian Exp $

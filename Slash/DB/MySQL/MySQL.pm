@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.40 2001/12/18 18:28:11 jamie Exp $
+# $Id: MySQL.pm,v 1.41 2001/12/18 19:09:00 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1018,7 +1018,7 @@ sub getNewPasswd {
 sub getUserUID {
 	my($self, $name) = @_;
 
-# We may want to add BINARY to this.
+# We may want to add BINARY to this. -Brian
 #
 # The concern is that MySQL's "=" matches text chars that are not
 # bit-for-bit equal, e.g. a-umlaut may "=" a, but that BINARY
@@ -1028,7 +1028,9 @@ sub getUserUID {
 # make an earlier one inaccessible.  A better method would be to
 # grab all uid/nicknames that MySQL thinks match, and then to
 # compare them (in order) in perl until a real bit-for-bit match
-# is found.
+# is found. -unknown???
+# Actually there is a way to optimize a table for binary searches
+# I believe -Brian
 
 	my($uid) = $self->sqlSelect(
 		'uid',
@@ -4599,7 +4601,8 @@ sub setUser {
 
 	# Power to the People
 	if ($hashref->{people}) {
-		$hashref->{people} = freeze($hashref->{people});
+		my $people = $hashref->{people};
+		$hashref->{people} = freeze($people);
 	}
 
 	# hm, come back to exboxes later; it works for now

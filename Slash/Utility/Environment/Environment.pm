@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.66 2003/02/06 21:46:46 brian Exp $
+# $Id: Environment.pm,v 1.67 2003/02/07 02:25:41 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1816,7 +1816,7 @@ sub createLog {
 
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
-	if ($status == 302 ) {
+	if ($status == 302) {
 		# See mod_relocate -Brian
 		if ($uri =~ /\.relo$/) {
 			my $apr = Apache::Request->new(Apache->request);
@@ -1826,10 +1826,10 @@ sub createLog {
 			$dat = $uri;
 			$uri = 'relocate-undef';
 		}
-	} elsif ($status == 404 ) {
+	} elsif ($status == 404) {
 		$dat = $uri;
 		$uri = 'not found';
-	} elsif ($uri =~ '^/palm') {
+	} elsif ($uri =~ /^\/palm/) {
 		($dat = $ENV{REQUEST_URI}) =~ s|\.shtml$||;
 		$uri = 'palm';
 	} elsif ($uri eq '/') {
@@ -1994,4 +1994,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.66 2003/02/06 21:46:46 brian Exp $
+$Id: Environment.pm,v 1.67 2003/02/07 02:25:41 jamie Exp $

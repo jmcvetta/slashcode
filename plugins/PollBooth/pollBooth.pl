@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.35 2002/07/17 13:10:27 pudge Exp $
+# $Id: pollBooth.pl,v 1.36 2002/07/19 18:59:44 brian Exp $
 
 use strict;
 use Slash;
@@ -36,13 +36,11 @@ sub main {
 		$ops{$op}->($slashdb,$form);
 		# Why not do this in a more generic manner you say? 
 		# Because I am paranoid about this being abused. -Brian
-		if ($form->{sid}) {
-			my $section = $slashdb->getSection(
-				$slashdb->getStory($form->{sid}, 'section')
-			);
-			my $url = $section->{rootdir} || $constants->{real_rootdir};
+		my $SECT = $slashdb->getSection($form->{section});
+		if ($SECT) {
+			my $url = $SECT->{rootdir} || $constants->{real_rootdir};
 			
-			redirect($url, "/article.pl?sid=$form->{sid}");
+			redirect($url, "/$form->{returnto}");
 		}
 	}
 

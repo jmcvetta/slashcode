@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.146 2005/03/29 20:46:49 pudge Exp $
+# $Id: Data.pm,v 1.147 2005/03/30 05:23:51 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -45,7 +45,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1355,23 +1355,22 @@ sub processCustomTags {
 	if (grep /^ECODE$/, @{$constants->{approvedtags}}) {
 		my $ecode   = 'ecode';
 		my $open    = qr[\n* <\s* (?:$ecode) (?: \s+ END="(\w+)")? \s*> \n*]xsio;
-		my $close_1 = qr[$open (.*?) \n* <\s* /\2    \s*> \n*]xsio;  # if END is used
-		my $close_2 = qr[$open (.*?) \n* <\s* /ECODE \s*> \n*]xsio;  # if END is not used
+		my $close_1 = qr[($open (.*?) \n* <\s* /\2    \s*> \n*)]xsio;  # if END is used
+		my $close_2 = qr[($open (.*?) \n* <\s* /ECODE \s*> \n*)]xsio;  # if END is not used
 
 		while ($str =~ m[($open)]g) {
 			my $len = length($1);
 			my $end = $2;
 			my $pos = pos($str) - $len;
 
-			my $newlen = 25;  # length('<BLOCKQUOTE></BLOCKQUOTE>')
 			my $close = $end ? $close_1 : $close_2;
-
 			my $substr = substr($str, $pos);
 			if ($substr =~ m/^$close/si) {
-				my $code = strip_code($2);
-				$newlen += length($code);
-				substr($str, $pos, $newlen) = "<blockquote>$code</blockquote>";
-				pos($str) = $pos + $newlen;
+				my $len = length($1);
+				my $code = strip_code($3);
+				my $newstr = "<blockquote>$code</blockquote>";
+				substr($str, $pos, $len) = $newstr;
+				pos($str) = $pos + length($newstr);
 			}
 		}
 	}
@@ -3638,4 +3637,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.146 2005/03/29 20:46:49 pudge Exp $
+$Id: Data.pm,v 1.147 2005/03/30 05:23:51 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.21 2003/07/23 06:15:17 jamie Exp $
+# $Id: MySQL.pm,v 1.22 2003/11/14 19:51:39 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -325,8 +325,8 @@ sub deleteMessages {
 	# set defaults
 	my $constants = getCurrentStatic();
 	my $sendx = $constants->{message_send_expire}  || 7;
-	my $webx  = $constants->{message_web_expire}   || 31;
-	my $webmx = $constants->{message_web_maxtotal} || 50;
+	my $webx  = $constants->{message_web_expire}   || 14;
+	my $webmx = $constants->{message_web_maxtotal} || 25;
 	my $logx  = $constants->{archive_delay}        || 14;
 
 	# delete message log entries

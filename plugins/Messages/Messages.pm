@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.10 2002/07/01 18:46:29 pudge Exp $
+# $Id: Messages.pm,v 1.11 2002/07/01 18:57:14 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -477,11 +477,11 @@ sub quicksend {
 
 	# allow for altto
 	if ($tuser =~ /\D/) {
-		$msg->{user}{uid}	= 0;
-		$msg->{altto}		= $tuser;
+		$msg{user}{uid}	= 0;
+		$msg{altto}	= $tuser;
 	} else {
-		$msg->{user}		= $slashdb->getUser($tuser);
-		$msg->{altto}		= '';
+		$msg{user}	= $slashdb->getUser($tuser);
+		$msg{altto}	= '';
 	}
 
 	$self->send(\%msg);
@@ -910,4 +910,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.10 2002/07/01 18:46:29 pudge Exp $
+$Id: Messages.pm,v 1.11 2002/07/01 18:57:14 pudge Exp $

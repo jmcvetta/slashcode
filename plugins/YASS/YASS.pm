@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.3 2002/01/08 17:22:09 pudge Exp $
+# $Id: YASS.pm,v 1.4 2002/02/25 20:44:12 brian Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -33,30 +33,24 @@ sub new {
 
 sub getActive {
 	my ($self, $limit) = @_;
-	my $slashdb = getCurrentDB();
-	my $constants = getCurrentStatic();
 
-	my $sids;
+	my $all;
+
 	unless($limit) {
-		$sids = $self->sqlSelectAll(
-			"sid", 
-			"story_param", 
-			"name = 'active' AND value = 'yes'",
+		$all = $self->sqlSelectAllHashrefArray(
+			"story_param.sid as sid, story_param.url as url, title", 
+			"story_param, stories", 
+			"name = 'active' AND value = 'yes' AND stories.sid = story_param.sid",
 			"ORDER BY title");
 	} else {
-		$sids = $self->sqlSelectAll(
-			"story_param.sid", 
+		$all = $self->sqlSelectAllHashrefArray(
+			"story_param.sid as sid, story_param.url as url, title", 
 			"story_param, stories", 
 			"name = 'active' AND value = 'yes' AND stories.sid = story_param.sid",
 			"ORDER BY date DESC LIMIT $limit");
 	}
 
-	my @all;
-	for (@$sids) {
-		push @all, $slashdb->getStory($_->[0]);
-	}
-
-	return \@all;
+	return $all;
 }
 
 sub DESTROY {

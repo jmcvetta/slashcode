@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.5 2000/05/31 17:56:35 capttofu Exp $
+#  $Id: slashdotrc.pl,v 1.6 2000/06/01 18:06:00 pudge Exp $
 ###############################################################################
 require URI;
 
@@ -85,7 +85,7 @@ my %my_conf = (
 # comment posting and story submission abuse settings
 	post_limit		=> 10,	# seconds delay before repeat posting
 	max_posts_allowed	=> 30,	# maximum number of posts per day allowed
-	max_submissions_allowed => 20,	# maximum number of submissions per day allowed
+	max_submissions_allowed => 20,	# maximum number of submissions per timeframe allowed
 	submission_speed_limit	=> 300,	# how fast they can submit
 	formkey_timeframe 	=> 14400, # the time frame that we check for a formkey
 

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashd,v 1.6 2000/05/31 19:21:52 pudge Exp $
+#  $Id: slashd,v 1.7 2000/06/01 18:06:00 pudge Exp $
 ###############################################################################
 use sigtrap;
 use strict;
@@ -674,6 +674,8 @@ sub main {
 	require Slash;
 	Slash->import;
 	*I = getSlashConf();
+
+	mkpath "$I{datadir}/logs/", 0, 0755;
 
 	open STDERR, ">> $I{datadir}/logs/slashd.log"
 		or die "Can't open STDERR to $I{datadir}/logs/slashd.log: $!";

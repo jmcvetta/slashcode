@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.170 2003/08/26 18:19:28 pater Exp $
+# $Id: Slash.pm,v 1.171 2003/08/26 19:21:34 jamie Exp $
 
 package Slash;
 
@@ -1711,10 +1711,10 @@ EOT
 		}, 1) if $comment->{original_pid};
 
 		push @link, createSelect("reason_$comment->{cid}",
-			$reasons, '', 1, 1) if ($can_mod
-			&& $user->{mode} ne 'archive'
-			&& (!$user->{state}{discussion-archived}
-			|| $constants->{comments_moddable_archived}));
+			$reasons, '', 1, 1) if $can_mod
+				&& $user->{mode} ne 'archive'
+				&& ( !$user->{state}{discussion_archived}
+					|| $constants->{comments_moddable_archived} );
 
 		push @link, qq|<INPUT TYPE="CHECKBOX" NAME="del_$comment->{cid}">|
 			if $user->{is_admin};

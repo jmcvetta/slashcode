@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.14 2002/12/26 19:46:13 jamie Exp $
+# $Id: topics.pl,v 1.15 2003/02/11 20:00:08 brian Exp $
 
 use strict;
 use Slash;
@@ -19,13 +19,54 @@ sub main {
 	
 	print createMenu('topics');
 
-	if ($form->{op} eq 'toptopics') {
+	if ($form->{op} eq 'hierarchy') {
+		hierarchy();
+	} elsif ($form->{op} eq 'toptopics') {
 		topTopics();
 	} else {
 		listTopics();
 	}
 
 	footer();
+}
+
+#################################################################
+sub hierarchy {
+	my $slashdb = getCurrentDB();
+	my $form = getCurrentForm();
+	my $constants = getCurrentStatic();
+	my $section = $slashdb->getSection();
+
+	my(@topics, %parents);
+	my $topics = $slashdb->getTopics(1); # Don't cache
+
+	for my $topic (values %$topics) {
+		if ($topic->{image} =~ /^\w+\.\w+$/) {
+			$topic->{imageclean} = "$constants->{imagedir}/topics/$topic->{image}";
+		} else {
+			$topic->{imageclean} = $topic->{image};
+		}
+		if ($topic->{parent_topic}) {
+			push(@{$parents{$topic->{parent_topic}}{child}}, $topic);
+		}
+		$parents{$topic->{tid}}{parent} = $topic;
+	}
+	
+	for my $parent (values %parents) {
+		# We remove children that have no children. No Welfare state for us! 
+		next if $parent->{parent}{parent_topic} && !$parent->{child};
+		if ($parent->{child}) {
+			my @children = sort({ $a->{alttext} cmp $b->{alttext} } @{$parent->{child}});
+			$parent->{child} = \@children;
+		}
+		push @topics, $parent;
+	}
+	@topics = sort({ $a->{parent}{alttext} cmp $b->{parent}{alttext} } @topics);
+
+	slashDisplay('hierarchy', {
+		title		=> 'Hierarchy of Topics',
+		topics		=> \@topics,
+	});
 }
 
 #################################################################

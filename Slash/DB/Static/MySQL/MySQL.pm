@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.20 2002/01/14 18:33:00 brian Exp $
+# $Id: MySQL.pm,v 1.21 2002/02/05 18:44:23 cliff Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -616,13 +616,14 @@ sub tokens2points {
 sub stirPool {
 	my($self) = @_;
 	my $stir = getCurrentStatic('stir');
-	my $cursor = $self->sqlSelectMany("points,users.uid as uid",
-			"users,users_comments,users_info",
-			"users.uid=users_comments.uid AND
-			 users.uid=users_info.uid AND
-			 seclev <= 1 AND
+	# Note that this query should not affect editors, although it used
+	# to, hence we've removed seclev, and the users table from this 
+	# query, entirely.
+	my $cursor = $self->sqlSelectMany("points,users_comments.uid AS uid",
+			"users_comments,users_info",
+			"users_info.uid=users_comments.uid AND
 			 points > 0 AND
-			 to_days(now())-to_days(lastgranted) > $stir");
+			 TO_DAYS(now())-TO_DAYS(lastgranted) > $stir");
 
 	my $revoked = 0;
 

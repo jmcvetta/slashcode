@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.165 2004/09/20 14:32:13 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.166 2004/09/20 15:41:30 tvroom Exp $
 #
 
 #
@@ -973,6 +973,7 @@ CREATE TABLE topics (
 	image VARCHAR(100) NOT NULL,
 	width SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 	height SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+	submittable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	PRIMARY KEY (tid)
 ) TYPE=InnoDB;
 

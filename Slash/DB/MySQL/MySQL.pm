@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.107 2002/03/19 20:15:24 jamie Exp $
+# $Id: MySQL.pm,v 1.108 2002/03/26 15:00:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2244,17 +2244,16 @@ sub updateFormkeyVal {
 
 	my $formkey_quoted = $self->sqlQuote($formkey);
 
-	# I'm going to rewrite this using transactions
-	# it's too error prone as it is, and I'm unable
-	# to duplicate errors being reported on the site.
+	my $where = "value = 0";
+
+	# Before the transaction-based version was written, we
+	# did something like this, which Patrick noted seemed
+	# to cause difficult-to-track errors.
 	# my $speed_limit = $constants->{"${formname}_speed_limit"};
 	# my $maxposts = $constants->{"max_${formname}_allowed"} || 0;
 	# my $min = time() - $speed_limit;
-	# my $where = "idcount < $maxposts ";
-	# $where .= "AND last_ts <= $min ";
-	# $where .= "AND value = 0";
-
-	my $where .= "value = 0";
+	# $where .= " AND idcount < $maxposts";
+	# $where .= " AND last_ts <= $min";
 
 	# print STDERR "MIN $min MAXPOSTS $maxposts WHERE $where\n" if $constants->{DEBUG};
 

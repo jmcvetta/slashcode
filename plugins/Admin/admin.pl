@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.180 2003/10/28 00:40:03 pudge Exp $
+# $Id: admin.pl,v 1.181 2003/10/28 19:12:19 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -159,6 +159,12 @@ sub main {
 			seclev		=> 500,
 			adminmenu	=> 'info',
 			tab_selected	=> 'webheads',
+		},
+		mcd_stats		=> {
+			function	=> \&displayMcdStats,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'mcdstats',
 		},
 	};
 
@@ -1912,7 +1918,7 @@ sub displayRecentWebheads {
 
 	my $admindb = getObject("Slash::Admin", { db_type => 'log' });
 
-	my $data_hr = $admindb->getRecentWebheads();
+	my $data_hr = $admindb->getRecentWebheads(10, 5000);
 
 	# We need the list of all webheads too.
 	my %webheads = ( );
@@ -1936,6 +1942,18 @@ sub displayRecentWebheads {
 		data		=> $data_hr,
 		webheads	=> $webheads_ar,
 	});
+}
+
+##################################################################
+sub displayMcdStats {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	my $stats = $slashdb->getMCDStats();
+	if (!$stats) {
+		print getData('no-mcd-stats');
+		return;
+	}
+	slashDisplay('mcd_stats', { stats => $stats });
 }
 
 ##################################################################

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.17 2003/10/20 04:14:53 jamie Exp $
+# $Id: PLUGIN,v 1.18 2003/10/28 19:12:19 jamie Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
@@ -17,6 +17,7 @@ template=templates/ispellok;admin;default
 template=templates/keywordEdit;admin;default
 template=templates/listFilters;admin;default
 template=templates/listStories;admin;default
+template=templates/mcd_stats;admin;default
 template=templates/messages;admin;default
 template=templates/otherLinks;admin;default
 template=templates/recent;admin;default

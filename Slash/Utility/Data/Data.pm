@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.7 2001/12/13 17:28:59 jamie Exp $
+# $Id: Data.pm,v 1.8 2001/12/14 16:21:33 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -465,6 +465,8 @@ sub stripByMode {
 		$str =~ s/&/&amp;/g;
 		$str =~ s/</&lt;/g;
 		$str =~ s/>/&gt;/g;
+		### this is not ideal; we want breakHtml to be
+		### entity-aware
 		# attributes are inside tags, and don't need to be
 		# broken up
 		$str = breakHtml($str) unless $no_white_fix || $fmode == ATTRIBUTE;
@@ -1746,4 +1748,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.7 2001/12/13 17:28:59 jamie Exp $
+$Id: Data.pm,v 1.8 2001/12/14 16:21:33 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.7 2003/01/27 21:58:30 pudge Exp $
+# $Id: message_delivery.pl,v 1.8 2003/01/29 22:01:09 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -53,7 +53,7 @@ $task{$me}{code} = sub {
 		for my $msg (@$msgs) {
 			if ($msg->{code} == $code) {
 				push @{ $collective{ $code }{ $msg->{user}{uid} } }, $msg;
-				delete $msgs->[$c];
+				$msgs->[$c] = undef;
 			}
 			$c++;
 		}
@@ -94,6 +94,7 @@ $task{$me}{code} = sub {
 		}
 	}
 
+	@$msgs = grep { $_ } @$msgs;
 	my @good  = $messages->process(@$msgs);
 
 	my %msgs  = map { ($_->{id}, $_) } @$msgs;

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.151 2004/06/17 16:12:20 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.152 2004/06/20 17:09:49 jamiemccarthy Exp $
 #
 
 #
@@ -907,7 +907,9 @@ CREATE TABLE submissions (
 	INDEX del (del),
 	INDEX uid (uid),
 	KEY ipid (ipid),
-	KEY subnetid (subnetid)
+	KEY subnetid (subnetid),
+	KEY primaryskid_tid (primaryskid, tid),
+	KEY tid (tid)
 ) TYPE=InnoDB;
 
 

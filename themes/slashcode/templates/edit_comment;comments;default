@@ -203,6 +203,10 @@ IF do_br %]<BR>[% END %]
 		[% END %]
 		</FONT>
 	</TD></TR>
+	<tr>
+		<td valign="top" align="right"><font color="[% user.colors.bg_3 %]"><b>URLs</b></font></td>
+		<td><code>&lt;URL:http://example.com/&gt;</code> will auto-link a URL</td>
+	</tr>
 	<TR>
 		<TD VALIGN="TOP" ALIGN="RIGHT"><font color="[% user.colors.bg_3 %]"><B>Important Stuff</B></font></TD>
 		<TD><P>
@@ -232,4 +236,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.39 2004/07/02 00:13:57 pudge Exp $
+$Id: edit_comment;comments;default,v 1.40 2004/07/02 15:41:20 jamiemccarthy Exp $

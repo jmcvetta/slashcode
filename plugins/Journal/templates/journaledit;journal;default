@@ -60,9 +60,13 @@ __template__
 		[% END %]
 		</FONT>
 	</TD></TR>
+	<tr>
+		<td valign="top" align="right"><font color="[% user.colors.bg_3 %]"><b>URLs</b></font></td>
+		<td><code>&lt;URL:http://example.com/&gt;</code> will auto-link a URL</td>
+	</tr>
 </TABLE>
 
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.13 2004/05/07 21:49:30 pudge Exp $
+$Id: journaledit;journal;default,v 1.14 2004/07/02 15:41:20 jamiemccarthy Exp $

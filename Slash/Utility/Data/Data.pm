@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.111 2004/02/02 07:35:03 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.112 2004/02/25 10:42:47 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2335,10 +2335,32 @@ sub _url_to_domain_tag {
 	my $absolutedir = getCurrentStatic('absolutedir');
 	my $uri = URI->new_abs($link, $absolutedir);
 	my $uri_str = $uri->as_string;
-	my($info, $host, $scheme) = ("", "", "");
-	if ($uri->can("host") and $host = $uri->host) {
-		$info = fullhost_to_domain($host);
-	} elsif ($uri->can("scheme") and $scheme = $uri->scheme) {
+
+	my($info, $scheme) = ('', '');
+	if ($uri->can('host')) {
+		my $host;
+		unless (($host = $uri->host)
+				&&
+			$uri->can('scheme')
+				&&
+			($scheme = $uri->scheme)
+		) {
+			# If this URL is malformed in a particular
+			# way ("scheme:///host"), treat it the way
+			# that many browsers will (rightly or
+			# wrongly) treat it.
+			if ($uri_str =~ s|$scheme:///+|$scheme://|) {
+				$uri = URI->new_abs($uri_str, $absolutedir);
+				$uri_str = $uri->as_string;
+				$host = $uri->host;
+			}
+		}
+		$info = fullhost_to_domain($host) if $host;
+	}
+
+	if (!$info && ($scheme || (
+		$uri->can('scheme') && ($scheme = $uri->scheme)
+	))) {
 		# Most schemes, like ftp or http, have a host.  Some,
 		# most notably mailto and news, do not.  For those,
 		# at least give the user an idea of why not, by
@@ -2352,17 +2374,16 @@ sub _url_to_domain_tag {
 		} else {
 			$info = lc $scheme;
 		}
-	} else {
-		$info = "?";
 	}
-	if ($info ne "?") {
-		$info =~ tr/A-Za-z0-9.-//cd;
-	}
+
+	$info =~ tr/A-Za-z0-9.-//cd if $info;
+
 	if (length($info) == 0) {
-		$info = "?";
+		$info = '?';
 	} elsif (length($info) >= 25) {
-		$info = substr($info, 0, 10) . "..." . substr($info, -10);
+		$info = substr($info, 0, 10) . '...' . substr($info, -10);
 	}
+
 	# Add a title tag to make this all friendly for those with vision
 	# and similar issues -Brian
 	$href =~ s/>/ TITLE="$info">/ if $info ne '?';
@@ -3214,4 +3235,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.111 2004/02/02 07:35:03 jamiemccarthy Exp $
+$Id: Data.pm,v 1.112 2004/02/25 10:42:47 pudge Exp $

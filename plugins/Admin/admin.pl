@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.165 2003/07/01 20:36:08 jamie Exp $
+# $Id: admin.pl,v 1.166 2003/07/10 16:43:02 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1378,9 +1378,9 @@ sub editStory {
 	}
 
 	my $authortext = slashDisplay('futurestorybox', {
-		past => $past,
-		present => $storyref,
-		future => $future,
+		past	=> $past,
+		present	=> $storyref,
+		future	=> $future,
 	}, { Return => 1 });
 
 	my $slashdtext = get_slashd_box();

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.419 2003/07/01 20:36:08 jamie Exp $
+# $Id: MySQL.pm,v 1.420 2003/07/10 16:43:26 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.419 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.420 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4212,7 +4212,7 @@ sub getStoryByTimeAdmin {
 
 	my $time = $story->{'time'};
 	my $returnable = $self->sqlSelectAllHashrefArray(
-			'title, sid, time',
+			'title, sid, time, displaystatus',
 			'stories',
 			"time $sign '$time' AND writestatus != 'delete' $where",
 			"ORDER BY time $order LIMIT $limit"
@@ -5680,18 +5680,20 @@ sub getStoryList {
 		. 'time, name, stories.subsection,stories.section, displaystatus, stories.writestatus';
 	my $tables = 'stories LEFT JOIN topics ON stories.tid=topics.tid'; # 'stories, topics';
 	my $where = ''; # stories.tid=topics.tid ";
+	my @where;
 	# See getSubmissionsForUser() on why the following is like this. -Brian
 	my $SECT = $self->getSection($user->{section} || $form->{section});
 	if ($SECT->{type} eq 'collected') {
-		$where .= "stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+		push @where, "stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
 			if $SECT->{contained} && @{$SECT->{contained}};
 	} else {
-		$where .= "stories.section = " . $self->sqlQuote($SECT->{section});
+		push @where, "stories.section = " . $self->sqlQuote($SECT->{section});
 	}
-	$where .= "time < DATE_ADD(NOW(), INTERVAL 72 HOUR) "
+	push @where, "time < DATE_ADD(NOW(), INTERVAL 72 HOUR) "
 		if $form->{section} eq "";
 	my $other = "ORDER BY time DESC LIMIT $first_story, $num_stories";
 
+	$where = join ' AND ', @where;
 	my $count = $self->sqlSelect("COUNT(*)", $tables, $where);
 
 	my $list = $self->sqlSelectAll($columns, $tables, $where, $other);

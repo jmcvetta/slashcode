@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.19 2002/07/11 16:07:39 pudge Exp $
+# $Id: Display.pm,v 1.20 2002/10/04 20:56:02 jamie Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -198,7 +198,7 @@ sub slashDisplay {
 		);
 	} else {
 		# we don't want to have to call this here, but because
-		# it is cached the performance his it is generally light,
+		# it is cached the performance hit is generally light,
 		# and this is the only good way to get the actual name,
 		# page, section, we bite the bullet and do it
 		$tempdata = $slashdb->getTemplateByName($name, [qw(tpid page section)]);
@@ -206,6 +206,8 @@ sub slashDisplay {
 		# we could, at this point, just return from the
 		# function if $tempdata->{tpid} is undef ...
 		# do we want to try?  for now leave it in.
+		# Returning from here would be a bad idea unless
+		# $user->{current*} are restored to original values.
 
 		$tempname = "ID $tempdata->{tpid}, " .
 			"$name;$tempdata->{page};$tempdata->{section}";

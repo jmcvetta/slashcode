@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.58 2002/06/20 01:42:46 jamie Exp $
+# $Id: Slash.pm,v 1.59 2002/06/20 04:12:55 pudge Exp $
 
 package Slash;
 
@@ -92,7 +92,12 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
-	if (!$thisComment || !@$thisComment) {
+	# i don't know why this line had || !@$thisComment, but it
+	# breaks things (most notably, things relying on hitparade,
+	# like slash:hitparade in rss, selectThreshold in comments,
+	# etc.) when there are no comments YET, but the discussion
+	# is valid -- pudge
+	if (!$thisComment) { #|| !@$thisComment) {
 		_print_cchp($header);
 		return ( {}, 0 );
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.46 2002/04/06 22:11:33 jamie Exp $
+# $Id: admin.pl,v 1.47 2002/04/07 06:34:47 patg Exp $
 
 use strict;
 use Image::Size;
@@ -1430,6 +1430,10 @@ sub saveStory {
 	    }
 	}
 	my $sid = $slashdb->createStory($data);
+
+	if ($form->{subid}) {
+	    $slashdb->deleteSubmission($form->{subid});
+	}
 
 	if ($constants->{feature_story_enabled}) {
 		if ($form->{feature_story}) {

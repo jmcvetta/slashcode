@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.102 2004/03/06 00:33:42 pudge Exp $
+# $Id: User.pm,v 1.103 2004/03/10 23:28:49 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -342,8 +342,11 @@ sub handler {
 			# allowed to make the attempt on the SSL server.
 			# Logging in means the users.pl script and either
 			# an empty op or the 'userlogin' op.
-                        $uri =~ m{^/users\.pl}
-                        && (!$form->{op} || $form->{op} eq 'userlogin')
+			(
+			$uri =~ m{^/osdn-test/}
+			||
+			$uri =~ m{^/(?:users|login)\.pl}
+			) && (!$form->{op} || $form->{op} eq 'userlogin')
                 )
 	) {
 		my $ans = $constants->{allow_nonadmin_ssl};

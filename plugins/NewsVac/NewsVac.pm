@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.19 2002/10/07 17:35:36 pudge Exp $
+# $Id: NewsVac.pm,v 1.20 2002/10/10 20:19:17 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -75,7 +75,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -3781,6 +3781,7 @@ EOT
 		});
 		$self->setSubmission($subid, {
 			separate	=> 1,
+			storyonly	=> 1,
 			keywords	=> $_->{keywords},
 			url		=> $_->{url},
 			url_title	=> $_->{url_title},
@@ -6244,4 +6245,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.19 2002/10/07 17:35:36 pudge Exp $
+$Id: NewsVac.pm,v 1.20 2002/10/10 20:19:17 pudge Exp $

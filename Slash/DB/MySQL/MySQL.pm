@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.636 2004/07/19 03:18:34 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.637 2004/07/19 18:23:42 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.636 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.637 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6446,7 +6446,7 @@ sub _stories_time_clauses {
 	my $must_be_subscriber =	$options->{must_be_subscriber}	|| 0;
 	my $column_name =		$options->{column_name}		|| "time";
 	my $exact_now =			$options->{exact_now}		|| 0;
-	my $timecalc_off_set =		$options->{timecalc_off_set}	|| 0;
+	my $fake_secs_ahead =		$options->{fake_secs_ahead}	|| 0;
 
 	my($is_future_column, $where);
 
@@ -6468,7 +6468,10 @@ sub _stories_time_clauses {
 	# also round our selection time to the minute, so the query cache
 	# can work for the full 60 seconds.
 	my $now = $exact_now ? 'NOW()'
-		: $self->sqlQuote( time2str('%Y-%m-%d %H:%M:00', time, 'GMT') );
+		: $self->sqlQuote( time2str(
+			'%Y-%m-%d %H:%M:00',
+			time + $fake_secs_ahead,
+			'GMT') );
 
 	if ($future) {
 		$is_future_column = "IF($column_name <= $now, 0, 1) AS is_future";
@@ -6539,6 +6542,9 @@ sub getStoriesEssentials {
 		$options->{tid} = $nexuses;
 	}
 
+	# This is just used by tasks/precache_gse.pl.
+	my $fake_secs_ahead = $options->{fake_secs_ahead} || 0;
+
 	# Restrict the selection to include or exclude based on
 	# up to three types of data.  The data fed to this loop
 	# tells it which table to look in, which column in the
@@ -6589,6 +6595,7 @@ sub getStoriesEssentials {
 		try_future => 1,
 		future_secs => $future_secs,
 		must_be_subscriber => 0,
+		fake_secs_ahead => $fake_secs_ahead,
 	});
 	my $columns;
 	if ($options->{return_min_stoid_only}) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.109 2004/07/19 14:42:40 jamiemccarthy Exp $
+# $Id: index.pl,v 1.110 2004/07/19 18:23:57 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -93,7 +93,7 @@ my $start_time = Time::HiRes::time;
 	# Times listed are elapsed time from the previous markpoint.
 
 	my $gse_hr = { tid => $gSkin->{nexus} };
-	$gse_hr->{limit} = $user_maxstories if !$user->{is_anon} && $user_maxstories;
+	$gse_hr->{limit} = $user_maxstories if $user_maxstories;
 	$gse_hr->{issue} = $issue if $issue;
 	$gse_hr->{sectioncollapse} = $user->{sectioncollapse} if $user->{sectioncollapse};
 	if (rand(1) < $constants->{index_gse_backup_prob}) {

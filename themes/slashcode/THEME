@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.76 2004/07/17 15:32:55 jamiemccarthy Exp $
+# $Id: THEME,v 1.77 2004/07/19 18:23:57 jamiemccarthy Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -90,8 +90,9 @@ task=tasks/new_headfoot.pl
 task=tasks/freshenup.pl
 task=tasks/open_backend.pl
 task=tasks/new_motd.pl
-task=tasks/performance_stats.pl
 task=tasks/p2f_hof_topics.pl
+task=tasks/performance_stats.pl
+task=tasks/precache_gse.pl
 task=tasks/refresh_authors_cache.pl
 task=tasks/refresh_section_metakeywords.pl
 task=tasks/report_slashd_errors.pl

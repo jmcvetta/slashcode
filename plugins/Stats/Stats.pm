@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.60 2002/09/20 20:00:11 brian Exp $
+# $Id: Stats.pm,v 1.61 2002/09/20 20:40:45 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -202,16 +202,16 @@ sub getCommentsByDistinctIPID {
 sub getCommentsByDistinctUIDPosters {
 	my($self, $options) = @_;
 
-	my $section_where = " 1=1 ";
-	$section_where .= " AND discussions.id = comments.sid
-			    AND discussions.section = '$options->{section}'"
+	my $section_where = "";
+	$section_where = " AND discussions.id = comments.sid
+			   AND discussions.section = '$options->{section}'"
 		if $options->{section};
 
 	my $tables = 'comments';
 	$tables .= ", discussions" if $options->{section};
 
 	my $used = $self->sqlSelect(
-		'count(DISTINCT uid)', $tables, 
+		"COUNT(DISTINCT uid)", $tables, 
 		"date BETWEEN '$self->{_date} 00:00' AND '$self->{_date} 23:59:59'
 		$section_where",
 		'',
@@ -221,7 +221,7 @@ sub getCommentsByDistinctUIDPosters {
 
 ########################################################
 sub getAdminModsInfo {
-	my($self, $weekago) = @_;
+	my($self) = @_;
 
 	# First get the count of upmods and downmods performed by each admin.
 	my $m1_uid_val_hr = $self->sqlSelectAllHashref(
@@ -432,28 +432,27 @@ sub countCommentsDaily {
 	my $tables = 'comments';
 	$tables .= ", submissions" if $options->{section};
 
-	my $section_where = "1=1 ";
-	$section_where .= " AND discussions.id = comments.sid
-			    AND discussions.section = '$options->{section}'"
+	my $section_where = "";
+	$section_where = " AND discussions.id = comments.sid
+			   AND discussions.section = '$options->{section}'"
 		if $options->{section};
 	
 	# Count comments posted yesterday... using a primary key,
 	# if it'll save us a table scan.  On Slashdot this cuts the
 	# query time from about 12 seconds to about 0.8 seconds.
-	my $max_cid = $self->sqlSelect("MAX(comments.cid)", $tables);
 	my $cid_limit_clause = "";
+	my $max_cid = $self->sqlSelect("MAX(comments.cid)", $tables);
 	if ($max_cid > 300_000) {
 		# No site can get more than 100K comments a day in
 		# all its sections combined.  It is decided.  :)
-		$cid_limit_clause = "cid > " . ($max_cid-100_000)
-			. " AND ";
+		$cid_limit_clause = " AND cid > " . ($max_cid-100_000);
 	}
 
 	my $comments = $self->sqlSelect(
 		"COUNT(*)",
 		"comments",
-		"$cid_limit_clause $section_where
-		 date BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'"
+		"date BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'
+		 $cid_limit_clause $section_where"
 	);
 
 	return $comments; 

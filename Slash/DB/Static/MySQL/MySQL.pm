@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.49 2002/07/16 11:35:12 jamie Exp $
+# $Id: MySQL.pm,v 1.50 2002/07/18 04:56:49 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -583,8 +583,7 @@ sub getSectionInfo {
 	my $sections = $self->sqlSelectAllHashrefArray(
 		"section, url",
 		"sections",
-		"isolate=0 and (section != '' and section != 'articles')
-		ORDER BY section"
+		" ORDER BY section"
 	);
 
 	$self->sqlConnect();

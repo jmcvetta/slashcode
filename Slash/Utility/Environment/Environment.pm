@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.33 2002/07/16 13:29:34 jamie Exp $
+# $Id: Environment.pm,v 1.34 2002/07/18 04:56:49 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1652,7 +1652,8 @@ sub createEnvironment {
 			$new_cfg->{absolutedir} = $_->{url};
 			$new_cfg->{rootdir} = $_->{url};
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
-			$new_cfg->{real_rootdir} = $_->{url} if $_->{isolate};  # you gotta keep 'em separated, unh!
+			# Isolate no longer exists -Brian
+			#$new_cfg->{real_rootdir} = $_->{url} if $_->{isolate};  # you gotta keep 'em separated, unh!
 			$new_cfg->{defaultsection} = $_->{section};
 			$new_cfg->{basedomain} = $_->{hostname};
 			$new_cfg->{static_section} = $_->{section};
@@ -1711,4 +1712,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.33 2002/07/16 13:29:34 jamie Exp $
+$Id: Environment.pm,v 1.34 2002/07/18 04:56:49 brian Exp $

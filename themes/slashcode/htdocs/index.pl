@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.44 2002/07/17 21:27:37 jamie Exp $
+# $Id: index.pl,v 1.45 2002/07/18 04:56:49 brian Exp $
 
 use strict;
 use Slash;
@@ -55,8 +55,7 @@ sub main {
 		$fetchdb  = $slashdb;
 	}
 	$stories = $fetchdb->getStoriesEssentials(
-		$limit, 
-		($form->{section} ne 'index') ? $form->{section} : '',
+		$limit, $form->{section},
 		'',
 	);
 
@@ -255,12 +254,6 @@ sub displayStories {
 		$counter->{$category} ||= $x;
 
 		my($storytext, $story) = displayStory($sid, '', $other);
-
-		if ($constants->{get_titles}) {
-			my $titlelink = slashDisplay('storyTitleOnly', { story => $story }, {Return => 1});
-
-			$return->{$category}{titles} .= $titlelink; 
-		}
 
 		$tmpreturn .= $storytext;
 	

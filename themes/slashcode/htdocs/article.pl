@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.24 2002/06/17 14:44:35 pudge Exp $
+# $Id: article.pl,v 1.25 2002/07/18 04:56:49 brian Exp $
 
 use strict;
 use Slash;
@@ -28,9 +28,8 @@ sub main {
 
 	if ($story) {
 		my $SECT = $slashdb->getSection($story->{section});
-		my $title = $SECT->{isolate} ?
-			"$SECT->{title} | $story->{title}" :
-			"$constants->{sitename} | $story->{title}";
+    # This should be a getData call for title
+		my $title = "$constants->{sitename} | $story->{title}";
 		$story->{introtext} = parseSlashizedLinks($story->{introtext});
 		$story->{bodytext} =  parseSlashizedLinks($story->{bodytext});
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.28 2002/07/17 13:10:27 pudge Exp $
+# $Id: sections.pl,v 1.29 2002/07/18 04:56:49 brian Exp $
 
 use strict;
 use Slash;
@@ -214,11 +214,6 @@ sub editSection {
 			$this_section->{qid},
 			1
 		) : '';
-	my $isolate = createSelect('isolate', 
-		$slashdb->getDescriptions('isolatemodes'),
-		$this_section->{isolate}, 
-		1
-	);
 	my $issue = createSelect('issue', 
 		$slashdb->getDescriptions('issuemodes'),
 		$this_section->{issue}, 
@@ -238,7 +233,6 @@ sub editSection {
 		section		=> $section,
 		this_section	=> $this_section,
 		qid		=> $qid,
-		isolate		=> $isolate,
 		issue		=> $issue,
 		blocks		=> \@blocks,
 		topics		=> $topics,
@@ -271,13 +265,13 @@ sub saveSection {
 			qid		=> $form->{qid},
 			title		=> $form->{title},
 			issue		=> $form->{issue},
-			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
 			writestatus	=> 'dirty',
 			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
 			index_handler	=> $form->{index_handler},
+			type	=> $form->{type},
 		});
 
 		print getData('update', { section => $section });
@@ -287,13 +281,13 @@ sub saveSection {
 			qid		=> $form->{qid},
 			title		=> $form->{title},
 			issue		=> $form->{issue},
-			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
 			writestatus	=> 'dirty',
 			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
 			index_handler	=> $form->{index_handler},
+			type	=> $form->{type},
 		});
 		print getData($return ? 'insert' : 'failed', { 
 			section => $section

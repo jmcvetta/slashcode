@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.34 2002/04/08 16:48:43 cliff Exp $
+# $Id: slashschema_create.sql,v 1.35 2002/04/08 18:45:07 brian Exp $
 #
 
 #
@@ -389,6 +389,7 @@ CREATE TABLE pollquestions (
 	date datetime,
 	uid mediumint UNSIGNED NOT NULL,
 	section varchar(30) NOT NULL,
+	FOREIGN KEY (section) REFERENCES sections(section),
 	FOREIGN KEY (discussion) REFERENCES discussions(id),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	PRIMARY KEY (qid)

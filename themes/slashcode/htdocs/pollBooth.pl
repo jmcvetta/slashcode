@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.28 2002/04/05 20:10:51 jamie Exp $
+# $Id: pollBooth.pl,v 1.29 2002/04/08 18:45:07 brian Exp $
 
 use strict;
 use Slash;
@@ -65,8 +65,8 @@ sub default {
 			my $discussion_id = $slashdb->getPollQuestion(
 				$form->{'qid'}, 'discussion'
 			);
-			my $discussion = 
-				$slashdb->getDiscussion($discussion_id);
+			my $discussion = $slashdb->getDiscussion($discussion_id)
+				if $discussion_id;
 			if ($discussion) {
 				printComments($discussion);
 			}
@@ -255,7 +255,7 @@ sub listpolls {
 	my($form) = @_;
 	my $slashdb = getCurrentDB();
 	my $min = $form->{min} || 0;
-	my $questions = $slashdb->getPollQuestionList($min, { section => $form->{section}});
+	my $questions = $slashdb->getPollQuestionList($min, { section => $form->{section} } );
 	my $sitename = getCurrentStatic('sitename');
 
 	# Just me, but shouldn't title be in the template?

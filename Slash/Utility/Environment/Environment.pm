@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.146 2004/10/09 17:26:18 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.147 2004/10/10 17:13:45 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1355,7 +1355,11 @@ The prepared user data.
 =item Side effects
 
 Sets some cookies in Apache mode, sets currentPage (for templates) and
-bunches of other user datum.
+bunches of other user datum.  If the default values or the schema for
+fields like karma_bonus or domaintags ever changes, such that writing
+'undef' to delete a users_param row is no longer an acceptable
+alternative to writing out the default value, then the code both here
+and in users.pl save*() should be re-examined.
 
 =back
 
@@ -2660,4 +2664,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.146 2004/10/09 17:26:18 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.147 2004/10/10 17:13:45 jamiemccarthy Exp $

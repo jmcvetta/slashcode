@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.20 2002/04/01 23:07:53 jamie Exp $
+# $Id: Data.pm,v 1.21 2002/04/22 19:38:32 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -1194,6 +1194,8 @@ sub fudgeurl {
 		}
 	}
 
+	# These entities can crash browsers and don't belong in URLs.
+	$url =~ s/&#(.+?);//g;
 	# we don't like SCRIPT at the beginning of a URL
 	my $decoded_url = decode_entities($url);
 	return $decoded_url =~ /^[\s\w]*script\b/i ? undef : $url;
@@ -1921,4 +1923,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.20 2002/04/01 23:07:53 jamie Exp $
+$Id: Data.pm,v 1.21 2002/04/22 19:38:32 jamie Exp $

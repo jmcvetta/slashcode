@@ -24,11 +24,11 @@ __template__
 	{ link = "$constants.rootdir/admin.pl?op=templates",	label = "Templates",	sel_label = "templates" },
 	{ link = "$constants.rootdir/admin.pl?op=vars",		label = "Vars",		sel_label = "vars" },
 	{ link = "$constants.rootdir/admin.pl?op=recent",	label = "Info",		sel_label = "info" },
-	{ link = "$constants.rootdir/getting_started.shtml",	label = "Help",		sel_label = "help" },
+	{ link = "$constants.rootdir/slashguide.shtml",	label = "Help",		sel_label = "help" },
 ];
 PROCESS tabbedmenu tabs=tabs color=color selected=page; %]
 
 __seclev__
 10000
 __version__
-$Id: config;menu;default,v 1.7 2003/05/12 18:17:10 pudge Exp $
+$Id: config;menu;default,v 1.8 2003/05/13 05:50:23 pater Exp $

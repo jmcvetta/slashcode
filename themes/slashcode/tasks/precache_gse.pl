@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: precache_gse.pl,v 1.2 2004/07/19 18:42:50 jamiemccarthy Exp $
+# $Id: precache_gse.pl,v 1.3 2004/07/19 18:50:22 jamiemccarthy Exp $
 
 # Calls getStoriesEssentials, on each DB that might perform
 # its SQL, a few seconds before the top of each minute, so
@@ -17,7 +17,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "0-59 * * * *";
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -66,14 +66,15 @@ $task{$me}{code} = sub {
 	);
 
 	# Sleep until :45 after the top of the minute.
-	my $now_secs = time % 60;
-	return "started too late" if $now_secs > 55;
+	my $time = time;
+	my $now_secs = $time % 60;
+	return "started too late" if $now_secs > 50;
 	sleep 45 - $now_secs if $now_secs < 45;
+	my $max_time = time - $now_secs + 57;
 
 	# Make each gSE query to each virtual user.
 	for my $vu (@virtual_users) {
-		$now_secs = time % 60;
-		if ($now_secs > 58) {
+		if (time >= $max_time) {
 			push @errs, "ran out of time on vu '$vu': " . scalar(gmtime);
 			last;
 		}

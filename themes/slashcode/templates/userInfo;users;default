@@ -125,11 +125,11 @@ END; %]
 [% END %]
 <P>
 [% IF subcount > 0 %]
-[% title = "$nickname's " _ ((subcount>submissions.size) ? "Latest " : "") _ "Submissions"; %]
+[% title = "${useredit.nickname}'s " _ ((subcount>submissions.size) ? "Latest " : "") _ "Submissions"; %]
 [% PROCESS listSubmissions title=title admin_flag=admin_flag submissions=submissions %]
 [% END %]
 
 __seclev__
 500
 __version__
-$Id: userInfo;users;default,v 1.68 2004/03/09 20:03:32 tvroom Exp $
+$Id: userInfo;users;default,v 1.69 2004/03/09 21:08:09 tvroom Exp $

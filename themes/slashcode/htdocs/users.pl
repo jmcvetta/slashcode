@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.62 2002/03/06 19:39:47 jamie Exp $
+# $Id: users.pl,v 1.63 2002/03/12 14:43:30 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -294,6 +294,11 @@ sub main {
 		}
 		redirect($refer);
 		return;
+
+	# this will only redirect if it is a section-based rootdir, and
+	# NOT an isolated section (which has the same rootdir as real_rootdir)
+	} elsif ($op eq 'userclose' && $constants->{rootdir} ne $constants->{real_rootdir}) {
+		redirect($constants->{real_rootdir}, '/users.pl?op=userclose');
 
 	} elsif ($op eq 'savepasswd') {
 		my $error_flag = 0;

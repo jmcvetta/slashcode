@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.193 2004/03/23 15:30:21 tvroom Exp $
+# $Id: admin.pl,v 1.194 2004/03/29 22:44:11 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1831,7 +1831,10 @@ sub moderate {
 	my($sid, $cid);
 
 	titlebar("100%", "Moderating...");
-
+	if(!dbAvailable("write_comments"){
+		print getData("comments_db_down");
+		return;
+	}
 	for my $key (sort keys %{$form}) {
 		if ($key =~ /^reason_(\d+)_(\d+)$/) {
 			($sid, $cid) = ($1, $2);

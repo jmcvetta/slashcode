@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.72 2002/05/30 18:38:58 jamie Exp $
+# $Id: admin.pl,v 1.73 2002/06/05 15:26:07 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -365,7 +365,11 @@ sub templateSave {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 
-	$form->{seclev} ||= 500;
+	if (!$form->{seclev}) {
+		$form->{seclev} = 500;
+	} elsif ($form->{seclev} > $user->{seclev}) {
+		$form->{seclev} = $user->{seclev};
+	}
 
 	my $id = $slashdb->getTemplate($tpid, '', 1);
 	my $temp = $slashdb->getTemplateByName($name, [ 'section', 'page', 'name', 'tpid', 'seclev' ], 1 , $page, $section);

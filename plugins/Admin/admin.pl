@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.150 2003/04/26 14:13:12 pudge Exp $
+# $Id: admin.pl,v 1.151 2003/05/06 18:17:15 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1628,6 +1628,7 @@ sub updateStory {
 		dept		=> $form->{dept},
 		'time'		=> $time,
 		displaystatus	=> $form->{displaystatus},
+		commentstatus	=> $form->{commentstatus},
 		writestatus	=> $form->{writestatus},
 		bodytext	=> $form->{bodytext},
 		introtext	=> $form->{introtext},
@@ -1818,6 +1819,7 @@ sub saveStory {
 		relatedtext	=> $form->{relatedtext},
 		subid		=> $form->{subid},
 		subsection	=> $form->{subsection},
+		commentstatus	=> $form->{commentstatus},
 	};
 	my $extras = $slashdb->getSectionExtras($data->{section});
 	if ($extras && @$extras) {

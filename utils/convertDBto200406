@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.11 2004/07/15 04:37:33 jamiemccarthy Exp $
+# $Id: convertDBto200406,v 1.12 2004/07/16 19:41:44 tvroom Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -1000,7 +1000,10 @@ print <<EOT;
 
 # Then run utils/convertDBto200406_render to convert story_topics_chosen
 # to story_topics_rendered.
-
+#
+# To compare number of stories in each section pre and post conversion run utils/compareSecPrePost200406
+# This will help verify you have your topic tree set up in a sensible manner
+#
 # Once you're REALLY happy with everything, DROP TABLE *_old
 
 EOT

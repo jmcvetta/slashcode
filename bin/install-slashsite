@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.20 2002/03/14 20:49:24 pudge Exp $
+# $Id: install-slashsite,v 1.21 2002/04/09 18:45:48 brian Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -23,7 +23,7 @@ use vars qw(
 	$dirname
 );
 
-(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -512,8 +512,9 @@ sub apache_site_conf {
 
     # this directive will redirect non-logged-in users to
     # index.shtml if they request the home page; turn it
-    # on to help increase performance
-    #PerlTransHandler Slash::Apache::IndexHandler
+    # on to help increase performance or if you are using something
+    # other then index.pl for the index
+    PerlTransHandler Slash::Apache::IndexHandler
 
     # this directive will enable you to display user's pages
     # with /~username

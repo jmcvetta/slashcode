@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.48 2002/04/07 13:26:44 jamie Exp $
+# $Id: admin.pl,v 1.49 2002/04/09 18:45:48 brian Exp $
 
 use strict;
 use Image::Size;
@@ -25,6 +25,14 @@ sub main {
 	my($tbtitle);
 
 	my $ops = {
+		slashd_log	=> {
+			function	=> \&displaySlashd,
+			seclev		=> 500,
+		},
+		edit_keyword	=> {
+			function	=> \&editKeyword,
+			seclev		=> 10000,
+		},
 		edit_keyword	=> {
 			function	=> \&editKeyword,
 			seclev		=> 10000,
@@ -1374,6 +1382,14 @@ sub updateStory {
 	titlebar('100%', getTitle('updateStory-title'));
 	# make sure you pass it the goods
 	listStories(@_);
+}
+
+##################################################################
+sub displaySlashd {
+	my($form, $slashdb, $user, $constants) = @_;
+	slashDisplay('slashd_log', {
+		tasks		=> $slashdb->getSlashdStatuses(),
+	});
 }
 
 ##################################################################

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.37 2002/04/08 23:39:54 brian Exp $
+# $Id: slashschema_create.sql,v 1.38 2002/04/09 18:45:48 brian Exp $
 #
 
 #
@@ -444,6 +444,8 @@ CREATE TABLE sections (
 	url char(128) DEFAULT '' NOT NULL,
 	hostname char(128) DEFAULT '' NOT NULL,
 	cookiedomain char(128) DEFAULT '' NOT NULL,
+	index_handler varchar(30) DEFAULT "index.pl" NOT NULL,
+	writestatus ENUM("ok","dirty") DEFAULT 'ok' NOT NULL,
 	KEY (section),
 	FOREIGN KEY (qid) REFERENCES pollquestions(qid),
 	FOREIGN KEY (feature_story) REFERENCES stories(sid),
@@ -507,6 +509,14 @@ CREATE TABLE site_info (
 	description varchar(255),
 	UNIQUE site_keys (name,value),
 	PRIMARY KEY (param_id)
+) TYPE = myisam;
+
+DROP TABLE IF EXISTS slashd_status;
+CREATE TABLE slashd_status (
+	task varchar(50) NOT NULL,
+	time_took float(6,2) DEFAULT '0.00' NOT NULL,
+	last_update timestamp, 
+	PRIMARY KEY (task)
 ) TYPE = myisam;
 
 

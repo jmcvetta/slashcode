@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.22 2002/03/21 03:39:50 jamie Exp $
+# $Id: sections.pl,v 1.23 2002/04/09 18:45:48 brian Exp $
 
 use strict;
 use Slash;
@@ -50,9 +50,7 @@ sub main {
 		delSection($form->{section});
 		listSections($user);
 
-	} elsif ($op eq 'editsection' || $form->{editsection} ||
-		 $form->{addextra})
-	{
+	} elsif ($op eq 'editsection' || $form->{editsection} || $form->{addextra}) {
 		saveSection($form->{section}) 
 			if $form->{addextra} && @{$form->{section_extras}};
 		titlebar('100%', getData('edithead'));
@@ -196,8 +194,10 @@ sub saveSection {
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
+			writestatus	=> 'dirty',
 			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
+			index_handler	=> $form->{index_handler},
 		});
 
 		print getData('update', { section => $section });
@@ -210,8 +210,10 @@ sub saveSection {
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
+			writestatus	=> 'dirty',
 			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
+			index_handler	=> $form->{index_handler},
 		});
 		print getData($return ? 'insert' : 'failed', { 
 			section => $section

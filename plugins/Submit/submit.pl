@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.89 2004/03/22 16:01:10 cowboyneal Exp $
+# $Id: submit.pl,v 1.90 2004/03/23 20:13:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -140,7 +140,7 @@ sub main {
 # update the notes and sections fields but don't delete anything.
 sub updateSubmissions {
 	my($constants, $slashdb, $user, $form) = @_;
-	$slashdb->deleteSubmission(0, 1);
+	$slashdb->deleteSubmission({ nodelete => 1 });
 	submissionEd(@_);
 }
 
@@ -266,7 +266,7 @@ sub mergeSubmissions {
 	}
 
 	# need to do this even if nothing is checked, so we update notes etc.
-	my @subids = $slashdb->deleteSubmission;
+	my @subids = $slashdb->deleteSubmission({ accepted => 1 });
 
 	submissionEd(@_, getData('mergehead', { subids => \@subids }));
 }

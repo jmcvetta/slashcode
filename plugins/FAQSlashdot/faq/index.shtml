@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: index.shtml,v 1.12 2003/06/16 19:45:02 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: index.shtml,v 1.13 2003/07/10 14:15:47 malda Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -35,6 +35,10 @@ in this FAQ. What should I do?</a></b></li>
 <ul>
 <li>
 <b><a href="editorial.shtml#ed100">How do I submit stories to Slashdot?</a></b></li>
+
+<li>
+<b><a href="editorial.shtml#ed103">Where do I submit Press Releases?</a></b></li>
+
 
 <li>
 <b><a href="editorial.shtml#ed105">Can I submit a story anonymously?</a></b></li>

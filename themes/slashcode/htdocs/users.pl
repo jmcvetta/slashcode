@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.178 2003/04/26 14:13:12 pudge Exp $
+# $Id: users.pl,v 1.179 2003/05/08 16:06:11 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1858,7 +1858,8 @@ sub saveUserAdmin {
 
 	} elsif ($form->{md5id}) {
 		$user_editfield_flag = 'md5id';
-		($id, $user_edit->{$form->{fieldname}})
+		my $fieldname = $form->{fieldname} || 'md5id';
+		($id, $user_edit->{$fieldname})
 			= ($form->{md5id}, $form->{md5id});
 
 	} else {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.52 2002/11/22 06:18:51 jamie Exp $
+# $Id: index.pl,v 1.53 2002/12/11 00:41:20 brian Exp $
 
 use strict;
 use Slash;
@@ -208,7 +208,24 @@ sub displayStandardBlocks {
 				$boxBank->{$bid}{bid},
 				$boxBank->{$bid}{url}
 			);
-
+		} elsif ($bid eq 'friends_journal' && $constants->{plugin}{Journal} && $constants->{plugin}{Zoo}) {
+			# this is only executed if poll is to be dynamic
+			my $journal = getObject("Slash::Journal");
+			my $zoo = getObject("Slash::Zoo");
+			my $uids = $zoo->getFriendsUIDs($user->{uid});
+			my $articles = $journal->getsByUids($uids, 0,
+				$constants->{journal_default_display}, { titles_only => 1})
+				if ($uids && @$uids);
+			# We only display if the person has friends with data
+			if ($articles && @$articles) {
+				$return .= portalbox(
+					$constants->{fancyboxwidth},
+					getData('friends_journal_head'),
+					slashDisplay('friendsview', { articles => $articles}, { Return => 1 }),
+					$bid,
+					"$constants->{rootdir}/my/journal/friends"
+				);
+			}
 		# this could grab from the cache in the future, perhaps ... ?
 		} elsif ($bid eq 'rand' || $bid eq 'srandblock') {
 			# don't use cached title/bid/url from getPortalsCommon

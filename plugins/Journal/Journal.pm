@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.26 2002/12/10 17:30:20 jamie Exp $
+# $Id: Journal.pm,v 1.27 2002/12/11 00:41:20 brian Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -64,8 +64,9 @@ sub getsByUid {
 }
 
 sub getsByUids {
-	my($self, $uids, $start, $limit) = @_;
+	my($self, $uids, $start, $limit, $options) = @_;
 	my $list = join(",", @$uids);
+	my $answer;
 	my $order = "ORDER BY journals.date DESC";
 	$order .= " LIMIT $start, $limit" if $limit;
 
@@ -74,15 +75,27 @@ sub getsByUids {
 	# correctly uses an index on uid.  Logically they are the same and
 	# the DB *really* should be smart enough to pick up on that, but no.
 	# At least, not in MySQL 3.23.49a.
-	my $where = "users.uid IN ($list) AND journals.id=journals_text.id AND users.uid=journals.uid";
 
-	my $answer = $self->sqlSelectAll(
-		'journals.date, article, description, journals.id,
-		 posttype, tid, discussion, users.uid, users.nickname',
-		'journals, journals_text, users',
-		$where,
-		$order
-	);
+	if($options->{titles_only}) {
+		my $where = "users.uid IN ($list) AND users.uid=journals.uid";
+
+		$answer = $self->sqlSelectAllHashrefArray(
+			'description, id, nickname',
+			'journals, users',
+			$where,
+			$order
+		);
+	} else {
+		my $where = "users.uid IN ($list) AND journals.id=journals_text.id AND users.uid=journals.uid";
+
+		$answer = $self->sqlSelectAll(
+			'journals.date, article, description, journals.id,
+			 posttype, tid, discussion, users.uid, users.nickname',
+			'journals, journals_text, users',
+			$where,
+			$order
+		);
+	}
 	return $answer;
 }
 

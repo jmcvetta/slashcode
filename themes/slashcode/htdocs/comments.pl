@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.134 2003/05/06 05:11:56 jamie Exp $
+# $Id: comments.pl,v 1.135 2003/05/13 06:25:47 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1368,7 +1368,9 @@ sub moderate {
 	$slashdb->setDiscussionDelCount($sid, $total_deleted);
 	$was_touched = 1 if $total_deleted;
 
-	slashDisplay('mod_footer');
+	slashDisplay('mod_footer', {
+		metamod_elig => scalar $slashdb->metamodEligible($user),
+	});
 
 	if ($hasPosted && !$total_deleted) {
 		print getError('already posted');

@@ -74,11 +74,12 @@ END %]
 			tid	=> s.tid,
 			section	=> s.section
 		};
-		Slash.linkStory(ls);
-	END;
+		storylinks = Slash.linkStory(ls) -%]
+<A HREF="[% storylinks.0 %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 %]"[% END %]>[% storylinks.1 %]</A>
+	[%- END;
 END %]
 
 __seclev__
 1000
 __version__
-$Id: display;article;default,v 1.20 2003/05/16 01:25:35 brian Exp $
+$Id: display;article;default,v 1.21 2003/08/05 21:29:20 pudge Exp $

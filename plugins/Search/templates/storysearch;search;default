@@ -12,13 +12,15 @@ __name__
 storysearch
 __template__
 [% FOREACH story=stories %]
-	[% Slash.linkStory({
+	[% storylinks = Slash.linkStory({
 		section	=> story.section,
 		tid	=> story.tid,
 		sid	=> story.sid,
 		'link'	=> story.title
 	}) 
-	%]<BR>
+	%]
+<A HREF="[% storylinks.0 %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 %]"[% END %]>[% storylinks.1 %]</A>
+	<BR>
 	<FONT SIZE="-1">On [% Slash.timeCalc(story.time, '%B %o, %Y') %] with [% story.commentcount %] comments</FONT><BR>
 	[% story.introtext %] <BR>
 	<FONT SIZE="-1">
@@ -42,4 +44,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: storysearch;search;default,v 1.18 2003/06/20 15:30:38 jamie Exp $
+$Id: storysearch;search;default,v 1.19 2003/08/05 21:29:20 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.20 2003/07/10 01:24:44 pudge Exp $
+# $Id: Page.pm,v 1.21 2003/08/05 21:29:20 pudge Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -225,7 +225,7 @@ sub prepareStory {
 #########################################################
 
 sub getLinksContent { 
-	my ($self, $storyref, $other) = @_;
+	my($self, $storyref, $other) = @_;
 
 	if ($other->{custom_links}) {
 		# For when the default links just aren't what we want, we
@@ -236,7 +236,7 @@ sub getLinksContent {
 		}, { Return => 1 });
 	}
 
-	my (@links, $link, $thresh,@cclink);	
+	my(@links, $link, $thresh, @cclink);	
 
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
@@ -295,16 +295,21 @@ sub getLinksContent {
 	
 	if ($storyref->{section} ne $constants->{defaultsection} 
 		&& !$form->{section}) {
-		my ($section) = $self->getSection($storyref->{section});
-
-		push @links, getData('seclink', {
-			name	=> $storyref->{section},
-			section	=> $section
-		});
+		my $SECT = $reader->getSection($storyref->{section});
+		my $url;
+		if ($SECT->{rootdir}) {
+			my $url = $SECT->{rootdir} . '/';
+		} elsif ($user->{is_anon}) {
+			$url = $constants->{rootdir} . '/' . $story->{section} . '/';
+		} else {
+			$url = $constants->{rootdir} . '/index.pl?section=' . $story->{section};
+		}
+		push @links, [ $url, $SECT->{title} ];
 	}
-	
-	push @links, getData('editstory', 
-		{ sid => $storyref->{sid} }) if $user->{seclev} > 100;
+
+	if ($user->{seclev} >= 100) {
+		push @links, [ "$constants->{rootdir}/admin.pl?op=edit&sid=$story->{sid}", 'Edit' ];
+	}
 
 	my $storycontent = 
 		slashDisplay('storylink', {

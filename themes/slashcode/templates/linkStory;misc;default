@@ -1,6 +1,8 @@
 __section__
 default
 __description__
+THIS SHOULD NOT BE USED AND IS GOING AWAY
+
 Create a link to a story, whenever it needs one
 
 * dynamic = boolean for using dynamic, instead of static, page
@@ -28,4 +30,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: linkStory;misc;default,v 1.13 2003/03/10 19:13:37 pudge Exp $
+$Id: linkStory;misc;default,v 1.14 2003/08/05 21:29:20 pudge Exp $

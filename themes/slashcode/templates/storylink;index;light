@@ -11,9 +11,15 @@ en_US
 __name__
 storylink
 __template__
-<P><B>(</B> [% links.join(' | ') %] <B>)</B></P>
+<P><B>(</B>
+[% FOREACH storylinks = links; IF storylinks.ref == 'ARRAY' %]
+<A HREF="[% storylinks.0 | strip_attribute %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 | strip_attribute %]"[% END %]>[% storylinks.1 %]</A>
+[% ELSE; storylinks; END %]
+[% UNLESS loop.last %] | [% END %]
+[% END %]
+<B>)</B></P>
 
 __seclev__
 10000
 __version__
-$Id: storylink;index;light,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: storylink;index;light,v 1.6 2003/08/05 21:29:20 pudge Exp $

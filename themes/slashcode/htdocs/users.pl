@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.147 2003/01/28 01:29:23 brian Exp $
+# $Id: users.pl,v 1.148 2003/01/30 04:43:08 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1695,7 +1695,7 @@ sub editComm {
 		new_user_percent_select	=> $new_user_percent_select,
 		new_user_bonus_select	=> $new_user_bonus_select,
 		note			=> $note,
-		karma_bonus			=> $karma_bonus,
+		karma_bonus		=> $karma_bonus,
 		small_length_bonus_select => $small_length_bonus_select,
 		long_length_bonus_select => $long_length_bonus_select,
 	});

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.2 2000/05/16 20:38:54 pudge Exp $
+#  $Id: Slash.pm,v 1.3 2000/05/17 22:55:28 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use CGI ();
@@ -1731,14 +1731,14 @@ sub reparentComments {
 		my $reparent;
 
 		# do threshold reparenting thing
-		unless ($comments->[$x]{points} < $I{U}{threshold}) {
+		if ($I{U}{reparent} && $comments->[$x]{points} >= $I{U}{threshold}) {
 			while ($pid && $comments->[$pid]{points} < $I{U}{threshold}) {
 				$pid = $comments->[$pid]{pid};
 				$reparent = 1;
 			}
 		}
 
-		if ($depth && ! $reparent) { # don't reparent again!
+		if ($depth && !$reparent) { # don't reparent again!
 			# set depth of this comment based on parent's depth
 			$comments->[$x]{depth} = ($pid ? $comments->[$pid]{depth} : 0) + 1;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+# $Id: Data.pm,v 1.3 2001/11/06 14:18:17 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -26,6 +26,7 @@ LONG DESCRIPTION.
 
 use strict;
 use Date::Format qw(time2str);
+use Date::Language;
 use Date::Parse qw(str2time);
 #use Date::Manip qw(DateCalc UnixDate Date_Init);
 use Digest::MD5 'md5_hex';
@@ -40,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -302,15 +303,15 @@ sub timeCalc {
 	$date = str2time($date) + $off_set;
 
 	# set user's language
-	my $lang = getCurrentStatic('datelang') || 'English';
-	Date::Format->language($lang) if $lang && $lang ne 'English';
+	my $lang = getCurrentStatic('datelang');
 
 	# convert the raw date to pretty formatted date
-	$date = time2str($format || $user->{'format'}, $date);
-
-	# so we can handle database dates properly; maybe
-	# check database engine behavior?
-	Date::Format->language('English') if $lang && $lang ne 'English';
+	if ($lang && $lang ne 'English') {
+		my $datelang = Date::Language->new($lang);
+		$date = $datelang->time2str($format || $user->{'format'}, $date);
+	} else {
+		$date = time2str($format || $user->{'format'}, $date);
+	}
 
 	# return the new pretty date
 	return $date;
@@ -1748,4 +1749,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+$Id: Data.pm,v 1.3 2001/11/06 14:18:17 pudge Exp $

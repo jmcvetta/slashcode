@@ -106,7 +106,7 @@ END %]
 [% END %]
 [% IF user.homepage %]
 	<TR><TD ALIGN="RIGHT">[% PROCESS formLabel value => 'URL' %]</TD>
-		<TD><A HREF="[% user.homepage %]">[% user.homepage | strip_literal %]</A></TD></TR>
+		<TD><a href="[% user.homepage %]" rel="nofollow">[% user.homepage | strip_literal %]</a></TD></TR>
 [% END %]
 
 	[% IF newdiscussion || form.newdiscussion %]
@@ -255,4 +255,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.43 2004/10/11 17:56:43 jamiemccarthy Exp $
+$Id: edit_comment;comments;default,v 1.44 2005/03/23 18:34:41 pudge Exp $

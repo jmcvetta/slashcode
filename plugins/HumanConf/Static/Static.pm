@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.18 2004/05/01 06:56:50 pudge Exp $
+# $Id: Static.pm,v 1.19 2004/05/10 21:29:51 pudge Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -252,8 +252,13 @@ sub addPool {
 	$image_format =~ s/\W+//g;
 
 	if ($question == 1) {
-		$extension = $image_format =~ /^jpe?g$/ ? '.jpg' : ".$image_format";
-		$method = $image_format;
+		if ($image_format =~ /^jpe?g$/) {
+			$extension = '.jpg';
+			$method = 'jpeg';
+		} else {
+			$extension = ".$image_format";
+			$method = $image_format;
+		}
 		($answer, $retval) = $self->drawImage();
 	} else {
 		warn "HumanConf warning: addPool called with"

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.232 2004/09/14 23:34:26 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.233 2004/09/16 06:56:23 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1540,6 +1540,16 @@ sub extractChosenFromForm {
 				= $form->{st_main_select_ids}[$i];
 		}
 	}
+
+	# save the user's topic popup settings
+	if (exists $form->{st_saved_tree}) {
+		my $user = getCurrentUser();
+		$user->{st_saved_tree} = $form->{st_saved_tree};
+		$slashdb->setUser($user->{uid}, {
+			st_saved_tree	=> $form->{st_saved_tree}
+		});
+	}
+
 	return($chosen_hr, $chosen_names_hr);
 }
 

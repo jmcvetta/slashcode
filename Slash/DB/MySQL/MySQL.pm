@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.195 2002/07/18 05:36:19 brian Exp $
+# $Id: MySQL.pm,v 1.196 2002/07/18 12:05:58 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.196 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4006,14 +4006,16 @@ sub getStoriesEssentials {
 	# see about the impact on this -Brian
 	$where .= "AND writestatus != 'delete' ";
 
-	# Now we want to read along here (aka no complaining read this first). 
-	# We are always in a section. The behavior for a contained section is to displayed
-  # what sections are contained. In the case of no sections in the container it is assumed to be all.
-	# This would be the Slashdot special since it is optimized there to never do any sort of lookup with 
-  # section. Any other section is just a contained section and works like any other section. If 
-	# "sectioncollapse" is enabled for the user we just collapse all of stories in the contained set of 
-  # sections.
+	# Now we want to read along here (i.e., no complaining, read this first). 
+	# We are always in a section. The behavior for a contained section is
+	# to display what sections are contained. In the case of no sections
+	# in the container, it is assumed to be all. This would be the Slashdot
+	# special since it is optimized there to never do any sort of lookup with 
+	# section. Any other section is just a contained section and works like
+	# any other section. If "sectioncollapse" is enabled for the user we just
+	# collapse all of stories in the contained set of sections.
 	# Got any questions? Just ask, don't bitch about this. -Brian
+	# Huh huh, you said "bitch" -- pudge
 	my $SECT = $self->getSection($section);
 	if ($SECT->{type} eq 'collected') {
 		$where .= " AND stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
@@ -4026,7 +4028,7 @@ sub getStoriesEssentials {
 		}
 	} else {
 		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
-			$where .= " AND displaystatus >= 0 ";
+		$where .= " AND displaystatus >= 0 ";
 	}
 
 	$where .= "AND tid='$tid' " if $tid;

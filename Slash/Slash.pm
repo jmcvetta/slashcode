@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.65 2002/07/17 21:27:36 jamie Exp $
+# $Id: Slash.pm,v 1.66 2002/07/18 12:07:03 pudge Exp $
 
 package Slash;
 
@@ -932,8 +932,7 @@ hashref of author data, and hashref of topic data.
 =cut
 
 sub displayStory {
-	# caller is the pagename of the calling script
-	my($sid, $full, $other) = @_;	# , $caller  no longer needed?  -- pudge
+	my($sid, $full, $other) = @_;	
 
 	my $slashdb = getCurrentDB();
 	my $story = $slashdb->getStory($sid);

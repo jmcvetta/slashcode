@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.48 2002/01/03 04:06:50 jamie Exp $
+# $Id: MySQL.pm,v 1.49 2002/01/04 00:41:31 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -476,6 +476,9 @@ sub getModeratorCommentLog {
 # Probably by accident. -Brian
 #
 # I've replaced it. - Cliff
+#
+# No, on purpose;  modCommentLog;misc;default now displays that data.
+# Removing it again. - Jamie
 
 	# We no longer need SID as CID is now unique.
 	my $comments = $self->sqlSelectMany("comments.sid as sid,
@@ -490,8 +493,7 @@ sub getModeratorCommentLog {
 				"moderatorlog, users, comments",
 				"moderatorlog.cid=$cid
 			     AND moderatorlog.uid=users.uid
-			     AND comments.cid=$cid
-			     AND moderatorlog.active=1",
+			     AND comments.cid=$cid",
 				"ORDER BY ts"
 	);
 	my(@comments, $comment);

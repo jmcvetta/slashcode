@@ -1,11 +1,14 @@
 #!/usr/bin/perl -w
+# This code is a part of Slash, and is released under the GPL.
+# Copyright 1997-2003 by Open Source Development Network. See README
+# and COPYING for more information, or see http://slashcode.com/.
+# $Id: set_recent_topics.pl,v 1.9 2003/05/06 11:32:20 pudge Exp $
 
 # This task (and its associated templates and other changes)
 # was rewritten almost in its entirety, by Shane Zatezalo
 # <shane at lottadot dot com>, May 2002.
 
 use strict;
-use File::Spec;
 use Slash::Constants ':slashd';
 
 use vars qw( %task $me );
@@ -73,8 +76,8 @@ sub updateRecentTopics {
         my($tpid) = $slashdb->getTemplateByName('recentTopics', 'tpid', 0, '', $section);
         $slashdb->setTemplate($tpid, { template => $html });
         $slashdb->setBlock('recenttopics', {
-                block =>        $block,
-                bid =>          'recenttopics',
+                block	=> $block,
+                bid	=> 'recenttopics',
         }) unless $section;
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.143 2004/05/04 16:24:56 tvroom Exp $
+# $Id: MySQL.pm,v 1.144 2004/05/04 19:17:23 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.144 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1309,11 +1309,11 @@ sub getM2Consequences {
 }
 
 sub getModResolutionSummaryForUser {
-	my ($self, $uid, $limit) = @_;
+	my($self, $uid, $limit) = @_;
 	my $uid_q = $self->sqlQuote($uid);
 	my $limit_str = "";
 	$limit_str = "LIMIT $limit" if $limit;
-	my ($fair, $unfair, $fairvotes, $unfairvotes) = (0,0,0,0);
+	my($fair, $unfair, $fairvotes, $unfairvotes) = (0,0,0,0);
 	
 	my $reasons = $self->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;

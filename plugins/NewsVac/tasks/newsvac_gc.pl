@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: newsvac_gc.pl,v 1.2 2002/04/17 20:14:02 cliff Exp $
+# $Id: newsvac_gc.pl,v 1.3 2002/09/19 19:27:09 pudge Exp $
 #
 # SlashD Task (c) OSDN 2001
 #
@@ -23,8 +23,10 @@ $task{$me}{code} = sub {
 
 	# Get our plugin.
 	my $newsvac = getObject('Slash::NewsVac');
-	slashdLogDie("NewsVac Plugin failed to load, correctly!") 
-		unless $newsvac;
+	if (!$newsvac) {
+		slashdLog('NewsVac plugin failed to load');
+		return;
+	}
 
 	# Count out the pieces of trash.
 	my @init = (
@@ -51,7 +53,6 @@ EOT
 
 
 };
-
 
 
 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.19 2002/02/25 23:52:37 cliff Exp $
+# $Id: Makefile,v 1.20 2002/02/26 00:07:32 cliff Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -145,8 +145,9 @@ install: slash plugins
 		$(INSTALL) -d $(SLASH_PREFIX)/$$d; \
 	 	if [ $$replace ]; then \
 			cat $$f | \
-			sed -e "1s/\#\!\/usr\/bin\/perl/$$replacewith/" > $$n; \
-			$(CHMOD) $(MODE) $$n; \
+			sed -e "1s/\#\!\/usr\/bin\/perl/$$replacewith/" > $$n.tmp; \
+			$(INSTALL) -m $(MODE) $$n.tmp $$n; \
+			$(RM) $$n.tmp; \
 		else \
 			$(INSTALL) $$f $$n; \
 		fi; \
@@ -214,14 +215,14 @@ install: slash plugins
 		\( -name CVS -type d   -o   -name .#* -type f \)		\
 			-a \( -prune						\
 				-exec echo "(cleaning out {})" \;		\
-				-exec rm -rf {} \; \)				\
+				-exec $(RM_RF) {} \; \)				\
 		2> /dev/null ;							\
 	else									\
 	find $(SLASH_PREFIX)							\
 		\( -name CVS -type d   -o   -name .#* -type f \)		\
 			-a \( -prune						\
 				-exec echo "(cleaning out {})" \;		\
-				-exec rm -rf {} \; \)				\
+				-exec $(RM_RF) {} \; \)				\
 		2> /dev/null ;							\
 	fi
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.168 2003/07/25 17:40:27 pudge Exp $
+# $Id: admin.pl,v 1.169 2003/08/12 15:13:58 vroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1286,9 +1286,10 @@ sub editStory {
 				$storyref->{$field}, {});
 		}
 
-		my $author = $slashdb->getAuthor($storyref->{uid});
-		my $topic = $slashdb->getTopic($storyref->{tid});
-		$storycontent = dispStory(\%story_copy, $author, $topic, 'Full', { stid => \@stid });
+		my $author  = $slashdb->getAuthor($storyref->{uid});
+		my $topic   = $slashdb->getTopic($storyref->{tid});
+		my $preview = $form->{op} eq "preview" ? 1 : 0;
+		$storycontent = dispStory(\%story_copy, $author, $topic, 'Full', { stid => \@stid, preview => $preview });
 	}
 
 	for (@{$extracolumns}) {

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.45 2000/08/17 20:25:54 pudge Exp $
+#  $Id: Slash.pm,v 1.46 2000/09/05 17:47:14 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -526,10 +526,7 @@ sub getUser {
 		$I{U}{'format'} = $I{dateformats}{ $I{U}{dfid} };
 
 		# Do we want the comments stuff?
-		if (!$ENV{SCRIPT_NAME}
-			|| $ENV{SCRIPT_NAME} =~ /index|article|comments|metamod|search|pollBooth/) {
-			getExtraStuff('comments');
-		}
+		getExtraStuff('comments');
 
 		# Do we want the index stuff?
 		getExtraStuff('index');
@@ -2280,7 +2277,7 @@ sub dispComment  {
 <B><FONT SIZE="${\( $I{fontbase} + 2 )}">($C->{fakeemail})</FONT></B>
 EOT
 
-	(my $nickname  = $C->{nickname}) =~ s/ /+/g;
+	my $nickname = fixparam($C->{nickname});
 	my $userinfo = <<EOT if $C->{uid} > 0;
 (<A HREF="$I{rootdir}/users.pl?op=userinfo&nick=$nickname">User #$C->{uid} Info</A>)
 EOT

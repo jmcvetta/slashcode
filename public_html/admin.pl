@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.24 2000/08/14 21:15:54 pudge Exp $
+#  $Id: admin.pl,v 1.25 2000/09/05 17:47:14 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1248,7 +1248,7 @@ EOT
 
 	$S->{dept} =~ s/ /-/gi;
 	print qq!<TR><TD BGCOLOR="$I{bg}[3]"><FONT COLOR="$I{fg}[3]"> <B>Title</B> </FONT></TD>\n<TD BGCOLOR="$I{bg}[2]"> !,
-		$I{query}->textfield(-name => 'title', -default => $S->{title}, -size => 50),
+		$I{query}->textfield(-name => 'title', -default => $S->{title}, -size => 50, -override => 1),
 		'</TD></TR>';
 
 	if ($I{use_dept}) {

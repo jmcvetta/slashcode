@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.26 2004/10/28 22:43:50 pudge Exp $
+# $Id: Access.pm,v 1.27 2005/02/22 22:23:42 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -393,11 +393,13 @@ sub checkFormPost {
 		if ($slashdb->checkTimesPosted($formname, $max, $id, $formkey_earliest)) {
 			undef $formkey unless $formkey =~ /^\w{10}$/;
 
-			unless ($formkey && $slashdb->checkFormkey($formkey_earliest, $formname, $id, $formkey)) {
-				$slashdb->createAbuse("invalid form key", $formname, $ENV{QUERY_STRING});
-				$$err_message = Slash::getData('invalidformkey', '', '');
-				return;
-			}
+# wtf?  no method checkFormkey exists ...
+# of course, checkFormPost is never even called ...
+#			unless ($formkey && $slashdb->checkFormkey($formkey_earliest, $formname, $id, $formkey)) {
+#				$slashdb->createAbuse("invalid form key", $formname, $ENV{QUERY_STRING});
+#				$$err_message = Slash::getData('invalidformkey', '', '');
+#				return;
+#			}
 
 			if (submittedAlready($formkey, $formname, $err_message)) {
 				$slashdb->createAbuse("form already submitted", $formname, $ENV{QUERY_STRING});
@@ -811,4 +813,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.26 2004/10/28 22:43:50 pudge Exp $
+$Id: Access.pm,v 1.27 2005/02/22 22:23:42 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.227 2004/11/27 18:50:11 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.228 2005/02/22 22:23:41 pudge Exp $
 
 package Slash;
 
@@ -1646,6 +1646,12 @@ sub getData {
 	my $var  = $cache->{getdata}{ $name->{tempdata}{tpid} } ||= { };
 
 	if (defined $var->{$value}) {
+		# restore our original values; this is done if
+		# slashDisplay is called, but it is not called here -- pudge
+		my $user = getCurrentUser();
+		$user->{currentSkin}	= $name->{origSkin};
+		$user->{currentPage}	= $name->{origPage};
+
 		return $var->{$value};
 	}
 

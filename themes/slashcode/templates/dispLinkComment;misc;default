@@ -26,7 +26,7 @@ __template__
 		}) %][% END %]
 
 		[% IF user.mode == 'parents' && !form.pid%]
-			| <a href="[% constants.rootdir %]comments.pl?sid=[% sid %]&amp;threshold=[% user.threshold %]&amp;commentsort=[% user.commentsort %]&amp;mode=[% user.mode %]&amp;cid=[% cid %]&amp;pid=[% cid %]">View this thread</a>
+			| <a href="[% constants.rootdir %]/comments.pl?sid=[% sid %]&amp;threshold=[% user.threshold %]&amp;commentsort=[% user.commentsort %]&amp;mode=[% user.mode %]&amp;cid=[% cid %]&amp;pid=[% cid %]">View this thread</a>
 		[% END %]
 
 		[% IF !(user.state.discussion_archived) && (original_pid || can_mod || user.is_admin) %] | [% END %]
@@ -60,4 +60,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.19 2003/11/17 17:17:39 pater Exp $
+$Id: dispLinkComment;misc;default,v 1.20 2003/11/17 17:20:58 pater Exp $

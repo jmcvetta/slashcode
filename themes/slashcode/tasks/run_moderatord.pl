@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.33 2003/04/01 14:23:25 jamie Exp $
+# $Id: run_moderatord.pl,v 1.34 2003/09/02 21:06:49 pudge Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -419,13 +419,7 @@ sub reconcile_m2 {
 			my $comment_subj = ($slashdb->getComments(
 				$mod_hr->{sid}, $mod_hr->{cid}
 			))[2];
-			my $comment_url =
-				fudgeurl(	# inserts scheme if necessary
-					join("",
-						$constants->{rootdir},
-						"/comments.pl?sid=", $mod_hr->{sid},
-						"&cid=", $mod_hr->{cid}
-				)	);
+			my $comment_url = "/comments.pl?sid=$mod_hr->{sid}&cid=$mod_hr->{cid}";
 
 			$m2_results{$mod_hr->{uid}}{change} ||= 0;
 			$m2_results{$mod_hr->{uid}}{change} += $csq->{m1_karma}{sign}

@@ -2,26 +2,23 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_gse_min_stoid.pl,v 1.2 2004/07/17 15:50:05 jamiemccarthy Exp $
+# $Id: set_gse_min_stoid.pl,v 1.3 2004/07/19 17:25:42 jamiemccarthy Exp $
 
 # Does the most common getStoriesEssentials call, determines the
 # minimum stoid returned, and writes it to a var.
 
 use strict;
-use vars qw( %task $me $minutes_run );
+use vars qw( %task $me );
 use Time::HiRes;
 use Slash::DB;
 use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
-
-# Change this var to change how often the task runs.
-$minutes_run = 3;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{on_startup} = 1;
-$task{$me}{timespec} = "1-59/$minutes_run * * * *";
+$task{$me}{timespec} = "59 10 * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
 $task{$me}{fork} = SLASHD_NOWAIT;
 

@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+# $Id: subscribemail.pl,v 1.29 2003/08/29 16:18:45 jamie Exp $
+
 use strict;
 
 use vars qw( %task $me );

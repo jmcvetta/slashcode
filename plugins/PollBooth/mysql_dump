@@ -1,1 +1,5 @@
+#
+# $Id: mysql_dump,v 1.2 2003/08/29 16:18:44 jamie Exp $
+#
+
 INSERT INTO hooks (param, class, subroutine) VALUES ('admin_save_story_success','Slash::PollBooth','createAutoPollFromStory');

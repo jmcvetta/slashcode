@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+# $Id: events.pl,v 1.7 2003/08/29 16:18:44 jamie Exp $
+
 use strict;
 use Slash;
 use Slash::Display;

@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+# $Id: sitecheck.pl,v 1.10 2003/08/29 16:18:45 jamie Exp $
+
 use strict;
 use LWP::UserAgent;
 

@@ -1,4 +1,7 @@
 #!/usr/bin/perl -w
+
+# $Id: example_client.pl,v 1.5 2003/08/29 16:18:44 jamie Exp $
+
 use strict;
 use Data::Dumper;
 use SOAP::Lite;

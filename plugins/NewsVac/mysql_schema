@@ -1,3 +1,7 @@
+#
+# $Id: mysql_schema,v 1.7 2003/08/29 16:18:44 jamie Exp $
+#
+
 DROP TABLE IF EXISTS newsvac_keywords;
 CREATE TABLE newsvac_keywords (
   id SMALLINT UNSIGNED NOT NULL auto_increment,

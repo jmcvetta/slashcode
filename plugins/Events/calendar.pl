@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 
+# $Id: calendar.pl,v 1.3 2003/08/29 16:18:44 jamie Exp $
+
 use strict;
 use Slash;
 use Slash::Display;
 use Slash::Utility;
 use HTML::CalendarMonth;
 use HTML::AsSubs;
-
-
 
 ##################################################################
 sub main {

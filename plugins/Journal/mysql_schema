@@ -1,3 +1,7 @@
+#
+# $Id: mysql_schema,v 1.10 2003/08/29 16:18:44 jamie Exp $
+#
+
 DROP TABLE IF EXISTS journals;
 CREATE TABLE journals (
 	id MEDIUMINT UNSIGNED NOT NULL auto_increment,

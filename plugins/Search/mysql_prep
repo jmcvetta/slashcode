@@ -1,3 +1,7 @@
+#
+# $Id: mysql_prep,v 1.7 2003/08/29 16:18:45 jamie Exp $
+#
+
 ALTER TABLE stories add fulltext (title);
 ALTER TABLE story_text add fulltext (introtext,bodytext);
 ALTER TABLE comments add fulltext (subject);

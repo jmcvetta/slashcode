@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+# $Id: stockquotes.pl,v 1.4 2003/08/29 16:18:45 jamie Exp $
+
 use strict;
 use Slash;
 use Date::Format;

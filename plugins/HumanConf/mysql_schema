@@ -1,3 +1,7 @@
+#
+# $Id: mysql_schema,v 1.5 2003/08/29 16:18:44 jamie Exp $
+#
+
 DROP TABLE IF EXISTS humanconf;
 CREATE TABLE humanconf (
 	hcid		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,

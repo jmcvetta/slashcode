@@ -1,3 +1,7 @@
+#
+# $Id: mysql_schema,v 1.10 2003/08/29 16:18:45 jamie Exp $
+#
+
 DROP TABLE IF EXISTS stats_daily; 
 CREATE TABLE stats_daily (
     id int UNSIGNED NOT NULL auto_increment,

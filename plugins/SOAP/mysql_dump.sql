@@ -1,3 +1,7 @@
+#
+# $Id: mysql_dump.sql,v 1.3 2003/08/29 16:18:44 jamie Exp $
+#
+
 INSERT INTO vars (name, value) VALUES ('soap_enabled', 1);
 
 # examples for use with test package Slash::SOAP::Test

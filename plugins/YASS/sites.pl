@@ -1,4 +1,7 @@
 #!/usr/bin/perl -w
+
+# $Id: sites.pl,v 1.9 2003/08/29 16:18:45 jamie Exp $
+
 use strict;
 use Slash;
 use Slash::Utility;

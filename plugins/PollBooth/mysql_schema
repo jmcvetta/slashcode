@@ -1,3 +1,7 @@
+#
+# $Id: mysql_schema,v 1.4 2003/08/29 16:18:44 jamie Exp $
+#
+
 # Not going to install this unless the pollbooth plugin is installed
 DROP TABLE IF EXISTS auto_poll;
 CREATE TABLE auto_poll (

@@ -1,3 +1,7 @@
+#
+# $Id: mysql_dump.sql,v 1.2 2003/08/29 16:18:45 jamie Exp $
+#
+
 INSERT INTO blocks (bid, block, seclev, type, description, section, ordernum, title, portal, url, rdf, retrieve) VALUES ('stockquotes','',500,'static','','index',8,'Stock Quotes',1,'','',0);
 
 INSERT INTO stocks (name, stockorder, exchange, symbol, url) VALUES ('currency',-1,'_DATA','USD','Preferred currency.');

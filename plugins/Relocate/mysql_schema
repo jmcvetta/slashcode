@@ -1,4 +1,8 @@
 #
+# $Id: mysql_schema,v 1.4 2003/08/29 16:18:44 jamie Exp $
+#
+
+#
 # Table structure for table 'links'
 # The url_index really should be an MD5, the way the NewsVac
 # plugin does it. - Jamie 2003/07/07

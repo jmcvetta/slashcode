@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.7 2003/08/29 16:18:44 jamie Exp $
+# $Id: mysql_schema,v 1.8 2004/02/20 20:22:35 pudge Exp $
 #
 
 # As of July 2003 we don't have any reason I can see to ever want
@@ -51,6 +51,7 @@ CREATE TABLE message_codes (
         modes     VARCHAR(32) DEFAULT '' NOT NULL,
         send      ENUM('now', 'defer', 'collective') DEFAULT 'now' NOT NULL,
         subscribe TINYINT(1) DEFAULT '0' NOT NULL,
+        acl       VARCHAR(32) DEFAULT '' NOT NULL,
         PRIMARY KEY (code)
 ) TYPE=InnoDB;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.49 2002/07/19 18:26:20 jamie Exp $
+# $Id: Stats.pm,v 1.50 2002/07/19 19:05:29 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -102,12 +102,21 @@ sub getSlaveDBLagCount {
 	# (a billion) bytes (should this be a var?).  Yes, the same
 	# data is called "File" vs. "Log_File", "Position" vs. "Pos",
 	# depending on whether it's on the master or slave side.
+	# And on the slave side, for MySQL 4.x, I *think* I want
+	# Master_Log_File and Read_Master_Log_Pos but other possible
+	# candidates are Relay_Master_Log_File and Exec_master_log_pos
+	# respectively.
 	my $master = ($slashdb ->sqlShowMasterStatus())->[0];
 	my $slave  = ($backupdb->sqlShowSlaveStatus())->[0];
-	my($master_file_num) = $master->{File}     =~ /\.(\d+)$/;
-	my($slave_file_num)  = $slave ->{Log_File} =~ /\.(\d+)$/;
+	my $master_filename = $master->{File};
+	my $slave_filename  = $slave ->{Log_File} || $slave->{Master_Log_File};
+	my($master_file_num) = $master_filename =~ /\.(\d+)$/;
+	my($slave_file_num)  = $slave_filename  =~ /\.(\d+)$/;
+	my $master_pos = $master->{Position};
+	my $slave_pos  = $slave->{Pos} || $slave->{Read_Master_Log_Pos};
+
 	my $count = 2**30 * ($master_file_num - $slave_file_num)
-		+ $master->{Position} - $slave->{Pos};
+		+ $master_pos - $slave_pos;
 	$count = 0 if $count < 0;
 	$count = 2**30 if $count > 2**30;
 	return $count;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.1 2002/11/26 21:43:05 pudge Exp $
+# $Id: stats.pl,v 1.2 2002/11/26 22:09:26 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -46,7 +46,8 @@ sub main {
 	header('', '', { admin => 1 } );
 
 	# dispatch of op
-	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $stats);
+	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $stats)
+		if $ops{$op}[ALLOWED];
 
 	footer();
 }

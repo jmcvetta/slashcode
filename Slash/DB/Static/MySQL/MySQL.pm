@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.55 2002/08/28 20:13:11 jamie Exp $
+# $Id: MySQL.pm,v 1.56 2002/08/29 21:56:28 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -660,16 +660,6 @@ sub convert_tokens_to_points {
 	for my $uid (@uids) {
 		my($tokens, $points);
 
-		my $rtbl = $self->getUser($uid, 'rtbl') || 0;
-		if ($rtbl) {
-			$tokens = 0;
-			$points = 0;
-		} else {
-			$tokens = "LEAST(tokens,$maxtokens) - $tokentrade",
-			$points = "points + $pointtrade",
-		}
-
-		$granted{$uid} = $rtbl ? 0 : 1;
 		$self->setUser($uid, {
 			-lastgranted	=> 'NOW()',
 			-tokens		=> $tokens,

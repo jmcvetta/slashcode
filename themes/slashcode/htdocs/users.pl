@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.96 2002/08/29 21:53:03 jamie Exp $
+# $Id: users.pl,v 1.97 2002/08/29 21:56:28 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -2372,7 +2372,6 @@ sub getUserAdmin {
 	}
 
 	$user_edit->{author} = ($user_edit->{author} == 1) ? ' CHECKED' : '';
-	$user_edit->{rtbl} = ($user_edit->{rtbl} == 1) ? ' CHECKED' : '';
 	if (! $user->{nonuid}) {
 		my $threshcodes = $slashdb->getDescriptions('threshcode_values','',1);
 		$thresh_select = createSelect('defaultpoints', $threshcodes, $user_edit->{defaultpoints}, 1);

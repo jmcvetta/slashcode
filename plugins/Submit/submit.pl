@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.70 2002/10/11 01:15:30 jamie Exp $
+# $Id: submit.pl,v 1.71 2002/10/29 14:28:52 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -98,8 +98,12 @@ sub main {
 		! $ops->{$op}{function}
 	);
 
-	my $data = { admin => 1 };
-	$data->{tab_selected} = 'submissions' if $op eq 'list';
+	# the submissions tab should always be highlighted,
+	# being submit.pl and all
+	my $data = {
+		admin => 1,
+		tab_selected => 'submissions',
+	};
 	header(
 		getData('header', { tbtitle => $tbtitle } ),
 		'', $data

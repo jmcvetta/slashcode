@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.532 2004/03/16 16:02:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.533 2004/03/16 17:33:39 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.532 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.533 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -852,8 +852,6 @@ sub getModeratorCommentLog {
 		? ", comments.uid AS uid2, comments.ipid AS ipid2"
 		: "";
 
-	$select_extra .= ", comments.karma AS karma" if $t eq "cid";
-
 	my $vq = $self->sqlQuote($value);
 	my $where_clause = "";
 	my $ipid_table = "moderatorlog";
@@ -878,6 +876,7 @@ sub getModeratorCommentLog {
 		 comments.cid AS cid,
 		 comments.pid AS pid,
 		 comments.points AS score,
+		 comments.karma AS karma,
 		 users.uid AS uid,
 		 users.nickname AS nickname,
 		 $ipid_table.ipid AS ipid,
@@ -4895,13 +4894,15 @@ sub _calc_karma_token_loss {
 			$kc *= $change;
 		}
 	}
-	if (defined $constants->{comment_karma_limit}
+	if ($kc < 0 
+		&& defined $constants->{comment_karma_limit}
 		&& $constants->{comment_karma_limit} ne "") {
 		my $future_karma = $comment_change_hr->{karma} + $kc;
 		if ($future_karma < $constants->{comment_karma_limit}) {
 			$kc = $constants->{comment_karma_limit}
 				- $comment_change_hr->{karma};
 		}
+		$kc = 0 if $kc > 0;
 	}
 	$tc = $kc;
 	return ($kc, $tc);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.507 2004/02/12 03:00:41 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.508 2004/02/12 05:11:07 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.507 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.508 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5276,18 +5276,18 @@ sub setCommentForMod {
 	$hr->{points_change} = $val;
 	$hr->{points_after} = $hr->{points_before} + $val;
 
-	my $ckarma_val;
+	my $karma_val;
 	if (!$constants->{mod_down_karmacoststyle}) {
-		$ckarma_val = $val;
+		$karma_val = $val;
 	} elsif ($val < 0) {
-		$ckarma_val = ($hr->{points_before}+$val) - $hr->{points_max};
+		$karma_val = ($hr->{points_before}+$val) - $hr->{points_max};
 	} else {
-		$ckarma_val = $val;
+		$karma_val = $val;
 	}
-	if ($ckarma_val) {
-		my $ckarma_abs_val = abs($ckarma_val);
-		$update->{-ckarma}     = sprintf("ckarma%+d", $ckarma_val);
-		$update->{-ckarma_abs} = sprintf("ckarma_abs%+d", $ckarma_abs_val);
+	if ($karma_val) {
+		my $karma_abs_val = abs($karma_val);
+		$update->{-karma}     = sprintf("karma%+d", $karma_val);
+		$update->{-karma_abs} = sprintf("karma_abs%+d", $karma_abs_val);
 	}
 
 	my $changed = $self->sqlUpdate("comments", $update, $where, {

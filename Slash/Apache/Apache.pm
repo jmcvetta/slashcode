@@ -1,11 +1,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.56 2004/06/17 16:11:40 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.57 2004/07/03 17:18:37 jamiemccarthy Exp $
 
 package Slash::Apache;
 
 use strict;
+use Time::HiRes;
 use Apache;
 use Apache::SIG ();
 use Apache::ModuleConfig;
@@ -21,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -109,64 +110,64 @@ sub SlashSetForm ($$$$) {
 	$cfg->{constants}{form_override}{$key} = $value;
 }
 
-sub SlashSetVarHost ($$$$$) {
-	my($cfg, $params, $key, $value, $hostname) = @_;
-	unless ($cfg->{constants}) {
-		print STDERR "SlashSetVarHost must be called after call SlashVirtualUser \n";
-		exit(1);
-	}
-	my $new_cfg;
-	for (keys %{$cfg->{constants}}) {
-		$new_cfg->{$_} = $cfg->{constants}{$_}
-			unless $_ eq 'form_override';
-	}
-	$new_cfg->{$key} = $value;
-	$cfg->{site_constants}{$hostname} = $new_cfg;
-}
-
-sub SlashSetFormHost ($$$$$) {
-	my($cfg, $params, $key, $value, $hostname) = @_;
-	unless ($cfg->{constants}) {
-		print STDERR "SlashSetFormHost must be called after call SlashVirtualUser \n";
-		exit(1);
-	}
-	my $new_cfg;
-	for (keys %{$cfg->{constants}}) {
-		$new_cfg->{$_} = $cfg->{constants}{$_}
-			unless $_ eq 'form_override';
-	}
-	$new_cfg->{form_override}{$key} = $value;
-	$cfg->{site_constants}{$hostname} = $new_cfg;
-}
-
-sub SlashSectionHost ($$$$) {
-	my($cfg, $params, $section, $url)  = @_;
-	my $hostname = $url;
-	$hostname =~ s/.*\/\///;
-	unless ($cfg->{constants}) {
-		print STDERR "SlashSectionHost must be called after call SlashVirtualUser \n";
-		exit(1);
-	}
-	# Yes, this looks slower then the other method but I was getting different results.
-	# Bad results, and it's Friday. Bad results on Friday is a bad thing.
-	# -Brian
-	my $new_cfg;
-	for (keys %{$cfg->{constants}}) {
-		$new_cfg->{$_} = $cfg->{constants}{$_}
-			unless $_ eq 'form_override';
-	}
-	# Must not just copy the form_override info
-	$new_cfg->{form_override} = {};
-	$new_cfg->{absolutedir} = $url;
-	$new_cfg->{absolutedir_secure} = set_rootdir($url, $cfg->{constants}{absolutedir_secure});
-	$new_cfg->{rootdir} = set_rootdir($url, $cfg->{constants}{rootdir});
-	$new_cfg->{basedomain} = $hostname;
-	$new_cfg->{defaultsection} = $section;
-	$new_cfg->{static_section} = $section;
-	# Should no longer be needed -Brian
-	#$new_cfg->{form_override}{section} = $section;
-	$cfg->{site_constants}{$hostname} = $new_cfg;
-}
+#sub SlashSetVarHost ($$$$$) {
+#	my($cfg, $params, $key, $value, $hostname) = @_;
+#	unless ($cfg->{constants}) {
+#		print STDERR "SlashSetVarHost must be called after call SlashVirtualUser \n";
+#		exit(1);
+#	}
+#	my $new_cfg;
+#	for (keys %{$cfg->{constants}}) {
+#		$new_cfg->{$_} = $cfg->{constants}{$_}
+#			unless $_ eq 'form_override';
+#	}
+#	$new_cfg->{$key} = $value;
+#	$cfg->{site_constants}{$hostname} = $new_cfg;
+#}
+#
+#sub SlashSetFormHost ($$$$$) {
+#	my($cfg, $params, $key, $value, $hostname) = @_;
+#	unless ($cfg->{constants}) {
+#		print STDERR "SlashSetFormHost must be called after call SlashVirtualUser \n";
+#		exit(1);
+#	}
+#	my $new_cfg;
+#	for (keys %{$cfg->{constants}}) {
+#		$new_cfg->{$_} = $cfg->{constants}{$_}
+#			unless $_ eq 'form_override';
+#	}
+#	$new_cfg->{form_override}{$key} = $value;
+#	$cfg->{site_constants}{$hostname} = $new_cfg;
+#}
+#
+#sub SlashSectionHost ($$$$) {
+#	my($cfg, $params, $section, $url)  = @_;
+#	my $hostname = $url;
+#	$hostname =~ s/.*\/\///;
+#	unless ($cfg->{constants}) {
+#		print STDERR "SlashSectionHost must be called after call SlashVirtualUser \n";
+#		exit(1);
+#	}
+#	# Yes, this looks slower then the other method but I was getting different results.
+#	# Bad results, and it's Friday. Bad results on Friday is a bad thing.
+#	# -Brian
+#	my $new_cfg;
+#	for (keys %{$cfg->{constants}}) {
+#		$new_cfg->{$_} = $cfg->{constants}{$_}
+#			unless $_ eq 'form_override';
+#	}
+#	# Must not just copy the form_override info
+#	$new_cfg->{form_override} = {};
+#	$new_cfg->{absolutedir} = $url;
+#	$new_cfg->{absolutedir_secure} = set_rootdir($url, $cfg->{constants}{absolutedir_secure});
+#	$new_cfg->{rootdir} = set_rootdir($url, $cfg->{constants}{rootdir});
+#	$new_cfg->{basedomain} = $hostname;
+#	$new_cfg->{defaultsection} = $section;
+#	$new_cfg->{static_section} = $section;
+#	# Should no longer be needed -Brian
+#	#$new_cfg->{form_override}{section} = $section;
+#	$cfg->{site_constants}{$hostname} = $new_cfg;
+#}
 
 sub SlashCompileTemplates ($$$) {
 	my($cfg, $params, $flag) = @_;
@@ -180,7 +181,9 @@ sub SlashCompileTemplates ($$$) {
 	return unless $constants->{cache_enabled}
 		  && !$constants->{template_cache_size};
 
-	print STDERR "$cfg->{VirtualUser} ($$): Compiling All Templates Begin\n";
+	my $start_time = Time::HiRes::time;
+	my $begin_printed = 0;
+	my $elapsed_time = 0;
 
 	my $templates = $slashdb->getTemplateNameCache();
 
@@ -199,23 +202,39 @@ sub SlashCompileTemplates ($$$) {
 	# then be compiled; now, we will get errors in
 	# the error log for templates that don't check
 	# the input values; that can't easily be helped
+	my @templates = ( );
 	for my $name (sort keys %$templates) {
 		for my $page (sort keys %{$templates->{$name}}) {
 			for my $skin (sort keys %{$templates->{$name}{$page}}) {
-				slashDisplay($name, 0, {
-					Page	=> $page,
-					Skin	=> $skin,
-					Return	=> 1,
-					Nocomm	=> 1
-				});
+				push @templates, [$name, $page, $skin];
 			}
 		}
 	}
+	for my $i (0..$#templates) {
+		my($name, $page, $skin) = @{$templates[$i]};
+		slashDisplay($name, 0, {
+			Page	=> $page,
+			Skin	=> $skin,
+			Return	=> 1,
+			Nocomm	=> 1
+		});
+		$elapsed_time = Time::HiRes::time - $start_time;
+		if (!$begin_printed
+			&& ( $i < $#templates * 0.5 && $elapsed_time > 6 * 0.5
+			  || $i > 2 && $elapsed_time * $#templates / $i > 6	)
+		) {
+			# Only bother to print the begin (and done) message
+			# if this is taking a while and we're not almost done
+			# anyway.
+			printf STDERR "%s (%d): Compiling All Templates Begin\n",
+				$cfg->{VirtualUser}, $$;
+			$begin_printed = 1;
+		}
+	}
 
-	# Pudge, any reason we still need this Begin/Done debug log? - Jamie
-	# Yes, sometimes it takes a long time to do it, and you want to know
-	# what is going on ... -- pudge
-	print STDERR "$cfg->{VirtualUser} ($$): Compiling All Templates Done\n";
+	printf STDERR "%s (%d): Compiling All Templates Done in %0.3f secs\n",
+		$cfg->{VirtualUser}, $$, Time::HiRes::time - $start_time
+		if $begin_printed;
 
 	$cfg->{template} = Slash::Display::get_template(0, 0, 1);
 	# let's make sure

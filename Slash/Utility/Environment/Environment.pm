@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.129 2004/06/25 06:45:43 pudge Exp $
+# $Id: Environment.pm,v 1.130 2004/07/03 17:18:38 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -711,16 +711,16 @@ sub getCurrentStatic {
 
 	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
 		my $const_cfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
-# XXXSKIN - this should probably go away, along with SlashSectionHost,
-# SlashSetFormHost, and SlashSetVarHost in Slash::Apache, except ...
-		my $hostname = $r->header_in('host');
-		$hostname =~ s/:\d+$//;
-		if ($const_cfg->{'site_constants'}{$hostname}) { 
-			$constants = $const_cfg->{site_constants}{$hostname};
-		} else {
-# XXXSKIN - ... this would be the one line to keep
+## XXXSKIN - this should probably go away, along with SlashSectionHost,
+## SlashSetFormHost, and SlashSetVarHost in Slash::Apache, except ...
+#		my $hostname = $r->header_in('host');
+#		$hostname =~ s/:\d+$//;
+#		if ($const_cfg->{'site_constants'}{$hostname}) { 
+#			$constants = $const_cfg->{site_constants}{$hostname};
+#		} else {
+## XXXSKIN - ... this would be the one line to keep
 			$constants = $const_cfg->{'constants'};
-		}
+#		}
 	} else {
 		$constants = $static_constants;
 	}
@@ -2499,4 +2499,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.129 2004/06/25 06:45:43 pudge Exp $
+$Id: Environment.pm,v 1.130 2004/07/03 17:18:38 jamiemccarthy Exp $

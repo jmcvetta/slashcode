@@ -33,7 +33,7 @@ up with the hassle.
 Sorry, but the re-registration data which you have provided is invalid, please
 try again!<P>
   [% ELSE %]
-<H2>Welcome, [% user.nickname %]!</H2>
+<H2>Welcome, [% user.nickname | strip_literal %]!</H2>
   [% END %]
 
 In the entry field below, please enter the registration ID which should have
@@ -56,4 +56,4 @@ Registration ID: &nbsp;
 __seclev__
 10000
 __version__
-$Id: regResult;users;default,v 1.4 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: regResult;users;default,v 1.5 2004/07/02 00:13:58 pudge Exp $

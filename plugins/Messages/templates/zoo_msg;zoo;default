@@ -32,9 +32,9 @@ If you'd like to, view or edit your
 [% ELSE %]
 
 [% IF type == 'friend' || type == 'foe' || type == 'bitch' %]
-[% zoo_user.nickname %] ([% zoo_user.uid %]) has made you their [% type %].
+[% zoo_user.nickname | strip_literal %] ([% zoo_user.uid %]) has made you their [% type %].
 [% ELSIF type == 'neutral' %]
-[% zoo_user.nickname %] ([% zoo_user.uid %]) has ceased their relationship with you.
+[% zoo_user.nickname | strip_literal %] ([% zoo_user.uid %]) has ceased their relationship with you.
 [% END %]
     [% absolutedir %]/~[% zoo_user.nickname | fixparam %]/
 
@@ -47,4 +47,4 @@ If you'd like to view or edit any of your relationships, go to:
 __seclev__
 500
 __version__
-$Id: zoo_msg;zoo;default,v 1.5 2004/06/17 16:11:59 jamiemccarthy Exp $
+$Id: zoo_msg;zoo;default,v 1.6 2004/07/02 00:13:50 pudge Exp $

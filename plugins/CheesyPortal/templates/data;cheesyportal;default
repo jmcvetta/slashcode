@@ -22,11 +22,11 @@ __template__
 	Cheesy Portal
 
 [% CASE 'mysite' %]
-	[% user.nickname %]'s Slashbox
+	[% user.nickname | strip_literal %]'s Slashbox
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;cheesyportal;default,v 1.6 2003/08/06 04:50:12 jamie Exp $
+$Id: data;cheesyportal;default,v 1.7 2004/07/02 00:13:50 pudge Exp $

@@ -44,7 +44,7 @@ __template__
 	<A HREF="[% constants.real_rootdir %]/users.pl">log in</A>.
 
 [% CASE 'uid_voted' %]
-	[% user.nickname %] at [% env.remote_addr %] has already voted.
+	[% user.nickname | strip_literal %] at [% env.remote_addr %] has already voted.
 	[% IF env.http_x_forwarded_for %]
 	(proxy for [% env.http_x_forwarded_for %])
 	[% END %]
@@ -72,4 +72,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;pollBooth;default,v 1.5 2003/09/02 02:07:13 vroom Exp $
+$Id: data;pollBooth;default,v 1.6 2004/07/02 00:13:51 pudge Exp $

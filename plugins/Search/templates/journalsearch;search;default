@@ -17,7 +17,7 @@ __template__
 	<FONT SIZE="-1">On [% Slash.timeCalc(journal.date) %]</FONT><BR>
 	[% journal.article %]<BR>
 	<FONT SIZE="-1">
-	Author: <A HREF="[% gSkin.rootdir %]/~[% journal.nickname | fixparam %]/">[% journal.nickname %]</A>
+	Author: <A HREF="[% gSkin.rootdir %]/~[% journal.nickname | fixparam %]/">[% journal.nickname | strip_literal %]</A>
 	[% IF journal.score %]<BR>
 	Score: ([% journal.score %])
 	[% END %]
@@ -30,4 +30,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journalsearch;search;default,v 1.16 2004/06/17 16:12:01 jamiemccarthy Exp $
+$Id: journalsearch;search;default,v 1.17 2004/07/02 00:13:51 pudge Exp $

@@ -31,7 +31,7 @@ END %]
 [% PROCESS titlebar future=story.is_future %]
 
 <A HREF="[% gSkin.rootdir %]/search.pl?topic=[% topic.tid %]">[% topic.alttext %]</A> | 
-<B>Posted by [% author.nickname %] [% story.atstorytime %]</B><BR>
+<B>Posted by [% author.nickname | strip_literal %] [% story.atstorytime %]</B><BR>
 
 [% IF constants.use_dept && story.dept %]
 <FONT SIZE="2"><B>from the [% story.dept %] dept.</B></FONT><BR>
@@ -54,4 +54,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;light,v 1.19 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: dispStory;misc;light,v 1.20 2004/07/02 00:13:57 pudge Exp $

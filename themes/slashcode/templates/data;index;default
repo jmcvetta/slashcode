@@ -36,7 +36,7 @@ __template__
 	%]
 
 [% CASE 'userboxhead' %]
-	[% user.nickname %]'s Slashbox
+	[% user.nickname | strip_literal %]'s Slashbox
 
 [% CASE 'friends_journal_head' %]
 	[% returnme.data_constant = 1 %] 
@@ -76,4 +76,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.21 2004/04/20 19:25:14 pudge Exp $
+$Id: data;index;default,v 1.22 2004/07/02 00:13:56 pudge Exp $

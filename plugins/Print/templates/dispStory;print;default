@@ -28,7 +28,7 @@ END -%]
 <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
 <TR><TD><B>Title</B></TD>	<TD>&nbsp;&nbsp;</TD>	<TD>[% story.title %]</TD></TR>
 <TR><TD><B>Date</B></TD>	<TD>&nbsp;&nbsp;</TD>	<TD>[% story.storytime %]</TD></TR>
-<TR><TD><B>Author</B></TD>	<TD>&nbsp;&nbsp;</TD>	<TD>[% author.nickname %]</TD></TR>
+<TR><TD><B>Author</B></TD>	<TD>&nbsp;&nbsp;</TD>	<TD>[% author.nickname | strip_literal %]</TD></TR>
 <TR><TD><B>Topic</B></TD>	<TD>&nbsp;&nbsp;</TD>	<TD>[% topic %]</TD></TR>
 [% IF constants.use_dept -%]
 <TR><TD COLSPAN="2" NOWRAP>from the <EM>[% story.dept %]</EM> dept.</TD></TR>
@@ -52,4 +52,4 @@ END -%]
 [% END %]</OL>
 [% END -%]
 __version__
-$Id: dispStory;print;default,v 1.5 2004/06/17 16:12:00 jamiemccarthy Exp $
+$Id: dispStory;print;default,v 1.6 2004/07/02 00:13:51 pudge Exp $

@@ -37,7 +37,7 @@ __template__
 		<TD VALIGN="TOP">
 
 [% FOREACH aid = aid_order %]
-		<INPUT TYPE="CHECKBOX" NAME="exaid_[% aid %]"[% aidref.$aid.checked %]>[% aidref.$aid.nickname %]<BR>
+		<INPUT TYPE="CHECKBOX" NAME="exaid_[% aid %]"[% aidref.$aid.checked %]>[% aidref.$aid.nickname | strip_literal %]<BR>
 [% END %]
 
 		</TD>
@@ -86,4 +86,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: tildeEd;users;default,v 1.11 2004/06/17 16:12:26 jamiemccarthy Exp $
+$Id: tildeEd;users;default,v 1.12 2004/07/02 00:13:58 pudge Exp $

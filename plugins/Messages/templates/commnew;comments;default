@@ -15,7 +15,7 @@ __template__
 [% IF msg.mode == 1 %]
 
 <P>
-[% reply.nickname %] has posted a new comment on [% constants.sitename %],
+[% reply.nickname | strip_literal %] has posted a new comment on [% constants.sitename %],
 <B><A HREF="[% gSkin.rootdir %]/comments.pl?sid=[% reply.sid %]&amp;cid=[% reply.cid
 %]">[% reply.subject %]</A></B>, attached to
 <B><A HREF="[% discussion.url %]">[% discussion.title %]</A></B>.
@@ -35,4 +35,4 @@ Attached to:
 __seclev__
 500
 __version__
-$Id: commnew;comments;default,v 1.6 2004/06/17 16:11:58 jamiemccarthy Exp $
+$Id: commnew;comments;default,v 1.7 2004/07/02 00:13:50 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.189 2003/12/09 15:17:48 jamie Exp $
+# $Id: Slash.pm,v 1.190 2003/12/09 17:34:56 pater Exp $
 
 package Slash;
 
@@ -1192,6 +1192,13 @@ EOT
 	# we need a display-friendly fakeemail string
 	$comment->{fakeemail_vis} = ellipsify($comment->{fakeemail});
 	push @{$user->{state}{cids}}, $comment->{cid};
+
+	# stats for clampe
+	if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME}) {
+		my $fname = catfile('clampe', $user->{ipid});
+		my $comlog = "IPID: $user->{ipid} UID: $user->{uid} SID: $comment->{sid} CID: $comment->{cid} Dispmode: $user->{mode} Thresh: $user->{threshold} CIPID: $comment->{ipid} CUID: $comment->{uid}";
+		doLog($fname, $comlog);	
+	}
 
 	return _hard_dispComment(
 		$comment, $constants, $user, $form, $comment_shrunk,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.18 2002/10/17 16:48:27 jamie Exp $
+# $Id: subscribe.pl,v 1.19 2002/10/20 13:18:32 jamie Exp $
 
 use strict;
 
@@ -157,11 +157,11 @@ sub save {
 		$hbtm;
 	$slashdb->setUser($user_edit->{uid}, $user_update);
 
-	print "<p>Subscription options saved.\n<p>";
 	titlebar("100%", "Editing Subscription...", {
 		template =>		'prefs_titlebar',
 		tab_selected =>		'subscription',
 	});
+	print "<p>Subscription options saved.\n<p>";
 	slashDisplay("edit", {
 		user_edit => $user_edit,
 		user_newvalues => $user_newvalues,

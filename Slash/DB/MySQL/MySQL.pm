@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.564 2004/04/23 22:28:05 pudge Exp $
+# $Id: MySQL.pm,v 1.565 2004/04/26 12:41:46 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.564 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.565 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8437,6 +8437,7 @@ sub getUser {
 	# If no such user, we can return now.
 	# 2004/04/02 - we're seeing this message a lot, not sure why so much.
 	# Adding more debug info to check - Jamie
+	# I'm guessing it's the "com_num_X_at_or_after_cid" check.
 	if (!$answer || !%$answer) {
 		if ($mcddebug) {
 			my $elapsed = sprintf("%6.4f", Time::HiRes::time - $start_time);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.8 2003/09/25 19:43:31 pudge Exp $
+# $Id: Blob.pm,v 1.9 2003/09/25 19:54:13 pudge Exp $
 
 package Slash::Blob;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 # there are plenty of other methods out there, this needs to be replaced -- pudge
@@ -30,6 +30,7 @@ my %mimetypes = (
 	eps  => 'application/postscript',
 	zip  => 'application/zip',
 	doc  => 'application/msword',
+	xls  => 'application/ms-excel',
 	pdf  => 'application/pdf',
 	gz   => 'application/x-gzip',
 	bz2  => 'application/x-bzip2',

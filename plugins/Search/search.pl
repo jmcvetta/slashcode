@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.28 2002/04/22 21:00:41 brian Exp $
+# $Id: search.pl,v 1.29 2002/05/02 22:40:55 brian Exp $
 
 use strict;
 use Slash;
@@ -159,6 +159,21 @@ sub _sections {
 }
 
 #################################################################
+# Ugly isn't it?
+sub _subsections {
+	my $slashdb = getCurrentDB();
+	my $form = getCurrentForm();
+	my $subsections = $slashdb->getDescriptions('section_subsection', $form->{section}, 1)
+		if $form->{section};
+	return undef
+		unless (keys %$subsections);
+	my %newsections = %$subsections;
+	$newsections{''} = getData('all_subsections');
+
+	return \%newsections;
+}
+
+#################################################################
 sub _buildargs {
 	my($form) = @_;
 	my $uri;
@@ -274,8 +289,10 @@ sub storySearch {
 
 	my $start = $form->{start} || 0;
 	my $stories = $searchDB->findStory($form, $start, $constants->{search_default_display} + 1, $form->{sort});
+
 	slashDisplay('searchform', {
 		sections	=> _sections(),
+		subsections	=> _subsections(),
 		topics		=> _topics(),
 		tref		=> $slashdb->getTopic($form->{topic}),
 		op		=> $form->{op},

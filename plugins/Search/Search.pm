@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.22 2002/04/22 21:00:41 brian Exp $
+# $Id: Search.pm,v 1.23 2002/05/02 22:40:55 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -250,6 +250,10 @@ sub findStory {
 	$where .= " AND time < now() AND stories.writestatus != 'delete' ";
 	$where .= " AND stories.uid=" . $self->sqlQuote($form->{author})
 		if $form->{author};
+	$where .= " AND stories.submitter=" . $self->sqlQuote($form->{submitter})
+		if $form->{submitter};
+	$where .= " AND stories.subsection=" . $self->sqlQuote($form->{subsection})
+		if $form->{subsection};
 	if ($form->{section}) {
 		$where .= " AND stories.section = '$form->{section}'"
 	} else {

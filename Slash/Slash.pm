@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.217 2004/07/19 22:10:06 tvroom Exp $
+# $Id: Slash.pm,v 1.218 2004/07/20 18:31:48 jamiemccarthy Exp $
 
 package Slash;
 
@@ -645,7 +645,7 @@ sub printComments {
 		# MemCached key prefix "ctp" means "comment_text, parsed".
 		# Prepend our site key prefix to try to avoid collisions
 		# with other sites that may be using the same servers.
-		$mcdkey = "$mcd->{keyprefix}ctp:";
+		$mcdkey = "$slashdb->{_mcd_keyprefix}ctp:";
 		$mcdkeylen = length($mcdkey);
 		if ($constants->{memcached_debug}) {
 			$mcd_debug = { start_time => Time::HiRes::time };

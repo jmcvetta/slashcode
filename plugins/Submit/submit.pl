@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.103 2004/11/20 00:12:36 jamiemccarthy Exp $
+# $Id: submit.pl,v 1.104 2004/11/30 18:24:53 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -220,7 +220,8 @@ sub previewForm {
 		title =>	$sub->{subj},
 		introtext =>	$sub->{story},
 	};
-	my $similar_stories = $reader->getSimilarStories($storyref, $num_sim);
+	my $similar_stories = [];
+	$similar_stories = $reader->getSimilarStories($storyref, $num_sim) if $user->{is_admin};
 
 	# Truncate that data to a reasonable size for display.
 

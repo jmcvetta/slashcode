@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 #
-# $Id: newsvac_gc.pl,v 1.3 2002/09/19 19:27:09 pudge Exp $
+# $Id: newsvac_gc.pl,v 1.4 2005/03/11 19:58:11 pudge Exp $
 #
-# SlashD Task (c) OSDN 2001
+# SlashD Task (c) OSTG 2001
 #
 # Description: Performs garbage collection on NewsVac data.
 #

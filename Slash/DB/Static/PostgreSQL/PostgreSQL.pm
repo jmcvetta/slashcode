@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PostgreSQL.pm,v 1.9 2004/04/02 00:43:00 pudge Exp $
+# $Id: PostgreSQL.pm,v 1.10 2005/03/11 19:57:47 pudge Exp $
 
 package Slash::DB::Static::PostgreSQL;
 use strict;
@@ -11,7 +11,7 @@ use Slash::Utility;
 use base 'Slash::DB::PostgreSQL';
 use base 'Slash::DB::Static::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Whoa, slow down. You're going a mile a minute.
 

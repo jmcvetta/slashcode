@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.267 2005/02/11 16:20:12 pudge Exp $
+# $Id: users.pl,v 1.268 2005/03/11 19:58:43 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';

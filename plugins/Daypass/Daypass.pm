@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.1 2005/02/03 05:33:45 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.2 2005/03/11 19:58:06 pudge Exp $
 
 package Slash::Daypass;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 

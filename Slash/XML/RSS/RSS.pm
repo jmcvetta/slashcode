@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.24 2004/12/14 00:19:29 pudge Exp $
+# $Id: RSS.pm,v 1.25 2005/03/11 19:58:01 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -512,4 +512,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.24 2004/12/14 00:19:29 pudge Exp $
+$Id: RSS.pm,v 1.25 2005/03/11 19:58:01 pudge Exp $

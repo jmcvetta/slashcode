@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.16 2004/12/02 21:14:42 jamiemccarthy Exp $
+# $Id: login.pl,v 1.17 2005/03/11 19:58:08 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();

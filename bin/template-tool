@@ -2,9 +2,9 @@
 #	my($db_name, $db_page, $db_skin) = split $;, $key;
 #
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: template-tool,v 1.32 2004/06/17 16:11:50 jamiemccarthy Exp $
+# $Id: template-tool,v 1.33 2005/03/11 19:58:02 pudge Exp $
 
 # First version by Brian, brian@tangent.org
 # Updated by Patrick Galbraith, capttofu@slashdot.org
@@ -26,7 +26,7 @@ use Slash::Install;
 use Getopt::Std;
 use Cwd;
 
-(my $VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
@@ -674,7 +674,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

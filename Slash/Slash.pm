@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.230 2005/03/11 00:08:55 pudge Exp $
+# $Id: Slash.pm,v 1.231 2005/03/11 19:57:19 pudge Exp $
 
 package Slash;
 

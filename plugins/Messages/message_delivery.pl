@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.17 2004/05/04 16:22:40 tvroom Exp $
+# $Id: message_delivery.pl,v 1.18 2005/03/11 19:58:09 pudge Exp $
 
 use strict;
 use File::Spec::Functions;

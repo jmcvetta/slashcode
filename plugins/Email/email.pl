@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.11 2004/06/17 16:11:55 jamiemccarthy Exp $
+# $Id: email.pl,v 1.12 2005/03/11 19:58:06 pudge Exp $
 
 # Slash::Email - web script
 # 
 # Email a Slash site story to a friend!
-# (c) OSDN 2002
+# (c) OSTG 2002
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -16,7 +16,7 @@ use Slash::Utility;
 use Slash::Constants ':messages';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think

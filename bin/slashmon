@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.34 2004/11/25 14:10:47 jamiemccarthy Exp $
+# $Id: slashmon,v 1.35 2005/03/11 19:58:02 pudge Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -28,7 +28,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -437,7 +437,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

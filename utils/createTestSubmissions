@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestSubmissions,v 1.10 2005/02/01 21:03:38 tvroom Exp $
+# $Id: createTestSubmissions,v 1.11 2005/03/11 19:58:48 pudge Exp $
 
 # Based on jamie's createTestStories. Any bugs are probably HIS fault
 # but I'll take the heat for them, because he's a really cool guy.
@@ -28,7 +28,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $gSkin );
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -214,7 +214,7 @@ sub make_werds {
 	}
 	my @links = qw(
 		http://slashdot.org/		http://www.brunching.com/
-		http://www.newsforge.com	http://osdn.com
+		http://www.newsforge.com	http://ostg.com
 		http://whitehouse.gov		http://www.whitehouse.gov/
 		http://us.imdb.com/		http://www.kernel.org
 		http://ic.ac.uk			http://cr.yp.to/
@@ -358,7 +358,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

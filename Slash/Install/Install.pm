@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.44 2004/11/05 13:11:39 jamiemccarthy Exp $
+# $Id: Install.pm,v 1.45 2005/03/11 19:57:57 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Rating.pm,v 1.6 2004/09/09 00:55:54 tvroom Exp $
+# $Id: Rating.pm,v 1.7 2005/03/11 19:58:12 pudge Exp $
 
 package Slash::Rating;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #Right, this is not needed at the moment but will be in the near future
 sub new {

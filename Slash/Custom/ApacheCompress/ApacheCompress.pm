@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ApacheCompress.pm,v 1.2 2005/02/24 17:32:37 pudge Exp $
+# $Id: ApacheCompress.pm,v 1.3 2005/03/11 19:57:24 pudge Exp $
 
 # this merely overrides a "broken" method in Apache::SSI,
 # where include directives don't work for mixing with Apache::Compress
@@ -20,7 +20,7 @@ use Compress::Zlib 1.0;
 use Apache::File;
 use Apache::Constants qw(:common);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
   my $r = shift;

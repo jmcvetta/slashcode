@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PostgreSQL.pm,v 1.9 2004/04/02 00:43:00 pudge Exp $
+# $Id: PostgreSQL.pm,v 1.10 2005/03/11 19:57:30 pudge Exp $
 
 package Slash::DB::PostgreSQL;
 use strict;
@@ -13,7 +13,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Sample.pm,v 1.5 2004/04/02 00:43:01 pudge Exp $
+# $Id: Sample.pm,v 1.6 2005/03/11 19:57:56 pudge Exp $
 
 package Slash::Hook::Sample;
 use strict;
@@ -13,7 +13,7 @@ use vars qw($VERSION);
 
 # Shake well, serve warm.
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub sample {

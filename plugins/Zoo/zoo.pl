@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.50 2004/12/09 17:36:33 jamiemccarthy Exp $
+# $Id: zoo.pl,v 1.51 2005/03/11 19:58:22 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.19 2004/10/15 02:26:48 jamiemccarthy Exp $
+# $Id: runtask,v 1.20 2005/03/11 19:58:02 pudge Exp $
 
 use sigtrap;
 use strict;
@@ -30,7 +30,7 @@ use vars qw(
 	$task_exit_flag
 );
 
-(my $VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -384,7 +384,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

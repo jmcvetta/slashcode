@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: newsvac.pl,v 1.18 2004/10/11 17:01:16 jamiemccarthy Exp $
+# $Id: newsvac.pl,v 1.19 2005/03/11 19:58:11 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -15,7 +15,7 @@ use Schedule::Cron;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {

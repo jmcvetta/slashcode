@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 #
-# $Id: refresh_section_metakeywords.pl,v 1.5 2004/06/17 16:12:23 jamiemccarthy Exp $
+# $Id: refresh_section_metakeywords.pl,v 1.6 2005/03/11 19:58:47 pudge Exp $
 #
-# SlashD Task (c) OSDN 2001
+# SlashD Task (c) OSTG 2001
 #
 # Description: refreshes the static "metakeywordsd" template for use
 # in HTML output.

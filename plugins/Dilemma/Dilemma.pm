@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Dilemma.pm,v 1.7 2004/10/17 22:42:02 jamiemccarthy Exp $
+# $Id: Dilemma.pm,v 1.8 2005/03/11 19:58:06 pudge Exp $
 
 package Slash::Dilemma;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # ZOIDBERG: Friends! Help! A guinea pig tricked me!
 

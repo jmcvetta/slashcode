@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.162 2005/02/22 17:10:32 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.163 2005/03/11 19:58:00 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2705,4 +2705,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.162 2005/02/22 17:10:32 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.163 2005/03/11 19:58:00 pudge Exp $

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.14 2004/11/07 23:31:36 jamiemccarthy Exp $
+# $Id: counthits.pl,v 1.15 2005/03/11 19:58:46 pudge Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 20;

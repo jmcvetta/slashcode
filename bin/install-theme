@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-theme,v 1.6 2004/04/02 00:43:02 pudge Exp $
+# $Id: install-theme,v 1.7 2005/03/11 19:58:02 pudge Exp $
 
 # This is a theme install script.
 # chromatic (chromatic@wgz.org), based on install-plugin by Krow
@@ -14,7 +14,7 @@ use Getopt::Std;
 use File::Copy;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -105,7 +105,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PollBooth.pm,v 1.5 2004/06/21 16:30:28 tvroom Exp $
+# $Id: PollBooth.pm,v 1.6 2005/03/11 19:58:11 pudge Exp $
 
 package Slash::PollBooth;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #Right, this is not needed at the moment but will be in the near future
 sub new {

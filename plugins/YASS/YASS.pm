@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.14 2004/04/02 00:43:05 pudge Exp $
+# $Id: YASS.pm,v 1.15 2005/03/11 19:58:22 pudge Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;

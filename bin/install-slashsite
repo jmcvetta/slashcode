@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.40 2004/06/17 16:11:50 jamiemccarthy Exp $
+# $Id: install-slashsite,v 1.41 2005/03/11 19:58:02 pudge Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -715,7 +715,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

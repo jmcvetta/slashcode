@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.27 2005/01/12 20:15:15 pudge Exp $
+# $Id: MySQL.pm,v 1.28 2005/03/11 19:58:09 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'

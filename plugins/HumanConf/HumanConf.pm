@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.9 2004/05/01 06:56:50 pudge Exp $
+# $Id: HumanConf.pm,v 1.10 2005/03/11 19:58:08 pudge Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;

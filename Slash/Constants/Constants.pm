@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.23 2005/03/08 22:35:18 pudge Exp $
+# $Id: Constants.pm,v 1.24 2005/03/11 19:57:24 pudge Exp $
 
 package Slash::Constants;
 
@@ -29,7 +29,7 @@ use strict;
 use base 'Exporter';
 use vars qw(@ISA $VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS %CONSTANTS);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 constants();
 @EXPORT		= qw();
@@ -202,4 +202,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.23 2005/03/08 22:35:18 pudge Exp $
+$Id: Constants.pm,v 1.24 2005/03/11 19:57:24 pudge Exp $

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.13 2005/03/08 22:17:23 jamiemccarthy Exp $
+# $Id: balance_readers.pl,v 1.14 2005/03/11 19:58:45 pudge Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10

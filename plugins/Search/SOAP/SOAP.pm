@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: SOAP.pm,v 1.6 2004/11/21 02:14:46 jamiemccarthy Exp $
+# $Id: SOAP.pm,v 1.7 2005/03/11 19:58:14 pudge Exp $
 
 package Slash::Search::SOAP;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # As a note I will be adding support for sort later.
 # I want to make it easy for people just to pass in a string

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestUsers,v 1.14 2004/12/21 11:31:17 jamiemccarthy Exp $
+# $Id: createTestUsers,v 1.15 2005/03/11 19:58:48 pudge Exp $
 
 BEGIN {
 	{
@@ -22,7 +22,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -164,7 +164,7 @@ sub make_werds {
 	$werder->set_syllables_num($min_syl, $min_syl + int(rand(4)+1));
 	my @links = qw(
 		http://slashdot.org/            http://www.brunching.com/
-		http://www.newsforge.com        http://osdn.com
+		http://www.newsforge.com        http://ostg.com
 		http://whitehouse.gov           http://www.whitehouse.gov/
 		http://us.imdb.com/             http://www.kernel.org
 		http://ic.ac.uk                 http://cr.yp.to/
@@ -318,7 +318,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2004 by Open Source Development Network. See README
+Copyright 1997-2005 by Open Source Technology Group. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

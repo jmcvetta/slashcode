@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.14 2004/06/17 16:11:46 jamiemccarthy Exp $
+# $Id: Provider.pm,v 1.15 2005/03/11 19:57:48 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar

@@ -28,9 +28,9 @@
 # 	ISBN: 0-596-00200-2
 
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.13 2004/06/17 16:12:00 jamiemccarthy Exp $
+# $Id: print.pl,v 1.14 2005/03/11 19:58:12 pudge Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.13 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();

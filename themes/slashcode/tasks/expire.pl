@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: expire.pl,v 1.6 2004/04/02 00:43:06 pudge Exp $
+# $Id: expire.pl,v 1.7 2005/03/11 19:58:47 pudge Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '2 6 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, this can wait

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.31 2004/11/19 04:15:02 cowboyneal Exp $
+# $Id: Log.pm,v 1.32 2005/03/11 19:57:23 pudge Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.59 2004/11/23 18:48:03 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.60 2005/03/11 19:58:47 pudge Exp $
 
 use File::Path;
 use File::Temp;

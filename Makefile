@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.27 2004/10/28 18:30:45 jamiemccarthy Exp $
+# $Id: Makefile,v 1.28 2005/03/11 19:57:18 pudge Exp $
 
 ##
 ##  Makefile -- Current one for Slash

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2004 by Open Source Development Network. See README
+# Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.32 2004/10/07 22:05:00 jamiemccarthy Exp $
+# $Id: Page.pm,v 1.33 2005/03/11 19:58:11 pudge Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 

@@ -91,7 +91,7 @@ __template__
 
 		[% tilde_ed %]
 
-		<INPUT TYPE="SUBMIT" VALUE="Save">
+		<INPUT TYPE="SUBMIT" VALUE="Save"> <INPUT TYPE="SUBMIT" NAME="restore_defaults" VALUE="Restore Defaults">
 		</TD>
 	</TR>
 </TABLE>
@@ -100,4 +100,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editHome;users;default,v 1.13 2003/03/04 19:07:59 pudge Exp $
+$Id: editHome;users;default,v 1.14 2003/12/16 18:58:56 vroom Exp $

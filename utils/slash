@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash,v 1.15 2003/03/04 19:56:33 pudge Exp $
+# $Id: slash,v 1.16 2003/07/28 20:07:32 pudge Exp $
 
 # /etc/init.d/slash
 #
@@ -12,8 +12,7 @@
 #		Cliff Wood
 #		... and a cast of several.
 
-PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:\
-			/usr/local/sbin:/usr/bin/X11:/usr/X11R6/bin";
+PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin/X11:/usr/X11R6/bin";
 
 # Slash home
 PROGNAME="slashd";

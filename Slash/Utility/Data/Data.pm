@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.88 2003/06/30 19:28:51 jamie Exp $
+# $Id: Data.pm,v 1.89 2003/07/01 20:03:12 vroom Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1508,6 +1508,16 @@ sub fudgeurl {
 	my $uri = new URI $url;
 	my $scheme = undef;
 	$scheme = $uri->scheme if $uri && $uri->can("scheme");
+
+
+        # modify scheme:/ to scheme:// for $schemes defined below
+        # need to recreate $uri after doing so to make userinfo
+        # clearing work for something like http:/foo.com...@bar.com
+
+        my $schemes_to_mod = {http=>1,https=>1,ftp=>1};
+       	$url = $uri->canonical->as_string;
+        $url=~s|^$scheme:/([^/])|$scheme://$1| if $schemes_to_mod->{$scheme};
+        $uri = new URI $url;
 	if ($uri && !$scheme && $uri->can("authority") && $uri->authority) {
 		# The URI has an authority but no scheme, e.g. "//sitename.com/".
 		# URI.pm doesn't always handle this well.  E.g. host() returns
@@ -2894,4 +2904,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.88 2003/06/30 19:28:51 jamie Exp $
+$Id: Data.pm,v 1.89 2003/07/01 20:03:12 vroom Exp $

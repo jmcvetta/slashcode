@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.26 2004/06/22 23:34:53 pudge Exp $
+# $Id: Page.pm,v 1.27 2004/07/07 01:22:48 tvroom Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -124,28 +124,17 @@ sub displayStories {
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
+	my $gSkin = getCurrentSkin();
 
 	my $misc = {};
-	$misc->{subsection} = $other->{subsection};
-	my $tid = $other->{tid} || '';
+	my $tid = $other->{tid} || $gSkin->{nexus} || '';
 
 	my $limit = $other->{count};
-	if ($misc->{subsection}) {
-		my $subsections = $self->getDescriptions(
-			'section_subsection_names', $section
-		); 
-		# from title to id
-		$misc->{subsection} = $subsections->{$other->{subsection}};
-		$limit ||= $self->getSubSection(
-			$misc->{subsection}, 'artcount'
-		);
-	} else {
-		$limit ||= $self->getSection($section, 'artcount');
-	}
+	$limit ||= $self->getSection($section, 'artcount');
 
 	my $storystruct = [];
 
-	my $stories = $self->getStoriesEssentials({ limit => $limit, tids => $tid });
+	my $stories = $self->getStoriesEssentials({ limit => $limit, tid => $tid });
 
 	my $i = 0;
 
@@ -153,9 +142,10 @@ sub displayStories {
 	# 	return $self->displayStoryList($stories, $other)
 	# - Cliff
 	while (my $story = shift @{$stories}) {
-		my($sid, $section, $time, $title) = @{$story}{qw(sid section time title)}; #[0, 1, 2, 9];
+		my($sid, $primaryskid, $time, $title) = @{$story}{qw(sid primaryskid time title)}; #[0, 1, 2, 9];
 		my $atstorytime;
-
+		my $storyskin = $self->getSkin($primaryskid);
+		my $section = $storyskin->{name};
 		if ($other->{titles_only}) {
 			my $storycontent = $self->getStoryTitleContent({ 
 					sid 	=> $sid, 
@@ -163,7 +153,7 @@ sub displayStories {
 					title 	=> $title,
 					section	=> $section
 			});
-			$storystruct->[$i]{widget} = $storycontent;
+			$storystruct->[$i]{widget} = $storycontent
 		} else {
 			my $storyref = $self->prepareStory($sid);
 			my $storycontent = '';
@@ -197,6 +187,8 @@ sub prepareStory {
 
 	# get the body, introtext... 
 	my $storyref = $self->getStory($sid);
+	my $storyskin = $self->getSkin($storyref->{primaryskid});
+	$storyref->{section} = $storyskin->{name} if $storyskin;
 
 	return if ! $storyref;
 

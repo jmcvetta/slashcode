@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.7 2001/11/16 13:48:46 pudge Exp $
+# $Id: Display.pm,v 1.8 2001/12/04 00:34:26 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -152,7 +152,7 @@ Compiles templates and caches them.
 
 sub slashDisplay {
 	my($name, $data, $opt) = @_;
-	my(@comments, $err, $ok, $out, $origSection, $origPage,
+	my(@comments, $err, $ret, $out, $origSection, $origPage,
 		$tempdata, $tempname, $user, $slashdb, $constants);
 	return unless $name;
 
@@ -221,12 +221,14 @@ sub slashDisplay {
 	# let us pass in a context if we have one
 	my $template = $CONTEXT || get_template(0, 0, 1);
 
+	# we only populate $err if !$ret ... still, if $err
+	# is false, then we assume everything is OK
 	if ($CONTEXT) {
-		$ok  = eval { $out = $template->include($name, $data) };
-		$err = $@ if !$ok;
+		$ret = eval { $out = $template->include($name, $data) };
+		$err = $@ if !$ret;
 	} else {
-		$ok  = $template->process($name, $data, \$out);
-		$err = $template->error if !$ok;
+		$ret = $template->process($name, $data, \$out);
+		$err = $template->error if !$ret;
 	}
 
 	my $Nocomm = defined $opt->{Nocomm}
@@ -235,17 +237,17 @@ sub slashDisplay {
 
 	$out = $comments[0] . $out . $comments[1] unless $Nocomm;
 
-	if ($ok) {
-		print $out unless $opt->{Return};
-	} else {
+	if ($err) {
 		errorLog("$tempname : $err");
+	} else {
+		print $out unless $opt->{Return};
 	}
 
 	# restore our original values
 	$user->{currentSection}	= $origSection;
 	$user->{currentPage}	= $origPage;
 
-	return $opt->{Return} ? $out : $ok;
+	return $opt->{Return} ? $out : $ret;
 }
 
 #========================================================================

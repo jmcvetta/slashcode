@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.12 2001/12/01 22:03:52 jamie Exp $
+# $Id: MySQL.pm,v 1.13 2001/12/04 00:34:16 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -312,7 +312,9 @@ sub deleteDaily {
 
 	# Note, on Slashdot, the next line locks the accesslog for several
 	# minutes, up to 10 minutes if traffic has been heavy.
-	$self->sqlDo("DELETE FROM accesslog WHERE date_add(ts,interval 48 hour) < now()");
+	unless ($constants->{noflush_accesslog}) {
+		$self->sqlDo("DELETE FROM accesslog WHERE date_add(ts,interval 48 hour) < now()");
+	}
 }
 
 ########################################################

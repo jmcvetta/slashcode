@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+# $Id: Display.pm,v 1.3 2001/12/04 00:34:36 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -969,11 +969,14 @@ sub createMenu {
 
 	for my $item (sort { $a->{menuorder} <=> $b->{menuorder} } @$menu_items) {
 		next unless $user->{seclev} >= $item->{seclev};
+
+		my $opts = { Return => 1, Nocomm => 1 };
+		my $value = $item->{value} && slashDisplay(\$item->{value}, 0, $opts);
+		my $label = $item->{label} && slashDisplay(\$item->{label}, 0, $opts);
+
 		push @$items, {
-			value => $item->{value}
-				? slashDisplay(\$item->{value}, {}, { Return => 1, Nocomm => 1 })
-				: "",
-			label => slashDisplay(\$item->{label}, {}, { Return => 1, Nocomm => 1 })
+			value => $value,
+			label => $label,
 		};
 	}
 
@@ -1113,4 +1116,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.2 2001/11/03 03:07:59 brian Exp $
+$Id: Display.pm,v 1.3 2001/12/04 00:34:36 pudge Exp $

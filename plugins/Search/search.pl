@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.41 2002/05/29 21:07:04 brian Exp $
+# $Id: search.pl,v 1.42 2002/06/04 17:04:59 pater Exp $
 
 use strict;
 use Slash;
@@ -195,7 +195,7 @@ sub _buildargs {
 	my($form) = @_;
 	my $uri;
 
-	for (qw[threshold query author op topic tid section]) {
+	for (qw[threshold query author op topic tid section sort]) {
 		my $x = "";
 		$x =  $form->{$_} if defined $form->{$_} && $x eq "";
 		$x =~ s/ /+/g;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.76 2003/03/23 01:29:17 jamie Exp $
+# $Id: Environment.pm,v 1.77 2003/03/25 18:27:06 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1958,7 +1958,17 @@ sub createLog {
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
 		$dat = $uri if $uri =~ $page;	
-		$uri =~ s|^/?(\w+)/?.*|$1|;
+		$uri =~ s|^/?(\w+)/?(.*)|$1|;
+		my $suspected_handler = $2;
+		my $SECT;
+		my $reader = getObject('Slash::DB', { db_type => 'reader' });
+		if ($SECT = $reader->getSection($uri) ) {
+			my $handler = $SECT->{index_handler};
+			$handler =~ s|^(.*)\.pl$|$1|;
+			if ($handler eq $suspected_handler) {
+				$uri = $handler;
+			}
+		}
 	} elsif ($uri =~ /\.html$/) {
 		$uri =~ s|^/(.*)\.html$|$1|;
 		$dat = $uri if $uri =~ $page;	
@@ -1968,7 +1978,6 @@ sub createLog {
 	if (getCurrentUser('is_admin')) {
 		$logdb->createAccessLogAdmin($uri, $dat, $status);
 	}
-
 }
 
 #========================================================================
@@ -2094,4 +2103,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.76 2003/03/23 01:29:17 jamie Exp $
+$Id: Environment.pm,v 1.77 2003/03/25 18:27:06 brian Exp $

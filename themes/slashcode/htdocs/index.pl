@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.62 2003/03/11 20:04:15 brian Exp $
+# $Id: index.pl,v 1.63 2003/03/25 18:27:06 brian Exp $
 
 use strict;
 use Slash;
@@ -207,7 +207,6 @@ sub displayStandardBlocks {
 				$boxBank->{$bid}{url}
 			);
 		} elsif ($bid eq 'friends_journal' && $constants->{plugin}{Journal} && $constants->{plugin}{Zoo}) {
-			# this is only executed if poll is to be dynamic
 			my $journal = getObject("Slash::Journal");
 			my $zoo = getObject("Slash::Zoo");
 			my $uids = $zoo->getFriendsUIDs($user->{uid});

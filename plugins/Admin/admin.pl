@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.141 2003/03/24 19:38:24 pudge Exp $
+# $Id: admin.pl,v 1.142 2003/03/25 18:27:06 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1204,7 +1204,6 @@ sub editStory {
 		my $tmp = $user->{currentSection};
 		$user->{currentSection} = $slashdb->getStory($sid, 'section', 1);
 		$user->{state}{editing} = 1;
-		#($story) = displayStory($sid, 'Full', { force_cache => 1});
 		$storyref = $slashdb->getStory($sid, '', 1);
 		
 		$storyref->{writestatus} = 'dirty';

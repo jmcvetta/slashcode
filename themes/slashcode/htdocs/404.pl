@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.11 2003/03/04 19:56:32 pudge Exp $
+# $Id: 404.pl,v 1.12 2003/03/25 18:27:06 brian Exp $
 
 use strict;
 use Slash;
@@ -13,6 +13,8 @@ sub main {
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
 	$ENV{REQUEST_URI} ||= '';
+	my $r = Apache->request();
+	$r->status(404);
 
 	# catch old .shtml links ... need to check for other schemes, too?
 	if ($ENV{REQUEST_URI} =~ m|^/?\w+/(\d\d/\d\d/\d\d/\d+)\.shtml$|) {

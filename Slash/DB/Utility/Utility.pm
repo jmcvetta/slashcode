@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.34 2003/03/22 01:13:50 jamie Exp $
+# $Id: Utility.pm,v 1.35 2003/03/25 18:27:06 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -313,6 +313,7 @@ sub sqlSelectArrayRef {
 		return undef;
 	}
 	my $r = $sth->fetchrow_arrayref;
+	$sth->finish;
 	return $r;
 }
 

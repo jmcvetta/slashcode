@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.29 2004/11/21 02:16:30 jamiemccarthy Exp $
+# $Id: slashmon,v 1.30 2004/11/23 20:18:16 pudge Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -29,7 +29,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -81,8 +81,8 @@ sub init {
 	my $vus = [ (
 		$slashdb->{virtual_user},
 		sort { $a cmp $b }
-			grep { $_ ne $slashdb->{virtual_user} }
-			keys %vus_hash
+		grep { $_ ne $slashdb->{virtual_user} }
+		keys %vus_hash
 	) ];
 
 	# Set up the @db array based on what virtual users we have.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.428 2003/07/22 19:48:23 vroom Exp $
+# $Id: MySQL.pm,v 1.429 2003/07/22 22:01:58 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.428 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.429 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -838,7 +838,7 @@ EOT
 }
 
 ########################################################
-# ok, I was tired of trying to mould getDescriptions into 
+# ok, I was tired of trying to mold getDescriptions into 
 # taking more args.
 sub getTemplateList {
 	my($self, $section, $page) = @_;

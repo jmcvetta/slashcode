@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.10 2002/01/08 17:22:09 pudge Exp $
+# $Id: Display.pm,v 1.11 2002/04/08 16:48:43 cliff Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -418,9 +418,9 @@ It might seem simpler to just use the functional form:
 	[% form.something | strip_nohtml      # filter %]
 	[% Slash.strip_nohtml(form.something) # function %]
 
-But we might make it harder to use the Slash plugin (see L<Slash::Display::Plugin>)
-in the future (perhaps only certain seclevs?), so it is best to stick with the filter,
-which is most likely faster anyway.
+But we might make it harder to use the Slash plugin (see
+L<Slash::Display::Plugin>) in the future (perhaps only certain seclevs?), so it
+is best to stick with the filter, which is most likely faster anyway.
 
 =cut
 
@@ -428,7 +428,25 @@ my %list_ops = (
 	'rand'		=> sub {
 		my $list = $_[0];
 		return $list->[rand @$list];
-	}
+	},
+
+	'highval'		=> sub {
+		my $list = $_[0];
+		my $maxval;
+
+		$maxval = (!defined($maxval) or $_ > $maxval) ?  $_ : $maxval
+			for @{$list};
+		return $maxval;
+	},
+
+	'lowval'		=> sub {
+		my $list = $_[0];
+		my $minval;
+
+		$minval = (!defined($minval) or $_ < $minval) ?  $_ : $minval
+			for @{$list};
+		return $minval;
+	},
 );
 
 my %scalar_ops = (
@@ -436,6 +454,7 @@ my %scalar_ops = (
 	'lc'		=> sub { lc $_[0] },
 	'ucfirst'	=> sub { ucfirst $_[0] },
 	'lcfirst'	=> sub { lcfirst $_[0] },
+
 	'substr'        => sub {
 		if (@_ == 2) {
 			substr($_[0], $_[1]);

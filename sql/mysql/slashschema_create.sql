@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.33 2002/04/05 20:10:50 jamie Exp $
+# $Id: slashschema_create.sql,v 1.34 2002/04/08 16:48:43 cliff Exp $
 #
 
 #
@@ -633,6 +633,7 @@ CREATE TABLE submissions (
 	ipid char(32) DEFAULT '' NOT NULL,
 	subnetid char(32) DEFAULT '' NOT NULL,
 	del tinyint DEFAULT '0' NOT NULL,
+	weight float DEFAULT '0' NOT NULL, 
 	PRIMARY KEY (subid),
 	FOREIGN KEY (tid) REFERENCES topics(tid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
@@ -641,7 +642,6 @@ CREATE TABLE submissions (
 	KEY subid (subid,section),
 	KEY ipid (ipid),
 	KEY subnetid (subnetid)
-
 ) TYPE = myisam;
 
 #

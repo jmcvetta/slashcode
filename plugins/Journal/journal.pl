@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.76 2004/01/27 23:01:00 pudge Exp $
+# $Id: journal.pl,v 1.77 2004/02/17 00:02:06 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -548,13 +548,18 @@ sub saveArticle {
 	$form->{description} =~ s/[\r\n].*$//s;  # strip anything after newline
 	my $description = strip_notags($form->{description});
 
-	unless ($description ne "" && $form->{article} ne "") {
-		unless ($ws) {
-			_printHead("mainhead") or return;
-			print getData('no_desc_or_article');
-			editArticle(@_, 1);
+	# from comments.pl
+	for ($description, $form->{article}) {
+		my $d = decode_entities($_);
+		$d =~ s/&#?[a-zA-Z0-9]+;//g;	# remove entities we don't know
+		if ($d !~ /\S/) {		# require SOME non-whitespace
+			unless ($ws) {
+				_printHead("mainhead") or return;
+				print getData('no_desc_or_article');
+				editArticle(@_, 1);
+			}
+			return 0;
 		}
-		return 0;
 	}
 
 	return 0 unless _validFormkey($ws ? qw(max_post_check interval_check) : ());

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.189 2005/01/05 01:01:28 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.190 2005/01/05 17:33:37 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -462,7 +462,7 @@ EOT
 			my $uniq = $section_page_summary_stats->{$skid}{$op}{cnt}	|| 0;
 			my $pages = $section_page_summary_stats->{$skid}{$op}{pages}	|| 0;
 			my $bytes = $section_page_summary_stats->{$skid}{$op}{bytes}	|| 0;
-			my $users = $section_page_summary_stats->{$skid}{$op}{users}	|| 0;
+			my $users = $section_page_summary_stats->{$skid}{$op}{uids}	|| 0;
 			$temp->{$op}{label} = sprintf("%8s", $op);
 			$temp->{$op}{ipids} = sprintf("%8u", $uniq);
 			$temp->{$op}{bytes} = sprintf("%8.1f MB",$bytes/(1024*1024));

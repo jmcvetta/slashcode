@@ -17,7 +17,7 @@ graph
 __template__
 [% FILTER null;
 
-USE my_graph = GD.Graph.lines(800, 600);
+USE my_graph = GD.Graph.lines(640, 480);
 
 IF y_max < 12;
 	y_label_skip = 1;
@@ -81,4 +81,4 @@ returnimage -%]
 __seclev__
 1000
 __version__
-$Id: graph;dilemma;default,v 1.3 2004/09/07 22:12:27 jamiemccarthy Exp $
+$Id: graph;dilemma;default,v 1.4 2004/10/15 02:16:38 jamiemccarthy Exp $

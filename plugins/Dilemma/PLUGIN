@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.3 2004/09/07 22:12:27 jamiemccarthy Exp $
+# $Id: PLUGIN,v 1.4 2004/10/15 02:16:38 jamiemccarthy Exp $
 name=Dilemma
 description="Prisoner's Dilemma tournaments
 htdoc=dilemma.pl
@@ -7,6 +7,9 @@ task=dilemma_backend.pl
 mysql_schema=mysql_schema.sql
 mysql_dump=mysql_dump.sql
 template=templates/data;dilemma;default
+template=templates/index;dilemma;default
 template=templates/graph;dilemma;default
 template=templates/maininfo;dilemma;default
+template=templates/next_prev_issue;dilemma;default
+template=templates/storylink;dilemma;default
 

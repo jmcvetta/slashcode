@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.3 2004/10/14 14:32:45 jamiemccarthy Exp $
+# $Id: dilemma.pl,v 1.4 2004/10/15 02:16:38 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -81,10 +81,15 @@ sub main {
 
 	my $info = $dilemma_reader->getDilemmaInfo();
 	my $species_hr = $dilemma_reader->getDilemmaSpeciesInfo();
+	my $species_order = [
+		sort { $species_hr->{$b}{alivecount} <=> $species_hr->{$a}{alivecount} }
+		keys %$species_hr
+	];
 
 	slashDisplay('maininfo', {
 		info		=> $info,
 		species		=> $species_hr,
+		species_order	=> $species_order,
 	});
 
 	slashDisplay('index', {
@@ -379,17 +384,6 @@ sub displayStories {
 		}, { Return => 1 });
 
 		$return .= $tmpreturn;
-	}
-
-	unless ($constants->{index_no_prev_next_day}) {
-		my($today, $tomorrow, $yesterday, $week_ago) = getOlderDays($form->{issue});
-		$return .= slashDisplay('next_prev_issue', {
-			today           => $today,
-			tomorrow        => $tomorrow,
-			yesterday       => $yesterday,
-			week_ago        => $week_ago,
-			linkrel         => $linkrel,
-		}, { Return => 1 });
 	}
 
 	return $return;

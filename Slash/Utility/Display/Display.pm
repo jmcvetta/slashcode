@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.53 2003/03/27 22:25:45 brian Exp $
+# $Id: Display.pm,v 1.54 2003/03/28 01:33:14 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1077,9 +1077,9 @@ sub createMenu {
 		&& $user->{lastlookuid} != $user->{uid}
 		&& ($user->{lastlooktime} || 0) >= time - ($constants->{lastlookmemory} || 3600)
 	) {
-		my $lastlook_user = $reader->getUser($user->{lastlookuid});
-		my $nick_fix = fixparam($lastlook_user->{nickname});
-		my $nick_attribute = strip_attribute($lastlook_user->{nickname});
+		my $ll_nick = $reader->getUser($user->{lastlookuid}, 'nickname');
+		my $nick_fix = fixparam($ll_nick);
+		my $nick_attribute = strip_attribute($ll_nick);
 		push @$menu_items, {
 			value =>	"$constants->{rootdir}/~$nick_fix",
 			label =>	"~$nick_attribute ($user->{lastlookuid})",
@@ -1529,4 +1529,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.53 2003/03/27 22:25:45 brian Exp $
+$Id: Display.pm,v 1.54 2003/03/28 01:33:14 jamie Exp $

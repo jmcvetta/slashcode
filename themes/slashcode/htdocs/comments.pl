@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.139 2003/06/03 13:27:18 jamie Exp $
+# $Id: comments.pl,v 1.140 2003/06/03 19:04:27 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1006,10 +1006,6 @@ sub previewForm {
 		$sig = "--<BR>$sig";
 	}
 
-	my $subscriber_bonus = 0;
-	$subscriber_bonus = 1
-		if $user->{is_subscriber} && $form->{nosubscriberbonus} ne 'on';
-
 	my $preview = {
 		nickname		=> $form->{postanon}
 						? getCurrentAnonymousCoward('nickname')
@@ -1023,8 +1019,12 @@ sub previewForm {
 		subject			=> $tempSubject,
 		comment			=> $tempComment,
 		sig			=> $sig,
-		subscriber_bonus	=> $subscriber_bonus,
 	};
+
+	if ($constants->{plugin}{Subscribe}) {
+		$preview->{subscriber_bonus} = $user->{is_subscriber} && $form->{nosubscriberbonus} ne 'on'
+			? 1 : 0;
+	}
 
 	my $tm = $user->{mode};
 	$user->{mode} = 'archive';
@@ -1135,7 +1135,8 @@ sub submitComment {
 		$pts = $maxScore if $pts > $maxScore;
 		$karma_bonus = 1 if $pts >= 1 && $user->{karma} > $constants->{goodkarma}
 			&& !$form->{nobonus};
-		$subscriber_bonus = 1 if $user->{is_subscriber}
+		$subscriber_bonus = 1 if $constants->{plugin}{Subscribe}
+			&& $user->{is_subscriber}
 			&& $form->{nosubscriberbonus} ne 'on';
 	}
 	# This is here to prevent posting to discussions that don't exist/are nd -Brian
@@ -1160,8 +1161,10 @@ sub submitComment {
 		uid		=> $posters_uid,
 		points		=> $pts,
 		karma_bonus	=> $karma_bonus ? 'yes' : 'no',
-		subscriber_bonus => $subscriber_bonus ? 'yes' : 'no',
 	};
+	if ($constants->{plugin}{Subscribe}) {
+		$clean_comment->{subscriber_bonus} = $subscriber_bonus ? 'yes' : 'no';
+	}
 
 	my $maxCid = $slashdb->createComment($clean_comment);
 

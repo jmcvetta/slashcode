@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.86 2003/02/22 19:48:57 brian Exp $
+# $Id: MySQL.pm,v 1.87 2003/02/25 18:52:53 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1637,6 +1637,7 @@ sub getRandUsersCreatedYest {
 		"SUBSTRING(created_at, 1, 10) >= SUBSTRING(DATE_SUB(
 			NOW(), INTERVAL 1 DAY
 		 ), 1, 10)");
+	$min ||= 0;
 	my $users_ar = $self->sqlSelectAllHashrefArray(
 		"uid, nickname, realemail",
 		"users",

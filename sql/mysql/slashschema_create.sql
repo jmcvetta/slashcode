@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.169 2004/10/06 03:27:45 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.170 2004/10/12 16:18:33 tvroom Exp $
 #
 
 #
@@ -1010,6 +1010,8 @@ CREATE TABLE topic_nexus_extras (
 	extras_textname VARCHAR(100) NOT NULL,
 	type ENUM('text', 'list') NOT NULL DEFAULT 'text',
 	content_type ENUM('story', 'comment') NOT NULL DEFAULT 'story',
+	required ENUM('no', 'yes') NOT NULL DEFAULT 'no',
+	ordering TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (extras_id),
 	UNIQUE tid_keyword (tid, extras_keyword)
 ) TYPE=InnoDB;

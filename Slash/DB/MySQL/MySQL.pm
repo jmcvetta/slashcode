@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.560 2004/04/15 01:58:22 tvroom Exp $
+# $Id: MySQL.pm,v 1.561 2004/04/15 05:42:15 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.560 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.561 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5540,21 +5540,23 @@ sub createMetaMod {
 			 !$m2_user->{is_admin};
 
 		$rows += 0; # if no error, returns 0E0 (true!), we want a numeric answer
+
 		my $ui_hr = { };
 		     if ($is_fair  && $m2s->{$mmid}{val} > 0) {
 			++$voted_up_fair if $m2s_orig{$mmid};
-			$ui_hr->{up_fair}	= "up_fair+1"
+			$ui_hr->{-up_fair}	= "up_fair+1";
 		} elsif ($is_fair  && $m2s->{$mmid}{val} < 0) {
 			++$voted_down_fair if $m2s_orig{$mmid};
-			$ui_hr->{down_fair}	= "down_fair+1"
+			$ui_hr->{-down_fair}	= "down_fair+1";
 		} elsif (!$is_fair && $m2s->{$mmid}{val} > 0) {
 			++$voted_up_unfair if $m2s_orig{$mmid};
-			$ui_hr->{up_unfair}	= "up_unfair+1"
+			$ui_hr->{-up_unfair}	= "up_unfair+1";
 		} elsif (!$is_fair && $m2s->{$mmid}{val} < 0) {
 			++$voted_down_unfair if $m2s_orig{$mmid};
-			$ui_hr->{down_unfair}	= "down_unfair+1"
+			$ui_hr->{-down_unfair}	= "down_unfair+1";
 		}
 		$self->sqlUpdate("users_info", $ui_hr, "uid=$mod_uid");
+
 		if ($rows) {
 			# If a row was successfully updated, insert a row
 			# into metamodlog.

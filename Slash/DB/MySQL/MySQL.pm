@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.440 2003/08/22 21:54:09 pudge Exp $
+# $Id: MySQL.pm,v 1.441 2003/08/25 20:36:44 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.440 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.441 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4375,6 +4375,13 @@ sub getStoryByTime {
 	my $topic   = $options->{topic}   || '';
 	my $section = $options->{section} || '';
 	my $where;
+	my $name  = 'story_by_time';
+	_genericCacheRefresh($self, $name, $constants->{story_expire} || 600); # use same cache time as for stories
+	my $cache = $self->{"_${name}_cache"} ||= {};
+
+	$self->{"_${name}_cache_time"} = time() if !keys %$cache;
+# any reason to force a refresh?
+#	%$cache = () if $refresh;
 
 	# We only do getStoryByTime() for stories that are more recent
 	# than twice the story archiving delay (or bytime_delay if defined).
@@ -4387,23 +4394,36 @@ sub getStoryByTime {
 	$bytime_delay = 7 if $bytime_delay < 7;
 
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
+	my $key = $sign;
 
 	if (!$section && !$topic && $user->{sectioncollapse}) {
 		$where .= ' AND displaystatus>=0';
+		$key .= '|>=';
 	} else {
 		$where .= ' AND displaystatus=0';
+		$key .= '|=';
 	}
 
 	$where .= " AND sid != '$story->{sid}'";
+	$key .= "|$story->{sid}";
+
 	if (!$topic && !$section) {
 		$where .= " AND tid not in ($user->{extid})" if $user->{extid};
 		$where .= " AND uid not in ($user->{exaid})" if $user->{exaid};
 		$where .= " AND section not in ($user->{exsect})" if $user->{exsect};
+		# don't cache if user has own prefs -- pudge
+		$key = $user->{extid} || $user->{exaid} || $user->{exsect} ? '' : $key . '|';
 	} elsif ($section) {
 		$where .= " AND section = '$section'";
+		$key .= "|$section";
 	} elsif ($topic) {
 		$where .= " AND tid = '$topic'";
+		$key .= "|$topic";
 	}
+
+	$key .= "|$time" if $key;
+
+	return $cache->{$key} if $key && defined $cache->{$key};
 
 #	print STDERR "SELECT title, sid, section, tid FROM stories WHERE " .
 #		"'$time' > DATE_SUB(NOW(), INTERVAL $bytime_delay DAY) AND time $sign '$time' AND time < NOW() AND writestatus != 'delete' $where " .
@@ -4421,6 +4441,8 @@ sub getStoryByTime {
 
 		"ORDER BY time $order LIMIT $limit"
 	);
+	# needs to be defined as empty
+	$cache->{$key} = $returnable || '' if $key;
 
 	return $returnable;
 }

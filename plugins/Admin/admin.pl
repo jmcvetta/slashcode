@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.169 2003/08/12 15:13:58 vroom Exp $
+# $Id: admin.pl,v 1.170 2003/08/18 19:37:05 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1030,9 +1030,9 @@ sub getRelated {
 sub otherLinks {
 	my($aid, $tid, $uid) = @_;
 
-	my $slashdb = getCurrentDB();
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $topics = $slashdb->getTopics();
+	my $topics = $reader->getTopics();
 	my @tids = ( $tid );
 	if (ref($tid) && ref($tid) eq 'ARRAY') {
 		@tids = ( @$tid );

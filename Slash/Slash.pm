@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.125 2003/04/22 20:03:09 jamie Exp $
+# $Id: Slash.pm,v 1.126 2003/04/24 04:47:47 jamie Exp $
 
 package Slash;
 
@@ -1452,7 +1452,7 @@ sub _hard_dispComment {
 		my $nick_param = fixparam($comment->{nickname});
 		$user_nick_to_display = qq{<A HREF="$constants->{real_rootdir}/~$nick_param">$nick_literal ($comment->{uid})</A>};
 		if ($constants->{plugin}{Subscribe} && $constants->{subscribe}
-			&& $comment->{subscriber_bonus}) {
+			&& $comment->{subscriber_bonus} eq 'yes') {
 			if ($constants->{plugin}{FAQSlashdot}) {
 				$user_nick_to_display .= qq{ <A HREF="/faq/com-mod.shtml#cm2600">*</A>};
 			} else {

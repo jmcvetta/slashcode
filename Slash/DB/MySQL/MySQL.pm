@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.203 2002/07/24 20:14:46 pudge Exp $
+# $Id: MySQL.pm,v 1.204 2002/07/30 01:07:22 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -38,6 +38,9 @@ my %descriptions = (
 
 	'submission-notes'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'string_param', "type='submission-notes'") },
+
+	'submission-state'
+		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='submission-state'") },
 
 	'months'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='months'") },
@@ -4399,10 +4402,7 @@ sub createStory {
 			-karma => $newkarma },
 		"uid=$suid") if !isAnon($suid);
 
-		$self->sqlUpdate('submissions',
-			{ del=>2 },
-			'subid=' . $self->sqlQuote($story->{subid})
-		);
+		$self->setSubmission($story->{subid}, { del => 2, sid => $story->{sid} });
 	}
 
 	$story->{submitter}	= $story->{submitter} ?

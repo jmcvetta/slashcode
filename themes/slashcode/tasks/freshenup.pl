@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.48 2004/09/14 19:05:39 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.49 2004/09/27 15:59:11 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -63,7 +63,7 @@ $task{$me}{code} = sub {
 		for my $story (@$deletable) {
 			$x++;
 			$dirty_skins{$story->{primaryskid}} = 1;
-			$slashdb->deleteStoryAll($story->{sid});
+			$slashdb->deleteStoryAll($story->{stoid});
 			slashdLog("Deleting $story->{sid} ($story->{title})")
 				if verbosity() >= 1;
 		}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.179 2004/09/16 13:53:37 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.180 2004/09/27 15:59:33 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2008,19 +2008,24 @@ sub getTodayArmorList {
 ########################################################
 # freshen.pl
 sub deleteStoryAll {
-	my($self, $sid) = @_;
-	my $sid_q = $self->sqlQuote($sid);
+	my($self, $id) = @_;
+	my $stoid = $self->getStoidFromSidOrStoid($id);
+	return 0 if !$stoid;
 
-#	$self->{_dbh}{AutoCommit} = 0;
+	my $story = $self->getStory($stoid);
+	my $discussion_id = $story->{discussion};
+
 	$self->sqlDo("SET AUTOCOMMIT=0");
-	my $discussion_id = $self->sqlSelect('id', 'discussions', "sid = $sid_q");
-	$self->sqlDelete("stories", "sid=$sid_q");
-	$self->sqlDelete("story_text", "sid=$sid_q");
+	my $rows = 0;
+	for my $table (qw( stories story_dirty story_files
+		story_param story_render_dirty story_text
+		story_topics_chosen story_topics_rendered )) {
+		$rows += $self->sqlDelete($table, "stoid=$stoid");
+	}
 	$self->deleteDiscussion($discussion_id) if $discussion_id;
-#	$self->{_dbh}->commit;
-#	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
 	$self->sqlDo("SET AUTOCOMMIT=1");
+	return $rows;
 }
 
 ########################################################

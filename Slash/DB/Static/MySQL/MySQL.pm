@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.66 2002/09/19 20:01:12 pater Exp $
+# $Id: MySQL.pm,v 1.67 2002/09/20 18:48:43 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -756,17 +756,6 @@ sub stirPool {
 }
 
 ########################################################
-# For moderatord and some utils
-sub getLastUser {
-	my($self) = @_;
-	# Why users_info instead of users?	- Cliff
-	# No reason, and I think the other was slower -Brian
-	my $totalusers  = $self->sqlSelect("max(uid)", "users");
-
-	return $totalusers;
-}
-
-########################################################
 # For tailslash
 sub pagesServed {
 	my($self) = @_;
@@ -812,8 +801,7 @@ sub fetchEligibleModerators {
 	my $constants = getCurrentStatic();
 	my $hitcount = defined($constants->{m1_eligible_hitcount})
 		? $constants->{m1_eligible_hitcount} : 3;
-	my $eligible_users = $self->getLastUser()
-		* ($constants->{m1_eligible_percentage} || 0.8);
+	my $youngest_uid = $self->getYoungestEligibleModerator();
 
 	# Whether the var "authors_unlimited" is set or not, it doesn't
 	# much matter whether we return admins in this list.
@@ -822,7 +810,7 @@ sub fetchEligibleModerators {
 		$self->sqlSelectAll(
 			"users_info.uid, COUNT(*) AS c",
 			"users_info, users_prefs, accesslog",
-			"users_info.uid < $eligible_users
+			"users_info.uid <= $youngest_uid
 			 AND users_info.uid=accesslog.uid
 			 AND users_info.uid=users_prefs.uid
 			 AND (op='article' OR op='comments')
@@ -835,6 +823,8 @@ sub fetchEligibleModerators {
 
 	return $returnable;
 }
+
+
 ########################################################
 # For run_moderatord.pl
 # Quick overview:  This method takes a list of uids who are eligible

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.225 2002/09/19 16:33:25 jamie Exp $
+# $Id: MySQL.pm,v 1.226 2002/09/20 18:48:43 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.225 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.226 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -359,7 +359,6 @@ sub getM2Consequences {
 			for my $key (keys %$retval) {
 				$self->_set_csq($key, $retval->{$key});
 			}
-#use Data::Dumper; print STDERR "frac '$frac' ckey '$ckey' retval " . Dumper($retval);
 			last;
 		}
 	}
@@ -443,12 +442,10 @@ sub setModsSaved {
 	my($self, $user, $mods_saved_ar) = @_;
 	$user = getCurrentUser() if !$user;
 
-#print STDERR "mods_saved_ar  '@$mods_saved_ar'\n";
 	my $mods_saved_txt = join(",",
 		sort { $a <=> $b }
 		grep /^\d+$/,
 		@$mods_saved_ar);
-#print STDERR "mods_saved_txt '$mods_saved_txt'\n";
 	$self->setUser($user->{uid}, { mods_saved => $mods_saved_txt });
 }
 
@@ -1760,7 +1757,6 @@ sub deleteModeratorlog {
 	if ($opts->{cid}) {
 		$where = 'cid=' . $self->sqlQuote($opts->{cid});
 	} elsif ($opts->{sid}) {
-		# XXX This will not work. - Jamie 2002/09/02
 		$where = 'sid=' . $self->sqlQuote($opts->{sid});
 	} else {
 		return;
@@ -5464,6 +5460,24 @@ sub getSimilarStories {
 	}
 #print STDERR "ret_ar " . Dumper($ret_ar);
 	return $ret_ar;
+}
+
+########################################################
+# For run_moderatord.pl and plugins/Stats/adminmail.pl
+sub getYoungestEligibleModerator {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+	my $youngest_uid = $self->getLastUser()
+		* ($constants->{m1_eligible_percentage} || 0.8);
+	return int($youngest_uid);
+}
+
+########################################################
+# For run_moderatord.pl and some utils
+sub getLastUser {
+	my($self) = @_;
+	my $totalusers = $self->sqlSelect("MAX(uid)", "users_count");
+	return $totalusers;
 }
 
 ########################################################

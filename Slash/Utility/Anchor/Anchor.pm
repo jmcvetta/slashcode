@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.45 2003/04/26 13:38:03 jamie Exp $
+# $Id: Anchor.pm,v 1.46 2003/04/29 19:04:02 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -495,7 +495,7 @@ sub prepAds {
 
 ########################################################
 sub getAd {
-	my($num, $log) = @_;
+	my($num) = @_;
 	$num ||= 1;
 	my $user = getCurrentUser();
 
@@ -504,9 +504,8 @@ sub getAd {
 		# general), don't generate the actual ad, just generate some
 		# shtml code which *will* generate the actual ad when it's
 		# executed later.
-		$log = $log ? " Slash::createLog('$log');" : "";
 		return <<EOT;
-<!--#perl sub="sub { use Slash;$log print Slash::getAd($num); }" -->
+<!--#perl sub="sub { use Slash; print Slash::getAd($num); }" -->
 EOT
 	}
 
@@ -571,4 +570,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.45 2003/04/26 13:38:03 jamie Exp $
+$Id: Anchor.pm,v 1.46 2003/04/29 19:04:02 pudge Exp $

@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.65 2004/03/10 19:28:04 jamiemccarthy Exp $
+# $Id: THEME,v 1.66 2004/03/15 18:28:20 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -95,6 +95,7 @@ task=tasks/refresh_section_metakeywords.pl
 task=tasks/rss_submit.pl
 task=tasks/run_moderatord.pl
 task=tasks/run_portald.pl
+task=tasks/set_cids.pl
 task=tasks/set_recent_topics.pl
 task=tasks/spamarmor.pl
 template=templates/admin;menu;default

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.154 2003/02/19 17:06:57 pater Exp $
+# $Id: users.pl,v 1.155 2003/02/20 20:33:16 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -584,7 +584,7 @@ sub newUser {
 			if ($form->{newsletter} || $form->{comment_reply} || $form->{headlines}) {
 				my $messages  = getObject('Slash::Messages');
 				my %params;
-				$params{MSG_CODE_NEW_COMMENT()} = MSG_MODE_EMAIL()
+				$params{MSG_CODE_COMMENT_REPLY()} = MSG_MODE_EMAIL()
 					if $form->{comment_reply};
 				$params{MSG_CODE_NEWSLETTER()}  = MSG_MODE_EMAIL()
 					if $form->{newsletter};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.409 2003/06/02 17:03:56 pudge Exp $
+# $Id: MySQL.pm,v 1.410 2003/06/03 16:31:39 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.409 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.410 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4908,11 +4908,10 @@ error in getStoriesEssentials
 EOT
 
 	while (my $story = $cursor->fetchrow_hashref) {
-		if ($form->{issue}) {
-			my $issue= timeCalc($story->{time}, '%Y%m%d');
-			next if timeCalc($story->{time}, '%Y%m%d') ne $form->{issue};
-			$story->{issue} = $issue;
-		}
+#		if ($form->{issue}) {
+#			my $issue= timeCalc($story->{time}, '%Y%m%d');
+#			$story->{issue} = $issue;
+#		}
 		push @stories, $story;
 		last if ++$count >= $limit;
 	}

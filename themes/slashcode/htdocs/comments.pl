@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.200 2004/07/08 15:43:37 cowboyneal Exp $
+# $Id: comments.pl,v 1.201 2004/08/24 23:45:21 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -593,7 +593,7 @@ sub validateComment {
 		my $min_line_len = $constants->{comments_min_line_len}
 			+ ($min_line_len_max - $constants->{comments_min_line_len})
 				* ($check_prefix_len - $kickin)
-				/ ($max_comment_len - $kickin);
+				/ ($max_comment_len - $kickin); # /
 
 		my $check_notags = strip_nohtml($check_prefix);
 		# Don't count & or other chars used in entity tags;  don't count

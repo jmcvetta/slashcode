@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: topic_popup_static.pl,v 1.1 2004/06/25 06:45:43 pudge Exp $
+# $Id: topic_popup_static.pl,v 1.2 2004/06/29 17:18:50 pudge Exp $
 
 use strict;
 
@@ -18,6 +18,7 @@ $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
+	Slash::Utility::Anchor::getSkinColors();
 	for my $type ('css', 'js') {
 		my $new = Slash::Admin::PopupTree::getPopupTree({}, {}, { type => $type, Nocomm => 1 });
 		next unless $new;

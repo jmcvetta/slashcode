@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.9 2002/03/01 07:47:15 jamie Exp $
+# $Id: subscribe.pl,v 1.10 2002/03/01 15:47:09 jamie Exp $
 
 use strict;
 
@@ -39,15 +39,6 @@ sub main {
 		},
 	};
 
-	# subscribe.pl is not yet for regular users
-	if ($user->{seclev} < 100
-		&& $op ne 'paypal'
-		&& $op ne 'pause'
-		&& $user->{hits_paidfor} == 0) {
-		my $rootdir = getCurrentStatic('rootdir');
-		redirect("$rootdir/users.pl");
-		return;
-	}
 	$op = 'default' unless $ops->{$op};
 
 	header("subscribe") unless $op eq 'pause';

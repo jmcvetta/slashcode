@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.10 2002/03/01 15:04:38 jamie Exp $
+# $Id: Subscribe.pm,v 1.11 2002/03/01 15:47:09 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -145,6 +145,10 @@ sub convertPagesToDollars {
 sub insertPayment {
 	my($self, $payment) = @_;
 	my $slashdb = getCurrentDB();
+
+	# Can't buy pages for an Anonymous Coward.
+	return 0 if isAnon($payment->{uid});
+
 	my $success = 1; # set to 0 on insert failure
 
 	# If no transaction id was given, we'll be making up one of our own.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.36 2002/09/17 19:54:43 jamie Exp $
+# $Id: User.pm,v 1.37 2002/09/20 18:34:16 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -79,7 +79,8 @@ sub handler {
 			&& Slash::Apache::ConnectionIsSSL() ) {
 			# Accessing non-dynamic URL on SSL webserver; redirect
 			# to the non-SSL URL.
-			my $newloc = $uri . "?" . $r->args;
+			my $newloc = $uri;
+			$newloc .= "?" . $r->args if $r->args;
 			$r->err_header_out(Location =>
 				URI->new_abs($newloc,
 					$constants->{absolutedir}) );
@@ -205,7 +206,8 @@ sub handler {
 		) ) {                             
 		# User is not an admin but is trying to connect to an admin-only
 		# webserver.  Redirect them to the non-SSL URL.
-		my $newloc = $uri . "?" . $r->args;
+		my $newloc = $uri;
+		$newloc .= "?" . $r->args if $r->args;
 		$r->err_header_out(Location =>
 			URI->new_abs($newloc, $constants->{absolutedir}));
 		return REDIRECT;

@@ -100,7 +100,7 @@ FOREACH story = storylistref;
 		</FONT>
 		</TD>
 		<TD>
-		<FONT SIZE="2">[% story.comments %]</FONT>
+		<FONT SIZE="2">[% story.commentcount %]</FONT>
 		</TD>
 
 		<TD><FONT SIZE="2">[% story.td2 %]&nbsp;
@@ -124,4 +124,4 @@ FOREACH story = storylistref;
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.23 2004/07/08 18:03:31 jamiemccarthy Exp $
+$Id: listStories;admin;default,v 1.24 2004/07/10 23:47:26 jamiemccarthy Exp $

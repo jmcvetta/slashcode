@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.19 2003/04/01 00:32:00 jamie Exp $
+# $Id: slashmon,v 1.20 2003/08/28 11:16:47 jamie Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -28,7 +28,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -62,12 +62,16 @@ sub init {
 	$slashdb = getCurrentDB();
 	$constants = getCurrentStatic();
 
+	my $vus_hr = {
+		map { ( $_, 1 ) }
+		@{$slashdb->sqlSelectColArrayref('virtual_user', 'dbs')}
+	};
 	my $vus = [ (
 		$slashdb->{virtual_user},
 		sort { $a cmp $b }
 		grep { $_ ne $slashdb->{virtual_user} }
-		@{$slashdb->sqlSelectColArrayref('virtual_user', 'dbs')}
-	)];
+		keys %$vus_hr
+	) ];
 	my $log_db = $slashdb->getDBs()->{log}[0]{virtual_user} || '';
 
 	# Set up the @db array based on what virtual users we have.

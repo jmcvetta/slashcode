@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.12 2000/07/24 20:37:31 cbwood Exp $
+#  $Id: slashdotrc.pl,v 1.13 2000/08/03 18:19:20 cbwood Exp $
 ###############################################################################
 require URI;
 
@@ -79,9 +79,10 @@ my %my_conf = (
 	m2_toomanyunfair	=> 0.3,		# Minimum % of unfairs for which M2 is ignored.
 	m2_bonus		=> '+1',	# Bonus for participating in meta-moderation.
 	m2_penalty		=> '-1',	# Penalty for misuse of meta-moderation.
-	m2_userpercentage	=> 0.9		# UID must be below this percentage of the total userbase to metamoderate.
+	m2_userpercentage	=> 0.9,		# UID must be below this percentage of the total userbase to metamoderate.
 	comment_minscore	=> -1,		# Minimum score for a specific comment.
 	comment_maxscore	=> 5,		# Maximum score for a specific comment.
+	submission_bonus	=> 3,		# Bonus given to user if submission is used.
 	goodkarma		=> 25,		# Users get bonus points for posts if karma above this value
 	badkarma		=> -10,		# Users get penalized for posts if karma is below this value
 	maxkarma		=> 50,		# Maximum karma a user can accumulate.

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.10 2000/07/26 14:04:20 cbwood Exp $
+#  $Id: metamod.pl,v 1.11 2000/08/03 18:19:20 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -190,7 +190,7 @@ sub metaMod {
 			sqlUpdate("users_info", { -m2unfair => "m2unfair+1" },
 				"uid=$muid");
 			sqlUpdate("users_info", { -karma => "karma-1" },
-				"$muid=uid and karma>$I{badkarma_limit}");
+				"$muid=uid and karma>$I{badkarma}");
 		}
 	}
 	# Time is now fixed at form submission time to ease 'debugging'

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.82 2003/02/03 06:50:55 jamie Exp $
+# $Id: MySQL.pm,v 1.83 2003/02/03 07:20:29 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -460,6 +460,7 @@ sub decayTokens {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 	my $days = $constants->{mod_token_decay_days} || 14;
+	my $min_k = ($constants->{mod_elig_minkarma} || 0) - 3;
 	my $perday = int($constants->{mod_token_decay_perday} || 0);
 
 	# If no decay wanted, nothing need be done.
@@ -470,7 +471,7 @@ sub decayTokens {
 	my $uids_ar = $self->sqlSelectColArrayref(
 		"uid",
 		"users_info",
-		"lastaccess < DATE_SUB(NOW(), INTERVAL $days DAY)
+		"(lastaccess < DATE_SUB(NOW(), INTERVAL $days DAY) OR karma < $min_k)
 		 AND tokens > 0"
 	);
 	my $uids_in = join(",", sort @$uids_ar);

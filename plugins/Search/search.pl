@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.3 2001/04/18 18:21:56 brian Exp $
+# $Id: search.pl,v 1.4 2001/04/23 13:57:56 brian Exp $
 
 use strict;
 use Slash;
@@ -68,6 +68,22 @@ sub _authors {
 }
 
 #################################################################
+sub _buildargs {
+	my ($form) = @_;
+	my $uri;
+
+	for (qw[threshold query author op topic section]) {
+		my $x = "";
+		$x =  $form->{$_} if defined $form->{$_} && $x eq "";
+		$x =~ s/ /+/g;
+		$uri .= "$_=$x&" unless $x eq "";
+	}
+	$uri =~ s/&$//;
+
+	return $uri;
+}
+
+#################################################################
 sub commentSearch {
 	my ($form, $constants) = @_;
 	my $slashdb = getCurrentDB();
@@ -101,6 +117,7 @@ sub commentSearch {
 		comments => $comments,
 		back		=> $back,
 		forward		=> $forward,
+		args		=> _buildargs($form),
 	});
 }
 
@@ -137,6 +154,7 @@ sub userSearch {
 		users => $users,
 		back		=> $back,
 		forward		=> $forward,
+		args		=> _buildargs($form),
 	});
 }
 
@@ -173,6 +191,7 @@ sub storySearch {
 		stories => $stories,
 		back		=> $back,
 		forward		=> $forward,
+		args		=> _buildargs($form),
 	});
 }
 

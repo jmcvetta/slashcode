@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ScheduleShifts.pm,v 1.2 2005/03/09 21:28:14 pudge Exp $
+# $Id: ScheduleShifts.pm,v 1.3 2005/03/11 00:06:39 pudge Exp $
 
 package Slash::ScheduleShifts;
 
@@ -19,7 +19,7 @@ use base 'Slash::DB::MySQL';
 use constant SHIFT_DEFAULT		=> -2;
 use constant SHIFT_NOTSET		=> -1;
 
-our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our @DOW = qw(sun mon tue wed thu fri sat);
 our %DOW;
@@ -387,7 +387,6 @@ sub getShift {
 	my $tzcode   = $constants->{shift_shifts_tz};
 
 	# hr begin in our defined TZ, length in hours
-	my @shifts = map { [ split /=/ ] } split /,/, $constants->{shift_shifts};
 	my @shifts = map {
 		[ @{ %{ $self->{shift_defs}{$_} } }{qw(start length)} ]
 	} @{ $self->{shift_types} };

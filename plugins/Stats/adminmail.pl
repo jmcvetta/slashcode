@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.186 2004/11/29 16:43:55 tvroom Exp $
+# $Id: adminmail.pl,v 1.187 2004/12/19 00:46:39 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -518,8 +518,7 @@ EOT
 	}
 	
 	foreach my $day (@ah_days){
-		my $avg = $stats->sqlSelect("value", "stats_daily",
-			"day='$day' AND skid='0' AND name='avg_comments_per_story'");
+		my $avg = $stats->getStat("avg_comments_per_story", $day, 0);
 		push @{$data{avg_comments_per_story}}, sprintf("%12.1f", $avg);
 	}
 	slashdLog("Story Comment Counts End");
@@ -679,7 +678,7 @@ EOT
 	}
 	
 	foreach my $day (@ah_days){
-		my $avg = $stats->sqlSelect("value", "stats_daily", "day='$day' and skid='0' and name='avg_hits_per_story'");
+		my $avg = $stats->getStat("avg_hits_per_story", $day, 0);
 		push @{$data{avg_hits_per_story}}, sprintf("%12.1f", $avg);
 	}
 

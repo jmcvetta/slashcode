@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.152 2004/12/09 04:38:12 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.153 2004/12/19 00:46:39 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -1091,6 +1091,17 @@ sub countDailySubscribers {
 }
 
 ########################################################
+sub getStat {
+	my($self, $name, $day, $skid) = @_;
+	$skid ||= 0;
+	my $name_q = $self->sqlQuote($name);
+	my $day_q =  $self->sqlQuote($day);
+	my $skid_q = $self->sqlQuote($skid);
+	return $self->sqlSelect("value", "stats_daily",
+		"name=$name_q AND day=$day_q AND skid=$skid_q");
+}
+
+########################################################
 sub getStatToday {
 	my($self, $name) = @_;
 	my $name_q = $self->sqlQuote($name);
@@ -1769,4 +1780,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.152 2004/12/09 04:38:12 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.153 2004/12/19 00:46:39 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hook.pm,v 1.2 2002/04/03 20:33:09 brian Exp $
+# $Id: Hook.pm,v 1.3 2002/04/12 15:28:54 pudge Exp $
 
 package Slash::Hook;
 use strict;
@@ -16,9 +16,10 @@ use vars qw($VERSION);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashHook);
 
+my %classes;
 
 sub slashHook {
 	my($param, $options) = @_;
@@ -26,18 +27,36 @@ sub slashHook {
 
 	my $hooks = $slashdb->getHooksByParam($param);
 	for my $hook (@$hooks) {
-		eval "require $hook->{class}";
+		my $class = $hook->{class};
+		my $function = $class . '::' . $hook->{subroutine};
+
+		if ($classes{$class}) {			# already require'd
+			if ($classes{$class} eq 'NA') {	# already failed
+				next;
+			}
+		} else {
+			eval "require $class";		# we cache because this is expensive,
+							# even if it has already succeeded or
+							# failed, just by doing the eval -- pudge
+			if ($@) {			# failed
+				$classes{$class} eq 'NA';
+				next;
+			} else {			# success!
+				$classes{$class} = 1;
+			}
+		}
+
 		my $code;
 		{
 			no strict 'refs';
-			$code = \&{ $hook->{class} . '::' . $hook->{subroutine} };
+			$code = \&{ $function };
 		}
 		if (defined (&$code)) {
 			unless ($code->($options)) {
-					errorLog("Failed executing hook ($param) - $hook->{class}::$hook->{subroutine}");
+				errorLog("Failed executing hook ($param) - $function");
 			}
 		} else {
-			errorLog("Failed trying to do hook ($param) - $hook->{class}::$hook->{subroutine}");
+			errorLog("Failed trying to do hook ($param) - $function");
 		}
 	}
 }

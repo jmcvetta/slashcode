@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.223 2004/07/16 20:30:51 tvroom Exp $
+# $Id: admin.pl,v 1.224 2004/07/16 22:05:27 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1916,7 +1916,6 @@ sub updateStory {
 		introtext	=> $form->{introtext},
 		relatedtext	=> $form->{relatedtext},
 		-rendered	=> 'NULL', # freshenup.pl will write this
-		in_trash	=> 'no',   # clicking Delete is the only way to trash a story
 	};
 
 	for (qw(dept bodytext relatedtext)) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.75 2003/09/02 15:04:25 pater Exp $
+# $Id: journal.pl,v 1.76 2004/01/27 23:01:00 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -207,9 +207,10 @@ sub displayRSS {
 	my @items;
 	for my $article (@$articles) {
 		push @items, {
+			story		=> {
+				'time'		=> $article->[0],
+			},
 			title		=> $article->[2],
-# needs a var controlling this ... what to use as desc?
-#			description	=> timeCalc($article->[0]),
 			description	=> strip_mode($article->[1], $article->[4]),
 			'link'		=> "$constants->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]"
 		};

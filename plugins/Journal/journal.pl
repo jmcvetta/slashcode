@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.52 2002/10/21 18:31:23 jamie Exp $
+# $Id: journal.pl,v 1.53 2002/10/22 15:15:04 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -836,6 +836,14 @@ sub get_entries {
 		};
 	}
 	return \@items;
+}
+
+# this WILL NOT remain in journal.pl, it is here only temporarily, until
+# we get the more generic SOAP interface up and running, and then the Search
+# SOAP working (this will be in the Search SOAP API, i think)
+sub get_uid_from_nickname {
+	my($self, $nick) = @_;
+	return getCurrentDB->getUserUID($nick);
 }
 
 sub _save_params {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.54 2003/03/04 19:56:32 pudge Exp $
+# $Id: Search.pm,v 1.55 2003/03/28 21:48:13 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -330,7 +330,7 @@ sub findPollQuestion {
 
 	$form->{query} = $self->_cleanQuery($form->{query});
 	my $query = $self->sqlQuote($form->{query});
-	my $columns = "qid, question, voters, date";
+	my $columns = "*";
 	$columns .= ", TRUNCATE( " . $self->_score('question', $form->{query}, $constants->{search_method}) . ", 1) as score "
 		if $form->{query};
 	my $tables = "pollquestions";

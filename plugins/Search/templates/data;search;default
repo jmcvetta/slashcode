@@ -61,12 +61,23 @@ __template__
 	[% returnme.data_constant = 1 %]
 	All Subsections
 
-[% CASE 'search_result' %]
-	Searching For: [% text %]
+[% CASE 'search_titlebar_title' %]
+	[% IF text.length > 0 %]
+		Searching For: [% text %]
+	[% ELSE %]
+		Search [% constants.sitename %]
+	[% END %]
+
+[% CASE 'search_header_title' %]
+	[% IF text.length > 0 %]
+		Search '[% text %]'
+	[% ELSE %]
+		Search [% constants.sitename %]
+	[% END %]
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;search;default,v 1.8 2004/04/20 19:25:11 pudge Exp $
+$Id: data;search;default,v 1.9 2004/10/03 16:03:44 jamiemccarthy Exp $

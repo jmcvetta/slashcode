@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.82 2004/07/23 15:35:26 pudge Exp $
+# $Id: search.pl,v 1.83 2004/10/03 16:03:44 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -71,10 +71,12 @@ sub main {
 		$form->{op} = 'stories' if !exists($ops_rss{$form->{op}});
 		$ops_rss{$form->{op}}->($form, $constants, $slashdb, $searchDB, $gSkin);
 	} else {
-		# Yep, these are hardcoded, and someday this should change... -Brian 
 		my $text = strip_notags($form->{query});
-		header("$constants->{sitename}: Search '$text'") or return;
-		titlebar("100%", getData('search_result', { text => $text }));
+		my $header_title   = getData('search_header_title',   { text => $text });
+		my $titlebar_title = getData('search_titlebar_title', { text => $text });
+		header($header_title) or return;
+		titlebar("100%", $titlebar_title);
+
 		$form->{op} = 'stories' unless exists $ops{$form->{op}};
 
 		# Here, panic mode is handled without needing to call the

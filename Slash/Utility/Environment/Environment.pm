@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.119 2004/03/16 17:54:25 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.120 2004/03/24 18:02:19 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1311,7 +1311,7 @@ sub prepareUser {
 	}
 
 	$user->{state}{post}	= $method eq 'POST' ? 1 : 0;
-	@{$user}{qw[ipid subnetid]} = get_ipids($hostip);
+	@{$user}{qw[ipid subnetid classbid hostip]} = get_ipids($hostip);
 
 	my @defaults = (
 		['mode', 'thread'], qw[
@@ -1440,10 +1440,11 @@ sub get_ipids {
 		return $locationid eq 'classbid' ? $classbid
 		     : $locationid eq 'subnetid' ? $subnetid
 		     : $locationid eq 'ipid'     ? $ipid
+		     : $locationid eq 'ip'       ? $hostip
 		     : '';
 	}
 
-	return($ipid, $subnetid, $classbid);
+	return($ipid, $subnetid, $classbid, $hostip);
 }
 
 #========================================================================
@@ -2356,4 +2357,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.119 2004/03/16 17:54:25 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.120 2004/03/24 18:02:19 jamiemccarthy Exp $

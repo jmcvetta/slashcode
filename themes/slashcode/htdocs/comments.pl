@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.176 2004/03/24 05:31:03 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.177 2004/03/24 18:02:19 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -865,15 +865,18 @@ sub validateComment {
 	# If we can, they're coming from an open HTTP proxy, which
 	# we probably don't want to allow to post.
 	if ($user->{is_anon} && $constants->{comments_portscan_anon_for_proxy}) {
-		my $is_proxy = $slashdb->checkForOpenProxy();
+		my $is_trusted = $slashdb->checkIsTrusted($user->{ipid});
+		if ($is_trusted ne 'yes') {
+			my $is_proxy = $slashdb->checkForOpenProxy($user->{hostip});
 print STDERR scalar(localtime) . " comments.pl cfop returned '$is_proxy'\n";
-		if ($is_proxy) {
-			$$error_message = getError('open proxy', {
-				unencoded_ip	=> $ENV{REMOTE_ADDR},
-				port		=> $is_proxy,
-			});
-			$form_success = 0;
-			return;
+			if ($is_proxy) {
+				$$error_message = getError('open proxy', {
+					unencoded_ip	=> $ENV{REMOTE_ADDR},
+					port		=> $is_proxy,
+				});
+				$form_success = 0;
+				return;
+			}
 		}
 	}
 

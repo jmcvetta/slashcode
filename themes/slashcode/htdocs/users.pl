@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.239 2004/05/04 19:37:12 pudge Exp $
+# $Id: users.pl,v 1.240 2004/05/05 22:00:38 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -306,7 +306,7 @@ sub main {
 	# this will only redirect if it is a section-based rootdir, and
 	# NOT an isolated section (which has the same rootdir as real_rootdir)
 	} elsif ($op eq 'userclose' && $constants->{rootdir} ne $constants->{real_rootdir}) {
-		redirect($constants->{real_rootdir}, '/users.pl?op=userclose');
+		redirect($constants->{real_rootdir} . '/login.pl?op=userclose');
 
 	} elsif ($op eq 'savepasswd') {
 		my $error_flag = 0;
@@ -336,8 +336,9 @@ sub main {
 	# Figure out what the op really is.
 	$op = 'userinfo' if (! $form->{op} && ($form->{uid} || $form->{nick}));
 	$op ||= $user->{is_anon} ? 'userlogin' : 'userinfo';
-	if ($user->{is_anon} && $ops->{$op}{seclev} > 0) {
-		$op = 'default';
+	if ($user->{is_anon} && ( ($ops->{$op}{seclev} > 0) || ($op =~ /^newuserform|mailpasswdform|displayform$/) )) {
+		redirect($constants->{real_rootdir} . '/login.pl');
+		return;
 	} elsif ($user->{seclev} < $ops->{$op}{seclev}) {
 		$op = 'userinfo';
 	}

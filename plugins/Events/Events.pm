@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.6 2002/05/04 17:47:23 brian Exp $
+# $Id: Events.pm,v 1.7 2002/11/09 23:36:01 brian Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -88,9 +88,15 @@ sub getEventsByDay {
 
 	my $user = getCurrentUser();
 	my $section;
-	$section ||= $user->{section};
 	my $where = "((to_days(begin) <= to_days('$date')) AND (to_days(end) >= to_days('$date')))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
-	$where .= " AND stories.section = '$section'" if $section;
+	my $slashdb = getCurrentDB();
+	my $SECT = $slashdb->getSection(getCurrentForm('section'));
+	if ($SECT->{type} eq 'collected') {
+		$where .= " AND stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+			if $SECT->{contained} && @{$SECT->{contained}};
+	} else {
+		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
+	}
 	my $order = "ORDER BY tid";
 	$order .= " LIMIT $limit "
 		if $limit;
@@ -111,7 +117,6 @@ sub getEvents {
 	$begin ||= timeCalc(0, '%Y-%m-%d');
 
 	my $user = getCurrentUser();
-	$section ||= $user->{section};
 	my $where = " to_days(begin) >= to_days('$begin') "; 
 	$where = " ($where AND to_days(end) <= to_days('$end')) " if $end; 
 	$where .= " AND stories.sid = event_dates.sid";
@@ -119,7 +124,15 @@ sub getEvents {
 	$where .= " AND topics.tid = stories.tid";
 
 	$where .= " AND stories.tid = $topic" if $topic;
-	$where .= " AND stories.section = '$section'" if $section;
+
+	my $slashdb = getCurrentDB();
+	my $SECT = $slashdb->getSection($section);
+	if ($SECT->{type} eq 'collected') {
+		$where .= " AND stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+			if $SECT->{contained} && @{$SECT->{contained}};
+	} else {
+		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
+	}
 
 	my $order = "ORDER BY tid";
 	$order .= " LIMIT $limit "

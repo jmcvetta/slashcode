@@ -64,7 +64,6 @@ gstatic total:        -          -   [% grand_total_static %]
 [% END -%]
 [% END %]
 
-    accesslog: [% accesslog %] rows total
      formkeys: [% formkeys %] rows total
      comments: [% comments %] posted yesterday
   submissions: [% submissions %] submissions 
@@ -201,4 +200,4 @@ Count  Nickname
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.81 2004/11/29 17:56:53 tvroom Exp $
+$Id: display;adminmail;default,v 1.82 2005/01/18 18:34:25 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.650 2004/08/02 12:58:15 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.651 2004/08/02 13:29:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.650 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.651 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4544,21 +4544,22 @@ sub getBanList {
 	my($self, $refresh) = @_;
 	my $constants = getCurrentStatic();
 	my $debug = $constants->{debug_db_cache};
-	my $mcd = $self->getMCD();
-	my $mcdkey = "$self->{_mcd_keyprefix}:al:ban" if $mcd;
-	my $banlist_ref;
+#	my $mcd = $self->getMCD();
+#	my $mcdkey = "$self->{_mcd_keyprefix}:al:ban" if $mcd;
+#	my $banlist_ref;
 
 	# Randomize the expire time a bit;  it's not good for the DB
 	# to have every process re-ask for this at the exact same time.
 	my $expire_time = $constants->{banlist_expire};
 	$expire_time += int(rand(60)) if $expire_time;
 	_genericCacheRefresh($self, 'banlist', $expire_time);
-	$banlist_ref = $self->{_banlist_cache} ||= {};
-
-	if (!keys %$banlist_ref && $mcd) {
-		$banlist_ref = $mcd->get($mcdkey);
-		return $banlist_ref if $banlist_ref;
-	}
+	my $banlist_ref = $self->{_banlist_cache} ||= {};
+#	$banlist_ref = $self->{_banlist_cache} ||= {};
+#
+#	if (!keys %$banlist_ref && $mcd) {
+#		$banlist_ref = $mcd->get($mcdkey);
+#		return $banlist_ref if $banlist_ref;
+#	}
 
 	%$banlist_ref = () if $refresh;
 
@@ -4583,9 +4584,9 @@ sub getBanList {
 		$banlist_ref->{_junk_placeholder} = 1;
 		$self->{_banlist_cache_time} = time() if !$self->{_banlist_cache_time};
 
-		if ($mcd) {
-			$mcd->set($mcdkey, $banlist_ref, $constants->{banlist_expire} || 900);
-		}
+#		if ($mcd) {
+#			$mcd->set($mcdkey, $banlist_ref, $constants->{banlist_expire} || 900);
+#		}
 	}
 
 	if ($debug) {

@@ -50,6 +50,7 @@ __template__
 	<INPUT TYPE="HIDDEN" NAME="startat" VALUE="[% user.startat %]">
 	<INPUT TYPE="HIDDEN" NAME="threshold" VALUE="[% user.threshold %]">
 	<INPUT TYPE="HIDDEN" NAME="commentsort" VALUE="[% user.commentsort %]">
+        [% IF gotmodwarning %]<INPUT TYPE="HIDDEN" NAME="gotmodwarning" VALUE="1">[% END %]
 
 [% IF newdiscussion || form.newdiscussion %]
 	<INPUT TYPE="HIDDEN" NAME="indextype" VALUE="[% indextype %]">
@@ -209,4 +210,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.28 2003/05/15 15:53:11 jamie Exp $
+$Id: edit_comment;comments;default,v 1.29 2003/07/10 19:06:46 vroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: performance_stats.pl,v 1.1 2004/05/25 21:17:47 tvroom Exp $
+# $Id: performance_stats.pl,v 1.2 2004/05/25 21:44:54 tvroom Exp $
 
 use strict;
 
@@ -14,7 +14,7 @@ use vars qw( %task $me );
 # GMT if you installed everything correctly.  So 6:07 AM GMT is a good
 # sort of midnightish time for the Western Hemisphere.  Adjust for
 # your audience and admins.
-$task{$me}{timespec} = '0-59/1 * * *';
+$task{$me}{timespec} = '0-59/1 * * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, this can wait
 $task{$me}{on_startup} = 1;
 $task{$me}{code} = sub {

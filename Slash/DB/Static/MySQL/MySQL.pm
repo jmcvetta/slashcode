@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.212 2005/01/11 03:19:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.213 2005/01/13 14:43:59 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -631,7 +631,7 @@ sub deleteOldModRows {
 	while ($need_bottom && $junk_bottom < $need_bottom) {
 		$junk_bottom += $max_rows;
 		$junk_bottom = $need_bottom if $need_bottom < $junk_bottom;
-		$self->sqlDelete('moderatorlog', "id < $junk_bottom");
+		$self->sqlDelete('metamodlog', "id < $junk_bottom");
 		sleep $sleep_between
 			if $sleep_between && $junk_bottom < $need_bottom;
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.43 2003/03/13 22:08:22 brian Exp $
+# $Id: Display.pm,v 1.44 2003/03/14 04:25:24 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -499,7 +499,8 @@ sub linkStory {
 
 	# We need to make sure we always get the right link -Brian
 	$story_link->{section} ||= $reader->getStory($story_link->{sid}, 'section');
-	$story_link->{'link'} ||= $reader->getStory($story_link->{sid}, 'title');
+	$story_link->{'link'} = $reader->getStory($story_link->{sid}, 'title')
+		if $story_link->{'link'} eq "";
 	my $section = $reader->getSection($story_link->{section});
 	my $url = $section->{rootdir} || $constants->{real_rootdir} || $constants->{rootdir};
 
@@ -1548,4 +1549,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.43 2003/03/13 22:08:22 brian Exp $
+$Id: Display.pm,v 1.44 2003/03/14 04:25:24 jamie Exp $

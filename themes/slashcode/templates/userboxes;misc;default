@@ -119,20 +119,6 @@ IF !useredit.is_anon;
 			'">Send Message</A></B>)';
 		END;
 
-		IF useredit.icq;
-			'<BR><B>ICQ UIN: </B>';
-			'<IMG SRC="http://web.icq.com/whitepages/online?icq=';
-			useredit.icq | strip_attribute;
-			'&amp;img=5" height="18" width="18">';
-			useredit.icq | strip_literal;
-			' (<B><A HREF="http://wwp.icq.com/scripts/search.dll?to=';
-			useredit.icq | strip_attribute;
-			'">Add User</A>, ';
-			'<A HREF="http://wwp.icq.com/scripts/contact.dll?msgto=';
-			useredit.icq | strip_attribute;
-			'">Send Message</A></B>)';
-		END;
-
 		IF useredit.jabber;
 			'<BR><B>Jabber:</B> ';
 			useredit.jabber | strip_literal;
@@ -207,4 +193,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: userboxes;misc;default,v 1.23 2004/10/07 22:04:55 jamiemccarthy Exp $
+$Id: userboxes;misc;default,v 1.24 2005/03/13 17:39:27 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.106 2003/07/18 04:08:33 jamie Exp $
+# $Id: MySQL.pm,v 1.107 2003/07/30 22:21:51 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -171,12 +171,15 @@ sub updateArchivedDiscussions {
 	my($self) = @_;
 
 	my $days_to_archive = getCurrentStatic('archive_delay');
-	return unless $days_to_archive;
+	return 0 if !$days_to_archive;
+
 	# Close discussions.
-	$self->sqlDo(
-		"UPDATE discussions SET type='archived'
-		 WHERE to_days(now()) - to_days(ts) > $days_to_archive AND 
-		       (type='open' OR type='dirty')"
+	return $self->sqlUpdate(
+		"discussions",
+		{ type => 'archived' },
+		"TO_DAYS(NOW()) - TO_DAYS(ts) > $days_to_archive
+		 AND type = 'open'
+		 AND flags != 'delete'"
 	);
 }
 
@@ -186,18 +189,19 @@ sub updateArchivedDiscussions {
 sub getArchiveList {
 	my($self, $limit, $dir) = @_;
 	$limit ||= 1;
-	$dir = 'ASC' if $dir ne 'ASC' || $dir ne 'DESC';
+	$dir = 'ASC' if $dir !~ /^(?:ASC|DESC)$/;
 
 	my $days_to_archive = getCurrentStatic('archive_delay');
-	return unless $days_to_archive;
+	return 0 unless $days_to_archive;
 
 	# Close associated story so that final archival .shtml is written
 	# to disk. This is accomplished by the archive.pl task.
 	my $returnable = $self->sqlSelectAll(
-		'sid, title, section', 'stories',
-		"to_days(now()) - to_days(time) > $days_to_archive
-		AND (writestatus='ok' OR writestatus='dirty')
-		AND displaystatus > -1",
+		'sid, title, section',
+		'stories',
+		"TO_DAYS(NOW()) - TO_DAYS(time) > $days_to_archive
+		 AND (writestatus='ok' OR writestatus='dirty')
+		 AND displaystatus > -1",
 		"ORDER BY time $dir LIMIT $limit"
 	);
 
@@ -514,11 +518,14 @@ sub decayTokens {
 		 AND tokens > 0"
 	);
 	my $uids_in = join(",", sort @$uids_ar);
-	my $rows = $self->sqlUpdate(
-		"users_info",
-		{ -tokens => "GREATEST(0, tokens - $perday)" },
-		"uid IN ($uids_in) AND tokens > 0"
-	);
+	my $rows = 0;
+	if ($uids_in) {
+		$rows = $self->sqlUpdate(
+			"users_info",
+			{ -tokens => "GREATEST(0, tokens - $perday)" },
+			"uid IN ($uids_in) AND tokens > 0"
+		);
+	}
 	my $decayed = $rows * $perday;
 	return $decayed;
 }
@@ -1391,31 +1398,6 @@ sub getStoriesWithFlag {
 ########################################################
 # For tasks/spamarmor.pl
 #
-# Please note use of closure. This is not an error.
-#
-#{
-#my($usr_block_size, $usr_start_point);
-#
-#sub iterateUsers {
-#	my($self, $blocksize, $start) = @_;
-#
-#	$start ||= 0;
-#
-#	($usr_block_size, $usr_start_point) = ($blocksize, $start)
-#		if $blocksize && $blocksize != $usr_block_size;
-#	$usr_start_point += $usr_block_size  + 1 if !$blocksize;
-#
-#	return $self->sqlSelectAllHashrefArray(
-#		'*',
-#		'users', '',
-#		"ORDER BY uid LIMIT $usr_start_point,$usr_block_size"
-#	);
-#}
-#}
-
-########################################################
-# For tasks/spamarmor.pl
-#
 # This returns a hashref of uid and realemail for 1/nth of the users
 # whose emaildisplay param is set to 1 (armored email addresses).
 # By default 1/7th, and which 1/7th determined by date.
@@ -1454,12 +1436,15 @@ sub getTodayArmorList {
 # freshen.pl
 sub deleteStoryAll {
 	my($self, $sid) = @_;
-	my $db_sid = $self->sqlQuote($sid);
+	my $sid_q = $self->sqlQuote($sid);
 
-	$self->sqlDo("DELETE FROM stories WHERE sid=$db_sid");
-	$self->sqlDo("DELETE FROM story_text WHERE sid=$db_sid");
-	my $discussion_id = $self->sqlSelect('id', 'discussions', "sid = $db_sid");
+	$self->{_dbh}{AutoCommit} = 0;
+	my $discussion_id = $self->sqlSelect('id', 'discussions', "sid = $sid_q");
+	$self->sqlDelete("stories", "sid=$sid_q");
+	$self->sqlDelete("story_text", "sid=$sid_q");
 	$self->deleteDiscussion($discussion_id) if $discussion_id;
+	$self->{_dbh}->commit;
+	$self->{_dbh}{AutoCommit} = 1;
 }
 
 ########################################################
@@ -1571,16 +1556,15 @@ sub refreshUncommonStoryWords {
 sub deleteOldFormkeys {
 	my($self, $timeframe) = @_;
 	$timeframe ||= 14400;
-	my $nowtime = time();
-	$self->sqlDo("DELETE FROM formkeys WHERE ts < ($nowtime - (2*".$timeframe."))");
+	$timeframe *= 2; # why are we doubling this? bizarre - Jamie 2003/07/24
+	my $delete_before_time = time - $timeframe;
+	$self->sqlDelete("formkeys", "ts < $delete_before_time");
 }
 
 ########################################################
 sub countAccesslogDaily {
 	my($self) = @_;
-
-	return $self->sqlSelect("count(*)", "accesslog",
-		"to_days(now()) - to_days(ts)=1");
+	return $self->sqlCount("accesslog", "TO_DAYS(NOW()) - TO_DAYS(ts)=1");
 }
 
 ########################################################
@@ -1589,6 +1573,8 @@ sub countAccesslogDaily {
 sub createRSS {
 	my($self, $bid, $item) = @_;
 	# this will go away once we require Digest::MD5 2.17 or greater
+	# Hey pudge, CPAN is up to Digest::MD5 2.25 or so, think we can
+	# make this go away now? - Jamie 2003/07/24
 	$item->{title} =~ /^(.*)$/;
 	my $title = $1;
 	$item->{description} =~ /^(.*)$/;

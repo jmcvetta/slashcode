@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.28 2003/03/04 19:56:32 pudge Exp $
+# $Id: NewsVac.pm,v 1.29 2003/07/30 22:21:51 jamie Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -1056,11 +1056,17 @@ sub id_to_rel {
 from_url_id, to_url_id, tagname, tagattr FROM rel WHERE rel_id=$q_rel_id
 EOT
 
+	# Uhhhh... why did I not just use $self->sqlSelectArrayRef
+	# and keep my own cache in $self->{_something} if I was that
+	# concerned about caching?  Was I just being stupid?  I did
+	# write this quite a while ago... - Jamie 2003/07/24
+	my $qlid = $self->_querylog_start("SELECT", "rel");
 	my $sth = $self->select_cached($select_text);
 	if ($sth) {
 		$ary_ref = $sth->fetchrow_arrayref;
 		$sth->finish;
 	}
+	$self->_querylog_finish($qlid);
 
 	$self->errLog(getData('id_ro_rel_result', {
 		row => $ary_ref,
@@ -3638,6 +3644,7 @@ EOT
 GROUP BY rel2.from_url_id ORDER BY rel2.from_url_id LIMIT 2000
 EOT
 
+	my $qlid = $self->_querylog_start('SELECT', $tables);
 	my $sth = $self->sqlSelectMany($fields, $tables, $where, $other);
 
 	my($i, %submitworthy, @sub) = (0);
@@ -3770,6 +3777,9 @@ EOT
 		++$i;
 	}
 
+	$sth->finish; # not really necessary
+	$self->_querylog_finish($qlid);
+
 	for (@sub) {
 		# skip if too low weight
 		if ($_->{weight} < ($constants->{newsvac_min_weight} || 10)) {
@@ -3816,7 +3826,6 @@ EOT
 		}, { ignore => 1 });
 		$submitworthy{$_} ? ++$worthy : ++$unworthy;
 	}
-	$sth->finish; # not really necessary
 
 	# Not table locking anymore. See above.
 	#$sth = $self->sqlDo("UNLOCK TABLES");
@@ -3887,6 +3896,7 @@ None.
 sub load_keywords {
 	my($self, $kw_ref, $keys_ref, $m_regex_ref, $m_regex_enc_ref) = @_;
 
+	my $qlid = $self->_querylog_start('SELECT', 'newsvac_keywords');
 	my $cursor = $self->sqlSelectMany(
 		'id,regex,weight,tag', 'newsvac_keywords'
 	);
@@ -3894,6 +3904,8 @@ sub load_keywords {
 	while (my($id, $regex, $weight, $tag) = $cursor->fetchrow) {
 		$kw_ref->{$regex} = [$weight, $tag, $id];
 	}
+	$cursor->finish;
+	$self->_querylog_finish($qlid);
 
 	@{$keys_ref} = sort {
 		($kw_ref->{$b}[0] <=> $kw_ref->{$a}[0]) ||
@@ -6269,4 +6281,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.28 2003/03/04 19:56:32 pudge Exp $
+$Id: NewsVac.pm,v 1.29 2003/07/30 22:21:51 jamie Exp $

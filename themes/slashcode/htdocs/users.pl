@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.133 2002/12/11 05:48:26 pudge Exp $
+# $Id: users.pl,v 1.134 2002/12/17 06:17:58 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -732,7 +732,8 @@ sub showComments {
 	});
 
 	my $min_comment = $form->{min_comment} || 0;
-	$min_comment = 0 unless $user->{is_admin};
+	$min_comment = 0 unless $user->{seclev} > $constants->{comments_more_seclev}
+		|| $constants->{comments_more_seclev} == 2 && $user->{is_subscriber};
 	my $comments_wanted = $user->{show_comments_num}
 		|| $constants->{user_comment_display_default};
 	my $commentcount = $slashdb->countCommentsByUID($uid);
@@ -924,8 +925,8 @@ sub showInfo {
 	my $comments_wanted = $user->{show_comments_num}
 		|| $constants->{user_comment_display_default};
 	my $min_comment = $form->{min_comment} || 0;
-	# haven't decided whether ordinary users get this yet
-	$min_comment = 0 unless $admin_flag;
+	$min_comment = 0 unless $user->{seclev} > $constants->{comments_more_seclev}
+		|| $constants->{comments_more_seclev} == 2 && $user->{is_subscriber};
 
 	my($netid, $netid_vis) = ('', '');
 	if ($requested_user->{nonuid}) {

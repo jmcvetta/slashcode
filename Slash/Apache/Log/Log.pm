@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.23 2003/06/08 15:12:33 jamie Exp $
+# $Id: Log.pm,v 1.24 2003/06/24 02:33:11 pudge Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -29,13 +29,6 @@ sub handler {
 
 	# Added this so that small sites would not have admin logins 
 	# recorded in their stats. -Brian
-
-	my $slashdb = getCurrentDB();
-	my $SECT;
-	$SECT = $slashdb->{_sections_cache}{$constants->{section}}
-		if exists($slashdb->{_sections_cache})
-		&& exists($slashdb->{_sections_cache}{$constants->{section}});
-	$SECT ||= {};
 
 	# so it will still log it if the admin DOES request
 	# to admin.pl?  i thought you wanted it to NOT log

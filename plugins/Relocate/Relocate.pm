@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.4 2003/08/29 19:56:28 pudge Exp $
+# $Id: Relocate.pm,v 1.5 2003/09/10 22:45:47 pudge Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -72,7 +72,7 @@ sub getStoriesForLinks {
 sub href2SlashTag {
 	my($self, $text, $sid, $options) = @_;
 	my $user = getCurrentUser();
-	return $text unless $text && $sid;
+	return $text unless $text && $sid && getCurrentStatic('relocate_href2slash');
 	my $tokens = HTML::TokeParser->new(\$text);
 	if ($tokens) {
 		while (my $token = $tokens->get_tag(qw| a slash |)) {

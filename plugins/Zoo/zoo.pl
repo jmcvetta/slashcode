@@ -2,18 +2,18 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.39 2003/02/08 00:12:12 brian Exp $
+# $Id: zoo.pl,v 1.40 2003/02/11 16:40:16 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
-use Slash::Constants qw(:web :people);
+use Slash::Constants qw(:web :people :messages);
 use Slash::Display;
 use Slash::Utility;
 use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -592,16 +592,23 @@ sub action {
 			print getData("no_go");
 			return 0;
 		}
-		if ( $form->{op} eq 'delete' || $form->{type} eq 'neutral') {
-			if ($form->{uid}) {
-				$zoo->delete($user->{uid}, $form->{uid});
-			} else {
-				for my $uid (grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form) {
-					$zoo->delete($user->{uid}, $uid);
-				}
+
+		my @uids;
+		if ($form->{uid}) {
+			@uids = ($form->{uid});
+		} else {
+			@uids = grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form;
+		}
+
+		if ($form->{op} eq 'delete' || $form->{type} eq 'neutral') {
+			for my $uid (@uids) {
+				$zoo->delete($user->{uid}, $uid);
 			}
+
 		} else {
 			if ($form->{uid}) {
+				# no multiples
+				@uids = ($uids[0]);
 				if ($form->{type} eq 'foe') {
 					$zoo->setFoe($user->{uid}, $form->{uid});
 				} elsif ($form->{type} eq 'friend') {
@@ -609,6 +616,28 @@ sub action {
 				}
 			}
 		}
+
+		# send message here
+		# how do we know the operation (setFriend, SetFoe, delete) above succeeded?
+		my $messages = getObject('Slash::Messages');
+		if ($messages && $form->{type} =~ /^(?:neutral|friend|foe)$/) {
+			my $muids = $messages->checkMessageCodes(MSG_CODE_ZOO_CHANGE, \@uids);
+			for my $uid (@$muids) {
+				my $data  = {
+					template_name	=> 'zoo_msg',
+					subject		=> { template_name => 'zoo_msg_subj' },
+					type		=> $form->{type},
+					zoo_user	=> {
+						map { ($_ => $user->{$_}) } qw(uid nickname) # any other user info?
+					}
+					# do templates need any other information?
+				};
+
+				$messages->create($uid, MSG_CODE_ZOO_CHANGE, $data, 0, '', 'collective');
+			}
+		}
+
+
 	}
 	# This is just to make sure the next view gets it right
 	if ($form->{type} eq 'foe') {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.28 2002/02/26 07:14:40 patg Exp $
+# $Id: slashschema_create.sql,v 1.29 2002/03/06 18:57:54 brian Exp $
 #
 
 #
@@ -443,6 +443,8 @@ CREATE TABLE section_extras (
 	section varchar(30) NOT NULL,
 	name varchar(100) NOT NULL,
 	value varchar(100) NOT NULL,
+	type enum("text","list") DEFAULT 'text' NOT NULL,
+	list varchar(255) DEFAULT '' NOT NULL,
 	FOREIGN KEY (section) REFERENCES sections(section),
 	UNIQUE extra (section,name),
 	PRIMARY KEY (param_id)

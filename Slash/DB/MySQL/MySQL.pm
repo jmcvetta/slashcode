@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.744 2004/12/09 04:03:40 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.745 2004/12/14 17:51:55 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.744 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.745 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5980,7 +5980,7 @@ sub setAccessList {
 }
 
 #################################################################
-# Should probably cache this instead of relying on MySQL's query cache.
+# XXX Should probably cache this instead of relying on MySQL's query cache.
 sub checkIsProxy {
 	my($self, $ipid) = @_;
 
@@ -5992,7 +5992,7 @@ sub checkIsProxy {
 }
 
 #################################################################
-# Should probably cache this instead of relying on MySQL's query cache.
+# XXX Should probably cache this instead of relying on MySQL's query cache.
 sub checkIsTrusted {
 	my($self, $ipid) = @_;
 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.31 2003/03/22 01:12:07 jamie Exp $
+# $Id: run_moderatord.pl,v 1.32 2003/03/27 06:12:44 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -90,7 +90,7 @@ sub give_out_points {
 
 	moderatordLog(getData('moderatord_log_header'));
 
-	my $backup_db = getObject('Slash::DB', 'reader');
+	my $backup_db = getObject('Slash::DB', { db_type => 'reader' });
 	my $log_db = getObject('Slash::DB', 'log_slave');
 
 	my $newcomments = get_num_new_comments($constants, $slashdb);

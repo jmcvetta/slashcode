@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.331 2003/02/16 15:24:01 jamie Exp $
+# $Id: MySQL.pm,v 1.332 2003/02/18 14:41:34 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.331 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.332 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4585,6 +4585,48 @@ sub getComments {
 	);
 }
 
+#######################################################
+sub getSubmissionsByNetID {
+        my($self, $id, $field, $limit) = @_;
+
+        $limit = 'LIMIT ' . $limit if $limit;
+	my $where;
+	
+	if ($field eq 'ipid') {
+		$where = "ipid='$id'";
+	} elsif ($field eq 'subnetid') {
+		$where = "subnetid='$id'";
+	} else {
+		$where = "ipid='$id' OR subnetid='$id'";
+	}
+
+        my $answer = $self->sqlSelectAllHashrefArray(
+                'subid,title,time',
+                'submissions', $where,
+		"ORDER BY time DESC $limit");
+
+	return $answer;
+}
+
+########################################################
+sub countSubmissionsByNetID {
+	my($self, $id, $field) = @_;
+
+	my $where;
+
+	if ($field eq 'ipid') {
+		$where = "ipid='$id'";
+	} elsif ($field eq 'subnetid') {
+		$where = "subnetid='$id'";
+	} else {
+		$where = "ipid='$id' OR subnetid='$id'";
+	}
+
+	my $count = $self->sqlCount('submissions', $where);
+
+	return $count;
+}
+
 ########################################################
 # Needs to be more generic in the long run. 
 # Be nice if we could just pull certain elements -Brian
@@ -4607,6 +4649,8 @@ sub countStoriesBySubmitter {
 
 	return $count;
 }
+
+
 
 ########################################################
 # Be nice if we could control more of what this 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.590 2004/06/21 17:10:16 pudge Exp $
+# $Id: MySQL.pm,v 1.591 2004/06/21 18:41:52 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.590 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.591 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8621,6 +8621,8 @@ sub getSection {
 
 	return undef if !$skin;
 
+	$skin = { %$skin };  # copy, don't change!
+
 	# Now, for historical reasons, we pad this out with the
 	# information that was in there before. - Jamie 2004/05
 	$skin->{artcount} = $skin->{artcount_max};
@@ -8629,16 +8631,6 @@ sub getSection {
 	$skin->{last_update} = $skin->{last_rewrite};
 	$skin->{qid} = 0; # XXXSECTIONTOPICS this is wrong
 	$skin->{rewrite} = $skin->{max_rewrite_secs};
-	if ($skin->{url}) {
-		my $rootdir_uri = new URI($skin->{url});
-		$rootdir_uri->scheme("");
-		$skin->{rootdir} = $rootdir_uri->as_string;
-	} else {
-		# XXXSECTIONTOPIC should do this with mainpage_skid,
-		# see the comment in getSkins.
-		my $gSkin = getCurrentSkin();
-		$skin->{rootdir} = $gSkin->{rootdir};
-	}
 	$skin->{section} = $skin->{name};
 	$skin->{type} = $skin->{name} =~ /^(index|mainpage)$/ ? 'collected' : 'contained'; # XXXSECTIONTOPICS this is a hack guess and probably wrong in at least one case
 	my $topic_tree = $self->getTopicTree();

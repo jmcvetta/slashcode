@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.117 2004/10/08 18:35:21 jamiemccarthy Exp $
+# $Id: index.pl,v 1.118 2004/10/09 21:24:08 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -98,7 +98,7 @@ my $start_time = Time::HiRes::time;
 	# current skin is the mainpage, add in the list of story_always_topic
 	# and story_always_nexus tids, and story_always_author uids..
 	$gse_hr->{tid} = [ $gSkin->{nexus} ];
-	if ($gSkin->{skid} = $constants->{mainpage_skid}) {
+	if ($gSkin->{skid} == $constants->{mainpage_skid}) {
 		my $always_tid_str = join ",",
 			$user->{story_always_topic},
 			$user->{story_always_nexus};

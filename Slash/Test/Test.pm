@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.14 2003/12/19 22:46:42 jamie Exp $
+# $Id: Test.pm,v 1.15 2003/12/20 06:32:22 jamie Exp $
 
 package Slash::Test;
 
@@ -94,7 +94,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -258,7 +258,6 @@ sub _getTemplate {
 	} elsif ($template =~ /^(\w+);(\w+);(\w+)$/) {
 		($template, $page, $section) = ($1, $2, $3)
 	}
-print STDERR "_gT template='$template' page='$page' section='$section'\n";
 
 	$data->{Page}    = $page if $page;
 	$data->{Section} = $section if $section;
@@ -278,4 +277,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.14 2003/12/19 22:46:42 jamie Exp $
+$Id: Test.pm,v 1.15 2003/12/20 06:32:22 jamie Exp $

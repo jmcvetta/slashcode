@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.87 2003/08/29 15:21:07 jamie Exp $
+# $Id: User.pm,v 1.88 2003/09/02 02:22:29 vroom Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -348,6 +348,11 @@ sub userLogin {
 			$slashdb->getUser($uid, 'session_login'));
 		return($uid, $newpass);
 	} else {
+		my $hostip = $r->connection->remote_ip;
+		my $subnet = $hostip;
+		$subnet =~ s/(\d+\.\d+\.\d+)\.\d+/$1\.0/;
+		my $name_uid = $slashdb->getUserUID($name);
+		$slashdb->sqlInsert("badpasswords", { uid => $name, password => $passwd, subnet => $subnet, ip => $hostip } );
 		return getCurrentStatic('anonymous_coward_uid');
 	}
 }

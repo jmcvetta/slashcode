@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.108 2003/08/04 17:27:55 pudge Exp $
+# $Id: MySQL.pm,v 1.109 2003/09/02 02:22:29 vroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -424,6 +424,8 @@ sub deleteDaily {
 		|| 14;
 
 	# Now for some random stuff
+	$self->sqlDo("DELETE from badpasswords
+		WHERE TO_DAYS(NOW()) - TO_DAYS(ts) > 2");
 	$self->sqlDo("DELETE FROM pollvoters");
 	$self->sqlDo("DELETE FROM moderatorlog
 		WHERE TO_DAYS(NOW()) - TO_DAYS(ts) > $archive_delay_mod");

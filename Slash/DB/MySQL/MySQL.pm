@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.442 2003/08/26 18:11:10 jamie Exp $
+# $Id: MySQL.pm,v 1.443 2003/09/02 02:22:29 vroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.442 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.443 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2669,6 +2669,9 @@ sub deletePoll {
 sub getPollQuestionList {
 	my($self, $offset, $other) = @_;
 	my($where);
+
+	my $justStories = $other->{type} eq "story" ? 1 : 0 ;
+
 	$offset = 0 if $offset !~ /^\d+$/;
 	my $admin = getCurrentUser('is_admin');
 
@@ -2701,9 +2704,18 @@ sub getPollQuestionList {
 	$where .= " AND date <= NOW() " unless $admin;
 	my $limit = $other->{limit} || 20;
 
+	my $cols = 'pollquestions.qid as qid, question, date, voters, discussions.commentcount as commentcount, 
+			polltype, date>now() as future,pollquestions.topic';
+	$cols .= ", stories.title as title, stories.sid as sid" if $justStories;
+
+	my $tables = 'pollquestions,discussions';
+	$tables .= ',stories' if $justStories;
+
+	$where .= ' AND pollquestions.qid = stories.qid' if $justStories;
+
 	my $questions = $self->sqlSelectAll(
-		'qid, question, date, voters, commentcount, polltype, date>now() as future,pollquestions.topic',
-		'pollquestions,discussions',
+		$cols,
+		$tables,
 		$where,
 		"ORDER BY date DESC LIMIT $offset, $limit"
 	);
@@ -6090,14 +6102,16 @@ sub getRecentComments {
 		 comments.uid AS uid, points AS score,
 		 lastmod, comments.reason AS reason,
 		 users.nickname AS nickname,
+		 comment_text.comment AS comment,
 		 SUM(val) AS sum_val,
 		 IF(moderatorlog.cid IS NULL, 0, COUNT(*))
 		 	AS num_mods",
-		"comments, users
+		"comments, users, comment_text
 		 LEFT JOIN moderatorlog
 		 	ON comments.cid=moderatorlog.cid
 			AND moderatorlog.active=1",
 		"comments.uid=users.uid
+		 AND comments.cid = comment_text.cid
 		 AND comments.points BETWEEN $min AND $max
 		 AND comments.cid BETWEEN $start_cid AND $end_cid",
 		"GROUP BY comments.cid

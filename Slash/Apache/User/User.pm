@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.74 2003/06/30 23:35:53 pudge Exp $
+# $Id: User.pm,v 1.75 2003/07/14 14:56:08 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -604,6 +604,7 @@ Bender:Ah crap, I'm some sort of robot!
 Bender:When will man learn that all races are equally inferior to robots?
 Bender:Curse my natural showmanship!
 Bender:I'm not allowed to sing. Court order.
+Bender:Boy, who knew a cooler could also make a handy wang coffin?
 Fry:There's a lot about my face you don't know.
 Fry:Drugs are for losers. And hypnosis is for losers with big weird eyebrows.
 Fry:These new hands are great. I'm gonna break them in tonight.
@@ -636,6 +637,7 @@ Fry:The spoon's in the foot powder.
 Fry:You mean Bender is the evil Bender? I'm shocked! Shocked! Well not that shocked.
 Fry:I'm literally angry with rage!
 Fry:The butter in my pocket is melting!
+Fry:Stop abducting me!
 EOT
 
 1;

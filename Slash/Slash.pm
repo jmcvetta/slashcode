@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.59 2002/06/20 04:12:55 pudge Exp $
+# $Id: Slash.pm,v 1.60 2002/06/20 11:53:44 jamie Exp $
 
 package Slash;
 
@@ -92,12 +92,7 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
-	# i don't know why this line had || !@$thisComment, but it
-	# breaks things (most notably, things relying on hitparade,
-	# like slash:hitparade in rss, selectThreshold in comments,
-	# etc.) when there are no comments YET, but the discussion
-	# is valid -- pudge
-	if (!$thisComment) { #|| !@$thisComment) {
+	if (!$thisComment) {
 		_print_cchp($header);
 		return ( {}, 0 );
 	}
@@ -191,6 +186,8 @@ sub selectComments {
 
 	# Cascade comment point totals down to the lowest score, so
 	# (2, 1, 3, 5, 4, 2, 1) becomes (18, 16, 15, 12, 7, 3, 1).
+	# We do a bit of a weird thing here, returning this data in
+	# the fields for a fake comment with "cid 0"...
 	for my $x (reverse(0..$num_scores-2)) {
 		$comments->{0}{totals}[$x] += $comments->{0}{totals}[$x + 1];
 	}
@@ -262,7 +259,7 @@ sub reparentComments {
 
 	# You know, we do assume comments are linear -Brian
 	for my $x (sort { $a <=> $b } keys %$comments) {
-		next if $x == 0;
+		next if $x == 0; # exclude the fake "cid 0" comment
 
 		my $pid = $comments->{$x}{pid};
 		my $reparent;
@@ -417,9 +414,10 @@ sub printComments {
 
 	# Should I index or just display normally?
 	my $cc = 0;
-	if ($comments->{$cidorpid} && $comments->{$cidorpid}{visiblekids}) {
-		$cc = $comments->{$cidorpid}{visiblekids};
-	}
+	$cc = $comments->{$cidorpid}{visiblekids}
+		if $cidorpid
+			&& $comments->{$cidorpid}
+			&& $comments->{$cidorpid}{visiblekids};
 
 	$lvl++ if $user->{mode} ne 'flat' && $user->{mode} ne 'archive'
 		&& $cc > $user->{commentspill}

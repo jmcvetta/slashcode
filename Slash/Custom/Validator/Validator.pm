@@ -10,7 +10,7 @@
 # This source code is available under the license at:
 #     http://www.w3.org/Consortium/Legal/copyright-software
 #
-# $Id: Validator.pm,v 1.1 2005/03/28 22:50:17 pudge Exp $
+# $Id: Validator.pm,v 1.2 2005/03/29 20:01:16 pudge Exp $
 
 package Slash::Custom::Validator;
 
@@ -45,7 +45,7 @@ use warnings;
 #                            redirect
 #                           ); # 2.81 for XHTML, and import redirect() function.
 
-use CGI::Carp            qw(carp croak fatalsToBrowser);
+#use CGI::Carp            qw(carp croak fatalsToBrowser);
 use Config::General      qw();
 use File::Spec           qw();
 use HTML::Parser    3.25 qw(); # Need 3.25 for $p->ignore_elements.
@@ -152,7 +152,7 @@ BEGIN {
 
   #
   # Strings
-  $VERSION    =  q$Revision: 1.1 $;
+  $VERSION    =  q$Revision: 1.2 $;
   $VERSION    =~ s/Revision: ([\d\.]+) /$1/;
 
   #
@@ -230,7 +230,7 @@ $File->{'Header'} = &prepSSI({
                              });
 $File->{'Footer'} = &prepSSI({
                               File => $CFG->{'Footer'},
-                              Date => q$Date: 2005/03/28 22:50:17 $,
+                              Date => q$Date: 2005/03/29 20:01:16 $,
                              });
 
 #

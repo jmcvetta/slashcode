@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.119 2002/12/13 01:43:25 jamie Exp $
+# $Id: admin.pl,v 1.120 2002/12/17 18:34:37 brian Exp $
 
 use strict;
 use Time::HiRes;
@@ -1697,6 +1697,9 @@ sub displayRecentRequests {
 	my $admindb = getObject("Slash::Admin",
 		$constants->{backup_db_user} || $constants->{log_db_user});
 
+	my $backupdb = getObject("Slash::DB",
+		$constants->{backup_db_user} || $constants->{log_db_user});
+
 	# Note, limit the id passed in by making sure we don't try to do a
 	# select on more than 500,000 rows.  This is an arbitrary number,
 	# but the intent is to keep from locking up the DB too much.
@@ -1706,7 +1709,7 @@ sub displayRecentRequests {
 	$min_id = $max_id + $min_id			if  $min_id < 0;
 	$min_id = $max_id				if  $min_id < $max_id - 500_000;
 
-	my $min_id_ts ||= $slashdb->getAccesslog($min_id, 'ts');
+	my $min_id_ts ||= $backupdb->getAccesslog($min_id, 'ts');
 
 	my $options = { min_id => $min_id };
 	$options->{thresh_count} = defined($form->{thresh_count}) ? $form->{thresh_count} : 100;

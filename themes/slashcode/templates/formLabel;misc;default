@@ -17,9 +17,9 @@ __name__
 formLabel
 __template__
 [% UNLESS nobreak %]<p>[% END %]<font color="[% user.colors.bg_3 %]"><b>[% value | strip_html %]</b></font>
-[% IF comment %]([% comment | strip_html %])[% END %][% UNLESS nobreak %]<br>[% END %]
+[% IF comment %]([% comment | strip_html %])[% END %][% UNLESS nobreak %]<br>[% END; nobreak = 0 %]
 
 __seclev__
 10000
 __version__
-$Id: formLabel;misc;default,v 1.7 2004/09/24 23:44:11 pudge Exp $
+$Id: formLabel;misc;default,v 1.8 2004/10/04 21:05:18 pudge Exp $

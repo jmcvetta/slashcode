@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.426 2003/07/21 15:39:36 jamie Exp $
+# $Id: MySQL.pm,v 1.427 2003/07/22 17:16:13 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.426 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.427 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3673,6 +3673,31 @@ sub getAbuses {
 
 	$self->sqlSelectAll('ts,uid,ipid,subnetid,pagename,reason', 'abusers',  "$where->{$key}", 'ORDER by ts DESC');
 
+}
+
+##################################################################
+# grabs the number of rows in the last X rows of accesslog, in order
+# to get an idea of recent hits
+sub countAccessLogHitsInLastX {
+	my($self, $field, $check, $x) = @_;
+	$x ||= 10000;
+	$check = md5hex($check) if length($check) != 32 && $field ne 'uid';
+	my $where = '';
+
+	my($max) = $self->sqlSelect("MAX(id)", "accesslog");
+	my $min = $max - $x;
+
+	if ($field eq 'uid') {
+		$where = "uid=$check ";
+	} elsif ($field eq 'md5id') {
+		$where = "(host_addr='$check' OR subnetid='$check') ";
+	} else {
+		$where = "$field='$check' ";
+	}
+
+	$where .= "AND id BETWEEN $min AND $max";
+
+	return $self->sqlCount("accesslog", $where);
 }
 
 ##################################################################

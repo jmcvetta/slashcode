@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.49 2003/03/18 20:39:06 brian Exp $
+# $Id: Display.pm,v 1.50 2003/03/18 21:44:22 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1518,35 +1518,6 @@ sub _slashJournal {
 	my($tokens, $token, $newtext) = @_;
 }
 
-sub _slashSlash {
-	my($tokens, $token, $newtext) = @_;
-
-	my($content, $data);
-	if ($token->[1]{href}) {
-		my $reloDB = getObject('Slash::Relocate', { db_type => 'reader' });
-		$data = $tokens->get_text("/slash");
-		if ($reloDB) {
-			$content = slashDisplay('hrefLink', {
-				id    => $token->[1]{id},
-				title => $token->[1]{href},
-				text  => $data,
-			}, { Return => 1 });
-		}
-		$content ||= getData('SLASH-UKNOWN-LINK');
-	} elsif ($token->[1]{story}) {
-		$data = $tokens->get_text("/slash");
-		my $reader = getObject('Slash::DB', { db_type => 'reader' });
-		$content = linkStory({
-			'link'	=> $data,
-			sid	=> $token->[1]{story},
-			title	=> $reader->getStory($token->[1]{story}, 'title'),
-		});
-		$content ||= getData('SLASH-UKNOWN-STORY');
-	} # More of these type can go here.
-
-	$$newtext =~ s#\Q$token->[3]$data</SLASH>\E#$content#is;
-}
-
 1;
 
 __END__
@@ -1558,4 +1529,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.49 2003/03/18 20:39:06 brian Exp $
+$Id: Display.pm,v 1.50 2003/03/18 21:44:22 brian Exp $

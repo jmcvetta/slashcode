@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.747 2004/12/02 02:48:13 pudge Exp $
+# $Id: upgrades,v 1.748 2004/12/07 22:19:01 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2810,3 +2810,6 @@ DELETE FROM vars where name in
 # SLASHDOT LAST UPDATED HERE
 
 # End of T_2_5_0_40, Start of T_2_5_0_41 - 2004/11/30
+
+# End of T_2_5_0_41, Start of T_2_5_0_42 - 2004/12/07
+

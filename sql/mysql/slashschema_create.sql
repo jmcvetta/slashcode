@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.77 2002/11/17 21:26:27 jamie Exp $
+# $Id: slashschema_create.sql,v 1.78 2002/11/19 18:21:28 jamie Exp $
 #
 
 #
@@ -393,7 +393,9 @@ CREATE TABLE moderatorlog (
 	PRIMARY KEY (id),
 	KEY sid (sid,cid),
 	KEY sid_2 (sid,uid,cid),
-	KEY cid (cid)
+	KEY cid (cid),
+	KEY ipid (ipid),
+	KEY subnetid (subnetid)
 ) TYPE = myisam;
 
 #

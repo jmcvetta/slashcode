@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.43 2001/12/12 19:20:11 pudge Exp $
+# $Id: submit.pl,v 1.44 2001/12/17 18:31:10 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -33,14 +33,14 @@ sub main {
 
 	my $section = $form->{section};
 
-        # this really should not be done now, but later, it causes
-        # a lot of problems, but it causes a LOT of problems
-        # when moved elsewhere and we get double-encoding!
-        # so leave it here until you really know what you
-        # are doing -- pudge
-        $form->{from}   = strip_attribute($form->{from})  if $form->{from};
-        $form->{subj}   = strip_attribute($form->{subj})  if $form->{subj};
-        $form->{email}  = strip_attribute($form->{email}) if $form->{email};
+	# this really should not be done now, but later, it causes
+	# a lot of problems, but it causes a LOT of problems
+	# when moved elsewhere and we get double-encoding!
+	# so leave it here until you really know what you
+	# are doing -- pudge
+	$form->{from}   = strip_attribute($form->{from})  if $form->{from};
+	$form->{subj}   = strip_attribute($form->{subj})  if $form->{subj};
+	$form->{email}  = strip_attribute($form->{email}) if $form->{email};
 
 	# Show submission title on browser's titlebar.
 	my($tbtitle) = $form->{title};

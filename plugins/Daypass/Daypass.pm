@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.3 2005/03/29 22:22:47 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.4 2005/04/01 01:26:13 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -13,7 +13,7 @@ use base 'Slash::DB::Utility';
 # For sqlReplace, for now
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -148,10 +148,26 @@ sub confirmDaypasskey {
 	return $rows;
 }
 
+sub getDaypassTZOffset {
+	my($self) = @_;
+	my $slashdb = getCurrentDB();
+	my $constants = getCurrentStatic();
+
+	my $dptz = $constants->{daypass_tz} || 'GMT';
+	return 0 if $dptz eq 'GMT';
+
+	my $timezones = $slashdb->getTZCodes();
+	return $timezones->{$dptz} || 0;
+}
+
 sub getGoodonDay {
 	my($self) = @_;
 	my $slashdb = getCurrentDB();
-	my $db_time = $slashdb->getTime();
+	my $constants = getCurrentStatic();
+
+	my $off_set = $self->getDaypassTZOffset();
+	my $db_time = $slashdb->getTime({ add_secs => $off_set });
+
 	# Cheesy (and easy) way of doing this.  Yank the seconds and
 	# just return the (GMT) date.
 	return substr($db_time, 0, 10);
@@ -163,6 +179,7 @@ sub userHasDaypass {
 	# Anonymous users can't have a daypass.
 	return 0 if $user->{is_anon};
 	my $goodonday = $self->getGoodonDay();
+	my $off_set = $self->getDaypassTZOffset();
 	# Really should memcached this, here.
 	my $uid = $user->{uid};
 	my $goodonday_q = $self->sqlQuote($goodonday);

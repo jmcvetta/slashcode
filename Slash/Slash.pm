@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.221 2004/08/10 21:53:53 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.222 2004/09/12 15:18:46 cowboyneal Exp $
 
 package Slash;
 
@@ -507,6 +507,13 @@ sub printComments {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
+
+        if ($constants->{clampe_stats}) {
+                my $fname = catfile('clampe', $user->{ipid});
+		my $sc = defined $form->{'savechanges'} ? 1 : 0;
+                my $savelog = "IPID: $user->{ipid} UID: $user->{uid} Thresh: $user->{threshold} Dispmode: $user->{mode} Sort: $user->{commentsort} SaveChanges: $sc";
+                doClampeLog($fname, [$savelog]);
+         }
 
 	if (!$discussion || !$discussion->{id}) {
 		print getData('no_such_sid', {}, '');

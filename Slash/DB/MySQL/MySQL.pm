@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.482 2003/11/25 20:51:52 pudge Exp $
+# $Id: MySQL.pm,v 1.483 2003/11/25 23:57:01 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.482 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.483 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8548,6 +8548,14 @@ sub getForumParents {
 	my $num_parents = $self->sqlSelect('count(*)', 'comments', "sid=$forum_id AND pid=0");
 
 	return $num_parents;
+}
+
+########################################################
+# for ubb_like_forums
+sub getForumFirstPostHashref {
+	my($self, $forum_id) = @_;
+
+	return $self->sqlSelectHashref("*", 'comments', "sid=$forum_id", 'ORDER BY comments.cid ASC LIMIT 1');
 }
 
 ########################################################

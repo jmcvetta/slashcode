@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.22 2004/01/22 18:59:22 jamie Exp $
+# $Id: Slash.pm,v 1.23 2004/02/04 18:04:13 jamiemccarthy Exp $
 #
 
 $Bundle::Slash::VERSION = '2.33';
@@ -98,6 +98,8 @@ Apache::Test		- may need to put Apache's 'httpd' and 'apxs' into $PATH before in
 Apache::Cookie		- may need to put Apache's 'httpd' and 'apxs' into $PATH before installing
 
 Apache::Request		- libapreq
+
+Apache::SSI		- required by Slash::Custom::ApacheSSI
 
 AppConfig		- Should be installed with TT, but sometimes not?
 

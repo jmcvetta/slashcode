@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.60 2004/01/29 23:51:35 pudge Exp $
+# $Id: THEME,v 1.61 2004/02/04 18:04:19 jamiemccarthy Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -74,6 +74,7 @@ mysql_dump=sql/mysql/datadump.sql
 mysql_prep=sql/mysql/prep.sql
 pg_dump=sql/postgresql/datadump.sql
 pg_prep=sql/postgresql/prep.sql
+task=tasks/accesslog_artcom.pl
 task=tasks/counthits.pl
 task=tasks/daily.pl
 task=tasks/daily_archive.pl

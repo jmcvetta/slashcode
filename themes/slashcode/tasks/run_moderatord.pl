@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.38 2004/02/02 21:18:16 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.39 2004/02/04 18:04:19 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -17,7 +17,7 @@ use Data::Dumper;
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '8-58/10 0-23 * * *';
+$task{$me}{timespec} = '18 0-23 * * *';
 $task{$me}{timespec_panic_1} = '18 1,10 * * *';		# night only
 $task{$me}{timespec_panic_2} = '';			# don't run
 $task{$me}{resource_locks} = { log_slave => 1 };
@@ -189,7 +189,8 @@ sub give_out_tokens {
 	# Note:  this is a large array -- on Slashdot, at least tens of
 	# thousands of elements.
 
-	my $count_hr = $log_db->fetchEligibleModerators_accesslog();
+	my $count_hr = $log_db->fetchEligibleModerators_accesslog_read();
+
 	my @eligible_uids = @{$backup_db->fetchEligibleModerators_users($count_hr)};
 	my $eligible = scalar @eligible_uids;
 

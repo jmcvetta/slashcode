@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.138 2004/02/02 21:18:16 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.139 2004/02/04 18:04:15 jamiemccarthy Exp $
 #
 
 #
@@ -111,6 +111,14 @@ CREATE TABLE accesslog_admin (
 	PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
+DROP TABLE IF EXISTS accesslog_artcom;
+CREATE TABLE accesslog_artcom (
+	uid mediumint UNSIGNED NOT NULL,
+	ts datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+	c smallint unsigned NOT NULL DEFAULT '0',
+	INDEX uid (uid),
+	INDEX ts (ts)
+) TYPE=InnoDB;
 
 #
 # Table structure for table 'authors_cache'

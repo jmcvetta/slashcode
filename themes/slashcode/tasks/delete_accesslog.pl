@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: delete_accesslog.pl,v 1.6 2003/10/09 19:48:29 jamie Exp $
+# $Id: delete_accesslog.pl,v 1.7 2004/02/04 18:04:19 jamiemccarthy Exp $
 
 use strict;
 
@@ -26,7 +26,7 @@ $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 	my $logdb = getObject('Slash::DB', { db_type => 'log' } );
 	my $counter = 0;
-	my $hoursback = 60;
+	my $hoursback = $constants->{accesslog_hoursback} || 60;
 	my $failures = 10; # This is probably related to a lock failure
 	my $id = $logdb->sqlSelect('MAX(id)',
 		'accesslog',

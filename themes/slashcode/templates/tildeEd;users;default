@@ -60,7 +60,7 @@ __template__
 </TABLE>
 [% PROCESS titlebar width='100%' title=customize_title %]
 [%- col_max_size = box_order.size / 3; col_size = 0 -%]
-<TABLE><TR><TD VALIGN="TOP">
+<TABLE BGCOLOR="[% user.colors.bg_2 %]"><TR><TD VALIGN="TOP">
 [% FOREACH bid = box_order %]
 	[% IF section_descref.$bid.boldflag %]
 		<B>
@@ -92,4 +92,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: tildeEd;users;default,v 1.15 2004/09/28 15:04:35 cowboyneal Exp $
+$Id: tildeEd;users;default,v 1.16 2004/09/28 15:12:18 cowboyneal Exp $

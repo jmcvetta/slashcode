@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.65 2002/04/22 19:35:33 pudge Exp $
+# $Id: comments.pl,v 1.66 2002/05/18 06:25:33 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -720,6 +720,8 @@ sub validateComment {
 
 	$$subj =~ s/\(Score(.*)//i;
 	$$subj =~ s/Score:(.*)//i;
+
+	$$subj =~ s/\&(.*?);/approveCharref($1)/sge;
 
 	for ($$comm, $$subj) {
 		my $d = decode_entities($_);

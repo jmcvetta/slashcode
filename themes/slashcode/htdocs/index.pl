@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.123 2005/03/11 19:58:41 pudge Exp $
+# $Id: index.pl,v 1.124 2005/03/21 19:42:40 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -148,7 +148,8 @@ my $start_time = Time::HiRes::time;
 	# subscribe and you can see it"?  Yes if the user is logged-in
 	# but not a subscriber, but only if the first story is actually
 	# in the future.  Just check the first story;  they're in order.
-	if ($stories->[0]{is_future}
+	if (@$stories # damn you, autovivification!
+		&& $stories->[0]{is_future}
 		&& !$user->{is_subscriber}
 		&& !$user->{is_anon}
 		&& $constants->{subscribe_future_plug}) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.55 2002/04/25 18:45:40 cliff Exp $
+# $Id: submit.pl,v 1.56 2002/04/25 21:38:27 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -385,7 +385,7 @@ sub displayForm {
 	}
 
 	slashDisplay('displayForm', {
-		fixedstory	=> strip_text(url2html($form->{story})),
+		fixedstory	=> strip_html(url2html($form->{story})),
 		savestory	=> $form->{story} && $form->{subj},
 		username	=> $form->{name} || $username,
 		fakeemail	=> processSub($fakeemail, $known),

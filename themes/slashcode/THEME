@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.61 2004/02/04 18:04:19 jamiemccarthy Exp $
+# $Id: THEME,v 1.62 2004/02/24 20:20:32 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -150,6 +150,7 @@ template=templates/header-admin;misc;default
 template=templates/header;misc;default
 template=templates/header;misc;light
 template=templates/hierarchy;topics;default
+template=templates/horiz_rule;misc;default
 template=templates/html-header;misc;default
 template=templates/html-redirect;misc;default
 template=templates/index;index;default
@@ -164,6 +165,7 @@ template=templates/linkStory;misc;default
 template=templates/linkrel;misc;default
 template=templates/listAbuses;users;default
 template=templates/listBanned;users;default
+template=templates/listComments;users;default
 template=templates/listReadOnly;users;default
 template=templates/listTopics;topics;default
 template=templates/lockTest;misc;default

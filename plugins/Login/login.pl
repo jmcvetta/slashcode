@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.15 2004/11/09 20:15:24 pudge Exp $
+# $Id: login.pl,v 1.16 2004/12/02 21:14:42 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -141,7 +141,7 @@ sub newUser {
 				$messages->setPrefs($uid, \%params);
 			}
 
-			my $user_send = $reader->getUser($uid);
+			my $user_send = $slashdb->getUser($uid);
 			_sendMailPasswd(@_, $user_send);
 			header(getData('newuserhead')) or return;
 			print getData('newuser_msg', { uid => $uid });

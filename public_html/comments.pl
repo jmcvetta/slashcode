@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.28 2000/12/18 13:29:45 pudge Exp $
+#  $Id: comments.pl,v 1.29 2000/12/18 14:11:57 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -403,7 +403,7 @@ EOT
 	$$subj =~ s/\(Score(.*)//i;
 	$$subj =~ s/Score:(.*)//i;
 
-	unless (defined($$comm = balance_tags($$comm, 1))) {
+	unless (defined($$comm = balanceTags($$comm, 1))) {
 		editComment() and return unless $preview;
 		print <<EOT;
 You can only post nested lists and blockquotes four levels deep.

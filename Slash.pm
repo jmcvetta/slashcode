@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.59 2000/12/18 14:06:23 pudge Exp $
+#  $Id: Slash.pm,v 1.60 2000/12/18 14:11:57 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -58,7 +58,7 @@ BEGIN {
 		getDateFormat dispComment getDateOffset linkComment redirect
 		insertFormkey getFormkeyId checkSubmission checkTimesPosted
 		updateFormkeyId formSuccess formAbuse formFailure errorMessage
-		fixurl fixparam chopEntity balance_tags
+		fixurl fixparam chopEntity balanceTags
 	);
 	$CRLF = "\015\012";
 }
@@ -1453,7 +1453,7 @@ sub fixint {
 }
 
 ########################################################
-sub balance_tags {
+sub balanceTags {
 	my($html, $hard) = @_;
 	my %tags;
 	my $match = 'B|I|A|OL|UL|EM|TT|STRONG|BLOCKQUOTE|DIV';
@@ -2378,7 +2378,7 @@ EOT
 	if ($I{F}{mode} ne 'archive' && length($C->{comment}) > $I{U}{maxcommentsize}
 		&& $I{F}{cid} ne $C->{cid}) {
 
-		$C->{comment} = balance_tags(
+		$C->{comment} = balanceTags(
 			chopEntity($C->{comment}, $I{U}{maxcommentsize})
 		);
 

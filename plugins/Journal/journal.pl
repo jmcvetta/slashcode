@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.43 2002/06/05 16:22:45 pudge Exp $
+# $Id: journal.pl,v 1.44 2002/06/18 17:41:59 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -190,7 +190,7 @@ sub displayRSS {
 			title		=> $article->[2],
 # needs a var controlling this ... what to use as desc?
 #			description	=> timeCalc($article->[0]),
-#			description	=> "$nickname wrote: " . strip_mode($article->[1], $article->[4]),
+			description	=> strip_mode($article->[1], $article->[4]),
 			'link'		=> "$constants->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]"
 		};
 	}

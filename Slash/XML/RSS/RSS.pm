@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.6 2002/03/12 21:29:01 pudge Exp $
+# $Id: RSS.pm,v 1.7 2002/06/18 17:41:59 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -280,7 +280,14 @@ sub create {
 			}
 
 			for my $key (keys %$item) {
-				$encoded_item->{$key} = $self->encode($item->{$key}, $key);
+				if ($key eq 'description') {
+					if ($version >= 0.91) {
+						my $desc = $self->rss_item_description($item->{$key});
+						$encoded_item->{$key} = $desc if $desc;
+					}
+				} else {
+					$encoded_item->{$key} = $self->encode($item->{$key}, $key);
+				}
 			}
 
 			push @items, $encoded_item if keys %$encoded_item;
@@ -348,7 +355,7 @@ sub rss_story {
 
 	if ($version >= 0.91) {
 		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
-		$encoded_item->{description} = $self->encode($desc) if $desc;
+		$encoded_item->{description} = $desc if $desc;
 	}
 
 	if ($version >= 1.0) {
@@ -437,4 +444,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.6 2002/03/12 21:29:01 pudge Exp $
+$Id: RSS.pm,v 1.7 2002/06/18 17:41:59 pudge Exp $

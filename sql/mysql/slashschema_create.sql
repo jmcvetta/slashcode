@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.130 2003/11/07 13:46:29 jamie Exp $
+# $Id: slashschema_create.sql,v 1.131 2003/11/25 06:26:27 vroom Exp $
 #
 
 #
@@ -52,6 +52,7 @@ CREATE TABLE accesslist (
 	was_nopalm enum('no','yes') NOT NULL default 'no',
 	was_proxy enum('no','yes') NOT NULL default 'no',
 	was_trusted enum('no','yes') NOT NULL default 'no',
+	estimated_users smallint UNSIGNED default 1,
 	PRIMARY KEY  (id),
 	KEY uid (uid),
 	KEY ipid (ipid),

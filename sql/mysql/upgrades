@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.680 2004/10/05 20:44:35 jamiemccarthy Exp $
+# $Id: upgrades,v 1.681 2004/10/05 23:48:25 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2562,4 +2562,15 @@ CREATE TABLE uncommonstorywords (
 # perl -MSlash::Test=virtusername -e '@usw = split / /, $constants->{uncommonstorywords}; for $w (@usw) { $slashdb->sqlInsert("uncommonstorywords", { word => $w }) }'
 
 DELETE FROM vars WHERE name='uncommonstorywords';
+
+# need something here to convert exsect into extid data
+# and losing the ' from extid and exaid data wouldn't be a bad idea either
+# and maybe make them both params? that can probably wait
+# then just edit users.pl and tildeEd templates.
+
+ALTER TABLE users_index CHANGE COLUMN extid story_never_topic TEXT NOT NULL DEFAULT '', CHANGE COLUMN exaid story_never_author VARCHAR(255) NOT NULL DEFAULT '', CHANGE COLUMN exsect story_never_nexus VARCHAR(255) NOT NULL DEFAULT '', ADD COLUMN story_always_topic TEXT NOT NULL DEFAULT '', ADD COLUMN story_always_author VARCHAR(255) NOT NULL DEFAULT '', ADD COLUMN story_always_nexus VARCHAR(255) NOT NULL DEFAULT '';
+
+INSERT INTO string_param (type, code, name) VALUES ('story023','0','Never');
+INSERT INTO string_param (type, code, name) VALUES ('story023','2','Often');
+INSERT INTO string_param (type, code, name) VALUES ('story023','3','Always');
 

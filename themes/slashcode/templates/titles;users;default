@@ -45,7 +45,7 @@ __template__
 	Change password for [% user_edit.nickname | strip_literal %] ( [% user_edit.uid %]) 
 
 [% CASE 'tildeEd_title' %]
-	Exclude Stories from the Homepage
+	Customize Stories on the Homepage
 
 [% CASE 'tildeEd_customize_title' %]
 	Customize Slashboxes
@@ -85,4 +85,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: titles;users;default,v 1.11 2004/07/02 00:13:58 pudge Exp $
+$Id: titles;users;default,v 1.12 2004/10/05 23:48:26 jamiemccarthy Exp $

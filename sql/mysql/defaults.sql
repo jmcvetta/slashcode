@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.200 2004/09/29 17:54:54 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.201 2004/10/05 23:48:24 jamiemccarthy Exp $
 #
 
 #
@@ -248,6 +248,9 @@ INSERT INTO string_param (type, code, name) VALUES ('cookie_location','classbid'
 INSERT INTO string_param (type, code, name) VALUES ('cookie_location','ipid','My IP Address');
 INSERT INTO string_param (type, code, name) VALUES ('yes_no','yes','yes');
 INSERT INTO string_param (type, code, name) VALUES ('yes_no','no','no');
+INSERT INTO string_param (type, code, name) VALUES ('story023','0','Never');
+INSERT INTO string_param (type, code, name) VALUES ('story023','2','Often');
+INSERT INTO string_param (type, code, name) VALUES ('story023','3','Always');
 INSERT INTO string_param (type, code, name) VALUES ('submission-notes','','Unclassified');
 INSERT INTO string_param (type, code, name) VALUES ('submission-notes','Hold','Hold');
 INSERT INTO string_param (type, code, name) VALUES ('submission-notes','Quick','Quick');

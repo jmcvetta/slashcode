@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.185 2004/10/03 18:24:42 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.186 2004/10/05 23:48:23 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -636,6 +636,8 @@ sub getDailyMail {
 	# 1 - want all stories in the mainpage nexus, or any
 	# other nexuses linked to it, mailed
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
+# XXXSKIN - fix this - there is no more "sectioncollapse" and the
+# story_always_* need to be used instead
 	if ($user->{sectioncollapse}) {
 		my $nexuses = $self->getNexusChildrenTids($mp_tid);
 		my $nexus_clause = join ',', @$nexuses, $mp_tid;
@@ -644,13 +646,14 @@ sub getDailyMail {
 		$where .= "AND story_topics_rendered.tid = $mp_tid ";
 	}
 
-	$where .= "AND story_topics_rendered.tid NOT IN ($user->{extid}) "
-		if $user->{extid};
-	$where .= "AND stories.uid NOT IN ($user->{exaid}) "
-		if $user->{exaid};
-# XXXSKIN !!!!
-#	$where .= "AND section not in ($user->{exsect}) "
-#		if $user->{exsect};
+# XXXSKIN - fix this - the "never"s need to be screened out after the
+# sqlSelectAll, not here.
+	$where .= "AND story_topics_rendered.tid NOT IN ($user->{story_never_topic}) "
+		if $user->{story_never_topic};
+	$where .= "AND story_topics_rendered.tid NOT IN ($user->{story_never_nexus}) "
+		if $user->{story_never_nexus};
+	$where .= "AND stories.uid NOT IN ($user->{story_never_author}) "
+		if $user->{story_never_author};
 
 	my $other = " ORDER BY stories.time DESC";
 

@@ -75,8 +75,8 @@ __template__
 		<P><INPUT TYPE="CHECKBOX" NAME="noicons"[% i_check %]>
 		<B>No Icons</B> (disable topic icon images on stories)
 
-		<P><INPUT TYPE="CHECKBOX" NAME="sectioncollapse"[% s_check %]>
-		<B>Collapse Sections</B> (show stories from all sections, unless specifically excluded)
+<!--		<P><INPUT TYPE="CHECKBOX" NAME="sectioncollapse"[% s_check %]>
+		<B>Collapse Sections</B> (show stories from all sections, unless specifically excluded) -->
 
 		<P><B>Maximum Stories</B> The default is 30.  The main
 		column displays 1/3rd of these at minimum, and all of
@@ -100,4 +100,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editHome;users;default,v 1.16 2004/09/28 15:34:49 cowboyneal Exp $
+$Id: editHome;users;default,v 1.17 2004/10/05 23:48:26 jamiemccarthy Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.106 2003/03/26 02:27:27 jamie Exp $
+# $Id: slashschema_create.sql,v 1.107 2003/04/08 18:51:44 jamie Exp $
 #
 
 #
@@ -43,11 +43,13 @@ CREATE TABLE accesslist (
 	now_nosubmit enum('no','yes') NOT NULL default 'no',
 	now_norss enum('no','yes') NOT NULL default 'no',
 	now_proxy enum('no','yes') NOT NULL default 'no',
+	now_trusted enum('no','yes') NOT NULL default 'no',
 	was_ban enum('no','yes') NOT NULL default 'no',
 	was_nopost enum('no','yes') NOT NULL default 'no',
 	was_nosubmit enum('no','yes') NOT NULL default 'no',
 	was_norss enum('no','yes') NOT NULL default 'no',
 	was_proxy enum('no','yes') NOT NULL default 'no',
+	was_trusted enum('no','yes') NOT NULL default 'no',
 	PRIMARY KEY  (id),
 	KEY uid (uid),
 	KEY ipid (ipid),
@@ -57,7 +59,8 @@ CREATE TABLE accesslist (
 	KEY now_nopost (now_nopost),
 	KEY now_nosubmit (now_nosubmit),
 	KEY now_norss (now_norss),
-	KEY now_proxy (now_proxy)
+	KEY now_proxy (now_proxy),
+	KEY now_trusted (now_trusted)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS accesslog; 

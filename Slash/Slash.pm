@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.178 2003/11/10 22:30:48 pudge Exp $
+# $Id: Slash.pm,v 1.179 2003/11/19 16:24:19 pater Exp $
 
 package Slash;
 
@@ -990,7 +990,8 @@ sub displayThread {
 	if ($user->{mode} eq 'flat'
 		|| $user->{mode} eq 'archive'
 		|| $user->{mode} eq 'metamod'
-		|| $user->{mode} eq 'parents') {
+		|| $user->{mode} eq 'parents'
+		|| $user->{mode} eq 'child') {
 		$indent = 0;
 		$full = 1;
 	} elsif ($user->{mode} eq 'nested') {

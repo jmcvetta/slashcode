@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.103 2002/09/09 22:06:43 pater Exp $
+# $Id: users.pl,v 1.104 2002/09/11 15:22:35 pater Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1146,7 +1146,7 @@ sub tildeEd {
 	my $aids = $slashdb->getDescriptions('all-authors'); #$slashdb->getAuthorNames();
 	my $n = 0;
 
-	@$aid_order = sort { lc %$aids->{$a}{nickname} cmp lc %$aids->{$b}{nickname} } keys %$aids;
+	@$aid_order = sort { lc $aids->{$a} cmp lc $aids->{$b} } keys %$aids;
 
 	for my $aid (keys %$aids) { #(@$aids) {
 		$aidref->{$aid}{checked}  = ($exaid =~ /'\Q$aid\E'/) ? ' CHECKED' : '';
@@ -1155,7 +1155,7 @@ sub tildeEd {
 
 	my $topics = $slashdb->getDescriptions('topics');
 
-	@$tid_order = sort { lc %$topics->{$a}{alttext} cmp lc %$topics->{$b}{alttext} } keys %$topics;
+	@$tid_order = sort { lc $topics->{$a} cmp lc $topics->{$b} } keys %$topics;
 
 	while (my($tid, $alttext) = each %$topics) {
 		$tidref->{$tid}{checked} = ($extid =~ /'\Q$tid\E'/) ?

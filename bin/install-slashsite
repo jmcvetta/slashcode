@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.25 2002/11/16 22:28:25 jamie Exp $
+# $Id: install-slashsite,v 1.26 2002/12/29 18:58:50 jamie Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -509,6 +509,7 @@ sub apache_site_conf {
     # memory usage, degrades when it is On.
     SlashCompileTemplates Off
     
+    PerlAccessHandler  Slash::Apache::Banlist
     PerlAccessHandler  Slash::Apache::User
     PerlCleanupHandler Slash::Apache::Log
     PerlCleanupHandler Slash::Apache::Log::UserLog

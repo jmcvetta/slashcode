@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.665 2004/09/10 23:08:37 pudge Exp $
+# $Id: upgrades,v 1.666 2004/09/14 19:05:39 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2523,4 +2523,12 @@ ALTER TABLE topic_nexus_extras MODIFY COLUMN type ENUM('text', 'list') NOT NULL 
 # SLASHCLUSTER LAST UPDATED HERE
 
 # End of T_2_5_0_25, Start of T_2_5_0_26 - 2004/09/09
+
+ALTER TABLE story_topics_rendered DROP COLUMN weight;
+
+DROP TABLE IF EXISTS story_render_dirty;
+CREATE TABLE story_render_dirty (
+        stoid MEDIUMINT UNSIGNED NOT NULL,
+	PRIMARY KEY (stoid)
+) TYPE=InnoDB;
 

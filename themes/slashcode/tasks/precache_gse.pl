@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: precache_gse.pl,v 1.7 2004/08/06 04:19:26 jamiemccarthy Exp $
+# $Id: precache_gse.pl,v 1.8 2004/09/14 19:05:39 jamiemccarthy Exp $
 
 # Calls getStoriesEssentials, on each DB that might perform
 # its SQL, a few seconds before the top of each minute, so
@@ -17,7 +17,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "0-59 * * * *";
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -73,11 +73,17 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	# Sleep until :10 after the top of the minute.
+	# Make sure we run at (and until) predictable times through
+	# the minute.
 	my $time = time;
 	my $now_secs = $time % 60;
+	# Don't bother running this time around if there are fewer
+	# than 20 seconds left in the minute (that's cutting it
+	# too close).
 	return "started too late" if $now_secs > 40;
+	# If it's between :00 and :09, sleep until it's :10.
 	sleep 10 - $now_secs if $now_secs < 10;
+	# Quit trying once it gets up to :55.
 	my $max_time = $time - $now_secs + 55;
 
 	# Make each gSE query to each virtual user.

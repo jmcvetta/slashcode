@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.176 2004/08/14 00:04:29 pudge Exp $
+# $Id: MySQL.pm,v 1.177 2004/09/14 19:05:38 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1841,6 +1841,38 @@ sub getMinCommentcount {
 		"MIN(commentcount)",
 		"stories",
 		"stoid IN ($stoid_clause)");
+}
+
+########################################################
+# For freshenup.pl
+sub getSRDsWithinLatest {
+	my($self, $num_latest) = @_;
+	$num_latest ||= 1000;
+	my $max_stoid = $self->sqlSelect("MAX(stoid)", "stories");
+	my $srd_latest = 0;
+	if ($max_stoid && $max_stoid > $num_latest) {
+		$srd_latest = $self->sqlSelectColArrayref(
+			"stoid",
+			"story_render_dirty",
+			"stoid > " . $max_stoid - $num_latest);
+	} else {
+		$srd_latest = $self->sqlSelectColArrayref(
+			"stoid",
+			"story_render_dirty");
+	}
+	return $srd_latest;
+}
+
+########################################################
+# For freshenup.pl
+sub getSRDs {
+	my($self, $limit) = @_;
+	$limit ||= 100;
+	return $self->sqlSelectColArrayref(
+		"stoid",
+		"story_render_dirty",
+		"",
+		"ORDER BY stoid DESC LIMIT $limit");
 }
 
 ########################################################

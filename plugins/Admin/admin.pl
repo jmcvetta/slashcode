@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.77 2002/07/11 14:51:54 pudge Exp $
+# $Id: admin.pl,v 1.78 2002/07/12 00:53:35 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -1311,7 +1311,8 @@ sub listStories {
 	}
 
 	for (@$storylist) {
-		my($hits, $comments, $sid, $title, $aid, $time_plain, $topic, $section,
+		my($hits, $comments, $sid, $title, $aid, $time_plain, $topic,
+			$subsection, $section,
 			$displaystatus, $writestatus) = @$_;
 		my $time = timeCalc($time_plain, '%H:%M', 0);
 		my $td   = timeCalc($time_plain, '%A %B %d', 0);

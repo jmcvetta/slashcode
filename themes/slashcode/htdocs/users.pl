@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.189 2003/07/22 17:16:13 pater Exp $
+# $Id: users.pl,v 1.190 2003/07/22 18:37:43 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2214,6 +2214,7 @@ sub saveComm {
 		clbig			=> $form->{clbig},
 		clbig_bonus		=> $clbig_bonus,
 		commentlimit		=> $form->{commentlimit},
+		bytelimit		=> $form->{bytelimit},
 		commentsort		=> $form->{commentsort},
 		commentspill		=> $form->{commentspill},
 		domaintags		=> ($form->{domaintags} != 2 ? $form->{domaintags} : undef),

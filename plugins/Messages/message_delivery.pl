@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.5 2003/01/21 21:49:39 pudge Exp $
+# $Id: message_delivery.pl,v 1.6 2003/01/23 17:09:23 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -31,15 +31,15 @@ $task{$me}{code} = sub {
 	$time[5] += 1900;
 	$time[4] += 1;
 	my $now = sprintf "%04d-%02d-%02d", @time[5, 4, 3];
-	my $last_deferred = $slashdb->getVar('messages_last_deferred', 'value') || 0;
+	my $last_deferred = $slashdb->getVar('message_last_deferred', 'value') || 0;
 
 	my($successes, $failures) = (0, 0);
 	my $count = $constants->{message_process_count} || 10;
 
 	my $msgs;
-	if ($last_deferred != $now) {
+	if ($last_deferred ne $now) {
 		$msgs = $messages->gets($count);
-		$slashdb->setVar('messages_last_deferred', $now);
+		$slashdb->setVar('message_last_deferred', $now);
 	} else {
 		$msgs = $messages->gets($count, { 'send' => 'now' });
 	}

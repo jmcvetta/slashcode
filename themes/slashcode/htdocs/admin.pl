@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.20 2000/07/12 16:15:20 pudge Exp $
+#  $Id: admin.pl,v 1.21 2000/07/24 20:37:31 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1028,6 +1028,7 @@ sub importText {
 ##################################################################
 sub linkNode {
 	my $n = shift;
+	return '[?]' if $n eq '?';
 	return $n . '<SUP><A HREF="http://www.everything2.com/index.pl?node='
 		. $I{query}->escape($n) . '">[?]</A></SUP>';
 }
@@ -1672,12 +1673,13 @@ sub saveStory {
 			'subid=' . $I{dbh}->quote($I{F}{subid})
 		);
 
-		print "Assigning 3 karma to UID $suid" if $suid > 0;
+		print "Assigning $I{submission_bonus} karma to UID $suid" if $suid > 0;
 
-		sqlUpdate('users_info',
-			{ -karma => 'karma + 3' }, 
-			"uid=$suid"
-		) if $suid > 0;
+		my($userkarma)=sqlSelect('karma','users_info',"uid=$suid");
+		my $newkarma = ($userkarma + $I{submission_bonus} > $I{maxkarma}) ?
+			$I{maxkarma} : "karma+$I{submission_bonus}";
+		sqlUpdate('users_info', { -karma => $newkarma }, "uid=$suid")
+			if $suid > 0;
 
 		sqlUpdate('submissions',
 			{ del=>2 }, 

@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: index.pl,v 1.6 2000/07/05 18:49:36 cbwood Exp $
+#  $Id: index.pl,v 1.7 2000/07/24 20:37:31 cbwood Exp $
 ###############################################################################
 # pre stories cache update
 use strict;
@@ -286,6 +286,8 @@ sub checkForM2 {
 	my($d) = sqlSelect('to_days(now()) - to_days(lastmm)',
 		'users_info', "uid=$I{U}{uid}");
 	return unless $d;
+	my($tuid) = sqlSelect('count(*)', 'users');
+	return unless $I{U}{uid} < int($tuid * $I{m2_userpercentage});
 	print qq'Have you <A HREF="$I{rootdir}/metamod.pl">Meta Moderated</A> Today?<BR>';
 }
 

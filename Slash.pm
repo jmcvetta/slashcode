@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.39 2000/07/12 14:18:09 pudge Exp $
+#  $Id: Slash.pm,v 1.40 2000/07/24 20:37:31 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -89,6 +89,14 @@ sub getSlashConf {
 		: 'DEFAULT';
 
 	*I = $Slash::conf{$ENV{SERVER_NAME} ? $serv : $$};
+
+	# %%%%%% For stuff that NEEDS to be defined, check and define it here.
+
+	# Maximum karma. If it's not defined, things break.
+	$I{maxkarma} = 999 if !defined($I{maxkarma});
+	# Sanity check- ASSERT: MAXKARMA >= M2_MAXBONUS.
+	$I{m2_maxbonus} = $I{maxkarma}
+		if !$I{m2_maxbonus} || $I{m2_maxbonus} > $I{maxkarma};
 
 	$I{reasons} = [
 		'Normal',	# "Normal"
@@ -1869,7 +1877,7 @@ sub selectThreshold  {
 	my $s = qq!<SELECT NAME="threshold">\n!;
 	foreach my $x ($I{comment_minscore}..$I{comment_maxscore}) {
 		my $select = ' SELECTED' if $x == $I{U}{threshold};
-		$s .= qq!\t<OPTION VALUE="$x"$select>$x: $counts->[$x+1] comments\n!;
+		$s .= qq!\t<OPTION VALUE="$x"$select>$x: $counts->[$x - $I{comment_minscore}] comments\n!;
 	}
 	$s .= "</SELECT>\n";
 }
@@ -2585,7 +2593,7 @@ sub selectStories {
 	} else {
 		$s .= "	LIMIT $SECT->{artcount}";
 	}
-#	print "\n\n\n\n\n<-- stories select $s -->\n\n\n\n\n";
+	#print "\n\n\n\n\n<-- stories select $s -->\n\n\n\n\n";
 
 	my $cursor = $I{dbh}->prepare($s) or apacheLog($s);
 	$cursor->execute or apacheLog($s);

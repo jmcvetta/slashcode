@@ -76,7 +76,6 @@ __template__
    END;
 
    FOREACH t = topic_children;
-      # XXXSKIN obviously there are smarter ways to do this
       NEXT IF !topics.$t.searchable;
       listnames.${topics.$t.textname} = t;
    END;
@@ -131,4 +130,4 @@ END %]</li>
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.28 2004/10/19 18:35:01 tvroom Exp $
+$Id: searchform;search;default,v 1.29 2004/10/20 17:42:17 jamiemccarthy Exp $

@@ -106,7 +106,7 @@ END %]
 
 [% IF story.is_future %]<P><FONT SIZE="-1">See any serious problems with this story?
 Paste a short message here (if it's a dupe, the URL would be great)
-<form action="/index.pl" method="POST">
+<form action="[% gSkin.rootdir %]/index.pl" method="POST">
 <input type="HIDDEN" name="op" value="remark">
 <input type="TEXT" name="remark" size="20" maxlength="100">
 <input type="HIDDEN" name="sid" value="[% story.sid | strip_attribute %]">
@@ -140,4 +140,4 @@ END -%]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.39 2004/10/15 22:56:53 jamiemccarthy Exp $
+$Id: dispStory;misc;default,v 1.40 2004/10/19 00:14:57 pudge Exp $

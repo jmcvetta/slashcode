@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.110 2004/07/19 18:23:57 jamiemccarthy Exp $
+# $Id: index.pl,v 1.111 2004/08/02 11:56:18 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -413,6 +413,8 @@ sub displayStories {
 # right now we need all the edge we can get.  Hopefully we can get this 
 # back on soon. - Jamie 2004/07/17
 #       my $user_maxstories = $user->{maxstories};
+# Here, maxstories should come from the skin, and $cnt should be
+# named minstories and that should come from the skin too.
 	my $user_maxstories = getCurrentAnonymousCoward("maxstories");
 	my $cnt = int($user_maxstories / 3);
 	my($return, $counter);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: symlink-tool,v 1.3 2003/03/04 19:56:32 pudge Exp $
+# $Id: symlink-tool,v 1.4 2003/03/20 20:58:39 jamie Exp $
 
 # By Jamie McCarthy, jamie@slashdot.org
 # Based on template-tool, by Cliff Wood, Patrick Galbraith, Brian Aker
@@ -14,14 +14,14 @@
 use strict;
 use File::Basename;
 use File::Path;
-use File::Spec::Functions;
+use File::Spec::Functions qw( :DEFAULT splitpath );
 use Slash;
 use Slash::Utility;
 use Slash::DB;
 use Slash::Install;
 use Getopt::Std;
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
@@ -43,6 +43,7 @@ my $verbose = $opts{V} ? 1 : 0;
 
 my $virtuser = $opts{u} || 'slash';
 createEnvironment($virtuser);
+my @dotfiles = ( );
 my $slashdb = getCurrentDB();
 my $constants = getCurrentStatic();
 my $install = Slash::Install->new($virtuser);
@@ -94,20 +95,42 @@ for my $subdir (sort keys %subdir_files) {
 		my $site_rel_file = $target_file;
 		1 while $site_rel_file =~ s{^\.\.\/[^/]+/}{};
 		my $site_file_abs = canonpath(catfile($site_dir, $site_rel_file));
+		my $site_file_abs_dot = dotfile($site_file_abs);
+		my $site_file_abs_dot_short = dotfile($site_rel_file);
 		# At this point, $site_file_abs is e.g.
 		# '/usr/local/slash/site/mysite/tasks/spamarmor.pl'
-		# and $theme_file_abs is e.g.
-		# '/usr/local/slash/theme/customtheme/../slashcode/tasks/spamarmor.pl'
-		$num_changes += handle_file($site_file_abs, $theme_file_abs);
+		# $site_file_abs_dot is e.g.
+		# '/usr/local/slash/site/mysite/tasks/.spamarmor.pl'
+		# $theme_file_abs is e.g.
+		# '/usr/local/slash/theme/slashcode/tasks/spamarmor.pl'
+		$num_changes += handle_file($site_file_abs, $theme_file_abs,
+			$site_file_abs_dot, $site_file_abs_dot_short);
 	}
 }
 if ($num_changes == 0) {
 	print "symlink-tool -U: no symlink changes necessary\n";
 }
 
+if (@dotfiles) {
+	print "symlink-tool: found dotfiles: @dotfiles\n";
+}
+
 ###############################################
 sub handle_file {
-	my($symlink_file, $target_file) = @_;
+	my($symlink_file, $target_file, $symlink_file_dot, $symlink_file_dot_short) = @_;
+	lstat($symlink_file);
+	if (!-e _ && -e $symlink_file_dot) {
+		# The symlink file is missing and in its place is a
+		# dotfile.  This site must have that file disabled,
+		# perhaps temporarily.  Make sure it's correct;  do
+		# what we were doing to do on the real file, on the
+		# dotfile instead.
+		$symlink_file = $symlink_file_dot;
+		push @dotfiles, $symlink_file_dot_short;
+		if ($verbose) {
+			print "Checking dotfile replacement at '$symlink_file'\n";
+		}
+	}
 	lstat($symlink_file);
 	if (!-e _) {
 		print "Symlink at '$symlink_file' missing, ";
@@ -125,9 +148,9 @@ sub handle_file {
 	}
 	my $cur_target_file = readlink($symlink_file);
 	if ($cur_target_file eq $target_file) {
-#		if ($verbose) {
-#			print "Correct: $symlink_file -> $target_file\n";
-#		}
+		if ($verbose) {
+			print "Correct: $symlink_file -> $target_file\n";
+		}
 		return 0;
 	}
 	print "Symlink at '$symlink_file' mispointed at '$cur_target_file', ";
@@ -147,6 +170,13 @@ sub handle_file {
 	}
 	print "successfully relinked to '$target_file'\n";
 	return 1;
+}
+
+###############################################
+sub dotfile {
+	my($file_abs) = @_;
+	my($volume, $dirs, $file) = splitpath($file_abs);
+	return "$dirs.$file";
 }
 
 ###############################################

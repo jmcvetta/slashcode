@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.17 2002/07/19 14:30:45 pudge Exp $
+# $Id: Display.pm,v 1.18 2002/08/28 19:25:05 cliff Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -450,7 +450,7 @@ sub linkStory {
 
 #========================================================================
 
-=head2 pollbooth(QID [, NO_TABLE, CENTER])
+=head2 pollbooth(QID [, NO_TABLE, CENTER, RETURNTO])
 
 Creates a voting pollbooth.
 
@@ -474,6 +474,13 @@ If false, then will be formatted inside a C<fancybox>.
 Whether or not to center the tabled pollbooth (only
 works with NO_TABLE).
 
+=item RETURNTO
+
+If this parameter is specified, the voting widget will take the vote and return
+the user to the specified URI. Note that you WILL NOT be able to redirect
+outside of the site usign this parameter for security reasons (hence the need for 
+URIs as opposed to URLs).
+
 =back
 
 =item Return value
@@ -489,7 +496,7 @@ The 'pollbooth' template block.
 =cut
 
 sub pollbooth {
-	my($qid, $no_table, $center) = @_;
+	my($qid, $no_table, $center, $returnto) = @_;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $sect = $slashdb->getSection();
@@ -497,17 +504,18 @@ sub pollbooth {
 	# This special qid means to use the current (sitewide) poll.
 	$qid = $sect->{qid} if $qid eq '_currentqid';
 	# If no qid (or no sitewide poll), short-circuit out.
-	return "" if $qid eq "";
+	return '' if $qid eq '';
 
 	my $poll = $slashdb->getPoll($qid);
-	return "" unless %$poll;
+	return '' unless %$poll;
+
 	my $n_comments = $slashdb->countCommentsBySid(
 		$poll->{pollq}{discussion});
 	my $poll_open = $slashdb->isPollOpen($qid);
 	my $has_voted = $slashdb->hasVotedIn($qid);
 	my $can_vote = !$has_voted && $poll_open;
 
-	my $pollbooth = slashDisplay('pollbooth', {
+	return slashDisplay('pollbooth', {
 		question	=> $poll->{pollq}{question},
 		answers		=> $poll->{answers},
 		qid		=> $qid,
@@ -516,16 +524,9 @@ sub pollbooth {
 		can_vote	=> $can_vote,
 		voters		=> $poll->{pollq}{voters},
 		comments	=> $n_comments,
-		comments	=> $n_comments,
 		sect		=> $sect->{section},
+		returnto	=> $returnto,
 	}, 1);
-
-	return $no_table
-		? $pollbooth
-		: fancybox(
-			$constants->{fancyboxwidth}, 'Poll',
-			$pollbooth, $center, 1
-		);
 }
 
 #========================================================================
@@ -1122,4 +1123,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.17 2002/07/19 14:30:45 pudge Exp $
+$Id: Display.pm,v 1.18 2002/08/28 19:25:05 cliff Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.127 2002/11/16 22:28:25 jamie Exp $
+# $Id: users.pl,v 1.128 2002/11/20 03:50:08 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -941,15 +941,14 @@ sub showInfo {
 		} else {
 			$netid = $requested_user->{subnetid} ;
 		}
-		$netid_vis = $netid;
-		$netid_vis = substr($netid, 0, $constants->{id_md5_vislength})
-			if $constants->{id_md5_vislength};
-
-		$title = getTitle('user_netID_user_title', {
+		my $data = {
 			id => $id,
 			md5id => $netid,
-			md5id_vis => $netid_vis,
-		});
+		};
+		vislenify($data); # add $data->{md5id_vis}
+		$netid_vis = $data->{md5id_vis};
+
+		$title = getTitle('user_netID_user_title', $data);
 
 		
 		$admin_block = getUserAdmin($netid, $fieldkey, 0) if $admin_flag;

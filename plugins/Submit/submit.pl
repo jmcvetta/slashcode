@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.74 2002/11/14 15:32:23 pater Exp $
+# $Id: submit.pl,v 1.75 2002/11/20 03:50:08 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -184,7 +184,7 @@ sub previewForm {
                 if $topic->{image} =~ /^\w+\.\w+$/;
 
 	my $extracolumns = $slashdb->getSectionExtras($sub->{section}) || [ ];
-	my $ipid_vis = $constants->{id_md5_vislength} ? substr($sub->{ipid}, 0, $constants->{id_md5_vislength}) : $sub->{ipid};
+	vislenify($sub); # add $sub->{ipid_vis}
 
 	my $email_known = "";
 	$email_known = "mailto" if $sub->{email} eq $user->{fakeemail};
@@ -202,7 +202,7 @@ sub previewForm {
 		subid		=> $form->{subid},
 		topic		=> $topic,
 		ipid		=> $sub->{ipid},
-		ipid_vis	=> $ipid_vis,
+		ipid_vis	=> $sub->{ipid_vis},
 		admin_flag 	=> $admin_flag,
 		extras 		=> $extracolumns,
 		lockTest	=> lockTest($sub->{subj}),

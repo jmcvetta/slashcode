@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.747 2004/12/15 18:49:26 tvroom Exp $
+# $Id: MySQL.pm,v 1.748 2004/12/20 22:58:33 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.747 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.748 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10826,7 +10826,7 @@ sub getSection {
 sub getSkin {
 	my($self, $skid, $options) = @_;
 	if (!$skid) {
-		errorLog("cannot getSkin for empty skid");
+		errorLog("cannot getSkin for empty skid") if $ENV{GATEWAY_INTERFACE};
 		$skid = getCurrentStatic('mainpage_skid');
 	}
 	my $skins = $self->getSkins($options);

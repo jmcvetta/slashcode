@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.10 2004/07/13 23:54:41 jamiemccarthy Exp $
+# $Id: convertDBto200406,v 1.11 2004/07/15 04:37:33 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -691,6 +691,7 @@ CREATE TABLE story_param_new (
         PRIMARY KEY (param_id)
 ) TYPE=InnoDB;
 INSERT INTO story_param_new (stoid, name, value) SELECT stories_new.stoid, story_param.name, story_param.value FROM stories_new, story_param WHERE stories_new.sid=story_param.sid ORDER BY stories_new.stoid, name;
+INSERT INTO story_param_new (stoid, name, value) SELECT stoid, 'neverdisplay', 1 FROM stories_new WHERE displaystatus=-1;
 DROP TABLE IF EXISTS story_text_new;
 CREATE TABLE story_text_new (
         stoid MEDIUMINT UNSIGNED NOT NULL,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.631 2004/07/17 15:50:04 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.632 2004/07/17 16:43:38 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.631 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.632 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8585,14 +8585,20 @@ sub getTopiclistFromChosen {
 	}
 
 	my @tids = sort {
-			# Highest priority is whether this topic (at this
-			# weight) is in the preferred skid.
-		   $in_skid{$b} <=> $in_skid{$a}
-			# Second priority is the topic's weight
+			# Highest priority is whether this topic is
+			# NOT a nexus (nexus topics go at the end).
+		   (exists $tree->{$a}{nexus} ? 0 : 1) <=> (exists $tree->{$b}{nexus} ? 0 : 1)
+			# Next highest priority is whether this topic
+			# has an icon.
+		|| ($tree->{$a}{image} ? 1 : 0) <=> ($tree->{$b}{image} ? 1 : 0)
+			# Next highest priority is whether this topic
+			# (at this weight) is in the preferred skid.
+		|| $in_skid{$b} <=> $in_skid{$a}
+			# Next priority is the topic's weight
 		|| $chosen_hr->{$b} <=> $chosen_hr->{$a}
-			# Third priority is alphabetical sort
+			# Next priority is alphabetical sort
 		|| $tree->{$a}{textname} cmp $tree->{$b}{textname}
-			# Last priority is primary key sory
+			# Last priority is primary key sort
 		|| $a <=> $b
 	} keys %$chosen_hr;
 	return \@tids;

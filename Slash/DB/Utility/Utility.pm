@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.39 2003/04/22 23:44:13 pudge Exp $
+# $Id: Utility.pm,v 1.40 2003/04/25 18:35:51 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -235,6 +235,7 @@ sub sqlConnect {
 			#}
 		}
 	}
+	$self->{_dbh}{PrintError} = 0; #"off" this kills the issue of bad SQL sending errors to the client
 
 	return 1; # We return true that the sqlConnect was ok.
 }

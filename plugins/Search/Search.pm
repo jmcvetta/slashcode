@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.57 2003/03/28 22:25:31 brian Exp $
+# $Id: Search.pm,v 1.58 2003/04/25 18:35:51 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -249,11 +249,22 @@ sub findStory {
 		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
 	}
 
-	if (ref($form->{_multi}{tid}) eq 'ARRAY') {
-		$where .= " AND tid IN (" . join(",", @{$form->{_multi}{tid}}) . ") "; 
-	} else {
-		$where .= " AND tid=" . $self->sqlQuote($form->{tid})
-			if $form->{tid};
+	# Here we find the possible sids that could have this tid and then search only those
+	if ($form->{tid}) {
+		my @tids;
+		if (ref($form->{_multi}{tid}) eq 'ARRAY') {
+			push @tids, @{$form->{_multi}{tid}};
+		} else {
+			push @tids, $form->{tid};
+		}
+		my $string = join(',', @{$self->sqlQuote(\@tids)});
+		my $sids = $self->sqlSelectColArrayref('sid', 'story_topics', "tid IN ($string)");
+		if ($sids && @$sids) {
+			$string = join(',', @{$self->sqlQuote($sids)});
+			$where .= " AND stories.sid IN ($string) ";
+		} else {
+			return; # No results could possibly match
+		}
 	}
 	
 	$other .= " LIMIT $start, $limit" if $limit;

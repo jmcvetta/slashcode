@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.99 2003/08/05 17:46:49 pudge Exp $
+# $Id: Environment.pm,v 1.100 2003/08/06 04:51:48 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -2116,7 +2116,8 @@ sub slashProfInit {
 }
 
 sub slashProfEnd {
-	return unless getCurrentStatic('use_profiling');
+	my $use_profiling = getCurrentStatic('use_profiling');
+	return unless $use_profiling;
 	return unless @prof;
 
 	my $first = $prof[0][0];
@@ -2178,7 +2179,7 @@ EOT
 		# mark new beginning
 		$begin{$prof->[5]} = $t1 if $prof->[5];
 
-		printf STDERR <<'EOT', $$, $where, $t2, $s2, $t1, $s1;
+		printf STDERR <<'EOT', $$, $where, $t2, $s2, $t1, $s1 if $use_profiling > 1;
 %-6d: %-64.64s % 6d ms (%6.6s%%) / % 6d ms (%6.6s%%)
 EOT
 	}
@@ -2236,4 +2237,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.99 2003/08/05 17:46:49 pudge Exp $
+$Id: Environment.pm,v 1.100 2003/08/06 04:51:48 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.43 2004/04/08 04:32:41 jamiemccarthy Exp $
+# $Id: slashd,v 1.44 2004/04/15 01:25:32 tvroom Exp $
 
 ############################################################
 #
@@ -758,7 +758,7 @@ sub main {
 
 		# kill the dbh, we have too many problems
 		# if it sticks around during a fork -- pudge
-		$slashdb->{_dbh}->disconnect;
+		$slashdb->{_dbh}->disconnect if $slashdb->{_dbh};
 		undef $slashdb->{_dbh};
 
 		FORK: {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.209 2004/12/15 03:55:15 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.210 2004/12/21 19:46:47 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2658,7 +2658,7 @@ sub getModderCommenterIPIDSummary {
 	push @where, "cuid = $ac_uid" if $options->{only_anon_comments};
 	push @where, "id >= $options->{start_at_id}" if $options->{start_at_id};
 	push @where, "id <= $options->{end_at_id}" if $options->{end_at_id};
-	push @where, "ipid is not null and ipid!=''" if $options->{need_defined_ipid};
+	push @where, "comments.ipid is not null and comments.ipid!=''" if $options->{need_defined_ipid};
 	my $where = join(" AND ", @where);
 	my $mods = $self->sqlSelectAllHashref(
 			[qw(uid ipid)],

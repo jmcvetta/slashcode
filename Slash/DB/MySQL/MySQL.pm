@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.599 2004/06/23 00:24:08 tvroom Exp $
+# $Id: MySQL.pm,v 1.600 2004/06/23 02:03:21 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.599 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.600 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8364,7 +8364,7 @@ sub setStoryRenderedFromChosen {
 			{ stoid => $stoid, tid => $key, weight => $rendered_hr->{$key} }
 		)) {
 			# and we should ROLLBACK here
-			return 0;
+			return undef;
 		}
 	}
 
@@ -8378,6 +8378,10 @@ sub getPrimarySkidFromRendered {
 
 	# Eliminate any nexuses not in this set of rendered topics.
 	@nexuses = grep { $rendered_hr->{$_} } @nexuses;
+
+	# No rendered nexuses, none at all, means primaryskid 0,
+	# which means "none".
+	return 0 if !@nexuses;
 
 	# Eliminate the mainpage's nexus.
 	my $mp_skid = getCurrentStatic("mainpage_skid");

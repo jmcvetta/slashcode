@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.227 2002/09/23 19:11:36 jamie Exp $
+# $Id: MySQL.pm,v 1.228 2002/09/24 17:11:00 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.227 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.228 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -392,6 +392,8 @@ sub _set_csq {
 	my $i = int($a);
 
 	$hr->{chance} = $a - $i;
+	$hr->{num_base} = $i * $sign;
+	$hr->{num_possible} = ($i+1) * $sign;
 	if ($sign > 0) {
 		$hr->{sql_and_where}{$column} = "$column < $max";
 		$hr->{sql_base} = $i ? "LEAST($column+$i, $max)" : "";

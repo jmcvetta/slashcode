@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_cids.pl,v 1.4 2004/03/16 20:16:24 jamiemccarthy Exp $
+# $Id: set_cids.pl,v 1.5 2004/03/16 21:46:54 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,9 +13,9 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
-$task{$me}{timespec} = '*/10 * * * *';
+$task{$me}{timespec} = '5-59/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
 $task{$me}{fork} = SLASHD_NOWAIT;
 

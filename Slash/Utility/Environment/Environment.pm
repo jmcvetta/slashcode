@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.131 2004/07/16 15:14:49 tvroom Exp $
+# $Id: Environment.pm,v 1.132 2004/07/16 20:20:13 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2488,6 +2488,26 @@ sub getCurrentCache {
 	return defined $value ? $cache->{$value} : $cache;
 }
 
+
+######################################################################
+# for debugging cached hashes, finding out where they are changing
+# inappropriately
+package Slash::Utility::Environment::Tie;
+require Tie::Hash;
+@Slash::Utility::Environment::Tie::ISA = 'Tie::StdHash';
+
+# to use this, just do something like this to create the hash:
+#   tie my(%hash), 'Slash::Utility::Environment::Tie';
+# then modify the condition in STORE below to suit your needs
+
+sub STORE {
+	my($hash, $key, $value) = @_;
+	$hash->{$key} = $value;
+	if (!$key) {
+		warn "$$: [$key] => [$value] ???? : ", join "|", caller(0);
+	}
+}
+
 1;
 
 __END__
@@ -2499,4 +2519,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.131 2004/07/16 15:14:49 tvroom Exp $
+$Id: Environment.pm,v 1.132 2004/07/16 20:20:13 pudge Exp $

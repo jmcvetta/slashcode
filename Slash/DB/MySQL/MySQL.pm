@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.675 2004/09/03 13:09:03 tvroom Exp $
+# $Id: MySQL.pm,v 1.676 2004/09/08 21:05:25 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.675 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.676 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6548,6 +6548,7 @@ sub getCommentReply {
 ########################################################
 sub getCommentsForUser {
 	my($self, $sid, $cid, $options) = @_;
+	$options ||= {};
 
 	# Note that the "cache_read_only" option is not used at the moment.
 	# Slash has done comment caching in the past but does not do it now.
@@ -6560,6 +6561,13 @@ sub getCommentsForUser {
 	my $sid_quoted = $self->sqlQuote($sid);
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
+	my $other = "";
+	
+	my $order_dir = "";
+	$order_dir = uc($options->{order_dir}) eq "DESC" ? "DESC" : "ASC" if $options->{order_dir};
+	
+	$other.= "ORDER BY $options->{order_col} $order_dir" if $options->{order_col};
+	$other.= " LIMIT $options->{limit}" if $options->{limit};
 
 	my $select = " cid, date, date as time, subject, nickname, "
 		. "homepage, fakeemail, users.uid AS uid, sig, "
@@ -6585,7 +6593,7 @@ sub getCommentsForUser {
 		$where .= ")";
 	}
 
-	my $comments = $self->sqlSelectAllHashrefArray($select, $tables, $where);
+	my $comments = $self->sqlSelectAllHashrefArray($select, $tables, $where, $other);
 
 	my $archive = $cache_read_only;
 

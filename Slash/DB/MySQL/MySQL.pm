@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.68 2002/02/06 17:37:03 pudge Exp $
+# $Id: MySQL.pm,v 1.69 2002/02/06 22:49:51 cliff Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1442,9 +1442,16 @@ sub deleteSubmission {
 		$self->sqlUpdate("submissions", { del => 1 },
 			"subid=" . $self->sqlQuote($form->{subid})
 		);
+
+		# Brian mentions that this isn't atomic and that two updates
+		# executing this code with the same UID will cause problems.
+		# I say, that if you have 2 processes executing this code 
+		# at the same time, with the same uid, that you have a SECURITY
+		# BREACH. Caveat User.			- Cliff
 		$self->setUser($uid,
-			{ -deletedsubmissions => 'deletedsubmissions+1' }
-		);
+			{ deletedsubmissions => 
+				getCurrentUser('deletedsubmissions') + 1,
+		});
 		$subid{$form->{subid}}++;
 	}
 

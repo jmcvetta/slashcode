@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.40 2002/11/28 21:24:02 jamie Exp $
+# $Id: Anchor.pm,v 1.41 2003/02/19 16:36:15 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -165,6 +165,8 @@ sub header {
 #print STDERR "header(options->page) defined: '$options->{page}' for title '$data->{title}'\n" if defined($options->{page});
 	$data->{tab_selected} = $options->{tab_selected} if $options->{tab_selected};
 
+	$user->{state}{mt}{curcol} = 0;
+	$user->{state}{mt}{cols} = [ ];
 	if ($options->{admin} && $user->{is_admin}) {
 		$user->{state}{adminheader} = 1;
 		$display = slashDisplay('header-admin', $data, { Return => $options->{Return}, Page => $options->{Page} });
@@ -556,4 +558,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.40 2002/11/28 21:24:02 jamie Exp $
+$Id: Anchor.pm,v 1.41 2003/02/19 16:36:15 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.107 2003/07/30 22:21:51 jamie Exp $
+# $Id: MySQL.pm,v 1.108 2003/08/04 17:27:55 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1575,6 +1575,9 @@ sub createRSS {
 	# this will go away once we require Digest::MD5 2.17 or greater
 	# Hey pudge, CPAN is up to Digest::MD5 2.25 or so, think we can
 	# make this go away now? - Jamie 2003/07/24
+	# Oh probably, if someone wants to test it and all, i can
+	# add it to Slash::Bundle etc.  i'll put it on my TODO
+	# and DO it when i can. -- pudge
 	$item->{title} =~ /^(.*)$/;
 	my $title = $1;
 	$item->{description} =~ /^(.*)$/;
@@ -1617,17 +1620,18 @@ sub expireRSS {
 # For slashd
 
 ########################################################
-sub getSlashdStatus {
-	my($self) = @_;
-	my $answer = _genericGet('slashd_status', 'task', '', @_);
-	$answer->{last_completed_hhmm} =
-		substr($answer->{last_completed}, 11, 5)
-		if defined($answer->{last_completed});
-	$answer->{next_begin_hhmm} =
-		substr($answer->{next_begin}, 11, 5)
-		if defined($answer->{next_begin});
-	return $answer;
-}
+# see Slash::DB::MySQL instead
+#sub getSlashdStatus {
+#	my($self) = @_;
+#	my $answer = _genericGet('slashd_status', 'task', '', @_);
+#	$answer->{last_completed_hhmm} =
+#		substr($answer->{last_completed}, 11, 5)
+#		if defined($answer->{last_completed});
+#	$answer->{next_begin_hhmm} =
+#		substr($answer->{next_begin}, 11, 5)
+#		if defined($answer->{next_begin});
+#	return $answer;
+#}
 
 ########################################################
 sub setSlashdStatus {

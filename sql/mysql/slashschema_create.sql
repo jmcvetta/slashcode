@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.179 2004/11/14 23:18:10 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.180 2004/11/20 00:12:36 jamiemccarthy Exp $
 #
 
 #
@@ -953,6 +953,7 @@ DROP TABLE IF EXISTS submissions;
 CREATE TABLE submissions (
 	subid mediumint UNSIGNED NOT NULL auto_increment,
 	email varchar(255) DEFAULT '' NOT NULL,
+	emaildomain varchar(255) DEFAULT '' NOT NULL,
 	name varchar(50) NOT NULL,
 	time datetime NOT NULL,
 	subj varchar(50) NOT NULL,
@@ -969,8 +970,9 @@ CREATE TABLE submissions (
 	signature varchar(32) NOT NULL,
 	PRIMARY KEY (subid),
 	UNIQUE signature (signature),
-	INDEX del (del),
-	INDEX uid (uid),
+	KEY emaildomain (emaildomain),
+	KEY del (del),
+	KEY uid (uid),
 	KEY ipid (ipid),
 	KEY subnetid (subnetid),
 	KEY primaryskid_tid (primaryskid, tid),

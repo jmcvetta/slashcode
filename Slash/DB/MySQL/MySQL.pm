@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.729 2004/11/15 20:46:26 pudge Exp $
+# $Id: MySQL.pm,v 1.730 2004/11/20 00:12:37 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.729 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.730 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1788,8 +1788,11 @@ sub createSubmission {
 	$data->{subj} = delete $submission->{subj};
 	$data->{ipid} = getCurrentUser('ipid');
 	$data->{subnetid} = getCurrentUser('subnetid');
-	$data->{email} ||= delete $submission->{email} || '';
-	$data->{uid} ||= delete $submission->{uid} || getCurrentStatic('anonymous_coward_uid'); 
+	$data->{email} = delete $submission->{email} || '';
+	my $emailuri = URI->new($data->{email});
+	my $emailhost = $emailuri ? $emailuri->host() : "";
+	$data->{emaildomain} = fullhost_to_domain($emailhost);
+	$data->{uid} = delete $submission->{uid} || getCurrentStatic('anonymous_coward_uid'); 
 	$data->{'-time'} = delete $submission->{'time'};
 	$data->{'-time'} ||= 'NOW()';
 	$data->{primaryskid} = delete $submission->{primaryskid} || $constants->{mainpage_skid};
@@ -1803,7 +1806,7 @@ sub createSubmission {
 	my $subid = $self->getLastInsertId;
 
 	# The next line makes sure that we get any section_extras in the DB - Brian
-	$self->setSubmission($subid, $submission) if keys %$submission;
+	$self->setSubmission($subid, $submission) if $subid && keys %$submission;
 
 	return $subid;
 }
@@ -5639,6 +5642,27 @@ sub getAccessList {
 		'accesslist',
 		"now_$access_type = 'yes'",
 		"ORDER BY ts DESC LIMIT $min, $max");
+}
+
+##################################################################
+sub countSubmissionsFromUID {
+	my($self, $uid, $options) = @_;
+	my $constants = getCurrentStatic();
+	my $days_back = $options->{days_back} || $constants->{submission_count_days};
+	my $uid_q = $self->sqlQuote($uid);
+	return $self->sqlCount("submissions",
+		"uid=$uid_q
+		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY)");
+}
+
+sub countSubmissionsWithEmaildomain {
+	my($self, $emaildomain, $options) = @_;
+	my $constants = getCurrentStatic();
+	my $days_back = $options->{days_back} || $constants->{submission_count_days};
+	my $emaildomain_q = $self->sqlQuote($emaildomain);
+	return $self->sqlCount("submissions",
+		"emaildomain=$emaildomain_q
+		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY)");
 }
 
 ##################################################################

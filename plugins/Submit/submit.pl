@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.102 2004/10/12 14:58:00 tvroom Exp $
+# $Id: submit.pl,v 1.103 2004/11/20 00:12:36 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -207,6 +207,13 @@ sub previewForm {
 		last_sid	=> '',
 	}) if $user->{is_admin};
 
+	my $num_from_uid = 0;
+	my $num_with_emaildomain = 0;
+	if ($user->{is_admin}) {
+		$num_from_uid = $slashdb->countSubmissionsFromUID($sub->{uid});
+		$num_with_emaildomain = $slashdb->countSubmissionsWithEmaildomain($sub->{emaildomain});
+	}
+
 	my $num_sim = $constants->{similarstorynumshow} || 5;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $storyref = {
@@ -245,6 +252,8 @@ sub previewForm {
 		extras 		=> $extracolumns,
 		lockTest	=> lockTest($sub->{subj}),
 		similar_stories	=> $similar_stories,
+		num_from_uid	=> $num_from_uid,
+		num_with_emaildomain => $num_with_emaildomain,
 	});
 }
 

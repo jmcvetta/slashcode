@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.622 2004/07/15 14:44:30 tvroom Exp $
+# $Id: MySQL.pm,v 1.623 2004/07/15 15:41:33 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.622 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.623 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2543,6 +2543,10 @@ sub checkStoryViewable {
 		$stoid = $self->sqlSelect("stoid", "stories", "sid='$sid'");
 	}
 	return 0 unless $stoid;
+
+	return 0 if $self->sqlCount(
+		"story_param",
+		"stoid = '$stoid' AND name='neverdisplay' AND value > 0");
 
 	my @nexuses;
 	if ($start_tid) {
@@ -5383,7 +5387,6 @@ sub displaystatusForStories {
 		"stories.stoid=str.stoid AND str.tid=$constants->{mainpage_nexus_tid} " .
 		"AND stories.stoid IN ($stoid_list)",
 	);
-
 	my $sectional = $self->sqlSelectAllHashref(
 		'stoid',
 		'DISTINCT stories.stoid',
@@ -5391,8 +5394,15 @@ sub displaystatusForStories {
 		"stories.stoid=str.stoid AND str.tid in($section_nexus_list) " .
 		"AND stories.stoid IN ($stoid_list)",
 	);
+	my $nd = $self->sqlSelectAllKeyValue(
+		"stoid, value",
+		"story_param",
+		"name='neverdisplay' AND stoid IN ($stoid_list)");
+
 	foreach (@$stoids) {
-		if ($mainpage->{$_}) {
+		if ($nd->{$_}) {
+			$ds->{$_} = -1;
+		} elsif ($mainpage->{$_}) {
 			$ds->{$_} = 0;
 		} elsif ($sectional->{$_} ) {
 			$ds->{$_} = 1;
@@ -5415,11 +5425,9 @@ sub _displaystatus {
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
 	if (!$mp_tid) { warn "no mp_tid"; $mp_tid = 1 }
 	my $viewable = $self->checkStoryViewable($stoid, "", $options);
+	return -1 if !$viewable;
 	my $mainpage = $self->checkStoryViewable($stoid, $mp_tid, $options);
-	my $displaystatus = -1; # No display by default
-	if ($viewable) {
-		$displaystatus = $mainpage ? 0 : 1;
-	}
+	my $displaystatus = $mainpage ? 0 : 1;
 	return $displaystatus;
 }
 

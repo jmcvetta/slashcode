@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.79 2002/05/16 05:01:55 jamie Exp $
+# $Id: users.pl,v 1.80 2002/06/04 18:13:40 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -476,7 +476,7 @@ sub newUserForm {
 	my $user = getCurrentUser();
 	my $suadmin_flag = $user->{seclev} >= 10000;
 	my $title = getTitle('newUserForm_title');
-	slashDisplay('newUserForm', { title => $title, suadmin_flag => $suadmin_flag})
+	slashDisplay('newUserForm', { title => $title, suadmin_flag => $suadmin_flag })
 }
 
 #################################################################
@@ -747,8 +747,13 @@ sub showInfo {
 			$uid = $requested_user->{uid};
 			$nick = $requested_user->{nickname};
 			if ((my $conflict_id = $slashdb->getUserUID($id)) && $form->{userinfo}) {
-				slashDisplay('showInfoConflict', { op => 'userinfo', id => $uid, nick => $nick, conflict_id => $conflict_id});
-				return(1);
+				slashDisplay('showInfoConflict', {
+					op		=> 'userinfo',
+					id		=> $uid,
+					nick		=> $nick,
+					conflict_id	=> $conflict_id
+				});
+				return 1;
 			}
 
 		} elsif (length($id) == 32) {

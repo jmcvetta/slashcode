@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.41 2002/04/16 16:31:03 pudge Exp $
+# $Id: journal.pl,v 1.42 2002/06/04 18:13:40 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -552,19 +552,19 @@ sub saveArticle {
 			my $zoo = getObject('Slash::Zoo');
 			my $friends = $zoo->getFriendsForMessage;
 
+			my $data = {
+				template_name	=> 'messagenew',
+				subject		=> { template_name => 'messagenew_subj' },
+				journal		=> {
+					description	=> $description,
+					article		=> $form->{article},
+					posttype	=> $form->{posttype},
+					id		=> $id,
+					uid		=> $user->{uid},
+					nickname	=> $user->{nickname},
+				}
+			};
 			for (@$friends) {
-				my $data = {
-					template_name	=> 'messagenew',
-					subject		=> { template_name => 'messagenew_subj' },
-					journal		=> {
-						description	=> $description,
-						article		=> $form->{article},
-						posttype	=> $form->{posttype},
-						id		=> $id,
-						uid		=> $user->{uid},
-						nickname	=> $user->{nickname},
-					}
-				};
 				$messages->create($_, MSG_CODE_JOURNAL_FRIEND, $data);
 			}
 		}

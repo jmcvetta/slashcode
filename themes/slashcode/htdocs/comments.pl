@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.67 2002/05/29 21:07:04 brian Exp $
+# $Id: comments.pl,v 1.68 2002/06/04 18:13:40 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -1062,14 +1062,14 @@ sub submitComment {
 		if ($messages && $constants->{commentnew_msg}) {
 			my $users = $messages->getMessageUsers(MSG_CODE_NEW_COMMENT);
 
+			my $data  = {
+				template_name	=> 'commnew',
+				subject		=> { template_name => 'commnew_subj' },
+				reply		=> $reply,
+				discussion	=> $discussion,
+			};
 			for my $usera (@$users) {
 				next if $users{$usera};
-				my $data  = {
-					template_name	=> 'commnew',
-					subject		=> { template_name => 'commnew_subj' },
-					reply		=> $reply,
-					discussion	=> $discussion,
-				};
 				$messages->create($usera, MSG_CODE_NEW_COMMENT, $data);
 				$users{$usera}++;
 			}
@@ -1365,10 +1365,8 @@ sub moderateCid {
 						reason	=> $reason,
 					},
 				};
-				$messages->create(
-					$users->[0],
-					MSG_CODE_COMMENT_MODERATE,
-					$data
+				$messages->create($users->[0],
+					MSG_CODE_COMMENT_MODERATE, $data
 				);
 			}
 		}

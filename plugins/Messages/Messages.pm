@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.7 2002/02/06 16:59:38 pudge Exp $
+# $Id: Messages.pm,v 1.8 2002/06/04 18:13:40 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -76,11 +76,6 @@ containing the data to send.  To override the default
 key.  Pass the name of the template in as the "template_name"
 key.  If "subject" is a template, then pass it as a hashref,
 with "template_name" as one of the keys.
-
-B<NOTE>: You cannot re-use the same MESSAGE reference for
-multiple messages.  The data is manipulated.  You must pass in
-a new data structure each time through.  This should be fixed
-in future versions.
 
 =item FROM_ID
 
@@ -135,6 +130,9 @@ sub create {
 	if (!ref $data) {
 		$message = $data;
 	} elsif (ref $data eq 'HASH') {
+		# copy parent data structure so it is not modified,
+		# so it is left alone on return back to caller
+		$data = { %$data };
 		unless ($data->{template_name}) {
 			messagedLog(getData("no template", 0, "messages"));
 			return 0;
@@ -142,19 +140,26 @@ sub create {
 
 		my $user = getCurrentUser();
 		$data->{_NAME}    = delete($data->{template_name});
-		$data->{_PAGE}    = delete($data->{template_page})    || $user->{currentPage};
-		$data->{_SECTION} = delete($data->{template_section}) || $user->{currentSection};
+		$data->{_PAGE}    = delete($data->{template_page})
+			|| $user->{currentPage};
+		$data->{_SECTION} = delete($data->{template_section})
+			|| $user->{currentSection};
 
 		# set subject
 		if (exists $data->{subject} && ref($data->{subject}) eq 'HASH') {
+			# copy parent data structure so it is not modified,
+			# so it is left alone on return back to caller
+			$data->{subject} = { %{$data->{subject}} };
 			unless ($data->{subject}{template_name}) {
 				messagedLog(getData("no template subject", 0, "messages"));
 				return 0;
 			}
 
 			$data->{subject}{_NAME}    = delete($data->{subject}{template_name});
-			$data->{subject}{_PAGE}    = delete($data->{subject}{template_page})    || $user->{currentPage};
-			$data->{subject}{_SECTION} = delete($data->{subject}{template_section}) || $user->{currentSection};
+			$data->{subject}{_PAGE}    = delete($data->{subject}{template_page})
+				|| $data->{_PAGE}    || $user->{currentPage};
+			$data->{subject}{_SECTION} = delete($data->{subject}{template_section})
+				|| $data->{_SECTION} || $user->{currentSection};
 		}
 
 		$message = $data;
@@ -893,4 +898,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.7 2002/02/06 16:59:38 pudge Exp $
+$Id: Messages.pm,v 1.8 2002/06/04 18:13:40 pudge Exp $

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.4 2002/06/01 22:58:29 jamie Exp $
+# $Id: run_moderatord.pl,v 1.5 2002/06/04 18:13:41 pudge Exp $
 
 use strict;
 
@@ -204,7 +204,6 @@ sub reconcileM2 {
 			template_page	=> 'messages',
 			subject		=> {
 				template_name	=> 'msg_m2_subj',
-				template_page	=> 'messages',
 			},
 		};
 

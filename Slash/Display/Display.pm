@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.16 2002/05/13 18:35:47 pudge Exp $
+# $Id: Display.pm,v 1.17 2002/06/04 18:13:40 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -215,7 +215,9 @@ sub slashDisplay {
 		);
 	}
 
-	$data ||= {};
+	# copy parent data structure so it is not modified,
+	# so it is left alone on return back to caller
+	$data = $data ? { %$data } : {};
 
 	# let us pass in a context if we have one
 	my $template = $CONTEXT || get_template(0, 0, 1);

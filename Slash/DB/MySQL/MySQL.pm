@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.388 2003/05/06 18:17:15 brian Exp $
+# $Id: MySQL.pm,v 1.389 2003/05/06 19:07:42 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.388 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.389 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3454,12 +3454,6 @@ sub getBanList {
 	my($self, $refresh) = @_;
 	my $constants = getCurrentStatic();
 	
-	# I believe we need to call _genericGetsCache() here.  Maybe it
-	# was decided not to do that because the method returns a copy
-	# of the cache hashref, and the BanList may be quite large.
-	# But something needs to set $self->{_banlist_cache_time} or
-	# the _genericCacheRefresh() call does no good because this
-	# table's cache will never expire. - Jamie 2002/12/28
 	_genericCacheRefresh($self, 'banlist', $constants->{banlist_expire});
 	my $banlist_ref = $self->{_banlist_cache} ||= {};
 
@@ -3481,6 +3475,7 @@ sub getBanList {
 		# indicate whether the cache is fresh, besides checking its
 		# number of keys at the top of this "if")
 		$banlist_ref->{_junk_placeholder} = 1;
+		$self->{_banlist_cache_time} = time() if !$self->{_banlist_cache_time};
 	}
 
 	return $banlist_ref;
@@ -3491,12 +3486,6 @@ sub getNorssList {
 	my($self, $refresh) = @_;
 	my $constants = getCurrentStatic();
 	
-	# I believe we need to call _genericGetsCache() here.  Maybe it
-	# was decided not to do that because the method returns a copy
-	# of the cache hashref, and the BanList may be quite large.
-	# But something needs to set $self->{_norsslist_cache_time} or
-	# the _genericCacheRefresh() call does no good because this
-	# table's cache will never expire. - Jamie 2002/12/28
 	_genericCacheRefresh($self, 'norsslist', $constants->{banlist_expire});
 	my $norsslist_ref = $self->{_norsslist_cache} ||= {};
 
@@ -3518,6 +3507,7 @@ sub getNorssList {
 		# indicate whether the cache is fresh, besides checking its
 		# number of keys at the top of this "if")
 		$norsslist_ref->{_junk_placeholder} = 1;
+		$self->{_banlist_cache_time} = time() if !$self->{_banlist_cache_time};
 	}
 
 	return $norsslist_ref;

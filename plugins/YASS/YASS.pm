@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.9 2002/02/26 01:47:41 jamie Exp $
+# $Id: YASS.pm,v 1.10 2002/02/26 03:03:35 brian Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -31,35 +31,39 @@ sub new {
 	return $self;
 }
 
-sub getURLsSids {
+sub getSidsURLs {
 	my ($self) = @_;
-	$self->sqlSelectAll("value, sid", "story_param", "name='url'");
+	$self->sqlSelectAll("sid, value", "story_param", "name='url'");
 }
 
 sub create {
 	my ($self, $hash) = @_;
-	$hash->{-touched} = "now()";
-	$self->sqlInsert($hash);
+	$hash->{'-touched'} = "now()";
+	$self->sqlInsert('yass_sites', $hash);
 }
 
 sub success {
 	my ($self, $id) = @_;
-	my $hash->{-touched} = "now()";
-	$self->sqlUpdate($hash, "id = $id");
+	my %hash;
+	$hash{'-touched'} = "now()";
+	$hash{failures} = "0";
+	$self->sqlUpdate('yass_sites', \%hash, "id = $id");
 }
 
 sub setURL {
 	my ($self, $id, $url, $rdf) = @_;
-	my $hash->{url} = $url;
-	$hash->{rdf} = $rdf;
-	$self->sqlUpdate($hash, "id = $id");
+	my %hash;
+	$hash{url} = $url;
+	$hash{rdf} = $rdf;
+	$self->sqlUpdate('yass_sites', \%hash, "id = $id");
 }
 
 sub exists {
 	my ($self, $sid, $url) = @_;
 	my $q_url = $self->sqlQuote($url);
 	my $q_sid = $self->sqlQuote($sid);
-	my $return =  $self->sqlSelect('id', 'yass_sites', "sid = $q_sid AND url = $q_url");
+	my $return = 1 
+		if  $self->sqlSelect('id', 'yass_sites', "sid = $q_sid AND url = $q_url");
 	unless ($return) {
 		$return = $self->sqlSelect('sid', 'yass_sites', "sid = $q_sid");
 	}
@@ -68,17 +72,19 @@ sub exists {
 
 sub failed {
 	my ($self, $id) = @_;
-	my $hash->{-touched} = "now()";
-	$self->sqlUpdate($hash, "id = $id");
+	my %hash;
+	$hash{'-touched'} = "now()";
+	$hash{-failures} = "failures+1";
+	$self->sqlUpdate('yass_sites', \%hash, "id = $id");
 }
 
 
 sub getActive {
-	my ($self, $limit) = @_;
+	my ($self, $limit, $all) = @_;
 	my $failures = getCurrentStatic('yass_failures');
 	$failures ||= '14';
 
-	my $sid;
+	my ($sid, $order, $where);
 
 	my $order;
 	if ($limit) {
@@ -86,13 +92,20 @@ sub getActive {
 	} else {
 		$order = "ORDER BY title ASC";
 	}
-	my $all = $self->sqlSelectAllHashrefArray(
-		"yass_sites.sid as sid, url, title", 
+
+	if($all) {
+		$where = "stories.sid = yass_sites.sid",
+	} else {
+		$where = "stories.sid = yass_sites.sid and failures < $failures",
+	}
+
+	my $sites = $self->sqlSelectAllHashrefArray(
+		"yass_sites.sid as sid, url, title, id, failures", 
 		"yass_sites, stories", 
-		"stories.sid = yass_sites.sid and failed < $failures",
+		$where,
 		$order);
 
-	return $all;
+	return $sites;
 }
 
 sub DESTROY {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.19 2002/02/08 20:25:54 brian Exp $
+# $Id: slashschema_create.sql,v 1.20 2002/02/12 18:44:28 brian Exp $
 #
 
 #
@@ -745,7 +745,6 @@ CREATE TABLE users_comments (
 	commentlimit smallint UNSIGNED DEFAULT '100' NOT NULL,
 	commentspill smallint UNSIGNED DEFAULT '50' NOT NULL,
 	commentsort tinyint DEFAULT '0',
-	anon_comments tinyint UNSIGNED DEFAULT '0',
 	noscores tinyint DEFAULT '0' NOT NULL,
 	mode varchar(10) DEFAULT 'thread',
 	threshold tinyint DEFAULT '0',

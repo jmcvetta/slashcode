@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.189 2004/02/25 16:48:05 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.190 2004/03/16 14:23:54 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1898,6 +1898,11 @@ sub displayRecent {
 		sid	=> $sid
 		
 	}) || [ ];
+
+    if(defined $form->{show_m2s}){
+        $slashdb->setUser($user->{uid}, { user_m2_with_mod => $form->{show_m2s});
+    }
+
 
 	my $subj_vislen = 30;
 	for my $comm (@$recent_comments) {

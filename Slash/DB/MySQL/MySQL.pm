@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.639 2004/07/20 18:31:50 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.640 2004/07/20 21:01:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.639 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.640 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4633,7 +4633,7 @@ sub getAbuses {
 # status codes 1xx, 2xx, 3xx, 4xx and 5xx respectively.
 sub countAccessLogHitsInLastX {
 	my($self, $field, $check, $x) = @_;
-	$x ||= 10000;
+	$x ||= 1000;
 	$check = md5hex($check) if length($check) != 32 && $field ne 'uid';
 	my $where = '';
 

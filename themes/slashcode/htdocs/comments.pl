@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.127 2003/04/17 16:55:18 pudge Exp $
+# $Id: comments.pl,v 1.128 2003/04/22 14:00:03 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1173,7 +1173,9 @@ sub submitComment {
 		print getError('maxcid exceeded');
 		return(0);
 	} else {
-		slashDisplay('comment_submit') if ! $form->{newdiscussion};
+		slashDisplay('comment_submit', {
+			metamod_elig => scalar $slashdb->metamodEligible($user),
+		}) if ! $form->{newdiscussion};
 		undoModeration($id);
 		printComments($discussion, $maxCid, $maxCid,
 			{ force_read_from_master => 1 }

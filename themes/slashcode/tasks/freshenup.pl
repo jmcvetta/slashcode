@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.32 2003/08/26 18:11:10 jamie Exp $
+# $Id: freshenup.pl,v 1.33 2003/10/14 14:16:09 vroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -167,6 +167,28 @@ $task{$me}{code} = sub {
 			$do_log ||= (verbosity() >= 1);
 		}
 
+		# if we wrote a section page previously replace
+		# old pages with a redirect to the current
+		# article
+
+		my @old_sect = $slashdb->getPrevSectionsForSid($sid);
+		if(@old_sect){
+			foreach my $old_sect (@old_sect) {
+				next if $old_sect eq $section;
+				my $url = $constants->{rootdir}."/$section/$sid.shtml";
+				my $fn = "$basedir/$old_sect/$sid.shtml";
+				if(-e $fn){
+					my $fh = gensym();
+					if(!open($fh, ">", $fn)){
+						warn("Couldn't open file: $fn for writing");
+					} else {
+						print $fh slashDisplay("articlemoved", { url=> $url },{ Return => 1 } );
+						close $fh;
+					}
+				}
+			}
+			$slashdb->clearPrevSectionsForSid($sid);
+		}
 		# Now we extract what we need from the file we created
 		my $set_ok = 0;
 		my($cc, $hp) = _read_and_unlink_cchp_file($cchp_file, $cchp_param);

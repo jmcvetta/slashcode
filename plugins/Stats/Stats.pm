@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.6 2002/02/18 21:08:40 brian Exp $
+# $Id: Stats.pm,v 1.7 2002/02/19 06:50:42 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -92,7 +92,7 @@ sub countSubmissionsByDay {
 	my($self, $yesterday) = @_;
 
 	my $used = $self->sqlCount(
-		'comments', 
+		'submissions', 
 		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'"
 	);
 }

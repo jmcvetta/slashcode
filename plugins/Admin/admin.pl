@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.145 2003/04/11 16:59:16 pudge Exp $
+# $Id: admin.pl,v 1.146 2003/04/15 19:37:46 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1183,7 +1183,7 @@ sub editStory {
 		$user->{currentSection} = $tmp;
 		$storyref->{relatedtext} =
 			getRelated(
-				"$storyref->{title} $storyref->{bodytext} $storyref->{introtext}",
+				"$storyref->{title} $storyref->{introtext} $storyref->{bodytext}",
 				$storyref->{tid}
 			) . otherLinks(
 				$slashdb->getAuthor($storyref->{uid}, 'nickname'),

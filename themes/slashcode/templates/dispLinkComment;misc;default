@@ -25,11 +25,11 @@ __template__
 			subject_only => 1,
 		}) %][% END %]
 
-		[% IF user.mode == 'parents' %]
+		[% IF user.mode == 'parents' && !form.pid%]
 			|
 			[% Slash.linkComment({
 			sid	=> sid,
-			cid	=> cid,
+			pid	=> cid,
 			subject => 'View this thread',
 			subject_only => 1,
 		}) %][% END %]
@@ -65,4 +65,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.16 2003/11/17 15:59:22 pater Exp $
+$Id: dispLinkComment;misc;default,v 1.17 2003/11/17 16:08:17 pater Exp $

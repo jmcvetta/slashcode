@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.261 2004/10/12 19:33:31 jamiemccarthy Exp $
+# $Id: users.pl,v 1.262 2004/10/19 18:23:50 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1538,7 +1538,7 @@ sub tildeEd {
 
 	# Set up $topic_hr, @topictid_order, and $story023_default{topic}.
 
-	my $topic_hr = $reader->getDescriptions('non_nexus_topics');
+	my $topic_hr = $reader->getDescriptions('non_nexus_topics-storypickable');
 	my @topictid_order = sort { lc $topic_hr->{$a} cmp lc $topic_hr->{$b} } keys %$topic_hr;
 	for my $tid (@topictid_order) {
 		     if ($prefs{story_never_topic}{$tid}) {
@@ -1552,8 +1552,9 @@ sub tildeEd {
 
 	# Set up $nexus_hr, @nexustid_order, and $story023_default{nexus}.
 
-	my $nexus_tids_ar = $reader->getNexusChildrenTids($constants->{mainpage_nexus_tid});
 	my $topic_tree = $reader->getTopicTree();
+	my $nexus_tids_ar = $reader->getNexusChildrenTids($constants->{mainpage_nexus_tid});
+	@$nexus_tids_ar = grep {$topic_tree->{$_}{storypickable}} @$nexus_tids_ar;
 	my $nexus_hr = { };
 	for my $tid (@$nexus_tids_ar) {
 		$nexus_hr->{$tid} = $topic_tree->{$tid}{textname};

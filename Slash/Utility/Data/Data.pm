@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.105 2003/12/29 22:37:56 jamie Exp $
+# $Id: Data.pm,v 1.106 2003/12/29 22:55:36 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -25,6 +25,7 @@ LONG DESCRIPTION.
 =cut
 
 use strict;
+use POSIX ();
 use Date::Format qw(time2str);
 use Date::Language;
 use Date::Parse qw(str2time);
@@ -41,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -422,24 +423,21 @@ randomness.
 
 =cut
 
-{
-	my $maxint = 2**32-1;
-	sub createLogToken {
-		my $str = "";
-		my $need_srand = 0;
-		while (length($str) < 22) {
-			if ($need_srand) {
-				srand();
-				$need_srand = 0;
-			}
-			my $r = rand($maxint) . ":" . rand($maxint);
-			my $md5 = md5_base64($r);
-			$md5 =~ s/\W//g;
-			$str .= substr($md5, int(rand 8) + 5, 3);
-			$need_srand = 1 if rand() < 0.3;
+sub createLogToken {
+	my $str = "";
+	my $need_srand = 0;
+	while (length($str) < 22) {
+		if ($need_srand) {
+			srand();
+			$need_srand = 0;
 		}
-		return substr($str, 0, 22);
+		my $r = rand(POSIX::UINT_MAX()) . ":" . rand(POSIX::UINT_MAX());
+		my $md5 = md5_base64($r);
+		$md5 =~ tr/A-Za-z0-9//cd;
+		$str .= substr($md5, int(rand 8) + 5, 3);
+		$need_srand = 1 if rand() < 0.3;
 	}
+	return substr($str, 0, 22);
 }
 
 #========================================================================
@@ -3120,4 +3118,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.105 2003/12/29 22:37:56 jamie Exp $
+$Id: Data.pm,v 1.106 2003/12/29 22:55:36 jamie Exp $

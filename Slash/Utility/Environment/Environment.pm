@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.16 2002/02/11 18:16:04 pudge Exp $
+# $Id: Environment.pm,v 1.17 2002/02/12 15:19:39 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1296,11 +1296,10 @@ sub fixint {
 =head2 getObject(CLASS_NAME [, VIRTUAL_USER, ARGS])
 
 Returns a object in CLASS_NAME, using the new() constructor.  It passes
-VIRTUAL_USER and ARGS to it, and then caches it.  If the object exists
-the second time through, it will just return, without reinitializing
-(even if different VIRTUAL_USER and ARGS are passed).  That shouldn't be
-a problem, since you should only have one instance with one set of args
-required per Slash site.
+VIRTUAL_USER and ARGS to it, and then caches it by CLASS_NAME and VIRTUAL_USER.
+If the object for that CLASS_NAME/VIRTUAL_USER exists the second time through,
+it will just return, without reinitializing (even if different ARGS are passed,
+so don't do that).
 
 =over 4
 
@@ -1310,7 +1309,7 @@ required per Slash site.
 
 =item CLASS_NAME
 
-A class name to use in creating a object.
+A class name to use in creating a object.  Only [\w:] characters are allowed.
 
 =item VIRTUAL_USER
 
@@ -1342,22 +1341,22 @@ sub getObject {
 		$objects = $static_objects   ||= {};
 	}
 
-	if ($objects->{$class}) {
+	# clean up dangerous characters
+	$class =~ s/[^\w:]+//g;
+	$user ||= getCurrentVirtualUser();
+	return undef unless $user && $class;
+
+	if ($objects->{$class, $user}) {
 		# we've been here before, and it didn't work last time ...
 		# what, you think you can try it again and it will work
 		# magically this time?  you think you're better than me?
-		if ($objects->{$class} eq 'NA') {
+		if ($objects->{$class, $user} eq 'NA') {
 			return undef;
 		} else {
-			return $objects->{$class};
+			return $objects->{$class, $user};
 		}
+
 	} else {
-		$user ||= getCurrentVirtualUser();
-		return undef unless $user;
-
-		# clean up dangerous characters
-		$class =~ s/[^\w:]+//g;
-
 		# see if module has been loaded in already ...
 		(my $file = $class) =~ s|::|/|g;
 		# ... because i really hate eval
@@ -1370,10 +1369,10 @@ sub getObject {
 				"`perl -M$class -le '$class->new'` to see why.\n");
 		} else {
 			my $object = $class->new($user, @args);
-			return $objects->{$class} = $object if $object;
+			return $objects->{$class, $user} = $object if $object;
 		}
 
-		$objects->{$class} = 'NA';
+		$objects->{$class, $user} = 'NA';
 		return undef;
 	}
 }
@@ -1575,4 +1574,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.16 2002/02/11 18:16:04 pudge Exp $
+$Id: Environment.pm,v 1.17 2002/02/12 15:19:39 pudge Exp $

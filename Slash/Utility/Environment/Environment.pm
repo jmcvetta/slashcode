@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.38 2002/07/29 19:11:54 jamie Exp $
+# $Id: Environment.pm,v 1.39 2002/08/01 02:29:54 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1271,7 +1271,7 @@ Hashref of cleaned-up data.
 
 	# fields that have ONLY a-zA-Z0-9_
 	my %alphas = map {($_ => 1)} qw(
-		formkey hcanswer mode section type
+		formkey hcanswer mode op section type
 	);
 
 	# regexes to match dynamically generated numeric fields
@@ -1284,8 +1284,6 @@ Hashref of cleaned-up data.
 		query	=> sub { $_[0] =~ s|[\000-\040<>\177-\377]+| |g;
 			         $_[0] =~ s|\s+| |g;		},
 	);
-	# add more specials
-#	$special{qid} = $special{sid};
 
 
 sub filter_params {
@@ -1699,4 +1697,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.38 2002/07/29 19:11:54 jamie Exp $
+$Id: Environment.pm,v 1.39 2002/08/01 02:29:54 jamie Exp $

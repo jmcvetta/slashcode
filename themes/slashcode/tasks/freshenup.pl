@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.50 2004/10/15 02:26:48 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.51 2004/10/17 22:31:56 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -149,7 +149,7 @@ $task{$me}{code} = sub {
 		$do_all ? 'all_dirty' : 'mainpage_dirty',
 		'DESC',
 		$max_stories
-	) if $task_exit_flag;
+	) if !$task_exit_flag;
 
 	my $bailed = 0;
 	my $totalChangedStories = 0;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.19 2002/02/16 22:30:49 cliff Exp $
+# $Id: Environment.pm,v 1.20 2002/03/11 21:29:54 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1227,7 +1227,7 @@ sub filter_params {
 		artcount bseclev buymore cid clbig clsmall
 		commentlimit commentsort commentspill
 		commentstatus del displaystatus
-		filter_id height highlightthresh
+		filter_id hbtm height highlightthresh
 		isolate issue last maillist max
 		maxcommentsize maximum_length maxstories
 		min minimum_length minimum_match next
@@ -1587,4 +1587,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.19 2002/02/16 22:30:49 cliff Exp $
+$Id: Environment.pm,v 1.20 2002/03/11 21:29:54 jamie Exp $

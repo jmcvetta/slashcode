@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.11 2002/03/01 15:47:09 jamie Exp $
+# $Id: Subscribe.pm,v 1.12 2002/03/11 21:29:54 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -56,9 +56,33 @@ sub _subscribeDecisionPage {
                 ||  !$uid
                 ||   $user->{is_anon};
 
+	# If the user hasn't paid for any pages, or has already bought
+	# (used up) all the pages they've paid for, then they are not
+	# buying this one.
+
 	return 0 if !$user->{hits_paidfor}
                 || ( $user->{hits_bought}
 			&& $user->{hits_bought} >= $user->{hits_paidfor} );
+
+	# Has the user exceeded the maximum number of pages they want
+	# to buy *today*?
+
+	my $constants = getCurrentStatic();
+	my @gmt = gmtime;
+	my $today = sprintf("%04d%02d%02d", $gmt[5]+1900, $gmt[4]+1, $gmt[3]);
+	if ($today eq substr($user->{lastclick}, 0, 8)) {
+		# This is not the first click of the day, so the today_max may
+		# indeed apply.
+		my $today_max = $constants->{subscribe_hits_btmd} || 10;
+		$today_max = $user->{hits_bought_today_max}
+			if defined($user->{hits_bought_today_max});
+		# If this value ends up 0 (whether because the user set it to 0, or
+		# the site var is 0 and the user didn't override) then there is no
+		# daily maximum.
+		if ($today_max) {
+			return 0 if $user->{hits_bought_today} >= $today_max;
+		}
+	}
 
 	# The user has paid for pages and may be buying this one.
 
@@ -97,7 +121,7 @@ sub _subscribeDecisionPage {
 			$decision = 1 if $self->{defpage}{_any};
 		}
 	}
-	if (getCurrentStatic('subscribe_debug')) {
+	if ($constants->{subscribe_debug}) {
 		print STDERR "_subscribeDecisionPage $trueOnOther $decision $user->{uid}"
 			. " $user->{hits_bought} $user->{hits_paidfor}"
 			. " uri '$uri'\n";

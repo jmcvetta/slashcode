@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.56 2003/03/28 22:05:21 brian Exp $
+# $Id: Search.pm,v 1.57 2003/03/28 22:25:31 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -352,14 +352,17 @@ sub findPollQuestion {
 	$where .= " AND topic=" . $self->sqlQuote($form->{tid})
 		if $form->{tid};
 
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-	my $SECT = $reader->getSection($form->{section});
-	if ($SECT->{type} eq 'collected') {
-		$where .= " AND pollquestions.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
-			if $SECT->{contained} && @{$SECT->{contained}};
-	} else {
-		$where .= " AND pollquestions.section = " . $self->sqlQuote($SECT->{section});
-	}
+#	Sections are not right here, I need to work out logic for this -Brian
+#	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+#	my $SECT = $reader->getSection($form->{section});
+#	if ($SECT->{type} eq 'collected') {
+#		$where .= " AND pollquestions.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+#			if $SECT->{contained} && @{$SECT->{contained}};
+#	} else {
+#		$where .= " AND pollquestions.section = " . $self->sqlQuote($SECT->{section});
+#	}
+	$where .= " AND pollquestions.section = " . $self->sqlQuote($form->{section}) 
+		if $form->{section};
 	
 	my $sql = "SELECT $columns FROM $tables WHERE $where $other";
 

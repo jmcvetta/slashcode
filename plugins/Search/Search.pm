@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.48 2002/10/25 05:32:46 jamie Exp $
+# $Id: Search.pm,v 1.49 2002/11/14 19:44:40 brian Exp $
 
 package Slash::Search;
 
@@ -10,8 +10,9 @@ use Slash::Utility;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
+use Data::Dumper;
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -245,35 +246,12 @@ sub findStory {
 	$where .= " AND displaystatus != -1";
 
 	my $slashdb = getCurrentDB();
-	my $section = $slashdb->getSection(); 
-	if ($form->{section}) {
-		if ($form->{section} ne $constants->{section}) {
-			if ($section->{type} eq 'collected') {
-				if (!$section->{contained}
-					|| scalar(@{$section->{contained}}) == 0
-					|| (grep { $form->{section} eq $_ } @{$section->{contained}})
-				) {
-					$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
-				} else {
-					# Section doesn't belong to this contained section
-					# Tecnically we should return nothing but users are too dumb for that :)  -Brian
-					$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
-				}
-			} else  {
-				# Means we are dealing with a contained section and this is not the contained section
-				# Tecnically we should return nothing but users are too dumb for that :)  -Brian
-				$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
-			}
-		} else {
-			$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
-		}
+	my $SECT = $slashdb->getSection($form->{section});
+	if ($SECT->{type} eq 'collected') {
+		$where .= " AND stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+			if $SECT->{contained} && @{$SECT->{contained}};
 	} else {
-		if ($section->{type} eq 'collected') {
-			$where .= " AND stories.section IN ('" . join("','", @{$section->{contained}}) . "')" 
-				if $section->{contained} && @{$section->{contained}};
-		} else {
-			$where .= " AND stories.section = " . $self->sqlQuote($section->{section});
-		}
+		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
 	}
 
 	if (ref($form->{_multi}{tid}) eq 'ARRAY') {

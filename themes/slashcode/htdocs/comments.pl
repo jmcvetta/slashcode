@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.207 2004/10/14 19:20:01 pudge Exp $
+# $Id: comments.pl,v 1.208 2004/10/14 19:33:37 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -109,7 +109,7 @@ sub main {
 			$discussion = $slashdb->getDiscussionBySid($form->{sid});
 			$section = $discussion->{section};
 			if ($constants->{tids_in_urls}) {
-				my $tids = $slashdb->getTopiclistForStory($form->{sid}) || [];
+				my $tids = $slashdb->getTopiclistForStory($form->{sid});
 				my $tid_string = join('&amp;tid=', @$tids);
 				$user->{state}{tid} = $tid_string;
 			}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: precache_gse.pl,v 1.1 2004/07/19 18:23:57 jamiemccarthy Exp $
+# $Id: precache_gse.pl,v 1.2 2004/07/19 18:42:50 jamiemccarthy Exp $
 
 # Calls getStoriesEssentials, on each DB that might perform
 # its SQL, a few seconds before the top of each minute, so
@@ -17,7 +17,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "0-59 * * * *";
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -36,12 +36,14 @@ $task{$me}{code} = sub {
 	my $dbs = $slashdb->getDBs();
 	if ($constants->{index_gse_backup_prob} < 1 && $dbs->{writer}) {
 		my @writer = @{ $dbs->{writer} };
-		$virtual_users{$writer[0]{virtual_user}} = 1;
+		$virtual_users{$writer[0]{virtual_user}} = 1
+			if $writer[0]{isalive} eq 'yes';
 	}
 	if ($constants->{index_gse_backup_prob} > 0 && $dbs->{reader}) {
 		my @readers = @{ $dbs->{reader} };
 		for my $reader (@readers) {
-			$virtual_users{$reader->{virtual_user}} = 1;
+			$virtual_users{$reader->{virtual_user}} = 1
+				if $reader->{isalive} eq 'yes';
 		}
 	}
 	my @virtual_users = sort keys %virtual_users;

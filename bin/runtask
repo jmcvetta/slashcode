@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.18 2004/06/17 16:11:50 jamiemccarthy Exp $
+# $Id: runtask,v 1.19 2004/10/15 02:26:48 jamiemccarthy Exp $
 
 use sigtrap;
 use strict;
@@ -27,9 +27,10 @@ use Slash::Utility;
 use vars qw(
 	%opts %task $me $task_name $hard_verbosity
 	$virtual_user $constants $slashdb $user $dir $gSkin
+	$task_exit_flag
 );
 
-(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -122,11 +123,15 @@ sub verbosity {
 ############################################################
 
 sub slashdLogInit {
-	doLogInit('slashd', 1, 'runtask');
+	doLogInit('slashd', {
+		nopid => 1,
+		sname => 'runtask',
+	});
+	$SIG{USR1} = sub { $task_exit_flag = 1 };
 }
 
 sub slashdLogExit {
-	doLogExit('slashd', 1, 'runtask');
+	doLogExit('slashd', { nopid => 1, sname => 'runtask' });
 }
 
 sub get_task_subref {
@@ -287,6 +292,7 @@ sub main {
 	setCurrentSkin(determineCurrentSkin());
 	$gSkin = getCurrentSkin();
 	$dir = "$constants->{datadir}/tasks";
+	$task_exit_flag = 0;
 
 	# List what tasks are available
 	if ($opts{'l'}) {

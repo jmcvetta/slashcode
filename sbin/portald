@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.34 2003/04/10 07:31:01 pater Exp $
+# $Id: portald,v 1.35 2003/04/25 18:37:09 pater Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -86,23 +86,6 @@ EOT
 	}
 	setblock("top10comments", $block);
 
-}
-
-#################################################################
-sub getWhatsPlayingBox {
-	my $list = $slashdb->getWhatsPlaying();
-
-	my $block = '';
-	foreach (@$list) {
-		$block .= "<B>$_->[0]:</B><UL>";
-		my @items = split /\|/, $_->[1];
-		foreach (@items) {
-			$block .= "<LI>$_</LI>";
-		}
-		$block .= "</UL><BR>";
-	}
-
-	setblock("whatsplaying", $block);
 }
 
 #################################################################
@@ -251,7 +234,6 @@ for (@{$RDFlist}) {
 }
 
 getTop10Comments();
-getWhatsPlayingBox() if $constants->{slashbox_whatsplaying};
 getSlashdotPoll();
 getUptime();
 
@@ -267,6 +249,8 @@ foreach (keys %savedBlocks) {
 
 # from 'portald-site'
 newSemiRandomBlock($slashdb) if defined &newSemiRandomBlock;
+getWhatsPlayingBox($slashdb) if $constants->{slashbox_whatsplaying}
+	&& defined &getWhatsPlayingBox;
 
 portaldLog("Sucessfully Saved Portals");
 

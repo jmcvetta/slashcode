@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.80 2002/07/15 05:14:46 jamie Exp $
+# $Id: admin.pl,v 1.81 2002/07/16 22:06:18 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1653,8 +1653,8 @@ sub saveStory {
 	}
 
 	if ($sid) {
-		my $rootdir = $slashdb->getSection($form->{section}, 'url')
-			|| $constants->{rootdir};
+		my $section = $slashdb->getSection($form->{section});
+		my $rootdir = $section->{rootdir} || $constants->{rootdir};
 
 		my $id = $slashdb->createDiscussion( {
 			title	=> $form->{title},

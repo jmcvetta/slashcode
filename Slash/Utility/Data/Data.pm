@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.50 2002/07/16 17:06:45 pudge Exp $
+# $Id: Data.pm,v 1.51 2002/07/16 22:06:18 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -1855,8 +1855,8 @@ sub _slashlink_to_link {
 	# Load up special values and delete them from the attribute list.
 	my $sn = delete $attr{sn} || "";
 	my $sect = delete $attr{sect} || "";
-	my $sect_root = ($sect ? $slashdb->getSection($sect, "url") : "")
-		|| $root;
+	my $section = $sect ? $slashdb->getSection($sect) : {};
+	my $sect_root = $section->{rootdir} || $root;
 	my $frag = delete $attr{frag} || "";
 	# Generate the return value.
 	my $retval = q{<A HREF="};
@@ -2578,4 +2578,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.50 2002/07/16 17:06:45 pudge Exp $
+$Id: Data.pm,v 1.51 2002/07/16 22:06:18 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.36 2003/03/27 18:22:42 pudge Exp $
+# $Id: Utility.pm,v 1.37 2003/03/27 19:58:49 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -258,8 +258,8 @@ sub sqlSelectMany {
 	$sql .= "  WHERE $where " if $where;
 	$sql .= "        $other" if $other;
 
+	$self->sqlConnect;
 	my $sth = $self->{_dbh}->prepare_cached($sql);
-	$self->sqlConnect();
 	if ($sth->execute) {
 		return $sth;
 	} else {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.23 2002/04/18 08:55:10 brian Exp $
+# $Id: Environment.pm,v 1.24 2002/04/19 21:54:25 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1031,19 +1031,22 @@ sub setCookie {
 		? $cookiedomain
 		: '';
 
-# I cannot get HTTPS here ... I think it is not set until later.
-# This poses a problem.  -- pudge
-# Need to scan the connection class to find this information.
-# (I'll do it later). This may also be in $r->protocol -Brian
-# 	if ($constants->{cookiesecure} && $r->subprocess_env->{HTTPS}) {
-# 		$cookie{-secure} = 1;
-# 	}
-
-	my $cookie = Apache::Cookie->new($r,
+	my %cookiehash = (
 		-name    =>  $name,
 		-value   =>  $val || 'nobody',
 		-path    =>  $cookiepath
 	);
+
+# I cannot get HTTPS here ... I think it is not set until later.
+# This poses a problem.  -- pudge
+# Need to scan the connection class to find this information.
+# (I'll do it later). This may also be in $r->protocol -Brian
+# Brian advises port() is the best way, yes it's icky -Jamie
+	if ($constants->{cookiesecure} && $r->port == 443) {
+		$cookiehash{-secure} = 1;
+	}
+
+	my $cookie = Apache::Cookie->new($r, %cookiehash);
 
 	$cookie->expires('+1y') unless $session;
 	$cookie->bake;
@@ -1651,4 +1654,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.23 2002/04/18 08:55:10 brian Exp $
+$Id: Environment.pm,v 1.24 2002/04/19 21:54:25 jamie Exp $

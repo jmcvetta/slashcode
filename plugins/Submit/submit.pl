@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.91 2004/04/02 00:43:05 pudge Exp $
+# $Id: submit.pl,v 1.92 2004/04/06 00:23:41 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -168,17 +168,12 @@ sub previewStory {
 sub yourPendingSubmissions {
 	my($constants, $slashdb, $user, $form) = @_;
 
-	my $summary;
 	return if $user->{is_anon};
 
-	if (my $submissions = $slashdb->getSubmissionsPending()) {
-		for my $submission (@$submissions) {
-			$summary->{$submission->[4]}++;
-		}
+	if (my $submissions = $slashdb->getSubmissionsByUID($user->{uid}, "", { limit_days => 365 })) {
 		slashDisplay('yourPendingSubs', {
 			submissions	=> $submissions,
 			width		=> '100%',
-			summary		=> $summary,
 		});
 	}
 }

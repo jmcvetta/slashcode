@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.2 2000/05/16 20:43:34 pudge Exp $
+#  $Id: submit.pl,v 1.3 2000/05/24 17:11:35 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -305,7 +305,6 @@ EOT
 	my $cur_note_str = $I{F}{note} || 'Unclassified';
 
 	my(%all_sections, %all_notes, %sn);
-	%all_sections = map { ($_ || 'All Sections') => 1 } keys %{$I{sectionBank}};
 
 	while (my($section, $note, $cnt) = $c->fetchrow) {
 		my $section_str = $section;

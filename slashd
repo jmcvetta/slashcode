@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashd,v 1.3 2000/05/16 21:25:51 pudge Exp $
+#  $Id: slashd,v 1.4 2000/05/24 17:11:16 pudge Exp $
 ###############################################################################
 use sigtrap;
 use strict;
@@ -38,6 +38,7 @@ use URI::Escape;
 *I = getSlashConf();
 my $totalChangedStories = 1;
 
+mkpath "$I{datadir}/logs/", 0, 0755 or die "Can't mkpath '$I{datadir}/logs/': $!";
 open STDERR, ">> $I{datadir}/logs/slashd.log"
 	or die "Can't open STDERR to $I{datadir}/logs/slashd.log: $!";
 

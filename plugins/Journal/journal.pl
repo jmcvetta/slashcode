@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.53 2002/10/22 15:15:04 pudge Exp $
+# $Id: journal.pl,v 1.54 2002/10/23 03:22:38 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -682,6 +682,10 @@ sub _validFormkey {
 	my(@checks) = @_ ? @_ : qw(max_post_check interval_check formkey_check);
 	my $error;
 	# this is a hack, think more on it, OK for now -- pudge
+	# I think this needs to be part of cramming all possible
+	# user init code into getUser(). Saving a few nanoseconds
+	# here and there is not worth my staying up until 11 PM
+	# trying to figure out what fields get set where. - Jamie
 	Slash::Utility::Anchor::getSectionColors();
 	for (@checks) {
 		last if formkeyHandler($_, 0, 0, \$error);

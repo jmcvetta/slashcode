@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.50 2002/07/18 04:56:49 brian Exp $
+# $Id: MySQL.pm,v 1.51 2002/07/18 18:44:24 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -28,7 +28,7 @@ use base 'Slash::DB::MySQL';
 sub sqlShowMasterStatus {
 	my($self) = @_;
 
-	#$self->sqlConnect();
+	$self->sqlConnect();
 	my $stat = $self->{_dbh}->prepare("SHOW MASTER STATUS");
 	$stat->execute;
 	my $statlist = [];
@@ -42,7 +42,7 @@ sub sqlShowMasterStatus {
 sub sqlShowSlaveStatus {
 	my($self) = @_;
 
-	#$self->sqlConnect();
+	$self->sqlConnect();
 	my $stat = $self->{_dbh}->prepare("SHOW SLAVE STATUS");
 	$stat->execute;
 	my $statlist = [];

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.4 2002/07/09 18:14:40 pudge Exp $
+# $Id: Page.pm,v 1.5 2002/08/02 22:09:38 patg Exp $
 
 package Slash::Page;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -162,7 +162,7 @@ sub getLinksContent {
 	my $constants = getCurrentStatic();
 
 	# posts in each threshold
-	my @threshComments = split m/,/, $storyref->{hits}; 
+	my @threshComments = split m/,/, $storyref->{hitparade}; 
 
 	push @links, linkStory({
 		'link'	=> getData('readmore'),

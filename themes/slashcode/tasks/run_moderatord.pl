@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.48 2004/05/18 22:29:19 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.49 2004/05/21 12:27:11 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -631,6 +631,16 @@ sub reconcile_stats {
 ############################################################
 
 sub mark_m2_oldzone {
+	my($virtual_user, $constants, $slashdb, $user) = @_;
+	my $prev_oldzone = $slashdb->getVar('m2_oldzone', 'value', 1);
+	$prev_oldzone = "(none)" if !defined($prev_oldzone);
+	set_new_m2_oldzone($virtual_user, $constants, $slashdb, $user);
+	my $new_oldzone = $slashdb->getVar('m2_oldzone', 'value', 1);
+	$new_oldzone = "(none)" if !defined($new_oldzone);
+	slashdLog("m2_oldzone was '$prev_oldzone' now '$new_oldzone'");
+}
+
+sub set_new_m2_oldzone {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
 	my $reasons = $slashdb->getReasons();

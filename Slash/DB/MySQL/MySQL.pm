@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.363 2003/04/08 18:51:44 jamie Exp $
+# $Id: MySQL.pm,v 1.364 2003/04/09 19:35:51 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.363 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.364 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1662,6 +1662,16 @@ sub getDBs {
 	}
 
 	return \%databases;
+}
+
+#################################################################
+# get virtual user of a db type, for use when $user->{state}{dbs}
+# not filled in
+sub getDB {
+	my($self, $db_type) = @_;
+	my $users = $self->sqlSelectColArrayref('virtual_user', 'dbs',
+		'type=' . $self->sqlQuote($db_type));
+	return $users->[rand @$users];
 }
 
 #################################################################

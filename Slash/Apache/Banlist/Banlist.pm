@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.15 2003/04/08 16:05:34 pudge Exp $
+# $Id: Banlist.pm,v 1.16 2003/04/09 19:33:27 pudge Exp $
 
 package Slash::Apache::Banlist;
 
@@ -16,7 +16,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -31,7 +31,10 @@ sub handler {
 	$cur_subnet =~ s/^(\d+\.\d+\.\d+)\.\d+$/$1.0/;
 	$cur_subnet = md5_hex($cur_subnet);
 
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $slashdb = getCurrentDB();
+	my $reader_user = $slashdb->getDB('reader');
+
+	my $reader = getObject('Slash::DB', { virtual_user => $reader_user });
 	$reader->sqlConnect();
 
 	my $is_rss = $r->uri =~ m{(

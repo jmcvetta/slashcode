@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.47 2002/02/05 18:27:57 pudge Exp $
+# $Id: comments.pl,v 1.48 2002/02/05 22:46:46 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -638,7 +638,9 @@ sub validateComment {
 	}
 
 	if (isTroll()) {
-		$$error_message = getError('troll message');
+		$$error_message = getError('troll message', {
+			unencoded_ip => $ENV{REMOTE_ADDR}      
+		});
 		return;
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.104 2004/06/21 22:28:49 jamiemccarthy Exp $
+# $Id: index.pl,v 1.105 2004/07/17 15:32:55 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -63,18 +63,25 @@ my $start_time = Time::HiRes::time;
 	my $gSkin = getCurrentSkin();
 	$skin_name = $gSkin->{name};
 
+# XXXSKIN I'm turning custom numbers of maxstories off for now, so all
+# users get the same number.  This will improve query cache hit rates and 
+# right now we need all the edge we can get.  Hopefully we can get this 
+# back on soon. - Jamie 2004/07/17
+#	my $user_maxstories = $user->{maxstories};
+	my $user_maxstories = getCurrentAnonymousCoward("maxstories");
+
 	# Decide what our limit is going to be.
 	my $limit;
 	if ($form->{issue}) {
 		if ($user->{is_anon}) {
 			$limit = $gSkin->{artcount_max} * 3;
 		} else {
-			$limit = $user->{maxstories} * 7;
+			$limit = $user_maxstories * 7;
 		}
 	} elsif ($user->{is_anon}) {
 		$limit = $gSkin->{artcount_max};
 	} else {
-		$limit = $user->{maxstories};
+		$limit = $user_maxstories;
 	}
 
 	# TIMING START
@@ -84,7 +91,7 @@ my $start_time = Time::HiRes::time;
 	# Times listed are elapsed time from the previous markpoint.
 
 	my $gse_hr = { tid => $gSkin->{nexus} };
-	$gse_hr->{limit} = $user->{maxstories} if !$user->{is_anon} && $user->{maxstories};
+	$gse_hr->{limit} = $user_maxstories if !$user->{is_anon} && $user_maxstories;
 	$stories = $reader->getStoriesEssentials($gse_hr);
 
 	# We may, in this listing, have a story from the Mysterious Future.
@@ -386,7 +393,13 @@ sub displayStories {
 	my $gSkin     = getCurrentSkin();
 	my $ls_other  = { user => $user, reader => $reader, constants => $constants };
 	my($today, $x) = ('', 0);
-	my $cnt = int($user->{maxstories} / 3);
+# XXXSKIN I'm turning custom numbers of maxstories off for now, so all
+# users get the same number.  This will improve query cache hit rates and 
+# right now we need all the edge we can get.  Hopefully we can get this 
+# back on soon. - Jamie 2004/07/17
+#       my $user_maxstories = $user->{maxstories};
+	my $user_maxstories = getCurrentAnonymousCoward("maxstories");
+	my $cnt = int($user_maxstories / 3);
 	my($return, $counter);
 
 	# shift them off, so we do not display them in the Older

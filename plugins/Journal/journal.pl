@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.18 2001/04/25 17:12:40 pudge Exp $
+# $Id: journal.pl,v 1.19 2001/04/26 15:59:49 pudge Exp $
 
 use strict;
 use Slash;
@@ -231,7 +231,7 @@ sub displayArticle {
 	}
 
 	for my $article (@$articles) {
-		my($date_current, $time) =  split / /, $article->[0], 2;	
+		my($date_current) = timeCalc($article->[0], "%A %B %d, %Y");
 		if ($date eq $date_current) {
 			push @{$collection->{article}}, {
 				article		=> strip_mode($article->[1], $article->[4]),

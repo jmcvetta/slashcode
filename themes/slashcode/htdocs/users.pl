@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.68 2002/04/18 04:07:23 jamie Exp $
+# $Id: users.pl,v 1.69 2002/04/18 07:42:05 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1175,6 +1175,7 @@ sub changePasswd {
 		}
 	} else {
 		$id = $user->{uid};
+		$user_edit = $user;
 	}
 
 	# print getMessage('note', { note => $form->{note}}) if $form->{note};

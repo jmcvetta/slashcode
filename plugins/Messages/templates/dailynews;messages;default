@@ -52,9 +52,9 @@ END %]
 
 
 [% END %]
-Copyright 1997-2004 [% constants.sitepublisher %].  All rights reserved.
+Copyright 1997-2005 [% constants.sitepublisher %].  All rights reserved.
 
 __seclev__
 500
 __version__
-$Id: dailynews;messages;default,v 1.12 2004/06/24 18:58:30 pudge Exp $
+$Id: dailynews;messages;default,v 1.13 2005/01/28 23:03:28 cowboyneal Exp $

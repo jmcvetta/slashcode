@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.38 2003/02/10 20:32:33 brian Exp $
+# $Id: Zoo.pm,v 1.39 2003/02/20 21:44:32 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -277,9 +277,9 @@ sub rebuildUser {
 		$data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
 		for (@$data) {
 			if ($_->{type} eq 'friend') {
-				$people->{FOF()}{$_->{person}}{$_->{friend}} = 1;
+				$people->{FOF()}{$_->{person}}{$_->{uid}} = 1;
 			} elsif ($_->{type} eq 'foe') {
-				$people->{EOF()}{$_->{person}}{$_->{friend}} = 1;
+				$people->{EOF()}{$_->{person}}{$_->{uid}} = 1;
 			}
 		}
 	}

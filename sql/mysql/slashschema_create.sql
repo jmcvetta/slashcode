@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.84 2002/12/11 04:34:46 jamie Exp $
+# $Id: slashschema_create.sql,v 1.85 2002/12/17 21:51:02 brian Exp $
 #
 
 #
@@ -63,6 +63,7 @@ CREATE TABLE accesslog (
 	bytes mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	duration FLOAT DEFAULT 0.0 NOT NULL,
 	local_addr VARCHAR(16) DEFAULT '' NOT NULL,
+	static enum("yes","no") DEFAULT "yes",
 	INDEX host_addr_part (host_addr(16)),
 	INDEX op_part (op(12), section),
 	INDEX ts (ts),

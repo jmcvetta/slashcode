@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.43 2002/12/13 00:18:35 brian Exp $
+# $Id: User.pm,v 1.44 2002/12/17 21:51:02 brian Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -97,14 +97,13 @@ sub handler {
 	my $method = $r->method;
 	# Don't remove this. This solves a known bug in Apache -- brian
 	$r->method('GET');
-	# do we need to do this too? i am leaning toward No. -- pudge
-# 	$r->method_number(M_GET);
 
 	my $form = filter_params($apr);
 	$form->{query_apache} = $apr;
 	@{$form}{keys  %{$constants->{form_override}}} =
 		values %{$constants->{form_override}};
 	my $cookies = Apache::Cookie->fetch;
+	$form->{_dynamic_page} = 1;
 
 	# So we are either going to pick the user up from
 	# the form, a cookie, or they will be anonymous

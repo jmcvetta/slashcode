@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.19 2002/03/19 21:59:05 jamie Exp $
+# $Id: Data.pm,v 1.20 2002/04/01 23:07:53 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -782,6 +782,7 @@ sub breakHtml {
 	for (my $i = 0; $i < $l; ++$i) {
 		my $append_c = 1;
 		$c = substr($text, $i, 1);
+		my $c_sp = ($c =~ /^\s$/) ? 1 : 0;
 		if ($c eq '<')			{ $in_tag = 1 }
 		  elsif ($c eq '>')		{
 			$in_tag = 0;
@@ -789,9 +790,19 @@ sub breakHtml {
 			$cwl = 0 if $is_break_tag{$this_tag};
 			$this_tag = '';
 		} elsif ($in_tag)		{ $this_tag .= $c }
-		  elsif ($c =~ /\s/)		{
+		  elsif ($c_sp || $cwl >= $mwl) {
+		  	my $nexttext = substr($text, $i);
 			my $nsc;
-			if ($cnswcr && (($nsc) = substr($text, $i) =~ $cnswcr)) {
+			# If we're here because the char is a space, great.
+			# If not, add a space.  Either way, check the
+			# succeeding text to see if further spaces are
+			# necessary to work around the Windows/MSIE bug.
+			if (!$c_sp) {
+				# Prepend a space.
+				$new .= ' ';
+				$nexttext = " $nexttext";
+			}
+			if ($cnswcr && (($nsc) = $nexttext =~ $cnswcr)) {
 				# This space doesn't count as a wordbreak because of
 				# a Windows/MSIE bug. The regex puts everything up to
 				# and including the non-start-char(s) into $nsc.
@@ -817,10 +828,12 @@ sub breakHtml {
 					$append_c = 0;
 				}
 			} else {
-				# This space does count as a wordbreak.
-				$cwl = 0;
+				# This space we just copied, or the one we
+				# inserted before the char we're about to copy,
+				# does count as a wordbreak.
+				$cwl = $c_sp ? 0 : 1;
 			}
-		} elsif (++$cwl > $mwl)		{ $new .= ' '; $cwl = 1 }
+		} else { ++$cwl }
 		$new .= $c if $append_c;
 	}
 
@@ -1908,4 +1921,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.19 2002/03/19 21:59:05 jamie Exp $
+$Id: Data.pm,v 1.20 2002/04/01 23:07:53 jamie Exp $

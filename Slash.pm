@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.35 2000/07/10 14:40:31 pudge Exp $
+#  $Id: Slash.pm,v 1.36 2000/07/10 15:15:04 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1362,11 +1362,12 @@ sub fixurl {
 	# encode all non-safe, non-reserved characters
 	# different char set if destined to be a query string parameter
 	if ($parameter) {
-		$url =~ s/([^\w.+!*'(),;:@\$\/%-])/sprintf "%%%02X", ord $1/ge;
+		$url =~ s/([^\w.!*'(),;:@\$\/% -])/sprintf "%%%02X", ord $1/ge;
+		$url =~ s/ /+/g;
 	} else {
 		$url =~ s/[" ]//g;
 		$url =~ s/^'(.+?)'$/$1/g;
-		$url =~ s/([^\w.+!*'(),;:@\$\/%-?=&#])/sprintf "%%%02X", ord $1/ge;
+		$url =~ s/([^\w.!*'(),;:@\$\/%?=&#+-])/sprintf "%%%02X", ord $1/ge;
 		$url = fixHref($url) || $url;
 	}
 

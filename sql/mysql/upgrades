@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.550 2004/03/28 15:54:28 jamiemccarthy Exp $
+# $Id: upgrades,v 1.551 2004/03/28 20:01:03 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2220,4 +2220,8 @@ UPDATE vars SET name='comments_portscan', description='Scan incoming IPs for ope
 ALTER TABLE code_param CHANGE COLUMN type type VARCHAR(24) NOT NULL DEFAULT '';
 UPDATE code_param SET type='section_topic_types'    WHERE type='section_topic_ty';
 UPDATE code_param SET type='displaycodes_sectional' WHERE type='displaycodes_sec';
+
+ALTER TABLE badpasswords ADD COLUMN realemail VARCHAR(50) NOT NULL DEFAULT '';
+
+DROP TABLE topic_image_sections;
 

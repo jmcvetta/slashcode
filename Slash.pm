@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.26 2000/06/21 00:12:21 cbwood Exp $
+#  $Id: Slash.pm,v 1.27 2000/06/22 18:49:21 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -2026,7 +2026,8 @@ sub moderatorCommentLog {
 				 moderatorlog.val as val,
 				 moderatorlog.reason as reason",
 				"moderatorlog, users, comments",
-				"moderatorlog.sid='$sid'
+				"moderatorlog.active=1
+				 AND moderatorlog.sid='$sid'
 			     AND moderatorlog.cid=$cid
 			     AND moderatorlog.uid=users.uid
 			     AND comments.sid=moderatorlog.sid

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: article.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: article.pl,v 1.3 2000/06/22 18:49:21 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -111,7 +111,8 @@ sub moderatorLog {
 				subject, moderatorlog.uid as uid,
 				users.nickname as nickname,
 				moderatorlog.val as val, 
-				moderatorlog.reason as reason",
+				moderatorlog.reason as reason,
+				moderatorlog.active as active",
 			       "moderatorlog, users, comments",
 			       "moderatorlog.sid='$S->{sid}'
 				AND moderatorlog.uid=users.uid
@@ -127,6 +128,7 @@ sub moderatorLog {
 		<TH><FONT COLOR="$I{fg}[3]"> reason </FONT></TH>
 		<TH><FONT COLOR="$I{fg}[3]"> moderator </FONT></TH>
 		<TH><FONT COLOR="$I{fg}[3]"> comment </FONT></TH>
+		<TH><FONT COLOR="$I{fg}[3]"> active </FONT></TH>
 	</TR>
 
 EOT
@@ -138,6 +140,7 @@ EOT
 		<TD> $I{reasons}[$C->{reason}] </TD>
 		<TD> $C->{nickname} ($C->{uid}) </TD>
 		<TD><A HREF="$I{rootdir}/comments.pl?sid=$S->{sid}&cid=$C->{cid}">$C->{subject}</A></TD>
+		<TD> $C->{active} </TD>
 	</TR>
 
 EOT

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.6 2002/06/21 19:45:38 pudge Exp $
+# $Id: print.pl,v 1.7 2002/07/25 01:44:39 cliff Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.6 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -55,7 +55,8 @@ sub main {
 		return;
 	}
 
-	my $sect_title = $user->{currentSection}{title};
+	my $sect_title = 
+		$slashdb->getSection($user->{currentSection}, 'title');
 	my $story;
 	#Yeah, I am being lazy and paranoid  -Brian
 	if (!($user->{author} or $user->{is_admin}) and 

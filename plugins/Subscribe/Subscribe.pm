@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.7 2002/02/23 20:56:06 jamie Exp $
+# $Id: Subscribe.pm,v 1.8 2002/03/01 07:47:15 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -24,6 +24,17 @@ sub new {
 	my $slashdb = getCurrentDB();
         my $plugins = $slashdb->getDescriptions('plugins');
         return unless $plugins->{Subscribe};
+
+	$self->{defpage} = {
+		map { ( $_, 1 ) }
+		split / /, (
+			getCurrentStatic("subscribe_defpages")
+			|| "index"
+		)
+	};
+	$self->{defpage}{index} ||= 0;
+	$self->{defpage}{article} ||= 0;
+	$self->{defpage}{comments} ||= 0;
 
         bless($self, $class);
 
@@ -45,6 +56,8 @@ sub _subscribeDecisionPage {
                 || ( $user->{hits_bought}
 			&& $user->{hits_bought} >= $user->{hits_paidfor} );
 
+	# The user has paid for pages and may be buying this one.
+
 	my $decision = 0;
         $r ||= Apache->request;
         my $uri = $r->uri;
@@ -54,7 +67,18 @@ sub _subscribeDecisionPage {
                 $uri =~ s{^.*/([^/]+)\.pl$}{$1};
         }
 	if ($uri =~ /^(index|article|comments)$/) {
-		$decision = 1 if $user->{"buypage_$uri"};
+		# We check to see if the user has saved preferences for
+		# which page types they want to buy.  This assumes the
+		# data like $user->{buypage_index} is stored in
+		# users_param;  if the first (alphabetic) page listed
+		# in the var does not exist, then we simply use the
+		# default values.
+		my $first_defpage = (sort keys %{$self->{defpage}})[0];
+		if (exists $user->{"buypage_$first_defpage"}) {
+			$decision = 1 if $user->{"buypage_$uri"};
+		} else {
+			$decision = 1 if $self->{defpage}{$uri};
+		}
 	} elsif ($trueOnOther) {
 		$decision = 1 if $user->{buypage_index}
 			or $user->{buypage_article}

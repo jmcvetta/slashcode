@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.112 2003/05/20 18:45:38 jamie Exp $
+# $Id: slashschema_create.sql,v 1.113 2003/05/22 19:11:51 brian Exp $
 #
 
 #
@@ -787,6 +787,7 @@ CREATE TABLE story_text (
 	introtext text,
 	bodytext text,
 	relatedtext text,
+	rendered text,
 	FOREIGN KEY (sid) REFERENCES stories(sid),
 	PRIMARY KEY (sid)
 ) TYPE = myisam;

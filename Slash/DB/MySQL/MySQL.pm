@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.401 2003/05/21 05:18:24 jamie Exp $
+# $Id: MySQL.pm,v 1.402 2003/05/22 19:11:51 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.401 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.402 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4619,7 +4619,9 @@ sub getCommentsForUser {
 # - Jamie 2003/04
 sub getCommentText {
 	my($self, $cid) = @_;
+	return unless $cid;
 	if (ref $cid) {
+		return unless scalar(@$cid);
 		if (ref $cid ne "ARRAY") {
 			errorLog("_getCommentText called with ref to non-array: $cid");
 			return { };
@@ -6304,10 +6306,12 @@ sub getTopicImageBySection {
 # Brian, make this cache -Brian
 sub getStoryTopicsJustTids {
 	my($self, $sid, $options) = @_;
+	return $self->{_story_topics}{$sid} if $self->{_story_topics}{$sid} && !$options->{no_parents};
 	my $where = "1=1";
 	$where .= " AND is_parent = 'no'" if $options->{no_parents};
 	$where .= " AND sid = " . $self->sqlQuote($sid);
 	my $answer = $self->sqlSelectColArrayref('tid', 'story_topics', $where);
+	$self->{_story_topics}{$sid} = $answer;
 
 	return  $answer;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.100 2002/09/03 21:27:21 brian Exp $
+# $Id: users.pl,v 1.101 2002/09/04 02:27:23 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -539,11 +539,11 @@ sub newUser {
 			if ($form->{newsletter} || $form->{comment_reply} || $form->{headlines}) {
 				my $messages  = getObject('Slash::Messages');
 				my %params;
-				$params{MSG_CODE_NEW_COMMENT} = MSG_MODE_EMAIL
+				$params{MSG_CODE_NEW_COMMENT()} = MSG_MODE_EMAIL()
 					if $form->{comment_reply};
-				$params{MSG_CODE_NEWSLETTER} = MSG_MODE_EMAIL
+				$params{MSG_CODE_NEWSLETTER()}  = MSG_MODE_EMAIL()
 					if $form->{newsletter};
-				$params{MSG_CODE_HEADLINES} = MSG_MODE_EMAIL
+				$params{MSG_CODE_HEADLINES()}   = MSG_MODE_EMAIL()
 					if $form->{headlines};
 				$messages->setPrefs($uid, \%params);
 			}

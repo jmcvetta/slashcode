@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.50 2002/04/08 16:48:43 cliff Exp $
+# $Id: submit.pl,v 1.51 2002/04/12 16:44:03 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -173,9 +173,9 @@ sub previewForm {
 	$sub->{email} = processSub($sub->{email}, $email_known);
 
 	$slashdb->setSession(getCurrentUser('uid'), {
-		lasttitle => $sub->{subj},
-		last_subid=> $form->{subid},
-		last_sid  => '',
+		lasttitle	=> $sub->{subj},
+		last_subid	=> $form->{subid},
+		last_sid	=> '',
 	}) if $user->{is_admin};
 
 	slashDisplay('previewForm', {

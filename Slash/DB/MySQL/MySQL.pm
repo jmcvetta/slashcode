@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.653 2004/08/02 15:50:49 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.654 2004/08/02 15:57:53 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.653 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.654 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7630,7 +7630,7 @@ sub getMCD {
 			memcached_keyprefix memcached_servers
 			sitename );
 		my $in_clause = join ",", map { $self->sqlQuote($_) } @needed;
-		$constants = $self->sqlSelectKeyValue(
+		$constants = $self->sqlSelectAllKeyValue(
 			"name, value",
 			"vars",
 			"name IN ($in_clause)");

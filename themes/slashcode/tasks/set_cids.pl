@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_cids.pl,v 1.2 2004/03/16 16:02:44 jamiemccarthy Exp $
+# $Id: set_cids.pl,v 1.3 2004/03/16 17:36:03 tvroom Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,13 +13,13 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '*/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
 $task{$me}{fork} = SLASHD_NOWAIT;
 
-# Handles rotation of fakeemail address of all users.
+# Handles saving useful cids so we can speed up certain selects later.
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 	my $days = $slashdb->getVar("admin_comment_display_days", "value", 1) || 30;

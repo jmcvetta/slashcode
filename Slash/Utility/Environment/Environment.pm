@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.62 2003/01/31 02:33:15 jamie Exp $
+# $Id: Environment.pm,v 1.63 2003/01/31 03:18:14 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1136,7 +1136,16 @@ sub prepareUser {
 		$user->{is_anon} = 1;
 
 	} else {
-		$user  = $slashdb->getUser($uid); # getUserInstance($uid, $uri) {}
+		my $fetchdb;
+		if ($constants->{prepuser_backup_prob}
+			&& $constants->{backup_db_user}
+			&& rand(1) < $constants->{prepuser_backup_prob}) {
+			$fetchdb = getObject('Slash::DB', $constants->{backup_db_user});
+			$fetchdb ||= $slashdb; # In case it fails
+		} else {
+			$fetchdb = $slashdb;
+		}
+		$user = $fetchdb->getUser($uid);
 		$user->{is_anon} = 0;
 	}
 
@@ -1924,4 +1933,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.62 2003/01/31 02:33:15 jamie Exp $
+$Id: Environment.pm,v 1.63 2003/01/31 03:18:14 jamie Exp $

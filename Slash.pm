@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.48 2000/09/22 15:25:18 pudge Exp $
+#  $Id: Slash.pm,v 1.49 2000/09/23 23:48:53 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -94,6 +94,7 @@ sub getSlashConf {
 
 	# Maximum karma. If it's not defined, things break.
 	$I{maxkarma} = 999 if ! defined $I{maxkarma};
+	$I{minkarma} = -999 if ! defined $I{minkarma};
 	# Sanity check- ASSERT: MAXKARMA >= M2_MAXBONUS.
 	$I{m2_maxbonus} = $I{maxkarma}
 		if !$I{m2_maxbonus} || $I{m2_maxbonus} > $I{maxkarma};

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.71 2002/10/29 14:28:52 pater Exp $
+# $Id: submit.pl,v 1.72 2002/11/12 15:50:03 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -179,7 +179,9 @@ sub previewForm {
 
 	my $sub = $slashdb->getSubmission($form->{subid});
 
+	my $topic = $slashdb->getTopic($sub->{tid});
 	my $extracolumns = $slashdb->getSectionExtras($sub->{section}) || [ ];
+	my $ipid_vis = $constants->{id_md5_vislength} ? substr($sub->{ipid}, 0, $constants->{id_md5_vislength}) : $sub->{ipid};
 
 	my $email_known = "";
 	$email_known = "mailto" if $sub->{email} eq $user->{fakeemail};
@@ -195,6 +197,9 @@ sub previewForm {
 		submission	=> $sub,
 		submitter	=> $sub->{uid},
 		subid		=> $form->{subid},
+		topic		=> $topic,
+		ipid		=> $ipid,
+		ipid_vis	=> $ipid_vis,
 		admin_flag 	=> $admin_flag,
 		extras 		=> $extracolumns,
 		lockTest	=> lockTest($sub->{subj}),

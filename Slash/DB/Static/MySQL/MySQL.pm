@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.43 2002/06/21 13:19:15 jamie Exp $
+# $Id: MySQL.pm,v 1.44 2002/06/21 15:27:34 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -61,8 +61,9 @@ sub getBackendStories {
 
 	my $select;
 	$select .= "stories.sid, stories.title, time, dept, stories.uid,";
-	$select .= "alttext, image, stories.commentcount, stories.section as section,";
-	$select .= "story_text.introtext, story_text.bodytext,topics.tid as tid";
+	$select .= "alttext, image, commentcount, hitparade,";
+	$select .= "stories.section as section, introtext,";
+	$select .= "bodytext, topics.tid as tid";
 	my $from = "stories, story_text, topics";
 
 	my $where;

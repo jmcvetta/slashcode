@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.208 2004/04/06 00:33:47 tvroom Exp $
+# $Id: Slash.pm,v 1.209 2004/04/07 00:30:15 jamiemccarthy Exp $
 
 package Slash;
 
@@ -81,7 +81,7 @@ sub selectComments {
 	# When we pull comment text from the DB, we only want to cache it if
 	# there's a good chance we'll use it again.
 	my $cache_read_only = 0;
-	$cache_read_only = 1 if $header->{writestatus} eq 'archived';
+	$cache_read_only = 1 if $header->{type} eq 'archived';
 	$cache_read_only = 1 if timeCalc($header->{ts}, '%s') <
 		time - 3600 * $constants->{comment_cache_max_hours};
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.136 2004/11/03 22:26:07 pudge Exp $
+# $Id: Data.pm,v 1.137 2004/12/11 00:18:59 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1467,15 +1467,15 @@ sub breakHtml {
 		(?:^|\G|\s)		# Must start at a word bound
 		(?:
 			(?>(?:<[^>]+>)*)	# Eat up HTML tags
-			(?:			# followed by either
+			(			# followed by either
 				$nbe		# an entity (char. ref.)
-			|	\S		# or an ordinary char
+			|	(?!$nbe)\S	# or an ordinary char
 			)
 		){$mwl}			# $mwl non-HTML-tag chars in a row
 	)}{
-		substr($1, 0, -1)
+		substr($1, 0, -length($2))
 		. $workaround_start
-		. substr($1, -1)
+		. substr($1, -length($2))
 		. $workaround_end
 	}gsex;
 
@@ -2257,7 +2257,7 @@ sub balanceTags {
 			} else {
 				# Close tag not on stack; just delete it
 				my $p = pos($html) - length($whole);
-				$html =~ s|^(.{$p})\Q$whole\E|$1|si;
+				substr($html, $p, length($whole)) = '';
 				pos($html) = $p;
 			}
 
@@ -3531,4 +3531,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.136 2004/11/03 22:26:07 pudge Exp $
+$Id: Data.pm,v 1.137 2004/12/11 00:18:59 pudge Exp $

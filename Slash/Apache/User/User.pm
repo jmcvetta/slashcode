@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.77 2003/07/21 15:22:44 jamie Exp $
+# $Id: User.pm,v 1.78 2003/07/24 19:38:54 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -78,6 +78,7 @@ sub handler {
 
 	my $method = $r->method;
 	# Don't remove this. This solves a known bug in Apache -- brian
+	# i really wish we knew WHAT bug, and how this solves it -- pudge
 	$r->method('GET');
 
 	my $form = filter_params($apr);

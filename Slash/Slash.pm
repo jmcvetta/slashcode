@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.16 2001/11/07 06:58:36 brian Exp $
+# $Id: Slash.pm,v 1.17 2001/11/07 07:10:15 brian Exp $
 
 package Slash;
 
@@ -316,7 +316,7 @@ sub printComments {
 		lvl		=> $lvl,
 	});
 
-	return if ($user->{state}{nocomment} || $user->{mode} eq 'nocomment');
+	return if $user->{state}{nocomment} || $user->{mode} eq 'nocomment';
 
 	my($comment, $next, $previous);
 	if ($cid) {
@@ -977,7 +977,7 @@ sub _hard_dispComment {
 	} elsif ($user->{nosigs}) {
 		$comment_to_display = $comment->{comment};
 	} else {
-		$comment_to_display  = "$comment->{comment}$comment->{sig}";
+		$comment_to_display  = "$comment->{comment}<BR>$comment->{sig}";
 	}
 
 	$time_to_display = timeCalc($comment->{date});

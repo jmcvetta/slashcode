@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.14 2001/12/20 15:08:48 jamie Exp $
+# $Id: install-slashsite,v 1.15 2002/01/02 17:07:48 pudge Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -23,7 +23,7 @@ use vars qw(
 	$dirname
 );
 
-(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -502,6 +502,11 @@ sub apache_site_conf {
     PerlAccessHandler  Slash::Apache::User
     PerlCleanupHandler Slash::Apache::Log
     PerlCleanupHandler Slash::Apache::Log::UserLog
+
+    # if you have a frontend/backend setup and have X-Forwarded-For
+    # headers (such as from mod_proxy_add_forward), use this
+    # to properly populate remote_ip for formkeys etc.
+    #PerlPostReadRequestHandler Slash::Apache::ProxyRemoteAddr
 
     # this directive will redirect non-logged-in users to
     # index.shtml if they request the home page; turn it

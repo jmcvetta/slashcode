@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.8 2001/12/29 20:37:29 brian Exp $
+# $Id: Log.pm,v 1.9 2002/01/02 17:07:48 pudge Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -30,9 +30,14 @@ sub handler {
 
 	# Added this so that small sites would not have admin logins 
 	# recorded in their stats. -Brian
-	if (!$constants->{log_admin} &&  $uri !~ /admin/ ) {
-		return OK 
-			if getCurrentUser('is_admin');
+
+	# so it will still log it if the admin DOES request
+	# to admin.pl?  i thought you wanted it to NOT log
+	# requests to admin.pl?  should the !~ be =~ ?
+	# or am i just not thinking clearly? -- pudge
+
+	if (!$constants->{log_admin} && $uri !~ /admin\.pl/ ) {
+		return OK if getCurrentUser('is_admin');
 	}
 
 	createLog($uri, $dat);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.4 2001/12/02 04:52:12 pudge Exp $
+# $Id: Messages.pm,v 1.5 2002/01/02 17:07:49 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -297,11 +297,12 @@ sub checkMessageCodes {
 	return \@newuids;
 }
 
-
+# must return an array ref
 sub getMessageUsers {
 	my($self, $code) = @_;
-	my $coderef = $self->getMessageCode($code) or return MSG_MODE_NOCODE;
+	my $coderef = $self->getMessageCode($code) or return [];
 	my $users = $self->_getMessageUsers($code, $coderef->{seclev});
+	return $users || [];
 }
 
 
@@ -891,4 +892,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.4 2001/12/02 04:52:12 pudge Exp $
+$Id: Messages.pm,v 1.5 2002/01/02 17:07:49 pudge Exp $

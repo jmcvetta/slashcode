@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.7 2001/11/07 16:54:41 pudge Exp $
+# $Id: Apache.pm,v 1.8 2002/01/02 17:07:48 pudge Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -126,6 +126,23 @@ sub SlashCompileTemplates ($$$) {
 	$cfg->{template} = Slash::Display::get_template(0, 0, 1);
 	# let's make sure
 	$slashdb->{_dbh}->disconnect;
+}
+
+# this can be used in conjunction with mod_proxy_add_forward or somesuch
+# if you use a frontend/backend Apache setup, where all requests come
+# from 127.0.0.1
+sub ProxyRemoteAddr ($) {
+	my($r) = @_;
+
+	# we'll only look at the X-Forwarded-For header if the requests
+	# comes from our proxy at localhost
+	return OK unless $r->connection->remote_ip eq '127.0.0.1';
+
+	if (my($ip) = $r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+		$r->connection->remote_ip($ip);
+	}
+        
+	return OK;
 }
 
 sub IndexHandler {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.112 2004/02/03 21:31:46 pudge Exp $
+# $Id: Environment.pm,v 1.113 2004/02/12 19:28:43 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,8 +32,11 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
+
+	dbAvailable
+
 	createCurrentAnonymousCoward
 	createCurrentCookie
 	createCurrentDB
@@ -94,6 +97,50 @@ my($static_user, $static_form, $static_constants, $static_site_constants,
 	$static_virtual_user, $static_objects, $static_cache, $static_hostname);
 
 # FRY: I don't regret this.  But I both rue and lament it.
+
+#========================================================================
+
+=head2 dbAvailable([TOKEN])
+
+Returns TRUE if (as usual) the DB(s) are available for reading and
+writing.  Returns FALSE if the DB(s) are not available and should
+not be acessed -- either for the specific purpose named in the
+TOKEN or, if no TOKEN, for all purposes.  This should only be FALSE
+if the admins have created the /usr/local/slash/dboff file(s).
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item TOKEN
+
+Name of the resource specifically being asked about, or the
+empty string.
+
+=back
+
+=item Return value
+
+0 or 1.
+
+=back
+
+=cut
+
+sub dbAvailable {
+	# I'm not going to explain exactly how I came up with this
+	# logic... the if's are ordered to reduce computation as
+	# much as possible since this will be called at least twice
+	# per click.
+	my($token) = @_;
+print STDERR scalar(localtime) . " dbAvailable\n";
+	return 0 if -e "/usr/local/slash/dboff";
+	return 1 unless $token && $token =~ /^(\w+)/;
+	return 0 if -e "/usr/local/slash/dboff_$1";
+	return 1;
+}
 
 #========================================================================
 
@@ -666,13 +713,15 @@ sub getCurrentAnonymousCoward {
 	if ($ENV{GATEWAY_INTERFACE}) {
 		my $r = Apache->request;
 		my $const_cfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
+		return undef if !$const_cfg || !$const_cfg->{anonymous_coward};
 		if ($value) {
-			return $const_cfg->{'anonymous_coward'}{$value};
+			return $const_cfg->{anonymous_coward}{$value};
 		} else {
-			my %coward = %{$const_cfg->{'anonymous_coward'}};
+			my %coward = %{$const_cfg->{anonymous_coward}};
 			return \%coward;
 		}
 	} else {
+		return undef if !$static_anonymous_coward;
 		if ($value) {
 			return $static_anonymous_coward->{$value};
 		} else {
@@ -2290,4 +2339,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.112 2004/02/03 21:31:46 pudge Exp $
+$Id: Environment.pm,v 1.113 2004/02/12 19:28:43 jamiemccarthy Exp $

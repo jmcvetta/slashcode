@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.39 2003/09/10 22:27:34 pudge Exp $
+# $Id: Install.pm,v 1.40 2004/02/12 19:28:43 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -480,7 +480,9 @@ sub getThemeList {
 sub getSiteTemplates {
 	my($self) = @_;
 	my (%templates, @no_templates, @final);
-	my $slash_prefix = $self->get('base_install_directory')->{value};
+	my $bid = $self->get('base_install_directory');
+	die "cannot find base_install_directory, DB is probably unreachable" if !$bid;
+	my $slash_prefix = $bid->{value};
 	my $plugins = $self->get('plugin');
 	my @plugins;
 	for (keys %$plugins) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TemplatePages.pm,v 1.6 2004/01/27 23:06:54 pudge Exp $
+# $Id: TemplatePages.pm,v 1.7 2004/02/12 19:28:42 jamiemccarthy Exp $
 
 package Slash::Apache::TemplatePages;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -19,8 +19,8 @@ use vars qw($VERSION);
 sub handler {
 	my($r) = @_;
 	my $constants = getCurrentStatic();
+	return NOT_FOUND unless dbAvailable();
 	my $slashdb = getCurrentDB();
-	return NOT_FOUND if -e "$constants->{datadir}/dboff";
 	my $page = $r->uri;
 	$page =~ s|^/(.*)\.tmpl$|$1|;
 	my $section = getCurrentForm('section');

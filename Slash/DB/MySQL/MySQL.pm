@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.509 2004/02/12 16:12:05 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.510 2004/02/12 19:28:42 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.509 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.510 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1484,6 +1484,7 @@ sub getDescriptions {
 	# accounts for, as you might expect, a miniscule amount of DB traffic.
 	my $qlid = $self->_querylog_start('SELECT', 'descriptions');
 	my $sth = $descref->(@_);
+	return { } if !$sth;
 	while (my($id, $desc) = $sth->fetchrow) {
 		$codeBank_hash_ref->{$id} = $desc;
 	}
@@ -8281,7 +8282,7 @@ sub _genericGetCacheName {
 		$cache = '_' . join ('_', sort(@$tables), 'cache_tables_keys');
 		unless (keys %{$self->{$cache}}) {
 			for my $table (@$tables) {
-				my $keys = $self->getKeys($table);
+				my $keys = $self->getKeys($table) || [ ];
 				for (@$keys) {
 					$self->{$cache}{$_} = $table;
 				}
@@ -8290,7 +8291,7 @@ sub _genericGetCacheName {
 	} else {
 		$cache = '_' . $tables . 'cache_tables_keys';
 		unless (keys %{$self->{$cache}}) {
-			my $keys = $self->getKeys($tables);
+			my $keys = $self->getKeys($tables) || [ ];
 			for (@$keys) {
 				$self->{$cache}{$_} = $tables;
 			}
@@ -8890,7 +8891,7 @@ sub sqlTableExists {
 	my($self, $table) = @_;
 	return unless $table;
 
-	$self->sqlConnect();
+	$self->sqlConnect() || return undef;
 	my $tab = $self->{_dbh}->selectrow_array(qq!SHOW TABLES LIKE "$table"!);
 
 	return $tab;
@@ -8901,7 +8902,7 @@ sub sqlSelectColumns {
 	my($self, $table) = @_;
 	return unless $table;
 
-	$self->sqlConnect();
+	$self->sqlConnect() || return undef;
 	my $rows = $self->{_dbh}->selectcol_arrayref("SHOW COLUMNS FROM $table");
 	return $rows;
 }

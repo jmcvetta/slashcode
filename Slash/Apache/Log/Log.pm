@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.27 2003/09/23 22:43:38 jamie Exp $
+# $Id: Log.pm,v 1.28 2004/02/12 19:28:42 jamiemccarthy Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -24,7 +24,7 @@ use vars qw($VERSION);
 sub handler {
 	my($r) = @_;
 	my $constants = getCurrentStatic();
-	return OK if -e "$constants->{datadir}/dboff";
+	return OK unless dbAvailable("accesslog");
 
 	# Notes has a bug (still in apache 1.3.17 at
 	# last look). Apache's directory sub handler

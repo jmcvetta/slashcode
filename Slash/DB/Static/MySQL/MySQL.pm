@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.161 2004/07/15 19:47:25 pudge Exp $
+# $Id: MySQL.pm,v 1.162 2004/07/16 15:33:19 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1753,12 +1753,11 @@ sub getStoriesWithFlag {
 	my $returnable = [ ];
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
 	if ($purpose eq 'delete') {
-		# Find all stories in the past that are in the trash.
+		# Find all stories that are in the trash.
 		$returnable = $self->sqlSelectAllHashrefArray(
 			"stories.stoid, sid, primaryskid, title, time",
 			"stories, story_text",
-			"time < NOW()
-			 AND stories.stoid = story_text.stoid
+			"stories.stoid = story_text.stoid
 			 AND in_trash = 'yes'",
 			"$order_clause$limit_clause");
 	} elsif ($purpose eq 'mainpage_dirty') {

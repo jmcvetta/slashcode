@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.46 2003/04/29 19:04:02 pudge Exp $
+# $Id: Anchor.pm,v 1.47 2003/05/06 02:23:17 pater Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -317,10 +317,19 @@ sub ssiHead {
 	(my $dir = $constants->{rootdir}) =~ s|^(?:https?:)?//[^/]+||;
 	my $hostname = $slashdb->getSection($user->{currentSection}, 'hostname')
 		if $user->{currentSection};
+	my $page = $options->{Page} || $user->{currentPage} || 'misc';
+
+	# if there's a special .inc header for this page, use it, else it's
+	# business as usual.
+	$page = '' unless ($page ne 'misc' && $slashdb->existsTemplate({
+		name    => 'header',
+	        section => $user->{currentSection},
+	        page    => $user->{currentPage} }));
 
 	slashDisplay('ssihead', {
 		dir	=> $dir,
 		section => $user->{currentSection} ? "$user->{currentSection}/" : "",
+		page    => $page,
 	}, { Return => $options->{Return}, Page => $options->{Page} });
 }
 
@@ -570,4 +579,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.46 2003/04/29 19:04:02 pudge Exp $
+$Id: Anchor.pm,v 1.47 2003/05/06 02:23:17 pater Exp $

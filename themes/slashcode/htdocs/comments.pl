@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.20 2000/08/16 17:00:08 pudge Exp $
+#  $Id: comments.pl,v 1.21 2000/08/16 17:09:11 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -803,13 +803,15 @@ sub moderateCid {
 		"cid=$cid and sid='$sid'"
 	);
 
-	my($mid) = sqlSelect(
-		"id", "moderatorlog",
-		"uid=$I{U}{uid} and cid=$cid and sid='$sid'"
-	);
-	if ($mid) {
-		print "<LI>$subj ($sid-$cid, <B>Already moderated</B>)</LI>";
-		return;
+	unless ($I{U}{aseclev} > 99 && $I{authors_unlimited}) {
+		my($mid) = sqlSelect(
+			"id", "moderatorlog",
+			"uid=$I{U}{uid} and cid=$cid and sid='$sid'"
+		);
+		if ($mid) {
+			print "<LI>$subj ($sid-$cid, <B>Already moderated</B>)</LI>";
+			return;
+		}
 	}
 
 	my $modreason = $reason;

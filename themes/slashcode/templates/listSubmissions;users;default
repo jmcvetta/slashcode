@@ -67,10 +67,10 @@ cur_time = Slash.db.getTime();
 					[%- CASE 2 -%]
 						[% IF story_viewable %]
 							Accepted
+							[% approved = approved + 1; %]	
 						[% ELSE %]
 							Pending
 						[% END %]
-					[% approved = approved + 1; %]	
 				[%- END -%]
 			     [%-  END -%]
 			</TD>
@@ -103,5 +103,5 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listSubmissions;users;default,v 1.4 2004/03/23 15:13:40 tvroom Exp $
+$Id: listSubmissions;users;default,v 1.5 2004/05/25 15:36:28 tvroom Exp $
 

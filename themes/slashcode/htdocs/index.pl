@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.37 2002/07/03 01:30:49 brian Exp $
+# $Id: index.pl,v 1.38 2002/07/03 01:50:52 brian Exp $
 
 use strict;
 use Slash;
@@ -172,11 +172,6 @@ sub displayStandardBlocks {
 	}
 
 	for my $bid (@boxes) {
-		# sections only get blocks for their own section
-		if ($getblocks ne 'index') {
-			next if $boxBank->{$bid}{section} ne $getblocks;
-		}
-
 		if ($bid eq 'mysite') {
 			$return .= portalbox(
 				$constants->{fancyboxwidth},

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.77 2003/08/05 14:04:56 vroom Exp $
+# $Id: index.pl,v 1.78 2003/08/05 16:29:05 pudge Exp $
 
 use strict;
 use Slash;
@@ -296,8 +296,8 @@ sub displayStories {
 	# get some of our constant messages but do it just once instead
 	# of for every story
 	my $msg;
-	$msg->{readmore}=getData('readmore');
-	if($constants->{body_bytes}){
+	$msg->{readmore} = getData('readmore');
+	if ($constants->{body_bytes}){
 		$msg->{bytes} = getData('bytes');
 	} else {
 		$msg->{words} = getData('words');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.8 2002/01/08 17:22:09 pudge Exp $
+# $Id: MySQL.pm,v 1.9 2002/03/07 22:05:32 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -287,14 +287,37 @@ sub deleteMessages {
 
 	# set defaults
 	my $constants = getCurrentStatic();
-	my $sendx = $constants->{message_send_expire} || 7;
-	my $webx  = $constants->{message_web_expire}  || 31;
+	my $sendx = $constants->{message_send_expire}  || 7;
+	my $webx  = $constants->{message_web_expire}   || 31;
+	my $webmx = $constants->{message_web_maxtotal} || 50;
+	my $logx  = $constants->{archive_delay}        || 14;
 
+	# delete message log entries
+	$self->sqlDo("DELETE FROM $self->{_log_table} " .
+		"WHERE TO_DAYS(NOW()) - TO_DAYS(date) > $logx");
+
+	# delete web messages over certain date
 	my $ids = $self->sqlSelectColArrayref($prime, $table,
 		"TO_DAYS(NOW()) - TO_DAYS(date) > $webx"
 	);
 	$self->_delete_web($_, 0, 1) for @$ids;
 
+	# delete user's web messages over certain total #
+	$ids = $self->sqlSelectAll("user,count(*)", $table,
+		"", "group by user"
+	);
+	for (@$ids) {
+		if ($_->[1] > $webmx) {
+			my $c = $_->[1] - $webmx;
+			my $delids = $self->sqlSelectColArrayref(
+				"id", "message_web", "user=$_->[0]",
+				"ORDER BY date DESC LIMIT $c"
+			);
+			$self->_delete_web($_, 0, 1) for @$delids;
+		}
+	}
+
+	# delete unsent messages in queue over certain date
 	$self->_delete(0, "TO_DAYS(NOW()) - TO_DAYS(date) > $sendx");
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.260 2002/11/20 03:51:33 jamie Exp $
+# $Id: MySQL.pm,v 1.261 2002/11/20 05:39:46 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.260 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.261 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4545,10 +4545,10 @@ sub getStoriesEssentials {
 		$where .= " AND displaystatus >= 0 ";
 	}
 
-	$where .= " AND tid='$tid' " if $tid;
-	$where .= " AND sid = '$misc->{sid}' " if $misc->{sid};
-	$where .= " AND sid != '$misc->{exclude_sid}' " if $misc->{exclude_sid};
-	$where .= " AND subsection=$misc->{subsection} " if $misc->{subsection};
+	$where .= " AND tid = "        . $self->sqlQuote($tid)                 if $tid;
+	$where .= " AND sid = "        . $self->sqlQuote($misc->{sid})         if $misc->{sid};
+	$where .= " AND sid != "       . $self->sqlQuote($misc->{exclude_sid}) if $misc->{exclude_sid};
+	$where .= " AND subsection = " . $self->sqlQuote($misc->{subsection})  if $misc->{subsection};
 
 	# User Config Vars
 	$where .= " AND tid not in ($user->{extid}) "

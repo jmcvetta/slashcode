@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.582 2004/05/28 16:22:03 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.583 2004/06/01 21:30:56 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.582 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.583 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4032,13 +4032,16 @@ sub checkForOpenProxy {
 # the mods done to them) in list context.
 sub getNumCommPostedAnonByIPID {
 	my($self, $ipid, $hours, $start_cid) = @_;
+	my $constants = getCurrentStatic();
 	$ipid = $self->sqlQuote($ipid);
 	$hours ||= 24;
 	my $cid_clause = $start_cid ? " AND cid >= $start_cid" : "";
 	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
+	my $table_extras = "";
+	$table_extras .= " IGNORE INDEX(uid_date)" if $constants->{ignore_uid_date_index};
 	my $ar = $self->sqlSelectArrayRef(
 		"COUNT(*) AS count, SUM(pointsorig-points) AS sum",
-		"comments",
+		"comments $table_extras",
 		"ipid=$ipid
 		 AND uid=$ac_uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)

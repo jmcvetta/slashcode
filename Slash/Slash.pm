@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.29 2002/01/04 06:48:09 jamie Exp $
+# $Id: Slash.pm,v 1.30 2002/01/07 22:12:58 brian Exp $
 
 package Slash;
 
@@ -87,9 +87,8 @@ sub selectComments {
 		$cache_read_only
 	);
 
-	# This loop mainly takes apart the array and builds 
-	# a hash with the comments in it.  Each comment is
-	# is in the index of the hash (based on its cid).
+	# We first loop through the comments and assign bonuses and
+	# and such.
 	for my $C (@$thisComment) {
 		# By setting pid to zero, we remove the threaded
 		# relationship between the comments
@@ -122,7 +121,16 @@ sub selectComments {
 		# fix points in case they are out of bounds
 		$C->{points} = $min if $C->{points} < $min;
 		$C->{points} = $max if $C->{points} > $max;
+	}
 
+	# If we are sorting by highest score we resort to figure in bonuses
+	@$thisComment = sort {$b->{points} == $a->{points} ? $b->{cid} <=> $a->{cid} : $b->{points} <=> $a->{points} } @$thisComment
+		if $user->{commentsort} == 3;
+
+	# This loop mainly takes apart the array and builds 
+	# a hash with the comments in it.  Each comment is
+	# is in the index of the hash (based on its cid).
+	for my $C (@$thisComment) {
 		# So we save information. This will only have data if we have 
 		# happened through this cid while it was a pid for another
 		# comments. -Brian

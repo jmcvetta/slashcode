@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.28 2004/02/12 19:28:42 jamiemccarthy Exp $
+# $Id: Log.pm,v 1.29 2004/03/29 22:48:33 tvroom Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -23,8 +23,8 @@ use vars qw($VERSION);
 
 sub handler {
 	my($r) = @_;
+	return OK unless dbAvailable("write_accesslog");
 	my $constants = getCurrentStatic();
-	return OK unless dbAvailable("accesslog");
 
 	# Notes has a bug (still in apache 1.3.17 at
 	# last look). Apache's directory sub handler

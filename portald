@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: portald,v 1.5 2000/05/20 01:43:43 pudge Exp $
+#  $Id: portald,v 1.6 2000/07/31 17:16:26 pudge Exp $
 ###############################################################################
 
 =head1 Welcome to Portald
@@ -262,7 +262,7 @@ sub getRDF {
 			return;
 		}
 
-		$d =~ s/&(?!(?:[a-zA-Z0-9]+|#\d+);)/&amp;/g; #s/&/&amp;/g;
+		$d =~ s/&(?!#?[a-zA-Z0-9]+;)/&amp;/g; #s/&/&amp;/g;
 		$p->parse($d) or portaldLog("$bid did not parse properly");
 		setblock($bid, "$str$other");
 	};

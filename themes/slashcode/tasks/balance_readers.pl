@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.11 2004/12/21 09:56:51 jamiemccarthy Exp $
+# $Id: balance_readers.pl,v 1.12 2005/02/01 17:38:14 jamiemccarthy Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -273,6 +273,7 @@ sub get_sql_type_from_state {
 		|| $state =~ /waiting for binlog update/
 		|| $state eq 'init'
 		|| $state eq 'creating table'
+		|| $state eq 'Locked'
 		|| $state eq 'preparing'
 		|| $state eq 'removing tmp table'
 		|| $state eq 'query end'

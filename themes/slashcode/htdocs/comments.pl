@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.64 2002/04/17 15:39:25 jamie Exp $
+# $Id: comments.pl,v 1.65 2002/04/22 19:35:33 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -1130,7 +1130,8 @@ sub moderate {
 	titlebar("99%", "Moderating...");
 
 	$hasPosted = $slashdb->countCommentsBySidUID($sid, $user->{uid})
-		unless $user->{seclev} > 99 && $constants->{authors_unlimited};
+		unless $constants->{authors_unlimited}
+			&& $user->{seclev} >= $constants->{authors_unlimited};
 
 	slashDisplay('mod_header');
 
@@ -1183,13 +1184,12 @@ sub moderateCid {
 	my $user = getCurrentUser();
 
 	my $comment_changed = 0;
-	my $superAuthor = $constants->{authors_unlimited};
+	my $superAuthor = $constants->{authors_unlimited}
+		&& $user->{seclev} >= $constants->{authors_unlimited};
 
-	if ($user->{points} < 1) {
-		unless ($user->{is_admin} && $superAuthor) {
-			print getError('no points');
-			return 0;
-		}
+	if ($user->{points} < 1 && !$superAuthor) {
+		print getError('no points');
+		return 0;
 	}
 
 	my $comment = $slashdb->getComment($cid);
@@ -1201,7 +1201,7 @@ sub moderateCid {
 	# or without us presenting them the menu options.  So do the
 	# tests again.
 
-	unless ($user->{is_admin}) {
+	unless ($superAuthor) {
 		# Do not allow moderation of any comments with the same UID as the
 		# current user (duh!).
 		return if $user->{uid} == $comment->{uid};
@@ -1226,7 +1226,7 @@ sub moderateCid {
 		points	=> $user->{points},
 	};
 
-	unless ($user->{seclev} > 99 and $superAuthor) {
+	unless ($superAuthor) {
 		my $mid = $slashdb->getModeratorLogID($cid, $user->{uid});
 		if ($mid) {
 			$dispArgs->{type} = 'already moderated';
@@ -1437,8 +1437,8 @@ sub undoModeration {
 	#	3) The user is an author with a high enough security level
 	#	   and that option is turned on.
 	return if !$constants->{allow_moderation} || $user->{is_anon} ||
-		  ( $user->{seclev} > 99 && $constants->{authors_unlimited} &&
-		    $user->{author} );
+		  ( $constants->{authors_unlimited} && $user->{seclev} >= $constants->{authors_unlimited}
+		    && $user->{author} );
 
 	if ($sid !~ /^\d+$/) {
 		$sid = $slashdb->getDiscussionBySid($sid, 'header');

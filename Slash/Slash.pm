@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.54 2002/04/19 18:20:10 jamie Exp $
+# $Id: Slash.pm,v 1.55 2002/04/22 19:35:32 pudge Exp $
 
 package Slash;
 
@@ -308,8 +308,8 @@ sub _can_mod {
 			($constants->{comments_moddable_hours}
 			|| 24*$constants->{archive_delay})
 		) || (
-		       $user->{seclev} >= 100
-		    && $constants->{authors_unlimited}
+		       $constants->{authors_unlimited}
+		    && $user->{seclev} >= $constants->{authors_unlimited}
 		) );
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.12 2002/01/08 17:22:09 pudge Exp $
+# $Id: zoo.pl,v 1.13 2002/02/08 20:25:54 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -69,6 +69,10 @@ sub main {
 		freaks		=> { 
 			check => 1,			
 			function => \&freaks		
+		},
+		all		=> { 
+			check => 1,			
+			function => \&all		
 		},
 		default		=> { 
 			check => 0,			
@@ -259,6 +263,40 @@ sub freaks {
 				print getData('yournofreaks');
 			} else {
 				print getData('nofreaks', { nickname => $nick });
+			}
+		}
+	}
+}
+
+sub all {
+	my($zoo, $constants, $user, $form, $slashdb) = @_;
+
+	my ($uid, $nick);
+	if ($form->{uid} || $form->{nick}) {
+		$uid = $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
+		$nick = $form->{nick} ? $form->{nick} : $slashdb->getUser($uid, 'nickname');
+	} else {
+		$uid = $user->{uid};
+		$nick = $user->{nick};
+	}
+	my $editable = ($uid == $user->{uid} ? 1 : 0);
+	my $people = $zoo->getAll($uid);
+
+	if ($form->{content_type} eq 'rss') {
+		_rss($people, $nick, 'people');
+	} else {
+		if ($editable) {
+			_printHead("yourall");
+		} else {
+			_printHead("yourhead",{ nickname => $nick });
+		}
+		if (@$people) {
+			slashDisplay('alllist', { people => $people, editable => $editable });
+		} else {
+			if ($editable) {
+				print getData('yournoall');
+			} else {
+				print getData('noall', { nickname => $nick });
 			}
 		}
 	}

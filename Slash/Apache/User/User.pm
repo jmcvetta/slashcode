@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.21 2002/01/26 05:22:41 jamie Exp $
+# $Id: User.pm,v 1.22 2002/02/08 20:25:54 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -258,7 +258,6 @@ sub authors {
 sub userLogin {
 	my($name, $passwd) = @_;
 	my $r = Apache->request;
-	my $cfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
 	my $slashdb = getCurrentDB();
 
 	# Do we want to allow logins with encrypted passwords? -- pudge
@@ -332,6 +331,10 @@ sub userdir_handler {
 				$r->filename($constants->{basedir} . '/zoo.pl');
 			} elsif ($op eq 'freaks') {
 				$r->args("op=freaks");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($op eq 'zoo') {
+				$r->args("op=all");
 				$r->uri('/zoo.pl');
 				$r->filename($constants->{basedir} . '/zoo.pl');
 			} elsif ($op eq 'comments') {
@@ -442,6 +445,11 @@ sub userdir_handler {
 			$r->args("op=foes&nick=$nick&uid=$uid");
 			$r->uri('/zoo.pl');
 			$r->filename($constants->{basedir} . '/zoo.pl');
+
+		} elsif ($op eq 'friendview') {
+			$r->args("op=friendview&nick=$nick&uid=$uid");
+			$r->uri('/journal.pl');
+			$r->filename($constants->{basedir} . '/journal.pl');
 
 		} else {
 			$r->args("nick=$nick&uid=$uid");

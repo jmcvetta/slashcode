@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.87 2002/12/29 19:44:50 brian Exp $
+# $Id: Stats.pm,v 1.88 2003/01/08 03:10:34 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -852,7 +852,7 @@ sub countSfNetIssues {
 sub getAllStats {
 	my($self, $options) = @_;
 	my $table = 'stats_daily';
-	my $sel   = 'name, value, section, day';
+	my $sel   = 'name, value+0 as value, section, day';
 	my $extra = 'ORDER BY section, day, name';
 	my @where;
 
@@ -915,4 +915,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.87 2002/12/29 19:44:50 brian Exp $
+$Id: Stats.pm,v 1.88 2003/01/08 03:10:34 pudge Exp $

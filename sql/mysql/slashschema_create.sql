@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.153 2004/06/21 12:52:51 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.154 2004/06/21 15:42:27 tvroom Exp $
 #
 
 #
@@ -562,7 +562,7 @@ CREATE TABLE pollquestions (
 	discussion mediumint,
 	date datetime,
 	uid mediumint UNSIGNED NOT NULL,
-	section varchar(30) NOT NULL,
+	primaryskid SMALLINT UNSIGNED,
 	autopoll ENUM("no","yes") DEFAULT 'no' NOT NULL,
 	flags ENUM("ok","delete","dirty") DEFAULT 'ok' NOT NULL,
 	polltype enum('nodisplay','section','story') default 'section',

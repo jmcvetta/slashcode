@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.118 2004/04/06 02:44:47 pudge Exp $
+# $Id: Data.pm,v 1.119 2004/05/04 19:28:07 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -250,19 +250,19 @@ sub cleanRedirectUrl {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
-	# We absolutize the return-to URL to our homepage just to
+	# We absolutize the return-to URL to our domain just to
 	# be sure nobody can use the site as a redirection service.
 	# We decide whether to use the secure homepage or not
 	# based on whether the current page is secure.
 	my $base = root2abs();
 	my $clean = URI->new_abs($redirect || $constants->{rootdir}, $base);
 
-	my $site_domain = $constants->{basedomain};
-	$site_domain =~ s/^www\.//;
+	my @site_domain = split m/\./, $constants->{basedomain};
+	my $site_domain = join '.', @site_domain[-2, -1];
 	$site_domain =~ s/:.+$//;	# strip port, if available
 
-	my $host = $clean->can('host') ? $clean->host : '';
-	$host =~ s/^www\.//;
+	my @host = split m/\./, ($clean->can('host') ? $clean->host : '');
+	my $host = join '.', @host[-2, -1];
 
 	if ($site_domain eq $host) {
 		# Cool, it goes to our site.  Send the user there.
@@ -3296,4 +3296,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.118 2004/04/06 02:44:47 pudge Exp $
+$Id: Data.pm,v 1.119 2004/05/04 19:28:07 pudge Exp $

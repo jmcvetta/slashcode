@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.76 2002/05/03 19:32:39 pudge Exp $
+# $Id: users.pl,v 1.77 2002/05/06 02:53:36 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -435,17 +435,20 @@ print STDERR "users.pl main op '$op' returned '$retval'\n";
 #################################################################
 sub checkList {
 	my $string = shift;
+	my $constants = getCurrentStatic();
+	# what is this supposed to be for? -- pudge
 	$string = substr($string, 0, -1);
 
 	$string =~ s/[^\w,-]//g;
 	my @e = split m/,/, $string;
 	$string = sprintf "'%s'", join "','", @e;
+	my $len = $constants->{checklist_length} || 255;
 
-	if (length($string) > 254) {
+	if (length($string) > $len) {
 		print getError('checklist_err');
-		$string = substr($string, 0, 255);
+		$string = substr($string, 0, $len);
 		$string =~ s/,'??\w*?$//g;
-	} elsif (length $string < 3) {
+	} elsif (length($string) < 3) {
 		$string = '';
 	}
 
@@ -2319,7 +2322,7 @@ sub getOtherUserParams {
 	for my $param (keys %$params) {
 		if (exists $form->{$param}) {
 			# set user too for output in this request
-			$data->{$param} = $user->{$param} = $form->{$param};
+			$data->{$param} = $user->{$param} = $form->{$param} || undef;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.247 2004/11/04 15:44:27 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.248 2004/11/15 18:16:29 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -969,9 +969,13 @@ sub topicDelete {
 	if (!$success) {
 		# we should dump this to the screen instead
 		warn $errmsg;
+		slashHook('admin_topic_delete_failed',
+			{ tid => $form->{tid}, replacement => $form->{replacementtid} });
 		$form->{nexttid} = $form->{tid};
 		$form->{tid} = '';
 	} else {
+		slashHook('admin_topic_delete_success',
+			{ tid => $form->{tid}, replacement => $form->{replacementtid} });
 		$form->{nexttid} = $form->{replacementtid};
 	}
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.125 2004/06/17 17:39:52 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.126 2004/06/21 18:41:14 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1240,7 +1240,7 @@ sub setCookie {
 	# We need to actually determine domain from preferences,
 	# not from the server, so the site admin can specify
 	# special preferences if they want to. -- pudge
-	my $cookiedomain = $gSkin->{cookiedomain};
+	my $cookiedomain = $gSkin->{cookiedomain} || $constants->{cookiedomain};
 	my $cookiepath   = $constants->{cookiepath};
 
 	# note that domain is not a *host*, it is a *domain*,
@@ -2496,4 +2496,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.125 2004/06/17 17:39:52 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.126 2004/06/21 18:41:14 pudge Exp $

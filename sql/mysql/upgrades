@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.494 2003/12/31 16:43:50 pudge Exp $
+# $Id: upgrades,v 1.495 2004/01/22 16:15:23 jamie Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2017,3 +2017,4 @@ INSERT INTO vars (name, value, description) VALUES ('login_temp_minutes', '10', 
 # USEPERL LAST UPDATED HERE
 
 # SLASHCODE LAST UPDATED HERE
+

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: SOAP.pm,v 1.2 2002/12/09 16:27:21 pudge Exp $
+# $Id: SOAP.pm,v 1.3 2002/12/10 14:09:06 jamie Exp $
 
 package Slash::SOAP;
 
@@ -9,12 +9,12 @@ use strict;
 use Slash;
 use Slash::Utility;
 
-use vars qw($VERSION);
+use vars qw( $VERSION $ERROR );
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 =head1 NAME
 
@@ -173,4 +173,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: SOAP.pm,v 1.2 2002/12/09 16:27:21 pudge Exp $
+$Id: SOAP.pm,v 1.3 2002/12/10 14:09:06 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.50 2002/10/11 01:15:31 jamie Exp $
+# $Id: index.pl,v 1.51 2002/11/05 16:43:24 pater Exp $
 
 use strict;
 use Slash;
@@ -44,7 +44,7 @@ sub main {
 	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
 
 	my $title = getData('head', { section => $section });
-	header($title, $section->{section}, { tab_selected => 'home' });
+	header($title, $section->{section});
 
 	my $limit = $section->{type} eq 'collected' ?
 		$user->{maxstories} : $artcount;

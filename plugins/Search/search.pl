@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.7 2001/04/23 16:48:40 brian Exp $
+# $Id: search.pl,v 1.8 2001/04/23 16:51:58 brian Exp $
 
 use strict;
 use Slash;
@@ -233,14 +233,14 @@ sub commentSearchRSS {
 
 	$rss->channel(
 		title	=> xmlencode($constants->{sitename} . ' Search'),
-		'link'	=> xmlencode($constants->{absolutedir} . '/search.pl'),
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/search.pl'),
 		description	=> xmlencode($constants->{sitename} . ' Search'),
 	);
 
 	$rss->image(
 		title	=> xmlencode($constants->{sitename}),
 		url	=> xmlencode($constants->{rdfimg}),
-		'link'	=> $constants->{absolutedir} . '/',
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/'),
 	);
 
 	for my $entry (@$comments) {
@@ -268,21 +268,21 @@ sub userSearchRSS {
 
 	$rss->channel(
 		title	=> xmlencode($constants->{sitename} . ' Search'),
-		'link'	=> xmlencode($constants->{absolutedir} . '/search.pl'),
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/search.pl'),
 		description	=> xmlencode($constants->{sitename} . ' Search'),
 	);
 
 	$rss->image(
 		title	=> xmlencode($constants->{sitename}),
 		url	=> xmlencode($constants->{rdfimg}),
-		'link'	=> $constants->{absolutedir} . '/',
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/'),
 	);
 
 	for my $entry (@$users) {
 			my $time = timeCalc($entry->[3]);
 			$rss->add_item(
 				title	=> xmlencode("$entry->[0]"),
-				'link'	=> xmlencode($constants->{absolutedir} . '/users.pl?nick=' . $entry->[0]),
+				'link'	=> xmlencode_plain($constants->{absolutedir} . '/users.pl?nick=' . $entry->[0]),
 			);
 	}
 	return $rss->as_string;
@@ -304,21 +304,21 @@ sub storySearchRSS {
 
 	$rss->channel(
 		title	=> xmlencode($constants->{sitename} . ' Search'),
-		'link'	=> xmlencode($constants->{absolutedir} . '/search.pl'),
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/search.pl'),
 		description	=> xmlencode($constants->{sitename} . ' Search'),
 	);
 
 	$rss->image(
 		title	=> xmlencode($constants->{sitename}),
 		url	=> xmlencode($constants->{rdfimg}),
-		'link'	=> $constants->{absolutedir} . '/',
+		'link'	=> xmlencode_plain($constants->{absolutedir} . '/'),
 	);
 
 	for my $entry (@$stories) {
 			my $time = timeCalc($entry->[3]);
 			$rss->add_item(
 				title	=> xmlencode("$entry->[1] ($time)"),
-				'link'	=> xmlencode($constants->{absolutedir} . '/article.pl?sid=' . $entry->[2]),
+				'link'	=> xmlencode_plain($constants->{absolutedir} . '/article.pl?sid=' . $entry->[2]),
 			);
 	}
 	return $rss->as_string;

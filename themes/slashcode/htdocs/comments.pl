@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.151 2003/09/15 20:04:15 vroom Exp $
+# $Id: comments.pl,v 1.152 2003/09/15 23:52:42 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1380,7 +1380,7 @@ sub moderate {
 			my $ret_val = $slashdb->moderateComment($sid, $1, $form->{$key});
 			
 			# error conditions -- need to call getError
-			if($ret_val < 0){
+			if ($ret_val < 0) {
 				if ($ret_val == -1) {
 					print getError('no points');
 				} elsif ($ret_val == -2){
@@ -1495,7 +1495,7 @@ sub undoModeration {
 
 	for my $mod (@$removed) {
 		$mod->{val} =~ s/^(\d)/+$1/;  # put "+" in front if necessary
-		$messages = getObject('Slash::Messages');
+		my $messages = getObject('Slash::Messages');
 		$messages->send_mod_msg({
 			type	=> 'unmod_msg',
 			sid	=> $sid,

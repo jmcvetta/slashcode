@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.454 2003/09/15 20:02:56 vroom Exp $
+# $Id: MySQL.pm,v 1.455 2003/09/15 23:52:42 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.454 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.455 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4755,10 +4755,13 @@ sub getStoryByTime {
 	return $returnable;
 }
 
+##################################################################
+#
 sub getStorySidFromDiscussion {
 	my ($self, $discussion) = (@_);
 	return $self->sqlSelect("sid", "stories", "discussion = ".$self->sqlQuote($discussion));
 }
+
 ##################################################################
 # admin.pl only
 sub getStoryByTimeAdmin {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.162 2003/11/25 23:19:12 pater Exp $
+# $Id: comments.pl,v 1.163 2003/11/26 18:19:44 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -186,8 +186,19 @@ sub main {
 
 	$form->{pid} ||= "0";
 
-	my $title = $constants->{ubb_like_forums} ? 'Forums' : 'Comments';
-	header($discussion ? $discussion->{'title'} : $title, $section) or return;
+	my $title = 'Comments';
+
+	if ($discussion && $constants->{ubb_like_forums}
+		&& ($discussion->{type} eq 'recycle')) {
+		$title = $constants->{sitename} . ": Forums - "
+			. $discussion->{'title'};
+	} elsif ($discussion) {
+		$title = $discussion->{'title'};
+	} elsif ((!$discussion) && $constants->{ubb_like_forums}) {
+		$title = 'Forums';
+	}
+
+	header($title, $section) or return;
 
 	if ($user->{is_anon} && length($form->{upasswd}) > 1) {
 		print getError('login error');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.25 2002/03/05 00:36:58 brian Exp $
+# $Id: search.pl,v 1.26 2002/03/07 17:14:01 pudge Exp $
 
 use strict;
 use Slash;
@@ -590,9 +590,6 @@ sub journalSearch {
 }
 
 #################################################################
-# Do not enable -Brian
-# do not WRITE in the first place -- pudge
-# Writing is fine if it is not enabled --Brian
 sub journalSearchRSS {
 	my($form, $constants, $slashdb, $searchDB) = @_;
 
@@ -604,7 +601,7 @@ sub journalSearchRSS {
 		my $time = timeCalc($entry->[3]);
 		push @items, {
 			title	=> "$entry->[1] ($time)",
-			'link'	=> ($constants->{absolutedir} . '/article.pl?sid=' . $entry->[2]),
+			'link'	=> ($constants->{absolutedir} . '/~' . fixparam($entry->[0]) . '/journal/' . $entry->[2]),
 		};
 	}
 

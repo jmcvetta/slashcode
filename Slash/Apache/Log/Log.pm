@@ -1,16 +1,17 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.30 2004/04/02 00:42:59 pudge Exp $
+# $Id: Log.pm,v 1.31 2004/11/19 04:15:02 cowboyneal Exp $
 
 package Slash::Apache::Log;
 
 use strict;
 use Slash::Utility;
 use Apache::Constants qw(:common);
+use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -143,6 +144,13 @@ sub UserLog {
 		print STDERR scalar(gmtime) . " $$ mcd UserLog id=$user->{uid} setUser: upd '$user_update' keys '" . join(" ", sort keys %$user_update) . "'\n";
 	}
 	$slashdb->setUser($user->{uid}, $user_update) if $user_update && %$user_update;
+
+	# stats for clampe
+        if ($constants->{clampe_stats} && $user->{uid} > 827000 && $user->{uid} < 832000) {
+                my $fname = catfile('clampe', $user->{uid});
+                my $comlog = "URL: $ENV{REQUEST_URI} IPID: $user->{ipid} UID: $user->{uid} Dispmode: $user->{mode} Thresh: $user->{threshold} Karma: $user->{karma}";
+                doClampeLog($fname, [$comlog]);
+        }
 
 	return OK;
 }

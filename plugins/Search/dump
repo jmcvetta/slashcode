@@ -1,8 +1,7 @@
 #
-# $Id: dump,v 1.16 2004/11/09 20:28:11 pudge Exp $
+# $Id: dump,v 1.17 2004/11/21 02:14:45 jamiemccarthy Exp $
 #
 
-INSERT INTO vars (name, value, description) VALUES ('search_db_user', '', 'Enter a valid DBIx::Password user if you want search to run on a different DB then the default');
 INSERT INTO vars (name, value, description) VALUES ('search_default_display', '30', 'Default number of entries to display on Search page');
 INSERT INTO vars (name, value, description) VALUES ('search_journal_enabled', '1', 'Turns on searching journals.');
 INSERT INTO vars (name, value, description) VALUES ('search_rss_enabled', '1', 'Turns on searching rss.');

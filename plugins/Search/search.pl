@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.85 2004/11/09 20:28:11 pudge Exp $
+# $Id: search.pl,v 1.86 2004/11/21 02:14:45 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -36,10 +36,11 @@ sub main {
 	my $form      = getCurrentForm();
 	my $user      = getCurrentUser();
 	my $gSkin     = getCurrentSkin();
+	my $slashdb   = getCurrentDB();
+	my $searchDB  = getObject('Slash::Search', { db_type => 'search' });
+
 	# Backwards compatibility, we now favor tid over topic 
 	$form->{tid} ||= $form->{topic};
-
-	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
 
 	# Set some defaults
 	$form->{query}		||= '';

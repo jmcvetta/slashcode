@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.180 2004/11/20 00:12:36 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.181 2004/11/21 02:14:46 jamiemccarthy Exp $
 #
 
 #
@@ -325,6 +325,7 @@ CREATE TABLE dbs (
 	isalive enum("no","yes") DEFAULT "no" NOT NULL,
 	type enum("writer","reader","log","search", "log_slave","querylog") DEFAULT "reader" NOT NULL,
 	weight tinyint UNSIGNED NOT NULL DEFAULT 1,
+	weight_adjust float UNSIGNED NOT NULL DEFAULT 1.0,
 	PRIMARY KEY (id)
 ) TYPE=InnoDB;
 

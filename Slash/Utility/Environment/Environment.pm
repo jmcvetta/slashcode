@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.152 2004/11/16 20:12:27 pudge Exp $
+# $Id: Environment.pm,v 1.153 2004/11/21 02:14:45 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1542,34 +1542,31 @@ sub prepareUser {
 
 #========================================================================
 
+# For DB types that can have multiple replicated slaves, it is important
+# that, on any given request, the user always work with one DB of that
+# type.  This is because one slave may be further along in replication
+# than another, and switching between two slaves that are literally at
+# different points in time could cause chaos.  So, for each type of DB
+# that is available, we pick exactly one virtual user and assign it.
+# Those settings will not change throughout the script -- the Apache
+# page delivery, or the running of the slashd task, or whatever.
+
 sub setUserDBs {
 	my($user) = @_;
 	my $slashdb = getCurrentDB();
 
-	# First we find a good reader DB so that we can use that for the user.
-	my $databases = $slashdb->getDBs;
-	my %user_types;
-	for my $type (keys %$databases) {
-		my $db = $databases->{$type};
+	my $dbs = $slashdb->getDBs();
 
-		# shuffle the deck
-		my $i = @$db;
-		while ($i--) {
-			my $j = int rand($i+1);
-			@$db[$i, $j] = @$db[$j, $i];
-		}
+	# Run through the hashref of all DBs returned and mark how many
+	# types we're going to need to set.
+	my %user_types = ( );
+	for my $dbid (keys %$dbs) {
+		$user_types{ $dbs->{$dbid}{type} } = 1;
+	}
 
-		# there can be only one
-		my $virtual_user;
-		for (@$db) {
-			if ($_->{isalive} eq 'yes') {
-				$virtual_user = $_->{virtual_user};
-				last;
-			}
-		}
-
-		# save in user's state
-		$user_types{$type} = $virtual_user;
+	# Now for each type needed, pick a DB (at random) and assign it.
+	for my $type (sort keys %user_types) {
+		$user_types{$type} = $slashdb->getDB($type);
 	}
 
 	saveUserDBs($user, \%user_types) if $user;
@@ -2658,4 +2655,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.152 2004/11/16 20:12:27 pudge Exp $
+$Id: Environment.pm,v 1.153 2004/11/21 02:14:45 jamiemccarthy Exp $

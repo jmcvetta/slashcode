@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.79 2004/09/23 18:45:14 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.80 2004/11/21 02:14:45 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,24 +11,9 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
-
-#################################################################
-sub SelectDataBases {
-	my $search_db_user = getCurrentStatic('search_db_user');
-	my($slashdb, $searchDB);
-	if ($search_db_user) {
-		$slashdb  = getObject('Slash::DB', $search_db_user);
-		$searchDB = getObject('Slash::Search', $search_db_user);
-	} else {
-		$slashdb  = getCurrentDB();
-		$searchDB = Slash::Search->new(getCurrentVirtualUser());
-	}
-
-	return($slashdb, $searchDB);
-}
 
 #################################################################
 sub new {

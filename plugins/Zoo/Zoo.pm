@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.14 2002/08/22 18:59:06 brian Exp $
+# $Id: Zoo.pm,v 1.15 2002/08/23 18:31:52 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -373,6 +373,19 @@ SQL
 
 	my $friends  = $self->sqlSelectColArrayref($cols, $table, $where);
 	return $friends;
+}
+
+sub deleteZooJobs {
+	my ($self, $list) = @_;
+	$self->sqlDo("DELETE FROM people_log WHERE id IN (" . join(",", @$list) . ")");
+}
+
+sub getZooJobs {
+	my ($self, $limit) = @_;
+	$limit = "LIMIT $limit"
+		if $limit;
+
+	return $self->sqlSelectAllHashrefArray('*', 'people_log', '', "ORDER BY id " . $limit);
 }
 
 

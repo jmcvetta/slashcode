@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.27 2003/01/27 21:47:32 jamie Exp $
+# $Id: run_moderatord.pl,v 1.28 2003/01/27 21:58:30 pudge Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -519,7 +519,7 @@ sub reconcile_m2 {
 			if (@{$msg_user}) {
 				$data->{m2} = $m2_results{$_}{m2};
 				$data->{change} = $m2_results{$_}{change};
-				$messages->create($_, MSG_CODE_M2, $data);
+				$messages->create($_, MSG_CODE_M2, $data, 0, '', 'defer');
 			}
 		}
 	}

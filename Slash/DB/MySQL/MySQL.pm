@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.365 2003/04/09 21:00:20 jamie Exp $
+# $Id: MySQL.pm,v 1.366 2003/04/11 16:59:16 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.365 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.366 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6134,6 +6134,21 @@ sub getTemplate {
 	});
 	return $answer;
 }
+
+########################################################
+sub getTemplateListByText {
+	my($self, $text) = @_;
+
+	my %templatelist;
+	my $where = 'template LIKE ' . $self->sqlQuote("%${text}%");
+	my $templates =	$self->sqlSelectMany('tpid, name', 'templates', $where); 
+	while (my($tpid, $name) = $templates->fetchrow) {
+		$templatelist{$tpid} = $name;
+	}
+
+	return \%templatelist;
+}
+
 
 ########################################################
 # This is a bit different

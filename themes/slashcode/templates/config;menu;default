@@ -25,12 +25,12 @@ __template__
 	{ link = "$constants.rootdir/admin.pl?op=templates",	label = "Templates",	sel_label = "templates" },
 	{ link = "$constants.rootdir/admin.pl?op=vars",		label = "Vars",		sel_label = "vars" },
 	{ link = "$constants.rootdir/admin.pl?op=acls",		label = "ACLs",		sel_label = "acls" },
-	{ link = "$constants.rootdir/admin.pl?op=recent",	label = "Info",		sel_label = "info" },
-	{ link = "$constants.rootdir/slashguide.shtml",		label = "Help",		sel_label = "help" },
+	{ link = "$constants.rootdir/stats.pl",			label = "Info",		sel_label = "stats" },
+	{ link = "$constants.rootdir/admin.pl?op=recent",	label = "Security",	sel_label = "security" },
 ];
 PROCESS tabbedmenu tabs=tabs color=color selected=page lightfontcolor=lightfontcolor || ""; %]
 
 __seclev__
 10000
 __version__
-$Id: config;menu;default,v 1.11 2003/11/07 13:46:29 jamie Exp $
+$Id: config;menu;default,v 1.12 2004/03/23 15:03:39 tvroom Exp $

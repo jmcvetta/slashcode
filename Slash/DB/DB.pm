@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.7 2002/01/08 17:22:08 pudge Exp $
+# $Id: DB.pm,v 1.8 2002/04/05 20:10:50 jamie Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -1203,7 +1203,29 @@ Fixed KEY.
 
 =back
 
-=head2 getPollVoter(KEY)
+=head2 isPollOpen(KEY)
+
+I am the default documentation, short and stout.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item KEY
+
+Key, as in the KEY
+
+=back
+
+=item Return value
+
+Fixed KEY.
+
+=back
+
+=head2 hasVotedIn(KEY)
 
 I am the default documentation, short and stout.
 

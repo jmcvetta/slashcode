@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.17 2002/02/27 22:09:05 brian Exp $
+# $Id: article.pl,v 1.18 2002/04/05 20:10:51 jamie Exp $
 
 use strict;
 use Slash;
@@ -57,7 +57,7 @@ sub main {
 		};
 		header($links, $story->{section});
 
-		my $pollbooth = pollbooth($story->{sid}, 1);
+		my $pollbooth = pollbooth($story->{qid}, 1);
 		slashDisplay('display', {
 			poll			=> $pollbooth,
 			section			=> $SECT,

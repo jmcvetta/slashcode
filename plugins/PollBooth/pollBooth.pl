@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.27 2002/03/29 01:02:42 brian Exp $
+# $Id: pollBooth.pl,v 1.28 2002/04/05 20:10:51 jamie Exp $
 
 use strict;
 use Slash;
@@ -198,10 +198,15 @@ sub vote {
 	if (getCurrentUser('is_anon') and ! getCurrentStatic('allow_anonymous')) {
 		$notes = getData('anon');
 	} elsif ($aid > 0) {
-		my $id = $slashdb->getPollVoter($qid);
+		my $poll_open = $slashdb->isPollOpen($qid);
+		my $has_voted = $slashdb->hasVotedIn($qid);
 
-		if ($id) {
+		if ($has_voted) {
+			# Specific reason why can't vote.
 			$notes = getData('uid_voted');
+		} elsif (!$poll_open) {
+			# Voting is closed on this poll.
+			$notes = getData('poll_closed');
 		} elsif (exists $all_aid{$aid}) {
 			$notes = getData('success', { aid => $aid });
 			$slashdb->createPollVoter($qid, $aid);

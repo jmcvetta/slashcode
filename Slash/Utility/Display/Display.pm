@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.8 2002/03/27 00:52:10 brian Exp $
+# $Id: Display.pm,v 1.9 2002/04/05 20:10:50 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -505,28 +505,38 @@ sub pollbooth {
 	my $constants = getCurrentStatic();
 	my $sect = getCurrentUser('currentSection');
 
+	# If no/undef qid, but pollbooth was called anyway, display
+	# the current (sitewide) poll.
 	$qid = $slashdb->getVar('currentqid', 'value') unless $qid;
+	# If no/undef qid and no sitewide poll, short-circuit out.
 	return "" if $qid eq "";
 
-	my $polls = $slashdb->getPoll($qid);
-	return "" unless @$polls;
-
-	# in case $qid was really an sid
-	$qid = $polls->[0][-1];
-	my $poll_q = $slashdb->getPollQuestion($qid);
-	return "" unless keys %$poll_q;
+	my $poll = $slashdb->getPoll($qid);
+	return "" unless %$poll;
+	my $n_comments = $slashdb->countCommentsBySid(
+		$poll->{pollq}{discussion});
+	my $poll_open = $slashdb->isPollOpen($qid);
+	my $has_voted = $slashdb->hasVotedIn($qid);
+	my $can_vote = !$has_voted && $poll_open;
 
 	my $pollbooth = slashDisplay('pollbooth', {
-		polls		=> $polls,
-		question	=> $polls->[0][0],
+		question	=> $poll->{pollq}{question},
+		answers		=> $poll->{answers},
 		qid		=> $qid,
-		voters		=> $poll_q->{voters},
-		comments	=> $slashdb->countCommentsBySid($poll_q->{discussion}),
+		poll_open	=> $poll_open,
+		has_voted	=> $has_voted,
+		can_vote	=> $can_vote,
+		voters		=> $poll->{pollq}{voters},
+		comments	=> $n_comments,
 		sect		=> $sect,
 	}, 1);
 
-	return $pollbooth if $no_table;
-	fancybox($constants->{fancyboxwidth}, 'Poll', $pollbooth, $center, 1);
+	return $no_table
+		? $pollbooth
+		: fancybox(
+			$constants->{fancyboxwidth}, 'Poll',
+			$pollbooth, $center, 1
+		);
 }
 
 #========================================================================
@@ -1124,4 +1134,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.8 2002/03/27 00:52:10 brian Exp $
+$Id: Display.pm,v 1.9 2002/04/05 20:10:50 jamie Exp $

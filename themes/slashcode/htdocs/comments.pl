@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.192 2004/04/27 13:33:33 tvroom Exp $
+# $Id: comments.pl,v 1.193 2004/04/27 18:31:02 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -939,12 +939,17 @@ sub validateComment {
 		return;
 	}
 	
+	if (!$constants->{allow_anonymous} && ($user->{is_anon} || $form->{postanon})) {
+		$$error_message = getError('anonymous disallowed');
+		return;
+	}
+	
 	my $subnet_karma_comments_needed = $constants->{subnet_comments_posts_needed};
 	my ($subnet_karma, $subnet_post_cnt) = $slashdb->getNetIDKarma("subnetid", $user->{subnetid});
 	my ($sub_anon_max, $sub_anon_min, $sub_all_max, $sub_all_min ) = @{$constants->{subnet_karma_post_limit_range}};
 	
 	if ($subnet_post_cnt >= $subnet_karma_comments_needed) {
-		if ($user->{is_anon} && $subnet_karma >= $sub_anon_min && $subnet_karma <= $sub_anon_max ) {
+		if (($user->{is_anon} || $form->{postanon}) && $constants->{allow_anonymous} && $subnet_karma >= $sub_anon_min && $subnet_karma <= $sub_anon_max ) {
 			my $logged_in_allowed = ($subnet_karma >= $sub_all_min && $subnet_karma <= $sub_all_max) ? 0 : 1;
 			$$error_message = getError('troll message', {
 				unencoded_ip 		=> $ENV{REMOTE_ADDR},
@@ -960,10 +965,6 @@ sub validateComment {
 	} 
 	
 
-	if (!$constants->{allow_anonymous} && ($user->{is_anon} || $form->{postanon})) {
-		$$error_message = getError('anonymous disallowed');
-		return;
-	}
 
 	$$subj =~ s/\(Score(.*)//i;
 	$$subj =~ s/Score:(.*)//i;

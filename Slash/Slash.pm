@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.110 2003/02/13 22:01:31 brian Exp $
+# $Id: Slash.pm,v 1.111 2003/02/16 15:48:58 jamie Exp $
 
 package Slash;
 
@@ -95,7 +95,6 @@ sub selectComments {
 		$reader ||= $slashdb;
 		$thisComment = $reader->getCommentsForUser($header->{id}, $cid, $cache_read_only);
 	}
-
 
 	if (!$thisComment) {
 		_print_cchp($header);

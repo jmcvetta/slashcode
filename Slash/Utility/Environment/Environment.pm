@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.91 2003/05/15 16:55:33 jamie Exp $
+# $Id: Environment.pm,v 1.92 2003/05/20 15:16:52 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1099,7 +1099,15 @@ sub setCookie {
 
 	my $cookie = Apache::Cookie->new($r, %cookiehash);
 
-	$cookie->expires('+1y') unless $session;
+	# this should be fine, but if there is a problem, comment the following
+	# lines, and uncomment the one right above "bake"
+	if (!$val) {
+		$cookie->expires('-1y');  # delete
+	} elsif (!$session) {
+		$cookie->expires('+1y');
+	}
+
+	# $cookie->expires('+1y') unless $session;
 	$cookie->bake;
 
 	if ($domain) {
@@ -2099,4 +2107,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.91 2003/05/15 16:55:33 jamie Exp $
+$Id: Environment.pm,v 1.92 2003/05/20 15:16:52 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.166 2003/12/16 18:56:05 vroom Exp $
+# $Id: comments.pl,v 1.167 2004/01/02 00:14:33 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1008,14 +1008,18 @@ sub validateComment {
 		}
 	}
 
-	if ($constants->{allow_moderation} && !$user->{is_anon} && !$form->{gotmodwarning} && 
-		$slashdb->sqlCount("moderatorlog","uid=$user->{uid} and active=1 sid=$form->{sid}") && !$form->{postanon} && 
-		!($constants->{authors_unlimited} && $user->{seclev} >= $constants->{authors_unlimited}) && 
-		!$user->{acl}{modpoints_always})  {
-
+	if ($constants->{allow_moderation}
+		&& !$user->{is_anon}
+		&& !$form->{postanon}
+		&& !$form->{gotmodwarning}
+		&& !( $constants->{authors_unlimited}
+			&& $user->{seclev} >= $constants->{authors_unlimited} )
+		&& !$user->{acl}{modpoints_always}
+		&& $slashdb->countUserModsInDiscussion($user->{uid}, $form->{sid}) > 0
+	) {
 		$$error_message = getError("moderations to be lost");
 		$form_success = 0;
-		return; 
+		return;
 	}
 
 	$$error_message ||= '';

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.491 2003/12/31 16:43:50 pudge Exp $
+# $Id: MySQL.pm,v 1.492 2004/01/02 00:14:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.491 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.492 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -869,6 +869,16 @@ sub getTemplateList {
 	$self->_querylog_finish($qlid);
 
 	return $templatelist;
+}
+
+########################################################
+sub countUserModsInDiscussion {
+	my($self, $uid, $disc_id) = @_;
+	my $uid_q = $self->sqlQuote($uid);
+	my $disc_id_q = $self->sqlQuote($disc_id);
+	return $self->sqlCount(
+		"moderatorlog",
+		"uid=$uid_q AND active=1 AND sid=$disc_id_q");
 }
 
 ########################################################

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.55 2000/11/27 18:55:10 pudge Exp $
+#  $Id: Slash.pm,v 1.56 2000/12/18 11:11:19 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1417,6 +1417,13 @@ sub fixparam {
 sub fixurl {
 	my($url, $parameter) = @_;
 
+	# this is a temporary hack, to make sure we strip auth
+	# info if called from submit.pl.  If the path to get
+	# here from submit.pl changes (different number of
+	# calling functions), then this will break; that's
+	# why it is temporary -- pudge
+	my $stripauth = (caller(4))[1] =~ /submit.pl/;
+
 	if ($parameter) {
 		$url =~ s/([^$URI::unreserved])/$URI::Escape::escapes{$1}/oge;
 		return $url;
@@ -1426,6 +1433,11 @@ sub fixurl {
 		# add '#' to allowed characters
 		$url =~ s/([^$URI::uric#])/$URI::Escape::escapes{$1}/oge;
 		$url = fixHref($url) || $url;
+		if ($stripauth) {
+			my $uri = new URI $url;
+			$uri->authority($uri->host);
+			$url = $uri->as_string;
+		}
 		my $decoded_url = decode_entities($url);
 		return $decoded_url =~ s|^\s*\w+script\b.*$||i ? undef : $url;
 	}

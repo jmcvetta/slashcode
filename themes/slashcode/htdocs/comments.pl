@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.184 2004/03/29 22:38:03 tvroom Exp $
+# $Id: comments.pl,v 1.185 2004/03/30 20:06:25 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1469,7 +1469,7 @@ sub moderate {
 	}
 
 	if (!dbAvailable("write_comments")) {
-		print getError("comments_db_down");
+		print getError("comment_db_down");
 		return;
 	}
 

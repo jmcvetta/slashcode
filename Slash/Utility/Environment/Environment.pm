@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.68 2003/02/07 21:51:04 jamie Exp $
+# $Id: Environment.pm,v 1.69 2003/02/11 16:30:12 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -59,6 +59,7 @@ use vars qw($VERSION @EXPORT);
 	getObject
 	getAnonId
 	isAnon
+	isSubscriber
 	prepareUser
 	filter_params
 
@@ -860,6 +861,56 @@ sub isAnon {
 
 #========================================================================
 
+=head2 isSubscriber(USER)
+
+Tests to see if the user passed in is a subscriber.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item USER
+
+User data hashref from getUser() call.
+
+If you pass a UID instead of a USER, then the function will call getUser() for you.
+
+=back
+
+=item Return value
+
+Returns true if the USER is a subscriber, otherwise false.
+
+=back
+
+=cut
+
+sub isSubscriber {
+	my($suser) = @_;
+	my $constants = getCurrentStatic();
+
+	# assume is not subscriber by default
+	my $subscriber = 0;
+
+	if ($constants->{subscribe}) {
+		if (! ref $suser) {
+			my $slashdb = getCurrentDB();
+			$suser = $slashdb->getUser($suser);
+		}
+
+		$subscriber = 1 if $suser->{hits_paidfor} &&
+			$suser->{hits_bought} < $suser->{hits_paidfor};
+	} else {
+		$subscriber = 1;  # everyone is a subscriber if subscriptions are turned off
+	}
+
+	return $subscriber;
+}
+
+#========================================================================
+
 =head2 getAnonId([FORMKEY])
 
 Creates an anonymous ID that is used to set an AC cookie,
@@ -1620,12 +1671,15 @@ sub isDST {
 #========================================================================
 
 =head2 getObject(CLASS_NAME [, VIRTUAL_USER, ARGS])
+=head2 getObject(CLASS_NAME [, OPTIONS, ARGS])
 
 Returns a object in CLASS_NAME, using the new() constructor.  It passes
 VIRTUAL_USER and ARGS to it, and then caches it by CLASS_NAME and VIRTUAL_USER.
 If the object for that CLASS_NAME/VIRTUAL_USER exists the second time through,
 it will just return, without reinitializing (even if different ARGS are passed,
-so don't do that).
+so don't do that; see "nocache" option).
+
+In the second form, OPTIONS is a hashref.
 
 =over 4
 
@@ -1641,6 +1695,36 @@ A class name to use in creating a object.  Only [\w:] characters are allowed.
 
 Optional; will default to main Virtual User for site if not supplied.
 Passed as second argument to the new() constructor (after class name).
+
+=item OPTIONS
+
+Optional; several options are currently recognized.
+
+=over 4
+
+=item virtual_user
+
+String.  This is handled the same was as the first form, as though using
+VIRTUAL_USER, but allows for passing other options too.  Overrides "db_type"
+option.
+
+=item db_type
+
+String.  There are types of DBs (reader, writer, search, log), and there may be more
+than one DB of each type.  By passing a db_type instead of a virtual_user, you
+request any DB of that ype, instead of a specific DB.
+
+If neither "virtual_user" or "db_type" is passed, then the function will do a
+lookup of the class for what type of DB handle it wants, and then pick one
+DB at random that is of that type.
+
+=item nocache
+
+Boolean.  Get a new object, not a cached one.  Also won't cache the resulting object
+for future calls.
+
+=back
+
 
 =item ARGS
 
@@ -1667,21 +1751,27 @@ sub getObject {
 	# only if passed a hash, or no passed data at all
 	if (!$data || ref $data eq 'HASH') {
 		$data ||= {};
-		my $classes = getCurrentDB()->getClasses();
+		if ($data->{virtual_user}) {
+			$vuser = $data->{virtual_user};
 
-		# try passed db first, then db for given class
-		my $db_type  = $data->{db_type}  || $classes->{$class}{db_type};
-		my $fallback = $data->{fallback} || $classes->{$class}{fallback};
+		} else {
+			my $classes = getCurrentDB()->getClasses();
 
-		$vuser = ($db_type  && $user->{state}{dbs}{$db_type})
-		      || ($fallback && $user->{state}{dbs}{$fallback});
+			# try passed db first, then db for given class
+			my $db_type  = $data->{db_type}  || $classes->{$class}{db_type};
+			my $fallback = $data->{fallback} || $classes->{$class}{fallback};
 
-		return undef if $db_type && $fallback && !$vuser;
+			$vuser = ($db_type  && $user->{state}{dbs}{$db_type})
+			      || ($fallback && $user->{state}{dbs}{$fallback});
+
+			return undef if $db_type && $fallback && !$vuser;
+		}
 	}
 
 	# if plain string, use it as vuser
 	elsif (!ref $data) {
 		$vuser = $data;
+		$data ||= { virtual_user => $vuser };
 	}
 
 	# in the future, we may default to something else, but for now it is the writer
@@ -1695,7 +1785,7 @@ sub getObject {
 		$objects = $static_objects   ||= {};
 	}
 
-	if ($objects->{$class, $vuser}) {
+	if (!$data->{nocache} && $objects->{$class, $vuser}) {
 		# we've been here before, and it didn't work last time ...
 		# what, you think you can try it again and it will work
 		# magically this time?  you think you're better than me?
@@ -1718,10 +1808,13 @@ sub getObject {
 				"`perl -M$class -le '$class->new'` to see why.\n");
 		} else {
 			my $object = $class->new($vuser, @args);
-			return $objects->{$class, $vuser} = $object if $object;
+			if ($object) {
+				$objects->{$class, $vuser} = $object if !$data->{nocache};
+				return $object;
+			}
 		}
 
-		$objects->{$class, $vuser} = 'NA';
+		$objects->{$class, $vuser} = 'NA' if !$data->{nocache};
 		return undef;
 	}
 }
@@ -1995,4 +2088,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.68 2003/02/07 21:51:04 jamie Exp $
+$Id: Environment.pm,v 1.69 2003/02/11 16:30:12 pudge Exp $

@@ -17,8 +17,11 @@ __template__
 
 [%
 WHILE user.state.mt.curcol < user.state.mt.cols.max;
-	IF user.state.mt.cols.$user.state.mt.curcol < user.state.mt.currow;
+	nextcurcol = user.state.mt.curcol + 1;
+	IF user.state.mt.cols.$nextcurcol < user.state.mt.currow;
 		PROCESS maintable_td; "&nbsp;</TD>";
+	ELSE;
+		user.state.mt.curcol = nextcurcol;
 	END;
 END;
 user.state.mt.curcol = 0;
@@ -29,4 +32,4 @@ user.state.mt.curcol = 0;
 __seclev__
 10000
 __version__
-$Id: maintable_tr_end;misc;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: maintable_tr_end;misc;default,v 1.4 2004/04/08 00:36:16 jamiemccarthy Exp $

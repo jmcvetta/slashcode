@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.81 2002/06/13 17:37:56 pater Exp $
+# $Id: users.pl,v 1.82 2002/06/14 04:09:26 pater Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1138,7 +1138,7 @@ sub tildeEd {
 	for (sort { lc $b->[1] cmp lc $a->[1]} @$sections_description) {
 		my($bid, $title, $boldflag) = @$_;
 
-		push(@$order, $bid);
+		unshift(@$order, $bid);
 		$section_descref->{$bid}{checked} = ($exboxes =~ /'$bid'/) ?
 			' CHECKED' : '';
 		$section_descref->{$bid}{boldflag} = $boldflag > 0;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.17 2002/02/25 10:21:20 slashteam Exp $
+# $Id: Makefile,v 1.18 2002/02/25 22:50:31 cliff Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -103,12 +103,14 @@ install: slash plugins
 	# Create all necessary directories.
 	$(INSTALL) -d \
 		$(SLASH_PREFIX)/bin/ \
+		$(SLASH_PREFIX)/httpd/ \
+		$(SLASH_PREFIX)/themes/ \
+		$(SLASH_PREFIX)/plugins/ \
 		$(SLASH_PREFIX)/sbin \
 		$(SLASH_PREFIX)/sql/ \
 		$(SLASH_PREFIX)/sql/mysql/ \
 		$(SLASH_PREFIX)/sql/oracle/ \
-		$(SLASH_PREFIX)/sql/postgresql \
-		$(SLASH_PREFIX)/httpd/
+		$(SLASH_PREFIX)/sql/postgresql
 
 	# Quick hack to avoid the need for "cp -ruv" which breaks under FreeBSD
 	# is to just copy the directories now. We may end up copying over a file

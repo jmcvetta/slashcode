@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.45 2002/08/26 17:38:17 pudge Exp $
+# $Id: Environment.pm,v 1.46 2002/08/28 20:13:11 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1163,9 +1163,9 @@ sub prepareUser {
 		}
 	}
 
-	if ($user->{commentlimit} > $constants->{breaking} &&
-	    $user->{mode} ne 'archive')
-	{
+	if ($user->{commentlimit} > $constants->{breaking}
+		&& $user->{mode} ne 'archive'
+		&& $user->{mode} ne 'metamod') {
 		$user->{commentlimit} = int($constants->{breaking} / 2);
 		$user->{breaking} = 1;
 	} else {
@@ -1250,7 +1250,9 @@ Hashref of cleaned-up data.
 =cut
 
 {
-	my %multivalue = map {($_ => 1)} qw(section_multiple);
+	my %multivalue = map {($_ => 1)} qw(
+		section_multiple
+	);
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
@@ -1350,7 +1352,7 @@ sub filter_param {
 	if (exists $nums{$key}) {
 		$data = fixint($data);
 	} elsif (exists $alphas{$key}) {
-		$data =~ s|\W+||g;
+		$data =~ s|[^a-zA-Z0-9_]+||g;
 	} elsif (exists $special{$key}) {
 		$special{$key}->($data);
 	} else {
@@ -1698,4 +1700,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.45 2002/08/26 17:38:17 pudge Exp $
+$Id: Environment.pm,v 1.46 2002/08/28 20:13:11 jamie Exp $

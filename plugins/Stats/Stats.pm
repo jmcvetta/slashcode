@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.53 2002/07/29 22:17:30 brian Exp $
+# $Id: Stats.pm,v 1.54 2002/08/28 20:13:11 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -50,6 +50,20 @@ sub createStatDaily {
 	$insert->{section} ||= 'all';
 
 	$self->sqlInsert('stats_daily', $insert, { ignore => 1 });
+}
+
+########################################################
+sub updateStatDaily {
+	my($self, $day, $name, $update_clause, $options) = @_;
+
+	my $where = "day = " . $self->sqlQuote($day);
+	$where .= " AND name = " . $self->sqlQuote($name);
+	my $section = $options->{section} || 'all';
+	$where .= " AND section = " . $self->sqlQuote($section);
+
+	return $self->sqlUpdate('stats_daily', {
+		-value =>	$update_clause,
+	}, $where);
 }
 
 ########################################################
@@ -147,18 +161,12 @@ sub getRepeatMods {
 		"users AS usersorg,
 		 moderatorlog,
 		 users AS usersdest,
-		 users_info AS usersdesti
-		 LEFT JOIN users_param
-			ON usersorg.uid=users_param.uid
-			   AND users_param.name='rtbl'",
+		 users_info AS usersdesti",
 		"usersorg.uid=moderatorlog.uid
 		 AND usersorg.seclev < 100
 		 AND moderatorlog.cuid=usersdest.uid
 		 AND usersdest.uid=usersdesti.uid
-		 AND (
-			   users_param.value IS NULL
-			OR users_param.value = 0
-		 ) AND usersdest.uid != $ac_uid",
+		 AND usersdest.uid != $ac_uid",
 		"GROUP BY usersorg.uid, usersdest.uid, val
 		 HAVING c >= $min_count
 			AND latest >= DATE_SUB(NOW(), INTERVAL $within HOUR)

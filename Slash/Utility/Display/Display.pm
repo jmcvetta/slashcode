@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.18 2002/08/28 19:25:05 cliff Exp $
+# $Id: Display.pm,v 1.19 2002/08/28 20:13:11 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -121,6 +121,27 @@ sub createSelect {
 
 	if (ref $hashref eq 'ARRAY') {
 		$hashref = { map { ($_, $_) } @$hashref };
+	} else {
+		# If $hashref is a hash whose elements are also hashrefs, and
+		# they all have the field "name", then copy it into another
+		# hashref that pulls those "name" fields up one level.  Talk
+		# about wacky convenience features!
+		my @keys = keys %$hashref;
+		my $all_name = 1;
+		for my $key (@keys) {
+			if (!ref($hashref->{$key})
+				|| !ref($hashref->{$key}) eq 'HASH'
+				|| !defined($hashref->{$key}{name})) {
+				$all_name = 0;
+				last;
+			}
+		}
+		if ($all_name) {
+			$hashref = {
+				map { ($_, $hashref->{$_}{name}) }
+				keys %$hashref
+			};
+		}
 	}
 
 	return unless (ref $hashref eq 'HASH' && keys %$hashref);
@@ -1123,4 +1144,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.18 2002/08/28 19:25:05 cliff Exp $
+$Id: Display.pm,v 1.19 2002/08/28 20:13:11 jamie Exp $

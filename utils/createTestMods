@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMods,v 1.4 2002/04/17 20:27:13 pudge Exp $
+# $Id: createTestMods,v 1.5 2002/08/28 20:13:11 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Benchmark;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -142,11 +142,9 @@ my(%comments, %comment_authors);
 			};
 
 			my($modval, $reason, $active);
-			$reason = int(rand $#{$constants->{reasons}}) + 1;
-			$modval = ($reason > $constants->{badreasons}) ?
-				1 : -1;
-			$modval = -1 if $reason == 8;
-			$modval = 1 if $reason == 9;
+			my $reasons = $slashdb->getReasons();
+			$reason = (keys %$reasons)[rand(scalar(keys %$reasons)-1) + 1];
+			$modval = $reasons->{$reason}{val};
 			$slashdb->setModeratorLog(
 				$comment,
 				$uid,

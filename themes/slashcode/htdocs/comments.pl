@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.89 2002/08/13 12:22:03 pudge Exp $
+# $Id: comments.pl,v 1.90 2002/08/28 20:13:11 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1306,16 +1306,11 @@ sub moderateCid {
 		}
 	}
 
-	my $val = "-1";
-	if ($reason == 9) { # Overrated
-		$val = "-1";
-	} elsif ($reason == 10) { # Underrated
-		$val = "+1";
-	} elsif ($reason > $constants->{badreasons}) {
-		$val = "+1";
-	}
 	# Add moderation value to display arguments.
-	$dispArgs->{'val'} = $val;
+	my $reasons = $slashdb->getReasons();
+	my $val = $reasons->{$reason}{val};
+	$val = "+1" if $val == 1;
+	$dispArgs->{val} = $val;
 
 	my $scorecheck = $comment->{points} + $val;
 	my $active = 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.24 2002/05/29 21:37:54 pudge Exp $
+# $Id: Utility.pm,v 1.25 2002/08/28 20:13:11 jamie Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -428,7 +428,7 @@ sub sqlSelectAll {
 # returns:
 # hash ref of all records
 sub sqlSelectAllHashref {
-	my($self, $id , $select, $from, $where, $other) = @_;
+	my($self, $id, $select, $from, $where, $other) = @_;
 	# Yes, if $id is not in $select things will be bad
 	
 	# Allow $id to be an arrayref to collect multiple rows of results
@@ -488,17 +488,48 @@ sub sqlSelectAllHashrefArray {
 
 ########################################################
 sub sqlUpdate {
-	my($self, $table, $data, $where) = @_;
+	my($self, $table, $data, $where, $options) = @_;
 	my $sql = "UPDATE $table SET ";
-	for (keys %$data) {
-		if (/^-/) {
-			s/^-//;
-			$sql .= "\n  $_ = $data->{-$_},";
+
+	my @data_fields = ( );
+	my $order_hr = { };
+	if ($options && (!ref($options) || ref($options) ne 'ARRAY')) {
+#use Data::Dumper; print STDERR "sqlUpdate A: " . Dumper([ $table, $data, $where, $options ]);
+	}
+	if ($options && $options->{assn_order}) {
+		# Reorder the data fields into the order given.  Any
+		# fields not specified in the assn_order arrayref
+		# go last.  Note that the "-" prefix for each field
+		# must be included in assn_order keys.
+		# <http://www.mysql.com/documentation/mysql/bychapter/
+		# manual_Reference.html#UPDATE>
+		# "UPDATE assignments are evaluated from left to right."
+		my $order_ar = $options->{assn_order};
+		for my $i (0..$#$order_ar) {
+			$order_hr->{$order_ar->[$i]} = $i + 1;
+		}
+#print STDERR "sqlUpdate B: order_ar " . Dumper($order_ar) . "order_hr " . Dumper($order_hr);
+	}
+	# In any case, the field names are sorted.  This is new
+	# behavior as of August 2002.  It should not break anything,
+	# because nothing previous should have relied on perl's
+	# natural hash key sort order!
+	@data_fields = sort {
+		($order_hr->{$a} || 9999) <=> ($order_hr->{$b} || 9999)
+		||
+		$a cmp $b
+	} keys %$data;
+#if ($options) { print STDERR "sqlUpdate C: data_fields '@data_fields'\n" }
+
+	for my $field (@data_fields) {
+		if ($field =~ /^-/) {
+			$field =~ s/^-//;
+			$sql .= "\n  $field = $data->{-$field},";
 		} else {
-			$sql .= "\n $_ = " . $self->sqlQuote($data->{$_}) . ',';
+			$sql .= "\n $field = " . $self->sqlQuote($data->{$field}) . ',';
 		}
 	}
-	chop $sql;
+	chop $sql; # lose the terminal ","
 	$sql .= "\nWHERE $where\n";
 	my $rows = $self->sqlDo($sql);
 	# print STDERR "SQL: $sql\n";

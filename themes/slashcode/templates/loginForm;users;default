@@ -71,7 +71,11 @@ __template__
 	<TR>
 		<TD><B>Password:</B> (6-20 characters long)</TD>
 		<TD><INPUT TYPE="PASSWORD" NAME="upasswd" SIZE="20" MAXLENGTH="20">
-		<INPUT TYPE="SUBMIT" NAME="userlogin" VALUE="Log in"></TD>
+		</TD>
+	</TR>
+	<TR>
+		<TD><INPUT TYPE="CHECKBOX" NAME="login_temp" VALUE="yes"> Public Terminal</TD>
+		<TD><INPUT TYPE="SUBMIT" NAME="userlogin" VALUE="Log in"></TD>
 	</TR>
 	[% IF msg1 %]
 	<TR>
@@ -98,4 +102,4 @@ if you don't have one already.<BR>
 __seclev__
 500
 __version__
-$Id: loginForm;users;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: loginForm;users;default,v 1.7 2003/12/31 01:06:26 pudge Exp $

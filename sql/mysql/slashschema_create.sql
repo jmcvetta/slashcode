@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.133 2003/12/30 00:09:20 pudge Exp $
+# $Id: slashschema_create.sql,v 1.134 2003/12/31 01:06:26 pudge Exp $
 #
 
 #
@@ -1111,6 +1111,7 @@ CREATE TABLE users_info (
 	downmods mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	stirred mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	session_login tinyint DEFAULT '0' NOT NULL,
+	cookie_location enum("classbid","subnetid","ipid","none") DEFAULT "classbid" NOT NULL,
 	registered tinyint UNSIGNED DEFAULT '1' NOT NULL,
 	reg_id char(32) DEFAULT '' NOT NULL,
 	expiry_days smallint UNSIGNED DEFAULT '1' NOT NULL,
@@ -1130,11 +1131,13 @@ CREATE TABLE users_logtokens (
 	lid MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	uid MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
 	locationid CHAR(32) NOT NULL DEFAULT '',
+	temp TINYINT NOT NULL DEFAULT '0',
 	expires DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00',
 	value CHAR(22) NOT NULL DEFAULT '',
 	PRIMARY KEY (lid),
-	UNIQUE uid_locationid (uid, locationid),
-	KEY (locationid)
+	UNIQUE uid_locationid (uid, locationid, temp),
+	KEY (locationid),
+	KEY (temp)
 ) TYPE=InnoDB;
 
 #

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.98 2003/12/29 22:37:56 jamie Exp $
+# $Id: User.pm,v 1.99 2003/12/31 01:06:26 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -124,10 +124,19 @@ sub handler {
 	my $uid;
 	my $op = $form->{op} || '';
 
+	# we know this is not the current user yet, but we only
+	# want to save one bit of information there, and retrieve it
+	# later -- pudge
+	my $user_temp = getCurrentUser();
+	$user_temp->{state}{login_temp} = 'no';
+
 	if ((($op eq 'userlogin' || $form->{rlogin}) && length($form->{upasswd}) > 1)
 		||
 	     ($op eq 'userlogin' && $form->{logtoken})
 	) {
+		# this is only allowed to be set by user on login attempt
+		$user_temp->{state}{login_temp} = 'yes' if $form->{login_temp} eq 'yes';
+
 		my $tmpuid = $slashdb->getUserUID($form->{unickname});
 		my $passwd = $form->{upasswd};
 		my $logtoken;
@@ -206,7 +215,7 @@ sub handler {
 		my $cookvalue;
 		if ($tmpuid && $tmpuid > 0 && $tmpuid != $constants->{anonymous_coward_uid}) {
 			($uid, $cookvalue) =
-				$slashdb->getUserAuthenticate($tmpuid, $value);
+				$slashdb->getUserAuthenticate($tmpuid, $value, 0, 1);
 		}
 
 		if (!$logtoken && $uid && $op ne 'userclose') {
@@ -223,6 +232,10 @@ sub handler {
 	 			setCookie('user', bakeUserCookie($uid, $cookvalue),
 	 				$slashdb->getUser($uid, 'session_login')
 	 			);
+
+			# always set cookie for "temp" logins, on every request
+	 		} elsif ($user_temp->{state}{login_temp} eq 'yes') {
+ 				setCookie('user', bakeUserCookie($uid, $cookvalue), 2);
 	 		}
 		} elsif (!$logtoken) {
 			if ($op eq 'userclose') {
@@ -246,6 +259,9 @@ sub handler {
 		delete $cookies->{user};
 		setCookie('user', '');
 	}
+
+	# can't use after login
+	delete $form->{login_temp};
 
 	# This has happened to me a couple of times.
 	delete $cookies->{user} if $cookies->{user} && !$cookies->{user}->value;
@@ -305,6 +321,7 @@ sub handler {
 	if ($uri =~ /\.pl$/ || $uri =~ /\.tmpl$/) {
 		$user->{state}{_dynamic_page} = 1;
 	}
+	$user->{state}{login_temp} = $user_temp->{state}{login_temp};
 	$user->{state}{ssl} = $is_ssl;
 	createCurrentUser($user);
 	createCurrentForm($form);

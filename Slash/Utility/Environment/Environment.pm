@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.106 2003/12/30 00:07:34 pudge Exp $
+# $Id: Environment.pm,v 1.107 2003/12/31 01:06:26 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1111,6 +1111,9 @@ sub setCookie {
 	# lines, and uncomment the one right above "bake"
 	if (!$val) {
 		$cookie->expires('-1y');  # delete
+	} elsif ($session && $session > 1) {
+		my $minutes = $constants->{login_temp_minutes};
+		$cookie->expires("+${minutes}m");
 	} elsif (!$session) {
 		$cookie->expires('+1y');
 	}
@@ -1349,7 +1352,10 @@ sub prepareUser {
 #========================================================================
 
 sub get_ipids {
-	my($hostip, $no_md5) = @_;
+	my($hostip, $no_md5, $locationid) = @_;
+
+	$locationid = 'classbid' if @_ > 2 && !$locationid;
+
 	if (!$hostip && $ENV{GATEWAY_INTERFACE}) {
 		my $r = Apache->request;
 		$hostip = $r->connection->remote_ip;
@@ -1362,6 +1368,14 @@ sub get_ipids {
 	$subnetid = $no_md5 ? $subnetid : md5_hex($subnetid);
 	(my $classbid = $hostip) =~ s/(\d+\.\d+)\.\d+\.\d+/$1\.0\.0/;
 	$classbid = $no_md5 ? $classbid : md5_hex($classbid);
+
+	if ($locationid) {
+		return $locationid eq 'classbid' ? $classbid
+		     : $locationid eq 'subnetid' ? $subnetid
+		     : $locationid eq 'ipid'     ? $ipid
+		     : '';
+	}
+
 	return($ipid, $subnetid, $classbid);
 }
 
@@ -2265,4 +2279,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.106 2003/12/30 00:07:34 pudge Exp $
+$Id: Environment.pm,v 1.107 2003/12/31 01:06:26 pudge Exp $

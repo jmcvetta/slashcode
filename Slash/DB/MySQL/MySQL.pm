@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.54 2002/01/14 22:55:50 brian Exp $
+# $Id: MySQL.pm,v 1.55 2002/01/17 21:07:48 patg Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1603,6 +1603,7 @@ sub saveBlock {
 			title		=> $form->{title},
 			url		=> $form->{url},
 			rdf		=> $form->{rdf},
+			rss_template	=> $form->{rss_template},
 			section		=> $form->{section},
 			retrieve	=> $form->{retrieve},
 			portal		=> $form->{portal},
@@ -1620,6 +1621,7 @@ sub saveBlock {
 			title		=> $form->{title},
 			url		=> $form->{url},
 			rdf		=> $form->{rdf},
+			rss_template	=> $form->{rss_template},
 			section		=> $form->{section},
 			retrieve	=> $form->{retrieve},
 			portal		=> $form->{portal},

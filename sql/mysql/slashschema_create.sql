@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.14 2002/01/07 20:27:48 jamie Exp $
+# $Id: slashschema_create.sql,v 1.15 2002/01/17 21:07:48 patg Exp $
 #
 
 #
@@ -113,6 +113,8 @@ CREATE TABLE blocks (
 	rdf varchar(255),
 	retrieve tinyint NOT NULL DEFAULT '0',
 	last_update timestamp,
+	rss_template varchar(30),
+	FOREIGN KEY (rss_template) REFERENCES templates(name),
 	PRIMARY KEY (bid),
 	KEY type (type),
 	KEY section (section)

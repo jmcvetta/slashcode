@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.27 2002/01/10 23:14:08 jamie Exp $
+# $Id: admin.pl,v 1.28 2002/01/17 21:07:48 patg Exp $
 
 use strict;
 use Image::Size;
@@ -452,6 +452,13 @@ sub blockEdit {
 		$blockref = $slashdb->getBlock($bid, '', 1);
 	}
 	my $sectionbid = $blockref->{section};
+	my $rss_templates = $slashdb->getTemplateList('','portald');
+	my $rss_ref = { map { ($_, $_) } values %{$rss_templates} };
+
+	$blockref->{rss_template} ||= $constants->{default_rss_template};
+	my $rss_select = createSelect('rss_template', $rss_ref, $blockref->{rss_template}, 1);	
+	my $template_ref = $slashdb->getTemplateByName($blockref->{rss_template}, [ 'template' ], 1 , 'portald', 'default');
+	my $rss_template_code = $template_ref->{template}; 
 
 	if ($form->{blockdelete} || $form->{blockdelete1} || $form->{blockdelete2}) {
 		$blockdelete_flag = 1;
@@ -496,6 +503,8 @@ sub blockEdit {
 		retrieve_checked	=> $retrieve_checked,
 		blocktype_select	=> $blocktype_select,
 		sectionbid		=> $sectionbid,
+		rss_select		=> $rss_select,
+		rss_template_code	=> $rss_template_code,
 	});
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.14 2003/01/23 22:01:02 pudge Exp $
+# $Id: messages.pl,v 1.15 2003/02/11 16:32:31 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -235,6 +235,8 @@ sub save_prefs {
 	for my $code (keys %$messagecodes) {
 		my $coderef = $messages->getMessageCode($code);
 		if ($user->{seclev} < $coderef->{seclev} || !exists($form->{"deliverymodes_$code"})) {
+			$params{$code} = MSG_MODE_NONE;
+		} elsif (!$user->{is_subscriber} && $coderef->{subscribe}) {
 			$params{$code} = MSG_MODE_NONE;
 		} else {
 			$params{$code} = fixint($form->{"deliverymodes_$code"});

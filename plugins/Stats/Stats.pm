@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.154 2005/01/04 17:42:42 tvroom Exp $
+# $Id: Stats.pm,v 1.155 2005/01/05 19:30:07 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,10 +22,8 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.155 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
-# On a side note, I am not sure if I liked the way I named the methods either.
-# -Brian
 sub new {
 	my($class, $user, $options) = @_;
 	my $self = {};
@@ -75,6 +73,9 @@ sub new {
 		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX skid (skid)");
 		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX op_uid_skid (op, uid, skid)");
 		$self->sqlDo("ALTER TABLE accesslog_temp_errors ADD INDEX status_op_skid (status, op, skid)");
+		# It might be worth adding an index on referer(4) too.  We use it
+		# only twice, though.  Probably take more time to index than we'd
+		# save in the queries.
 
 		return undef unless $self->_do_insert_select(
 			"accesslog_temp",
@@ -940,7 +941,7 @@ sub getPageSummaryStats {
 	my @where;
 	push @where, "op IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{ops}}) . ")" if ref $options->{ops} eq "ARRAY";
 	my $where_clause = join ' AND ', @where;
-	$self->sqlSelectAllHashref("op", "op, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where_clause, "GROUP BY op");
+	$self->sqlSelectAllHashref("op", "op, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) AS pages, SUM(bytes) AS bytes", "accesslog_temp", $where_clause, "GROUP BY op");
 
 }
 ########################################################
@@ -950,7 +951,7 @@ sub getSectionPageSummaryStats {
 	push @where, "op IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{ops}}) . ")" if ref $options->{ops} eq "ARRAY";
 	push @where, "skid IN (" . join(',', map { $self->sqlQuote($_)} @{$options->{skids}}) . ")" if ref $options->{skids} eq "ARRAY";
 	my $where_clause = join ' AND ', @where;
-	$self->sqlSelectAllHashref(["skid","op"], "op, skid, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where_clause, "GROUP BY skid, op");
+	$self->sqlSelectAllHashref(["skid","op"], "op, skid, COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids, COUNT(*) AS pages, SUM(bytes) AS bytes", "accesslog_temp", $where_clause, "GROUP BY skid, op");
 }
 
 ########################################################
@@ -1455,7 +1456,7 @@ sub getTopReferers {
 	return $self->sqlSelectAll(
 		"DISTINCT SUBSTRING_INDEX(referer,'/',3) AS referer, COUNT(id) AS c",
 		"accesslog_temp",
-		"referer IS NOT NULL AND LENGTH(referer) > 0 AND referer REGEXP '^http' $where ",
+		"referer IS NOT NULL AND LENGTH(referer) > 0 AND referer LIKE 'http%' $where ",
 		"GROUP BY referer ORDER BY c DESC, referer LIMIT $count"
 	);
 }
@@ -1832,4 +1833,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.154 2005/01/04 17:42:42 tvroom Exp $
+$Id: Stats.pm,v 1.155 2005/01/05 19:30:07 jamiemccarthy Exp $

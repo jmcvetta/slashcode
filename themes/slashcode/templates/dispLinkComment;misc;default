@@ -25,6 +25,14 @@ __template__
 			subject_only => 1,
 		}) %][% END %]
 
+		[% IF user.mode = 'parents' %]
+			[% Slash.linkComment({
+			sid	=> sid,
+			pid	=> cid,
+			subject => 'View this thread',
+			subject_only => 1,
+		}) %][% END %]
+
 		[% IF !(user.state.discussion_archived) && (original_pid || can_mod || user.is_admin) %] | [% END %]
 
 		[% IF original_pid %][% Slash.linkComment({
@@ -56,4 +64,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.12 2003/03/06 03:54:59 jamie Exp $
+$Id: dispLinkComment;misc;default,v 1.13 2003/11/10 17:27:52 pater Exp $

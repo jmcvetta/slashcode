@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.152 2003/09/15 23:52:42 pudge Exp $
+# $Id: comments.pl,v 1.153 2003/11/10 17:27:52 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -358,6 +358,8 @@ sub displayComments {
 		printComments($discussion, $form->{cid}, $form->{cid});
 	} elsif ($form->{sid}) {
 		printComments($discussion, $form->{pid});
+	} elsif ($constants->{ubb_like_forums}) {
+		commentIndexUserCreated(@_);
 	} else {
 		commentIndex(@_);
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.103 2002/11/14 03:45:25 jamie Exp $
+# $Id: comments.pl,v 1.104 2002/11/16 22:28:25 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1422,7 +1422,7 @@ sub moderateCid {
 	}
 
 	# Write the proper records to the moderatorlog.
-	$slashdb->setModeratorLog($comment, $user->{uid}, $val, $reason, $active,
+	$slashdb->createModeratorLog($comment, $user, $val, $reason, $active,
 		$pointsneeded);
 
 	if ($active) {

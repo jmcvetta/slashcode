@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.126 2002/11/01 02:04:22 jamie Exp $
+# $Id: users.pl,v 1.127 2002/11/16 22:28:25 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -714,20 +714,22 @@ sub showComments {
 	my $commentstruct = [];
 	my($uid, $nickname);
 
+	my $user_edit;
+	if ($form->{uid} || $form->{nick}) {
+		$uid = $form->{uid} || $slashdb->getUserUID($form->{nick});
+		$user_edit = $slashdb->getUser($uid);
+	} else {
+		$uid = $user->{uid};
+		$user_edit = $user;
+	}
+	$nickname = $user_edit->{nickname};
+
 	print createMenu("users", {
 		style =>	'tabbed',
 		justify =>	'right',
 		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		tab_selected =>	$user_edit->{uid} == $user->{uid} ? 'me' : 'otheruser',
 	});
-
-	if ($form->{uid} or $form->{nick}) {
-		$uid		= $form->{uid} || $slashdb->getUserUID($form->{nick});
-		$nickname	= $slashdb->getUser($uid, 'nickname');
-	} else {
-		$nickname	= $user->{nickname};
-		$uid		= $user->{uid};
-	}
 
 	my $min_comment = $form->{min_comment} || 0;
 	$min_comment = 0 unless $user->{is_admin};
@@ -739,7 +741,7 @@ sub showComments {
 	) if $commentcount;
 
 	for (@$comments) {
-		my($pid, $sid, $cid, $subj, $cdate, $pts, $uid) = @$_;
+		my($pid, $sid, $cid, $subj, $cdate, $pts, $uid, $reason) = @$_;
 		$uid ||= 0;
 
 		my $type;
@@ -771,19 +773,21 @@ sub showComments {
 			cdate		=> $cdate,
 			pts		=> $pts,
 			uid		=> $uid,
+			reason		=> $reason,
 			replies		=> $replies,
 		};
 	}
 
 	slashDisplay('userCom', {
 		nick			=> $nickname,
-		uid			=> $uid,
+		useredit		=> $user_edit,
 		nickmatch_flag		=> ($user->{uid} == $uid ? 1 : 0),
-		points			=> $slashdb->getUser($uid, 'points'),
-		lastgranted		=> $slashdb->getUser($uid, 'lastgranted'),
 		commentstruct		=> $commentstruct || [],
 		commentcount		=> $commentcount,
 		min_comment		=> $min_comment,
+		reasons			=> $slashdb->getReasons(),
+		karma_flag		=> 0,
+		admin_flag		=> $user->{is_admin},
 	});
 }
 
@@ -986,7 +990,7 @@ sub showInfo {
 	}
 
 	for (@$comments) {
-		my($pid, $sid, $cid, $subj, $cdate, $pts, $uid) = @$_;
+		my($pid, $sid, $cid, $subj, $cdate, $pts, $uid, $reason) = @$_;
 		$uid ||= 0;
 
 		my $type;
@@ -1017,6 +1021,7 @@ sub showInfo {
 			subj		=> $subj,
 			cdate		=> $cdate,
 			pts		=> $pts,
+			reason		=> $reason,
 			uid		=> $uid,
 			replies		=> $replies,
 		};
@@ -1096,6 +1101,7 @@ sub showInfo {
 			admin_flag 		=> $admin_flag,
 			stories 		=> $stories,
 			storycount 		=> $storycount,
+			reasons			=> $slashdb->getReasons(),
 		});
 	}
 

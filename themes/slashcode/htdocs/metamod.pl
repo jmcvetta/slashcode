@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.22 2002/09/04 02:30:58 jamie Exp $
+# $Id: metamod.pl,v 1.23 2002/11/16 22:28:25 jamie Exp $
 
 use strict;
 use Slash;
@@ -61,11 +61,11 @@ sub metaModerate {
 		$m2s{$mmid}{is_fair} = ($form->{$key} eq '+') ? 1 : 0;
 	}
 
-	# The setMetaMod() method does all the heavy lifting here.
+	# The createMetaMod() method does all the heavy lifting here.
 	# Re m2_multicount:  if this var is set, then our vote for
 	# reason r on cid c applies potentially to *all* mods of
 	# reason r on cid c.
-	$slashdb->setMetaMod($user, \%m2s, $constants->{m2_multicount});
+	$slashdb->createMetaMod($user, \%m2s, $constants->{m2_multicount});
 
 	print getData('thanks');
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.494 2004/01/27 18:37:29 tvroom Exp $
+# $Id: MySQL.pm,v 1.495 2004/01/27 20:34:57 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.494 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.495 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6772,7 +6772,7 @@ sub getStory {
 	# just set the value to expire at a particular time because (1) that
 	# would involve converting the story's timestamp to unix epoch, and
 	# (2) we can't expire individual stories, we'd have to expire the
-	# whole story cache, and that would not be good for performance.	
+	# whole story cache, and that would not be good for performance.
 	if ($self->{$table_cache}{$id}{is_future}) {
 		delete $self->{$table_cache}{$id};
 	}

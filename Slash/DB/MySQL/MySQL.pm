@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.411 2003/06/05 15:49:09 jamie Exp $
+# $Id: MySQL.pm,v 1.412 2003/06/05 16:17:46 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.411 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.412 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5821,11 +5821,10 @@ sub getStory {
 		# but why do a join if it's not needed?
 		my($append, $answer, $db_id);
 		$db_id = $self->sqlQuote($id);
-#		my($column_clause) = $self->_stories_time_clauses({
-#			try_future => 1, must_be_subscriber => 0
-#		});
-#		$answer = $self->sqlSelectHashref("*, $column_clause", 'stories', "sid=$db_id");
-		$answer = $self->sqlSelectHashref("*", 'stories', "sid=$db_id");
+		my($column_clause) = $self->_stories_time_clauses({
+			try_future => 1, must_be_subscriber => 0
+		});
+		$answer = $self->sqlSelectHashref("*, $column_clause", 'stories', "sid=$db_id");
 		$append = $self->sqlSelectHashref('*', 'story_text', "sid=$db_id");
 		for my $key (keys %$append) {
 			$answer->{$key} = $append->{$key};
@@ -5871,9 +5870,9 @@ sub getStory {
 	# would involve converting the story's timestamp to unix epoch, and
 	# (2) we can't expire individual stories, we'd have to expire the
 	# whole story cache, and that would not be good for performance.
-#	if ($self->{$table_cache}{$id}{is_future}) {
-#		delete $self->{$table_cache}{$id};
-#	}
+	if ($self->{$table_cache}{$id}{is_future}) {
+		delete $self->{$table_cache}{$id};
+	}
 	# Now return what we need to return.
 	return $retval;
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.533 2004/03/16 17:33:39 tvroom Exp $
+# $Id: MySQL.pm,v 1.534 2004/03/23 15:46:41 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.533 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.534 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5625,7 +5625,7 @@ sub getComments {
 
 #######################################################
 sub getSubmissionsByNetID {
-	my($self, $id, $field, $limit) = @_;
+	my($self, $id, $field, $limit, $options) = @_;
 
 	$limit = "LIMIT $limit" if $limit;
 	my $where;
@@ -5637,24 +5637,54 @@ sub getSubmissionsByNetID {
 	} else {
 		$where = "ipid='$id' OR subnetid='$id'";
 	}
-
-	my $answer = $self->sqlSelectAllHashrefArray(
+	$where = "($where) AND time > DATE_SUB(NOW(), INTERVAL $options->{limit_days} DAY)"
+		if $options->{limit_days};
+	$where .= " AND del = 2" if $options->{accepted_only};
+	
+	my $subs = $self->sqlSelectAllHashrefArray(
 		'uid,name,subid,ipid,subj,time,del',
 		'submissions', $where,
 		"ORDER BY time DESC $limit");
 
-	return $answer;
+	for my $sub (@$subs) {
+		$sub->{sid} = $self->sqlSelect(
+			'value',
+			'submission_param',
+			"subid=".$self->sqlQuote($sub->{subid})." AND name='sid'") if $sub->{del} == 2;
+		if ($sub->{sid}) {
+			my $story_ref = $self->sqlSelectHashref("title,displaystatus,time","stories","sid=".$self->sqlQuote($sub->{sid}));
+			@$sub{'story_title','story_time','displaystatus'} = @$story_ref{'title','time','displaystatus'} if $story_ref;
+		}
+	}
+
+	return $subs;
 }
 
 ########################################################
 sub getSubmissionsByUID {
-	my($self, $id, $limit) = @_;
-	$limit=" LIMIT $limit " if $limit;
-	my $answer = $self->sqlSelectAllHashrefArray(
+	my($self, $id, $limit, $options) = @_;
+	$limit = " LIMIT $limit " if $limit;
+	my $where = "uid=$id";
+	$where = "($where) AND time > DATE_SUB(NOW(), INTERVAL $options->{limit_days} DAY)"
+		if $options->{limit_days};
+	$where .= " AND del = 2" if $options->{accepted_only};
+
+	my $subs = $self->sqlSelectAllHashrefArray(
 		'uid,name,subid,ipid,subj,time,del',
-		'submissions', "uid=$id",
+		'submissions', $where,
 		"ORDER BY time DESC $limit");
-	return $answer;
+	
+	for my $sub (@$subs) {
+		$sub->{sid} = $self->sqlSelect(
+			'value',
+			'submission_param', 
+			"subid=" . $self->sqlQuote($sub->{subid}) . " AND name='sid'") if $sub->{del} == 2;
+		if ($sub->{sid}) {
+			my $story_ref = $self->sqlSelectHashref("title,displaystatus,time","stories","sid=".$self->sqlQuote($sub->{sid}));
+			@$sub{'story_title','story_time','displaystatus'} = @$story_ref{'title','time','displaystatus'} if $story_ref;
+		}
+	}
+	return $subs;
 }
 
 ########################################################

@@ -68,9 +68,12 @@ __template__
 	[%- END -%]
 <A HREF="[% cc.1.0 | strip_attribute %]"[% IF cc.1.2 %] TITLE="[% cc.1.2 | strip_attribute %]"[% END %]>[% cc.1.1 | strip_html %]</A></B> comment[% cc.3 != 1 ? 's' : '' %]
 
+[% CASE 'edit' %]
+	Edit
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.20 2004/04/06 19:38:46 jamiemccarthy Exp $
+$Id: data;index;default,v 1.21 2004/04/20 19:25:14 pudge Exp $

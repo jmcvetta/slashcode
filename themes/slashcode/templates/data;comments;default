@@ -73,9 +73,18 @@ __template__
 [% CASE 'metamods_performed' %]
 	<P>[% num %] MetaModeration(s) Completed.
 
+[% CASE 'moderating' %]
+	Moderating...
+
+[% CASE 'metamoderating' %]
+	MetaModerating...
+
+[% CASE 'deletecid' %]
+	Delete form.cid
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;comments;default,v 1.19 2004/03/02 19:36:40 pudge Exp $
+$Id: data;comments;default,v 1.20 2004/04/20 19:25:14 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.39 2002/06/11 16:15:05 jamie Exp $
+# $Id: MySQL.pm,v 1.40 2002/06/13 18:06:58 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -157,8 +157,9 @@ sub getArchiveList {
 	# to disk. This is accomplished by the archive.pl task.
 	my $returnable = $self->sqlSelectAll(
 		'sid, title, section', 'stories',
-		"to_days(now()) - to_days(time) > $days_to_archive AND
-		(writestatus='ok' OR writestatus='dirty')",
+		"to_days(now()) - to_days(time) > $days_to_archive
+		AND (writestatus='ok' OR writestatus='dirty')
+		AND displaystatus > -1",
 		"ORDER BY time $dir LIMIT $limit"
 	);
 
@@ -889,19 +890,17 @@ sub getStoriesWithFlag {
 	$sqlorder = "ORDER BY time $order ";
 	$sqlorder .= "LIMIT $limit" if $limit;
 
-	# if writestatus is delete, we want ALL the candidates,
-	# not just the ones that are displaying -- pudge
-	my $displaywhere = $writestatus eq 'delete' ? ''
-		: 'AND displaystatus > -1';
-
 	# Currently only used by two tasks and we do NOT want stories
 	# that are marked as "Never Display". If this changes, 
 	# another method will be required. If such is created, I would
 	# suggest getAllStoriesWithFlag() as the method name. We ALSO
 	# don't want to mess with stories that haven't been displayed
-	# yet!
-	#
-	# - Cliff 14-Oct-2001
+	# yet!  - Cliff 14-Oct-2001
+	# But if writestatus is delete, we want ALL the candidates,
+	# not just the ones that are displaying -- pudge
+	my $displaywhere = $writestatus eq 'delete' ? ''
+		: 'AND displaystatus > -1';
+
 	my $returnable = $self->sqlSelectAll(
 		"sid,title,section",
 		"stories", 

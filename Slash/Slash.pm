@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.108 2003/01/31 03:13:11 jamie Exp $
+# $Id: Slash.pm,v 1.109 2003/02/05 18:38:11 jamie Exp $
 
 package Slash;
 
@@ -208,12 +208,9 @@ sub _get_points {
 	}
 
 	# If you don't trust new users
-	if ($user->{new_user_bonus} && $user->{new_user_percent}) {
-		my $perc = 100*$C->{uid}/$max_uid;
-		if ($perc > $user->{new_user_percent}) {
-			$hr->{new_user_bonus} =
-				$user->{new_user_bonus};
-		}
+	if ($user->{new_user_bonus} && $user->{new_user_percent}
+		&& 100 - 100*$C->{uid}/$max_uid < $user->{new_user_percent}) {
+		$hr->{new_user_bonus} = $user->{new_user_bonus};
 	}
 
 	# Adjust reasons. Do we need a reason?

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.209 2004/04/07 00:30:15 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.210 2004/04/12 18:51:30 tvroom Exp $
 
 package Slash;
 
@@ -41,6 +41,7 @@ use vars qw($VERSION @EXPORT);
 $VERSION   	= '2.003000';  # v2.3.0
 # note: those last two lines of functions will be moved elsewhere
 @EXPORT		= qw(
+	constrain_score
 	getData
 	gensym
 
@@ -206,11 +207,20 @@ sub selectComments {
 	return($comments, $count);
 }
 
+sub constrain_score {
+	my ($score) = @_;
+	my $constants = getCurrentStatic();
+	my ($min, $max) = ($constants->{comment_minscore}, $constants->{comment_maxscore});
+	$score = $min if $score < $min;
+	$score = $max if $score > $max;
+	return $score;
+}
+
 sub _get_points {
 	my($C, $user, $min, $max, $max_uid, $reasons) = @_;
 	my $hr = {
-		score_start => $C->{pointsorig},
-		moderations => $C->{points} - $C->{pointsorig},
+		score_start => constrain_score($C->{pointsorig} + $C->{tweak_orig}),
+		moderations => constrain_score($C->{points} + $C->{tweak}) - constrain_score($C->{pointsorig} + $C->{tweak_orig}),
 	};
 	my $points = $hr->{score_start};
 
@@ -860,7 +870,7 @@ sub moderatorCommentLog {
 				  $constants->{comment_maxscore});
 		my $max_uid = $slashdb->countUsers({ max => 1 });
 
-		my $select = "cid, uid, karma_bonus, reason, points, pointsorig";
+		my $select = "cid, uid, karma_bonus, reason, points, pointsorig, tweak, tweak_orig";
 		if ($constants->{plugin}{Subscribe} && $constants->{subscribe}) {
 			$select .= ", subscriber_bonus";
 		}

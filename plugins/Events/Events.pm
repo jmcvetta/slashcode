@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.1 2002/02/13 00:34:15 brian Exp $
+# $Id: Events.pm,v 1.2 2002/02/23 05:14:14 patg Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -77,14 +77,40 @@ sub deleteDates {
 sub getEventsByDay {
 	my ($self, $date, $limit) = @_;
 
+	my $user = getCurrentUser();
+	my $section;
+	$section ||= $user->{section};
 	my $where = "((to_days('$date') >= to_days(begin)) AND (to_days('$date') <= to_days(end)))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
-	$where .= " AND BeginDate < now "
-		if $limit;
+	$where .= " AND stories.section = '$section'" if $section;
 	my $order = "ORDER BY tid";
 	$order .= " LIMIT $limit "
 		if $limit;
 	my $events = $self->sqlSelectAll(
 		"stories.sid,title,'',topics.tid,alttext",
+		"stories, event_dates, topics",
+		$where,
+		$order
+		);
+	
+	return $events;
+}
+
+sub getEvents {
+	my ($self, $date, $limit, $section, $topic)  = @_;
+
+	my $user = getCurrentUser();
+	$section ||= $user->{section};
+	my $where = "(to_days('$date') <= to_days(begin)) AND stories.sid = event_dates.sid";
+	$where .= " AND topics.tid = stories.tid";
+
+	$where .= " AND stories.tid = $topic" if $topic;
+	$where .= " AND stories.section = '$section'" if $section;
+
+	my $order = "ORDER BY tid";
+	$order .= " LIMIT $limit "
+		if $limit;
+	my $events = $self->sqlSelectAll(
+		"stories.sid,title,time,begin,end,section,topics.tid,alttext",
 		"stories, event_dates, topics",
 		$where,
 		$order

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.510 2004/02/12 19:28:42 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.511 2004/02/12 19:47:22 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.510 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.511 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6745,8 +6745,8 @@ sub getRecentComments {
 	my $start_cid = $max_cid - ($startat+($num*5-1));
 	my $end_cid = $max_cid - $startat;
 
-	my ($limit_clause, $where_extra);
-	if($sid) {
+	my($limit_clause, $where_extra);
+	if ($sid) {
 		$where_extra  = " AND comments.sid = ".$self->sqlQuote($sid);
 		$limit_clause = " LIMIT $startat, $num ";
 	} else {
@@ -8891,7 +8891,7 @@ sub sqlTableExists {
 	my($self, $table) = @_;
 	return unless $table;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $tab = $self->{_dbh}->selectrow_array(qq!SHOW TABLES LIKE "$table"!);
 
 	return $tab;
@@ -8902,7 +8902,7 @@ sub sqlSelectColumns {
 	my($self, $table) = @_;
 	return unless $table;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $rows = $self->{_dbh}->selectcol_arrayref("SHOW COLUMNS FROM $table");
 	return $rows;
 }

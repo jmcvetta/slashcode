@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.50 2004/02/12 19:28:43 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.51 2004/02/12 19:47:23 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -30,7 +30,7 @@ sub new {
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 
 	if ($self->can('init')) {
 		# init should return TRUE for success, else
@@ -132,7 +132,7 @@ sub list {
 	my $prime = $self->{'_prime'};
 
 	$val ||= $prime;
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start('SELECT', $table);
 	my $list = $self->{_dbh}->selectcol_arrayref("SELECT $val FROM $table");
 	$self->_querylog_finish($qlid);
@@ -203,7 +203,7 @@ sub exists {
 
 	my $sql = "SELECT count(*) FROM $table WHERE $where";
 	# we just need one stinkin value to see if this exists
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start('DELETE', $table);
 	my $count = $self->{_dbh}->selectrow_array($sql);
 	$self->_querylog_finish($qlid);
@@ -274,7 +274,7 @@ sub getLastInsertId {
 	# We're not going to go through sqlSelect() because that will
 	# involve querylog code;  we'll fetch this value here.
 	my $sql = "SELECT LAST_INSERT_ID()";
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $sth = $self->{_dbh}->prepare($sql);
 	if (!$sth->execute) {
 		$self->sqlErrorLog($sql);
@@ -428,7 +428,7 @@ sub sqlSelectMany {
 	$sql .= "  WHERE $where " if $where;
 	$sql .= "        $other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $sth = $self->{_dbh}->prepare($sql);
 	if ($sth->execute) {
 		return $sth;
@@ -450,7 +450,7 @@ sub sqlSelect {
 	$sql .= "WHERE $where " if $where;
 	$sql .= "$other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->{_dbh}->prepare($sql);
 	if (!$sth->execute) {
@@ -478,7 +478,7 @@ sub sqlSelectArrayRef {
 	$sql .= "WHERE $where " if $where;
 	$sql .= "$other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->{_dbh}->prepare($sql);
 	if (!$sth->execute) {
@@ -512,7 +512,7 @@ sub sqlCount {
 	$sql .= " WHERE $where" if $where;
 
 	# we just need one stinkin value - count
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $table);
 	my $count = $self->{_dbh}->selectrow_array($sql);
 	$self->_querylog_finish($qlid);
@@ -530,7 +530,7 @@ sub sqlSelectHashref {
 	$sql .= "WHERE $where " if $where;
 	$sql .= "$other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->{_dbh}->prepare($sql);
 
@@ -555,7 +555,7 @@ sub sqlSelectColArrayref {
 	$sql .= "WHERE $where " if $where;
 	$sql .= "$other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->{_dbh}->prepare($sql);
 
@@ -592,7 +592,7 @@ sub sqlSelectAll {
 	$sql .= "WHERE $where " if $where;
 	$sql .= "$other" if $other;
 
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $H = $self->{_dbh}->selectall_arrayref($sql);
@@ -781,7 +781,7 @@ sub sqlInsert {
 #################################################################
 sub sqlQuote {
 	my($self, $value) = @_;
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	if (ref($value) eq 'ARRAY') {
 		my(@array);
 		for (@$value) {
@@ -796,7 +796,7 @@ sub sqlQuote {
 #################################################################
 sub sqlDo {
 	my($self, $sql) = @_;
-	$self->sqlConnect() || return undef;
+	$self->sqlConnect() or return undef;
 	my $rows = $self->{_dbh}->do($sql);
 	unless ($rows) {
 		unless ($sql =~ /^INSERT\s+IGNORE\b/i) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.33 2002/06/23 23:51:53 jamie Exp $
+# $Id: Data.pm,v 1.34 2002/06/24 11:44:17 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -1048,7 +1048,8 @@ sub approveTag {
 
 		my $tree = HTML::TreeBuilder->new_from_content("<$wholetag>");
 		my($elem) = $tree->look_down(_tag => 'body')->content_list;
-		return "" unless $elem;
+		# look_down() can return a string for some kinds of bogus data
+		return "" unless $elem && ref($elem) eq 'HTML::Element';
 		my @attr_order =
 			sort { $allowed{uc $a}{ord} <=> $allowed{uc $b}{ord} }
 			grep { !/^_/ && exists $allowed{uc $_} }
@@ -2425,4 +2426,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.33 2002/06/23 23:51:53 jamie Exp $
+$Id: Data.pm,v 1.34 2002/06/24 11:44:17 jamie Exp $

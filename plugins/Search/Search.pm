@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.18 2002/02/24 22:41:29 cliff Exp $
+# $Id: Search.pm,v 1.19 2002/02/25 04:32:53 cliff Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -278,8 +278,6 @@ EOT
 	}
 	
 	my $sql = "SELECT $columns FROM $tables WHERE $where $other";
-
-	print STDERR "findStories: $sql\n";
 
 	$self->sqlConnect();
 	my $cursor = $self->{_dbh}->prepare($sql);

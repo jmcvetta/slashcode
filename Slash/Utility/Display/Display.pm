@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.54 2003/03/28 01:33:14 jamie Exp $
+# $Id: Display.pm,v 1.55 2003/04/22 14:27:27 pater Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -874,17 +874,19 @@ The 'fancybox', 'portalboxtitle', and
 =cut
 
 sub portalbox {
-	my($width, $title, $contents, $bid, $url) = @_;
+	my($width, $title, $contents, $bid, $url, $getblocks) = @_;
 	return unless $title && $contents;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
+	$getblocks ||= 'index';
 
 	$title = slashDisplay('portalboxtitle', {
 		title	=> $title,
 		url	=> $url,
 	}, { Return => 1, Nocomm => 1 });
 
-	if ($user->{exboxes}) {
+	if (($user->{exboxes} && $getblocks eq 'index') || 
+		($user->{exboxes} && $constants->{slashbox_sections})) {
 		$title = slashDisplay('portalmap', {
 			title	=> $title,
 			bid	=> $bid,
@@ -1529,4 +1531,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.54 2003/03/28 01:33:14 jamie Exp $
+$Id: Display.pm,v 1.55 2003/04/22 14:27:27 pater Exp $

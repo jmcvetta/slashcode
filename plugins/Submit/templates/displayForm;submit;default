@@ -82,7 +82,7 @@ be deleted.)</FONT>
 
 [% PROCESS formLabel value => "Section and Topic", comment => "" %]
 
-[% Slash.createSelect('skid', skin_values, 0, 1, 0, 1) %]
+[% Slash.createSelect('primaryskid', skin_values, form.primaryskid, 1, 0, 1) %]
 [% Slash.createSelect('tid', topic_values, form.tid, 1, 0, 1)%]	
 
 <BR><FONT SIZE="2">(In general, submit to [% skins.${constants.mainpage_skid}.title || 'the main section' %])</FONT>
@@ -122,4 +122,4 @@ be deleted.)</FONT>
 __seclev__
 10000
 __version__
-$Id: displayForm;submit;default,v 1.24 2004/07/16 18:04:33 jamiemccarthy Exp $
+$Id: displayForm;submit;default,v 1.25 2004/07/26 18:12:59 tvroom Exp $

@@ -65,7 +65,7 @@ TITLE="[% topic.textname %]"></A>
 		[% END %]
 	[% END %]
 		<BR>
-	[% Slash.createSelect('skid', Slash.db.getDescriptions('skins'), submission.primaryskid, 1, 0, 1) %]
+	[% Slash.createSelect('primaryskid', Slash.db.getDescriptions('skins'), submission.primaryskid, 1, 0, 1) %]
 	[% Slash.createSelect('tid', Slash.db.getDescriptions('non_nexus_topics'), submission.tid, 1, 0, 1) %]
 
 		<INPUT TYPE="submit" NAME="op" VALUE="preview"><BR>
@@ -105,4 +105,4 @@ TITLE="[% topic.textname %]"></A>
 __seclev__
 10000
 __version__
-$Id: previewForm;submit;default,v 1.37 2004/07/15 04:58:37 jamiemccarthy Exp $
+$Id: previewForm;submit;default,v 1.38 2004/07/26 18:12:59 tvroom Exp $

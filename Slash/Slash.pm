@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.182 2003/11/25 20:33:53 pudge Exp $
+# $Id: Slash.pm,v 1.183 2003/11/25 23:55:02 pater Exp $
 
 package Slash;
 
@@ -99,6 +99,12 @@ sub selectComments {
 	if (!$thisComment) {
 		_print_cchp($header);
 		return ( {}, 0 );
+	}
+
+	if ($constants->{ubb_like_forums} && $user->{mode} eq 'parents') {
+		# don't display the comment that describes the forums
+		my $forum_desc = $slashdb->getForumFirstPostHashref($header->{id});
+		delete $thisComment->{$forum_desc->{cid}};
 	}
 
 	my $max_uid = $reader->countUsers({ max => 1 });

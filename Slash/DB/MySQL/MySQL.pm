@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.181 2002/07/11 16:49:10 jamie Exp $
+# $Id: MySQL.pm,v 1.182 2002/07/11 22:00:18 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5299,14 +5299,20 @@ sub setSubmission {
 
 ########################################################
 sub getSection {
-	my($self, $section, $value) = @_;
+	my($self, $section, $value, $no_cache) = @_;
 	$section ||= getCurrentStatic('section');
-	my $answer = _genericGet({
-		table		=> 'sections',
-		table_prime	=> 'section',
-		arguments	=> [($self, $section, $value)],
-		col_table 	=> { label => 'contained', table => 'sections_contained', table_index => 'container', key => 'section'},
-	});
+	my $data = {
+		table           => 'sections',
+		table_prime     => 'section',
+		arguments       => [($self, $section, $value)],
+		col_table       => { label => 'contained', table => 'sections_contained', table_index => 'container', key => 'section'},
+	};
+	my $answer;
+	if ($no_cache) {
+		$answer = _genericGet($data);
+	} else {
+		$answer = _genericGetCache($data);
+	}
 	return $answer;
 }
 

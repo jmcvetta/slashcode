@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.7 2005/03/11 19:58:06 pudge Exp $
+# $Id: dilemma.pl,v 1.8 2005/04/05 13:09:48 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -79,24 +79,24 @@ sub main {
 	my $dilemma_reader = getObject('Slash::Dilemma', { db_type => 'reader' });
 	my $dilemma_db = getObject('Slash::Dilemma');
 
-	my $info = $dilemma_reader->getDilemmaInfo();
-	my $species_hr = $dilemma_reader->getDilemmaSpeciesInfo();
-	my $species_order = [
-		sort {
-			$species_hr->{$b}{alivecount} <=> $species_hr->{$a}{alivecount}
-			||
-			$species_hr->{$b}{totalcount} <=> $species_hr->{$a}{totalcount}
-			||
-			$a cmp $b
-		}
-		keys %$species_hr
-	];
-
-	slashDisplay('maininfo', {
-		info		=> $info,
-		species		=> $species_hr,
-		species_order	=> $species_order,
-	});
+#	my $info = $dilemma_reader->getDilemmaInfo();
+#	my $species_hr = $dilemma_reader->getDilemmaSpeciesInfo();
+#	my $species_order = [
+#		sort {
+#			$species_hr->{$b}{alivecount} <=> $species_hr->{$a}{alivecount}
+#			||
+#			$species_hr->{$b}{totalcount} <=> $species_hr->{$a}{totalcount}
+#			||
+#			$a cmp $b
+#		}
+#		keys %$species_hr
+#	];
+#
+#	slashDisplay('maininfo', {
+#		info		=> $info,
+#		species		=> $species_hr,
+#		species_order	=> $species_order,
+#	});
 
 	slashDisplay('index', {
 		metamod_elig    => 0,

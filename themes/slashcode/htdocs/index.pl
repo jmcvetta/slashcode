@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.82 2003/08/25 21:44:56 vroom Exp $
+# $Id: index.pl,v 1.83 2003/08/26 14:04:26 vroom Exp $
 
 use strict;
 use Slash;
@@ -289,7 +289,7 @@ sub displayStories {
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
 	my $user      = getCurrentUser();
-	my $ls_other   = { reader => $reader , constants => $constants, user => $user};
+	my $ls_other  = { user => $user, reader => $reader, constants => $constants };
 	my($today, $x) = ('', 0);
 	my $cnt = int($user->{maxstories} / 3);
 	my($return, $counter);

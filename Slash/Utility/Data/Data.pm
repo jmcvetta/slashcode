@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.120 2004/05/07 23:06:04 pudge Exp $
+# $Id: Data.pm,v 1.121 2004/05/14 17:33:51 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -43,7 +43,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2493,7 +2493,7 @@ sub _url_to_domain_tag {
 
 	# Add a title tag to make this all friendly for those with vision
 	# and similar issues -Brian
-	$href =~ s/>/ TITLE="$info">/ if $info ne '?';
+	$href =~ s/>/ title="$info">/ if $info ne '?';
 	return "$href$body</a $info>";
 }
 
@@ -3339,4 +3339,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.120 2004/05/07 23:06:04 pudge Exp $
+$Id: Data.pm,v 1.121 2004/05/14 17:33:51 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.67 2003/04/29 19:25:50 pudge Exp $
+# $Id: index.pl,v 1.68 2003/05/01 03:50:10 jamie Exp $
 
 use strict;
 use Slash;
@@ -87,7 +87,6 @@ sub main {
 			$future_plug = 1;
 		}
 	}
-print STDERR "index.pl future_plug '$future_plug'\n";
 
 	# displayStories() pops stories off the front of the @$stories array.
 	# Whatever's left is fed to displayStandardBlocks for use in the

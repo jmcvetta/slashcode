@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.11 2002/10/21 15:28:13 pudge Exp $
+# $Id: messages.pl,v 1.12 2002/11/15 16:49:57 pater Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -105,7 +105,7 @@ sub edit_message {
 
 <B>Important Stuff:</B>
 	<LI>Please try to keep posts on topic.
-	<LI>Try to reply to other people comments instead of starting new threads.
+	<LI>Try to reply to other people's comments instead of starting new threads.
 	<LI>Read other people's messages before posting your own to avoid simply duplicating
 		what has already been said.
 	<LI>Use a clear subject that describes what your message is about.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.471 2003/11/10 19:32:26 vroom Exp $
+# $Id: MySQL.pm,v 1.472 2003/11/10 21:24:15 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.471 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.472 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6390,7 +6390,7 @@ sub getStoryList {
 		push @where, "stories.section = " . $self->sqlQuote($SECT->{section});
 	}
 	push @where, "time < DATE_ADD(NOW(), INTERVAL 72 HOUR) "
-		if $form->{section} eq "" and !$constants->{show_all_future_stories_admin};
+		if $form->{section} eq '' && !$constants->{show_all_future_stories_admin};
 	my $other = "ORDER BY time DESC LIMIT $first_story, $num_stories";
 
 	$where = join ' AND ', @where;

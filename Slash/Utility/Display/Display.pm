@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.85 2004/06/23 19:17:13 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.86 2004/06/23 19:20:07 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -487,13 +487,13 @@ sub linkStory {
 		my $skinname = $skin->{name} eq 'mainpage' ? 'articles' : $skin->{name};
 		$url .= '/' . $skinname . '/' . $story_link->{sid} . '.shtml';
 		# manually add the tid(s), if wanted
-		if ($constants->{tids_in_urls} && $params{tid}) {
+		if ($constants->{tids_in_urls} && $params{tids}) {
 			$url .= '?';
-			if (ref $params{tid} eq 'ARRAY') {
-				$url .= 'tid=' . join( "&tid=", map { fixparam($_) } @{$params{tid}} )
-					if @{$params{tid}};
+			if (ref $params{tids} eq 'ARRAY') {
+				$url .= 'tid=' . join( "&tid=", map { fixparam($_) } @{$params{tids}} )
+					if @{$params{tids}};
 			} else {
-				$url .= 'tid=' . fixparam($params{tid});
+				$url .= 'tid=' . fixparam($params{tids});
 			}
 		}
 	}
@@ -1650,4 +1650,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.85 2004/06/23 19:17:13 jamiemccarthy Exp $
+$Id: Display.pm,v 1.86 2004/06/23 19:20:07 jamiemccarthy Exp $

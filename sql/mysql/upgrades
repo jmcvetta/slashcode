@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.739 2004/11/24 06:31:15 jamiemccarthy Exp $
+# $Id: upgrades,v 1.740 2004/11/24 23:56:22 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2780,4 +2780,6 @@ INSERT INTO vars (name, value, description) VALUES ('dbs_reader_lag_secs_end','3
 INSERT INTO vars (name, value, description) VALUES ('dbs_reader_lag_weight_min','0.1','The minimum weight to multiply a reader DB\'s base weight by once its lag hits dbs_reader_lag_secs_end');
 INSERT INTO vars (name, value, description) VALUES ('dbs_reader_weight_reduce_max','2.0','The maximum number of units per minute to reduce weight down to the minimum');
 INSERT INTO vars (name, value, description) VALUES ('dbs_reader_weight_increase_max','1.0','The maximum number of units per minute to restore weight back up to 1');
+
+# run `perl utils/users_index_cleanup.plx VIRTUAL_USER`
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.154 2003/07/17 02:49:10 jamie Exp $
+# $Id: Slash.pm,v 1.155 2003/07/18 03:46:58 jamie Exp $
 
 package Slash;
 
@@ -630,7 +630,10 @@ sub printComments {
 		if ($constants->{memcached_debug} && $constants->{memcached_debug} >= 2) {
 			print STDERR scalar(gmtime) . " printComments memcached mcdkey '$mcdkey'\n";
 		}
-		my @keys_try = map { "$mcdkey$_" } @$cids_needed_ar;
+		my @keys_try =
+			map { "$mcdkey$_" }
+			grep { $_ != $form->{cid} }
+			@$cids_needed_ar;
 		$comment_text = $slashdb->{_mcd}->get_multi(@keys_try);
 		my @old_keys = keys %$comment_text;
 		if ($constants->{memcached_debug} && $constants->{memcached_debug} >= 2) {

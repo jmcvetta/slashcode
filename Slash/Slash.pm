@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.186 2003/12/02 23:37:38 vroom Exp $
+# $Id: Slash.pm,v 1.187 2003/12/05 02:54:11 jamie Exp $
 
 package Slash;
 
@@ -339,6 +339,8 @@ sub _print_cchp {
 		)) {
 			warn "_print_cchp cannot open '$filename', $!\n";
 		} else {
+			$count ||= 0;
+			$hp_str ||= '0';
 			print $fh "count $count, hitparade $hp_str\n";
 			close $fh;
 		}

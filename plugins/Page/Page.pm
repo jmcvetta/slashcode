@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.19 2003/07/09 00:02:53 jamie Exp $
+# $Id: Page.pm,v 1.20 2003/07/10 01:24:44 pudge Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -155,7 +155,7 @@ sub displayStories {
 	# 	return $self->displayStoryList($stories, $other)
 	# - Cliff
 	while (my $story = shift @{$stories}) {
-		my($sid, $section, $time, $title) = @{$_}{qw(sid section time title)}; #[0, 1, 2, 9];
+		my($sid, $section, $time, $title) = @{$story}{qw(sid section time title)}; #[0, 1, 2, 9];
 		my $atstorytime;
 
 		if ($other->{titles_only}) {

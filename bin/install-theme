@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-theme,v 1.3 2002/01/08 17:22:09 pudge Exp $
+# $Id: install-theme,v 1.4 2002/04/17 20:27:13 pudge Exp $
 
 # This is a theme install script.
 # chromatic (chromatic@wgz.org), based on install-plugin by Krow
@@ -14,9 +14,9 @@ use Getopt::Std;
 use File::Copy;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
+(my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 my %opts;
 # Remember to doublecheck these match usage()!
@@ -36,7 +36,7 @@ unless (DBIx::Password::checkVirtualUser($opts{'u'})) {
 	my $install = Slash::Install->new($opts{'u'});
 
 	print "\nPlease select which themes you would like?\n" unless $opts{'l'} ;
-	my $themes = $install->getThemeList($PREFIX);
+	my $themes = $install->getThemeList($SLASH_PREFIX);
 	for (sort keys %$themes) {
 		print "$themes->{$_}{'order'}.\t$_ $themes->{$_}{'description'}\n";
 	}

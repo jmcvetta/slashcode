@@ -2,16 +2,16 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.5 2002/04/08 18:45:07 cliff Exp $
+# $Id: runtask,v 1.6 2002/04/17 20:27:13 pudge Exp $
 
 use sigtrap;
 use strict;
 use Carp;
 use Getopt::Std;
-# use Date::Manip; # is this needed?  -- pudge
 use File::Basename;
 use File::Path;
 use File::Spec::Functions;
+use FindBin '$Bin';
 use LWP::UserAgent;
 use HTTP::Request;
 use Time::Local;
@@ -26,9 +26,9 @@ use Slash::Utility;
 
 use vars qw( %opts %task $me $task_name $virtual_user $constants $slashdb $user $dir );
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
-(my $SLASH_PREFIX) = '/usr/local/slash';
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
+(my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 main();
 exit 0;

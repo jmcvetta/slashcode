@@ -2,11 +2,10 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hitparade_commentcount_fix.pl,v 1.3 2002/01/08 17:22:10 pudge Exp $
+# $Id: hitparade_commentcount_fix.pl,v 1.4 2002/04/17 20:27:13 pudge Exp $
 
 use strict;
 use vars qw( %task );
-use FindBin '$Bin';
 use File::Basename;
 use Slash;
 use Slash::DB;
@@ -14,10 +13,9 @@ use Slash::Display;
 use Slash::Utility;
 use Getopt::Std;
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 #my $PROGNAME = basename($0);
 my $PROGNAME = 'hitparade_commentcount_fix.pl';
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 $task{$PROGNAME}{timespec} = '0,5,10,15,20,25,30,35,40,45,50,55 * * * *';
 

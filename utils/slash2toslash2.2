@@ -2,18 +2,16 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash2toslash2.2,v 1.4 2002/01/08 17:22:10 pudge Exp $
+# $Id: slash2toslash2.2,v 1.5 2002/04/17 20:27:13 pudge Exp $
 
 use strict;
 use File::Basename;
-use FindBin '$Bin';
 use Getopt::Std;
 use DBIx::Password;
 use Digest::MD5 'md5_hex';
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 my(%opts, %forced_plugins, %sacred_tables);
 my($del_users, $poll_uid, $process_menus);
@@ -1529,4 +1527,4 @@ if they so desire.
 
 =head1 VERSION
 
-$Id: slash2toslash2.2,v 1.4 2002/01/08 17:22:10 pudge Exp $
+$Id: slash2toslash2.2,v 1.5 2002/04/17 20:27:13 pudge Exp $

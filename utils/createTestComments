@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.6 2002/02/23 20:56:06 jamie Exp $
+# $Id: createTestComments,v 1.7 2002/04/17 20:27:13 pudge Exp $
 
 BEGIN {
 	{
@@ -15,7 +15,6 @@ BEGIN {
 
 use strict;
 use File::Basename;
-use FindBin '$Bin';
 use Getopt::Std;
 use Slash;
 use Slash::Utility;
@@ -24,9 +23,8 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 my (%opts, %family_tree, %deep_tree);
 # Remember to doublecheck these match usage()!

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.15 2002/04/12 18:20:19 jamie Exp $
+# $Id: Install.pm,v 1.16 2002/04/17 20:31:45 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -207,6 +207,7 @@ sub _install {
 	my $email = $self->getValue('adminmail');
 	my $driver = $self->getValue('db_driver');
 	my $prefix_site = $self->getValue('site_install_directory');
+	my $SLASH_PREFIX = $self->getValue('base_install_directory');
 
 	my %stuff = ( # [relative directory, executable]
 		htdoc		=> ["htdocs",			1],
@@ -308,6 +309,7 @@ sub _install {
 				chomp;
 				s/www\.example\.com/$hostname/g;
 				s/admin\@example\.com/$email/g;
+				s|/usr/local/slash|$SLASH_PREFIX|g;
 				push @sql, $_;
 			}
 			close $fh;
@@ -363,6 +365,7 @@ sub _install {
 				chomp;
 				s/www\.example\.com/$hostname/g;
 				s/admin\@example\.com/$email/g;
+				s|/usr/local/slash|$SLASH_PREFIX|g;
 				push @sql, $_;
 			}
 			close $fh;

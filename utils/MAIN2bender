@@ -2,16 +2,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MAIN2bender,v 1.5 2002/01/08 17:22:10 pudge Exp $
+# $Id: MAIN2bender,v 1.6 2002/04/17 20:27:13 pudge Exp $
 
 use strict;
 use Getopt::Std;
-use FindBin '$Bin';
 use File::Basename;
 
 (my $PROGNAME) = basename($0);
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %opts;
 # Remember to doublecheck these match usage()!

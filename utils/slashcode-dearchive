@@ -2,19 +2,17 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashcode-dearchive,v 1.7 2002/01/08 17:22:10 pudge Exp $
+# $Id: slashcode-dearchive,v 1.8 2002/04/17 20:27:13 pudge Exp $
 
 use strict;
 use File::Basename;
-use FindBin '$Bin';
 use Getopt::Std;
 use Slash::DB;
 use Slash::DB::Utility;
 use Date::Manip;
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 
 # REGULAR EXPRESSION DEFINITIONS

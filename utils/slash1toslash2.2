@@ -2,19 +2,17 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash1toslash2.2,v 1.5 2002/03/06 19:05:34 cliff Exp $
+# $Id: slash1toslash2.2,v 1.6 2002/04/17 20:27:13 pudge Exp $
 
 use strict;
 use File::Basename;
-use FindBin '$Bin';
 use Getopt::Std;
 use DBIx::Password;
 use Digest::MD5 'md5_hex';
 use vars qw(%my_conf);
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
-(my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 my %opts;
 # Remember to doublecheck these match usage()!
@@ -1902,4 +1900,4 @@ if they so desire.
 
 =head1 VERSION
 
-$Id: slash1toslash2.2,v 1.5 2002/03/06 19:05:34 cliff Exp $
+$Id: slash1toslash2.2,v 1.6 2002/04/17 20:27:13 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.95 2003/05/06 00:06:42 pater Exp $
+# $Id: MySQL.pm,v 1.96 2003/05/06 03:20:28 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -128,7 +128,7 @@ sub updateCommentTotals {
 ########################################################
 # For slashd
 sub getNewStoryTopic {
-	my($self) = @_;
+	my($self, $section) = @_;
 
 	my $constants = getCurrentStatic();
 	my $needed = $constants->{recent_topic_img_count} || 5;
@@ -140,10 +140,16 @@ sub getNewStoryTopic {
 	# work for all sites except those that post tons of duplicate
 	# topic stories.
 	$needed = $needed * 3 + 5;
+	my $clause;	
+	if ($section) {
+		$clause = "stories.section = '$section'";
+	} else {
+		$clause = 'displaystatus = 0';
+	}
 	my $ar = $self->sqlSelectAllHashrefArray(
 		"alttext, stories.tid AS tid",
 		"stories, topics",
-		"stories.tid=topics.tid AND displaystatus = 0
+		"stories.tid=topics.tid AND $clause
 		 AND writestatus != 'delete' AND time < NOW()",
 		"ORDER BY time DESC LIMIT $needed"
 	);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.531 2004/03/16 14:26:22 tvroom Exp $
+# $Id: MySQL.pm,v 1.532 2004/03/16 16:02:44 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.531 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.532 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -852,7 +852,7 @@ sub getModeratorCommentLog {
 		? ", comments.uid AS uid2, comments.ipid AS ipid2"
 		: "";
 
-	$select_extra .= ", comments.karma as karma" if $t eq "cid";
+	$select_extra .= ", comments.karma AS karma" if $t eq "cid";
 
 	my $vq = $self->sqlQuote($value);
 	my $where_clause = "";
@@ -4895,10 +4895,12 @@ sub _calc_karma_token_loss {
 			$kc *= $change;
 		}
 	}
-	if(defined $constants->{comment_karma_loss_limit} and $constants->{comment_karma_loss_limit} ne ""){
+	if (defined $constants->{comment_karma_limit}
+		&& $constants->{comment_karma_limit} ne "") {
 		my $future_karma = $comment_change_hr->{karma} + $kc;
-		if($future_karma < $constants->{comment_karma_loss_limit}){
-			$kc = $constants->{comment_karma_loss_limit} - $comment_change_hr->{karma};
+		if ($future_karma < $constants->{comment_karma_limit}) {
+			$kc = $constants->{comment_karma_limit}
+				- $comment_change_hr->{karma};
 		}
 	}
 	$tc = $kc;
@@ -5403,11 +5405,14 @@ sub setCommentForMod {
 		$karma_val = $val;
 	}
 	
-	if(defined $constants->{comment_karma_loss_limit} and $constants->{comment_karma_loss_limit} ne "") {
+	if ($karma_val < 0
+		&& defined($constants->{comment_karma_limit})
+		&& $constants->{comment_karma_limit} ne "") {
 		my $future_karma = $hr->{karma} + $karma_val;
-		if($future_karma < $constants->{comment_karma_loss_limit}){
-			$karma_val = $constants->{comment_karma_loss_limit} - $hr->{karma};
+		if ($future_karma < $constants->{comment_karma_limit}) {
+			$karma_val = $constants->{comment_karma_limit} - $hr->{karma};
 		}
+		$karma_val = 0 if $karma_val > 0; # just to make sure
 	}
 
 	if ($karma_val) {
@@ -5424,7 +5429,6 @@ sub setCommentForMod {
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
 	$self->sqlDo("SET AUTOCOMMIT=1");
-
 
 	return $changed ? $hr : undef;
 }

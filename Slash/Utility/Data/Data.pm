@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.82 2003/03/28 01:24:54 jamie Exp $
+# $Id: Data.pm,v 1.83 2003/04/09 19:37:24 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -810,7 +810,7 @@ sub stripBadHtml {
 =head2 processCustomTags(STRING)
 
 Private function.  It does processing of special custom tags
-(so far, just ECODE, and its deprecated synonym, LITERAL).
+(so far, just ECODE).
 
 =over 4
 
@@ -862,7 +862,7 @@ sub processCustomTags {
 
 	# ECODE must be in approvedtags
 	if (grep /^ECODE$/, @{$constants->{approvedtags}}) {
-		my $ecode   = 'literal|ecode';  # "LITERAL" is old name
+		my $ecode   = 'ecode';
 		my $open    = qr[\n* <\s* (?:$ecode) (?: \s+ END="(\w+)")? \s*> \n*]xsio;
 		my $close_1 = qr[$open (.*?) \n* <\s* /\2    \s*> \n*]xsio;  # if END is used
 		my $close_2 = qr[$open (.*?) \n* <\s* /ECODE \s*> \n*]xsio;  # if END is not used
@@ -2817,4 +2817,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.82 2003/03/28 01:24:54 jamie Exp $
+$Id: Data.pm,v 1.83 2003/04/09 19:37:24 pudge Exp $

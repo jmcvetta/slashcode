@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.566 2004/04/27 13:39:00 tvroom Exp $
+# $Id: MySQL.pm,v 1.567 2004/04/27 22:18:14 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.566 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.567 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1082,10 +1082,10 @@ sub getMetamodsForMods {
 	}
 	return $mods_to_m2s;
 }
-########################################################
 
+########################################################
 sub getMetamodlogForUser {
-	my ($self, $uid, $limit) = @_;
+	my($self, $uid, $limit) = @_;
 	my $uid_q = $self->sqlQuote($uid);
 	my $limit_clause = $limit ? " LIMIT $limit" : "";
 	my $m2s = $self->sqlSelectAllHashrefArray(
@@ -1111,7 +1111,6 @@ sub getMetamodlogForUser {
 	
 	return $m2s;
 }
-
 
 ########################################################
 sub getModeratorLogID {
@@ -5752,7 +5751,7 @@ sub setCommentForMod {
 	if (!$constants->{mod_down_karmacoststyle}) {
 		$karma_val = $karma_change;
 	} elsif ($val < 0) {
-		$karma_val = ($hr->{points_before}+$karma_change) - $hr->{points_max};
+		$karma_val = ($hr->{points_before} + $karma_change) - $hr->{points_max};
 	} else {
 		$karma_val = $karma_change;
 	}
@@ -6499,13 +6498,13 @@ sub calcModval {
 }
 
 sub getNetIDKarma {
-	my ($self, $type, $id ) = @_;
-	my ($count, $karma);
+	my($self, $type, $id) = @_;
+	my($count, $karma);
 	if ($type eq "ipid") {
 		($count, $karma) = $self->sqlSelect("count(*),sum(karma)","comments","ipid='$id'");
 		return wantarray ? ($karma, $count) : $karma;
 	} elsif ($type eq "subnetid") {
-		 ($count, $karma) = $self->sqlSelect("count(*),sum(karma)","comments","subnetid='$id'");
+		($count, $karma) = $self->sqlSelect("count(*),sum(karma)","comments","subnetid='$id'");
 		return wantarray ? ($karma, $count) : $karma;
 	} else {
 		($count, $karma) = $self->sqlSelect("count(*),sum(karma)","comments","ipid='$id'");

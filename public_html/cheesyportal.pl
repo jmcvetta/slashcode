@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: cheesyportal.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: cheesyportal.pl,v 1.3 2000/08/14 21:15:54 pudge Exp $
 ###############################################################################
 
 use strict;
@@ -52,14 +52,14 @@ sub main {
 	my $b;
 	while (my($block, $title, $bid, $url) = $c->fetchrow) {
 		if ($bid eq "mysite") {
-			$b = portalbox(200, "$I{U}{nickname}'s Slashbox",
+			$b = portalbox($I{fancyboxwidth}, "$I{U}{nickname}'s Slashbox",
 				$I{U}{mylinks} ||  $block
 			);
 
 		} elsif ($bid =~ /_more$/) {
 		} elsif ($bid eq "userlogin") {
 		} else {
-			$b = portalbox(200, $title, $block, "", $url);
+			$b = portalbox($I{fancyboxwidth}, $title, $block, "", $url);
 		}
 
 		print $b;

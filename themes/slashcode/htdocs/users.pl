@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.19 2000/08/01 14:38:31 capttofu Exp $
+#  $Id: users.pl,v 1.20 2000/08/14 21:15:54 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -162,7 +162,7 @@ sub checkList {
 	my $string = shift;
 	$string = substr($string, 0, -1);
 
-	$string =~ s/[^\w,]//g;
+	$string =~ s/[^\w,-]//g;
 	my @e = split m/,/, $string;
 	$string = sprintf "'%s'", join "','", @e;
 
@@ -204,7 +204,7 @@ EOT
 
 	print qq!</TD><TD WIDTH="180" VALIGN="TOP">!;
 
-	print portalbox("200", $title, $content, "", $url);
+	print portalbox($I{fancyboxwidth}, $title, $content, "", $url);
 }
 
 #################################################################

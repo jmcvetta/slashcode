@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: index.pl,v 1.8 2000/08/01 14:38:31 capttofu Exp $
+#  $Id: index.pl,v 1.9 2000/08/14 21:15:54 pudge Exp $
 ###############################################################################
 # pre stories cache update
 use strict;
@@ -41,9 +41,11 @@ sub main {
 	# $I{F}{mode} = $I{U}{mode}="dynamic" if $ENV{SCRIPT_NAME};
 
 	for ($I{F}{op}) {
-		/^u$/ and upBid($I{F}{bid});
-		/^d$/ and dnBid($I{F}{bid});
-		/^x$/ and rmBid($I{F}{bid});
+		my $c;
+		upBid($I{F}{bid}), $c++ if /^u$/;
+		dnBid($I{F}{bid}), $c++ if /^d$/;
+		rmBid($I{F}{bid}), $c++ if /^x$/;
+		redirect($ENV{SCRIPT_NAME}) if $c;
 	}
 
 	my $SECT = getSection($I{F}{section});
@@ -176,12 +178,12 @@ sub displayStandardBlocks {
 	foreach my $bid (@boxes) {
 		if ($bid eq 'mysite') {
 			print portalbox(
-				200, "$I{U}{nickname}'s Slashbox",
+				$I{fancyboxwidth}, "$I{U}{nickname}'s Slashbox",
 				$I{U}{mylinks} || 'This is your user space.  Love it.',
 				$bid
 			);
 		} elsif ($bid =~ /_more$/) {
-			print portalbox(200,"Older Stuff",
+			print portalbox($I{fancyboxwidth},"Older Stuff",
 				getOlderStories($olderStuff, $SECT),
 				$bid) if $olderStuff;
 		} elsif ($bid eq "userlogin" && $I{U}{uid} > 0) {
@@ -189,11 +191,11 @@ sub displayStandardBlocks {
 		} elsif ($bid eq "userlogin") {
 			my $SB = $I{boxBank}{$bid};
 			my $B = eval prepBlock $I{blockBank}{$bid};
-			print portalbox(200, $SB->{title}, $B, $SB->{bid}, $SB->{url});
+			print portalbox($I{fancyboxwidth}, $SB->{title}, $B, $SB->{bid}, $SB->{url});
 		} else {
 			my $SB = $I{boxBank}{$bid};
 			my $B = $I{blockBank}{$bid};
-			print portalbox(200, $SB->{title}, $B, $SB->{bid}, $SB->{url});
+			print portalbox($I{fancyboxwidth}, $SB->{title}, $B, $SB->{bid}, $SB->{url});
 		}
 	}
 }

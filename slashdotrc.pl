@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.13 2000/08/03 18:19:20 cbwood Exp $
+#  $Id: slashdotrc.pl,v 1.14 2000/08/14 21:17:10 pudge Exp $
 ###############################################################################
 require URI;
 
@@ -55,6 +55,7 @@ my %my_conf = (
 	approvedtags    => [qw(B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV)],
 	defaultsection  => 'articles',  # default section for articles
 	http_proxy	=> '',	# 'http://proxy.example.com/'
+	fancyboxwidth	=> 200,
 
 # this controls the life of %storyBank
 	story_expire	=> 600,

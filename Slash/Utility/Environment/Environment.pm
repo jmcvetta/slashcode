@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.51 2002/10/26 23:23:14 pudge Exp $
+# $Id: Environment.pm,v 1.52 2002/11/07 05:10:30 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -590,7 +590,8 @@ Returns no value.
 =cut
 
 sub createCurrentStatic {
-	($static_constants, $static_site_constants) = @_;
+	($static_constants) = @_;
+	$static_site_constants = $_[1] if defined $_[1];
 }
 
 #========================================================================
@@ -1896,4 +1897,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.51 2002/10/26 23:23:14 pudge Exp $
+$Id: Environment.pm,v 1.52 2002/11/07 05:10:30 pudge Exp $

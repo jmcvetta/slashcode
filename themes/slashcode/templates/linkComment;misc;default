@@ -35,7 +35,7 @@ __template__
 
 [% END %]
 
-[% IF not user.noscores and points %]
+[% IF !user.noscores && points.defined %]
 	<FONT SIZE="-1">(Score:[% points %])</FONT>
 [% END %]
 
@@ -48,4 +48,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: linkComment;misc;default,v 1.8 2003/03/04 19:07:59 pudge Exp $
+$Id: linkComment;misc;default,v 1.9 2003/11/18 16:46:44 jamie Exp $

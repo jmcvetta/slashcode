@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.219 2004/08/02 12:01:45 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.220 2004/08/05 15:04:00 cowboyneal Exp $
 
 package Slash;
 
@@ -1251,7 +1251,7 @@ EOT
 	if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME}) {
 		my $fname = catfile('clampe', $user->{ipid});
 		my $comlog = "IPID: $user->{ipid} UID: $user->{uid} SID: $comment->{sid} CID: $comment->{cid} Dispmode: $user->{mode} Thresh: $user->{threshold} CIPID: $comment->{ipid} CUID: $comment->{uid}";
-		doLog($fname, [$comlog]);	
+		doClampeLog($fname, [$comlog]);	
 	}
 
 	return _hard_dispComment(

@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: suggestions.shtml,v 1.5 2003/06/19 02:44:32 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: suggestions.shtml,v 1.6 2003/10/20 17:25:34 pater Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <TABLE>
@@ -195,6 +195,7 @@
         </SMALL></I> 
 </P>
 
+<!--
 <A NAME="su800"></a>
 <H2>How about a WAP Interface?</H2>
 
@@ -209,6 +210,7 @@
 	Answered by: <A HREF="mailto:malda@slashdot.org">CmdrTaco</A> <BR>
 	Last Modified: 2/13/02 <BR>
 	</SMALL></I> 
+//-->
 
 <A NAME="su850"></a>
 <H2>Getting the slashdot headlines by 'finger @www.slashdot.org' would be nice, don't you think?</H2>

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.35 2003/10/11 13:45:31 jamie Exp $
+# $Id: slashd,v 1.36 2003/12/20 06:35:33 jamie Exp $
 
 ############################################################
 #
@@ -434,8 +434,6 @@ sub set_resources {
 		}
 	}
 }
-
-sub abs { $_[0] >= 0 ? $_[0] : -$_[0] }
 
 # Given a task filename, calculates its next execution time, and recreates
 # the event array with that task scheduled for that time.  This happens

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.15 2000/06/29 19:50:39 pudge Exp $
+#  $Id: submit.pl,v 1.16 2000/06/29 20:29:58 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -415,7 +415,7 @@ USER
 		my @strs = (substr($subj, 0, 35), substr($name, 0, 20), substr($email, 0, 20));
 		# Adds proper section for form editor.
 		my $sec = $section ne $I{defaultsection} ? "&section=$section" : "";
-		my $stitle = '&title=' . fixurl($strs[0]);
+		my $stitle = '&title=' . fixurl($strs[0], 1);
 
 		printf(($admin ? <<ADMIN : <<USER), @strs);
 		</FONT><INPUT TYPE="CHECKBOX" NAME="del_$subid">

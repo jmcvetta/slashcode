@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.74 2002/11/05 00:42:19 jamie Exp $
+# $Id: MySQL.pm,v 1.75 2002/11/27 21:31:13 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -451,6 +451,7 @@ sub updateLastaccess {
 			"TO_DAYS(NOW()) - TO_DAYS(ts) <= 1",
 			"GROUP BY uid"
 		);
+		return unless $uids_ar && @$uids_ar;
 		my $uids_in = join(",", sort @$uids_ar);
 		$self->sqlUpdate(
 			"users_info",

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.18 2001/11/07 01:21:27 brian Exp $
+# $Id: admin.pl,v 1.19 2001/11/07 04:38:05 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -55,10 +55,6 @@ sub main {
 		edit		=> {
 			function 	=> \&editStory,
 			seclev		=> 100,
-		},
-		listtopics	=> {
-			function 	=> \&listTopics,
-			seclev		=> 10000,
 		},
 		blocks 		=> {	# blockdelete_cancel,blockdelete_confirm,
 					# blockdelete1,blockdelete2,blocksave,
@@ -753,26 +749,6 @@ sub topicSave {
 	}
 
 	$form->{nexttid} = $form->{tid};
-}
-
-##################################################################
-sub listTopics {
-	my($form, $slashdb, $user, $constants) = @_;
-	my $imagedir = $constants->{imagedir};
-
-	my $topics = $slashdb->getTopics();
-
-	for ( keys %$topics) {
-		$_->{image} = "$constants->{imagedir}/topics/$_->{image}" if $_->{image} =~ /^\w+\.\w+$/;
-	}
-
-	my $title = getTitle('listTopics-title');
-
-	slashDisplay('listTopics', {
-			topics 		=> [ values %$topics ],
-			title		=> $title
-		}
-	);
 }
 
 ##################################################################

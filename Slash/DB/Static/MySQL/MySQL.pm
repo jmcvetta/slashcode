@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.201 2004/11/11 01:16:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.202 2004/11/11 21:07:40 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.201 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -566,7 +566,7 @@ sub updateLastaccess {
 				);
 				# If there is more to do, sleep for a moment so we don't
 				# hit the DB too hard.
-				Time::HiRes::sleep(0.2) if @uids;
+				sleep 2 if @uids;
 			}
 		}
 	} else {

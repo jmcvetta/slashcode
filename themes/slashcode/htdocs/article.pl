@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.40 2003/03/20 14:46:51 pudge Exp $
+# $Id: article.pl,v 1.41 2003/04/26 13:38:03 jamie Exp $
 
 use strict;
 use Slash;
@@ -23,14 +23,9 @@ sub main {
 
 	my $future_err = 0;
 	if ($story && $story->{is_future} && !($user->{is_admin} || $user->{author})) {
-		if (!$constants->{subscribe} || !$user->{is_subscriber}) {
-			$future_err = 1;
-		} else {
-			my $subscribe = getObject("Slash::Subscribe");
-			if (!$subscribe || !$subscribe->plummyPage()) {
-				$future_err = 1;
-			}
-		}
+		$future_err = 1 if !$constants->{subscribe}
+			|| !$user->{is_subscriber}
+			|| !$user->{state}{page_plummy};
 		if ($future_err) {
 			$story = '';
 		}

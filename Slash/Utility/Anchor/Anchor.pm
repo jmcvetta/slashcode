@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.44 2003/03/04 19:56:32 pudge Exp $
+# $Id: Anchor.pm,v 1.45 2003/04/26 13:38:03 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -348,11 +348,7 @@ sub prepAds {
 	my $ad_max = $constants->{ad_max} || $ad_messaging_num;
 	my $ad_messaging_prob = $constants->{ad_messaging_prob} || 0.5;
 
-	my $adless = 0;
-	if ($constants->{subscribe}) {
-		my $subscribe = getObject('Slash::Subscribe');
-		$adless = 1 if $subscribe && $subscribe->adlessPage();
-	}
+	my $adless = $user->{state}{page_adless} ? 1 : 0;
 
 	# Let's lay out some representative possibilities so we
 	# get the logic right:
@@ -471,13 +467,28 @@ sub prepAds {
 		# If we're not showing a messaging ad, it doesn't get shown.
 		$use_this_ad = 0 if !$use_messaging && $num == $ad_messaging_num;
 		# If there's no ad here, it doesn't get shown obviously.
-		$use_this_ad = 0 if !$ENV{"AD_BANNER_$num"};
+		# But if we're testing, assume there could be ads everywhere.
+		if (!$constants->{debug_adtext}) {
+			$use_this_ad = 0 if !$ENV{"AD_BANNER_$num"};
+		}
 		if ($use_this_ad) {
-			$user->{state}{ad}{$num} = $ENV{"AD_BANNER_$num"};
+			if ($constants->{debug_adtext}) {
+				$user->{state}{ad}{$num} = "\n<FONT SIZE=\"+3\" COLOR=\"#888888\">AD $num HERE</FONT>\n";
+			} else {
+				$user->{state}{ad}{$num} = $ENV{"AD_BANNER_$num"};
+			}
 		} elsif ($num == 1 && $ENV{AD_PAGECOUNTER}) {
-			$user->{state}{ad}{$num} = $ENV{AD_PAGECOUNTER};
+			if ($constants->{debug_adtext}) {
+				$user->{state}{ad}{$num} = "\n<FONT SIZE=\"+2\" COLOR=\"#888888\">PAGECOUNTER</FONT>\n";
+			} else {
+				$user->{state}{ad}{$num} = $ENV{AD_PAGECOUNTER};
+			}
 		} else {
-			$user->{state}{ad}{$num} = "\n<!-- no ad $num -->\n";
+			if ($constants->{debug_adtext}) {
+				$user->{state}{ad}{$num} = "\n<FONT SIZE=\"+3\" COLOR=\"#888888\">no ad $num here</FONT>\n";
+			} else {
+				$user->{state}{ad}{$num} = "\n<!-- no ad $num -->\n";
+			}
 		}
 	}
 }
@@ -560,4 +571,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.44 2003/03/04 19:56:32 pudge Exp $
+$Id: Anchor.pm,v 1.45 2003/04/26 13:38:03 jamie Exp $

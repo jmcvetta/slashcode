@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.86 2003/04/24 15:00:49 pudge Exp $
+# $Id: Environment.pm,v 1.87 2003/04/26 13:38:03 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1094,7 +1094,25 @@ sub setCookie {
 		-path    =>  $cookiepath
 	);
 
+	# This old code may be wrong, says Pudge.
+	my $secure_old = 0;
+	if ($constants->{cookiesecure}) {
+		my $subr = $r->lookup_uri($r->uri);
+		if ($subr && $subr->subprocess_env('HTTPS') eq 'on') {
+			$secure_old = 1;
+#			$cookiehash{-secure} = 1;
+		}
+	}
+	# And this new (old) code is right, says Pudge.
+	my $secure_new = 0;
 	if ($constants->{cookiesecure} && Slash::Apache::ConnectionIsSSL()) {
+		$secure_new = 1;
+#		$cookiehash{-secure} = 1;
+	}
+	if ($secure_old || $secure_new) {
+		my $uid = getCurrentUser('uid');
+		print STDERR scalar(gmtime) . " uid '$uid' secure_old '$secure_old' secure_new '$secure_new'\n"
+			if $secure_old xor $secure_new;
 		$cookiehash{-secure} = 1;
 	}
 
@@ -1202,7 +1220,7 @@ sub prepareUser {
 
 	$uid = $constants->{anonymous_coward_uid} unless defined($uid) && $uid ne '';
 
-	my $reader = getObject('Slash::DB', { virtual_user => $user_types{'reader'} });
+	my $reader = getObject('Slash::DB', { virtual_user => $user_types{reader} });
 
 	if (isAnon($uid)) {
 		if ($ENV{GATEWAY_INTERFACE}) {
@@ -1284,15 +1302,20 @@ sub prepareUser {
 		$user->{currentPage} = 'misc';
 	}
 
-	if ($constants->{subscribe}
-		&& $user->{hits_paidfor}
-		&& $user->{hits_bought} < $user->{hits_paidfor}
-	) {
-		$user->{is_subscriber} = 1;
-		if (my $subscribe = getObject('Slash::Subscribe')) {
-			$user->{state}{plummy_page} = $subscribe->plummyPage($r);
+	if ($constants->{subscribe}) {
+		# Decide whether the user is a subscriber.
+		$user->{is_subscriber} = 1 if $user->{hits_paidfor}
+			&& $user->{hits_bought} < $user->{hits_paidfor};
+		# Make other decisions about subscriber-related attributes
+		# of this page.  Note that we still have $r lying around,
+		# so we can save Subscribe.pm a bit of work.
+		if (my $subscribe = getObject('Slash::Subscribe', { db_type => 'reader' })) {
+			$user->{state}{page_plummy} = $subscribe->plummyPage($r, $user);
+			$user->{state}{page_buying} = $subscribe->buyingThisPage($r, $user);
+			$user->{state}{page_adless} = $subscribe->adlessPage($r, $user);
 		}
 	}
+	print STDERR scalar(localtime) . " user->currentPage '$user->{currentPage}' user->state->page_ plummy='$user->{state}{page_plummy}' buying='$user->{state}{page_buying}' adless='$user->{state}{page_adless}'\n";
 
 	if ($user->{seclev} >= 100) {
 		$user->{is_admin} = 1;
@@ -2096,4 +2119,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.86 2003/04/24 15:00:49 pudge Exp $
+$Id: Environment.pm,v 1.87 2003/04/26 13:38:03 jamie Exp $

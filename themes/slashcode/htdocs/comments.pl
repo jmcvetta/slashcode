@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.130 2003/04/24 04:47:47 jamie Exp $
+# $Id: comments.pl,v 1.131 2003/04/26 13:38:03 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -159,12 +159,11 @@ sub main {
 					# etc.) and if that story is viewable.
 					$future_err = 1;
 					$null_it_out = 1;
-				} else {
-					my $subscribe = getObject("Slash::Subscribe");
-					if (!$subscribe || !$subscribe->plummyPage()) {
-						$future_err = 1;
-						$null_it_out = 1;
-					}
+				} elsif (!$user->{is_subscriber} || !$user->{state}{page_plummy}) {
+					# If the user is not a subscriber or the page is
+					# not able to have plums, sorry!
+					$future_err = 1;
+					$null_it_out = 1;
 				}
 			} elsif ($discussion->{sid} && !$slashdb->checkStoryViewable($discussion->{sid})) {
 				# Probably a Never Display'd story.

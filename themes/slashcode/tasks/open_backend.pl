@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.14 2003/08/07 06:08:07 pudge Exp $
+# $Id: open_backend.pl,v 1.15 2003/09/05 16:19:43 jamie Exp $
 
 use strict;
 use Slash;
@@ -48,14 +48,16 @@ sub save2file {
 	# re-FETCH the file; if they send an If-Modified-Since, Apache
 	# will just return a header saying the file has not been modified
 	# -- pudge
-	open $fh, "<$f" or die "Can't open $f: $!";
-	my $current = do { local $/; <$fh> };
-	close $fh;
-
-	my $new = $d;
-	# normalize ...
-	s|<dc:date>[^<]*</dc:date>|| for $current, $new;
-	return if $current eq $new;
+	# on the other hand, don't abort if the file doesn't exist; that
+	# probably means the site is newly installed - Jamie 2003/09/05
+	if (open $fh, "<$f") {
+		my $current = do { local $/; <$fh> };
+		close $fh;
+		my $new = $d;
+		# normalize ...
+		s|<dc:date>[^<]*</dc:date>|| for $current, $new;
+		return if $current eq $new;
+	}
 
 	open $fh, ">$f" or die "Can't open $f: $!";
 	print $fh $d;

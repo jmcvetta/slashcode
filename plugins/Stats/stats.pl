@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.27 2004/06/17 16:12:02 jamiemccarthy Exp $
+# $Id: stats.pl,v 1.28 2004/07/13 17:57:59 tvroom Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -68,28 +68,28 @@ sub main {
 sub _get_graph_data {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
-	my $sections = _get_sections();
+	my $skins = _get_skins();
 	my(%days, @data);
 	for my $namesec (@{$form->{stats_graph_multiple}}) {
-		my($name, $section, $label) = split /,/, $namesec;
+		my($name, $skid, $label) = split /,/, $namesec;
 
 		my $stats_data = $stats->getAllStats({
-			section	=> $section,
+			skid	=> $skid,
 			name	=> $name,
 			days	=> $form->{stats_days}  # 0 || 14 || 31*3
 		});
 
 		my $data;
-		for my $day (keys %{$stats_data->{$section}}) {
+		for my $day (keys %{$stats_data->{$skid}}) {
 			next if $day eq 'names';
-			$data->{$day} = $stats_data->{$section}{$day}{$name};
+			$data->{$day} = $stats_data->{$skid}{$day}{$name};
 			$days{$day} ||= $data->{$day};
 		}
 
 		$label ||= '';
 		push @data, {
 			data  => $data,
-			type  => "$name / $sections->{$section}",
+			type  => "$name / $skins->{$skid}",
 			label => $label,
 		};
 	}
@@ -108,8 +108,8 @@ sub _get_graph_id {
 
 	my @id;
 	for my $namesec (@{$form->{stats_graph_multiple}}) {
-		my($name, $section, $label) = split /,/, $namesec;
-		push @id, join '-', map { uri_escape($_, '\W') } ($name, $section, $label);
+		my($name, $skid, $label) = split /,/, $namesec;
+		push @id, join '-', map { uri_escape($_, '\W') } ($name, $skid, $label);
 	}
 
 	for ($form->{stats_days}, $form->{title}, $form->{type}, $form->{byweekavg}) {
@@ -206,7 +206,7 @@ sub report {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
 	slashDisplay('report', {
-		sections	=> _get_sections(),
+		skins	=> _get_skins(),
 	});
 }
 
@@ -233,7 +233,7 @@ sub list {
 	$sep_name_select = ($form->{stats_name_pre} || $form->{stats_name});
 
 	$stats_data = $stats->getAllStats({
-		section	 		=> $form->{stats_section},
+		skid	 		=> $form->{stats_skid},
 		days	 		=> $form->{stats_days} || 1,
 		name	 		=> $stats_name,
 		name_pre 		=> $stats_name_pre,
@@ -242,7 +242,7 @@ sub list {
 
 	slashDisplay('list', {
 		stats_data	=> $stats_data,
-		sections	=> _get_sections(),
+		skins		=> _get_skins(),
 	});
 }
 
@@ -253,12 +253,12 @@ sub _set_legend {
 	$gd->set_legend(@$legend);
 }
 
-sub _get_sections {
+sub _get_skins {
 	my $slashdb = getCurrentDB();
 	# don't modify the data, copy it
-	my %sections = %{$slashdb->getDescriptions('skins')};
-	$sections{all} = 'All';
-	return \%sections;
+	my %skins = %{$slashdb->getDescriptions('skins')};
+	$skins{0} = 'All';
+	return \%skins;
 }
 
 createEnvironment();

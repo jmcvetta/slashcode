@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.58 2000/12/18 13:29:45 pudge Exp $
+#  $Id: Slash.pm,v 1.59 2000/12/18 14:06:23 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -58,7 +58,7 @@ BEGIN {
 		getDateFormat dispComment getDateOffset linkComment redirect
 		insertFormkey getFormkeyId checkSubmission checkTimesPosted
 		updateFormkeyId formSuccess formAbuse formFailure errorMessage
-		fixurl fixparam chopEntity
+		fixurl fixparam chopEntity balance_tags
 	);
 	$CRLF = "\015\012";
 }

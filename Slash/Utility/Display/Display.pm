@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.28 2002/10/27 15:45:35 jamie Exp $
+# $Id: Display.pm,v 1.29 2002/11/09 03:14:59 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -283,7 +283,6 @@ sub selectSection {
 
 	my $seclev = getCurrentUser('seclev');
 	my $sections = $slashdb->getDescriptions('sections');
-	my $sectionbank = $slashdb->getSections();
 
 	createSelect($label, $sections, $default, $return);
 }
@@ -1223,4 +1222,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.28 2002/10/27 15:45:35 jamie Exp $
+$Id: Display.pm,v 1.29 2002/11/09 03:14:59 brian Exp $

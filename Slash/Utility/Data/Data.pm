@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.18 2002/03/19 20:15:24 jamie Exp $
+# $Id: Data.pm,v 1.19 2002/03/19 21:59:05 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -791,7 +791,7 @@ sub breakHtml {
 		} elsif ($in_tag)		{ $this_tag .= $c }
 		  elsif ($c =~ /\s/)		{
 			my $nsc;
-			if ($cnswcr && ($nsc) = substr($text, $i) =~ $cnswcr) {
+			if ($cnswcr && (($nsc) = substr($text, $i) =~ $cnswcr)) {
 				# This space doesn't count as a wordbreak because of
 				# a Windows/MSIE bug. The regex puts everything up to
 				# and including the non-start-char(s) into $nsc.
@@ -1908,4 +1908,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.18 2002/03/19 20:15:24 jamie Exp $
+$Id: Data.pm,v 1.19 2002/03/19 21:59:05 jamie Exp $

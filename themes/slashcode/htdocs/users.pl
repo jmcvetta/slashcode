@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.45 2001/12/17 18:30:08 brian Exp $
+# $Id: users.pl,v 1.46 2001/12/17 21:00:39 brian Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -46,6 +46,12 @@ sub main {
 		userlogin	=>  {
 			function	=> \&showInfo,
 			seclev		=> 1,
+			formname	=> $formname,
+			checks		=> [],
+		},
+		no_user	=>  {
+			function	=> \&noUser,
+			seclev		=> 0,
 			formname	=> $formname,
 			checks		=> [],
 		},
@@ -605,6 +611,10 @@ sub showComments {
 	});
 }
 
+sub noUser {
+	print getData("no_user");
+}
+
 #################################################################
 # arhgghgh. I love torture. I love pain. This subroutine satisfies
 # these needs of mine
@@ -824,7 +834,6 @@ sub showInfo {
 		});
 
 	} else {
-		#if (! defined $uid && defined $nick && ! $requested_user->{nonuid}) {
 		if (! $requested_user->{uid}) {
 			
 			print getError('userinfo_idnf_err', { id => $id, fieldkey => $fieldkey});

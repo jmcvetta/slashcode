@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.99 2003/09/15 23:51:22 pudge Exp $
+# $Id: Data.pm,v 1.100 2003/09/16 14:03:23 pater Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2959,7 +2959,16 @@ sub grepn {
 # Removed from openbackend
 sub sitename2filename {
 	my($section) = @_;
-	(my $filename = $section || lc getCurrentStatic('sitename')) =~ s/\W+//g;
+	my $filename = '';
+
+	if ($section ne 'light') {
+		$filename = $section || lc getCurrentStatic('sitename');
+	} else {
+		$filename = lc getCurrentStatic('sitename');
+	}
+
+	$filename =~ s/\W+//g;
+
 	return $filename;
 }
 
@@ -3037,4 +3046,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.99 2003/09/15 23:51:22 pudge Exp $
+$Id: Data.pm,v 1.100 2003/09/16 14:03:23 pater Exp $

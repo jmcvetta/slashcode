@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.57 2002/06/01 22:59:41 jamie Exp $
+# $Id: Slash.pm,v 1.58 2002/06/20 01:42:46 jamie Exp $
 
 package Slash;
 
@@ -92,7 +92,7 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
-	if (!$thisComment) {
+	if (!$thisComment || !@$thisComment) {
 		_print_cchp($header);
 		return ( {}, 0 );
 	}
@@ -387,22 +387,33 @@ sub printComments {
 	my $form = getCurrentForm();
 	my $slashdb = getCurrentDB();
 
-	unless ($discussion) {
-		print getData('no_such_sid');
+	if (!$discussion || !$discussion->{id}) {
+		print getData('no_such_sid', {}, '');
 		return 0;
 	}
 
 	$pid ||= 0;
 	$cid ||= 0;
+	my $cidorpid = $cid || $pid;
 	my $lvl = 0;
 
 	# Get the Comments
-	my($comments, $count) = selectComments($discussion, $cid || $pid);
+	my($comments, $count) = selectComments($discussion, $cidorpid);
+
+	if ($cidorpid && !exists($comments->{$cidorpid})) {
+		# No such comment in this discussion.
+		my $d = getData('no_such_comment', {
+			sid => $discussion->{id},
+			cid => $cid,
+		}, '');
+		print $d;
+		return 0;
+	}
 
 	# Should I index or just display normally?
 	my $cc = 0;
-	if ($comments->{$cid || $pid}{visiblekids}) {
-		$cc = $comments->{$cid || $pid}{visiblekids};
+	if ($comments->{$cidorpid} && $comments->{$cidorpid}{visiblekids}) {
+		$cc = $comments->{$cidorpid}{visiblekids};
 	}
 
 	$lvl++ if $user->{mode} ne 'flat' && $user->{mode} ne 'archive'

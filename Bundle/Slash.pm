@@ -1,10 +1,10 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.38 2005/03/11 17:19:24 pudge Exp $
+# $Id: Slash.pm,v 1.39 2005/03/29 19:02:04 pudge Exp $
 #
 
-$Bundle::Slash::VERSION = '2.50';
+$Bundle::Slash::VERSION = '2.51';
 
 1;
 
@@ -110,6 +110,12 @@ LWP::Parallel
 Lingua::Stem
 
 URI::Find
+
+Config::General		- HTML validator
+
+Set::IntSpan		- HTML validator
+
+Text::Iconv		- HTML validator
 
 
 =head1 DESCRIPTION

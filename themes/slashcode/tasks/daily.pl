@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily.pl,v 1.14 2004/12/09 04:07:37 jamiemccarthy Exp $
+# $Id: daily.pl,v 1.15 2004/12/14 17:52:50 jamiemccarthy Exp $
 
 use strict;
 
@@ -59,7 +59,7 @@ sub daily_generateDailyMailees {
 				story_always_topic	story_always_author	story_always_nexus
 			)) {
 				my $value = $user->{$cust_key};
-				my @values = sort split /[,']+/, $value;
+				my @values = sort grep /^\d+$/, split /[,']+/, $value;
 				$key .= '|' . join(',', @values);
 			}
 			# allow us to make certain emails sent individually,

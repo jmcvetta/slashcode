@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.357 2003/03/23 01:29:17 jamie Exp $
+# $Id: MySQL.pm,v 1.358 2003/03/23 02:30:20 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.357 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.358 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3142,15 +3142,9 @@ sub createAbuse {
 sub setExpired {
 	my($self, $uid) = @_;
 
-	if  (! $self->checkExpired($uid)) {
-		$self->setUser($uid, { expired => 1});
-		$self->sqlInsert('accesslist', {
-			-uid		=> $uid,
-			formname 	=> 'comments',
-			-readonly	=> 1,
-			-ts		=> 'now()',
-			reason		=> 'expired'
-		}) if $uid ;
+	if  ($uid && !$self->checkExpired($uid)) {
+		$self->setUser($uid, { expired => 1 });
+		$self->setAccessList({ uid => $uid }, [qw( nopost )], 'expired');
 	}
 }
 
@@ -3158,10 +3152,9 @@ sub setExpired {
 sub setUnexpired {
 	my($self, $uid) = @_;
 
-	if ($self->checkExpired($uid)) {
-		$self->setUser($uid, { expired => 0});
-		my $sql = "WHERE uid = $uid AND reason = 'expired' AND formname = 'comments'";
-		$self->sqlDo("DELETE from accesslist $sql") if $uid;
+	if ($uid && $self->checkExpired($uid)) {
+		$self->setUser($uid, { expired => 0 });
+		$self->setAccessList({ uid => $uid }, [ ], '');
 	}
 }
 
@@ -3170,12 +3163,11 @@ sub checkExpired {
 	my($self, $uid) = @_;
 	return 0 if !$uid;
 
-	my $where = "uid = $uid AND readonly = 1 AND reason = 'expired'";
-
-	$self->sqlSelect(
-		"readonly",
-		"accesslist", $where
+	my $rows = $self->sqlCount(
+		"accesslist",
+		"uid = '$uid' AND now_nopost = 'yes' AND reason = 'expired'"
 	);
+	return $rows ? 1 : 0;
 }
 
 ##################################################################

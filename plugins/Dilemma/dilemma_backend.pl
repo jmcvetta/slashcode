@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma_backend.pl,v 1.6 2004/09/08 00:36:01 jamiemccarthy Exp $
+# $Id: dilemma_backend.pl,v 1.7 2004/09/08 14:55:31 jamiemccarthy Exp $
 
 use Slash::Constants ':slashd';
 
@@ -200,14 +200,14 @@ sub do_logdatadump {
 		$xml .= "<tick>$tick</tick>";
 		$xml .= "<foodsize>$foodsize</foodsize>";
 		if ($playlog_hr->{$meetlog_meetid} && %{$playlog_hr->{$meetlog_meetid}}) {
-			$xml .= "<agentplay>";
 			my @daids = sort { $a <=> $b } keys %{$playlog_hr->{$meetlog_meetid}};
 			for my $daid (@daids) {
+				$xml .= "<agentplay>";
 				$xml .= "<daid>$daid</daid>";
 				$xml .= "<play>$playlog_hr->{$meetlog_meetid}{$daid}{play}</play>";
 				$xml .= "<reward>$playlog_hr->{$meetlog_meetid}{$daid}{reward}</reward>";
+				$xml .= "</agentplay>";
 			}
-			$xml .= "</agentplay>";
 			# Recycle the RAM for each meeting, since there may
 			# be millions of 'em.
 			delete $playlog_hr->{$meetlog_meetid};

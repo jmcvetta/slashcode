@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.8 2001/04/25 17:12:39 pudge Exp $
+# $Id: Makefile,v 1.9 2001/04/25 17:47:08 cliff Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -84,11 +84,16 @@ install: slash plugins
 # directory it will be easy
 	# Lets go install the libraries, remember to clean out old versions.
 	(cd Slash; make install UNINST=1)
-	# Lets go install the plugin's libraries
+	# Lets go install the plugin libraries
+	#
+	# This tries to intelligently install plugins based on whether or not
+	# they have a Makefile. Not all current plugins have the "install" target
+	# so we shouldn't track them for errors, at this time. This should be 
+	# fixed, eventually.
 	#
 	# If 'plugins' is already a dependency, why do we need to regenerate the
 	# Makefile? - Cliff
-	(cd plugins; \
+	-(cd plugins; \
 	 for a in $(PLUGINS); do \
 	 	(cd $$a; \
 	 	if [ -f Makefile ]; then \
@@ -144,7 +149,10 @@ install: slash plugins
 		install -d $(SLASH_PREFIX)/$$d; \
 		install $$f $(SLASH_PREFIX)/$$d/$$b; \
 		if [ -f "$$f.bak" ]; then \
-			rm $$f; mv $$f.bak $$f; \
+			if [ -f $$f ]; then \
+				rm $$f; \
+			fi; \
+			mv $$f.bak $$f; \
 		fi; \
 	done)
 

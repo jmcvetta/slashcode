@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.30 2002/05/02 22:56:13 brian Exp $
+# $Id: search.pl,v 1.31 2002/05/02 22:58:19 brian Exp $
 
 use strict;
 use Slash;
@@ -74,7 +74,7 @@ sub main {
 	if ($form->{op} eq 'rss' && !$user->{is_admin}) {
 		$form->{op} = 'stories'
 			unless $constants->{search_rss_enabled};
-	} elsif ($form->{op} eq 'rss') {
+	} elsif ($form->{op} eq 'submissions' && !$user->{is_admin}) {
 		$form->{op} = 'stories'
 			unless $constants->{submiss_view};
 	}

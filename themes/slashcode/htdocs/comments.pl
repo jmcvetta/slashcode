@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.147 2003/07/29 18:29:11 vroom Exp $
+# $Id: comments.pl,v 1.148 2003/08/19 01:37:28 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -782,17 +782,17 @@ sub validateComment {
 		next if $_ eq 'uid' && $user->{is_anon};
 		# Otherwise we perform the specific read-only test.
 		$read_only = $slashdb->checkReadOnly('nopost', {
-        	        $_ => $user->{$_},
-	        });
+			$_ => $user->{$_},
+		});
 		# Bail if a specific test returns TRUE
 		last if $read_only;
 	}
-        if ($read_only) {
-                $$error_message = getError('readonly');
-                $form_success = 0;
-                # editComment('', $$error_message), return unless $preview;
-                return;
-        }
+	if ($read_only) {
+		$$error_message = getError('readonly');
+		$form_success = 0;
+		# editComment('', $$error_message), return unless $preview;
+		return;
+	}
 
 	# New check (July 2002):  there is a max number of posts per 24-hour
 	# period, either based on IPID for anonymous users, or on UID for

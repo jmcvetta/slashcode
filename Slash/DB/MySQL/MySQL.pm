@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.433 2003/07/29 19:03:56 pudge Exp $
+# $Id: MySQL.pm,v 1.434 2003/08/05 14:30:27 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.433 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.434 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -219,8 +219,14 @@ my %descriptions = (
 	'section-types'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'string_param', "type='section_types'") },
 
-	'otherusersparam',
+	'otherusersparam'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'string_param', "type='otherusersparam'") },
+
+	'bytelimit'
+		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='bytelimit'") },
+
+	'bytelimit_sub'
+		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='bytelimit' OR type='bytelimit_sub'") },
 
 	countries => sub {
 		$_[0]->sqlSelectMany(

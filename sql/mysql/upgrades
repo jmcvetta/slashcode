@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.577 2004/05/01 06:56:50 pudge Exp $
+# $Id: upgrades,v 1.578 2004/05/04 16:14:31 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2279,3 +2279,5 @@ INSERT INTO vars (name, value, description) VALUES ('maxtokens_add','3','Max tok
 # only if using HumanConf, and you want to have a better value ...
 UPDATE vars SET value = 10 WHERE name = "hc_pool_secs_before_use";
 INSERT INTO vars (name, value, description) VALUES ('hc_image_format','jpg','Format for HC images (png, jpg, etc.)');
+
+INSERT INTO vars (name, value, description) VALUES ('m2_wait_hours','12','Number of hours to wait before a mod is available for m2');

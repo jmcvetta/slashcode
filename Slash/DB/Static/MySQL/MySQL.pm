@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.97 2003/05/06 11:14:25 pudge Exp $
+# $Id: MySQL.pm,v 1.98 2003/05/08 14:33:27 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -142,7 +142,7 @@ sub getNewStoryTopic {
 	$needed = $needed * 3 + 5;
 	my $clause;	
 	if ($section) {
-		$clause = "stories.section = '$section'";
+		$clause = "stories.section = '$section' AND displaystatus != 1";
 	} else {
 		$clause = 'displaystatus = 0';
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.99 2003/05/12 23:40:50 pater Exp $
+# $Id: MySQL.pm,v 1.100 2003/06/03 11:53:22 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1731,7 +1731,9 @@ sub getHeadFootPages {
 	my $list = $self->sqlSelectAll(
 		'page',
 		'templates',
-		"section = '$section' AND name='$headfoot'");
+		"section = '$section' AND name='$headfoot' AND page != 'misc'");
+	push @$list, [qw( misc )];
+
 	return $list;
 }
 

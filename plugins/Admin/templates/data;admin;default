@@ -107,9 +107,18 @@ Saved [% form.thisname %]<BR>
 	IF moreinfo %] More info: "[% moreinfo | strip_literal %]".[%
 	END %]&nbsp;**</B></P></BLOCKQUOTE>
 
+[% # NO POINTS.
+CASE "no points" %]
+	You don't have any moderator points.<BR>
+[% # NO POINTS.
+CASE "not enough points" %]
+	You don't have enough moderator points.<BR>
+[% CASE "unknown_moderation_warning" %]
+	An unknown error occurred while moderating.<BR>
+[% CASE "moderate_recent_message" %]
+	<P>Return to the set of <A HREF="[% constants.rootdir %]/admin.pl?op=recent&amp;startat=[% startat %]">recent comments</A> you were just moderating.</P>
 [% END %]
-
 __seclev__
 10000
 __version__
-$Id: data;admin;default,v 1.6 2003/08/06 04:50:12 jamie Exp $
+$Id: data;admin;default,v 1.7 2003/09/15 18:34:45 vroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.175 2003/09/10 22:28:15 pudge Exp $
+# $Id: admin.pl,v 1.176 2003/09/15 18:34:45 vroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -97,6 +97,12 @@ sub main {
 			seclev		=> 100,
 			adminmenu	=> 'config',
 			tab_selected	=> 'filters',
+		},
+		moderate_recent		=> {
+			function	=> \&moderate,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'recent',
 		},
 		siteinfo	=> {
 			function 	=> \&siteInfo,
@@ -1746,6 +1752,51 @@ sub displaySlashd {
 	});
 }
 
+
+##################################################################
+# Handles moderation
+sub moderate {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	my $was_touched = {};
+	my ($sid,$cid);
+
+	titlebar("100%", "Moderating...");
+
+	for my $key (sort keys %{$form}) {
+		if ($key =~ /^reason_(\d+)_(\d+)$/) {
+			($sid, $cid) = ($1, $2);
+			my $ret_val = $slashdb->moderateComment($sid, $cid, $form->{$key});
+			
+			# No points and not enough points shouldn't show up since the user
+			# is an admin but check just in case 
+			if($ret_val < 0){
+				if ($ret_val == -1) {
+					print getData('no points');
+				} elsif ($ret_val == -2){
+					print getData('not enough points');
+				} else {
+					print getData('unknown_moderation_warning');
+				}
+			
+			} else {
+				$was_touched->{$sid} += $ret_val;
+			}
+			
+		}
+	}
+
+	foreach my $s (keys %$was_touched) {
+		if($was_touched->{$s}){
+			my $story_sid = $slashdb->getStorySidFromDiscussion($sid);
+			$slashdb->setStory($story_sid, { writestatus => 'dirty' }) if $story_sid;
+		}
+	}
+	my $startat=$form->{startat} || 0;
+	print getData('moderate_recent_message', { startat => $startat });
+}
+
+
 ##################################################################
 sub displayRecent {
 	my($form, $slashdb, $user, $constants) = @_;
@@ -1759,7 +1810,7 @@ sub displayRecent {
 		min	=> $min,
 		max	=> $max,
 		startat	=> $startat,
-		num	=> 30,
+		num	=> 100,
 	}) || [ ];
 
 	my $subj_vislen = 30;
@@ -1938,6 +1989,8 @@ sub getTitle {
 	return slashDisplay('titles', $hashref,
 		{ Return => 1, Nocomm => $nocomm });
 }
+
+
 
 ##################################################################
 # Based on $form, returns the time for a story we're saving.  It

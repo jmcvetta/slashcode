@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.769 2005/02/16 20:50:34 pudge Exp $
+# $Id: upgrades,v 1.770 2005/02/22 23:34:26 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2856,3 +2856,6 @@ INSERT INTO message_codes (code, type, seclev, modes, send, subscribe) VALUES (1
 # End of T_2_5_0_47, Start of T_2_5_0_48 - 2005/02/08
 
 # End of T_2_5_0_48, Start of T_2_5_0_49 - 2005/02/15
+
+# End of T_2_5_0_49, Start of T_2_5_0_50 - 2005/02/22
+

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.157 2003/11/17 23:21:58 pater Exp $
+# $Id: comments.pl,v 1.158 2003/11/18 20:41:04 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -471,11 +471,12 @@ sub commentIndexUserCreated {
 	# um, let's put this in the template
 	# titlebar("100%", getData('user_discussions'));
 	my $searchdb = getObject('Slash::Search', $constants->{search_db_user});
-	my $start = $form->{start} || 0;
-	my $hashref = {};
-	$hashref->{section} = $form->{section} if $form->{section};
-	$hashref->{tid} = $form->{tid} if $form->{tid};
-	$hashref->{type} = 'recycle'; 
+	my $start    = $form->{start} || 0;
+	my $hashref  = {};
+	my $sections;
+	$hashref->{section}  = $form->{section} if $form->{section};
+	$hashref->{tid}      = $form->{tid} if $form->{tid};
+	$hashref->{type}     = 'recycle'; 
 	$hashref->{approved} = '1'; 
 
 	my $discussions = $searchdb->findDiscussion(
@@ -485,8 +486,11 @@ sub commentIndexUserCreated {
 
 	my $section_select;	
 	if ($constants->{ubb_like_forums}) {
-		my $sections = $slashdb->getDescriptions('forums');
+		$sections = $slashdb->getDescriptions('forums');
 		$section_select = createSelect('section', $sections, $form->{section}, 1);
+		for (my $i=0; $i < @$discussions; $i++) {
+			$discussions->[$i]{comment} = $slashdb->getForumDescription($discussions->[$i]{id});
+		}
 	}
 
 	if ($discussions && @$discussions) {
@@ -521,6 +525,7 @@ sub commentIndexUserCreated {
 			args		=> _buildargs($form),
 			start		=> $start,
 			back		=> $back,
+			sections	=> $sections,
 			section_select  => $section_select,
 		});
 	} else {

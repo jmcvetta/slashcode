@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.476 2003/11/18 16:25:48 jamie Exp $
+# $Id: MySQL.pm,v 1.477 2003/11/18 20:41:04 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.476 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.477 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8512,6 +8512,16 @@ sub getMenus {
 	}
 
 	return $menus;
+}
+
+########################################################
+# for ubb_like_forums
+sub getForumDescriptions {
+	my($self, $forum_id);
+
+	my $desc = $self->sqlSelect('comment', 'comments, comment_text', "comments.cid=comment_text.cid AND sid=$forum_id", 'ORDER BY comments.cid ASC LIMIT 1');
+
+	return $desc;
 }
 
 ########################################################

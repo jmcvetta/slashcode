@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.24 2002/02/14 21:40:03 pudge Exp $
+# $Id: slashschema_create.sql,v 1.25 2002/02/14 22:16:31 jamie Exp $
 #
 
 #
@@ -572,10 +572,10 @@ CREATE TABLE story_topics (
   tid smallint(5) unsigned default NULL,
   FOREIGN KEY (sid) REFERENCES stories(sid),
   FOREIGN KEY (tid) REFERENCES topics(tid),
-  PRIMARY KEY  (id),
+  PRIMARY KEY (id),
   INDEX tid (tid),
-  INDEX sid (sid),
-) TYPE=MyISAM;
+  INDEX sid (sid)
+) TYPE = myisam;
 
 #
 # Table structure for table 'string_param'

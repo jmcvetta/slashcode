@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.13 2003/04/01 02:10:07 brian Exp $
+# $Id: stats.pl,v 1.14 2003/04/01 18:13:43 brian Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -21,7 +21,6 @@ sub main {
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
 
-	# This will need to be changed to "log_db_user"
 	my $stats     = getObject('Slash::Stats', { db_type => 'log_slave' } );
 
 	my $admin      = $user->{seclev} >= ($constants->{stats_admin_seclev} || 100);

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.43 2002/04/17 20:14:02 cliff Exp $
+# $Id: slashschema_create.sql,v 1.44 2002/04/22 20:15:21 brian Exp $
 #
 
 #
@@ -116,6 +116,7 @@ CREATE TABLE blocks (
 	rss_template varchar(30),
 	items smallint NOT NULL DEFAULT '0', 
 	autosubmit enum("no","yes") DEFAULT 'no' NOT NULL,
+	rss_cookie varchar(255),
 	FOREIGN KEY (rss_template) REFERENCES templates(name),
 	PRIMARY KEY (bid),
 	KEY type (type),

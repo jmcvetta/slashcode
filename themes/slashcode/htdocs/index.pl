@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.73 2003/05/29 15:58:38 brian Exp $
+# $Id: index.pl,v 1.74 2003/05/30 18:37:01 brian Exp $
 
 use strict;
 use Slash;
@@ -291,6 +291,7 @@ sub displayStories {
 		next if (($story->{is_future} && !$user->{is_subscriber}) || ($story->{is_future} && $constants->{subscribe_future_secs} < 1)) ;
 		my @threshComments = split m/,/, $story->{hitparade};  # posts in each threshold
 
+		$other->{is_future} = 1 if $story->{is_future};
 		my $storytext = displayStory($story->{sid}, '', $other);
 
 		$tmpreturn .= $storytext;

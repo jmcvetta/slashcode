@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.760 2005/02/15 18:23:58 pudge Exp $
+# $Id: MySQL.pm,v 1.761 2005/02/22 18:39:23 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.760 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.761 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3079,6 +3079,16 @@ sub getCommentChildren {
 
 	return $scid;
 }
+
+########################################################
+sub getCommentsStartingAt {
+	my($self, $start_at, $options) = @_;
+	my $limit = $options->{limit} ? "LIMIT $options->{limit}" : "";
+	my $order = $options->{order} eq "DESC" ? "DESC" : "ASC";
+	my($comments) = $self->sqlSelectAllHashrefArray('*', 'comments', "cid >= $start_at", "ORDER BY cid $order $limit");
+	return $comments;
+}
+
 
 ########################################################
 # Does what it says, deletes one comment.

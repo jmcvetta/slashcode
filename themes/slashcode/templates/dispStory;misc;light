@@ -47,9 +47,10 @@ END %]
 <P>[% IF constants.run_ads && constants.ad_messaging_num; Slash.getAd(constants.ad_messaging_num); END %]
 [% story.bodytext %]
 [% ELSE %]
+<P>
 [% IF constants.run_ads && constants.ad_messaging_num; Slash.getAd(constants.ad_messaging_num); END %]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;light,v 1.17 2003/08/19 01:38:47 pudge Exp $
+$Id: dispStory;misc;light,v 1.18 2003/08/25 21:54:48 vroom Exp $

@@ -65,7 +65,7 @@ __template__
                 &nbsp;&nbsp;&nbsp;
                 <INPUT TYPE="RADIO" NAME="emaildisplay" [% emaildisplay.1 %] 
 		VALUE=1>&nbsp;
-                Show your email with random SPAM-armoring applied (this
+                Show your email address with random SPAM-armoring applied (this
 		changes weekly).<BR> &nbsp;&nbsp;&nbsp;
                 <INPUT TYPE="RADIO" NAME="emaildisplay" [% emaildisplay.2 %] 
 		VALUE=2>&nbsp;
@@ -299,4 +299,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.41 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: editComm;users;default,v 1.42 2004/07/02 00:08:01 pudge Exp $

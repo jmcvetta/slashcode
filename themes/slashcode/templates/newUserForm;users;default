@@ -43,7 +43,7 @@ __template__
 		<INPUT TYPE="CHECKBOX" NAME="comment_reply" VALUE="1" CHECKED> Replies to my comments will be mailed to me<BR>
 		<INPUT TYPE="CHECKBOX" NAME="newsletter" VALUE="1" > Send me the newsletter<BR>
 		<INPUT TYPE="CHECKBOX" NAME="headlines" VALUE="1" > Send me the daily headlines<BR>
-[% IF constants.hc && constants.hc_sw_newuser && user.state.hc %]
+[% IF constants.plugin.HumanConf && constants.hc && constants.hc_sw_newuser && user.state.hc %]
         [% IF user.state.hcinvalid %]
                 [% user.state.hcerror %]
         [% ELSE %]
@@ -78,4 +78,4 @@ password mailed to you</A> by entering your nickname, uid, or email address.
 __seclev__
 10000
 __version__
-$Id: newUserForm;users;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: newUserForm;users;default,v 1.10 2003/05/15 15:53:11 jamie Exp $

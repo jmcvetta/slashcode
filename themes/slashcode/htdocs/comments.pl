@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.135 2003/05/13 06:25:47 pater Exp $
+# $Id: comments.pl,v 1.136 2003/05/15 15:53:11 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -212,7 +212,10 @@ sub main {
 		# yeah, the next step is to loop through the array of $ops->{$op}{check}
 		my $formname;
 		my $options = {};
-		$options->{no_hc} = 1 if !$constants->{hc_sw_comments}
+		$options->{no_hc} = 1 if
+			   !$constants->{plugin}{HumanConf}
+			|| !$constants->{hc}
+			|| !$constants->{hc_sw_comments}
 			|| (!$user->{is_anon}
 			   && $user->{karma} > $constants->{hc_maxkarma});
  

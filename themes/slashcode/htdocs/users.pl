@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.180 2003/05/12 13:14:24 pudge Exp $
+# $Id: users.pl,v 1.181 2003/05/15 15:53:11 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -418,7 +418,9 @@ sub main {
 		# user's karma doesn't get them out of having to prove
 		# they're a human for creating a *new* user.)
                 my $options = {};
-		if (	   !$constants->{hc_sw_newuser}
+		if (	   !$constants->{plugin}{HumanConf}
+			|| !$constants->{hc}
+			|| !$constants->{hc_sw_newuser}
 			   	&& ($formname eq 'users/nu' || $op eq 'newuserform')
 			|| !$constants->{hc_sw_mailpasswd}
 			   	&& ($formname eq 'users/mp' || $op eq 'mailpasswdform')

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.170 2003/08/18 19:37:05 jamie Exp $
+# $Id: admin.pl,v 1.171 2003/08/19 01:38:47 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1272,18 +1272,15 @@ sub editStory {
 		}
 
 		for my $field (qw( introtext bodytext )) {
-			$storyref->{$field} = cleanSlashTags(
-				$storyref->{$field}, {});
+			$storyref->{$field} = cleanSlashTags($storyref->{$field});
 
 			# do some of the processing displayStory()
 			# does, as we are bypassing it by going straight to
 			# dispStory() -- pudge
-			$story_copy{$field} = parseSlashizedLinks(
-				$storyref->{$field}, {});
-			$story_copy{$field} = cleanSlashTags(
-				$storyref->{$field}, {});
-			$story_copy{$field} = processSlashTags(
-				$storyref->{$field}, {});
+			$story_copy{$field} = parseSlashizedLinks($storyref->{$field});
+			$story_copy{$field} = cleanSlashTags($storyref->{$field});
+			my $options = $field eq 'bodytext' ? { break => 1 } : undef;
+			$story_copy{$field} = processSlashTags($storyref->{$field}, $options);
 		}
 
 		my $author  = $slashdb->getAuthor($storyref->{uid});

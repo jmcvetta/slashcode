@@ -36,6 +36,8 @@ END %]
 <FONT SIZE="2"><B>from the [% story.dept %] dept.</B></FONT><BR>
 [% END %]
 
+[% mypagemenu = PROCESS pagemenu; IF mypagemenu %]<FONT SIZE="2">[% mypagemenu %]</FONT><BR>[% END %]
+
 [% story.introtext %]
 
 [% IF full && user.is_admin && !preview %]<P><A HREF="[% constants.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</A>[% END %]
@@ -50,4 +52,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;light,v 1.16 2003/08/12 15:17:51 vroom Exp $
+$Id: dispStory;misc;light,v 1.17 2003/08/19 01:38:47 pudge Exp $

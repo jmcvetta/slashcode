@@ -52,6 +52,7 @@ END %]
 							&nbsp;&nbsp;<A HREF="[% constants.rootdir -%]/email.pl?sid=[% story.sid %]"><IMG SRC="[% constants.imagedir -%]/email.gif" BORDER="0"></A>
 						[% END %]<BR>
 					[% IF constants.use_dept && story.dept %]<FONT FACE="[% constants.mainfontface %]" SIZE="1">from the <B>[% story.dept %]</B> dept.</FONT>[% END %]
+					[% mypagemenu = PROCESS pagemenu; IF mypagemenu %]<BR><FONT FACE="[% constants.mainfontface %]" SIZE="1">[% mypagemenu %]</FONT>[% END %]
 				</TD>
 			</TR></TABLE>
 		</TD>
@@ -128,4 +129,4 @@ END -%]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.29 2003/08/12 15:17:51 vroom Exp $
+$Id: dispStory;misc;default,v 1.30 2003/08/19 01:38:47 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.101 2003/06/10 07:19:35 pater Exp $
+# $Id: MySQL.pm,v 1.102 2003/06/18 13:03:35 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1317,8 +1317,27 @@ sub getMetaModerations {
 }
 
 ########################################################
-# For freshenup.pl,archive.pl
+# For freshenup.pl
 #
+# We have an index on just 1 char of story_text.rendered, and
+# its only purpose is to make this select into a lookup instead
+# of a table scan.
+sub getStoriesNeedingRender {
+	my($self, $limit) = @_;
+	$limit ||= 10;
+	my $returnable = $self->sqlSelectColArrayref(
+		"stories.sid",
+		"stories, story_text", 
+		"stories.sid = story_text.sid
+		 AND rendered IS NULL
+		 AND displaystatus = 0",
+		"ORDER BY time DESC LIMIT $limit"
+	);
+	return $returnable;
+}
+
+########################################################
+# For freshenup.pl,archive.pl
 #
 sub getStoriesWithFlag {
 	my($self, $purpose, $order, $limit) = @_;

@@ -1,7 +1,8 @@
-# $Id: PLUGIN,v 1.27 2004/10/25 22:52:18 pudge Exp $
+# $Id: PLUGIN,v 1.28 2005/03/13 16:26:13 jamiemccarthy Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
+mysql_schema=mysql_schema.sql
 pg_dump=dump
 htdoc=admin.pl
 task=refresh_uncommon.pl

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.18 2001/11/30 05:46:33 pudge Exp $
+# $Id: search.pl,v 1.19 2001/12/25 19:37:04 brian Exp $
 
 use strict;
 use Slash;
@@ -103,7 +103,15 @@ sub _authors {
 # Ugly isn't it?
 sub _topics {
 	my $slashdb = getCurrentDB();
-	my $topics = $slashdb->getDescriptions('topics');
+	my $section = getCurrentForm('section');
+
+	my $topics;
+	if ($section) {
+		$topics = $slashdb->getDescriptions('topics_section', $section);
+	} else {
+		$topics = $slashdb->getDescriptions('topics');
+	}
+
 	$topics->{''} = 'All Topics';
 
 	return $topics;

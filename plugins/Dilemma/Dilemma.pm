@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Dilemma.pm,v 1.9 2005/04/05 13:09:48 jamiemccarthy Exp $
+# $Id: Dilemma.pm,v 1.10 2005/04/05 16:48:32 jamiemccarthy Exp $
 #
 # XXX Every place we have getDilemmaInfo() needs to (a) know the $trid
 # for the tournament and (b) change to getDilemmaTournamentInfo($trid)
@@ -17,7 +17,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # ZOIDBERG: Friends! Help! A guinea pig tricked me!
 
@@ -723,12 +723,12 @@ sub getLogDataDump {
 	my $species_info_hr = $self->getDilemmaSpeciesInfo();
 	my $agents_info_hr = $self->getDilemmaAgentsInfo();
 	my $meetlog_sth = $self->sqlSelectMany(
-		"*",
+		"meetid, trid, tick, foodsize",
 		"dilemma_meetlog",
 		"",
 		"ORDER BY meetid");
 	my $playlog_sth = $self->sqlSelectMany(
-		"*",
+		"meetid, daid, playtry, playactual, reward, sawdaid",
 		"dilemma_playlog",
 		"",
 		"ORDER BY meetid, daid");

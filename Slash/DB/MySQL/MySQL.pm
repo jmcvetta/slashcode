@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.114 2002/03/29 07:47:35 patg Exp $
+# $Id: MySQL.pm,v 1.115 2002/04/03 03:15:12 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5352,6 +5352,39 @@ sub getStories {
 sub getRelatedLinks {
 	my $answer = _genericGets('related_links', 'id', '', @_);
 	return $answer;
+}
+
+########################################################
+sub getHooksByParam {
+	my ($self, $param) = @_;
+	my $answer = $self->sqlSelectAllHashrefArray('*', 'hooks', 'param =' . $self->sqlQuote($param) );
+	return $answer;
+}
+
+########################################################
+sub getHook {
+	my $answer = _genericGet('hooks', 'id', '', @_);
+	return $answer;
+}
+
+########################################################
+sub createHook {
+	my($self, $hash) = @_;
+
+	$self->sqlInsert('hooks', $hash);
+}
+
+########################################################
+sub deleteHook {
+	my($self, $id) = @_;
+
+	$self->sqlDelete('hooks', 'id =' . $self->sqlQuote($id));  
+}
+
+########################################################
+sub setHook {
+	my($self, $id, $value) = @_;
+	$self->sqlUpdate('hooks', $value, 'id=' . $self->sqlQuote($id));
 }
 
 ########################################################

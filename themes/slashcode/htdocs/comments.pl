@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.84 2002/07/24 15:14:06 patg Exp $
+# $Id: comments.pl,v 1.85 2002/07/24 15:52:09 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -113,8 +113,8 @@ sub main {
 			function		=> \&submitComment,
 			seclev			=> 0,
 			post			=> 1,
-			formname 		=> $form->{new_discussion} ? 'discussions' : 'comments',
-			checks			=> $form->{new_discussion} ? [] : 
+			formname 		=> 'comments',
+			checks			=> 
 			[ qw ( response_check update_formkeyid max_post_check valid_check interval_check formkey_check ) ],
 		},
 	};
@@ -443,7 +443,7 @@ sub commentIndexUserCreated {
 
 		my $title = getData('user_discussions');
 
-		$title .= ": " . $slashdb->getTopic($form->{tid},'alttext') . " ($form->{tid})" if $form->{tid};
+		$title .= ": " . $slashdb->getTopic($form->{tid}, 'alttext') . " ($form->{tid})" if $form->{tid};
 	
 		slashDisplay('udiscuss_list', {
 			discussions	=> $discussions,
@@ -638,7 +638,7 @@ sub createDiscussion {
 		# We COULD drop ID from the call below, but not right now.
 		slashDisplay('newdiscussion', { 
 			error 		=> $error, 
-			'label'		=> $label,
+			label		=> $label,
 			form		=> $newform,
 			format_select	=> $format_select,
 			id 		=> $id,
@@ -835,7 +835,7 @@ sub validateComment {
 		# Don't count & or other chars used in entity tags;  don't count
 		# chars commonly used in ascii art.  Not that it matters much.
 		# Do count chars commonly used in source code.
-		my $num_chars = $check_notags =~ tr/A-Za-z0-9?!(){}[]-+='"@$//;
+		my $num_chars = $check_notags =~ tr/A-Za-z0-9?!(){}[]+='"@$-//;
 
 		# Note that approveTags() has already been called by this point,
 		# so all tags present are legal and uppercased.
@@ -1034,8 +1034,8 @@ sub submitComment {
 	my $clean_comment = {
 		subject		=> $tempSubject,
 		comment		=> $tempComment,
-		sid		=> $form->{sid} , 
-		pid		=> $form->{pid} ,
+		sid		=> $form->{sid},
+		pid		=> $form->{pid},
 		ipid		=> $user->{ipid},
 		subnetid	=> $user->{subnetid},
 		uid		=> $form->{postanon} ? $constants->{anonymous_coward_uid} : $user->{uid},

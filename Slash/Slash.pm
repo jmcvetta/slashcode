@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.229 2005/03/08 22:40:17 pudge Exp $
+# $Id: Slash.pm,v 1.230 2005/03/11 00:08:55 pudge Exp $
 
 package Slash;
 
@@ -718,6 +718,11 @@ sub printComments {
 				print STDERR scalar(gmtime) . " printComments memcached writing '$mcdkey$cid' length " . length($comment_text->{$cid}) . " retval=$retval expire: $exp_at\n";
 			}
 		}
+
+		my $karma_bonus = $comments->{$cid}{karma_bonus};
+		if (!$karma_bonus || $karma_bonus eq 'no') {
+			$comment_text->{$cid} = noFollow($comment_text->{$cid});
+		}
 	}
 
 	if ($mcd && $constants->{memcached_debug} && $constants->{memcached_debug} > 1) {
@@ -1217,6 +1222,12 @@ sub dispComment {
 		$comment->{sig} =~ s/^\s*-{1,5}\s*<(?:P|BR)>//i;
 		$comment->{sig} = getData('sigdash', {}, 'comments')
 			. $comment->{sig};
+	}
+
+	if (!$comment->{karma_bonus} || $comment->{karma_bonus} eq 'no') {
+		for ($comment->{sig}, $comment->{comment}) {
+			$_ = noFollow($_);
+		}
 	}
 
 	my $reasons = $reader->getReasons();

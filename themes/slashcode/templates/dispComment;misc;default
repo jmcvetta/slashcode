@@ -51,7 +51,7 @@ on [% Slash.timeCalc(time) %]
    IF !is_anon && (has_homepage || has_journal) %]
 	<BR><FONT FACE="[% constants.mainfontface %]" SIZE="1">(
 	[% IF has_homepage %]
-		<A HREF="[% homepage %]">[% homepage | strip_literal %]</A>
+		<A HREF="[% homepage %]"[% IF (!karma_bonus) || (karma_bonus == 'no') %] REL="nofollow"[% END %]>[% homepage | strip_literal %]</A>
 		[% IF has_journal %] | [% END %]
 	[% END %]
 	[% IF has_journal %]
@@ -99,4 +99,4 @@ on [% Slash.timeCalc(time) %]
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.27 2004/06/17 16:12:24 jamiemccarthy Exp $
+$Id: dispComment;misc;default,v 1.28 2005/03/11 00:08:58 pudge Exp $

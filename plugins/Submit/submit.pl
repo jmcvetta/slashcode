@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.110 2005/03/01 19:41:19 tvroom Exp $
+# $Id: submit.pl,v 1.111 2005/03/11 00:08:56 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -704,6 +704,7 @@ sub processSub {
 }
 
 #################################################################
+=pod
 sub url2html {
 	my($introtext) = @_;
 	$introtext =~ s/\n\n/\n<P>/gi;
@@ -722,6 +723,7 @@ sub url2html {
 	$introtext =~ s/\s+$//;
 	return $introtext;
 }
+=cut
 
 #################################################################
 

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.115 2003/06/18 13:03:35 jamie Exp $
+# $Id: slashschema_create.sql,v 1.116 2003/06/19 13:49:06 jamie Exp $
 #
 
 #
@@ -791,7 +791,6 @@ CREATE TABLE story_text (
 	rendered text,
 	FOREIGN KEY (sid) REFERENCES stories(sid),
 	PRIMARY KEY (sid),
-	INDEX rendered (rendered(1))
 ) TYPE=InnoDB;
 
 #

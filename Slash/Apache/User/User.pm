@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.121 2005/01/08 17:16:25 jamiemccarthy Exp $
+# $Id: User.pm,v 1.122 2005/02/02 23:20:12 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -71,6 +71,9 @@ sub handler {
 	my $apr = Apache::Request->new($r);
 	my $gSkin = getCurrentSkin();
 
+	my $reader_user = $slashdb->getDB('reader');
+	my $reader = getObject('Slash::DB', { virtual_user => $reader_user });
+
 	$r->header_out('X-Powered-By' => "Slash $Slash::VERSION");
 	random($r);
 
@@ -83,6 +86,7 @@ sub handler {
 	my $is_ssl = Slash::Apache::ConnectionIsSSL();
 
 	$slashdb->sqlConnect;
+	$reader->sqlConnect;
 
 	##################################################
 	# Don't remove this. This solves a known bug in Apache -- brian
@@ -330,7 +334,7 @@ sub handler {
 	$srand_called ||= 1;
 
 	# If this uid is marked as banned, deny them access.
-	my $banlist = $slashdb->getBanList();
+	my $banlist = $reader->getBanList;
 	if ($banlist->{$uid}) {
 		# The global current user hasn't been created yet, so the
 		# template expects uid just passed in as the var named "uid".

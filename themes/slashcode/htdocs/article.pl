@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.57 2004/06/22 03:39:01 pudge Exp $
+# $Id: article.pl,v 1.58 2004/07/09 00:43:04 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -174,7 +174,7 @@ sub main {
 			# is being called by slashd, and we need to write
 			# that file, then here's where we print an empty
 			# file that will satisfy slashd. - Jamie
-			Slash::_print_cchp({ sid => "dummy" });
+			Slash::_print_cchp({ stoid => "dummy" });
 		}
 	} else {
 		header('Error', $form->{section}) or return;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.42 2003/09/28 01:27:03 jamie Exp $
+# $Id: Apache.pm,v 1.43 2003/09/28 14:57:28 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -234,13 +234,16 @@ sub ProxyRemoteAddr ($) {
 	my($r) = @_;
 
 	if (!defined($trusted_ip_regex)) {
-		$trusted_ip_regex = getCurrentStatic("x_forwarded_for_trust_regex")
-			|| '127.0.0.1';
+		$trusted_ip_regex = getCurrentStatic("x_forwarded_for_trust_regex");
 		if ($trusted_ip_regex) {
 			# Avoid a little processing each time by doing
 			# the regex parsing just once.
 			$trusted_ip_regex = qr{$trusted_ip_regex};
+		} elsif (!defined($trusted_ip_regex)) {
+			# If not defined, use localhost.
+			$trusted_ip_regex = qr{^127\.0\.0\.1$};
 		} else {
+			# If defined but false, disable.
 			$trusted_ip_regex = '0';
 		}
 	}

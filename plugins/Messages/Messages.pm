@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.12 2002/07/02 14:24:54 pudge Exp $
+# $Id: Messages.pm,v 1.13 2002/07/11 14:55:50 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -164,6 +164,12 @@ sub create {
 			$data->{subject}{_SECTION} = delete($data->{subject}{template_section})
 				|| $data->{_SECTION} || $user->{currentSection};
 		}
+
+		$data->{_templates}{email}{content}	||= 'msg_email';
+		$data->{_templates}{email}{subject}	||= 'msg_email_subj';
+		$data->{_templates}{web}{subject}	||= 'msg_web_subj';
+		$data->{_templates}{content}		||= '';
+		$data->{_templates}{subject}		||= '';
 
 		$message = $data;
 
@@ -396,7 +402,7 @@ sub send {
 		return 0;
 
 	} elsif ($mode == MSG_MODE_EMAIL) {
-		my($addr, $content, $subject);
+		my($addr, $content, $subject, $contemp, $subtemp);
 
 		unless ($constants->{send_mail}) {
 			messagedLog(getData("send_mail false", 0, "messages"));
@@ -413,8 +419,12 @@ sub send {
 			return 0;
 		}
 
-		$content = $self->callTemplate('msg_email', $msg);
-		$subject = $self->callTemplate('msg_email_subj', $msg);
+		$contemp = $msg->{_templates}{email}{content}
+			|| $msg->{_templates}{content};
+		$subtemp = $msg->{_templates}{email}{subject}
+			|| $msg->{_templates}{subject};
+		$content = $contemp ? $self->callTemplate($contemp, $msg) : $msg->{message};
+		$subject = $subtemp ? $self->callTemplate($subtemp, $msg) : $msg->{subject};
 
 		if (sendEmail($addr, $subject, $content, $msg->{priority})) {
 			$self->log($msg, MSG_MODE_EMAIL);
@@ -722,12 +732,17 @@ sub render {
 	my $mode = $self->getMode($msg);
 
 	unless ($notemplate) {
+		$msg->{_templates} = $msg->{message}{_templates};
+
 		# set subject
 		if (ref($msg->{message}) ne 'HASH' || !exists $msg->{message}{subject}) {
-			my $name = $mode == MSG_MODE_EMAIL ? 'msg_email_subj' :
-				   $mode == MSG_MODE_WEB   ? 'msg_web_subj'   :
-				   '';
-			$msg->{subject} =  $self->callTemplate($name, $msg)
+			my $subtemp_e = $msg->{_templates}{email}{subject}
+				|| $msg->{_templates}{subject};
+			my $subtemp_w = $msg->{_templates}{web}{subject}
+				|| $msg->{_templates}{subject};
+			my $name = $mode == MSG_MODE_EMAIL ? $subtemp_e :
+				   $mode == MSG_MODE_WEB   ? $subtemp_w : '';
+			$msg->{subject} = $self->callTemplate($name, $msg) if $name;
 		} else {
 			my $subject = $msg->{message}{subject};
 			if (ref($msg->{message}{subject}) eq 'HASH') {
@@ -910,4 +925,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.12 2002/07/02 14:24:54 pudge Exp $
+$Id: Messages.pm,v 1.13 2002/07/11 14:55:50 pudge Exp $

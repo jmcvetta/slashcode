@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.141 2005/03/11 19:57:59 pudge Exp $
+# $Id: Data.pm,v 1.142 2005/03/16 17:13:19 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -45,7 +45,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2131,7 +2131,11 @@ my $finder = Slash::Utility::Data::URI::Find->new(sub {
 
 sub url2html {
 	my($text) = @_;
+	# find() changes strict, but does not change it back,
+	# so we save and restore value on our own
+	my $old = URI::URL::strict;
 	$finder->find(\$text);
+	URI::URL::strict($old);
 	return $text;
 }
 }
@@ -3592,4 +3596,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.141 2005/03/11 19:57:59 pudge Exp $
+$Id: Data.pm,v 1.142 2005/03/16 17:13:19 pudge Exp $

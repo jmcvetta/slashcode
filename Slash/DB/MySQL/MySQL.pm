@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.232 2002/10/07 17:13:01 pudge Exp $
+# $Id: MySQL.pm,v 1.233 2002/10/11 16:14:25 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.232 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.233 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -723,9 +723,9 @@ sub getMetamodsForUserRaw {
 				IF(
 					id BETWEEN $min_old and $max_old,
 					POW((id-$min_old)/$old_range, $waitpow),
-					POW((id-$min_mid)/$mid_range, $waitpow) + 2
+					POW((id-$min_mid)/$mid_range, $waitpow) + 0.9
 				),
-				POW((id-$min_new)/$new_range, $waitpow) + 4
+				POW((id-$min_new)/$new_range, $waitpow) + 1.8
 			 )
 			 + RAND()
 			 AS rank",

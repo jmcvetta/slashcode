@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.171 2004/03/02 02:54:35 tvroom Exp $
+# $Id: comments.pl,v 1.172 2004/03/02 18:34:21 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -294,7 +294,7 @@ sub main {
 		# in there.. perhaps the length of the primary field in
 		# your form would be a good choice.
 		if ($ops->{$op}{update_formkey}) {
-			if($retval) {
+			if ($retval) {
 				my $field_length = $form->{postercomment}
 					? length($form->{postercomment})
 					: 0;
@@ -1421,11 +1421,11 @@ sub moderate {
 	my $was_touched = 0;
 
 	my $meta_mods_performed = 0;
-	if($user->{is_admin}){
+	if ($user->{is_admin}){
 		$meta_mods_performed = metaModerate();		
 	}
 
-	if($form->{meta_mod_only}){
+	if ($form->{meta_mod_only}){
 		titlebar("100%", "MetaModerating...");
 		print getData("metamoderate_message");
 		print getData("metamods_performed", { num => $meta_mods_performed }) if $meta_mods_performed;

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.6 2000/06/01 15:54:39 pudge Exp $
+#  $Id: users.pl,v 1.7 2000/06/06 13:53:31 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1011,7 +1011,7 @@ EOT2
 	(Note: the characters &amp;, &lt; and &gt; are not allowed in nicknames.)
 
 	<INPUT TYPE="TEXT" NAME="newuser" SIZE="20" MAXLENGTH="20" VALUE="$I{F}{newuser}">
-	<BR> and an <B>valid email address </B> address to send your registration
+	<BR> and a <B>valid email address</B> address to send your registration
 	information. This address will <B>not</B> be displayed on $I{sitename}.
 	<INPUT TYPE="TEXT" NAME="email" SIZE="20" VALUE="$I{F}{email}"><BR>
 	<INPUT TYPE="SUBMIT" NAME="op" VALUE="newuser"> Click the button to

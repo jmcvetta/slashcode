@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.19 2002/10/20 13:18:32 jamie Exp $
+# $Id: subscribe.pl,v 1.20 2002/10/27 15:49:07 jamie Exp $
 
 use strict;
 
@@ -29,7 +29,7 @@ sub main {
 			function	=> \&save,
 			seclev		=> 1,
 		},
-		paypal		=> {	# left in for historical reasons
+		paypal		=> {	# deprecated, left in for historical reasons
 			function	=> \&makepayment,
 			seclev		=> 1,
 		},
@@ -51,13 +51,18 @@ sub main {
 
 	$op = 'default' unless $ops->{$op};
 
-	header("subscribe") unless $op eq 'pause';
-	print createMenu('users', {
-                style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	'preferences',
-	});
+	if ($op ne 'pause') {
+		# "pause" is special, it does a 302 redirect so we need
+		# to not output any HTML.  Everything else gets this,
+		# header and menu.
+		header("subscribe");
+		print createMenu('users', {
+			style =>	'tabbed',
+			justify =>	'right',
+			color =>	'colored',
+			tab_selected =>	'preferences',
+		});
+	}
 
 	my $retval = $ops->{$op}{function}->($form, $slashdb, $user, $constants);
 

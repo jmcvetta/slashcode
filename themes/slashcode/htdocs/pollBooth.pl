@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.18 2001/11/07 01:21:28 brian Exp $
+# $Id: pollBooth.pl,v 1.19 2001/11/07 06:52:16 brian Exp $
 
 use strict;
 use Slash;
@@ -62,7 +62,17 @@ sub default {
 			);
 			my $discussion = 
 				$slashdb->getDiscussion($discussion_id);
-			printComments($discussion,'', '', 1) if $discussion;
+			if ($discussion) {
+				if ($user->{state}{nocomment} || $user->{mode} eq 'nocomment') {
+					slashDisplay('printCommentsNone', {
+						title   => $discussion->{title},
+						'link'    => $discussion->{url},
+						sid   => $discussion->{id},
+					});
+				} else {
+					printComments($discussion);
+				}
+			}
 		}
 	}
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.26 2003/05/13 19:32:12 brian Exp $
+# $Id: topics.pl,v 1.27 2003/05/23 14:13:13 pudge Exp $
 
 use strict;
 use Slash;
@@ -67,24 +67,29 @@ sub hierarchy {
 
 #################################################################
 sub topTopics {
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-	my $form = getCurrentForm();
+	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
 	my $constants = getCurrentStatic();
-	my $section = $reader->getSection();
+	my $form      = getCurrentForm();
 
-	my $topics = $reader->getTopNewsstoryTopics($form->{all});
+	my $limit = $form->{limit}
+		? $form->{limit}
+		: $form->{all}
+			? 0
+			: -1;  # use default
+	my $topics = $reader->getTopNewsstoryTopics($limit);
 
-	for my $top (@$topics) {
-		print STDERR "TOPIC $top->{name} \n";
-		$top->{count} = $reader->countStory($top->{tid});
-
-		my $limit = $top->{cnt} > 10
-			? 10 : $top->{cnt} < 3 || $form->{all}
-			? 3 : $top->{cnt};
+	for my $topic (@$topics) {
+		my $limit = $topic->{count} > 10
+			? 10
+			: $topic->{count} < 3 || $form->{all}
+				? 3
+				: $topic->{count};
 
 		my $stories = $reader->getStoriesEssentials(
-			$limit, $section->{section}, $top->{tid});
-		$top->{stories} = getOlderStories($stories, $section);
+			$limit, '', $topic->{tid}
+		);
+		$#{$stories} = $limit - 1;
+		$topic->{stories} = $stories;
 	}
 
 	slashDisplay('topTopics', {
@@ -101,14 +106,13 @@ sub listTopics {
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
 
-	my $topics = $reader->getTopics();
+	my $topics = $reader->getTopics;
 	
 	if ($form->{section}) {
 		my %new_topics;
 		my $ids = $reader->getDescriptions('topics_section', $form->{section});
 		for (keys %$topics) {
-			$new_topics{$_} = $topics->{$_}
-				if ($ids->{$_});	
+			$new_topics{$_} = $topics->{$_} if $ids->{$_};
 		}
 		$topics = \%new_topics;
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.402 2003/05/22 19:11:51 brian Exp $
+# $Id: MySQL.pm,v 1.403 2003/05/23 14:13:13 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.402 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.403 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3834,16 +3834,31 @@ sub currentAdmin {
 ########################################################
 #
 sub getTopNewsstoryTopics {
-	my($self, $all) = @_;
-	my $when = "AND to_days(now()) - to_days(time) < 14" unless $all;
-	my $order = $all ? "ORDER BY alttext" : "ORDER BY cnt DESC";
-	my $topics = $self->sqlSelectAllHashrefArray("topics.tid as tid, alttext, count(*) as cnt, default_image",
+	my($self, $limit) = @_;
+
+	my $all = 1 if !$limit;
+
+	$limit =~ s/\D+//g;
+	$limit = 10 if !$limit || $limit == 1;
+
+	my $other  = $all ? '' : "LIMIT $limit";
+	my $topics = $self->sqlSelectAllHashrefArray(
+		"topics.tid AS tid, alttext, COUNT(*) AS cnt, default_image, MAX(time) AS tme",
 		'topics,stories',
-		"topics.tid=stories.tid
-		$when
+		"writestatus != 'delete'
+		AND displaystatus >= 0
+		AND time <= NOW()
+		AND topics.tid=stories.tid
 		GROUP BY topics.tid
-		$order"
+		ORDER BY tme DESC
+		$other"
 	);
+
+	# fix names
+	for (@$topics) {
+		$_->{count}  = delete $_->{cnt};
+		$_->{'time'} = delete $_->{tme};
+	}
 
 	return $topics;
 }
@@ -4620,8 +4635,9 @@ sub getCommentsForUser {
 sub getCommentText {
 	my($self, $cid) = @_;
 	return unless $cid;
+
 	if (ref $cid) {
-		return unless scalar(@$cid);
+		return unless scalar @$cid;
 		if (ref $cid ne "ARRAY") {
 			errorLog("_getCommentText called with ref to non-array: $cid");
 			return { };
@@ -4641,8 +4657,6 @@ sub getCommentText {
 		return \%return;
 	} elsif ($cid) {
 		return $self->sqlSelect("comment", "comment_text", "cid=$cid");
-	} else {
-		return {};
 	}
 }
 

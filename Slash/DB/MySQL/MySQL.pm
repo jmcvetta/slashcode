@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.368 2003/04/15 18:44:33 jamie Exp $
+# $Id: MySQL.pm,v 1.369 2003/04/15 19:32:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.368 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.369 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2401,13 +2401,17 @@ sub hasVotedIn {
 #    -Brian
 sub savePollQuestion {
 	my($self, $poll) = @_;
-	$poll->{section} ||= getCurrentStatic('defaultsection');
-	$poll->{voters} ||= "0";
+
+	$poll->{section}  ||= getCurrentStatic('defaultsection');
+	$poll->{voters}   ||= "0";
 	$poll->{autopoll} ||= "no";
+
 	my $qid_quoted = "";
 	$qid_quoted = $self->sqlQuote($poll->{qid}) if $poll->{qid};
+
 	my $sid_quoted = "";
 	$sid_quoted = $self->sqlQuote($poll->{sid}) if $poll->{sid};
+
 	if ($poll->{qid}) {
 		$self->sqlUpdate("pollquestions", {
 			question	=> $poll->{question},
@@ -2436,6 +2440,7 @@ sub savePollQuestion {
 			qid		=> $poll->{qid}
 		}, "sid = $sid_quoted") if $sid_quoted;
 	}
+
 	# Loop through 1..8 and insert/update if defined
 	for (my $x = 1; $x < 9; $x++) {
 		if ($poll->{"aid$x"}) {
@@ -2453,10 +2458,12 @@ sub savePollQuestion {
 				WHERE qid=$qid_quoted AND aid=$x");
 		}
 	}
+
 	# Go on and unset any reference to the qid in sections, if it 
 	# needs to exist the next statement will correct this. -Brian
 	$self->sqlUpdate('sections', { qid => ''}, " qid = $poll->{qid} ")	
 		if ($poll->{qid});
+
 	if ($poll->{qid} && $poll->{currentqid}) {
 		$self->setSection($poll->{section}, { qid => $poll->{qid} });
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.72 2002/04/19 16:19:47 pudge Exp $
+# $Id: users.pl,v 1.73 2002/04/29 20:38:42 brian Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1427,6 +1427,7 @@ sub editComm {
 	my $d_check = $user_edit->{sigdash}		? ' CHECKED' : '';
 	my $b_check = $user_edit->{nobonus}		? ' CHECKED' : '';
 	my $p_check = $user_edit->{postanon}		? ' CHECKED' : '';
+	my $spell_check = $user_edit->{no_spell}	? ' CHECKED' : '';
 
 	$formats = $slashdb->getDescriptions('postmodes');
 	$posttype_select = createSelect(
@@ -1445,6 +1446,7 @@ sub editComm {
 		d_check			=> $d_check,
 		b_check			=> $b_check,
 		p_check			=> $p_check,
+		spell_check		=> $spell_check,
 		commentmodes_select	=> $commentmodes_select,
 		commentsort_select	=> $commentsort_select,
 		highlightthresh_select	=> $highlightthresh_select,
@@ -1828,13 +1830,14 @@ sub saveComm {
 		posttype	=> $form->{posttype},
 		threshold	=> $form->{uthreshold},
 		nosigs		=> ($form->{nosigs}     ? 1 : 0),
+		no_spell		=> ($form->{no_spell}     ? 1 : 0),
 		reparent	=> ($form->{reparent}   ? 1 : 0),
 		noscores	=> ($form->{noscores}   ? 1 : 0),
 		hardthresh	=> ($form->{hardthresh} ? 1 : 0),
-		anon_comments	=> ($form->{anon_comments} ? 1 : 0),
-		sigdash		=> ($form->{sigdash} ? 1 : 0),
-		nobonus		=> ($form->{nobonus} ? 1 : 0),
-		postanon	=> ($form->{postanon} ? 1 : 0),
+		anon_comments	=> ($form->{anon_comments} ? 1 : undef),
+		sigdash		=> ($form->{sigdash} ? 1 : undef),
+		nobonus		=> ($form->{nobonus} ? 1 : undef),
+		postanon	=> ($form->{postanon} ? 1 : undef),
 		textarea_rows	=> $form->{textarea_rows} || $constants->{textarea_rows},
 		textarea_cols	=> $form->{textarea_cols} || $constants->{textarea_cols},
 	};

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.62 2002/04/29 15:37:05 pudge Exp $
+# $Id: admin.pl,v 1.63 2002/04/29 20:38:42 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1131,7 +1131,7 @@ sub editStory {
 	my $ispell_comments = {
 		introtext =>    get_ispell_comments($storyref->{introtext}),
 		bodytext =>     get_ispell_comments($storyref->{bodytext}),
-	};
+	} unless $user->{no_spell};
 
 	my $future = $slashdb->getStoryByTimeAdmin('>', $storyref, "3");
 	$future = [ reverse(@$future) ];

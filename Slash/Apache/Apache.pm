@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.60 2004/07/05 02:36:40 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.61 2004/07/06 17:30:54 pudge Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -329,21 +329,9 @@ sub IndexHandler {
 
 	return DECLINED unless $r->is_main;
 	my $constants = getCurrentStatic();
-	my $gSkin     = getCurrentSkin();
 
-	# XXXSKIN - Pudge, does this look to you like the right solution
-	# for this problem?  One alternative would be to have
-	# getCurrentSkin() check its return value and do this same thing.
-	# Far as I know, this is the only place we need to do this.
-	# If the client is anonymous, Slash::Apache::User::handler has
-	# not been called, so setCurrentSkin hasn't been called, and we
-	# definitely need $gSkin set to do our manipulation of $uri.
-	# ARGH.  Or, do we need to call this every time through, because
-	# otherwise we get old data from previous click?
-#	if (!$gSkin->{skid}) {
-		setCurrentSkin(determineCurrentSkin());
-		$gSkin = getCurrentSkin();
-#	}
+	setCurrentSkin(determineCurrentSkin());
+	my $gSkin     = getCurrentSkin();
 
 	my $uri = $r->uri;
 	my $is_user = $r->header_in('Cookie') =~ $USER_MATCH;

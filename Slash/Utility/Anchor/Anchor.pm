@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.52 2003/07/29 11:05:09 pater Exp $
+# $Id: Anchor.pm,v 1.53 2003/07/29 18:36:31 vroom Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -144,7 +144,9 @@ sub header {
 	getSectionColors();
 
 	# This is ALWAYS displayed. Let the template handle title.
-	slashDisplay('html-header', { title => $data->{title} }, { Nocomm => 1,  Return => $options->{Return}, Page => $options->{Page} })
+	my $template_vars={title => $data->{title}};
+	$template_vars->{meta_desc} = $options->{meta_desc} if $options->{meta_desc};
+	slashDisplay('html-header', $template_vars, { Nocomm => 1,  Return => $options->{Return}, Page => $options->{Page} })
 		unless $options->{noheader};
 
 	$user->{state}{mt}{curcol} = 0;
@@ -600,4 +602,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.52 2003/07/29 11:05:09 pater Exp $
+$Id: Anchor.pm,v 1.53 2003/07/29 18:36:31 vroom Exp $

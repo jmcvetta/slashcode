@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.166 2005/02/04 16:45:28 tvroom Exp $
+# $Id: Stats.pm,v 1.167 2005/02/08 18:03:22 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,14 +22,15 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
 	my $self = {};
-
+	my $slashdb = getCurrentDB();
 	my $plugin = getCurrentStatic('plugin');
 	my $constants = getCurrentStatic();
+	
 	return unless $plugin->{'Stats'};
 
 	bless($self, $class);
@@ -66,7 +67,8 @@ sub new {
 						print STDERR "log_slave replication not caught up.  Waiting $wait_sec seconds and retrying.\n";
 						sleep $wait_sec if !$caught_up;
 					} else {
-						print STDERR "Checked replication $num_try times without success, giving up."; 
+						print STDERR "Checked replication $num_try times without success, giving up.";
+						$slashdb->insertErrnoteLog("adminmail", "Failed creating temp tables", "Checked replication $num_try times without success, giving up");
 						return undef;
 					}
 				}
@@ -2005,4 +2007,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.166 2005/02/04 16:45:28 tvroom Exp $
+$Id: Stats.pm,v 1.167 2005/02/08 18:03:22 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.31 2002/02/05 00:08:16 pudge Exp $
+# $Id: journal.pl,v 1.32 2002/02/08 15:36:00 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -370,6 +370,7 @@ sub saveArticle {
 		unless ($ws) {
 			_printHead("mainhead");
 			print getData('no_desc_or_article');
+			editArticle(@_, 1);
 		}
 		return 0;
 	}
@@ -485,12 +486,12 @@ sub removeArticle {
 }
 
 sub editArticle {
-	my($journal, $constants, $user, $form, $slashdb) = @_;
+	my($journal, $constants, $user, $form, $slashdb, $nohead) = @_;
 	# This is where we figure out what is happening
 	my $article = {};
 	my $posttype;
 
-	_printHead("mainhead");
+	_printHead("mainhead") unless $nohead;
 
 	if ($form->{state}) {
 		$article->{date}	= scalar(localtime(time()));

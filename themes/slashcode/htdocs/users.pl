@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.73 2002/04/29 20:38:42 brian Exp $
+# $Id: users.pl,v 1.74 2002/04/30 16:15:57 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1830,7 +1830,7 @@ sub saveComm {
 		posttype	=> $form->{posttype},
 		threshold	=> $form->{uthreshold},
 		nosigs		=> ($form->{nosigs}     ? 1 : 0),
-		no_spell		=> ($form->{no_spell}     ? 1 : 0),
+		no_spell	=> ($form->{no_spell}   ? 1 : 0),
 		reparent	=> ($form->{reparent}   ? 1 : 0),
 		noscores	=> ($form->{noscores}   ? 1 : 0),
 		hardthresh	=> ($form->{hardthresh} ? 1 : 0),

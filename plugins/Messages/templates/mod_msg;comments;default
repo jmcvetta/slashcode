@@ -13,6 +13,10 @@ en_US
 __name__
 mod_msg
 __template__
+[% 
+	cur_score = comment.points + comment.tweak;
+	cur_score = Slash.constrain_score(cur_score);
+%]
 [% IF msg.mode == 1 %]
 
 <P>
@@ -23,7 +27,7 @@ __template__
 </P>
 
 <P>
-It is currently scored <B>[% reasons.${comment.reason}.name %] ([% comment.points %])</B>.
+It is currently scored <B>[% reasons.${comment.reason}.name %] ([% cur_score %])</B>.
 </P>
 
 [% ELSE %]
@@ -35,11 +39,11 @@ A user has moderated your comment "[% reasons.${moderation.reason}.name %]" ([% 
 Attached to:
     [% discussion.title | decode_entities %]
     [% absolutedir %][% discussion.realurl %]
-
-It is currently scored [% reasons.${comment.reason}.name %] ([% comment.points %]).
+    
+It is currently scored [% reasons.${comment.reason}.name %] ([% cur_score %]).
 [% END %]
 
 __seclev__
 500
 __version__
-$Id: mod_msg;comments;default,v 1.8 2003/09/08 06:02:29 pudge Exp $
+$Id: mod_msg;comments;default,v 1.9 2004/04/12 18:49:25 tvroom Exp $

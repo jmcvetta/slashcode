@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.103 2003/03/13 22:08:22 brian Exp $
+# $Id: Stats.pm,v 1.104 2003/03/17 21:26:14 brian Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -695,61 +695,26 @@ sub countDaily {
 
 	my $constants = getCurrentStatic();
 
-	# For counting the total, we used to just do a COUNT(*) with the
-	# TO_DAYS clause.  If we separate out the count of each op, we can
-	# in perl be a little more specific about what we're counting.
-	# And it's about as fast for the DB.
-	my $totals_op = $self->sqlSelectAllHashref(
-		"op",
-		"op, COUNT(*) AS count",
-		"accesslog_temp",
-		"",
-		"GROUP BY op"
-	);
-	$returnable{total} = 0;
-	my %excl_countdaily = map { $_, 1 } @{$constants->{op_exclude_from_countdaily}};
-	for my $op (keys %$totals_op) {
-		# If this op is on the list of ops to exclude,
-		# don't add its count into the daily total.
-		next if $excl_countdaily{$op};
-		$returnable{total} += $totals_op->{$op}{count};
-	}
+	$returnable{unique} = $self->sqlSelect("DISTINCT host_addr", "accesslog_temp");
 
-	my $c = $self->sqlSelectMany("COUNT(*)", "accesslog_temp",
-		"", "GROUP BY host_addr");
-	$returnable{unique} = $c->rows;
-	$c->finish;
+	$returnable{unique_users} = $self->sqlSelectMany("DISTINCT uid", "accesslog_temp");
 
-	$c = $self->sqlSelectMany("COUNT(*)", "accesslog_temp",
-		"", "GROUP BY uid");
-	$returnable{unique_users} = $c->rows;
-	$c->finish;
+	return \%returnable;
+}
 
-	$c = $self->sqlSelectMany("dat, COUNT(*)", "accesslog_temp",
-		"(op='index' OR dat='index')",
-		"GROUP BY dat");
-
-	my(%indexes, %articles, %commentviews);
-
-	while (my($sect, $cnt) = $c->fetchrow) {
-		$indexes{$sect} = $cnt;
-	}
-	$c->finish;
-
-	$c = $self->sqlSelectMany("dat, COUNT(*), op", "accesslog_temp",
+########################################################
+sub countDailyStoriesAccess {
+	my($self) = @_;
+	my $c = $self->sqlSelectMany("dat, COUNT(*), op", "accesslog_temp",
 		"op='article'",
 		"GROUP BY dat");
 
+	my %articles; 
 	while (my($sid, $cnt) = $c->fetchrow) {
 		$articles{$sid} = $cnt;
 	}
 	$c->finish;
-
-	$returnable{'index'} = \%indexes;
-	$returnable{'articles'} = \%articles;
-
-
-	return \%returnable;
+	return \%articles;
 }
 
 ########################################################
@@ -1208,4 +1173,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.103 2003/03/13 22:08:22 brian Exp $
+$Id: Stats.pm,v 1.104 2003/03/17 21:26:14 brian Exp $

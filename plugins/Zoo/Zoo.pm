@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.34 2003/02/06 05:26:17 brian Exp $
+# $Id: Zoo.pm,v 1.35 2003/02/07 20:55:24 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -276,27 +276,31 @@ sub rebuildUser {
 	my $people;
 
 	my @friends;
-	for (@$data) {
-		if ($_->{type} eq 'friend') {
-			$people->{FRIEND()}{$_->{person}} = 1;
-			push @friends, $_->{person};
-		} elsif ($_->{type} eq 'foe') {
-			$people->{FOE()}{$_->{person}} = 1;
-		}
-		if ($_->{perceive} eq 'fan') {
-			$people->{FAN()}{$_->{person}} = 1;
-		} elsif ($_->{perceive} eq 'freak') {
-			$people->{FREAK()}{$_->{person}} = 1;
+	if ($data) {
+		for (@$data) {
+			if ($_->{type} eq 'friend') {
+				$people->{FRIEND()}{$_->{person}} = 1;
+				push @friends, $_->{person};
+			} elsif ($_->{type} eq 'foe') {
+				$people->{FOE()}{$_->{person}} = 1;
+			}
+			if ($_->{perceive} eq 'fan') {
+				$people->{FAN()}{$_->{person}} = 1;
+			} elsif ($_->{perceive} eq 'freak') {
+				$people->{FREAK()}{$_->{person}} = 1;
+			}
 		}
 	}
 
 	my $list = join (',', @friends);
-	$data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
-	for (@$data) {
-		if ($_->{type} eq 'friend') {
-			$people->{FOF()}{$_->{person}}{$_->{friend}} = 1;
-		} elsif ($_->{type} eq 'foe') {
-			$people->{EOF()}{$_->{person}}{$_->{friend}} = 1;
+	if ($list) {
+		$data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
+		for (@$data) {
+			if ($_->{type} eq 'friend') {
+				$people->{FOF()}{$_->{person}}{$_->{friend}} = 1;
+			} elsif ($_->{type} eq 'foe') {
+				$people->{EOF()}{$_->{person}}{$_->{friend}} = 1;
+			}
 		}
 	}
 

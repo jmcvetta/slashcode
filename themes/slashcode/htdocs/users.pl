@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.69 2002/04/18 07:42:05 jamie Exp $
+# $Id: users.pl,v 1.70 2002/04/18 15:10:25 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -371,6 +371,11 @@ sub main {
                 my $done = 0;
 		$done = 1 if $op eq 'savepasswd'; # special case
 		$formname = $ops->{$op}{formname};
+		     if ($formname eq 'users/nu' && !$constants->{hc_sw_newuser}) {
+			$options->{no_hc} = 1;
+		} elsif ($formname eq 'users/mp' && !$constants->{hc_sw_mailpasswd}) {
+			$options->{no_hc} = 1;
+		}
                 DO_CHECKS: while (!$done) {
                         for my $check (@{$ops->{$op}{checks}}) {
                                 $ops->{$op}{update_formkey} = 1 if $check eq 'formkey_check';

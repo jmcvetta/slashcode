@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.89 2003/05/01 00:51:08 jamie Exp $
+# $Id: Environment.pm,v 1.90 2003/05/06 17:06:57 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1094,27 +1094,8 @@ sub setCookie {
 		-path    =>  $cookiepath
 	);
 
-	# This old code may be wrong, says Pudge.
-	my $secure_old = 0;
-	if ($constants->{cookiesecure}) {
-		my $subr = $r->lookup_uri($r->uri);
-		if ($subr && $subr->subprocess_env('HTTPS') eq 'on') {
-			$secure_old = 1;
-#			$cookiehash{-secure} = 1;
-		}
-	}
-	# And this new (old) code is right, says Pudge.
-	my $secure_new = 0;
-	if ($constants->{cookiesecure} && Slash::Apache::ConnectionIsSSL()) {
-		$secure_new = 1;
-#		$cookiehash{-secure} = 1;
-	}
-	if ($secure_old || $secure_new) {
-		my $uid = getCurrentUser('uid');
-		print STDERR scalar(gmtime) . " uid '$uid' secure_old '$secure_old' secure_new '$secure_new'\n"
-			if $secure_old xor $secure_new;
-		$cookiehash{-secure} = 1;
-	}
+	$cookiehash{-secure} = 1
+		if $constants->{cookiesecure} && Slash::Apache::ConnectionIsSSL();
 
 	my $cookie = Apache::Cookie->new($r, %cookiehash);
 
@@ -2118,4 +2099,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.89 2003/05/01 00:51:08 jamie Exp $
+$Id: Environment.pm,v 1.90 2003/05/06 17:06:57 jamie Exp $

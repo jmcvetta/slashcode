@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.46 2000/09/05 17:47:14 pudge Exp $
+#  $Id: Slash.pm,v 1.47 2000/09/19 17:17:21 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -152,6 +152,9 @@ sub getSlash {
 
 	for ($I{query}->param) {
 		$I{F}{$_} = $I{query}->param($_);
+
+		# Paranoia - Clean out any embedded NULs.
+		$I{F}{$_} =~ s/\0//g;
 
 		# clean up numbers
 		if (exists $nums{$_}) {

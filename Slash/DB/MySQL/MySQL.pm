@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.70 2002/02/07 15:55:44 pudge Exp $
+# $Id: MySQL.pm,v 1.71 2002/02/08 14:43:36 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -477,28 +477,24 @@ sub getModeratorCommentLog {
 
 	my $vq = $self->sqlQuote($value);
 	my $where_clause = "";
-	   if ($type eq 'uid') {	$where_clause = "moderatorlog.uid=$vq"	}
-	elsif ($type eq 'cid') {	$where_clause = "moderatorlog.cid=$vq"	}
-	elsif ($type eq 'cuid') {	$where_clause = "moderatorlog.cuid=$vq"	}
-	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq"	}
-	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq"	}
+	   if ($type eq 'uid') {	$where_clause = "moderatorlog.uid=$vq  AND comments.uid=users.uid"	}
+	elsif ($type eq 'cid') {	$where_clause = "moderatorlog.cid=$vq  AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'cuid') {	$where_clause = "moderatorlog.cuid=$vq AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq     AND moderatorlog.uid=users.uid"	}
 	return [ ] unless $where_clause;
-	my $uid_clause = "";
-	   if ($type eq 'uid') {	$uid_clause = "comments.uid AS uid"	}
-	else {				$uid_clause = "moderatorlog.uid AS uid"	}
 
 	my $comments = $self->sqlSelectMany("comments.sid AS sid,
 				 comments.cid AS cid,
 				 comments.points AS score,
-				 $uid_clause,
+				 users.uid AS uid,
 				 users.nickname AS nickname,
 				 moderatorlog.val AS val,
 				 moderatorlog.reason AS reason,
 				 moderatorlog.ts AS ts,
 				 moderatorlog.active AS active",
 				"moderatorlog, users, comments",
-				"moderatorlog.uid=users.uid
-				 AND $where_clause
+				"$where_clause
 				 AND moderatorlog.cid=comments.cid",
 				"ORDER BY ts $asc_desc",
 				$limit
@@ -3138,6 +3134,9 @@ sub getCommentMostCommonReason {
 		"cid=$cid AND active=1",
 		"GROUP BY reason"
 	);
+	# Overrated and Underrated can't show up as a comment's reason.
+	delete $hr->{9}; delete $hr->{10};
+	# If no mods, return undef.
 	return undef if !keys %$hr;
 	# Sort first by popularity and secondarily by reason.
 	# "reason" is a numeric field, so we sort $a<=>$b numerically.

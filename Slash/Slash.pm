@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.42 2002/02/07 21:42:06 pudge Exp $
+# $Id: Slash.pm,v 1.43 2002/02/08 14:43:36 jamie Exp $
 
 package Slash;
 
@@ -439,6 +439,7 @@ sub moderatorCommentLog {
 
 	my $show_cid    = ($type eq 'cid') ? 0 : 1;
 	my $show_modder = $mod_admin ? 1 : 0;
+	my $mod_to_from = ($type eq 'uid') ? 'to' : 'from';
 	slashDisplay('modCommentLog', {
 		# modviewseclev
 		mod_admin	=> $mod_admin, 
@@ -447,6 +448,7 @@ sub moderatorCommentLog {
 		reasonHist	=> \@reasonHist,
 		show_cid	=> $show_cid,
 		show_modder	=> $show_modder,
+		mod_to_from	=> $mod_to_from,
 	}, { Return => 1, Nocomm => 1 });
 }
 

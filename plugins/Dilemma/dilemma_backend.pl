@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma_backend.pl,v 1.11 2005/04/05 16:48:28 jamiemccarthy Exp $
+# $Id: dilemma_backend.pl,v 1.12 2005/04/05 19:42:18 jamiemccarthy Exp $
 
 use Slash::Constants ':slashd';
 
@@ -267,8 +267,10 @@ sub do_logdatadump {
 					undef $playlog_sth;
 					last;
 				}
-				$playlog_hr->{$playlog_meetid}{$daid}{play} = $play;
+				$playlog_hr->{$playlog_meetid}{$daid}{playtry} = $playtry;
+				$playlog_hr->{$playlog_meetid}{$daid}{playactual} = $playactual;
 				$playlog_hr->{$playlog_meetid}{$daid}{reward} = $reward;
+				$playlog_hr->{$playlog_meetid}{$daid}{sawdaid} = $sawdaid;
 				last if $playlog_meetid > $meetlog_meetid;
 			}
 		}

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.653 2004/08/14 00:04:30 pudge Exp $
+# $Id: upgrades,v 1.654 2004/08/14 19:26:36 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2491,3 +2491,5 @@ INSERT INTO vars (name,value,description) SELECT 'm1_pointgrant_factor_downfairr
 # End of T_2_5_0_21, Start of T_2_5_0_22 - 2004/08/10
 
 INSERT INTO vars (name, value, description) VALUES ('top10comm_days','1','Look back (n) days to display the Top 10 Comments slashbox');
+INSERT INTO vars (name, value, description) VALUES ('dbs_revive_seconds','30','After a DB goes from isalive=no to yes, ramp up accesses to it over how many seconds?');
+

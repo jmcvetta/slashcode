@@ -17,7 +17,7 @@ __template__
    position:         absolute;
    top:              0px;
    right:            0px;
-   border:           2px outset #333333;
+   border:           1px outset #[% user.colors.bg_3 %];
    background-color: #ffffff;
    filter:           progid:DXImageTransform.Microsoft.dropShadow( Color=bababa,offx=3,offy=3,positive=true);
 }
@@ -85,4 +85,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_css;admin;default,v 1.2 2004/08/24 23:47:33 pudge Exp $
+$Id: topic_popup_css;admin;default,v 1.3 2004/10/19 21:42:39 pudge Exp $

@@ -29,7 +29,7 @@ It is currently scored <B>[% reasons.${comment.reason}.name %] ([% comment.point
 [% ELSE %]
 
 A user has moderated your comment "[% reasons.${moderation.reason}.name %]" ([% moderation.value %]).
-    [% comment.subject | decode_entities %]    
+    [% comment.subject | decode_entities %]
     [% absolutedir %]/comments.pl?sid=[% comment.sid %]&cid=[% comment.cid %]
 
 Attached to:
@@ -42,4 +42,4 @@ It is currently scored [% reasons.${comment.reason}.name %] ([% comment.points %
 __seclev__
 500
 __version__
-$Id: mod_msg;comments;default,v 1.7 2003/03/14 19:08:20 pudge Exp $
+$Id: mod_msg;comments;default,v 1.8 2003/09/08 06:02:29 pudge Exp $

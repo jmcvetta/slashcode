@@ -528,7 +528,7 @@ name: 			[% name %]
 form name: 		[% form.name %] 
 form owner_id: 		[% form.owner_aid %]
 
-[% CASE "noop" -%]    
+[% CASE "noop" -%]
 [% INCLUDE titlebar width="100%" title="No Op Given" %]
 
 [% CASE "processing_urls" -%]
@@ -629,4 +629,4 @@ Spider '[% spider %]' is stale [% IF count %](iter: [% count %])[% END -%]
 __seclev__
 100
 __version__
-$Id: data;newsvac;default,v 1.13 2003/03/04 19:07:59 pudge Exp $
+$Id: data;newsvac;default,v 1.14 2003/09/08 06:02:29 pudge Exp $

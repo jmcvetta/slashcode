@@ -26,11 +26,11 @@ __template__
 [% ELSE %]
 
 [% reply.nickname %] has posted a comment in reply to your comment.
-    [% reply.subject | decode_entities %]    
+    [% reply.subject | decode_entities %]
     [% absolutedir %]/comments.pl?sid=[% reply.sid %]&cid=[% reply.cid %]
 
 Replied to:
-    [% parent.subject | decode_entities %]    
+    [% parent.subject | decode_entities %]
     [% absolutedir %]/comments.pl?sid=[% parent.sid %]&cid=[% parent.cid %]
 
 Attached to:
@@ -42,4 +42,4 @@ Attached to:
 __seclev__
 500
 __version__
-$Id: reply_msg;comments;default,v 1.6 2003/03/14 19:08:20 pudge Exp $
+$Id: reply_msg;comments;default,v 1.7 2003/09/08 06:02:29 pudge Exp $

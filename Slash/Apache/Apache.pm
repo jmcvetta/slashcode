@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.51 2004/03/30 16:47:38 tvroom Exp $
+# $Id: Apache.pm,v 1.52 2004/03/30 20:33:24 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -218,6 +218,7 @@ sub SlashCompileTemplates ($$$) {
 		});
 	}
 
+	# Pudge, any reason we still need this Begin/Done debug log? - Jamie
 	print STDERR "$cfg->{VirtualUser} ($$): Compiling All Templates Done\n";
 
 	$cfg->{template} = Slash::Display::get_template(0, 0, 1);
@@ -254,7 +255,8 @@ sub ProxyRemoteAddr ($) {
 	return OK unless $r->connection->remote_ip =~ $trusted_ip_regex;
 
 	# ...unless the connection comes from a trusted source.
-	if (my($ip) = $r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+	my $xf = $r->header_in('X-Forward-Pound') || $r->header_in('X-Forwarded-For');
+	if (my($ip) = $xf =~ /([^,\s]+)$/) {
 		$r->connection->remote_ip($ip);
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.544 2004/03/29 22:35:28 tvroom Exp $
+# $Id: MySQL.pm,v 1.545 2004/03/30 20:33:24 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.544 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.545 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3779,11 +3779,21 @@ sub getKnownOpenProxy {
 sub setKnownOpenProxy {
 	my($self, $ip, $port) = @_;
 	return 0 unless $ip;
+	my $xff;
+	if ($port) {
+		my $r = Apache->request;
+		$xff = $r->header_in('X-Forwarded-For') if $r;
+#use Data::Dumper; print STDERR "sKOP headers_in: " . Dumper([ $r->headers_in ]) if $r;
+	}
+	$xff ||= undef;
+	$xff = $1 if $xff && length($xff) > 15
+		&& $xff =~ /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
 #print STDERR scalar(localtime) . " setKnownOpenProxy doing sqlReplace ip '$ip' port '$port'\n";
 	return $self->sqlReplace("open_proxies", {
 		ip =>	$ip,
 		port =>	$port,
 		-ts =>	'NOW()',
+		xff =>	$xff,
 	});
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.22 2004/07/18 05:56:06 pudge Exp $
+# $Id: open_backend.pl,v 1.23 2004/07/19 15:49:06 pudge Exp $
 
 use strict;
 use Slash;
@@ -41,9 +41,12 @@ $task{$me}{code} = sub {
 	return;
 };
 
+# this normalizes old and new content, stripping data that
+# updates every time
 sub fudge {
 	my($current, $new) = @_;
-	s|[dD]ate>[^<]+</|| for $current, $new;
+	s{[dD]ate>[^<]+</}{} for $current, $new;
+	s{<(?:slash:)?(?:comments|hitparade)>[^<]+</}{}g for $current, $new;
 	return($current, $new);
 }
 

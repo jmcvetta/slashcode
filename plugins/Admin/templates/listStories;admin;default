@@ -28,7 +28,7 @@ __template__
 
 [% IF storylistref && storylistref.size > 0;
 
-IF ndays_represented > 10;
+IF ndays_represented > (constants.admin_maxdays_divider || 10);
 	showdayboundaries = 0;
 ELSE;
 	showdayboundaries = 1;
@@ -124,4 +124,4 @@ FOREACH story = storylistref;
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.24 2004/07/10 23:47:26 jamiemccarthy Exp $
+$Id: listStories;admin;default,v 1.25 2004/07/16 20:37:57 jamiemccarthy Exp $

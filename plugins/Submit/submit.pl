@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.109 2005/02/08 19:23:17 tvroom Exp $
+# $Id: submit.pl,v 1.110 2005/03/01 19:41:19 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -351,6 +351,10 @@ sub submissionEd {
 		%all_skins, %all_notes, %sn);
 
 	$form->{del} = 0 if $user->{is_admin};
+
+	if (defined $form->{toggle_bin_refresh} && $user->{is_admin}) {
+		$slashdb->setUser($user->{uid}, { opt_disable_submit_bin_refresh => $form->{toggle_bin_refresh} ? 1 : 0 });
+	}
 
 	$def_skin = getData('defaultskin');
 	$def_note = getData('defaultnote');

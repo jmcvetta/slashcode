@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.37 2002/09/20 18:34:16 jamie Exp $
+# $Id: User.pm,v 1.38 2002/10/04 22:05:16 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -183,7 +183,9 @@ sub handler {
 	# This is only used if you have used the directive
 	# to disallow logins to your site.
 	# I need to complete this as a feature. -Brian
-	return DECLINED if $cfg->{auth} && isAnon($uid);
+	# This is not the way to abort processing... we can take a look
+	# at this later maybe. -Jamie 2002/10/02
+#	return DECLINED if $cfg->{auth} && isAnon($uid);
 
 	# this needs to get called once per child ... might as well
 	# have it called here. -- pudge

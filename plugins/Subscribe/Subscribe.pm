@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.29 2004/04/02 00:43:05 pudge Exp $
+# $Id: Subscribe.pm,v 1.30 2004/04/14 18:07:42 jamiemccarthy Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class) = @_;
@@ -228,9 +228,12 @@ sub plummyPage {
 # By default, allow readers to buy x pages for $y, 2x pages for $2y,
 # etc.  If you want to have n-for-the-price-of-m sales or whatever,
 # change the logic here.
+# Also, if someone hacks the HTML to purchase less than one
+# subscription, they get nothing.
 sub convertDollarsToPages {
 	my($self, $amount) = @_;
 	my $constants = getCurrentStatic();
+	$amount = 0 if $amount < $constants->{paypal_amount};
 	return sprintf("%0.0f", $amount*$constants->{paypal_num_pages}/
 		$constants->{paypal_amount});
 }

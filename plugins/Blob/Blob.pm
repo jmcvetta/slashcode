@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.2 2003/02/26 22:05:33 brian Exp $
+# $Id: Blob.pm,v 1.3 2003/03/04 19:56:32 pudge Exp $
 
 package Slash::Blob;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 my %mimetypes = (

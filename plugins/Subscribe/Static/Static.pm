@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.2 2003/02/26 18:00:19 jamie Exp $
+# $Id: Static.pm,v 1.3 2003/03/04 19:56:32 pudge Exp $
 
 package Slash::Subscribe::Static;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $vuser) = @_;

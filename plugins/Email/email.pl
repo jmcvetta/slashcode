@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.3 2002/07/11 16:07:39 pudge Exp $
+# $Id: email.pl,v 1.4 2003/03/04 19:56:32 pudge Exp $
 
 # Slash::Email - web script
 # 
@@ -17,7 +17,7 @@ use Slash::Constants ':messages';
 use Email::Valid;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.12 2002/09/23 19:11:36 jamie Exp $
+# $Id: createTestComments,v 1.13 2003/03/04 19:56:33 pudge Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -486,7 +486,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2002 by Open Source Development Network. See README
+Copyright 1997-2003 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

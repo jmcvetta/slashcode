@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.9 2003/02/21 21:24:34 pudge Exp $
+# $Id: stats.pl,v 1.10 2003/03/04 19:56:32 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();

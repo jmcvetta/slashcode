@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats_graphs_delete.pl,v 1.1 2003/02/24 15:31:47 pudge Exp $
+# $Id: stats_graphs_delete.pl,v 1.2 2003/03/04 19:56:32 pudge Exp $
 
 use strict;
 use Slash::Utility;

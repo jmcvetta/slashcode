@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-plugin,v 1.7 2002/04/17 20:27:13 pudge Exp $
+# $Id: install-plugin,v 1.8 2003/03/04 19:56:32 pudge Exp $
 
 # This is the plugin install script.
 # -Brian (brian@tangent.org)
@@ -14,7 +14,7 @@ use Getopt::Std;
 use File::Copy;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -105,7 +105,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2002 by Open Source Development Network. See README
+Copyright 1997-2003 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

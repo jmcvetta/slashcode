@@ -64,7 +64,7 @@ Discuss this story at:
 To opt-out of further emailings;
     [% thisurl %]/email.pl?op=optout_form
 
-Copyright 1997-2002 [% constants.sitepublisher %].  All rights reserved.
+Copyright 1997-2003 [% constants.sitepublisher %].  All rights reserved.
 
 __version__
-$Id: dispStory;email;default,v 1.2 2003/03/04 19:07:58 pudge Exp $
+$Id: dispStory;email;default,v 1.3 2003/03/04 19:56:32 pudge Exp $

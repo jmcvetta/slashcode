@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Email.pm,v 1.1 2002/06/28 18:52:26 cliff Exp $
+# $Id: Email.pm,v 1.2 2003/03/04 19:56:32 pudge Exp $
 
 package Slash::Email;
 
@@ -15,7 +15,7 @@ use base "Slash::DB::MySQL";
 
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 

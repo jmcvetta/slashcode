@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.11 2003/01/21 17:28:43 jamie Exp $
+# $Id: DB.pm,v 1.12 2003/03/04 19:56:31 pudge Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 

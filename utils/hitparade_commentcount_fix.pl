@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hitparade_commentcount_fix.pl,v 1.4 2002/04/17 20:27:13 pudge Exp $
+# $Id: hitparade_commentcount_fix.pl,v 1.5 2003/03/04 19:56:33 pudge Exp $
 
 use strict;
 use vars qw( %task );
@@ -13,7 +13,7 @@ use Slash::Display;
 use Slash::Utility;
 use Getopt::Std;
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 #my $PROGNAME = basename($0);
 my $PROGNAME = 'hitparade_commentcount_fix.pl';
 

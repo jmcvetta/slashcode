@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.15 2003/02/11 16:32:31 pudge Exp $
+# $Id: messages.pl,v 1.16 2003/03/04 19:56:32 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');

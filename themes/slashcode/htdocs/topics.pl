@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2002 by Open Source Development Network. See README
+# Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.20 2003/02/28 06:01:15 jamie Exp $
+# $Id: topics.pl,v 1.21 2003/03/04 19:56:32 pudge Exp $
 
 use strict;
 use Slash;

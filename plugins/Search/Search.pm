@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.46 2002/10/01 23:13:48 brian Exp $
+# $Id: Search.pm,v 1.47 2002/10/20 20:33:56 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -505,15 +505,26 @@ sub findDiscussion {
 sub _score {
 	my ($self, $col, $query, $method) = @_;
 	if ($method) {
-		my $terms;
-		for (split / /, $query) {
-			$terms .= $self->sqlQuote($_) . ",";
+		# We were getting malformed SQL queries with the previous
+		# way this was done, so I made it a bit more robust.  If
+		# no search terms are passed in with $query, instead of
+		# crashing it returns "0" which of course will assign a
+		# score of 0 to all hits.  I'd prefer to see the callers
+		# massage $form->{query} themselves, stripping leading
+		# and trailing spaces before passing it in here, but this
+		# will do for now. - Jamie 2002/10/20
+		my @terms = ( );
+		for my $term (split / /, $query) {
+			$term =~ /^\s*(.*?)\s*$/; $term = $1;
+			next unless $term;
+			push @terms, $self->sqlQuote($_);
 		}
-		chop($terms);
+		return "0" if !@terms;
+		my $terms = join(",", @terms);
 		return "($method($col, $terms))";
 	} else {
-		$query =  $self->sqlQuote($query);
-		return "\n(MATCH ($col) AGAINST($query))\n";
+		$query = $self->sqlQuote($query);
+		return "\n(MATCH ($col) AGAINST ($query))\n";
 	}
 }
 

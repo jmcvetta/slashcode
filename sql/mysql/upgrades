@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.473 2003/10/21 01:44:57 pudge Exp $
+# $Id: upgrades,v 1.474 2003/10/22 13:46:58 jamie Exp $
 #
 
 # BEGIN tf23's additions 
@@ -1925,7 +1925,7 @@ DELETE FROM vars WHERE name='tailslash_stats';
 # Change for plugins/Subscribe (ignore if not using that plugin)
 ALTER TABLE subscribe_payments ADD COLUMN payment_type VARCHAR(10) DEFAULT 'user';
 ALTER TABLE subscribe_payments ADD COLUMN puid MEDIUMINT UNSIGNED;
-UPDATE subscribe_payments SET puid=uid;
+UPDATE subscribe_payments SET puid=uid, ts=ts;
 ALTER TABLE subscribe_payments ADD INDEX puid (puid);
 
 INSERT INTO vars VALUES ('subscribe_allow_gifts','1','Allow gift subscriptions');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_cids.pl,v 1.3 2004/03/16 17:36:03 tvroom Exp $
+# $Id: set_cids.pl,v 1.4 2004/03/16 20:16:24 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,7 +13,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '*/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -36,7 +36,7 @@ $task{$me}{code} = sub {
 	# doesn't return a new value, then there were no new
 	# comments posted during that period several days ago,
 	# so we just keep using the old value.
-	my $cid = $slashdb->getCidForDaysBack($days, $startat) || $startat;
+	my $cid = $slashdb->getCidForDaysBack($days, $start_at) || $start_at;
 	my $success = $slashdb->setVar("min_cid_last_$days\_days", $cid);
 
 	if ($success) {

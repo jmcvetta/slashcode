@@ -13,7 +13,7 @@ storylink
 __template__
 <P><B>(</B>
 [% FOREACH storylinks = links; IF storylinks.ref == 'ARRAY' %]
-<A HREF="[% storylinks.0 | strip_attribute %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 | strip_attribute %]"[% END %]>[% storylinks.1 %]</A>
+<A HREF="[% storylinks.0 | strip_attribute %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 | strip_attribute %]"[% END %]>[% storylinks.1 | strip_html %]</A>
 [% ELSE; storylinks; END %]
 [% UNLESS loop.last %] | [% END %]
 [% END %]
@@ -22,4 +22,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: storylink;index;light,v 1.6 2003/08/05 21:29:20 pudge Exp $
+$Id: storylink;index;light,v 1.7 2004/04/06 19:04:44 jamiemccarthy Exp $

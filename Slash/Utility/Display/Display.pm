@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.79 2004/04/04 15:04:10 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.80 2004/04/06 19:04:44 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1530,10 +1530,10 @@ sub _slashStory {
 
 	my $content;
 	if ($storylinks->[0] && $storylinks->[2]) {
-		$content = '<A HREF="' . $storylinks->[0] . '"';
+		$content = '<A HREF="' . strip_attribute($storylinks->[0]) . '"';
 		$content .= ' TITLE="' . strip_attribute($storylinks->[2]) . '"'
 			if $storylinks->[2] ne '';
-		$content .= '>' . $storylinks->[1] . '</A>';
+		$content .= '>' . strip_html($storylinks->[1]) . '</A>';
 	}
 
 	$content ||= Slash::getData('SLASH-UNKNOWN-STORY');
@@ -1612,4 +1612,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.79 2004/04/04 15:04:10 jamiemccarthy Exp $
+$Id: Display.pm,v 1.80 2004/04/06 19:04:44 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.75 2002/09/12 22:33:37 brian Exp $
+# $Id: Slash.pm,v 1.76 2002/10/08 20:19:28 jamie Exp $
 
 package Slash;
 
@@ -124,7 +124,7 @@ sub selectComments {
 		# If you don't trust new users
 		if ($user->{new_user_bonus} && $user->{new_user_percent}) {
 			$C->{points} += $user->{new_user_bonus} 
-					if ((($C->{uid}/$max_uid)*100) > $user->{new_user_percent});
+					if ((($C->{uid}/$max_uid)*100) > 100-$user->{new_user_percent});
 		}
 
 		# Adjust reasons. Do we need a reason?

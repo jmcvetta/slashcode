@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.53 2004/08/10 21:54:05 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.54 2004/10/26 20:24:38 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -205,6 +205,11 @@ sub give_out_tokens {
 	my @eligible_uids = @{$backup_db->fetchEligibleModerators_users($count_hr)};
 	my $eligible = scalar @eligible_uids;
 
+	if (!$eligible) {
+		# Don't hand out any tokens, and don't give any points.
+		return 0;
+	}
+
 	# Chop off the least and most clicks.
 	my $start = int(($eligible-1) * $constants->{m1_pointgrant_start});
 	my $end   = int(($eligible-1) * $constants->{m1_pointgrant_end});
@@ -333,6 +338,10 @@ sub reconcile_m2 {
 		# named reasonably well.
 		my $csq = $slashdb->getM2Consequences($fair_frac, $mod_hr);
 
+		########################################
+		# We should wrap this in a transaction to make it faster.
+		# XXX START TRANSACTION
+		
 		# First update the moderator's tokens.
 		my $use_possible = $csq->{m1_tokens}{num}
 			&& rand(1) < $csq->{m1_tokens}{chance};
@@ -464,6 +473,9 @@ sub reconcile_m2 {
 		$slashdb->sqlUpdate("moderatorlog", {
 			-m2status => 2,
 		}, "id=$mod_hr->{id}");
+
+		# XXX END TRANSACTION
+		########################################
 
 	}
 

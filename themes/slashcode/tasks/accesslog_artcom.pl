@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: accesslog_artcom.pl,v 1.1 2004/02/04 18:04:19 jamiemccarthy Exp $
+# $Id: accesslog_artcom.pl,v 1.2 2004/10/26 20:24:50 jamiemccarthy Exp $
 # 
 # Transfer article and comments hits from accesslog into a new
 # table, accesslog_artcom, for fast processing by run_moderatord.
@@ -12,7 +12,7 @@ use Slash::DB;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 6;
@@ -43,8 +43,10 @@ $task{$me}{code} = sub {
 		# call createVar() but the admin really should be
 		# doing their job :)
 		my $success = $slashdb->setVar('moderatord_lastmaxid', 0);
-		if (!$success) {
-			return "setting var moderatord_lastmaxid failed, create it please";
+		if ($success == 0) {
+			my $err = "setting var moderatord_lastmaxid failed, create it please";
+			slashdErrnote($err);
+			return $err;
 		}
 	}
 	my $newmaxid = $log_db->sqlSelect("MAX(id)", "accesslog");

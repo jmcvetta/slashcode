@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.3 2002/05/08 17:13:04 jamie Exp $
+# $Id: HumanConf.pm,v 1.4 2003/02/16 19:47:05 jamie Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -70,6 +70,7 @@ sub createFormkeyHC {
 
 	# Loop until we successfully get an answer/html pair (one time
 	# in a zillion we'll have to try more than once).
+	my $secs = $constants->{hc_pool_secs_before_use} || 3600;
 	my($hcpid, $html) = ('', '');
 	while (1) {
 
@@ -79,6 +80,7 @@ sub createFormkeyHC {
 			"humanconf_pool",
 			"hcqid=" . $slashdb->sqlQuote($hcqid)
 				. " AND filename != ''"
+				. " AND created_at < DATE_SUB(NOW(), INTERVAL $secs SECOND)"
 				. " AND inuse = 0",
 			"ORDER BY RAND() LIMIT 1"
 		);

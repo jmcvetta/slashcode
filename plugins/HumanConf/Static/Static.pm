@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.6 2003/02/16 15:50:35 jamie Exp $
+# $Id: Static.pm,v 1.7 2003/02/16 19:47:05 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -108,6 +108,7 @@ sub deleteOldFromPool {
 	my $delrows = 0;
 	my $loop_num = 1;
 	my $remaining_to_delete = $want_delete;
+	my $secs = $constants->{hc_pool_secs_before_del} || 21600;
 	my $q_hr = $self->sqlSelectAllHashref(
 		"hcqid",
 		"hcqid, filedir",
@@ -130,9 +131,9 @@ sub deleteOldFromPool {
 		my $rows = $self->sqlUpdate(
 			"humanconf_pool",
 			{ inuse => 2, -lastused => "lastused" },
-			"lastused < DATE_SUB(NOW(), INTERVAL 6 HOUR) 
-			AND inuse = 0
-			$hcpid_clause"
+			"lastused < DATE_SUB(NOW(), INTERVAL $secs SECOND) 
+			 AND inuse = 0
+			 $hcpid_clause"
 		);
 		next if !$rows;
 
@@ -316,6 +317,7 @@ sub addPool {
 		filename =>	$filename,
 		html =>		$html,
 		inuse =>	0,
+		-created_at =>	'NOW()',
 	}, "hcpid=$hcpid");
 }
 

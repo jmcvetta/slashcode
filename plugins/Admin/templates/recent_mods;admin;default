@@ -15,10 +15,11 @@ __template__
 [% USE Slash %]
 <TABLE>
 	<TR><TD ALIGN="CENTER">Latest Moderations</TD></TR>
+	[% mod_options.hours_back = 72 %]
 	<TR><TD ALIGN="CENTER">[% Slash.moderatorCommentLog("global", "", mod_options) %] </TD></TR>
 </TABLE>
 
 __seclev__
 500
 __version__
-$Id: recent_mods;admin;default,v 1.1 2003/11/25 06:55:51 vroom Exp $
+$Id: recent_mods;admin;default,v 1.2 2003/12/09 04:23:58 vroom Exp $

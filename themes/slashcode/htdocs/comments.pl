@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.181 2004/03/26 16:57:24 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.182 2004/03/28 15:38:31 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -859,15 +859,17 @@ sub validateComment {
 		return;
 	}
 
-	# New check (March 2004):  if someone is posting anonymously,
-	# we scan the IP they're coming from to see if we can use
+	# New check (March 2004):  depending on the settings of
+	# two vars and whether the user is posting anonymous, we
+	# might scan the IP they're coming from to see if we can use
 	# some commonly-used proxy ports to access our own site.
 	# If we can, they're coming from an open HTTP proxy, which
-	# we probably don't want to allow to post.
-	if ($user->{is_anon} && $constants->{comments_portscan_anon_for_proxy}) {
+	# we don't want to allow to post.
+	if ($constants->{comments_portscan_all_for_proxy}
+		|| $user->{is_anon} && $constants->{comments_portscan_anon_for_proxy}) {
 		my $is_trusted = $slashdb->checkIsTrusted($user->{ipid});
 		if ($is_trusted ne 'yes') {
-#my $start_time = Time::HiRes::time;
+#use Time::HiRes; my $start_time = Time::HiRes::time;
 			my $is_proxy = $slashdb->checkForOpenProxy($user->{hostip});
 #my $elapsed = sprintf("%.3f", Time::HiRes::time - $start_time); print STDERR scalar(localtime) . " comments.pl cfop returned '$is_proxy' for '$user->{hostip}' in $elapsed secs\n";
 			if ($is_proxy) {

@@ -37,7 +37,7 @@ __template__
 				sid	=> story.sid,
 				'link'	=> story.title
 			}) %]
-<A HREF="[% storylinks.0 %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 %]"[% END %]>[% storylinks.1 %]</A>
+<A HREF="[% storylinks.0 | strip_attribute %]"[% IF storylinks.2 %] TITLE="[% storylinks.2 | strip_attribute %]"[% END %]>[% storylinks.1 | strip_html %]</A>
 			<FONT SIZE="-1">
 				([% story.commentcount %] comments) - [% Slash.timeCalc(story.time, '%B %o, %Y') %]
 			</FONT>
@@ -57,4 +57,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topTopics;topics;default,v 1.9 2003/08/05 21:29:20 pudge Exp $
+$Id: topTopics;topics;default,v 1.10 2004/05/09 14:18:44 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.116 2002/12/12 03:18:49 jamie Exp $
+# $Id: admin.pl,v 1.117 2002/12/12 08:36:06 jamie Exp $
 
 use strict;
 use Time::HiRes;
@@ -1706,16 +1706,16 @@ sub displayRecentRequests {
 	$min_id = $max_id + $min_id			if  $min_id < 0;
 	$min_id = $max_id				if  $min_id < $max_id - 200_000;
 
-	my $start_time = Time::HiRes::time;
 	my $min_id_ts ||= $slashdb->getAccesslog($min_id, 'ts');
-	my $duration = Time::HiRes::time - $start_time;
 
 	my $options = { min_id => $min_id };
 	$options->{thresh_count} = defined($form->{thresh_count}) ? $form->{thresh_count} : 100;
 	$options->{thresh_secs}  = defined($form->{thresh_secs} ) ? $form->{thresh_secs}  : 5;
 	$options->{thresh_hps}   = defined($form->{thresh_hps}  ) ? $form->{thresh_hps}   : 0.1;
 
+	my $start_time = Time::HiRes::time;
 	my $data = $admindb->getAccesslogAbusersByID($options);
+	my $duration = Time::HiRes::time - $start_time;
 	vislenify($data); # add {ipid_vis} to each row
 	for my $row (@$data) {
 		# Get constant roundoff decimals.

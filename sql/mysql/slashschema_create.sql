@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.29 2002/03/06 18:57:54 brian Exp $
+# $Id: slashschema_create.sql,v 1.30 2002/03/12 04:34:19 cliff Exp $
 #
 
 #
@@ -426,7 +426,7 @@ CREATE TABLE sections (
 	extras mediumint DEFAULT '0',
 	feature_story char(16) NOT NULL,
 	url char(32) DEFAULT '' NOT NULL,
-	hostname char(32)DEFAULT '' NOT NULL,
+	hostname char(32) DEFAULT '' NOT NULL,
 	KEY (section),
 	FOREIGN KEY (qid) REFERENCES pollquestions(qid),
 	FOREIGN KEY (feature_story) REFERENCES stories(sid),
@@ -475,6 +475,8 @@ CREATE TABLE sessions (
 	logintime datetime,
 	lasttime datetime,
 	lasttitle varchar(50),
+	last_subid varchar(15),
+	last_sid varchar(16),
 	INDEX (uid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	PRIMARY KEY (session)

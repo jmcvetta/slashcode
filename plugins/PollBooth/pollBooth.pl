@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.20 2001/11/07 07:10:15 brian Exp $
+# $Id: pollBooth.pl,v 1.21 2001/11/09 20:36:40 pudge Exp $
 
 use strict;
 use Slash;
@@ -82,7 +82,7 @@ sub editpoll {
 
 	my $currentqid = $slashdb->getVar('currentqid', 'value')
 		if $qid;
-	my ($question, $answers, $pollbooth);
+	my($question, $answers, $pollbooth);
 	if ($qid) {
 		$question = $slashdb->getPollQuestion($qid, ['question', 'voters', 'sid']);
 		$answers = $slashdb->getPollAnswers($qid, ['answer', 'votes', 'aid']);

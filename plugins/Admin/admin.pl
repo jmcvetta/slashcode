@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.19 2001/11/07 04:38:05 jamie Exp $
+# $Id: admin.pl,v 1.20 2001/11/09 20:36:40 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1287,9 +1287,9 @@ sub saveStory {
 	my $rootdir = getCurrentStatic('rootdir');
 
 	# In the previous form of this, a section only
-  # editor could assign a story to a different user
-  # and bypass their own restrictions for what section
-  # they could post to. -Brian
+	# editor could assign a story to a different user
+	# and bypass their own restrictions for what section
+	# they could post to. -Brian
 	$form->{displaystatus} ||= 1 if ($user->{section} || $edituser->{section});
 	if ($user->{section} || $edituser->{section}) {
 		$form->{section} = $user->{section} ? $user->{section} : $edituser->{section};

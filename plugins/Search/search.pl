@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.15 2001/11/06 19:26:13 brian Exp $
+# $Id: search.pl,v 1.16 2001/11/09 20:36:40 pudge Exp $
 
 use strict;
 use Slash;
@@ -42,7 +42,7 @@ sub main {
 	# Set some defaults
 	$form->{query}		||= '';
 	$form->{section}	||= '';
-	$form->{sort}	||= 1;
+	$form->{'sort'}		||= 1;
 	$form->{section}	= '' if $form->{section} eq 'index'; # XXX fix this right, do a {realsection}
 	$form->{threshold}	||= getCurrentUser('threshold');
 
@@ -378,7 +378,7 @@ sub userSearchRSS {
 	for my $entry (@$users) {
 		my $time = timeCalc($entry->[3]);
 		push @items, {
-			title	=> "$entry->[1]",
+			title	=> $entry->[1],
 			'link'	=> ($constants->{absolutedir} . '/users.pl?nick=' . $entry->[1]),
 		};
 	}

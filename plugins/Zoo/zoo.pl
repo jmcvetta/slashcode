@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.48 2004/06/17 16:12:18 jamiemccarthy Exp $
+# $Id: zoo.pl,v 1.49 2004/11/09 20:28:11 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -788,7 +788,8 @@ sub _rss {
 			description	=> "$constants->{sitename} $nick's ${type}",
 		},
 		image	=> 1,
-		items	=> \@items
+		items	=> \@items,
+		rdfitemdesc => 1,
 	});
 }
 

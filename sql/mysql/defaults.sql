@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.215 2004/10/28 14:57:29 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.216 2004/11/09 20:28:11 pudge Exp $
 #
 
 #
@@ -903,6 +903,7 @@ INSERT INTO vars (name, value, description) VALUES ('prepuser_backup_prob','0','
 INSERT INTO vars (name, value, description) VALUES ('rdfencoding','ISO-8859-1','Site encoding');
 INSERT INTO vars (name, value, description) VALUES ('rdfimg','http://www.example.com/images/topics/topicslash.gif','site icon to be used by RSS subscribers');
 INSERT INTO vars (name, value, description) VALUES ('rdfitemdesc','0','1 == include introtext in item description; 0 == don\'t.  Any other number is substr() of introtext to use');
+INSERT INTO vars (name, value, description) VALUES ('rdfitemdesc_html','0','1 == include HTML in item description; 0 == strip HTML (plain text only)');
 INSERT INTO vars (name, value, description) VALUES ('rdflanguage','en-us','What language is the site in?');
 INSERT INTO vars (name, value, description) VALUES ('rdfpublisher','Me','The \"publisher\" for your RSS channel');
 INSERT INTO vars (name, value, description) VALUES ('rdfrights','Copyright &copy; 2000, Me','The \"copyright\" for your RSS channel');

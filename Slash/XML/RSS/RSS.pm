@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.17 2004/06/23 18:05:16 pudge Exp $
+# $Id: RSS.pm,v 1.18 2004/11/09 20:28:10 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -158,10 +158,6 @@ sub create {
 	$self->{rdfitemdesc_html} = defined $param->{rdfitemdesc_html}
 		? $param->{rdfitemdesc_html}
 		: $constants->{rdfitemdesc_html};
-
-	# since we do substr if rdfitemdesc != 1, and that would break HTML,
-	# do it for that too (can be fixed later) -- pudge
-	$self->{rdfitemdesc_html} = 0 unless $self->{rdfitemdesc} == 1;
 
 	my $rss = XML::RSS->new(
 		version		=> $version,
@@ -452,6 +448,7 @@ sub rss_item_description {
 				$desc = substr($desc, 0, $self->{rdfitemdesc});
 				$desc =~ s/\S+$//;
 				$desc .= '...';
+				$desc = balanceTags($desc) if $self->{rdfitemdesc_html};
 			}
 		}
 
@@ -474,4 +471,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.17 2004/06/23 18:05:16 pudge Exp $
+$Id: RSS.pm,v 1.18 2004/11/09 20:28:10 pudge Exp $

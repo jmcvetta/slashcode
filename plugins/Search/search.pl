@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.84 2004/10/19 18:35:01 tvroom Exp $
+# $Id: search.pl,v 1.85 2004/11/09 20:28:11 pudge Exp $
 
 use strict;
 use Slash;
@@ -452,7 +452,9 @@ sub storySearchRSS {
 			description	=> "$constants->{sitename} Story Search",
 		},
 		image	=> 1,
-		items	=> \@items
+		items	=> \@items,
+		rdfitemdesc		=> $constants->{search_rdfitemdesc},
+		rdfitemdesc_html	=> $constants->{search_rdfitemdesc_html},
 	});
 }
 
@@ -563,7 +565,9 @@ sub journalSearchRSS {
 			description	=> "$constants->{sitename} Journal Search"
 		},
 		image	=> 1,
-		items	=> \@items
+		items	=> \@items,
+		rdfitemdesc		=> $constants->{search_rdfitemdesc},
+		rdfitemdesc_html	=> $constants->{search_rdfitemdesc_html},
 	});
 }
 
@@ -644,7 +648,9 @@ sub submissionSearchRSS {
 			description	=> "$constants->{sitename} Submission Search",
 		},
 		image	=> 1,
-		items	=> \@items
+		items	=> \@items,
+		rdfitemdesc		=> $constants->{search_rdfitemdesc},
+		rdfitemdesc_html	=> $constants->{search_rdfitemdesc_html},
 	});
 }
 
@@ -721,7 +727,9 @@ sub rssSearchRSS {
 			description	=> "$constants->{sitename} RSS Search",
 		},
 		image	=> 1,
-		items	=> \@items
+		items	=> \@items,
+		rdfitemdesc		=> $constants->{search_rdfitemdesc},
+		rdfitemdesc_html	=> $constants->{search_rdfitemdesc_html},
 	});
 }
 

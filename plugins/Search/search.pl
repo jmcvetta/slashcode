@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.23 2002/02/24 22:41:29 cliff Exp $
+# $Id: search.pl,v 1.24 2002/03/04 20:31:41 brian Exp $
 
 use strict;
 use Slash;
@@ -366,7 +366,7 @@ sub commentSearchRSS {
 		my $time = timeCalc($entry->[3]);
 		push @items, {
 			title	=> "$entry->[5] ($time)",
-			'link'	=> ($constants->{absolutedir} . "/comments.pl?sid=entry->[1]&pid=entry->[4]#entry->[10]"),
+			'link'	=> ($constants->{absolutedir} . "/comments.pl?sid=$entry->[1]&pid=$entry->[4]#$entry->[10]"),
 		};
 	}
 

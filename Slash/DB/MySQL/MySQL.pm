@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.193 2002/07/18 04:56:49 brian Exp $
+# $Id: MySQL.pm,v 1.194 2002/07/18 05:30:36 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.193 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.194 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4020,13 +4020,13 @@ sub getStoriesEssentials {
 			if $SECT->{contained} && @{$SECT->{contained}};
 
 		if ($user->{sectioncollapse}) {
-			$where .= "AND displaystatus >= 0 ";
+			$where .= " AND displaystatus >= 0 ";
 		} else {
-			$where .= "AND displaystatus = 0 ";
+			$where .= " AND displaystatus = 0 ";
 		}
 	} else {
 		$where .= " AND stories.section = " . $self->sqlQuote($SECT->{section});
-			$where .= "AND displaystatus => 0 ";
+			$where .= " AND displaystatus => 0 ";
 	}
 
 	$where .= "AND tid='$tid' " if $tid;

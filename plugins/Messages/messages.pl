@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.18 2003/04/11 14:03:11 pudge Exp $
+# $Id: messages.pl,v 1.19 2003/05/19 13:59:19 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -291,12 +291,20 @@ sub display_message {
 
 	my $message = $messages->getWeb($form->{id});
 
-	if ($message->{message} =~ /^<URL:(\S+)>$/) {
-		redirect($1);
+	if ($message) {
+		if ($message->{message} =~ /^<URL:(\S+)>$/) {
+			redirect($1);
+		} else {
+			header(getData('header'));
+			slashDisplay('display', {
+				message		=> $message,
+			});
+			footer();
+		}
 	} else {
 		header(getData('header'));
-		slashDisplay('display', {
-			message		=> $message,
+		print getData('message not found', {
+			id		=> $form->{id},
 		});
 		footer();
 	}

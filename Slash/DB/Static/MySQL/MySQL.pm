@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.157 2004/06/25 04:41:23 pudge Exp $
+# $Id: MySQL.pm,v 1.158 2004/06/29 17:49:25 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -570,9 +570,8 @@ sub decayTokens {
 sub getDailyMail {
 	my($self, $user) = @_;
 
-	my $columns = "stories.sid, title, stories.primaryskid,
-		users.nickname,
-		stories.tid, stories.time, stories.dept,
+	my $columns = "DISTINCT stories.sid, title, stories.primaryskid,
+		users.nickname, stories.tid, stories.time, stories.dept,
 		story_text.introtext, story_text.bodytext ";
 	my $tables = "stories, story_text, users, story_topics_rendered";
 	my $where = "time < NOW() AND TO_DAYS(NOW())-TO_DAYS(time)=1 ";

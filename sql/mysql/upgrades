@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.553 2004/03/30 16:40:21 tvroom Exp $
+# $Id: upgrades,v 1.554 2004/03/30 20:22:49 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2212,9 +2212,6 @@ CREATE TABLE open_proxies (
 	PRIMARY KEY (ip),
 	KEY ts (ts)
 ) TYPE=InnoDB;
-
-
-
 
 # End of T_2_3_0_144, Start of T_2_3_0_146 - 2004/03/23
 

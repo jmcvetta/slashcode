@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.128 2002/11/20 03:50:08 jamie Exp $
+# $Id: users.pl,v 1.129 2002/11/28 07:45:26 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2572,6 +2572,17 @@ sub getUserAdmin {
 	if ($mod_total) {
 		$user_edit->{stirredpercent} = sprintf("%.2f",
 			$user_edit->{stirred}*100/$mod_total);
+	}
+	if ($constants->{subscribe}) {
+		my $sp = $slashdb->sqlSelectAll(
+			"ts, email, payment_gross, pages, method, transaction_id",
+			"subscribe_payments",
+			"uid = '$user_edit->{uid}'",
+			"ORDER BY spid",
+		);
+		$sp ||= [ ];
+		formatDate($sp, 0);
+		$user_edit->{subscribe_payments} = $sp;
 	}
 
 	return slashDisplay('getUserAdmin', {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.63 2002/11/26 05:27:03 pudge Exp $
+# $Id: Data.pm,v 1.64 2002/11/28 07:45:26 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -271,7 +271,7 @@ sub formatDate {
 	my($data, $col, $as, $format) = @_;
 	errorLog('Not arrayref'), return unless ref($data) eq 'ARRAY';
 
-	if ($col && $col =~ /^\d+$/) {   # LoL
+	if (defined($col) && $col =~ /^\d+$/) {   # LoL
 		$as = defined($as) ? $as : $col;
 		for (@$data) {
 			errorLog('Not arrayref'), return unless ref eq 'ARRAY';
@@ -2667,4 +2667,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.63 2002/11/26 05:27:03 pudge Exp $
+$Id: Data.pm,v 1.64 2002/11/28 07:45:26 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.119 2004/05/04 19:28:07 pudge Exp $
+# $Id: Data.pm,v 1.120 2004/05/07 23:06:04 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -29,6 +29,7 @@ use Date::Format qw(time2str);
 use Date::Language;
 use Date::Parse qw(str2time);
 use Digest::MD5 qw(md5_hex md5_base64);
+use Email::Valid;
 use HTML::Entities qw(:DEFAULT %char2entity);
 use HTML::FormatText;
 use HTML::TreeBuilder;
@@ -42,7 +43,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -59,6 +60,7 @@ use vars qw($VERSION @EXPORT);
 	countWords
 	decode_entities
 	ellipsify
+	emailValid
 	encryptPassword
 	findWords
 	fixHref
@@ -126,6 +128,47 @@ sub nick2matchname {
 	$nick =~ s/[^a-zA-Z0-9]//g;
 	return $nick;
 }
+
+#========================================================================
+
+=head2 emailValid(EMAIL)
+
+Returns true if email is valid, false otherwise.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item EMAIL
+
+Email address to check.
+
+=back
+
+=item Return value
+
+True if email is valid, false otherwise.
+
+=back
+
+=cut
+
+sub emailValid {
+	my($email) = @_;
+
+	my $constants = getCurrentStatic();
+	return 0 if $constants->{email_domains_invalid}
+		&& ref($constants->{email_domains_invalid})
+		&& $email =~ $constants->{email_domains_invalid};
+
+	my $valid = Email::Valid->new;
+	return 0 unless $valid->rfc822($email);
+
+	return 1;
+}
+
 
 #========================================================================
 
@@ -3296,4 +3339,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.119 2004/05/04 19:28:07 pudge Exp $
+$Id: Data.pm,v 1.120 2004/05/07 23:06:04 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.570 2004/05/04 19:17:21 pudge Exp $
+# $Id: MySQL.pm,v 1.571 2004/05/07 23:06:02 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.570 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.571 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6957,6 +6957,12 @@ sub getSlashConf {
 		} else {
 			$conf{$key} = $conf_fixup_hashes{$key};
 		}
+	}
+
+	if ($conf{email_domains_invalid}) {
+		my $regex = sprintf('[^\w-](?:%s)$',
+			join '|', map quotemeta, split ' ', $conf{email_domains_invalid});
+		$conf{email_domains_invalid} = qr{$regex};
 	}
 
 	if ($conf{comment_nonstartwordchars}) {

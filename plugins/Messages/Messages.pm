@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.27 2004/04/02 00:43:03 pudge Exp $
+# $Id: Messages.pm,v 1.28 2004/05/07 23:06:04 pudge Exp $
 
 package Slash::Messages;
 
@@ -36,13 +36,12 @@ More to come.
 use strict;
 use base qw(Slash::Messages::DB::MySQL);
 use vars qw($VERSION);
-use Email::Valid;
 use Slash 2.003;	# require Slash 2.3.x
 use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -440,7 +439,7 @@ sub send {
 		}
 
 		$addr    = $msg->{altto} || $msg->{user}{realemail};
-		unless (Email::Valid->rfc822($addr)) {
+		unless (emailValid($addr)) {
 			messagedLog(getData("send mail error", {
 				addr	=> $addr,
 				uid	=> $msg->{user}{uid},
@@ -1093,4 +1092,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.27 2004/04/02 00:43:03 pudge Exp $
+$Id: Messages.pm,v 1.28 2004/05/07 23:06:04 pudge Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.160 2004/08/13 15:21:43 cowboyneal Exp $
+# $Id: slashschema_create.sql,v 1.161 2004/08/13 17:48:02 cowboyneal Exp $
 #
 
 #
@@ -956,7 +956,7 @@ CREATE TABLE templates (
 
 DROP TABLE IF EXISTS topics;
 CREATE TABLE topics (
-	tid SMALLINT UNSIGNED NOT NULL DEFAULT 0 AUTO_INCREMENT,
+	tid SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	keyword VARCHAR(20) NOT NULL,
 	textname VARCHAR(80) NOT NULL,
 	series ENUM('no', 'yes') DEFAULT 'no' NOT NULL,

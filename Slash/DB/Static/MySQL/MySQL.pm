@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.118 2004/01/22 19:01:15 jamie Exp $
+# $Id: MySQL.pm,v 1.119 2004/01/27 18:33:07 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1480,6 +1480,7 @@ sub refreshUncommonStoryWords {
 		"stories.sid = story_text.sid
 		 AND stories.time >= DATE_SUB(NOW(), INTERVAL $n_days DAY)"
 	);
+	my %common_words = map {$_ => 1} split " ", ($constants->{common_story_words} || "");
 	my @weights = (
 		$constants->{uncommon_weight_title} || 8,
 		$constants->{uncommon_weight_introtext} || 1,
@@ -1516,6 +1517,7 @@ sub refreshUncommonStoryWords {
 		}
 		grep { $word_hr->{$_}{count} <= $ignore_threshold }
 		grep { length($_) > $minlen }
+		grep { !$common_words{$_} }
 		keys %$word_hr;
 	my $uncommon_words = substr(join(" ", @uncommon_words), 0, $maxlen);
 	if (length($uncommon_words) == $maxlen) {

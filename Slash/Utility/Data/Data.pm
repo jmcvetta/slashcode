@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.93 2003/07/08 14:13:00 pater Exp $
+# $Id: Data.pm,v 1.94 2003/07/08 21:56:44 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2858,7 +2858,7 @@ sub countTotalVisibleKids {
 	$total += $comments->{$pid}{visiblekids};
 
 	for my $cid (@{$comments->{$pid}{kids}}) {
-		$total += countTotalKids($cid, $comments);
+		$total += countTotalVisibleKids($cid, $comments);
 	}
 
 	$comments->{$pid}{totalvisiblekids} = $total;
@@ -2923,4 +2923,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.93 2003/07/08 14:13:00 pater Exp $
+$Id: Data.pm,v 1.94 2003/07/08 21:56:44 pudge Exp $

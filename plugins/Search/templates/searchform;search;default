@@ -45,7 +45,7 @@ __template__
 	<br>
 
 	[% IF journal_option %]
-	<INPUT TYPE="RADIO" NAME="journal_only" VALUE="1"[% IF form.journal_only == '1' %] CHECKED[% END %]> Users with Journals
+	<INPUT TYPE="CHECKBOX" NAME="journal_only" VALUE="1"[% IF form.journal_only == '1' %] CHECKED[% END %]> Users with Journals
 	[% END %]
 
 	[% IF authors %]
@@ -85,4 +85,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.17 2004/06/02 12:59:59 jamiemccarthy Exp $
+$Id: searchform;search;default,v 1.18 2004/06/03 01:16:52 pudge Exp $

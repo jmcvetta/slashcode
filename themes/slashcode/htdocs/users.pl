@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.122 2002/10/24 14:24:19 pater Exp $
+# $Id: users.pl,v 1.123 2002/10/24 17:46:00 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -389,7 +389,7 @@ sub main {
 	if ($op ne 'userinfo' && $op ne 'display') {
 		my $data = {
 			adminmenu => $ops->{$op}{adminmenu} || 'admin',
-			tab_selected => $ops->{op}{tab_selected},
+			tab_selected => $ops->{$op}{tab_selected},
 		};
 		header(getMessage('user_header'), '', $data);
 		# This is a hardcoded position, bad idea and should be fixed -Brian

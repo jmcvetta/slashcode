@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.567 2004/04/27 22:18:14 pudge Exp $
+# $Id: MySQL.pm,v 1.568 2004/05/04 01:34:56 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.567 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.568 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -283,7 +283,6 @@ sub init {
 	# These are here to remind us of what exists
 	$self->{_storyBank} = {};
 	$self->{_codeBank} = {};
-	$self->{_sectionBank} = {};
 
 	$self->{_boxes} = {};
 	$self->{_sectionBoxes} = {};

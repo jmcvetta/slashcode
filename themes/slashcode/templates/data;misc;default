@@ -145,7 +145,7 @@ each submission of [% env.script_name %] in order to allow everyone to have a fa
 [%- ELSE %]So[% END %] total tokens=[% num_tokens %]
 First [% last_user * constants.m1_eligible_percentage %] accounts available.
 Eligible: [% eligible %] (min clicks [% constants.m1_eligible_hitcount %]) / Low factor [% factor_lowest %], High factor [% factor_highest %] / Start at [% start %] ([% least %] clicks, uid [% startuid %]), end at [% end %] ([% most %] clicks, uid [% enduid %])
-Incremented token-count on [% num_updated %] users.
+Incrementing token-count on [% num_updated %] users...
 
 [% CASE 'moderatord_log_footer' %]
 ---------------- END MODERATORD EXECUTION ----------------
@@ -183,4 +183,4 @@ Incremented token-count on [% num_updated %] users.
 __seclev__
 10000
 __version__
-$Id: data;misc;default,v 1.22 2004/08/30 02:13:24 jamiemccarthy Exp $
+$Id: data;misc;default,v 1.23 2004/11/15 23:14:12 jamiemccarthy Exp $

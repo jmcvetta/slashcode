@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.729 2004/11/14 23:18:10 jamiemccarthy Exp $
+# $Id: upgrades,v 1.730 2004/11/15 23:13:56 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2750,4 +2750,6 @@ CREATE TABLE dbs_readerstatus_queries (
 
 INSERT INTO vars (name, value, description) VALUES ('dbs_reader_adjust_delay','5','Number of seconds between each adjustment of reader DB weights');
 INSERT INTO vars (name, value, description) VALUES ('dbs_reader_expire_secs', 86400 * 7,'Number of seconds worth of dbs_readerstatus log to keep around');
+
+INSERT INTO vars (name, value, description) VALUES ('mod_token_assignment_delay', '2', 'Pause in seconds between batches of assigning token changes');
 

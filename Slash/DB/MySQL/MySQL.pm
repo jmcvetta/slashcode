@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.763 2005/03/11 19:57:26 pudge Exp $
+# $Id: MySQL.pm,v 1.764 2005/03/14 19:31:16 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.763 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.764 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7198,6 +7198,7 @@ sub setCommentForMod {
 
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
+	my $clear_ctp = 0;
 
 	my $allreasons_hr = $self->sqlSelectAllHashref(
 		"reason",
@@ -7229,6 +7230,13 @@ sub setCommentForMod {
 	}
 	if ($num_downmods > $constants->{mod_karma_bonus_max_downmods}) {
 		$update->{karma_bonus} = "no";
+		# If we remove a karma_bonus, we must invalidate the
+		# comment_text (because the noFollow changes).  Sadly
+		# at this point we don't know (due to performance
+		# requirements and atomicity) whether we are actually
+		# changing the value of this column, but we have to
+		# invalidate the cache anyway.
+		$clear_ctp = 1;
 	}
 
 	# Make sure we apply this change to the right comment :)
@@ -7312,11 +7320,22 @@ sub setCommentForMod {
 		});
 	}
 	$changed += 0;
+	if (!$changed) {
+		# If the row in the comments table didn't change, then
+		# the karma_bonus didn't change, so we know there is
+		# no need to clear the comment text cache.
+		$clear_ctp = 0;
+	}
 
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
 	$self->sqlDo("SET AUTOCOMMIT=1");
+
+	if ($clear_ctp and my $mcd = $self->getMCD()) {
+		my $mcdkey = "$self->{_mcd_keyprefix}:ctp:";
+		$mcd->delete("$mcdkey$cid", 3);
+	}
 
 	return $changed ? $hr : undef;
 }

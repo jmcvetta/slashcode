@@ -92,6 +92,7 @@ __template__
 
 				<TD VALIGN="MIDDLE"><B>User</B></TD>
 				<TD><INPUT TYPE="TEXT" NAME="userfield" VALUE="[% form.userfield | strip_attribute %]">
+					[% IF form.fieldname %]<INPUT TYPE="HIDDEN" NAME="fieldname" VALUE="[% form.fieldname | strip_attribute %]">[% END %]
 					<INPUT TYPE="SUBMIT" NAME="userinfo" VALUE="Info">
 					<INPUT TYPE="SUBMIT" NAME="edituser" VALUE="Edit">
 					<INPUT TYPE="SUBMIT" NAME="changepasswd" VALUE="Password">
@@ -242,4 +243,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.40 2003/03/18 07:55:03 pater Exp $
+$Id: getUserAdmin;users;default,v 1.41 2003/03/23 03:36:09 jamie Exp $

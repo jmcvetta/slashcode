@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.56 2002/04/25 21:38:27 brian Exp $
+# $Id: submit.pl,v 1.57 2002/04/29 18:49:15 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -211,7 +211,11 @@ sub submissionEd {
 
 	$def_section	= getData('defaultsection');
 	$def_note	= getData('defaultnote');
-	$cur_section	= $form->{section} || $def_section;
+	if ($user->{section} && !$form->{section}) {
+		$cur_section	= $user->{section};
+	} else {
+		$cur_section	= $form->{section} || $def_section;
+	}
 	$cur_note	= $form->{note} || $def_note;
 	$sections = $slashdb->getSubmissionsSections();
 

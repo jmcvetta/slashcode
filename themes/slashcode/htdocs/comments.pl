@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.17 2000/07/07 18:23:38 pudge Exp $
+#  $Id: comments.pl,v 1.18 2000/07/10 15:33:57 cbwood Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -755,8 +755,8 @@ sub moderate {
 			sqlUpdate(
 				"stories",
 				{
-					-commentcount	=> "commentcount-$delCount",
-					writestatus	=>1
+					-commentcount => "commentcount-$delCount",
+					writestatus	=> 1
 				},
 				"sid=" . $I{dbh}->quote($I{F}{sid}), 1
 			);

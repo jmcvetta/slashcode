@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.5 2000/07/05 18:49:36 cbwood Exp $
+#  $Id: metamod.pl,v 1.6 2000/07/10 15:33:57 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -60,11 +60,11 @@ EOT
 
 #################################################################
 sub karmaBonus {
-	# Sliding scale: having karma closer to $I{m2_maxkarma}, 
+	# Sliding scale: having karma closer to $I{m2_maxbonus}, 
 	# lowers a users chance for M2 bonus.
-	my $x = $I{m2_maxkarma} - $I{U}{karma};
+	my $x = $I{m2_maxbonus} - $I{U}{karma};
 	return 0 unless $x > 0;
-	return 1 if rand($I{m2_maxkarma}) < $x;
+	return 1 if rand($I{m2_maxbonus}) < $x;
 	return 0;
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.147 2002/04/30 18:55:15 brian Exp $
+# $Id: MySQL.pm,v 1.148 2002/04/30 19:05:00 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -97,8 +97,8 @@ my %descriptions = (
 	'topics_section_type'
 		=> sub { $_[0]->sqlSelectMany('topics.tid as tid,topics.alttext as alttext', 'topics, section_topics', "section='$_[2]' AND section_topics.tid=topics.tid AND type= '$_[3]'") },
 
-	'section_category'
-		=> sub { $_[0]->sqlSelectMany('id,title', 'categories', "section='$_[2]'") },
+	'section_subsection'
+		=> sub { $_[0]->sqlSelectMany('id,title', 'subsections', "section='$_[2]'") },
 
 	'maillist'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='maillist'") },
@@ -1511,8 +1511,8 @@ sub setSection {
 }
 
 ########################################################
-sub setCategory {
-	_genericSet('categories', 'id', '', @_);
+sub setSubSection {
+	_genericSet('subsections', 'id', '', @_);
 }
 
 ########################################################
@@ -3925,7 +3925,7 @@ sub getStoriesEssentials {
 	$where .= "AND tid='$tid' " if $tid;
 	$where .= "AND sid = '$misc->{sid}' " if $misc->{sid};
 	$where .= "AND sid != '$misc->{exclude_sid}' " if $misc->{exclude_sid};
-	$where .= "AND category=$misc->{category}" if $misc->{category};
+	$where .= "AND subsection=$misc->{subsection}" if $misc->{subsection};
 
 	# User Config Vars
 	$where .= "AND tid not in ($user->{extid}) "
@@ -5052,8 +5052,8 @@ sub getSection {
 }
 
 ########################################################
-sub getCategory {
-	my $answer = _genericGetCache('categories', 'id', '', @_);
+sub getSubSection {
+	my $answer = _genericGetCache('subsections', 'id', '', @_);
 	return $answer;
 }
 
@@ -5064,8 +5064,8 @@ sub getSections {
 }
 
 ########################################################
-sub getCategories {
-	my $answer = _genericGetsCache('categories', 'id', '', @_);
+sub getSubSections {
+	my $answer = _genericGetsCache('subsections', 'id', '', @_);
 	return $answer;
 }
 

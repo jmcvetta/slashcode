@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.168 2005/03/01 20:06:43 tvroom Exp $
+# $Id: Stats.pm,v 1.169 2005/03/08 18:19:26 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -1522,7 +1522,7 @@ sub getTopBadPasswordsByUID{
 	my $min = $options->{min};
 
 	my $other = "GROUP BY uid ";
-	$other .= " HAVING count(DISTINCT password) >= $options->{min}" if $min;
+	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 
 	return $self->sqlSelectAllHashrefArray(
@@ -1539,7 +1539,7 @@ sub getTopBadPasswordsByIP{
 	my $min = $options->{min};
 
 	my $other = "GROUP BY ip";
-	$other .= " HAVING count(DISTINCT password) >= $options->{min}" if $min;
+	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 	
 	return $self->sqlSelectAllHashrefArray(
@@ -1556,7 +1556,7 @@ sub getTopBadPasswordsBySubnet{
 	my $min = $options->{min};
 
 	my $other = "GROUP BY subnet";
-	$other .= " HAVING count(DISTINCT password) >= $options->{min}" if $min;
+	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 
 	return $self->sqlSelectAllHashrefArray(
@@ -2007,4 +2007,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.168 2005/03/01 20:06:43 tvroom Exp $
+$Id: Stats.pm,v 1.169 2005/03/08 18:19:26 tvroom Exp $

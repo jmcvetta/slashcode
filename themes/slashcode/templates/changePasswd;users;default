@@ -43,8 +43,7 @@ __template__
 [% ELSE %]
 		<INPUT TYPE="HIDDEN" NAME="uid" VALUE="[% useredit.uid %]">
 [% END %]
-		<B>Cookie expiration</B> [% session %]<BR>
-		<B>Cookie location</B> [% clocation %]<BR>
+		My login cookie <B>expires</B> [% session %] and <B>works from</B> [% clocation %]<BR>
 [% IF !admin_flag %]
 		[% IF got_oldpass %]
 			<INPUT TYPE="HIDDEN" NAME="oldpass" VALUE="[% form.oldpass | strip_attribute %]">	
@@ -69,4 +68,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: changePasswd;users;default,v 1.16 2003/12/31 01:06:26 pudge Exp $
+$Id: changePasswd;users;default,v 1.17 2003/12/31 16:43:50 pudge Exp $

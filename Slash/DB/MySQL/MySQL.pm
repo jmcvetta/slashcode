@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.589 2004/06/21 15:30:15 tvroom Exp $
+# $Id: MySQL.pm,v 1.590 2004/06/21 17:10:16 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.589 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.590 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1758,10 +1758,17 @@ sub getDescriptions {
 	my $qlid = $self->_querylog_start('SELECT', 'descriptions');
 	my $sth = $descref->(@_);
 	return { } if !$sth;
-	while (my($id, $desc) = $sth->fetchrow) {
-		$codeBank_hash_ref->{$id} = $desc;
+
+	# allow $descref to return a hashref, instead of a statement handle
+	if (ref($sth) =~ /::st$/) {
+		while (my($id, $desc) = $sth->fetchrow) {
+			$codeBank_hash_ref->{$id} = $desc;
+		}
+		$sth->finish;
+	} else {
+		@{$codeBank_hash_ref}{keys %$sth} = values %$sth;
 	}
-	$sth->finish;
+
 	$self->_querylog_finish($qlid);
 
 	$self->{$cache} = $codeBank_hash_ref if getCurrentStatic('cache_enabled');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.22 2004/06/17 16:11:49 jamiemccarthy Exp $
+# $Id: System.pm,v 1.23 2004/06/21 17:10:18 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -40,7 +40,7 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -161,9 +161,9 @@ sub messageID {
 
 	my $msg_id;
 	if ($host eq $localhost || !length($localhost)) {
-		$msg_id = sprintf('%f-%d-slash@%s', Time::HiRes::time(), $$, $host);
+		$msg_id = sprintf('<%f-%d-slash@%s>', Time::HiRes::time(), $$, $host);
 	} else {
-		$msg_id = sprintf('%f-%d-slash-%s@%s', Time::HiRes::time(), $$, $localhost, $host);
+		$msg_id = sprintf('<%f-%d-slash-%s@%s>', Time::HiRes::time(), $$, $localhost, $host);
 	}
 	return $msg_id;
 }}
@@ -455,4 +455,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.22 2004/06/17 16:11:49 jamiemccarthy Exp $
+$Id: System.pm,v 1.23 2004/06/21 17:10:18 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.28 2001/11/19 18:14:32 brian Exp $
+# $Id: MySQL.pm,v 1.29 2001/11/19 18:20:17 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3512,7 +3512,7 @@ sub getStoriesBySubmitter {
 sub countStoriesBySubmitter {
 	my($self, $id) = @_;
 
-	my $count = $self->sqlCount('stories', "submitter='$id'");
+	my $count = $self->sqlCount('stories', "submitter='$id'  AND time < NOW() AND (writestatus = 'ok' OR writestatus = 'dirty') and displaystatus >= 0");
 
 	return $count;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.38 2003/03/11 05:53:53 jamie Exp $
+# $Id: article.pl,v 1.39 2003/03/11 20:04:15 brian Exp $
 
 use strict;
 use Slash;
@@ -45,7 +45,7 @@ sub main {
 	}
 
 	if ($story) {
-		my $SECT = $slashdb->getSection($story->{section});
+		my $SECT = $reader->getSection($story->{section});
 		# This should be a getData call for title
 		my $title = "$constants->{sitename} | $story->{title}";
 
@@ -88,7 +88,7 @@ sub main {
 		slashDisplay('display', {
 			poll			=> $pollbooth,
 			section			=> $SECT,
-			section_block		=> $slashdb->getBlock($SECT->{section}),
+			section_block		=> $reader->getBlock($SECT->{section}),
 			show_poll		=> $pollbooth ? 1 : 0,
 			story			=> $story,
 			authortext		=> $authortext,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.88 2004/11/15 20:46:30 pudge Exp $
+# $Id: journal.pl,v 1.89 2004/11/16 22:32:25 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -209,16 +209,17 @@ sub displayRSS {
 	if ($form->{uid} || $form->{nick}) {
 		my $uid = $form->{uid} ? $form->{uid} : $reader->getUserUID($form->{nick});
 		$juser  = $reader->getUser($uid);
-	} else {
-		$juser  = $user;
 	}
+	$juser ||= $user;
 
 	if ($form->{op} eq 'friendview') {
 		my $zoo   = getObject('Slash::Zoo');
 		my $uids  = $zoo->getFriendsUIDs($juser->{uid});
-		$articles = $journal->getsByUids($uids, 0, $constants->{journal_default_display});
+		$articles = $journal->getsByUids($uids, 0, $constants->{journal_default_display} * 3);
 	} else {
-		$articles = $journal->getsByUid($juser->{uid}, 0, $constants->{journal_default_display});
+		# give an extra 3 * the normal HTML default display ... we can
+		# make a new var if we really need one -- pudge
+		$articles = $journal->getsByUid($juser->{uid}, 0, $constants->{journal_default_display} * 3);
 	}
 
 	my @items;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.81 2003/03/27 22:25:45 brian Exp $
+# $Id: Data.pm,v 1.82 2003/03/28 01:24:54 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -2002,7 +2002,7 @@ sub addDomainTags {
 		(.*?)			# $3 is whatever's between <A> and </A>
 		</A\b[^>]*>
 	}{
-		$3	? _url_to_domain_tag($1,$2, $3)
+		$3	? _url_to_domain_tag($1, $2, $3)
 			: ""
 	}gisex;
 
@@ -2016,14 +2016,6 @@ sub addDomainTags {
 	$html =~ s{</A>}{}g;
 
 	return $html;
-}
-
-# Add a title tag to make this all friendly for those with vision and similar issues -Brian
-sub _url_title_tag {
-	my($href, $title) = @_;
-	$href =~ s/>/ TITLE="$title">/is;
-
-	return $href;
 }
 
 sub _url_to_domain_tag {
@@ -2072,7 +2064,9 @@ sub _url_to_domain_tag {
 	} elsif (length($info) >= 25) {
 		$info = substr($info, 0, 10) . "..." . substr($info, -10);
 	}
-	$href =~ s/>/ TITLE="$info">/is;
+	# Add a title tag to make this all friendly for those with vision
+	# and similar issues -Brian
+	$href =~ s/>/ TITLE="$info">/ if $info ne '?';
 	return "$href$body</a $info>";
 }
 
@@ -2823,4 +2817,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.81 2003/03/27 22:25:45 brian Exp $
+$Id: Data.pm,v 1.82 2003/03/28 01:24:54 jamie Exp $

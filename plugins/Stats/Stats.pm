@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.55 2002/09/17 19:56:45 jamie Exp $
+# $Id: Stats.pm,v 1.56 2002/09/20 18:50:57 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -67,7 +67,7 @@ sub updateStatDaily {
 }
 
 ########################################################
-sub getPoints {
+sub getPointsInPool {
 	my($self) = @_;
 	return $self->sqlSelect('SUM(points)', 'users_comments');
 }
@@ -175,6 +175,26 @@ sub getRepeatMods {
 		 ORDER BY c DESC, orguid
 		 LIMIT $limit"
 	);
+	return $hr;
+}
+
+########################################################
+sub getModM2Ratios {
+	my($self, $options) = @_;
+
+	my $reasons = $self->getReasons();
+	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
+	my $reasons_m2able = join(",", @reasons_m2able);
+	my $hr = $self->sqlSelectAllHashref(
+		[qw( day m2count )],
+		"SUBSTRING(ts, 1, 10) AS day,
+		 m2count,
+		 COUNT(*) AS c",
+		"moderatorlog",
+		"active=1 AND reason IN ($reasons_m2able)",
+		"GROUP BY day, m2count"
+	);
+
 	return $hr;
 }
 

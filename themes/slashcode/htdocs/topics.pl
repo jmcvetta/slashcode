@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.11 2002/09/24 14:47:49 pater Exp $
+# $Id: topics.pl,v 1.12 2002/09/24 20:24:14 pudge Exp $
 
 use strict;
 use Slash;
@@ -17,6 +17,7 @@ sub main {
 
 	header(getData('head'));
 	
+	# i think this should be if ($user->{is_admin}) { ... -- pudge
 	if ($user->{seclev} >= 100) {
 		print createMenu('adv-admin');
 	}

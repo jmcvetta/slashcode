@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.150 2003/02/03 15:50:53 jamie Exp $
+# $Id: users.pl,v 1.151 2003/02/05 16:33:49 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -615,6 +615,7 @@ sub newUser {
 #################################################################
 sub mailPasswd {
 	my($hr) = @_;
+	my $user = getCurrentUser();
 	my $uid = $hr->{uid} || 0;
 
 	my $slashdb = getCurrentDB();
@@ -640,15 +641,23 @@ sub mailPasswd {
 		}
 	}
 
-	if (!$uid || isAnon($uid)) {
-		print getError('mailpasswd_notmailed_err');
+	my $user_edit = $slashdb->getUser($uid);
+
+	my $err_name = '';
+	$err_name = 'mailpasswd_notmailed_err' if !$uid || isAnon($uid);
+	$err_name = 'mailpasswd_readonly_err' if !$err_name
+		&& ($slashdb->checkReadOnly('ipid')
+			|| $slashdb->checkReadOnly('subnetid'));
+	$err_name = 'mailpasswd_toooften_err' if !$err_name
+		&& $slashdb->checkMaxMailPasswords($user_edit);
+	if ($err_name) {
+		print getError($err_name);
 		$slashdb->resetFormkey($form->{formkey});	
 		$form->{op} = 'mailpasswdform';
 		displayForm();
 		return(1);
 	}
 
-	my $user_edit = $slashdb->getUser($uid, ['nickname', 'realemail']);
 	my $newpasswd = $slashdb->getNewPasswd($uid);
 	my $tempnick = fixparam($user_edit->{nickname});
 
@@ -656,14 +665,33 @@ sub mailPasswd {
 		nickname	=> $user_edit->{nickname}
 	}, 1);
 
+	# Pull out some data passed in with the request.  Only the IP
+	# number is actually trustworthy, the others could be forged.
+	# Note that we strip the forgeable ones to make sure there
+	# aren't any "<>" chars which could fool a stupid mail client
+	# into parsing a plaintext email as HTML.
+	my $r = Apache->request;
+	my $remote_ip = $r->connection->remote_ip;
+	my $xff = $r->header_in('X-Forwarded-For') || '';
+	$xff =~ s/\s+/ /g;
+	$xff = substr(strip_notags($xff), 0, 20);
+	my $ua = $r->header_in('User-Agent') || '';
+	$ua =~ s/\s+/ /g;
+	$ua = substr(strip_attribute($ua), 0, 60);
+
 	my $msg = getMessage('mailpasswd_msg', {
 		newpasswd	=> $newpasswd,
-		tempnick	=> $tempnick
+		tempnick	=> $tempnick,
+		remote_ip	=> $remote_ip,
+		x_forwarded_for	=> $xff,
+		user_agent	=> $ua,
 	}, 1);
 
 	doEmail($uid, $emailtitle, $msg) if $user_edit->{nickname};
 	print getMessage('mailpasswd_mailed_msg', { name => $user_edit->{nickname} });
+	$slashdb->setUserMailPasswd($user_edit);
 }
+
 
 #################################################################
 sub showSubmissions {

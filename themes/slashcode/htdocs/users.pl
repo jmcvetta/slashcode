@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.213 2004/01/23 00:41:49 pudge Exp $
+# $Id: users.pl,v 1.214 2004/01/29 23:53:31 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2027,9 +2027,8 @@ sub savePasswd {
 
 		# only set cookie if user is current user
 		if ($form->{uid} eq $user->{uid}) {
-			my $value  = $slashdb->getLogToken($form->{uid}, 1);
-			my $cookie = bakeUserCookie($uid, $slashdb->getLogToken($form->{uid}, 1));
-			setCookie('user', $cookie, $user_edits_table->{session_login});
+			$user->{logtoken} = bakeUserCookie($uid, $slashdb->getLogToken($form->{uid}, 1));
+			setCookie('user', $user->{logtoken}, $user_edits_table->{session_login});
 		}
 	}
 

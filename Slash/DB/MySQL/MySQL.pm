@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.703 2004/10/07 22:04:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.704 2004/10/07 22:18:53 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.703 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.704 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7374,6 +7374,7 @@ sub getStoriesEssentials {
 		&& $fake_secs_ahead == 0
 		&& !defined($future_secs)
 		&& !$issue && !$sectioncollapse && !$return_min_stoid_only
+		&& !@$tid_x
 		&& !@$uid && !@$uid_x
 		&& !@$stoid && !@$stoid_x
 	);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.301 2003/01/21 04:51:13 jamie Exp $
+# $Id: MySQL.pm,v 1.302 2003/01/21 17:28:43 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.301 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.302 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1299,21 +1299,6 @@ sub setContentFilter {
 			err_message	=> $form->{err_message},
 		}, "filter_id=$form->{filter_id}"
 	);
-}
-
-########################################################
-# Only Slashdot uses this method
-# not for long... - Cliff
-sub setSectionExtra {
-	my($self, $full, $story) = @_;
-
-	if ($full && $self->sqlTableExists($story->{section}) && $story->{section}) {
-		my $extra = $self->sqlSelectHashref('*', $story->{section}, "sid='$story->{sid}'");
-		for (keys %$extra) {
-			$story->{$_} = $extra->{$_};
-		}
-	}
-
 }
 
 ########################################################

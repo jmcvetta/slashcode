@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.93 2003/01/21 04:00:58 jamie Exp $
+# $Id: Slash.pm,v 1.94 2003/01/21 17:28:43 jamie Exp $
 
 package Slash;
 
@@ -985,14 +985,6 @@ sub displayStory {
 
 	$story->{introtext} = parseSlashizedLinks($story->{introtext});
 	$story->{bodytext} =  parseSlashizedLinks($story->{bodytext});
-
-	# get extra data from section table for this story
-	# (if exists)
-	# this only needs to run for slashdot
-	# why is this commented out?  -- pudge
-	# Its basically an undocumented feature
-	# that Slash uses.
-	#$slashdb->setSectionExtra($full, $story);
 
 	my $return = dispStory($story, $author, $topic, $full, $other);
 	return($return, $story, $author, $topic);

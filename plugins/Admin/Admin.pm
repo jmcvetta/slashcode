@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.3 2002/12/11 21:11:01 jamie Exp $
+# $Id: Admin.pm,v 1.4 2002/12/13 01:01:25 jamie Exp $
 
 package Slash::Admin;
 
@@ -15,7 +15,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -60,6 +60,23 @@ sub getAccesslogAbusersByID {
 		 ORDER BY maxts DESC, c DESC
 		 LIMIT $limit"
 	);
+	return [ ] if !$ar || !@$ar;
+
+	# If we're returning data, find any IPIDs which are already listed
+	# as banned and put the reason in too.
+	my @ipids = map { $self->sqlQuote($_->{ipid}) } @$ar;
+	my $ipids = join(",", @ipids);
+	my $hr = $self->sqlSelectAllHashref(
+		"ipid",
+		"ipid, ts, reason",
+		"accesslist",
+		"ipid IN ($ipids) AND isbanned AND reason != ''"
+	);
+	for my $row (@$ar) {
+		next unless exists $hr->{$row->{ipid}};
+		$row->{bannedts}     = $hr->{$row->{ipid}}{ts};
+		$row->{bannedreason} = $hr->{$row->{ipid}}{reason};
+	}
 	return $ar;
 }
 

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.1 2002/06/12 23:15:41 cliff Exp $
+# $Id: print.pl,v 1.2 2002/06/14 04:34:15 cliff Exp $
 
 use strict;
 use Slash;
@@ -38,7 +38,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.1 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -85,12 +85,24 @@ sub main {
 	header($sect_title, 'print');
 	$user->{is_admin} = $adm;
 
+	my @story_links;
+	push @story_links, [$1, $2] while
+		$story->{relatedtext} =~
+		m!<A HREF="?([^"<]+?)"?>([^<]+?)</A>!ig;
+	# Drop the last two links, "More on <topic>", "Also by <author>", as 
+	# they don't appear in the story. 
+	#
+	# Plugin/Theme writers. If you change how story_text.relatedtext works,
+	# you may have to adust either the regexp, the slice below, or both!
+	@story_links = @story_links[0 .. $#story_links - 2];
+
 	slashDisplay('dispStory', {
 		user		=> $user,
 		story		=> $story,
 		topic		=> $topic,
 		author		=> $author,
 		section		=> $sect_title,
+		links		=> \@story_links,
 	}, { Nocomm => 1 });
 
 	slashDisplay('footer', {

@@ -39,7 +39,7 @@ rm.score; "  "; constants.absolutedir_secure %]/~[% rm.nickname | fixparam %] ([
 [% END %]
 [% IF repeat_mods;
 	FOREACH dir = [ '-1', '1' ];
-		IF repeat_mods.$dir.keys.size >= 1;
+		IF repeat_mods.$dir.defined AND repeat_mods.$dir.keys.size >= 1;
 			IF dir == -1; dirword = "DOWN"; ELSE; dirword = "UP"; END %]
 REPEAT [% dirword %]MODS:
 [%			FOREACH orguid = repeat_mods.$dir.keys.nsort;
@@ -55,4 +55,4 @@ END; %]
 __seclev__
 100
 __version__
-$Id: display;modmail;default,v 1.13 2003/03/04 19:07:59 pudge Exp $
+$Id: display;modmail;default,v 1.14 2003/08/05 20:22:32 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.36 2002/02/12 20:54:41 cliff Exp $
+# $Id: admin.pl,v 1.37 2002/02/20 01:00:31 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1322,7 +1322,7 @@ sub updateStory {
 		$slashdb->setStoryTopics($form->{sid}, $tid_ref);
 	}
 
-	$slashdb->updateStory();
+	$slashdb->updateStory($form);
 	titlebar('100%', getTitle('updateStory-title'));
 	# make sure you pass it the goods
 	listStories(@_);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.84 2002/02/19 22:47:01 brian Exp $
+# $Id: MySQL.pm,v 1.85 2002/02/20 01:00:31 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1865,6 +1865,9 @@ sub setStory {
 			if ($isolate);
 	}
 
+	$hashref->{day_published} = $hashref->{'time'}
+		if ($hashref->{'time'});
+
 	for (keys %$hashref) {
 		(my $clean_val = $_) =~ s/^-//;
 		my $key = $self->{$cache}{$clean_val};
@@ -3668,8 +3671,7 @@ sub getStoriesEssentials {
 		my $yesterday_str =
 			'DATE_FORMAT(DATE_SUB(time, INTERVAL 1 DAY),"%Y%m%d")';
 		$where .=
-			"AND '$form->{issue}' BETWEEN $yesterday_str AND
-			$tomorrow_str ";
+			"AND day_published = '$form->{issue}' ";
 	} else {
 		$other .= "LIMIT $limit ";
 	}
@@ -3983,6 +3985,7 @@ sub createStory {
 		tid		=> $story->{tid},
 		dept		=> $story->{dept},
 		'time'		=> $story->{'time'},
+		day_published		=> $story->{'time'},
 		title		=> $story->{title},
 		section		=> $story->{section},
 		displaystatus	=> $story->{displaystatus},
@@ -4037,6 +4040,7 @@ sub updateStory {
 		tid		=> $story->{tid},
 		dept		=> $story->{dept},
 		'time'		=> $time,
+		day_published		=> $time,
 		title		=> $story->{title},
 		section		=> $story->{section},
 		displaystatus	=> $story->{displaystatus},

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.25 2002/02/14 22:16:31 jamie Exp $
+# $Id: slashschema_create.sql,v 1.26 2002/02/20 01:00:31 brian Exp $
 #
 
 #
@@ -524,13 +524,15 @@ CREATE TABLE stories (
 	commentcount smallint UNSIGNED DEFAULT '0' NOT NULL,
 	hitparade varchar(64) DEFAULT '0,0,0,0,0,0,0' NOT NULL,
 	writestatus ENUM("ok","delete","dirty","archived") DEFAULT 'ok' NOT NULL,
+	day_published date DEFAULT '0000-00-00' NOT NULL,
 	PRIMARY KEY (sid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	FOREIGN KEY (tid) REFERENCES topics(tid),
 	FOREIGN KEY (section) REFERENCES sections(section),
 	INDEX frontpage (time, displaystatus, writestatus),
 	INDEX time (time), /* time > now() shows that this is still valuable, even with frontpage -Brian */
-	INDEX submitter (submitter)
+	INDEX submitter (submitter),
+	INDEX published (day_published)
 ) TYPE = myisam;
 
 #

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.21 2002/03/21 01:18:29 brian Exp $
+# $Id: sections.pl,v 1.22 2002/03/21 03:39:50 jamie Exp $
 
 use strict;
 use Slash;
@@ -196,7 +196,7 @@ sub saveSection {
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
-			cookiedomain		=> $form->{cookiedomain},
+			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
 		});
 
@@ -210,7 +210,7 @@ sub saveSection {
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
 			url		=> $form->{url},
-			cookiedomain		=> $form->{cookiedomain},
+			cookiedomain	=> $form->{cookiedomain},
 			hostname	=> $form->{hostname},
 		});
 		print getData($return ? 'insert' : 'failed', { 

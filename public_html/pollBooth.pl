@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.9 2000/07/12 15:10:58 pudge Exp $
+#  $Id: pollBooth.pl,v 1.10 2000/07/12 15:51:23 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -168,18 +168,18 @@ sub vote {
 		@{sqlSelectAll("aid", "pollanswers", "qid=$qid_dbi")} if $qid;
 
 	if (! keys %all_aid) {
- 		print "Invalid poll!<BR>";
+		print "Invalid poll!<BR>";
 		# Non-zero denotes error condition and that comments should not be 
 		# printed.
 		return 1;
 	}
-		
+
 	my $qid_htm = stripByMode($qid, 'attribute');
 
 	my $notes = "Displaying poll results";
 	if ($I{U}{uid} == -1 && ! $I{allow_anonymous}) {
 		$notes = "You may not vote anonymously.  " .
-		    qq[Please <A HREF="$I{rootdir}/users.pl">log in</A>.];
+			qq[Please <A HREF="$I{rootdir}/users.pl">log in</A>.];
 
 	} elsif ($aid > 0) {
 		my($id) = sqlSelect("id","pollvoters",

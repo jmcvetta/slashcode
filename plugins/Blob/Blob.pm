@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.7 2003/07/01 21:04:00 pudge Exp $
+# $Id: Blob.pm,v 1.8 2003/09/25 19:43:31 pudge Exp $
 
 package Slash::Blob;
 
@@ -15,9 +15,10 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
+# there are plenty of other methods out there, this needs to be replaced -- pudge
 my %mimetypes = (
 	jpeg => 'image/jpeg',
 	jpg  => 'image/jpeg',
@@ -67,11 +68,9 @@ sub create {
 	$values->{seclev} ||= 0;
 	# Couldn't find a module that did this
 	if (!$values->{content_type} && $values->{filename}) {
-		my $filename = lc($values->{filename});
-		$filename =~ s/.*\.(.*)$/$1/g;
-		$values->{content_type} = $mimetypes{$filename};
+		(my $ext = lc $values->{filename}) =~ s/^.*\.([^.]+)$/$1/s;
+		$values->{content_type} = $mimetypes{$ext};
 	}
-	delete($values->{filename});
 	$values->{content_type} ||= 'application/octet-stream';
 
 	my $id = md5_hex($values->{data});

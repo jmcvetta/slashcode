@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.7 2003/08/29 16:18:44 jamie Exp $
+# $Id: mysql_schema,v 1.8 2003/09/25 19:43:31 pudge Exp $
 #
 
 # 
@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS blobs;
 CREATE TABLE blobs (
 	id VARCHAR(32) NOT NULL,
 	content_type VARCHAR(80) NOT NULL,
+	filename VARCHAR(80) DEFAULT "" NOT NULL,
 	seclev mediumint UNSIGNED NOT NULL DEFAULT '0',
 	reference_count mediumint UNSIGNED NOT NULL DEFAULT '1',
 	data LONGBLOB NOT NULL,

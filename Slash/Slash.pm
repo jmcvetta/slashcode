@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.141 2003/06/12 18:35:49 jamie Exp $
+# $Id: Slash.pm,v 1.142 2003/06/28 00:17:41 pudge Exp $
 
 package Slash;
 
@@ -528,6 +528,7 @@ sub printComments {
 
 	if ($discussion->{type} eq 'archived'
 		|| ($discussion->{is_future} && !$constants->{subscribe_future_post})
+		|| ($discussion->{commentstatus} && $discussion->{commentstatus} ne 'enabled')
 	) {
 		# This was named "comment_read_only" but that's not very
 		# descriptive;  let's call it what it is... -Jamie 2002/02/26

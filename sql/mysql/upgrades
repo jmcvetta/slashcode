@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.678 2004/10/01 04:10:34 jamiemccarthy Exp $
+# $Id: upgrades,v 1.679 2004/10/01 15:13:52 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2558,8 +2558,8 @@ CREATE TABLE uncommonstorywords (
 	PRIMARY KEY (word)
 ) TYPE=InnoDB;
 
-# Run this perl script
-perl -MSlash::Test=virtusername -e '@usw = split / /, $constants->{uncommonstorywords}; for $w (@usw) { $slashdb->sqlInsert("uncommonstorywords", { word => $w }) }'
+# Run this perl script for each of your sites' virtual users
+# perl -MSlash::Test=virtusername -e '@usw = split / /, $constants->{uncommonstorywords}; for $w (@usw) { $slashdb->sqlInsert("uncommonstorywords", { word => $w }) }'
 
 DELETE FROM vars WHERE name='uncommonstorywords';
 

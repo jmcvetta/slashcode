@@ -105,7 +105,7 @@ END %]
 		<TR>
 			<TD ALIGN="RIGHT">URL: </TD>
 			<TD>
-				<INPUT TYPE="text" NAME="url" SIZE=60>
+				<INPUT TYPE="text" NAME="url" VALUE="[% form.url | strip_attribute %]" SIZE=60>
 			</TD>
 		</TR>
 	[% END %]
@@ -210,4 +210,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.29 2003/07/10 19:06:46 vroom Exp $
+$Id: edit_comment;comments;default,v 1.30 2003/11/17 15:29:35 pater Exp $

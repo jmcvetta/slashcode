@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.72 2004/09/20 14:32:26 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.73 2004/09/23 19:41:07 jamiemccarthy Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -145,8 +145,13 @@ sub header {
 		return if $r->header_only;
 	}
 
-#print STDERR scalar(localtime) . " $$ header skin_name='$skin_name' det='" . determineCurrentSkin() . "'\n";
-	setCurrentSkin($skin_name || determineCurrentSkin());
+	my $skid = 0;
+	if ($skin_name) {
+		my $skin = getSkin($skin_name);
+		$skid = $skin->{skid} if $skin;
+	}
+#print STDERR scalar(localtime) . " $$ header skin_name='$skin_name' skid='$skid' det='" . determineCurrentSkin() . "'\n";
+	setCurrentSkin($skid || determineCurrentSkin());
 	getSkinColors();
 
 	# This is ALWAYS displayed. Let the template handle the title
@@ -732,4 +737,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.72 2004/09/20 14:32:26 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.73 2004/09/23 19:41:07 jamiemccarthy Exp $

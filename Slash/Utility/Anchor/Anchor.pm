@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.10 2002/03/05 03:14:21 jamie Exp $
+# $Id: Anchor.pm,v 1.11 2002/03/05 05:06:13 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -329,6 +329,12 @@ sub prepAds {
 	}
 
 	my $constants = getCurrentStatic();
+	# Again, short-circuit if possible.
+	if (!$constants->{run_ads}) {
+		$user->{state}{ad} = { };
+		return;
+	}
+
 	my $ad_messaging_num = $constants->{ad_messaging_num} || 6;
 	my $ad_max = $constants->{ad_max} || $ad_messaging_num;
 	my $ad_messaging_prob = $constants->{ad_messaging_prob} || 0.5;
@@ -381,6 +387,8 @@ sub prepAds {
 
 	for my $num (1..$ad_max) {
 		my $use_this_ad = 1;
+		# Subscriber?  No ads.
+		$use_this_ad = 0 if $adless;
 		# If we're showing a messaging ad, no other ads get shown.
 		$use_this_ad = 0 if $use_messaging && $num != $ad_messaging_num;
 		# If we're not showing a messaging ad, it doesn't get shown.
@@ -418,7 +426,7 @@ EOT
 	# to set up all the ad data at once before we can return anything.
 	prepAds() if !defined($user->{state}{ad});
 
-	return $user->{state}{ad}{$num};
+	return $user->{state}{ad}{$num} || "";
 }
 
 
@@ -474,4 +482,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.10 2002/03/05 03:14:21 jamie Exp $
+$Id: Anchor.pm,v 1.11 2002/03/05 05:06:13 jamie Exp $

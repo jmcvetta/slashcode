@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.19 2002/02/27 22:09:05 brian Exp $
+# $Id: metamod.pl,v 1.20 2002/06/27 14:34:21 pater Exp $
 
 use strict;
 use Slash;
@@ -106,14 +106,15 @@ sub metaModerate {
 	# Note the use of a naked "10" here for the M2 flag. This is used
 	# to denote M2 entries that have yet to be reconciled.
 	my $changes = $slashdb->setMetaMod(\%m2victims, 10, scalar time);
+	my $count = $constants->{m2_comments} - $y;
 
 	slashDisplay('metaModerate', {
 		changes	=> $changes,
-		count	=> $constants->{m2_comments} - $y,
+		count	=> $count,
 		metamod	=> \%metamod,
 	});
 
-	$slashdb->setModeratorVotes($user->{uid}, \%metamod);
+	$slashdb->setModeratorVotes($user->{uid}, \%metamod) if $count > 0;
 }
 
 #################################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.759 2005/02/15 17:19:05 tvroom Exp $
+# $Id: MySQL.pm,v 1.760 2005/02/15 18:23:58 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.759 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.760 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1181,6 +1181,7 @@ sub undoModeration {
 	return \@removed;
 }
 
+########################################################
 sub getTopicParam {
 	my ($self, $tid_wanted, $val, $force_cache_freshen) = @_;
 	my $constants = getCurrentStatic();
@@ -1310,7 +1311,6 @@ sub getTopicTree {
 		return $tree_ref;
 	}
 }
-
 
 ########################################################
 # Given a topic tree, check it for loops (trees should not have

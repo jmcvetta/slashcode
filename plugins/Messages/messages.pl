@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.8 2002/09/24 17:16:31 brian Exp $
+# $Id: messages.pl,v 1.9 2002/10/17 16:48:27 jamie Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -60,11 +60,11 @@ sub edit_message {
 
 	my $template = <<EOT;
 [% IF preview %]
-	[% PROCESS titlebar width="95%" title="Preview Message" %]
+	[% PROCESS titlebar width="100%" title="Preview Message" %]
 	[% preview %]
 	<P>
 [% END %]
-	[% PROCESS titlebar width="95%" title="Send Message" %]
+	[% PROCESS titlebar width="100%" title="Send Message" %]
 
 <!-- error message -->
 [% IF error_message %][% error_message %][% END %]
@@ -195,9 +195,21 @@ sub display_prefs {
 	}
 
 	my $prefs = $messages->getPrefs($uid);
-	my $userm = $slashdb->getUser($uid);
+	my $userm = $slashdb->getUser($uid); # what the hell is this for, instead of just $user?
 
 	header(getData('header'));
+	print createMenu('users', {
+		style =>	'tabbed',
+		justify =>	'right',
+		color =>	'colored',
+		tab_selected =>	'preferences',
+	});
+	slashDisplay('prefs_titlebar', {
+		nickname => $user->{nickname},
+		uid => $user->{uid},
+		tab_selected => 'messages'
+	});
+	print createMenu('messages');
 	slashDisplay('display_prefs', {
 		userm		=> $userm,
 		prefs		=> $prefs,
@@ -245,9 +257,18 @@ sub list_messages {
 
 	header(getData('header'));
 # Spank me, this won't be here for long (aka Pater's cleanup will remove it) -Brian
-	print createMenu('users');
-	slashDisplay('user_titlebar', { nickname => $user->{nickname}, uid => $user->{uid}, page => 'messages' });
-	print createMenu('messages');
+	print createMenu('users', {
+		style =>	'tabbed',
+		justify =>	'right',
+		color =>	'colored',
+		tab_selected =>	'users',
+	});
+	slashDisplay('user_titlebar', {
+		nickname => $user->{nickname},
+		uid => $user->{uid},
+		tab_selected => 'messages'
+	});
+	print createMenu('messages'); # [ Message Preferences | Inbox ]
 	slashDisplay('list_messages', {
 		note		=> $note,
 		messagecodes	=> $messagecodes,

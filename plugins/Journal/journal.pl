@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.49 2002/10/15 19:52:31 pudge Exp $
+# $Id: journal.pl,v 1.50 2002/10/17 16:48:27 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -57,6 +57,8 @@ sub main {
 		preview		=> [ $user_ok,		\&editArticle		],
 		save		=> [ $user_ok,		\&saveArticle		], # formkey
 		remove		=> [ $user_ok,		\&removeArticle		],
+
+		editprefs	=> [ $user_ok,		\&editPrefs		],
 		setprefs	=> [ $user_ok,		\&setPrefs		],
 
 		list		=> [ 1,			\&listArticle		],
@@ -68,6 +70,9 @@ sub main {
 
 		default		=> [ 1,			\&displayFriends	],
 	);
+
+	# journal.pl waits until it's inside the op's subroutine to print
+	# its header.  Headers are bottlenecked through _printHead.
 
 	my $op = $form->{'op'};
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED]) {
@@ -420,6 +425,17 @@ sub displayArticle {
 	}
 }
 
+sub editPrefs {
+	my($journal, $constants, $user, $form, $slashdb) = @_;
+	
+	my $theme	= _checkTheme($user->{'journal_theme'});
+	my $themes	= $journal->themes;
+	slashDisplay('journaloptions', {
+		default		=> $theme,
+		themes		=> $themes,
+	});
+}
+
 sub setPrefs {
 	my($journal, $constants, $user, $form, $slashdb) = @_;
 
@@ -434,7 +450,7 @@ sub setPrefs {
 
 	$slashdb->setUser($user->{uid}, \%prefs);
 	
-	listArticle(@_);
+	editPrefs(@_);
 }
 
 sub listArticle {
@@ -452,7 +468,9 @@ sub listArticle {
 		? $slashdb->getUser($form->{uid}, 'nickname')
 		: $user->{nickname};
 
-	_printHead("userhead", { nickname => $nickname, uid => $form->{uid} || $user->{uid} }, 1);
+	_printHead("userhead",
+		{ nickname => $nickname, uid => $form->{uid} || $user->{uid} },
+		1);
 
 	if (@$list) {
 		slashDisplay('journallist', {
@@ -463,10 +481,6 @@ sub listArticle {
 			nickname	=> $nickname,
 		});
 	} elsif (!$user->{is_anon} && (!$form->{uid} || $form->{uid} == $user->{uid})) {
-		slashDisplay('journaloptions', {
-			default		=> $theme,
-			themes		=> $themes,
-		});
 		print getData('noentries');
 	} else {
 		print getData('noentries', { nickname => $nickname });
@@ -684,19 +698,21 @@ sub _printHead {
 	my($head, $data, $new_header) = @_;
 	my $title = getData($head, $data);
 	header($title);
+
+	$data->{width} = '100%';
+	$data->{title} = $title;
+	$data->{tab_selected} = 'journal';
+	$data->{style} = 'tabbed';
+
 	if ($new_header) {
-		$data->{selected} = 'journal';
 		my $slashdb = getCurrentDB();
 		my $useredit = $data->{uid}
 			? $slashdb->getUser($data->{uid})
 			: getCurrentUser();
 		$data->{useredit} = $useredit;
-		print createMenu("users");
-		slashDisplay("user_titlebar", $data);
-		print createMenu("journal");
-	} else {
-		slashDisplay("journalhead", { title => $title });
-	} 
+	}
+
+	slashDisplay("journalhead", $data);
 }
 
 sub _checkTheme {

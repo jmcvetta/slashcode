@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.56 2002/10/02 02:40:53 pudge Exp $
+# $Id: search.pl,v 1.57 2002/10/17 16:48:27 jamie Exp $
 
 use strict;
 use Slash;
@@ -99,7 +99,7 @@ sub main {
 	} else {
 		# Yep, these are hardcoded, and someday this should change... -Brian 
 		header("$constants->{sitename}: Search $form->{query}");
-		titlebar("99%", "Searching For:  $form->{query}");
+		titlebar("100%", "Searching For:  $form->{query}");
 		$form->{op} = 'stories' if !exists($ops{$form->{op}});
 
 		# Here, panic mode is handled without needing to call the

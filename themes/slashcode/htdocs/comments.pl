@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.100 2002/10/11 01:15:30 jamie Exp $
+# $Id: comments.pl,v 1.101 2002/10/17 16:48:27 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -285,7 +285,7 @@ sub delete {
 	my($form, $slashdb, $user, $constants) = @_;
 
 	# The content here should also probably go into a template.
-	titlebar("99%", "Delete $form->{cid}");
+	titlebar("100%", "Delete $form->{cid}");
 
 	my $delCount = deleteThread($form->{sid}, $form->{cid});
 
@@ -414,7 +414,7 @@ sub commentIndexUserCreated {
 	my $label = getData('label');
 
 	# um, let's put this in the template
-	# titlebar("90%", getData('user_discussions'));
+	# titlebar("100%", getData('user_discussions'));
 	my $searchdb = getObject('Slash::Search', $constants->{search_db_user});
 	my $start = $form->{start} || 0;
 	my $hashref = {};
@@ -491,7 +491,7 @@ sub commentIndexCreator {
 	}
 	my $searchdb = getObject('Slash::Search', $constants->{search_db_user});
 
-	titlebar("90%", getData('user_discussion', { name => $nickname}));
+	titlebar("100%", getData('user_discussion', { name => $nickname}));
 	my $start = $form->{start} || 0;
 	my $discussions = $searchdb->findDiscussion({ section => $form->{section}, type => 'recycle', uid => $uid }, $constants->{discussion_display_limit} + 1, $start, $constants->{discussion_sort_order});
 	if ($discussions && @$discussions) {
@@ -537,7 +537,7 @@ sub commentIndexPersonal {
 
 	my $label = getData('label');
 
-	titlebar("90%", getData('user_discussion', { name => $user->{nickname}}));
+	titlebar("100%", getData('user_discussion', { name => $user->{nickname}}));
 	my $start = $form->{start} || 0;
 	my $searchdb = getObject('Slash::Search', $constants->{search_db_user});
 	my $discussions = $searchdb->findDiscussion({ section => $form->{section}, type => 'recycle', uid => $user->{uid} }, $constants->{discussion_display_limit} + 1, $start, $constants->{discussion_sort_order});
@@ -1048,7 +1048,7 @@ sub submitComment {
 #	$tempComment = distressBinaries($tempComment);
 
 	unless ($form->{newdiscussion}) {
-		titlebar("95%", getData('submitted_comment'));
+		titlebar("100%", getData('submitted_comment'));
 	}
 
 	my $pts = 0;
@@ -1265,7 +1265,7 @@ sub moderate {
 	my $hasPosted;
 
 	# The content here should also probably go into a template.
-	titlebar("99%", "Moderating...");
+	titlebar("100%", "Moderating...");
 
 	$hasPosted = $slashdb->countCommentsBySidUID($sid, $user->{uid})
 		unless $constants->{authors_unlimited}

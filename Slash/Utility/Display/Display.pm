@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.21 2002/10/11 01:15:30 jamie Exp $
+# $Id: Display.pm,v 1.22 2002/10/17 16:48:27 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -640,14 +640,24 @@ sub horizmenu {
 
 #========================================================================
 
-=head2 titlebar(WIDTH, TITLE)
+=head2 titlebar(WIDTH, TITLE, OPTIONS)
 
-Prints a titlebar widget.  Deprecated; exactly equivalent to:
+Prints a titlebar widget.  Exactly equivalent to:
 
 	slashDisplay('titlebar', {
 		width	=> $width,
 		title	=> $title
 	});
+
+or, if template is passed in as an option, e.g. template => user_titlebar:
+
+	slashDisplay('user_titlebar', {
+		width	=> $width,
+		title	=> $title
+	});
+
+If you're calling this from a template, you better have a really good
+reason, since [% PROCESS %] will work just as well.
 
 =over 4
 
@@ -678,11 +688,11 @@ The 'titlebar' template block.
 =cut
 
 sub titlebar {
-	my($width, $title) = @_;
-	slashDisplay('titlebar', {
-		width	=> $width,
-		title	=> $title
-	});
+	my($width, $title, $options) = @_;
+	my $templatename = $options->{template} ? $options->{template} : "titlebar";
+	my $data = { width => $width, title => $title };
+	$data->{tab_selected} = $options->{tab_selected} if $options->{tab_selected};
+	slashDisplay($templatename, $data);
 }
 
 #========================================================================
@@ -993,11 +1003,17 @@ sub createMenu {
 	my $style = $options->{style};
 	$style = 'oldstyle' unless $style =~ /^tabbed$/;
 
+	# Use the colored background, for tabs that sit on top of the
+	# colored titlebar, or use the white background, for tabs that sit
+	# on top of the page below ("within" the colored titlebar)?
+	my $color = $options->{color};
+	$color = 'colored' unless $color =~ /^white$/;
+
 	# Get the list of menu items from the "menus" table.  Then add in
 	# any special ones passed in.
 	my $menu_items = getCurrentMenu($menu);
 	if (!$menu_items || !@$menu_items) {
-		return "<!-- createMenu($menu, $style), no items -->\n"; # DEBUG
+		return "<!-- createMenu($menu, $style, $color), no items -->\n"; # DEBUG
 	}
 	if ($options->{extra_items} && @{$options->{extra_items}}) {
 		push @$menu_items, @{$options->{extra_items}};
@@ -1025,7 +1041,7 @@ sub createMenu {
 			next unless $data->{value};
 			# Reconfigure data for what the tabbedmenu
 			# template expects.
-			$data->{sel_label} = lc $data->{label};
+			$data->{sel_label} = $item->{sel_label} || lc($data->{label});
 			$data->{sel_label} =~ s/\s+//g;
 			$data->{label} =~ s/ +/&nbsp;/g;
 			$data->{link} = $data->{value};
@@ -1035,13 +1051,14 @@ sub createMenu {
 	}
 
 	my $menu_text = "";
-	$menu_text .= "<!-- createMenu($menu, $style) -->\n"; # DEBUG
+	$menu_text .= "<!-- createMenu($menu, $style, $color), " . scalar(@$items) . " items -->\n"; # DEBUG
 
 	if ($style eq 'tabbed') {
 		# All menus in the tabbed style use the same template.
 		$menu_text .= slashDisplay("tabbedmenu",
 		 	{ tabs =>		$items,
 			  justify =>		$options->{justify} || 'left',
+			  color =>		$color,
 			  tab_selected =>	$options->{tab_selected},	},
 			{ Return => 1, Page => 'menu' });
 	} elsif ($style eq 'oldstyle') {
@@ -1189,4 +1206,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.21 2002/10/11 01:15:30 jamie Exp $
+$Id: Display.pm,v 1.22 2002/10/17 16:48:27 jamie Exp $

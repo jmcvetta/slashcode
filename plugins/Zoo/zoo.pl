@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.30 2002/10/11 01:15:30 jamie Exp $
+# $Id: zoo.pl,v 1.31 2002/10/17 16:48:27 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -156,10 +156,10 @@ sub friends {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfriendshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("yourfriendshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 			$implied = FRIEND;
 		} else {
-			_printHead("friendshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("friendshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 		}
 		
 		if (@$friends) {
@@ -195,10 +195,10 @@ sub fof {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfriendsoffriendshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("yourfriendsoffriendshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 			$implied = FOF;
 		} else {
-			_printHead("friendsoffriendshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("friendsoffriendshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 		}
 		
 		if (@$friends) {
@@ -234,10 +234,10 @@ sub enof {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfriendsenemieshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("yourfriendsenemieshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 			$implied = EOF;
 		} else {
-			_printHead("friendsenemieshead", { nickname => $nick, uid => $uid, page => 'friends' });
+			_printHead("friendsenemieshead", { nickname => $nick, uid => $uid, tab_selected => 'friends' });
 		}
 		
 		if (@$friends) {
@@ -273,10 +273,10 @@ sub foes {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfoeshead", { nickname => $nick, uid => $uid, page => 'foes' });
+			_printHead("yourfoeshead", { nickname => $nick, uid => $uid, tab_selected => 'foes' });
 			$implied = FOE;
 		} else {
-			_printHead("foeshead", { nickname => $nick, uid => $uid, page => 'foes' });
+			_printHead("foeshead", { nickname => $nick, uid => $uid, tab_selected => 'foes' });
 		}
 		
 		if (@$foes) {
@@ -310,10 +310,10 @@ sub fans {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfanshead", { nickname => $nick, uid => $uid, page => 'fans' });
+			_printHead("yourfanshead", { nickname => $nick, uid => $uid, tab_selected => 'fans' });
 			$implied = FAN;
 		} else {
-			_printHead("fanshead",{ nickname => $nick, uid => $uid, page => 'fans' });
+			_printHead("fanshead",{ nickname => $nick, uid => $uid, tab_selected => 'fans' });
 		}
 		if (@$fans) {
 			slashDisplay('plainlist', { people => $fans, editable => $editable, implied => $implied, nickname => $nick });
@@ -347,11 +347,11 @@ sub freaks {
 	} else {
 		my $implied;
 		if ($editable) {
-			_printHead("yourfreakshead", { nickname => $nick, uid => $uid, page => 'freaks' });
+			_printHead("yourfreakshead", { nickname => $nick, uid => $uid, tab_selected => 'freaks' });
 			$implied = FREAK;
 			
 		} else {
-			_printHead("freakshead",{ nickname => $nick, uid => $uid, page => 'freaks' });
+			_printHead("freakshead",{ nickname => $nick, uid => $uid, tab_selected => 'freaks' });
 		}
 		if (@$freaks) {
 			slashDisplay('plainlist', { people => $freaks, editable => $editable, implied => $implied, nickname => $nick });
@@ -446,7 +446,7 @@ sub check {
 	if ($form->{uid}) {
 		my $nickname = $slashdb->getUser($form->{uid}, 'nickname');
 		#my $compare = $slashdb->getUser($form->{uid}, 'people');
-		_printHead("confirm", { nickname => $nickname, uid => $form->{uid}, page => 'relation' });
+		_printHead("confirm", { nickname => $nickname, uid => $form->{uid}, tab_selected => 'relation' });
 		if ($form->{uid} == $user->{uid} || $form->{uid} == $constants->{anonymous_coward_uid}  ) {
 			print getData("no_go");
 			return 0;

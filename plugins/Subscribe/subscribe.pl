@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.17 2002/10/11 01:15:30 jamie Exp $
+# $Id: subscribe.pl,v 1.18 2002/10/17 16:48:27 jamie Exp $
 
 use strict;
 
@@ -55,7 +55,8 @@ sub main {
 	print createMenu('users', {
                 style =>	'tabbed',
 		justify =>	'right',
-		tab_selected =>	'subscription',
+		color =>	'colored',
+		tab_selected =>	'preferences',
 	});
 
 	my $retval = $ops->{$op}{function}->($form, $slashdb, $user, $constants);
@@ -91,7 +92,10 @@ sub edit {
 		? $user->{hits_bought_today_max}
 		: "";
 
-	titlebar("95%", "Editing Subscription...");
+	titlebar("100%", "Editing Subscription...", {
+		template =>		'prefs_titlebar',
+		tab_selected =>		'subscription',
+	});
 	slashDisplay("edit", {
 		user_edit => $user_edit,
 		user_newvalues => $user_newvalues,
@@ -154,7 +158,10 @@ sub save {
 	$slashdb->setUser($user_edit->{uid}, $user_update);
 
 	print "<p>Subscription options saved.\n<p>";
-	titlebar("95%", "Editing Subscription...");
+	titlebar("100%", "Editing Subscription...", {
+		template =>		'prefs_titlebar',
+		tab_selected =>		'subscription',
+	});
 	slashDisplay("edit", {
 		user_edit => $user_edit,
 		user_newvalues => $user_newvalues,

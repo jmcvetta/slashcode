@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.2 2001/03/20 20:22:21 brian Exp $
+# $Id: MySQL.pm,v 1.3 2001/03/22 10:19:09 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use Slash::Utility;
 use URI ();
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Bite my shiny, metal ass! 
 
@@ -280,7 +280,7 @@ sub getTop10Comments {
 	my $comments = $c->fetchall_arrayref;
 	$c->finish;
 
-	formatDate($comments, 'date', 'd');
+	formatDate($comments, 4, 4);
 
 	return $comments;
 }

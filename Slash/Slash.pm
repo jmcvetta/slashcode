@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.2 2001/03/20 20:22:20 brian Exp $
+# $Id: Slash.pm,v 1.3 2001/03/22 10:19:09 pudge Exp $
 
 package Slash;
 
@@ -1898,7 +1898,8 @@ sub displayStory {
 
 	my $slashdb = getCurrentDB();
 	my $story = $slashdb->getStory($sid);
-	my $author = $slashdb->getAuthor($story->{uid}, ['nickname', 'fakeemail']);
+	my $author = $slashdb->getAuthor($story->{uid},
+		['nickname', 'fakeemail', 'homepage']);
 	my $topic = $slashdb->getTopic($story->{tid});
 	
 	# convert the time of the story (this is database format) 

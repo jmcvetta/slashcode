@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.90 2002/07/22 15:47:42 pudge Exp $
+# $Id: admin.pl,v 1.91 2002/07/30 14:19:13 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -189,7 +189,7 @@ sub varSave {
 
 	if ($form->{thisname}) {
 		my $value = $slashdb->getVar($form->{thisname}, '', 1);
-		if ($value->{name}) {
+		if ($value && $value->{name}) {
 			$slashdb->setVar($form->{thisname}, {
 				value		=> $form->{value},
 				description	=> $form->{desc}
@@ -1485,10 +1485,10 @@ sub updateStory {
 			}
 		}
 		for (@{$tid_ref}) {
-			$default_set++ if ($_ eq $topic && $topic);
+			$default_set++ if $topic && $_ eq $topic;
 		}
 		push @$tid_ref, $topic if !$default_set;
-	
+
 		$slashdb->setStoryTopics($form->{sid}, $tid_ref);
 	}
 	$form->{introtext} = slashizeLinks($form->{introtext});

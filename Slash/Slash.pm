@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.15 2001/11/06 22:04:31 brian Exp $
+# $Id: Slash.pm,v 1.16 2001/11/07 06:58:36 brian Exp $
 
 package Slash;
 
@@ -272,7 +272,7 @@ and 'printCommComments' template blocks.
 =cut
 
 sub printComments {
-	my($discussion, $pid, $cid, $honor_no_display) = @_;
+	my($discussion, $pid, $cid) = @_;
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 	my $slashdb = getCurrentDB();
@@ -316,7 +316,7 @@ sub printComments {
 		lvl		=> $lvl,
 	});
 
-	return if (($user->{state}{nocomment} || $user->{mode} eq 'nocomment') && $honor_no_display);
+	return if ($user->{state}{nocomment} || $user->{mode} eq 'nocomment');
 
 	my($comment, $next, $previous);
 	if ($cid) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.279 2002/12/17 23:21:59 brian Exp $
+# $Id: MySQL.pm,v 1.280 2002/12/17 23:43:21 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.279 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.280 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1297,15 +1297,19 @@ sub createAccessLog {
 	my($self, $op, $dat) = @_;
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
+	my $user = getCurrentUser();
 	my $r = Apache->request;
 	my $hostip = $r->connection->remote_ip; 
 	my $bytes = $r->bytes_sent; 
+
+	$user ||= {};
+	$user->{state} ||= {};
 
 	my $uid;
 	if ($ENV{SLASH_USER}) {
 		$uid = $ENV{SLASH_USER};
 	} else {
-		$uid = $constants->{anonymous_coward_uid};
+		$uid = $user->{uid} || $constants->{anonymous_coward_uid};
 	}
 	my $section = $constants->{section};
 	# The following two are special cases
@@ -1349,7 +1353,8 @@ sub createAccessLog {
 		user_agent	=> $ENV{HTTP_USER_AGENT} || '0',
 		duration	=> $duration,
 		local_addr	=> $local_addr,
-		static	=> $form->{_dynamic_page} ? 'no' : 'yes',
+		static	=> $user->{state}->{_dynamic_page} ? 'no' : 'yes',
+		referer	=> $ENV{HTTP_REFERER},
 	}, { delayed => 1 });
 }
 

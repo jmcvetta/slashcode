@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.164 2003/12/16 19:51:17 pater Exp $
+# $Id: adminmail.pl,v 1.165 2003/12/20 06:37:30 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -735,9 +735,8 @@ EOT
 	my $new_users_yest = $slashdb->getNumNewUsersSinceDaysback(1)
 		- $slashdb->getNumNewUsersSinceDaysback(0);
 	$statsSave->createStatDaily('users_created', $new_users_yest);
-	$data{rand_users_yest} = $slashdb->getRandUsersCreatedYest(12);
-
-
+	$data{rand_users_yest} = $slashdb->getRandUsersCreatedYest(10, $yesterday);
+	$data{top_recent_domains} = $slashdb->getTopRecentRealemailDomains($yesterday);
 
 	my $relocate = getObject('Slash::Relocate');
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.116 2003/10/21 17:12:15 jamie Exp $
+# $Id: MySQL.pm,v 1.117 2003/12/20 06:37:30 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1713,27 +1713,67 @@ sub getNumNewUsersSinceDaysback {
 }
 
 ########################################################
+# Returns the first UID created within the last n days.
+# Rounds off to GMT midnight.
+sub getFirstUIDCreatedDaysBack {
+	my($self, $num_days, $yesterday) = @_;
+	$yesterday = substr($yesterday, 0, 10);
+
+	my $between_str = '';
+	if ($num_days) {
+		$between_str = "BETWEEN DATE_SUB('$yesterday 00:00',    INTERVAL $num_days DAY)
+				    AND DATE_SUB('$yesterday 23:59:59', INTERVAL $num_days DAY)";
+	} else {
+		$between_str = "BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
+	}
+	return $self->sqlSelect(
+		"MIN(uid)",
+		"users_info",
+		"created_at $between_str");
+}
+
+########################################################
 # Returns the uid/nicks of a random sample of users created
 # since yesterday.
 sub getRandUsersCreatedYest {
-	my($self, $num) = @_;
+	my($self, $num, $yesterday) = @_;
 	$num ||= 10;
 
-	my $max_uid = $self->countUsers({ max => 1 });
-	my $min = $self->sqlSelect(
-		"MIN(uid)",
-		"users_info",
-		"SUBSTRING(created_at, 1, 10) >= SUBSTRING(DATE_SUB(
-			NOW(), INTERVAL 1 DAY
-		 ), 1, 10)");
-	$min ||= 0;
+	my $min_uid = $self->getFirstUIDCreatedDaysBack(1, $yesterday);
+	return [ ] unless $min_uid;
+	my $max_uid = $self->getFirstUIDCreatedDaysBack(0, $yesterday);
+	if ($max_uid) {
+		$max_uid--;
+	} else {
+		$max_uid = $self->countUsers({ max => 1 });
+	}
+	return [ ] unless $max_uid && $max_uid >= $min_uid;
 	my $users_ar = $self->sqlSelectAllHashrefArray(
 		"uid, nickname, realemail",
 		"users",
-		"uid BETWEEN $min AND $max_uid",
+		"uid BETWEEN $min_uid AND $max_uid",
 		"ORDER BY RAND() LIMIT $num");
+	return [ ] unless $users_ar && @$users_ar;
 	@$users_ar = sort { $a->{uid} <=> $b->{uid} } @$users_ar;
 	return $users_ar;
+}
+
+########################################################
+# Returns the most popular email hosts of recently created
+# user accounts.
+sub getTopRecentRealemailDomains {
+	my($self, $yesterday, $options) = @_;
+	my $daysback = $options->{daysback} || 7;
+	my $num = $options->{num_wanted} || 10;
+
+	my $min_uid = $self->getFirstUIDCreatedDaysBack($daysback, $yesterday);
+	return [ ] unless $min_uid;
+	return $self->sqlSelectAllHashrefArray(
+		"SUBSTRING(realemail, LOCATE('\@', realemail)+1) AS domain,
+		 COUNT(*) AS c",
+		"users",
+		"uid >= $min_uid",
+		"GROUP BY domain ORDER BY c DESC, domain LIMIT $num");
 }
 
 ########################################################

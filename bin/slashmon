@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.21 2003/11/17 21:01:08 jamie Exp $
+# $Id: slashmon,v 1.22 2003/12/20 06:37:30 jamie Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -29,7 +29,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -111,7 +111,7 @@ sub init {
 	$maxlog_first = $logdb->sqlSelect("MAX(id)", "accesslog");
 	$maxlog_last = $maxlog_first;
 
-	$maxcid_first = $slashdb->sqlSelect("MAX(cid)", "comments");
+	$maxcid_first = $slashdb->getMaxCid();
 	$maxcid_last = $maxcid_first;
 
 	$time_first = Time::HiRes::time;
@@ -148,7 +148,7 @@ sub run {
 
 		$time_new = Time::HiRes::time;
 		$maxlog_new = $logdb->sqlSelect("MAX(id)", "accesslog");
-		$maxcid_new = $slashdb->sqlSelect("MAX(cid)", "comments");
+		$maxcid_new = $slashdb->getMaxCid();
 
 		update_db_ary();
 

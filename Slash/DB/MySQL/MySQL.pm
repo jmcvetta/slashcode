@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.488 2003/12/19 18:07:43 pudge Exp $
+# $Id: MySQL.pm,v 1.489 2003/12/20 06:37:30 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.488 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.489 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5498,7 +5498,8 @@ sub getStoriesEssentials {
 	my($column_time, $where_time) = $self->_stories_time_clauses({
 		try_future => 1, must_be_subscriber => 0
 	});
-	my $columns = "sid, section, title, time, commentcount, hitparade, tid, body_length, word_count, $column_time";
+	my $columns = "sid, section, title, time, commentcount, hitparade,"
+		. " tid, body_length, word_count, discussion, $column_time";
 
 	my $where = "$where_time ";
 
@@ -6572,6 +6573,12 @@ sub getSlashdStatuses {
 }
 
 ##################################################################
+sub getMaxCid {
+	my($self) = @_;
+	return $self->sqlSelect("MAX(cid)", "comments");
+}
+
+##################################################################
 sub getRecentComments {
 	my($self, $options) = @_;
 	my $constants = getCurrentStatic();
@@ -6583,7 +6590,7 @@ sub getRecentComments {
 	my $startat = $options->{startat} || 0;
 	my $num = $options->{num} || 100; # should be a var
 
-	my $max_cid = $self->sqlSelect("MAX(cid)", "comments");
+	my $max_cid = $self->getMaxCid();
 	my $start_cid = $max_cid - ($startat+($num*5-1));
 	my $end_cid = $max_cid - $startat;
 	my $ar = $self->sqlSelectAllHashrefArray(

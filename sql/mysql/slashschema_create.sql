@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.10 2001/12/12 05:58:45 jamie Exp $
+# $Id: slashschema_create.sql,v 1.11 2001/12/17 13:33:03 pudge Exp $
 #
 
 #
@@ -240,7 +240,6 @@ CREATE TABLE discussions (
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	FOREIGN KEY (topic) REFERENCES topics(tid),
 	INDEX (type,uid,ts),
-	KEY (sid),
 	PRIMARY KEY (id)
 ) TYPE = myisam;
 
@@ -522,7 +521,7 @@ CREATE TABLE stories (
 	writestatus ENUM("ok","delete","dirty","archived") DEFAULT 'ok' NOT NULL,
 	PRIMARY KEY (sid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
-	FOREIGN KEY (tid) REFERENCES tid(topic),
+	FOREIGN KEY (tid) REFERENCES topics(tid),
 	FOREIGN KEY (section) REFERENCES sections(section),
 	INDEX frontpage (time, displaystatus, writestatus),
 	INDEX time (time),

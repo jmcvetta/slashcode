@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.27 2000/06/22 18:49:21 cbwood Exp $
+#  $Id: Slash.pm,v 1.28 2000/06/26 20:19:49 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -32,6 +32,7 @@ use Date::Manip;
 use File::Spec::Functions;
 use HTML::Entities;
 use Mail::Sendmail;
+use URI;
 
 Apache::SIG->set;
 
@@ -1500,10 +1501,7 @@ EOT
 
 ########################################################
 sub redirect {
-	my $url = shift;
-	if ($url !~ m|^http://|i) {
-		$url =~ s|^/*|$I{rootdir}/|;
-	}
+	my $url = URI->new_abs(shift, $I{rootdir})->canonical->as_string;
 
 	my %params = (
 		-type		=> 'text/html',

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.623 2004/07/15 15:41:33 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.624 2004/07/16 13:56:45 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.623 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.624 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1342,16 +1342,27 @@ sub getNexusExtras {
 	return $answer;
 }
 
+sub getNexuslistFromChosen {
+	my($self, $chosen_hr) = @_;
+	return [ ] unless $chosen_hr;
+	my $rendered_hr = $self->renderTopics($chosen_hr);
+	my @nexuses = $self->getNexusTids();
+	@nexuses = grep { $rendered_hr->{$_} } @nexuses;
+	return [ @nexuses ];
+}
+
 ########################################################
+# XXXSECTIONTOPICS we should remove duplicates from the list
+# returned.  If 2 or more nexuses have the same extras_keyword,
+# that keyword should only be returned once.
 sub getNexusExtrasForChosen {
 	my($self, $chosen_hr) = @_;
 	return [ ] unless $chosen_hr;
 
-	my $rendered_hr = $self->renderTopics($chosen_hr);
-	my @nexuses = $self->getNexusTids();
-	@nexuses = grep { $rendered_hr->{$_} } @nexuses;
+	my $nexuses = $self->getNexuslistFromChosen($chosen_hr);
+
 	my $extras = [ ];
-	for my $nexusid (@nexuses) {
+	for my $nexusid (@$nexuses) {
 		my $ex_ar = $self->getNexusExtras($nexusid);
 		push @$extras, @$ex_ar;
 	}

@@ -52,6 +52,9 @@ __template__
 	futurestorywrite(story);
 END;
 futurestorywrite(present, 1);
+FOREACH story = otherpresent;
+	futurestorywrite(story);
+END;
 FOREACH story = past;
 	futurestorywrite(story);
 END %]
@@ -61,4 +64,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: futurestorybox;misc;default,v 1.6 2003/07/14 14:58:37 pudge Exp $
+$Id: futurestorybox;misc;default,v 1.7 2003/09/23 22:01:40 pudge Exp $

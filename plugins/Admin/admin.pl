@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.177 2003/09/15 23:52:42 pudge Exp $
+# $Id: admin.pl,v 1.178 2003/09/23 22:01:40 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1375,6 +1375,8 @@ sub editStory {
 	my $future = $slashdb->getStoryByTimeAdmin('>', $storyref, 3);
 	$future = [ reverse @$future ];
 	my $past = $slashdb->getStoryByTimeAdmin('<', $storyref, 3);
+	my $current = $slashdb->getStoryByTimeAdmin('=', $storyref, 20);
+	unshift @$past, @$current;
 
 	my $num_sim = $constants->{similarstorynumshow} || 5;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });

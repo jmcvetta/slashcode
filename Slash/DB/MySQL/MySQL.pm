@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.456 2003/09/16 22:23:02 pudge Exp $
+# $Id: MySQL.pm,v 1.457 2003/09/23 22:01:40 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.456 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.457 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4770,6 +4770,8 @@ sub getStoryByTimeAdmin {
 	my $user = getCurrentUser();
 	$limit ||= 1;
 
+	# '=' is also sometimes used for $sign; in that case,
+	# order is irrelevant -- pudge
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
 
 	$where .= " AND sid != '$story->{sid}'";

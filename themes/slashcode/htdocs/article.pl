@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.51 2003/08/22 21:54:09 pudge Exp $
+# $Id: article.pl,v 1.52 2003/09/23 22:01:40 pudge Exp $
 
 use strict;
 use Slash;
@@ -49,6 +49,8 @@ sub main {
 			my $future = $reader->getStoryByTimeAdmin('>', $story, 3);
 			$future = [ reverse @$future ];
 			my $past = $reader->getStoryByTimeAdmin('<', $story, 3);
+			my $current = $reader->getStoryByTimeAdmin('=', $story, 20);
+			unshift @$past, @$current;
 
 			$authortext = slashDisplay('futurestorybox', {
 				past	=> $past,

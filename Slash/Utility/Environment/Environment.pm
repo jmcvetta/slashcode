@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.92 2003/05/20 15:16:52 pudge Exp $
+# $Id: Environment.pm,v 1.93 2003/05/23 14:04:39 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1855,21 +1855,26 @@ Returns 0;
 =cut
 
 sub errorLog {
-	my($package, $filename, $line) = caller(1);
 	return if $Slash::Utility::NO_ERROR_LOG;
-	if ($ENV{GATEWAY_INTERFACE}) {
-		my $r = Apache->request;
-		if ($r) {
-			$r->log_error("$ENV{SCRIPT_NAME}:$package:$filename:$line:@_");
-			($package, $filename, $line) = caller(2);
-			$r->log_error ("Which was called by:$package:$filename:$line:@_\n");
 
-			return 0;
-		}
+	my $level = 1;
+	$level++ while (caller($level))[3] =~ /log/i;  # ignore other logging subs
+
+	my(@errors, $package, $filename, $line);
+
+	($package, $filename, $line) = caller($level++);
+	push @errors, ":$package:$filename:$line:@_";
+	($package, $filename, $line) = caller($level++);
+	push @errors, "Which was called by:$package:$filename:$line:@_" if $package;
+
+	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
+		$errors[0] = $ENV{SCRIPT_NAME} . $errors[0];
+		$errors[-1] .= "\n";
+		$r->log_error($_) for @errors;
+	} else {
+		$errors[0] = 'Error' . $errors[0];
+		print STDERR $_, "\n" for @errors;
 	}
-	print STDERR ("Error in library:$package:$filename:$line:@_\n");
-	($package, $filename, $line) = caller(2);
-	print STDERR ("Which was called by:$package:$filename:$line:@_\n") if $package;
 
 	return 0;
 }
@@ -2107,4 +2112,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.92 2003/05/20 15:16:52 pudge Exp $
+$Id: Environment.pm,v 1.93 2003/05/23 14:04:39 pudge Exp $

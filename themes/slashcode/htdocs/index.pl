@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.126 2005/03/31 20:29:07 jamiemccarthy Exp $
+# $Id: index.pl,v 1.127 2005/03/31 22:39:25 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -152,9 +152,11 @@ my $start_time = Time::HiRes::time;
 	# Do we want to display the plug saying "there's a future story,
 	# subscribe and you can see it"?  Yes if the user is logged-in
 	# but not a subscriber, but only if the first story is actually
-	# in the future.  Just check the first story;  they're in order.
+	# in the future.  If the user has a daypass, they don't get this
+	# either.  Just check the first story;  they're in order.
 	if ($is_future_story
 		&& !$user->{is_subscriber}
+		&& !$user->{has_daypass}
 		&& !$user->{is_anon}
 		&& $constants->{subscribe_future_plug}) {
 		$future_plug = 1;

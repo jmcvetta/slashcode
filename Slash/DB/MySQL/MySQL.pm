@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.355 2003/03/21 04:31:20 jamie Exp $
+# $Id: MySQL.pm,v 1.356 2003/03/22 01:10:59 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.355 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.356 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3657,11 +3657,25 @@ sub setAccessList {
 	$rows ||= 0;
 	if ($rows == 0) {
 		# No row currently exists for this uid, ipid or subnetid.
-		# Insert one.  Then we will update it.
-		$self->sqlInsert("accesslist", $insert_hr);
+		# If we are setting anything to "yes" or have a reason,
+		# then we need to go ahead, otherwise there is no point
+		# to this.
+		if (exists $update_hr->{reason}
+			||
+			scalar grep { $update_hr->{$_} eq 'yes' }
+				grep /^now_/, keys %$update_hr
+		) {
+			# Insert a row.  Then we will update it.  Set
+			# $rows to indicate that this was done.
+			$rows = $self->sqlInsert("accesslist", $insert_hr);
+		}
 	}
-	$rows = $self->sqlUpdate("accesslist", $update_hr, $where,
-		{ assn_order => [ @assn_order ] });
+	if ($rows) {
+		# If there is 1 or more rows to update, or if there weren't
+		# but we inserted one, then do this update.
+		$rows = $self->sqlUpdate("accesslist", $update_hr, $where,
+			{ assn_order => [ @assn_order ] });
+	}
 	return $rows ? 1 : 0;
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.19 2002/05/13 18:41:30 pudge Exp $
+# $Id: article.pl,v 1.20 2002/05/14 20:27:44 pudge Exp $
 
 use strict;
 use Slash;
@@ -75,7 +75,12 @@ sub main {
 		# this should really be done per-story, perhaps with article_nocomment
 		# being a default for the story editor instead of being system-wide; that feature
 		# has been begun, but doesn't work -- pudge
-		printComments($discussion) unless $constants->{article_nocomment};
+		if ($constants->{article_nocomment}) {
+			# to do the error channel
+			Slash::selectComments($discussion, 0) if $form->{ssi};
+		} else {
+			printComments($discussion);
+		}
 	} else {
 		my $message = getData('no_such_sid');
 		header($message, $form->{section});

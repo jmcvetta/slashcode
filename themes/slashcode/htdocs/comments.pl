@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.59 2002/04/02 16:23:37 jamie Exp $
+# $Id: comments.pl,v 1.60 2002/04/05 20:18:24 brian Exp $
 
 use strict;
 use HTML::Entities;
@@ -1224,13 +1224,19 @@ sub moderateCid {
 
 		# Adjust comment posters karma and moderation stats.
 		if ($comment->{uid} != $constants->{anonymous_coward_uid}) {
-			my $cuser = $slashdb->getUser($comment->{uid});
+			my $cuser = $slashdb->getUser($comment->{uid}, [ qw| downmods upmods karma | ]);
 			my $newkarma = $cuser->{karma} + $val;
 			$cuser->{downmods}++ if $val < 0;
 			$cuser->{upmods}++ if $val > 0;
-			$cuser->{karma} = $newkarma 
-				if $newkarma <= $constants->{maxkarma} &&
-				   $newkarma >= $constants->{minkarma};
+			if ($val < 0) {
+				$cuser->{karma} = $newkarma; 
+			} else {
+				$cuser->{karma} = $newkarma 
+						if $newkarma <= $constants->{maxkarma};
+			}
+			$cuser->{karma} = $constants->{minkarma} 
+					if $newkarma < $constants->{minkarma};
+
 			$slashdb->setUser($comment->{uid}, {
 				karma		=> $cuser->{karma},
 				upmods		=> $cuser->{upmods},

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.160 2005/01/18 20:54:28 pudge Exp $
+# $Id: Stats.pm,v 1.161 2005/01/20 20:30:16 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -61,10 +61,10 @@ sub new {
 		$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp_subscriber");
 		$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp_other");
 		$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp_rss");
-		$self->sqlDo("DROP TABLE IF EXISTS accesslog_build_unique_host_addr");
-		$self->sqlDo("DROP TABLE IF EXISTS accesslog_build_unique_host_uid");
+		$self->sqlDo("DROP TABLE IF EXISTS accesslog_temp_host_addr");
+		$self->sqlDo("DROP TABLE IF EXISTS accesslog_build_unique_uid");
 
-		$self->sqlDo("CREATE TABLE accesslog_build_unique_host_addr ( host_addr char(32) UNIQUE NOT NULL, PRIMARY KEY (host_addr)) TYPE = InnoDB");
+		$self->sqlDo("CREATE TABLE accesslog_temp_host_addr (host_addr char(32) UNIQUE NOT NULL, anon ENUM('no','yes') NOT NULL DEFAULT 'yes', PRIMARY KEY (host_addr, anon)) TYPE = InnoDB");
 		$self->sqlDo("CREATE TABLE accesslog_build_unique_uid ( uid MEDIUMINT UNSIGNED NOT NULL, PRIMARY KEY (uid)) TYPE = InnoDB");
 
 		# Then, get the schema in its CREATE TABLE statement format.
@@ -111,8 +111,8 @@ sub new {
 			"accesslog",
 			"ts $self->{_day_between_clause} AND status != 200",
 			3, 60);
-	
-		my $recent_subscribers = $self->getRecentSubscribers();
+		my $stats_reader = getObject('Slash::Stats', { db_type => 'reader' });	
+		my $recent_subscribers = $stats_reader->getRecentSubscribers();
 		if ($recent_subscribers && @$recent_subscribers) {
 			my $recent_subscriber_uidlist = join(", ", @$recent_subscribers);
 		
@@ -138,6 +138,9 @@ sub new {
 			"op NOT in($page_list)",
 			3, 60);
 	}
+
+	$self->sqlDo("INSERT IGNORE INTO accesslog_temp_host_addr SELECT host_addr, IF(uid=$constants->{anonymous_coward_uid},'yes','no') from accesslog_temp ");
+	$self->sqlDo("INSERT IGNORE INTO accesslog_temp_host_addr SELECT host_addr, IF(uid=$constants->{anonymous_coward_uid},'yes','no') from accesslog_temp_rss ");
 
 	return $self;
 }
@@ -1071,22 +1074,14 @@ sub countUsersMultiTable {
 	}
 	$self->sqlCount("accesslog_build_unique_uid");
 }
+
 ########################################################
-sub countDistinctIPIDMultiTable {
+
+sub countUniqueIPs {
 	my ($self, $options) = @_;
-	my $constants = getCurrentStatic;
-	my $tables = $options->{tables} || [];
-
 	my $where;
-	$where = "WHERE uid = $constants->{anonymous_coward_uid} " if $options->{user_type} eq "anonymous";
-	$where = "WHERE  uid != $constants->{anonymous_coward_uid} " if $options->{user_type} eq "logged-in";
-
-	$self->sqlDo("DELETE FROM accesslog_build_unique_host_addr");
-
-	foreach my $table (@$tables) {
-		$self->sqlDo("INSERT IGNORE INTO accesslog_build_unique_host_addr SELECT DISTINCT host_addr FROM $table $where");
-	}
-	$self->sqlCount("accesslog_build_unique_host_addr");
+	$where = "anon=".$self->sqlQuote($options->{anon}) if $options->{anon};
+	$self->sqlSelect("COUNT(DISTINCT host_addr)", "accesslog_temp_host_addr", $where);
 }
 ########################################################
 sub countUsersByPage {
@@ -1960,4 +1955,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.160 2005/01/18 20:54:28 pudge Exp $
+$Id: Stats.pm,v 1.161 2005/01/20 20:30:16 tvroom Exp $

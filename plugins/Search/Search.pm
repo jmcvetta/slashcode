@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.58 2003/04/25 18:35:51 brian Exp $
+# $Id: Search.pm,v 1.59 2003/07/01 04:28:32 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -161,7 +161,7 @@ sub findComments {
 #}
 
 ####################################################################################
-# I am beginnign to hate all the options.
+# I am beginning to hate all the options.
 sub findUsers {
 	my($self, $form, $start, $limit, $sort, $with_journal) = @_;
 	# userSearch REALLY doesn't need to be ordered by keyword since you
@@ -544,7 +544,7 @@ sub _cleanQuery {
 	my ($self, $query) = @_;
 	# This next line could be removed -Brian
 	# get rid of bad characters
-	$query =~ s/[^A-Z0-9'. :\/]/ /gi;
+	$query =~ s/[^A-Z0-9'. :\/_]/ /gi;
 
 	# This should be configurable -Brian
 	# truncate query length

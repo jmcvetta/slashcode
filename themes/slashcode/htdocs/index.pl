@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.90 2004/01/27 17:53:05 jamiemccarthy Exp $
+# $Id: index.pl,v 1.91 2004/01/29 23:52:59 pudge Exp $
 
 use strict;
 use Slash;
@@ -107,7 +107,7 @@ my $start_time = Time::HiRes::time;
 	# TIMING MARKPOINT
 	# Median 0.145 seconds, 90th percentile 0.222 seconds
 
-	return do_rss($reader, $constants, $user, $form, $stories) if $rss;
+	return do_rss($reader, $constants, $user, $form, $stories, $section) if $rss;
 
 printf STDERR scalar(localtime) . " index.pl $$ preheader %5.3f\n", (Time::HiRes::time - $start_time);
 
@@ -156,7 +156,7 @@ printf STDERR scalar(localtime) . " index.pl $$ slashDisplay %5.3f\n", (Time::Hi
 
 
 sub do_rss {
-	my($reader, $constants, $user, $form, $stories) = @_;
+	my($reader, $constants, $user, $form, $stories, $section) = @_;
 	my @rss_stories;
 	for (@$stories) {
 		my $story = $reader->getStory($_->{sid});
@@ -167,9 +167,12 @@ sub do_rss {
 		push @rss_stories, { story => $story };
 	}
 
+	my $title = getData('rsshead', { section => $section });
+	my $name = lc($constants->{basedomain}) . '.rss';
+
 	xmlDisplay('rss', {
 		channel	=> {
-			title	=> "$constants->{sitename} Subscriber Feed",  # in vars or something
+			title	=> $title,
 		},
 		version 		=> $form->{rss_version},
 		image			=> 1,
@@ -177,7 +180,7 @@ sub do_rss {
 		rdfitemdesc		=> 1,
 		rdfitemdesc_html	=> 1,
 	}, {
-		filename		=> lc($constants->{sitename}) . '.rss',
+		filename		=> $name,
 	});
 
 	writeLog($form->{section});

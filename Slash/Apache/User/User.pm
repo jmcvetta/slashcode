@@ -1,11 +1,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.93 2003/10/06 21:56:24 jamie Exp $
+# $Id: User.pm,v 1.94 2003/11/11 23:14:10 jamie Exp $
 
 package Slash::Apache::User;
 
 use strict;
+use Digest::MD5 'md5_hex';
 use Time::HiRes;
 use Apache;
 use Apache::Constants qw(:common M_GET REDIRECT);
@@ -23,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -241,9 +242,26 @@ sub handler {
 	# If this uid is marked as banned, deny them access.
 	my $banlist = $slashdb->getBanList();
 	if ($banlist->{$uid}) {
+		# The global current user hasn't been created yet, so the
+		# template expects uid just passed in as the var named "uid".
 		$r->custom_response(FORBIDDEN,
-			slashDisplay('bannedtext_uid', { }, { Return => 1} )
+			slashDisplay('bannedtext_uid', { uid => $uid }, { Return => 1 } )
 		);
+		# Now we need to create a user hashref for that global
+		# current user, so the "uid" field of accesslog gets written
+		# correctly when we log this attempted hit.  We do this
+		# dummy hashref with the bare minimum of values that we need,
+		# instead of going through prepareUser(), because this is
+		# much, much faster.
+		my $hostip = $r->connection->remote_ip;
+		my $subnet = $hostip;
+		$subnet =~ s/(\d+\.\d+\.\d+)\.\d+/$1\.0/;
+		my $user = {
+			uid		=> $uid,
+			ipid		=> md5_hex($hostip),
+			subnetid	=> md5_hex($subnet),
+		};
+		createCurrentUser($user);
 		return FORBIDDEN;
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.113 2005/03/23 18:35:58 pudge Exp $
+# $Id: submit.pl,v 1.114 2005/03/29 20:47:05 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -554,9 +554,9 @@ sub displayForm {
 
 	my $fixedstory;
 	if ($form->{sub_type} && $form->{sub_type} eq 'plain') {
-		$fixedstory = strip_plaintext(url2html_old($form->{story}));
+		$fixedstory = strip_plaintext($form->{story});
 	} else {
-		$fixedstory = strip_html(url2html_old($form->{story}));
+		$fixedstory = strip_html($form->{story});
 
 		# some submitters like to add whitespace before and
 		# after their introtext. This is never wanted. --Pater
@@ -612,9 +612,9 @@ sub saveSub {
 	}
 
 	if ($form->{sub_type} && $form->{sub_type} eq 'plain') {
-		$form->{story} = strip_plaintext(url2html_old($form->{story}));
+		$form->{story} = strip_plaintext($form->{story});
 	} else {
-		$form->{story} = strip_html(url2html_old($form->{story}));
+		$form->{story} = strip_html($form->{story});
 	}
 	$form->{story} = balanceTags($form->{story});
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.92 2002/09/09 21:52:42 patg Exp $
+# $Id: comments.pl,v 1.93 2002/09/13 01:04:44 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -947,7 +947,10 @@ sub previewForm {
 	# to have many linebreaks and runs of whitespace; this makes the
 	# compression filter more lenient about allowing them.
 
-	$tempComment = strip_mode($tempComment, $form->{posttype});
+	$tempComment = strip_mode($tempComment,
+		# if no posttype given, pick a default
+		$form->{posttype} || PLAINTEXT
+	);
 
 	validateComment(
 		\$tempComment, \$tempSubject, $error_message, 1,
@@ -1019,7 +1022,10 @@ sub submitComment {
 	# See the comment above validateComment() called from previewForm.
 	# Same thing applies here.
 
-	$tempComment = strip_mode($tempComment, $form->{posttype});
+	$tempComment = strip_mode($tempComment,
+		# if no posttype given, pick a default
+		$form->{posttype} || PLAINTEXT
+	);
 
 	unless (validateComment(
 		\$tempComment, \$tempSubject, $error_message, 1,

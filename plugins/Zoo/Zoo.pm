@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.10 2002/02/08 20:25:54 brian Exp $
+# $Id: Zoo.pm,v 1.11 2002/02/14 03:51:18 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -147,8 +147,6 @@ sub setFoe {
 sub _set {
 	my($self, $uid, $person, $type, $const) = @_;
 	my $slashdb = getCurrentDB();
-	# This looks silly, but I can not remember how or if you can use a const as a hash key
-
 
 	# First we do the main person
 	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
@@ -178,6 +176,84 @@ sub _set {
 	$people->{$s_const}{$uid} = 1;
 	$slashdb->setUser($person, { people => $people })
 
+}
+
+sub addFof {
+	my($self, $uid, $person) = @_;
+	my $slashdb = getCurrentDB();
+
+
+	# First we do the main person
+	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
+		$self->sqlUpdate('people', { -fof => "fof+1" }, "uid = $uid AND person = $person");
+	} else {
+		$self->sqlInsert('people', { uid => $uid,  person => $person, fof => 1 });
+	}
+	my $people = $slashdb->getUser($uid, 'people');
+	# First we clean up, then we reapply
+	$people->{FOF()}{$person} += 1;
+	$slashdb->setUser($uid, { people => $people });
+}
+
+sub addEof {
+	my($self, $uid, $person) = @_;
+	my $slashdb = getCurrentDB();
+
+
+	# First we do the main person
+	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
+		$self->sqlUpdate('people', { -fof => "fof+1" }, "uid = $uid AND person = $person");
+	} else {
+		$self->sqlInsert('people', { uid => $uid,  person => $person, fof => 1 });
+	}
+	my $people = $slashdb->getUser($uid, 'people');
+	# First we clean up, then we reapply
+	$people->{FOF()}{$person} += 1;
+	$slashdb->setUser($uid, { people => $people });
+}
+
+sub deleteFof {
+	my($self, $uid, $person) = @_;
+	my $slashdb = getCurrentDB();
+
+
+	# First we do the main person
+	my $number = $self->sqlSelect('fof', 'people', "uid = $uid AND person = $person");
+	if ($number <= 1) {
+		$self->sqlUpdate('people', { fof => "0" }, "uid = $uid AND person = $person");
+	} else {
+		$self->sqlUpdate('people', { -fof => "fof - 1" }, "uid = $uid AND person = $person");
+	}
+	my $people = $slashdb->getUser($uid, 'people');
+	# First we clean up, then we reapply
+	if ($people->{FOF()}{$person} >= 1) {
+		$people->{FOF()}{$person} -= 1;
+	} else {
+		delete $people->{FOF()}{$person};
+	}
+	$slashdb->setUser($uid, { people => $people });
+}
+
+sub deleteEof {
+	my($self, $uid, $person) = @_;
+	my $slashdb = getCurrentDB();
+
+
+	# First we do the main person
+	my $number = $self->sqlSelect('eof', 'people', "uid = $uid AND person = $person");
+	if ($number <= 1) {
+		$self->sqlUpdate('people', { eof => "0" }, "uid = $uid AND person = $person");
+	} else {
+		$self->sqlUpdate('people', { -eof => "eof - 1" }, "uid = $uid AND person = $person");
+	}
+	my $people = $slashdb->getUser($uid, 'people');
+	# First we clean up, then we reapply
+	if ($people->{EOF()}{$person} >= 1) {
+		$people->{EOF()}{$person} -= 1;
+	} else {
+		delete $people->{EOF()}{$person};
+	}
+	$slashdb->setUser($uid, { people => $people });
 }
 
 sub isFriend {

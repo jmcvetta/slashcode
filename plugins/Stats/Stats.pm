@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.113 2003/05/28 21:19:11 jamie Exp $
+# $Id: Stats.pm,v 1.114 2003/06/03 17:25:09 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -445,29 +445,60 @@ sub countCommentsByDistinctIPIDPerAnon {
 
 	my $ipid_uid_hr = $self->sqlSelectAllHashref(
 		[qw( ipid uid )],
-		"ipid, comments.uid AS uid",
+		"ipid, comments.uid AS uid, COUNT(*) AS c",
 		$tables, 
 		$where,
 		"GROUP BY ipid, uid"
 	);
 	return (0, 0, 0) unless $ipid_uid_hr && scalar keys %$ipid_uid_hr;
 
-	my($anon_only, $loggedin_only, $both) = (0, 0, 0);
+	my($ipids_anon_only, $ipids_loggedin_only, $ipids_both) = (0, 0, 0);
+	my($comments_anon_only, $comments_loggedin_only, $comments_both) = (0, 0, 0);
 	my $ac_uid = $constants->{anonymous_coward_uid};
 	for my $ipid (keys %$ipid_uid_hr) {
 		my @uids = keys %{$ipid_uid_hr->{$ipid}};
+		my($c, $c_anon, $c_loggedin) = (0, 0, 0);
+		for my $uid (@uids) {
+			$c += $ipid_uid_hr->{$ipid}{$uid}{c};
+		}
 		if ($ipid_uid_hr->{$ipid}{$ac_uid}) {
 			# At least one post by AC.
 			if (scalar(@uids) > 1) {
-				++$both;
+				++$ipids_both;
+				$comments_both += $c;
 			} else {
-				++$anon_only;
+				++$ipids_anon_only;
+				$comments_anon_only += $c;
 			}
 		} else {
-			++$loggedin_only;
+			++$ipids_loggedin_only;
+			$comments_loggedin_only += $c;
 		}
 	}
-	return ($anon_only, $loggedin_only, $both);
+	return ($ipids_anon_only, $ipids_loggedin_only, $ipids_both,
+		$comments_anon_only, $comments_loggedin_only, $comments_both);
+}
+
+########################################################
+sub countCommentsFromProxyAnon {
+	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
+
+	my $where = "date $self->{_day_between_clause}";
+	$where .= " AND discussions.id = comments.sid
+		    AND discussions.section = '$options->{section}'"
+		if $options->{section};
+
+	my $tables = 'comments, accesslist';
+	$tables .= ", discussions" if $options->{section};
+
+	my $c = $self->sqlCount(
+		$tables,
+		"$where
+		 AND comments.ipid = accesslist.ipid
+		 AND accesslist.now_proxy = 'yes'
+		 AND comments.uid = $constants->{anonymous_coward_uid}");
+	return $c;
 }
 
 ########################################################
@@ -1329,4 +1360,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.113 2003/05/28 21:19:11 jamie Exp $
+$Id: Stats.pm,v 1.114 2003/06/03 17:25:09 jamie Exp $

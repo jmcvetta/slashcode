@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.13 2001/11/06 02:47:47 brian Exp $
+# $Id: Journal.pm,v 1.14 2001/11/07 01:21:27 brian Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @EXPORT = qw(
 	MSG_CODE_JOURNAL_FRIEND
@@ -116,10 +116,14 @@ sub remove {
 	return unless $self->sqlDo("DELETE FROM journals WHERE uid=$uid AND id=$id");
 	$self->sqlDo("DELETE FROM journals_text WHERE id=$id");
 
-	my($date) = $self->sqlSelect('MAX(date)', 'journals', "uid=$uid");
-	$date ||= 0;	# has to be defined
+	my $date = $self->sqlSelect('MAX(date)', 'journals', "uid=$uid");
+	if ($date) {
+		$date = $self->sqlQuote($date);
+	} else {
+		$date = "NULL";
+	}
 	my $slashdb = getCurrentDB();
-	$slashdb->setUser($uid, { journal_last_entry_date => $date });
+	$slashdb->setUser($uid, { -journal_last_entry_date => $date });
 }
 
 sub friends {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.9 2001/11/03 03:05:02 brian Exp $
+# $Id: article.pl,v 1.10 2001/11/07 01:21:28 brian Exp $
 
 use strict;
 use Slash;
@@ -77,7 +77,7 @@ sub main {
 		});
 
 		my $discussion = $slashdb->getDiscussionBySid($story->{sid});
-		printComments($discussion);
+		printComments($discussion, '', '', 1);
 	} else {
 		my $message = getData('no_such_sid');
 		header($message);

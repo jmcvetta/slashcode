@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.7 2001/11/03 03:08:48 brian Exp $
+# $Id: User.pm,v 1.8 2001/11/07 01:21:27 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.001001';  # v2.1.1
-($REVISION)	= ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -297,6 +297,22 @@ sub userdir_handler {
 				$r->args("op=list");
 				$r->uri('/messages.pl');
 				$r->filename($constants->{basedir} . '/messages.pl');
+			} elsif ($op eq 'friends') {
+				$r->args("op=friends");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($op eq 'foes') {
+				$r->args("op=foes");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($op eq 'fans') {
+				$r->args("op=fans");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($op eq 'faultfinders') {
+				$r->args("op=faultfinders");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
 			} else {
 				$r->uri('/users.pl');
 				$r->filename($constants->{basedir} . '/users.pl');
@@ -329,6 +345,18 @@ sub userdir_handler {
 			$r->args("nick=$nick");
 			$r->uri('/pubkey.pl');
 			$r->filename($constants->{basedir} . '/pubkey.pl');
+		} elsif ($op eq 'friends') {
+			$r->args("op=friends&nick=$nick");
+			$r->uri('/zoo.pl');
+			$r->filename($constants->{basedir} . '/zoo.pl');
+		} elsif ($op eq 'fans') {
+			$r->args("op=fans&nick=$nick");
+			$r->uri('/zoo.pl');
+			$r->filename($constants->{basedir} . '/zoo.pl');
+		} elsif ($op eq 'foes') {
+			$r->args("op=foes&nick=$nick");
+			$r->uri('/zoo.pl');
+			$r->filename($constants->{basedir} . '/zoo.pl');
 		} else {
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');

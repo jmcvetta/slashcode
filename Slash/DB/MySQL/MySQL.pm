@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.21 2001/11/06 00:21:52 jamie Exp $
+# $Id: MySQL.pm,v 1.22 2001/11/07 01:21:27 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -83,6 +83,9 @@ my %descriptions = (
 	'session_login'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='session_login'") },
 
+	'sortorder'
+		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='sortorder'") },
+
 	'displaycodes'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='displaycodes'") },
 
@@ -91,6 +94,9 @@ my %descriptions = (
 
 	'sections'
 		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', 'isolate=0', 'order by title') },
+
+	'sections-all'
+		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', '', 'order by title') },
 
 	'static_block'
 		=> sub { $_[0]->sqlSelectMany('bid,bid', 'blocks', "$_[2] >= seclev AND type != 'portald'") },
@@ -2540,8 +2546,8 @@ sub getPoll {
 	# might want to select by sid ...
 	if ($qid !~ /^\d+$/) {
 		$col = 'sid';
-		$qid = $self->sqlQuote($qid);
 	}
+	$qid = $self->sqlQuote($qid);
 	my $sth = $self->{_dbh}->prepare_cached("
 		SELECT question,answer,aid,votes,pollquestions.qid  from pollquestions, pollanswers
 		WHERE pollquestions.qid=pollanswers.qid AND

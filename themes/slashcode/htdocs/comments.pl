@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.30 2001/11/06 21:17:08 brian Exp $
+# $Id: comments.pl,v 1.31 2001/11/07 01:21:28 brian Exp $
 
 use strict;
 #use Date::Manip;  # is this needed?  -- pudge
@@ -122,13 +122,6 @@ sub main {
 	# This is here to save a function call, even though the
 	# function can handle the situation itself
 	my ($discussion, $section);
-
-	# For those fresh morning where you wake up and don't have
-  # have a sid.
-	if (!$form->{sid} && $form->{cid}) {
-		$form->{sid} = $slashdb->getComment($form->{cid}, 'sid');
-		$user->{state}{comment_override_display} = 1;
-	}
 
 	if ($form->{sid}) {
 		# SID compatibility

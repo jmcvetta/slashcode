@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.23 2002/07/17 16:04:56 patg Exp $
+# $Id: portald,v 1.24 2002/07/17 21:27:37 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -149,7 +149,6 @@ sub getRDF {
 
 	my($bid, $url, $other) = @_;
 	my $rss = new XML::RSS;
-	$rss->strict(0);
 	my $template_name ||= $slashdb->getBlock($bid, 'rss_template');
 	my $items ||= $slashdb->getBlock($bid, 'items');
 	$items ||= $constants->{max_items};
@@ -161,16 +160,9 @@ sub getRDF {
 		portaldLog("failed to get $bid: $@");
 		return;
 	}
-    $d =~ s/&(?!#?[a-zA-Z0-9]+;)/&amp;/g;
+	$d =~ s/&(?!#?[a-zA-Z0-9]+;)/&amp;/g;
 
-    eval { $rss->parse($d) };
-
-    # to compensate for sf.net's broken rss
-    if ($@) { 
-	    $d =~ s/[^[:print:]]//g;
-
-	    eval { $rss->parse($d) } 
-	}
+	eval { $rss->parse($d) };
 
 	if ($@) {
 		portaldLog("$bid did not parse properly:$@");

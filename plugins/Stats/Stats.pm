@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.43 2002/07/17 16:04:56 patg Exp $
+# $Id: Stats.pm,v 1.44 2002/07/17 21:27:37 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -36,14 +36,13 @@ sub new {
 
 ########################################################
 sub createStatDaily {
-	my($self, $day, $name, $value, $section) = @_;
+	my($self, $day, $name, $value) = @_;
 	$value = 0 unless $value;
 
 	$self->sqlInsert('stats_daily', {
 			'day' => $day,
 			'name' => $name,
 			'value' => $value,
-			'section' => $section,
 	}, { ignore => 1 });
 }
 
@@ -105,22 +104,19 @@ sub getSlaveDBLagCount {
 
 ########################################################
 sub getCommentsByDistinctIPID {
-	my($self, $yesterday, $section) = @_;
+	my($self, $yesterday) = @_;
 
 	my $used = $self->sqlSelectColArrayref(
-		'ipid', 'comments,discussions', 
-		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59' AND discussions.sid = comments.pid AND discussions.section = '$section'",
+		'ipid', 'comments', 
+		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
 		'',
-		{ distinct => 1 }
+		{distinct => 1}
 	);
 }
 
 ########################################################
 sub getAdminModsInfo {
-	my($self, $yesterday, $weekago, $section) = @_;
-	# this takes a section arg, but I don't know how that's 
-	# going to work - need to do a join to make it work. 
-	# hold off for now.
+	my($self, $yesterday, $weekago) = @_;
 
 	# First get the count of upmods and downmods performed by each admin.
 	my $m1_uid_val_hr = $self->sqlSelectAllHashref(
@@ -299,29 +295,24 @@ sub getAdminModsInfo {
 
 ########################################################
 sub countSubmissionsByDay {
-	my($self, $yesterday, $section) = @_;
+	my($self, $yesterday) = @_;
 
-	my $where = "time BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
-	$where .= " AND section = '$section'" if $section;
 	my $used = $self->sqlCount(
 		'submissions', 
-		$where
+		"time BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'"
 	);
 }
 
 ########################################################
 sub countSubmissionsByCommentIPID {
-	my($self, $yesterday, $ipids, $section) = @_;
+	my($self, $yesterday, $ipids) = @_;
 	return unless @$ipids;
 	my $slashdb = getCurrentDB();
 	my $in_list = join(",", map { $slashdb->sqlQuote($_) } @$ipids);
 
-	my $where = "(time BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59') AND ipid IN ($in_list)";
-	$where .= " AND section = '$section'";
-
 	my $used = $self->sqlCount(
 		'submissions', 
-		$where
+		"(time BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59') AND ipid IN ($in_list)"
 	);
 }
 
@@ -342,7 +333,7 @@ sub countModeratorLogHour {
 
 ########################################################
 sub countCommentsDaily {
-	my($self, $yesterday, $section) = @_;
+	my($self, $yesterday) = @_;
 
 	# Count comments posted yesterday... using a primary key,
 	# if it'll save us a table scan.  On Slashdot this cuts the
@@ -409,32 +400,21 @@ sub countDailyByPageDistinctIPID {
 	$where .= "ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
 	$self->sqlSelect("count(DISTINCT host_addr)", "accesslog", $where);
 }
-########################################################
-sub countDailyByOPDistinctUID {
-	# This is so lame, and so not ANSI SQL -Brian
-	my($self, $op, $yesterday) = @_;
-	$self->sqlSelect("count(DISTINCT uid)", "accesslog",
-		"op='$op' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'");
-}
 
 ########################################################
 sub countDaily {
-	my($self, $section) = @_;
+	my($self) = @_;
 	my %returnable;
 
 	my $constants = getCurrentStatic();
 
-	my $where = "TO_DAYS(NOW()) - TO_DAYS(ts) = 1";
-	$where .= " AND section = '$section'" if $section;
-
 	my($min_day_id, $max_day_id) = $self->sqlSelect(
 		"MIN(id), MAX(id)",
 		"accesslog",
-		$where
+		"TO_DAYS(NOW()) - TO_DAYS(ts)=1"
 	);
 	$min_day_id ||= 1; $max_day_id ||= 1;
 	my $yesterday_clause = "(id BETWEEN $min_day_id AND $max_day_id)";
-	$yesterday_clause .= " AND section = '$section'" if $section,
 
 	# For counting the total, we used to just do a COUNT(*) with the
 	# TO_DAYS clause.  If we separate out the count of each op, we can

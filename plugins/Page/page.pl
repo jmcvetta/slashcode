@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: page.pl,v 1.3 2002/07/17 16:04:56 patg Exp $
+# $Id: page.pl,v 1.4 2002/07/17 21:27:37 jamie Exp $
 
 use strict;
 use Slash;
@@ -28,7 +28,7 @@ sub main {
 
 	my $title = getData('head', { section => $section });
 	header($title, $section->{section});
-	slashDisplay('index', { section => $section->{section}, index => $index});
+	slashDisplay('index', { index => $index});
 
 	footer();
 

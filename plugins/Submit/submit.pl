@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.64 2002/07/17 16:04:56 patg Exp $
+# $Id: submit.pl,v 1.65 2002/07/17 21:27:37 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -219,11 +219,11 @@ sub submissionEd {
 		$cur_section = $form->{section} || $def_section;
 	}
 	$cur_note	= $form->{note} || $def_note;
-	$sections = $slashdb->getSubmissionsSections($user->{section});
+	$sections = $slashdb->getSubmissionsSections();
 
 	for (@$sections) {
 		my($section, $note, $cnt) = @$_;
-		$all_sections{$section} = 1 if ! $user->{section};
+		$all_sections{$section} = 1;
 		$note ||= $def_note;
 		$all_notes{$note} = 1;
 		$sn{$section}{$note} = $cnt;
@@ -236,13 +236,13 @@ sub submissionEd {
 		}
 	}
 
-	$all_sections{$def_section} = 1 if ! $user->{section};
+	$all_sections{$def_section} = 1;
 
 	# self documentation, right?
 	@sections =	map  { [$_->[0], ($_->[0] eq $def_section ? '' : $_->[0])] }
 			sort { $a->[1] cmp $b->[1] }
 			map  { [$_, ($_ eq $def_section ? '' : $_)] }
-			keys %all_sections if ! $user->{section};
+			keys %all_sections;
 
 	@notes =	map  { [$_->[0], ($_->[0] eq $def_note ? '' : $_->[0])] }
 			sort { $a->[1] cmp $b->[1] }

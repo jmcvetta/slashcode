@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.120 2003/07/21 15:39:36 jamie Exp $
+# $Id: slashschema_create.sql,v 1.121 2003/07/21 16:10:12 jamie Exp $
 #
 
 #
@@ -547,7 +547,7 @@ CREATE TABLE querylog (
 	KEY caller (package, line),
 	KEY ts (ts),
 	KEY type (type)
-} TYPE=InnoDB;
+) TYPE=InnoDB;
 
 #
 # Table structure for table 'rss_raw'

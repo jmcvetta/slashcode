@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.149 2004/10/30 17:26:50 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.150 2004/11/03 19:48:15 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1686,13 +1686,13 @@ Hashref of cleaned-up data.
 	# special few
 	my %special = (
 		logtoken	=> sub { $_[0] = '' unless
-					 $_[0] =~ m|^\d+::[A-Za-z0-9]{22}$|	},
+					 $_[0] =~ m|^\d+::[A-Za-z0-9]{22}$|		},
 		sid		=> sub { $_[0] = '' unless
-					 $_[0] =~ regexSid()			},
-		flags		=> sub { $_[0] =~ s|[^a-z0-9_,]||g		},
+					 $_[0] =~ Slash::Utility::Data::regexSid()	},
+		flags		=> sub { $_[0] =~ s|[^a-z0-9_,]||g			},
 		query		=> sub { $_[0] =~ s|[\000-\040<>\177-\377]+| |g;
-			        	 $_[0] =~ s|\s+| |g;			},
-		colorblock	=> sub { $_[0] =~ s|[^\w#,]+||g			},
+			        	 $_[0] =~ s|\s+| |g;				},
+		colorblock	=> sub { $_[0] =~ s|[^\w#,]+||g				},
 	);
 
 
@@ -2660,4 +2660,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.149 2004/10/30 17:26:50 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.150 2004/11/03 19:48:15 jamiemccarthy Exp $

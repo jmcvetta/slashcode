@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: index.shtml,v 1.17 2004/01/29 02:02:04 pudge Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: index.shtml,v 1.18 2004/08/24 16:53:53 jamiemccarthy Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -335,7 +335,7 @@ else's journal?</a></b></li>
 
 <li>
 <b><a href="friends.shtml#fj1000">How do I add users to my friends / foes
-list?</a></b></li>
+list (or remove them)?</a></b></li>
 </ul>
 <!-- Subscriptions -->
 <h2> <b><a href="subscriptions.shtml">Subscriptions</a></b></h2>

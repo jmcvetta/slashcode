@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.718 2004/10/25 22:52:16 pudge Exp $
+# $Id: MySQL.pm,v 1.719 2004/10/26 01:17:42 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.718 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.719 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4145,14 +4145,14 @@ sub setStory {
 			my($name, $value) = @$duple;
 			last unless $success;
 			if (defined($value) && length($value)) {
-				$success ||= $self->sqlReplace($param_table, {
+				$success = $self->sqlReplace($param_table, {
 					stoid	=> $stoid,
 					name	=> $name,
 					value	=> $value,
 				});
 			} else {
 				my $name_q = $self->sqlQuote($name);
-				$success ||= $self->sqlDelete($param_table,
+				$success = $self->sqlDelete($param_table,
 					"stoid = $stoid AND name = $name_q"
 				);
 			}

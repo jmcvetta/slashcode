@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.70 2002/07/03 07:26:55 jamie Exp $
+# $Id: comments.pl,v 1.71 2002/07/08 22:01:57 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -556,7 +556,7 @@ sub createDiscussion {
 	my $label = getData('label');
 
 	if ($user->{seclev} >= $constants->{discussion_create_seclev}) {
-		# if form.url is empty, try the REFERER.  if it
+		# if form.url is empty, try the referrer.  if it
 		# matches comments.pl without any query string,
 		# then (later, down below) set url to point to discussion
 		# itself.
@@ -595,7 +595,7 @@ sub createDiscussion {
 				type	=> "recycle"
 			});
 
-			# fix URL to point to discussion if no referer
+			# fix URL to point to discussion if no referrer
 			if (!$form->{url}) {
 				$newurl = $constants->{rootdir} . "/comments.pl?sid=$id";
 				$slashdb->setDiscussion($id, { url => $newurl });

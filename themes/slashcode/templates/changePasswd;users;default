@@ -43,10 +43,10 @@ __template__
 [% ELSE %]
 		<INPUT TYPE="HIDDEN" NAME="uid" VALUE="[% useredit.uid %]">
 [% END %]
-		My login cookie <B>expires</B> [% session %] and <B>works from</B> [% clocation %]
+		My login session [% session %] and [% clocation %]
 
 		<P>Note: currently, to change your login cookie preferences, you must change your
-		password.  This will be fixed in the future.  You can change your password to
+		password.  This will be fixed in the near future.  You can change your password to
 		whatever your current password is, if you like, so it won't actually change.</P>
 
 		<P>Note: changing your password or login cookie preferences will disable all
@@ -75,4 +75,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: changePasswd;users;default,v 1.18 2004/01/23 00:39:06 pudge Exp $
+$Id: changePasswd;users;default,v 1.19 2004/01/28 20:29:35 pudge Exp $

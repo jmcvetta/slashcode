@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.84 2002/12/20 20:14:30 jamie Exp $
+# $Id: Stats.pm,v 1.85 2002/12/20 20:57:19 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -279,7 +279,7 @@ sub getModM2Ratios {
 }
 
 ########################################################
-sub getModReverses {
+sub getReverseMods {
 	my($self, $options) = @_;
 
 	# Double-check that options are numeric because we're going to
@@ -294,7 +294,7 @@ sub getModReverses {
 	my $upmul =     2  ;	$upmul = $options->{upmul} if defined $options->{upmul};
 	my $unm2able =  0.5;	$unm2able = $options->{unm2able} if defined $options->{unm2able};
 	my $denomadd =  4  ;	$denomadd = $options->{denomadd} if defined $options->{denomadd};
-	my $limit =    30  ;	$limit = $options->{limit} if defined $options->{limit};
+	my $limit =    12  ;	$limit = $options->{limit} if defined $options->{limit};
 
 	my $reasons = $self->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
@@ -306,7 +306,9 @@ sub getModReverses {
 				IF(points=5, $down5, 0),
 				IF(points<=$upmax, $upsub-points*$upmul, 0) ) )
 		  +SUM( IF( moderatorlog.reason IN ($reasons_m2able), 0, $unm2able ) )
-		 )/(COUNT(*)+$denomadd) AS score",
+		 )/(COUNT(*)+$denomadd) AS score,
+		 IF(MAX(moderatorlog.ts) > DATE_SUB(NOW(), INTERVAL 24 HOUR),
+			1, 0) AS isrecent",
 		"moderatorlog, comments, users, users_info",
 		"comments.cid=moderatorlog.cid
 		 AND users.uid=moderatorlog.uid
@@ -314,6 +316,9 @@ sub getModReverses {
 		 AND moderatorlog.active",
 		"GROUP BY muid ORDER BY score DESC, karma, tokens, muid LIMIT $limit",
 	);
+	for my $rm (@$ar) {
+		$rm->{score} = sprintf("%0.3f", $rm->{score});
+	}
 
 	return $ar;
 }
@@ -910,4 +915,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.84 2002/12/20 20:14:30 jamie Exp $
+$Id: Stats.pm,v 1.85 2002/12/20 20:57:19 jamie Exp $

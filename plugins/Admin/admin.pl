@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.32 2002/02/05 22:32:16 patg Exp $
+# $Id: admin.pl,v 1.33 2002/02/07 23:12:28 cliff Exp $
 
 use strict;
 use Image::Size;
@@ -1111,9 +1111,9 @@ sub get_ispell_comments {
 	$ok =~ s/\s+/\n/g;
 
 	local *ISPELL;
-	my $tmptext = write_to_temp_file(lc($text));
+	my $tmptext = write_to_temp_file($text);
 	my $tmpok = "";
-	$tmpok = write_to_temp_file(lc($ok)) if $ok;
+	$tmpok = write_to_temp_file($ok) if $ok;
 	my $tmpok_flag = "";
 	$tmpok_flag = " -p $tmpok" if $tmpok;
 	if (!open(ISPELL, "$ispell -a -B -S -W 3$tmpok_flag < $tmptext 2> /dev/null |")) {

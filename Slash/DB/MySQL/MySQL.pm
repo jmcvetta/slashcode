@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.228 2002/09/24 17:11:00 jamie Exp $
+# $Id: MySQL.pm,v 1.229 2002/09/24 18:45:43 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.228 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.229 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3080,12 +3080,14 @@ sub getAbuses {
 }
 
 ##################################################################
-sub getAccessListReason {
+# returns a hashref with reason and datetime fields
+sub getAccessListInfo {
 	my($self, $formname, $column, $user_check) = @_;
 
 	my $constants = getCurrentStatic();
 	my $ref = {};
-	my($reason,$where) = ('','');
+	my $aclinfo = {};
+	my $where = '';
 
 	if ($user_check) {
 		if ($user_check->{uid} =~ /^\d+$/ && !isAnon($user_check->{uid})) {
@@ -3111,18 +3113,22 @@ sub getAccessListReason {
 	}
 	
 
-	$ref = $self->sqlSelectAll("reason", "accesslist $where");
+	$ref = $self->sqlSelectAll("reason, ts", "accesslist $where");
+	$aclinfo->{reason} = '';
 
 	for (@$ref) {
-		if ($reason eq '') {
-			$reason = $_->[0];
-		} elsif ($reason ne $_->[0]) {
-			$reason = 'multiple';
-			return($reason);
+		if ($aclinfo->{reason} eq '') {
+			$aclinfo->{reason}   = $_->[0];
+			$aclinfo->{datetime} = $_->[1];
+		} elsif ($aclinfo->{reason} ne $_->[0]) {
+			$aclinfo->{reason}   = 'multiple';
+			$aclinfo->{datetime} = 'multiple';
+
+			return $aclinfo;
 		}
 	}
 
-	return($reason);
+	return $aclinfo;
 }
 
 ##################################################################

@@ -88,7 +88,7 @@ __template__
 <br>
 <input type="button" value="Never Display"  onmouseup="[% name %]_never_display()">
 <input type="button" value="Revert Weights" onmouseup="[% name %]_revert_weights()">
-<input type="button" value="Choose Topics"  onmouseup="[% name %]_show()">
+<input type="button" value="Choose Topics"  onmouseup="[% name %]_show()" name="[% name %]_topic_toggle">
 <input type="button" value="Remove Topic"   onmouseup="[% name %]_remove()">
 
 <script language="javascript">[% name %]_load_names();</script>
@@ -96,4 +96,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_tree;admin;default,v 1.9 2004/07/07 20:32:20 pudge Exp $
+$Id: topic_popup_tree;admin;default,v 1.10 2004/07/12 23:23:56 pudge Exp $

@@ -7,6 +7,7 @@ Prints the bar above each story, containing the actual title of the story.
 * title = text for title
 * future = boolean: whether story is in the future
 	(currently not used)
+* td_extra = extra_table cell(s) and contents to include after after the title table-cell
 
 __title__
 
@@ -28,6 +29,7 @@ __template__
 		</TABLE>
 		</TD>
 		<TD BGCOLOR="[% user.bg.3 %]" ALIGN="right"><IMG SRC="[% constants.imagedir %]/cr.gif" WIDTH="7" HEIGHT="10" ALT=""></TD>
+		[% td_extra %]
 	</TR>
 </TABLE>
 
@@ -36,4 +38,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: titlebar;misc;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: titlebar;misc;default,v 1.7 2004/03/02 02:41:00 tvroom Exp $

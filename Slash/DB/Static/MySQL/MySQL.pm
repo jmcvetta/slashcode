@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.170 2004/08/03 03:41:40 tvroom Exp $
+# $Id: MySQL.pm,v 1.171 2004/08/08 14:19:21 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.170 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2352,15 +2352,11 @@ sub getTopRecentRealemailDomains {
 sub getSkinsDirty {
 	my($self) = @_;
 	my $skin_ids = $self->sqlSelectColArrayref(
-		'DISTINCT skid', 'skins, topic_nexus_dirty',
-		'skins.nexus = topic_nexus_dirty.tid
+		'DISTINCT skid',
+		'skins LEFT JOIN topic_nexus_dirty ON skins.nexus = topic_nexus_dirty.tid',
+		'topic_nexus_dirty.tid IS NOT NULL
 		 OR skins.last_rewrite < DATE_SUB(NOW(), INTERVAL max_rewrite_secs SECOND)');
-	my $skins = $self->getSkins();
-	my $ret_hr = { };
-	for my $id (@$skin_ids) {
-		$ret_hr->{$id} = { %{$skins->{$id}} };
-	}
-	return $ret_hr;
+	return $skin_ids || [ ];
 }
 
 ########################################################

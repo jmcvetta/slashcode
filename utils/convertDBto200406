@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.8 2004/07/08 22:03:23 jamiemccarthy Exp $
+# $Id: convertDBto200406,v 1.9 2004/07/09 04:16:17 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -526,8 +526,8 @@ CREATE TABLE blocks_new (
 ) TYPE=InnoDB;
 INSERT INTO blocks_new ( bid, block, seclev, type, description, skin, ordernum, title, portal, url, rdf, retrieve, last_update, rss_template, items, autosubmit, rss_cookie, all_skins ) SELECT bid, block, seclev, type, description, section, ordernum, title, portal, url, rdf, retrieve, last_update, rss_template, items, autosubmit, rss_cookie, all_sections FROM blocks WHERE type != 'color';
 UPDATE blocks_new SET skin='mainpage' WHERE skin IN ('index', 'articles');
-UPDATE IGNORE blocks SET bid='mainpage_more' WHERE bid LIKE '%more' AND skin='mainpage' AND ordernum > -1;
-DELETE FROM blocks WHERE bid LIKE '%more' AND skin='mainpage' AND bid != 'mainpage_more';
+UPDATE IGNORE blocks_new SET bid='mainpage_more' WHERE bid LIKE '%more' AND skin='mainpage' AND ordernum > -1;
+DELETE FROM blocks_new WHERE bid LIKE '%more' AND skin='mainpage' AND bid != 'mainpage_more';
 EOT
 
 #

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashd,v 1.16 2000/07/24 22:10:03 pudge Exp $
+#  $Id: slashd,v 1.17 2000/10/12 18:00:09 pudge Exp $
 ###############################################################################
 use sigtrap;
 use strict;
@@ -333,9 +333,9 @@ sub newrdf {
 	my $c = getBackendStories($section);
 
 	my $SECT = getSection($section);
-	$SECT->{title} = "$I{sitename}: $SECT->{title}" unless $SECT->{isolate};
+	my $title = $SECT->{isolate} ? $SECT->{title} : "$I{sitename}: $SECT->{title}";
 
-	my @fs = (xmlEncodeStr($SECT->{title}),
+	my @fs = (xmlEncodeStr($title),
 		$section ? "/index.pl?section=$section" : '',
 		xmlEncodeStr($I{sitename})
 	);

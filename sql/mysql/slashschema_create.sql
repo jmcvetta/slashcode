@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.171 2004/10/15 22:56:52 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.172 2004/10/19 18:37:55 tvroom Exp $
 #
 
 #
@@ -702,6 +702,8 @@ CREATE TABLE skins (
 	title VARCHAR(64) DEFAULT '' NOT NULL,
 	issue ENUM('no', 'yes') DEFAULT 'no' NOT NULL,
 	submittable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	searchable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	storypickable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	url VARCHAR(255) DEFAULT '' NOT NULL,
 	hostname VARCHAR(128) DEFAULT '' NOT NULL,
 	cookiedomain VARCHAR(128) DEFAULT '' NOT NULL,
@@ -989,6 +991,8 @@ CREATE TABLE topics (
 	width SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 	height SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 	submittable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	searchable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	storypickable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	PRIMARY KEY (tid)
 ) TYPE=InnoDB;
 

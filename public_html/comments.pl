@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.16 2000/07/05 18:49:36 cbwood Exp $
+#  $Id: comments.pl,v 1.17 2000/07/07 18:23:38 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -426,10 +426,11 @@ EOT
 			} else {
 				$tags{$tag}++;
 
-				if (($tags{UL} + $tags{OL}) > 3) {
+				if (($tags{UL} + $tags{OL} + $tags{BLOCKQUOTE}) > 4) {
 					editComment() and return unless $preview;
 					print <<EOT;
-You can only post nested lists 3 levels deep.  Please fix your UL or OL tags.
+You can only post nested lists and blockquotes four levels deep.
+Please fix your UL, OL, and BLOCKQUOTE tags.
 EOT
 
 					return;

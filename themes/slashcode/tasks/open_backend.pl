@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.23 2004/07/19 15:49:06 pudge Exp $
+# $Id: open_backend.pl,v 1.24 2004/10/18 16:56:15 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -11,7 +11,7 @@ use Slash::Constants ':slashd';
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '13,43 * * * *';
+$task{$me}{timespec} = '0-59/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {

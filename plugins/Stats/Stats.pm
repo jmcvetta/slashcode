@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.121 2003/09/09 03:43:58 vroom Exp $
+# $Id: Stats.pm,v 1.122 2003/09/10 22:29:56 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -1166,55 +1166,62 @@ sub getDailyScoreTotal {
 }
 
 
+########################################################
 sub getTopBadPasswordsByUID{
 	my($self, $options) = @_;
 	my $limit = $options->{limit} || 10;
 	my $day = $self->{_day};
-	$day =~s/-//g;
+	$day =~ s/-//g;
 	my $min = $options->{min};
 	my $other = "group by uid ";
 	$other .= " having count(*) >= $options->{min}" if $min;
 	$other .= "  order by count desc limit $limit";
-	my $ar = $self->sqlSelectAllHashrefArray("nickname, users.uid as uid, count(*) as count",
-						"badpasswords,users",
-						"ts like '$day%' and users.uid = badpasswords.uid",
-						$other);
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"nickname, users.uid as uid, count(*) as count",
+		"badpasswords,users",
+		"ts like '$day%' and users.uid = badpasswords.uid",
+		$other
+	);
 	return $ar;
 }
 
+########################################################
 sub getTopBadPasswordsByIP{
 	my($self, $options) = @_;
 	my $limit = $options->{limit} || 10;
 	my $min = $options->{min};
 	my $day = $self->{_day};
-	$day =~s/-//g;
+	$day =~ s/-//g;
 	my $other = "group by ip";
 	$other .= " having count(*) >= $options->{min}" if $min;
 	$other .= "  order by count desc limit $limit";
-	my $ar = $self->sqlSelectAllHashrefArray("ip, count(*) as count",
-						"badpasswords",
-						"ts like '$day%'",
-						$other);
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"ip, count(*) as count",
+		"badpasswords",
+		"ts like '$day%'",
+		$other
+	);
 	return $ar;
 }
 
+########################################################
 sub getTopBadPasswordsBySubnet{
 	my($self, $options) = @_;
 	my $limit = $options->{limit} || 10;
 	my $min = $options->{min};
 	my $day = $self->{_day};
-	$day =~s/-//g;
+	$day =~ s/-//g;
 	my $other = "group by subnet";
 	$other .= " having count(*) >= $options->{min}" if $min;
 	$other .= "  order by count desc limit $limit";
-	my $ar = $self->sqlSelectAllHashrefArray("subnet, count(*) as count",
-						"badpasswords",
-						"ts like '$day%'",
-						$other);
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"subnet, count(*) as count",
+		"badpasswords",
+		"ts like '$day%'",
+		$other
+	);
 	return $ar;
 }
-
-########################################################
 
 ########################################################
 # Note, we are carrying the misspelling of "referrer" over from
@@ -1479,4 +1486,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.121 2003/09/09 03:43:58 vroom Exp $
+$Id: Stats.pm,v 1.122 2003/09/10 22:29:56 pudge Exp $

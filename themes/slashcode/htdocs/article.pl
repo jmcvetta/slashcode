@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.41 2003/04/26 13:38:03 jamie Exp $
+# $Id: article.pl,v 1.42 2003/04/29 02:16:06 pater Exp $
 
 use strict;
 use Slash;
@@ -73,7 +73,7 @@ sub main {
 				author	=> $story->{uid},
 			},
 		};
-		header($links, $story->{section});
+		header($links, $story->{section}, { Page => 'article' });
 
 		# Can't do this before getStoryByTime because
 		# $story->{time} is passed to an SQL request.

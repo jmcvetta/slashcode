@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.65 2003/04/24 23:05:48 jamie Exp $
+# $Id: index.pl,v 1.66 2003/04/29 02:16:06 pater Exp $
 
 use strict;
 use Slash;
@@ -55,7 +55,7 @@ sub main {
 	);
 
 	my $title = getData('head', { section => $section });
-	header($title, $section->{section});
+	header($title, $section->{section}, { Page => 'index' });
 
 	# We may, in this listing, have a story from the Mysterious Future.
 	# If so, there are three possibilities:

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.13 2003/07/22 20:26:32 jamie Exp $
+# $Id: open_backend.pl,v 1.14 2003/08/07 06:08:07 pudge Exp $
 
 use strict;
 use Slash;
@@ -43,6 +43,20 @@ $task{$me}{code} = sub {
 sub save2file {
 	my($f, $d) = @_;
 	my $fh = gensym();
+
+	# don't rewrite the file if it is has not changed, so clients don't
+	# re-FETCH the file; if they send an If-Modified-Since, Apache
+	# will just return a header saying the file has not been modified
+	# -- pudge
+	open $fh, "<$f" or die "Can't open $f: $!";
+	my $current = do { local $/; <$fh> };
+	close $fh;
+
+	my $new = $d;
+	# normalize ...
+	s|<dc:date>[^<]*</dc:date>|| for $current, $new;
+	return if $current eq $new;
+
 	open $fh, ">$f" or die "Can't open $f: $!";
 	print $fh $d;
 	close $fh;

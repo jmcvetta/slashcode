@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.75 2002/07/12 22:39:39 jamie Exp $
+# $Id: comments.pl,v 1.76 2002/07/13 14:10:12 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -752,7 +752,7 @@ sub validateComment {
 		my $num_allowed = 9999;
 		K_CHECK: for my $k (sort { $a <=> $b }
 			keys %{$constants->{comments_perday_bykarma}}) {
-			if ($user->{karma} < $k) {
+			if ($user->{karma} <= $k) {
 				$num_allowed = $constants->{comments_perday_bykarma}{$k};
 				last K_CHECK;
 			}

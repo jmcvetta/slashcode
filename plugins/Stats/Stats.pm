@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.125 2003/11/25 06:23:41 vroom Exp $
+# $Id: Stats.pm,v 1.126 2003/12/04 15:31:22 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -170,7 +170,7 @@ sub countModeratorLog {
 		my $reasons = $self->getReasons();
 		my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
 		my $reasons_m2able = join(",", @reasons_m2able);
-		push @clauses, "reason IN ($reasons_m2able)"
+		push @clauses, "reason IN ($reasons_m2able)" if $reasons_m2able;
 	}
 
 	my $where = join(" AND ", @clauses) || "";
@@ -217,10 +217,14 @@ sub getOldestUnm2dMod {
 	my $reasons = $self->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
 	my $reasons_m2able = join(",", @reasons_m2able);
+	my @clauses = ("active=1", "m2status=0");
+	push @clauses, "reason IN ($reasons_m2able)" if $reasons_m2able;
+	my $where = join(" AND ", @clauses) || "";
+
 	my($oldest) = $self->sqlSelect(
 		"UNIX_TIMESTAMP(MIN(ts))",
 		"moderatorlog",
-		"active=1 AND reason IN ($reasons_m2able) AND m2status=0"
+		$where
 	);
 	return $oldest || 0;
 }
@@ -310,14 +314,28 @@ sub getRepeatMods {
 sub getModM2Ratios {
 	my($self, $options) = @_;
 
+	# The SQL here tells the DB to count up how many of the mods
+	# have been M2'd how much, basically building a histogram.
+	# (The DB returns the counts for each character in each row
+	# of the histogram, and perl assembles them into the text
+	# that is output.)
+	# If there are no m2able modreasons, every char in the
+	# histogram is "X".  Otherwise, the chars in the histogram
+	# are "X" for fully-M2'd mods, "_" for un-m2able mods, and
+	# for mods which have been partially M2'd, the digit showing
+	# the number of M2's applied to them so far.
 	my $reasons = $self->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
 	my $reasons_m2able = join(",", @reasons_m2able);
+	my $m2able_char_clause = $reasons_m2able
+		? "IF(reason IN ($reasons_m2able), m2count, '_')"
+		: "'X'";
+
 	my $hr = $self->sqlSelectAllHashref(
 		[qw( day val )],
 		"SUBSTRING(ts, 1, 10) AS day,
 		 IF(m2status=0,
-			IF(reason IN ($reasons_m2able), m2count, '_'),
+			$m2able_char_clause,
 			'X'
 		 ) AS val,
 		 COUNT(*) AS c",
@@ -1576,4 +1594,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.125 2003/11/25 06:23:41 vroom Exp $
+$Id: Stats.pm,v 1.126 2003/12/04 15:31:22 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.162 2003/11/25 06:23:41 vroom Exp $
+# $Id: adminmail.pl,v 1.163 2003/12/04 15:31:22 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -96,10 +96,6 @@ $task{$me}{code} = sub {
 	}
 
 	my $articles = $logdb->countDailyStoriesAccess();
-
-	my $reasons = $slashdb->getReasons();
-	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
-	my $reasons_m2able = join(",", @reasons_m2able);
 
 	my $admin_clearpass_warning = '';
 	if ($constants->{admin_check_clearpass}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.35 2002/10/11 01:15:30 jamie Exp $
+# $Id: Anchor.pm,v 1.36 2002/10/22 18:15:30 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -517,8 +517,9 @@ sub getSectionColors {
 		@colors = split m/,/, getSectionBlock('colors') || $constants->{colors};
 	}
 
-	$user->{fg} = [@colors[0..4]];
-	$user->{bg} = [@colors[5..9]];
+	my $n_colors = scalar(@colors);
+	$user->{fg} = [@colors[0..$n_colors/2-1]];
+	$user->{bg} = [@colors[$n_colors/2..$n_colors-1]];
 }
 
 1;
@@ -532,4 +533,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.35 2002/10/11 01:15:30 jamie Exp $
+$Id: Anchor.pm,v 1.36 2002/10/22 18:15:30 jamie Exp $

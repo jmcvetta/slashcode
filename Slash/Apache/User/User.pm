@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.39 2002/10/17 16:48:27 jamie Exp $
+# $Id: User.pm,v 1.40 2002/10/22 18:15:30 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -335,7 +335,7 @@ sub userdir_handler {
 				$r->args("op=list");
 				$r->uri('/messages.pl');
 				$r->filename($constants->{basedir} . '/messages.pl');
-			} elsif ($op eq 'messages') { # change to be same as /inbox, move this to /my/preferences/messages
+			} elsif ($op eq 'messages') { # XXX change to be same as /inbox, move this to /my/preferences/messages
 				$r->args("op=display_prefs");
 				$r->uri('/messages.pl');
 				$r->filename($constants->{basedir} . '/messages.pl');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.101 2004/09/21 16:56:35 tvroom Exp $
+# $Id: submit.pl,v 1.102 2004/10/12 14:58:00 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -454,6 +454,18 @@ sub displayForm {
 		$current_hash->{0} = "Select Section";
 		$skin_values = $current_hash;
 	}
+	
+	my @topics = ();
+	my $nexus_id = $slashdb->getNexusFromSkid($form->{primaryskid} || $constants->{submission_default_skid} || $constants->{mainpage_skid});
+	push @topics, $nexus_id if $nexus_id;
+	push @topics, $form->{tid} if $form->{tid};
+
+	my $chosen_hr = genChosenHashrefForTopics(\@topics);
+	
+	my $extracolumns = $slashdb->getNexusExtrasForChosen($chosen_hr) || [ ];
+	my @required = map {$_->[1]} grep{$_->[4] eq "yes"} @$extracolumns;
+
+	my @missing_required = grep{$_->[4] eq "yes" && !$form->{$_->[1]}} @$extracolumns;
 
 	my $topic = $slashdb->getTopic($form->{tid});
 
@@ -465,14 +477,6 @@ sub displayForm {
 		# we assume this is like if form.email is passed in
 		$fakeemail = strip_attribute($user->{fakeemail});
 	}
-	my @topics = ();
-	my $nexus_id = $slashdb->getNexusFromSkid($form->{primaryskid} || $constants->{submission_default_skid} || $constants->{mainpage_skid});
-	push @topics, $nexus_id if $nexus_id;
-	push @topics, $form->{tid} if $form->{tid};
-
-	my $chosen_hr = genChosenHashrefForTopics(\@topics);
-	
-	my $extracolumns = $slashdb->getNexusExtrasForChosen($chosen_hr) || [ ];
 
 	my $fixedstory;
 	if ($form->{sub_type} && $form->{sub_type} eq 'plain') {
@@ -489,7 +493,8 @@ sub displayForm {
 
 	slashDisplay('displayForm', {
 		fixedstory	=> $fixedstory,
-		savestory	=> $form->{story} && $form->{subj} && $form->{tid},
+		savestory	=> $form->{story} && $form->{subj} && $form->{tid} && !@missing_required,
+		missing_required => \@missing_required,
 		username	=> $form->{name} || $username,
 		fakeemail	=> processSub($fakeemail, $known),
 		uid		=> $user->{uid},
@@ -562,6 +567,12 @@ sub saveSub {
 
 	my $extras = $slashdb->getNexusExtrasForChosen($chosen_hr) || [];
 
+	my @missing_required = grep{$_->[4] eq "yes" && !$form->{$_->[1]}} @$extras;
+
+	if (@missing_required) {
+		displayForm($form->{name}, $form->{email}, $form->{skin}, '', '');
+		return 0;
+	}
 	
 	if ($extras && @$extras) {
 		for (@$extras) {
@@ -569,6 +580,9 @@ sub saveSub {
 			$submission->{$key} = strip_nohtml($form->{$key}) if $form->{$key};
 		}
 	}
+
+
+
 	my $messagesub = { %$submission };
 	$messagesub->{subid} = $slashdb->createSubmission($submission);
 	# $slashdb->formSuccess($form->{formkey}, 0, length($form->{subj}));

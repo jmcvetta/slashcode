@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.28 2000/06/26 20:19:49 pudge Exp $
+#  $Id: Slash.pm,v 1.29 2000/06/29 19:20:56 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -2001,12 +2001,17 @@ EOT
 	print "\n\t</TD></TR>\n" if $lvl; # || ($I{U}{mode} eq "nested" and $lvl);
 	print $lcp;
 
+	my $delete_text = ($I{U}{aseclev} > 99 && $I{authors_unlimited})
+		? "<BR><B>NOTE: Checked comments will be deleted.</B>"
+		: "";
+
 	print <<EOT if ($I{U}{aseclev} || $I{U}{points}) && $I{U}{uid} > 0;
 	<TR><TD>
 		<P>Have you read the
 		<A HREF="$I{rootdir}/moderation.shtml">Moderator Guidelines</A>
 		yet? (<B>Updated 9.9</B>)
 		<INPUT TYPE="SUBMIT" NAME="op" VALUE="moderate">
+		$delete_text
 	</TD></TR></FORM>
 EOT
 

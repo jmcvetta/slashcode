@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.30 2002/01/28 17:22:06 pudge Exp $
+# $Id: journal.pl,v 1.31 2002/02/05 00:08:16 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -399,7 +399,7 @@ sub saveArticle {
 
 		# update description if changed
 		} elsif (!$form->{comments_on} && $article->{discussion} && $article->{description} ne $description) {
-			$slashdb->setDiscussion($article->{discussion}, { description => $description });
+			$slashdb->setDiscussion($article->{discussion}, { title => $description });
 		}
 
 		unless ($form->{comments_on}) {

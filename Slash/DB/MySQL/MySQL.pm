@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.310 2003/01/30 06:35:39 jamie Exp $
+# $Id: MySQL.pm,v 1.311 2003/01/30 17:18:58 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.310 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.311 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3231,19 +3231,86 @@ sub getUIDStruct {
 }
 
 ##################################################################
-sub getNetIDList {
+sub getNetIDStruct {
 	my($self, $id) = @_;
+
+	my $ipstruct;
 	my $vislength = getCurrentStatic('id_md5_vislength');
 	my $column4 = "ipid";
 	$column4 = "SUBSTRING(ipid, 1, $vislength)" if $vislength;
-	$self->sqlSelectAll(
+	
+	my $iplist = $self->sqlSelectAll(
 		"ipid,
-		MIN(SUBSTRING(date, 1, 10)) AS dmin, MAX(SUBSTRING(date, 1, 10)) AS dmax,
-		COUNT(*) AS c, $column4",
+		MIN(SUBSTRING(date, 1, 10)) AS dmin,
+		MAX(SUBSTRING(date, 1, 10)) AS dmax,
+		COUNT(*) AS c, $column4 as ipid_vis",
 		"comments",
 		"uid = '$id' AND ipid != ''",
-		"GROUP BY ipid ORDER BY dmax DESC, dmin DESC, c DESC, ipid ASC LIMIT 100"
-	);
+		"GROUP BY ipid ORDER BY dmax DESC, dmin DESC, c DESC, ipid ASC LIMIT 100");
+
+	for (@$iplist) {
+		my $ip;
+		$ip->{dmin} = $_->[1];
+		$ip->{dmax} = $_->[2];
+		$ip->{count} = $_->[3];
+		$ip->{ipid_vis} = $_->[4];
+		$ip->{comments} = 1;
+		$ipstruct->{$_->[0]} = $ip;
+	}
+
+	$iplist = $self->sqlSelectAll(
+                "ipid,
+                MIN(SUBSTRING(time, 1, 10)) AS dmin,
+                MAX(SUBSTRING(time, 1, 10)) AS dmax,
+                COUNT(*) AS c, $column4 as ipid_vis",
+                "submissions",
+                "uid = '$id' AND ipid != ''",
+                "GROUP BY ipid ORDER BY dmax DESC, dmin DESC, c DESC, ipid ASC LIMIT 100");
+
+	for (@$iplist) {
+		if (exists $ipstruct->{$_->[0]}) {
+			$ipstruct->{$_->[0]}{dmin} = ($ipstruct->{$_->[0]}{dmin} lt $_->[1]) ? $ipstruct->{$_->[0]}{dmin} : $_->[1];
+			$ipstruct->{$_->[0]}{dmax} = ($ipstruct->{$_->[0]}{dmax} gt $_->[2]) ? $ipstruct->{$_->[0]}{dmax} : $_->[2];
+			$ipstruct->{$_->[0]}{count} += $_->[3];
+			$ipstruct->{$_->[0]}{submissions} = 1;
+		} else {
+			my $ip;
+			$ip->{dmin} = $_->[1];
+                	$ip->{dmax} = $_->[2];
+                	$ip->{count} = $_->[3];
+                	$ip->{ipid_vis} = $_->[4];
+			$ip->{submissions} = 1;
+                	$ipstruct->{$_->[0]} = $ip;
+		}
+	}
+
+        $iplist = $self->sqlSelectAll(
+                "ipid,
+                MIN(SUBSTRING(ts, 1, 10)) AS dmin,
+                MAX(SUBSTRING(ts, 1, 10)) AS dmax,
+                COUNT(*) AS c, $column4 as ipid_vis",
+                "moderatorlog",
+                "uid = '$id' AND ipid != ''",
+                "GROUP BY ipid ORDER BY dmax DESC, dmin DESC, c DESC, ipid ASC LIMIT 100");
+
+	for (@$iplist) {
+                if (exists $ipstruct->{$_->[0]}) {
+                        $ipstruct->{$_->[0]}{dmin} = ($ipstruct->{$_->[0]}{dmin} lt $_->[1]) ? $ipstruct->{$_->[0]}{dmin} : $_->[1];
+                        $ipstruct->{$_->[0]}{dmax} = ($ipstruct->{$_->[0]}{dmax} gt $_->[2]) ? $ipstruct->{$_->[0]}{dmax} : $_->[2];
+                        $ipstruct->{$_->[0]}{count} += $_->[3];
+                        $ipstruct->{$_->[0]}{moderatorlog} = 1;
+                } else {
+                        my $ip;
+                        $ip->{dmin} = $_->[1];
+                        $ip->{dmax} = $_->[2];
+                        $ip->{count} = $_->[3];
+                        $ip->{ipid_vis} = $_->[4];
+                        $ip->{moderatorlog} = 1;
+                        $ipstruct->{$_->[0]} = $ip;
+                }
+        }
+
+	return $ipstruct;
 }
 
 ########################################################

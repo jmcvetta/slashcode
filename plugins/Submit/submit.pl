@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.62 2002/06/04 18:13:40 pudge Exp $
+# $Id: submit.pl,v 1.63 2002/07/02 15:15:47 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -512,7 +512,7 @@ sub url2html {
 	# this is kinda experimental ... esp. the $extra line
 	# we know it can break real URLs, but probably will preserve
 	# real URLs more often than it will break them
-	$introtext =~  s{(?<!["=>])(http|https|ftp|gopher|telnet)://([$URI::uric#]+)}{
+	$introtext =~  s{(?<!['"=>])(http|https|ftp|gopher|telnet)://([$URI::uric#]+)}{
 		my($proto, $url) = ($1, $2);
 		my $extra = '';
 		$extra = $1 if $url =~ s/([?!;:.,']+)$//;

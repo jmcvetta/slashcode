@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.245 2004/06/17 16:12:21 jamiemccarthy Exp $
+# $Id: users.pl,v 1.246 2004/07/18 23:27:32 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1522,10 +1522,10 @@ sub tildeEd {
 
 	@$tid_order = sort { lc $topics->{$a} cmp lc $topics->{$b} } keys %$topics;
 
-	while (my($tid, $alttext) = each %$topics) {
+	while (my($tid, $textname) = each %$topics) {
 		$tidref->{$tid}{checked} = ($extid =~ /'\Q$tid\E'/) ?
 			' CHECKED' : '';
-		$tidref->{$tid}{alttext} = $alttext;
+		$tidref->{$tid}{textname} = $textname;
 	}
 
 	my $sections = $reader->getDescriptions('skins');

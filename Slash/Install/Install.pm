@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.25 2002/07/19 19:02:57 brian Exp $
+# $Id: Install.pm,v 1.26 2002/07/19 20:57:12 brian Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -377,6 +377,11 @@ sub _install {
 					$self->{slashdb}->createTemplate($template);
 				}
 			}
+			$self->create({
+				name            => 'include_theme',
+				value           => $name,
+				description     => '',
+			});
 		}
 	}
 
@@ -469,15 +474,10 @@ sub getSiteTemplates {
 	}
 	#Themes override plugins so this has to run after plugins. -Brian
 	my $theme = $self->get('theme');
-	my $include_themes = $self->get('include_theme');
-	if ($include_themes) {
-		if (ref($include_themes)) { 
-			for (keys %$include_themes) {
-				_parseFilesForTemplates("$prefix/themes/$include_themes->{$_}{value}/THEME", \%templates, \@no_templates);
-			}
-		} else {
-			_parseFilesForTemplates("$prefix/themes/$include_themes->{$_}{value}/THEME", \%templates, \@no_templates);
-		}
+	my $include_theme = $self->get('include_theme');
+	if ($include_theme) {
+		my @no_templates; # Not current used -Brian
+		_parseFilesForTemplates("$prefix/themes/$include_theme->{value}/THEME", \%templates, \@no_templates);
 	}
 	$theme = $theme->{value};
 	_parseFilesForTemplates("$prefix/themes/$theme/THEME", \%templates, \@no_templates);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.47 2003/03/18 02:08:13 brian Exp $
+# $Id: Display.pm,v 1.48 2003/03/18 19:46:11 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use HTML::TokeParser ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1312,6 +1312,10 @@ sub cleanSlashTags {
 			$cleanSlashTags->{'link'}($tokens, $token,\$newtext);
 		} elsif ($token->[1]{story}) {
 			$cleanSlashTags->{'story'}($tokens, $token,\$newtext);
+		} elsif ($token->[1]{nickname}) {
+			$cleanSlashTags->{'user'}($tokens, $token,\$newtext);
+		} elsif ($token->[1]{user}) {
+			$cleanSlashTags->{'user'}($tokens, $token,\$newtext);
 		}
 	}
 
@@ -1549,4 +1553,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.47 2003/03/18 02:08:13 brian Exp $
+$Id: Display.pm,v 1.48 2003/03/18 19:46:11 brian Exp $

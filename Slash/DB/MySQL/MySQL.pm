@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.537 2004/03/24 18:02:18 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.538 2004/03/24 18:41:48 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.537 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.538 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3763,7 +3763,7 @@ sub getKnownOpenProxy {
 	my $port = $self->sqlSelect("port",
 		"open_proxies",
 		"ip = $ip_q AND ts >= DATE_SUB(NOW(), INTERVAL $hours_back HOUR)");
-print STDERR "getKnownOpenProxy returning " . (defined($port) ? "'$port'" : "undef") . " for ip '$ip'\n";
+#print STDERR "getKnownOpenProxy returning " . (defined($port) ? "'$port'" : "undef") . " for ip '$ip'\n";
 	return $port;
 }
 
@@ -3781,7 +3781,7 @@ print STDERR "setKnownOpenProxy doing sqlReplace ip '$ip' port '$port'\n";
 sub checkForOpenProxy {
 	my($self, $ip) = @_;
 	# If we weren't passed an IP address, default to whatever
-	# our current IP address is.
+	# the current IP address is.
 	if (!$ip && $ENV{GATEWAY_INTERFACE}) {
 		my $r = Apache->request;
 		$ip = $r->connection->remote_ip if $r;
@@ -3797,7 +3797,7 @@ sub checkForOpenProxy {
 	# existing listing.
 	my $port = $self->getKnownOpenProxy($ip);
 	if (defined $port) {
-#print STDERR scalar(localtime) . " cfop no need to check, port is '$port'\n";
+#print STDERR scalar(localtime) . " cfop no need to check ip '$ip', port is '$port'\n";
 		return $port;
 	}
 #print STDERR scalar(localtime) . " cfop ip '$ip' not known, checking\n";
@@ -3848,7 +3848,7 @@ sub checkForOpenProxy {
 #print STDERR scalar(localtime) . " cfop registering for proxy '$pua->{proxy}{http}'\n";
 		$pua->register($req, \&_cfop_callback);
 	}
-	print STDERR scalar(localtime) . Dumper($pua);
+#print STDERR scalar(localtime) . "pua: " . Dumper($pua);
 	$pua->wait($timeout);
 #print STDERR scalar(localtime) . " cfop done with wait, returning " . (defined $_proxy_port ? 'undef' : "'$port'") . "\n";
 	$_proxy_port = 0 if !$_proxy_port;

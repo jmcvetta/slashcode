@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.126 2004/06/21 18:41:14 pudge Exp $
+# $Id: Environment.pm,v 1.127 2004/06/21 23:54:50 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2352,16 +2352,22 @@ sub determineCurrentSkin {
 
 		if (!$skin) {
 			$skin = getCurrentStatic('mainpage_skid');
-			errorLog("determineCurrentSkin called but no skin found for $hostname\n");
+			if (!$skin) {
+				errorLog("determineCurrentSkin called but no skin found (even default) for $hostname\n");
+			} else {
+				errorLog("determineCurrentSkin called but no skin found (so using default) for $hostname\n");
+			}
 		}
 	} else {
 		my $form = getCurrentForm();
 		$skin   = $reader->getSkidFromName($form->{section}) if $form->{section};
-		$skin ||= $reader->getCurrentStatic('mainpage_skid');
+		$skin ||= getCurrentStatic('mainpage_skid');
+		if (!$skin) {
+			# this should never happen
+			errorLog("determineCurrentSkin called but no skin found (even default)");
+		}
 	}
  
-	# this should never happen
-	errorLog("determineCurrentSkin called but no skin found") if !$skin;
 	return $skin;
 }
 
@@ -2496,4 +2502,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.126 2004/06/21 18:41:14 pudge Exp $
+$Id: Environment.pm,v 1.127 2004/06/21 23:54:50 jamiemccarthy Exp $

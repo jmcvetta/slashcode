@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.31 2002/05/17 18:41:39 jamie Exp $
+# $Id: Stats.pm,v 1.32 2002/06/04 06:11:51 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -339,6 +339,15 @@ sub countBytesByPage {
 }
 
 ########################################################
+sub countUsersByPage {
+	my($self, $op, $yesterday) = @_;
+	my $where = "op='$op' AND "
+		if $op;
+	$where .= "ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
+	$self->sqlSelect("sum(bytes)", "accesslog", $where);
+}
+
+########################################################
 sub countDailyByPage {
 	my($self, $op, $yesterday) = @_;
 	my $where = "op='$op' AND "
@@ -356,6 +365,7 @@ sub countDailyByPageDistinctIPID {
 	$where .= "ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
 	$self->sqlSelect("count(DISTINCT host_addr)", "accesslog", $where);
 }
+
 
 ########################################################
 sub countDaily {

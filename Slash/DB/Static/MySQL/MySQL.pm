@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.205 2004/11/23 19:34:19 tvroom Exp $
+# $Id: MySQL.pm,v 1.206 2004/11/24 06:31:14 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -230,6 +230,22 @@ sub deleteOldDBReaderStatus {
 	my($self, $secs_back) = @_;
 	$self->sqlDelete("dbs_readerstatus",
 		"ts < DATE_SUB(NOW(), INTERVAL $secs_back SECOND)");
+}
+
+########################################################
+# For ircslash.pl
+sub getDBsReaderStatus {
+	my($self, $secs_back) = @_;
+	$secs_back ||= 60;
+	return $self->sqlSelectAllHashref(
+		"dbid",
+		"dbid,
+		 MIN(IF(was_alive='yes',1,0)) AS was_alive,
+		 AVG(slave_lag_secs) AS lag,
+		 AVG(query_bog_secs) AS bog",
+		"dbs_readerstatus",
+		"ts >= DATE_SUB(NOW(), INTERVAL $secs_back SECOND)",
+		"GROUP BY dbid");
 }
 
 ########################################################

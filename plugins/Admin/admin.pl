@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.205 2004/06/17 20:24:36 tvroom Exp $
+# $Id: admin.pl,v 1.206 2004/06/22 03:38:59 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -597,7 +597,7 @@ sub blockEdit {
 		values		=> [ 'template' ],
 		cache_flag	=> 1,
 		page		=> 'portald',
-		skin		=> $blockref->{skin}  # XXXSKIN - blocks table not ported yet
+		skin		=> $blockref->{skin}
 	});
 	my $rss_template_code = $template_ref->{template}; 
 

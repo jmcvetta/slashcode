@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.93 2004/06/17 16:12:02 jamiemccarthy Exp $
+# $Id: submit.pl,v 1.94 2004/06/22 03:39:01 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -273,11 +273,11 @@ sub submissionEd {
 
 	$form->{del} = 0 if $user->{is_admin};
 
-	$def_skin	= getData('defaultskin');
-	$def_note	= getData('defaultnote');
+	$def_skin = getData('defaultskin');
+	$def_note = getData('defaultnote');
 	$cur_skin = $form->{skid} || $def_skin;
-	$cur_note	= $form->{note} || $def_note;
-	$skins = $slashdb->getSubmissionsSkins;
+	$cur_note = $form->{note} || $def_note;
+	$skins    = $slashdb->getSubmissionsSkins;
 
 	for (@$skins) {
 		my($skin, $note, $cnt) = @$_;
@@ -450,7 +450,6 @@ sub displayForm {
 		$current_hash->{0} = "Select Section";
 		$skin_values = $current_hash;
 	}
-
 
 	my $topic = $slashdb->getTopic($form->{tid});
 

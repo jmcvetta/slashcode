@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TemplatePages.pm,v 1.9 2004/06/17 16:11:41 jamiemccarthy Exp $
+# $Id: TemplatePages.pm,v 1.10 2004/06/22 03:38:58 pudge Exp $
 
 package Slash::Apache::TemplatePages;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -30,7 +30,6 @@ sub handler {
 		page            => $page,
 		skin            => $skin
 	});
-	# XXXSKIN - header() not yet ported
 	if ($title) {
 		header($title, $skin) or return;
 		my $display = slashDisplay('body', '', { Page => $page, Skin => $skin, Return => 1 });

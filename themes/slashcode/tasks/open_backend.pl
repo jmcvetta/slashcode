@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.19 2004/06/17 16:12:23 jamiemccarthy Exp $
+# $Id: open_backend.pl,v 1.20 2004/06/22 03:39:01 pudge Exp $
 
 use strict;
 use Slash;
@@ -26,11 +26,7 @@ $task{$me}{code} = sub {
 		newrss(@_, undef, $stories);
 	}
 
-	# XXXSECTIONTOPICS need to remove this sections-all reference
-	# (replace with getSkins() loop)
-	# my $sections = $backupdb->getDescriptions('sections-all');
 	my $skins = $slashdb->getSkins();
-	# for my $section (keys %$sections) {
 	for my $skid (keys %$skins) {
 		my $name = $skins->{$skid}{name};
 		my $nexus = $skins->{$skid}{nexus};
@@ -42,7 +38,7 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	return ;
+	return;
 };
 
 sub save2file {
@@ -74,8 +70,8 @@ sub _do_rss {
 		$name, $stories, $version) = @_;
 
 	my $file    = sitename2filename($name);
-	my $skin = {};
-	$skin    = $backupdb->getSkin($name) if $name;
+	my $skin    = {};
+	$skin       = $backupdb->getSkin($name) if $name;
 	my $link    = ($skin->{url}  || $gSkin->{absolutedir}) . '/';
 	my $title   = $constants->{sitename};
 	$title = "$title: $skin->{title}" if $skin->{skid} != $constants->{mainpage_skid};

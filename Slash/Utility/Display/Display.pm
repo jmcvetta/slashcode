@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.83 2004/06/17 16:11:48 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.84 2004/06/22 03:38:59 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -548,6 +548,7 @@ The 'pollbooth' template block.
 =back
 
 =cut
+
 #XXXSKIN getCurrentSkin doesn't seem to be returning anything
 # on portald runs.  It defaults to mainpage skid if nothing
 # is returned.  However perhaps getCurrentSkin needs more
@@ -1642,4 +1643,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.83 2004/06/17 16:11:48 jamiemccarthy Exp $
+$Id: Display.pm,v 1.84 2004/06/22 03:38:59 pudge Exp $

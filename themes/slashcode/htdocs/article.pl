@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.56 2004/06/17 16:12:20 jamiemccarthy Exp $
+# $Id: article.pl,v 1.57 2004/06/22 03:39:01 pudge Exp $
 
 use strict;
 use Slash;
@@ -19,7 +19,7 @@ sub main {
 	my $story;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	$story = $reader->getStory($form->{s} || $form->{sid});
+	$story = $reader->getStory($form->{sid});
 
 	my $future_err = 0;
 	if ($story && $story->{is_future} && !($user->{is_admin} || $user->{author})) {

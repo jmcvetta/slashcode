@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMetamods,v 1.10 2002/09/23 19:11:36 jamie Exp $
+# $Id: createTestMetamods,v 1.11 2002/11/17 23:30:38 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Data::Dumper;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -115,7 +115,7 @@ my $reasons = $slashdb->getReasons();
 		# Do the metamod.
 		$slashdb->setModsSaved($m2user, [( keys %m2s )]);
 		$m2user = $slashdb->getUser($m2user->{uid});
-		$slashdb->setMetaMod($m2user, \%m2s, $multicount);
+		$slashdb->createMetaMod($m2user, \%m2s, $multicount);
 
 		$m2count++;
 

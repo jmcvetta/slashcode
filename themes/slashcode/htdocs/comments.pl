@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.93 2002/09/13 01:04:44 jamie Exp $
+# $Id: comments.pl,v 1.94 2002/09/15 15:35:56 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -866,8 +866,8 @@ sub validateComment {
 		my $breaktags_1_regex = "<(?:" . join("|", @$breaktags) . ")>";
 		my $breaktags_2_regex = "<(?:" . join("|", grep /^(P|BLOCKQUOTE)$/, @$breaktags) . ")>";
 		my $num_lines = 0;
-		$num_lines++ while $check_prefix =~ /$breaktags_1_regex/g;
-		$num_lines++ while $check_prefix =~ /$breaktags_2_regex/g;
+		$num_lines++ while $check_prefix =~ /$breaktags_1_regex/gi;
+		$num_lines++ while $check_prefix =~ /$breaktags_2_regex/gi;
 
 		if ($num_lines > 3) {
 			my $avg_line_len = $num_chars/$num_lines;
@@ -1446,9 +1446,13 @@ sub moderateCid {
 		});
 
 		# Adjust comment posters karma and moderation stats.
+		# This really should be done with sqlUpdate()s on the
+		# appropriate tables directly, to be atomic and all
+		# that good stuff.  Faster too. XXX - Jamie 2002/09/13
 		if ($comment->{uid} != $constants->{anonymous_coward_uid}) {
 			my $cuser = $slashdb->getUser($comment->{uid}, [ qw| downmods upmods karma | ]);
 			my $newkarma = $cuser->{karma} + $val;
+			$cuser->{tokens}-- if $val < 0;
 			$cuser->{downmods}++ if $val < 0;
 			$cuser->{upmods}++ if $val > 0;
 			if ($val < 0) {
@@ -1462,6 +1466,7 @@ sub moderateCid {
 
 			$slashdb->setUser($comment->{uid}, {
 				karma		=> $cuser->{karma},
+				tokens		=> $cuser->{tokens},
 				upmods		=> $cuser->{upmods},
 				downmods	=> $cuser->{downmods},
 			});

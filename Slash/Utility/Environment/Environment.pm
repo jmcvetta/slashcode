@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.103 2003/11/07 13:46:29 jamie Exp $
+# $Id: Environment.pm,v 1.104 2003/12/18 01:04:02 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -547,6 +547,7 @@ sub getCurrentStatic {
 	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
 		my $const_cfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
 		my $hostname = $r->header_in('host');
+		$hostname =~ s/:\d+$//;
 		if ($const_cfg->{'site_constants'}{$hostname}) { 
 			$constants = $const_cfg->{site_constants}{$hostname};
 		} else {
@@ -2244,4 +2245,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.103 2003/11/07 13:46:29 jamie Exp $
+$Id: Environment.pm,v 1.104 2003/12/18 01:04:02 jamie Exp $

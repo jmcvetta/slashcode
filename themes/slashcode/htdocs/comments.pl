@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.144 2003/07/10 20:49:06 pudge Exp $
+# $Id: comments.pl,v 1.145 2003/07/15 17:17:08 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -952,7 +952,7 @@ sub validateComment {
 		}
 	}
 
-        if ($constants->{allow_moderation} && !$user->{is_anon} && !$form->{gotmodwarning} && $slashdb->sqlCount("moderatorlog","uid=$user->{uid} and sid=$form->{sid}") && !$form->{postanon}) {
+	if ($constants->{allow_moderation} && !$user->{is_anon} && !$form->{gotmodwarning} && $slashdb->sqlCount("moderatorlog","uid=$user->{uid} and sid=$form->{sid}") && !$form->{postanon}) {
 		$$error_message = getError("moderations to be lost");
 		$form_success = 0;
 		return; 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.108 2004/07/19 14:15:56 jamiemccarthy Exp $
+# $Id: index.pl,v 1.109 2004/07/19 14:42:40 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -99,6 +99,7 @@ my $start_time = Time::HiRes::time;
 	if (rand(1) < $constants->{index_gse_backup_prob}) {
 		$stories = $reader->getStoriesEssentials($gse_hr);
 	} else {
+		my $slashdb = getCurrentDB();
 		$stories = $slashdb->getStoriesEssentials($gse_hr);
 	}
 #use Data::Dumper;

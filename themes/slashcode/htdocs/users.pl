@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.184 2003/05/20 18:45:38 jamie Exp $
+# $Id: users.pl,v 1.185 2003/05/30 19:14:00 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -843,7 +843,7 @@ sub showInfo {
 	my $commentstruct = [];
 	my $requested_user = {};
 
-	my($points, $lastgranted, $nickmatch_flag, $uid, $nick);
+	my($points, $nickmatch_flag, $uid, $nick);
 	my($mod_flag, $karma_flag, $n) = (0, 0, 0);
 
 	if (! $id && ! $form->{userfield}) {
@@ -1138,20 +1138,6 @@ sub showInfo {
 			$points = $requested_user->{points};
 
 			$mod_flag = 1 if $points > 0;
-
-			if ($points) {
-				$mod_flag = 1;
-				$lastgranted = $reader->getUser($uid, 'lastgranted');
-				if ($lastgranted) {
-					my $hours = $constants->{mod_stir_hours}
-						|| $constants->{stir}*24;
-					$requested_user->{points_expire} = timeCalc(
-						$lastgranted,
-						"%Y-%m-%d",
-						$user->{off_set} + $hours*3600
-					);
-				}
-			}
 
 			$title = getTitle('userInfo_main_title', { nick => $nick, uid => $uid });
 

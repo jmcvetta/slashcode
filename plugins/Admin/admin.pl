@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.112 2002/12/11 01:33:24 brian Exp $
+# $Id: admin.pl,v 1.113 2002/12/11 05:48:26 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1693,7 +1693,7 @@ sub displayRecent {
 sub displayRecentRequests {
 	my($form, $slashdb, $user, $constants) = @_;
 
-	my $admindb = getObject("Slash::Admin", $constants->{backup_db_user} || $constants->{log_db_user} );
+	my $admindb = getObject("Slash::Admin", $constants->{backup_db_user} || $constants->{log_db_user});
 	my $id = $form->{id};
 	my $ts = $form->{ts};
 	$id ||= $admindb->getAccesslogMaxID()

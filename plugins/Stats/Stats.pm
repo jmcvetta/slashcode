@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.75 2002/12/11 04:34:46 jamie Exp $
+# $Id: Stats.pm,v 1.76 2002/12/11 05:48:26 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -278,6 +278,7 @@ sub getModM2Ratios {
 	return $hr;
 }
 
+########################################################
 sub getModReverses {
 	my($self, $options) = @_;
 
@@ -730,6 +731,7 @@ sub countDaily {
 	return \%returnable;
 }
 
+########################################################
 sub countSfNetIssues {
 	my($self, $group_id) = @_;
 	my $constants = getCurrentStatic();
@@ -816,4 +818,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.75 2002/12/11 04:34:46 jamie Exp $
+$Id: Stats.pm,v 1.76 2002/12/11 05:48:26 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.27 2002/12/11 00:41:20 brian Exp $
+# $Id: Journal.pm,v 1.28 2002/12/11 05:48:26 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -76,7 +76,7 @@ sub getsByUids {
 	# the DB *really* should be smart enough to pick up on that, but no.
 	# At least, not in MySQL 3.23.49a.
 
-	if($options->{titles_only}) {
+	if ($options->{titles_only}) {
 		my $where = "users.uid IN ($list) AND users.uid=journals.uid";
 
 		$answer = $self->sqlSelectAllHashrefArray(

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.182 2004/10/03 14:26:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.183 2004/10/03 14:45:50 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -337,6 +337,26 @@ sub forgetUsersLastLookTime {
 		my $uids_in = join(",", @uid_chunk);
 		$self->sqlDelete("users_param",
 			"name IN ('lastlooktime', 'lastlookuid') AND uid IN ($uids_in)");
+	}
+}
+
+########################################################
+# For daily_forget.pl
+sub forgetUsersMailPass {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+	my $reader = getObject('Slash::DB', { db_type => "reader" });
+	my $max_hrs = $constants->{mailpass_max_hours} || 48;
+	my $min_mailpass_last_ts = time - ($max_hrs*3600 + 86400*7);
+	my $uids = $reader->sqlSelectColArrayref("uid", "users_param",
+		"name='mailpass_last_ts' AND value < '$min_mailpass_last_ts'");
+
+	my $splice_count = 2000;
+	while (@$uids) {
+		my @uid_chunk = splice @$uids, 0, $splice_count;
+		my $uids_in = join(",", @uid_chunk);
+		$self->sqlDelete("users_param",
+			"name IN ('mailpass_last_ts', 'mailpass_num') AND uid IN ($uids_in)");
 	}
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.26 2002/12/03 20:31:24 brian Exp $
+# $Id: article.pl,v 1.27 2002/12/06 02:41:27 brian Exp $
 
 use strict;
 use Slash;
@@ -82,7 +82,7 @@ sub main {
 			$user->{state}{tid} = $discussion->{topic};
 			# If no comments ever have existed just skip the display of the comment header bar -Brian
 			printComments($discussion)
-				if $discussion &&  $discussion->{commentstatus} ne 'disabled' && $discussion->{commentcount} > 0;;
+				if $discussion &&  !( $discussion->{commentcount} > 0 && $discussion->{commentstatus} eq 'disabled');
 		}
 	} else {
 		my $message = getData('no_such_sid');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.24 2002/06/16 13:59:55 jamie Exp $
+# $Id: slashd,v 1.25 2002/06/16 14:04:58 jamie Exp $
 
 ############################################################
 #
@@ -735,7 +735,9 @@ sub do_child {
 	my $info = {
 		invocation_num => $invocation_num,
 	};
-slashdLog("invocation_num $info->{invocation_num}");
+	if (verbosity() >= 4) {
+		slashdLog("invocation_num $info->{invocation_num}");
+	}
 	my $summary = $subref->($virtual_user, $constants, $slashdb, $user,
 		$info);
 

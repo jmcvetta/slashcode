@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.776 2005/03/15 23:38:27 pudge Exp $
+# $Id: upgrades,v 1.777 2005/03/28 23:22:04 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2867,4 +2867,6 @@ INSERT INTO misc_user_opts (name, optorder, seclev, default_val, vals_regex, sho
 # End of T_2_5_0_51, Start of T_2_5_0_52 - 2005/03/08
 
 # End of T_2_5_0_52, Start of T_2_5_0_53 - 2005/03/15
+
+INSERT INTO message_codes (code, type, seclev) VALUES (18, 'Invalid HTML Input', 100);
 

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.10 2003/09/09 18:14:08 vroom Exp $
+# $Id: PLUGIN,v 1.11 2005/03/28 23:21:35 pudge Exp $
 name=Messages
 description="Messaging system"
 mysql_schema=mysql_schema
@@ -16,6 +16,8 @@ template=templates/display;messages;default
 template=templates/display_prefs;messages;default
 template=templates/emailsponsor;messages;default
 template=templates/footer;messages;default
+template=templates/html_invalid;misc;default
+template=templates/html_invalid_subj;misc;default
 template=templates/journrep;comments;default
 template=templates/journrep_subj;comments;default
 template=templates/journuserboxes;misc;default
@@ -36,3 +38,5 @@ template=templates/unmod_msg;comments;default
 template=templates/unmod_msg_subj;comments;default
 template=templates/zoo_msg;zoo;default
 template=templates/zoo_msg_subj;zoo;default
+
+

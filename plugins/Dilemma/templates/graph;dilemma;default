@@ -19,7 +19,9 @@ __template__
 
 USE my_graph = GD.Graph.lines(800, 600);
 
-IF y_max < 20;
+IF y_max < 12;
+	y_label_skip = 1;
+ELSIF y_max < 24;
 	y_label_skip = 2;
 ELSIF y_max < 40;
 	y_label_skip = 5;
@@ -80,4 +82,4 @@ returnimage -%]
 __seclev__
 1000
 __version__
-$Id: graph;dilemma;default,v 1.1 2004/07/30 17:51:53 jamiemccarthy Exp $
+$Id: graph;dilemma;default,v 1.2 2004/08/27 20:15:43 jamiemccarthy Exp $

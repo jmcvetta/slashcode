@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.7 2004/06/17 16:12:00 jamiemccarthy Exp $
+# $Id: mysql_schema,v 1.8 2004/10/23 04:23:42 jamiemccarthy Exp $
 #
 
 #
@@ -15,9 +15,8 @@ CREATE TABLE links (
 	last_seen DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
 	is_alive enum('yes','no') DEFAULT 'yes' NOT NULL,
 	stats_type VARCHAR(24),
-	INDEX url_index (url(200)),
 	PRIMARY KEY (id)
-) TYPE = MyISAM;
+) TYPE = InnoDB;
 
 #
 # Table structure for table 'links_for_stories'

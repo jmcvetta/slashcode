@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.165 2004/07/19 19:45:41 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.166 2004/07/19 21:39:29 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1701,6 +1701,18 @@ sub getMetaModerations {
 	);
 
 	return $ret;
+}
+
+########################################################
+# For freshenup.pl
+sub getMinCommentcount {
+	my($self, $stoids) = @_;
+	return 0 if !$stoids || !@$stoids;
+	my $stoid_clause = join(",", map { $self->sqlQuote($_) } @$stoids );
+	return $self->sqlSelect(
+		"MIN(commentcount)",
+		"stories",
+		"stoid IN ($stoid_clause)");
 }
 
 ########################################################

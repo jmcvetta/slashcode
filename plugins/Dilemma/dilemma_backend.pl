@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma_backend.pl,v 1.5 2004/09/07 23:18:26 jamiemccarthy Exp $
+# $Id: dilemma_backend.pl,v 1.6 2004/09/08 00:36:01 jamiemccarthy Exp $
 
 use Slash::Constants ':slashd';
 
@@ -215,17 +215,16 @@ sub do_logdatadump {
 		$xml .= "</meeting>\n";
 		# Dump the xml to disk, if it's gotten big enough
 		if (length($xml) > 16384) {
-			my $new_cb = do_ldd_gz_dump($gz, $xml);
-			$compbytes += $new_cb;
+			do_ldd_gz_dump($gz, $xml);
 			$uncompbytes += length($xml);
 			$xml = "";
 		}
 	}
 	$meetlog_sth->finish();
 	$xml .= "</dilemmalogdump>\n";
-	my $new_cb = do_ldd_gz_finish($gz, $xml);
-	$compbytes += $new_cb;
+	do_ldd_gz_finish($gz, $xml);
 	$uncompbytes += length($xml);
+	$compbytes = -s $filename;
 	return " wrote xml file $compbytes/$uncompbytes bytes";
 }
 

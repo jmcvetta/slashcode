@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tailslash,v 1.7 2003/03/04 19:56:32 pudge Exp $
+# $Id: tailslash,v 1.8 2003/03/27 05:45:06 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -11,7 +11,7 @@ use Slash;
 use Slash::DB;
 use Slash::Utility;
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -22,11 +22,13 @@ version() if $opts{'v'};
 $opts{'u'} ||= 'slash';
 
 {
-	my $slashdb = Slash::DB->new($opts{'u'});
+	my $virtuser = $opts{u} || 'slashdot';
+	createEnvironment($virtuser);
+	my $log_db = getObject("Slash::DB", { db_type => "log_slave" });
 
 	if ($opts{'y'} eq "today") {
 		my($total, $today, $hour, $count);
-		my $pages = $slashdb->pagesServed();
+		my $pages = $log_db->pagesServed();
 
 		print "| Hour  | Total for hour | Total for day | Per second\n";
 
@@ -55,13 +57,13 @@ $opts{'u'} ||= 'slash';
 		exit;
 	}
 
-	my $id = $slashdb->maxAccessLog();
+	my $id = $log_db->maxAccessLog();
 	my $total;
 	my $starttime = time;
 
 	while (1) {
 		sleep 3;
-		my $info = $slashdb->getAccessLogInfo($id);
+		my $info = $log_db->getAccessLogInfo($id);
 
 		my $sec = time - $starttime;
 		$total += @$info;

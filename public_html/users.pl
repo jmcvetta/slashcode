@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.4 2000/05/31 20:21:19 pudge Exp $
+#  $Id: users.pl,v 1.5 2000/06/01 13:48:55 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -227,6 +227,7 @@ sub newUser {
 
 	$I{F}{newuser} =~ s/\s+/ /g;
 	$I{F}{newuser} = stripByMode($I{F}{newuser}, "nohtml");
+	$I{F}{newuser} =~ s/&//g;
 	$I{F}{newuser} = substr($I{F}{newuser}, 0, 20);
 
 	(my $matchname = lc $I{F}{newuser}) =~ s/[^a-zA-Z0-9]//g;
@@ -242,7 +243,7 @@ sub newUser {
 		" realemail=" . $I{dbh}->quote($I{F}{email})
 	);
 
-	if (!$cnt && $I{F}{email} =~ /\@/) {
+	if ($matchname ne '' && $I{F}{newuser} ne '' && !$cnt && $I{F}{email} =~ /\@/) {
 		titlebar("100%", "User $I{F}{newuser} created.");
 
 		$I{F}{pubkey} = stripByMode($I{F}{pubkey}, "html");
@@ -1007,6 +1008,7 @@ EOT1
 EOT2
 
 	print <<EOT;
+	(Note: the characters &amp;, &lt; and &gt; are not allowed in nicknames.)
 
 	<INPUT TYPE="TEXT" NAME="newuser" SIZE="20" MAXLENGTH="20" VALUE="$I{F}{newuser}">
 	<BR> and an <B>valid email address </B> address to send your registration

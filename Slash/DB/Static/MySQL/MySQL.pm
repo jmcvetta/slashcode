@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.164 2004/07/19 03:18:35 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.165 2004/07/19 19:45:41 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1753,7 +1753,7 @@ sub getStoriesWithFlag {
 	if ($purpose eq 'delete') {
 		# Find all stories that are in the trash.
 		$returnable = $self->sqlSelectAllHashrefArray(
-			"stories.stoid, sid, primaryskid, title, time",
+			"stories.stoid AS stoid, sid, primaryskid, title, time",
 			"stories, story_text",
 			"stories.stoid = story_text.stoid
 			 AND in_trash = 'yes'",
@@ -1762,7 +1762,7 @@ sub getStoriesWithFlag {
 		# Find all stories in the past that are dirty and have
 		# been rendered into the mainpage nexus tid.
 		$returnable = $self->sqlSelectAllHashrefArray(
-			"stories.stoid, sid, primaryskid, title, time",
+			"stories.stoid AS stoid, sid, primaryskid, title, time",
 			"stories, story_text, story_topics_rendered
 			 LEFT JOIN story_dirty ON stories.stoid=story_dirty.stoid",
 			"time < NOW()
@@ -1776,7 +1776,7 @@ sub getStoriesWithFlag {
 		# been rendered into ANY tid (thus excluding "ND"
 		# stories which don't have any nexus tids)..
 		$returnable = $self->sqlSelectAllHashrefArray(
-			"stories.stoid, sid, primaryskid, title, time",
+			"stories.stoid AS stoid, sid, primaryskid, title, time",
 			"stories, story_text, story_topics_rendered
 			 LEFT JOIN story_dirty ON stories.stoid=story_dirty.stoid",
 			"time < NOW()
@@ -1789,7 +1789,7 @@ sub getStoriesWithFlag {
 		# same as simply having one or more nexus tids, so the
 		# select may not have excluded all the right ones.
 		for my $story (@$returnable) {
-			$story->{killme} = 1 if !$self->checkStoryViewable($story->{sid});
+			$story->{killme} = 1 if !$self->checkStoryViewable($story->{stoid});
 		}
 		$returnable = [ grep { !$_->{killme} } @$returnable ];
 	}

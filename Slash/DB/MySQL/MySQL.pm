@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.637 2004/07/19 18:23:42 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.638 2004/07/19 19:45:40 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.637 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.638 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4448,7 +4448,11 @@ sub getBanList {
 	my $constants = getCurrentStatic();
 	my $debug = $constants->{debug_db_cache};
 
-	_genericCacheRefresh($self, 'banlist', $constants->{banlist_expire});
+	# Randomize the expire time a bit;  it's not good for the DB
+	# to have every process re-ask for this at the exact same time.
+	my $expire_time = $constants->{banlist_expire};
+	$expire_time += int(rand(60)) if $expire_time;
+	_genericCacheRefresh($self, 'banlist', $expire_time);
 	my $banlist_ref = $self->{_banlist_cache} ||= {};
 
 	%$banlist_ref = () if $refresh;
@@ -7886,6 +7890,7 @@ sub getStory {
 	if (!$is_in_cache || $force_cache_freshen) {
 		# We avoid the join here. Sure, it's two calls to the db,
 		# but why do a join if it's not needed?
+#print STDERR "getStory cache miss for $$ '$id_style' '$id'\n";
 		my($append, $answer, $id_clause);
 		if ($id_style eq "sid") {
 			$id_clause = "sid=" . $self->sqlQuote($id);

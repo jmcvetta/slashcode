@@ -138,7 +138,7 @@ __template__
 			[% IF field == 'ipid' || field == 'md5id' %]
 			<TR>
 				<TD ALIGN="RIGHT" WIDTH="100">Is Proxy</TD>
-				<TD ALIGN="LEFT"><INPUT TYPE="checkbox" NAME="isproxy" [% isproxy %]>&nbsp;</TD>
+				<TD ALIGN="LEFT"><INPUT TYPE="checkbox" NAME="isproxy" [% isproxy %]>&nbsp;<INPUT TYPE="TEXT" SIZE="40" NAME="isproxy_reason" VALUE="[% isproxy_reason | strip_attribute %]">&nbsp;[% isproxy_time %]</TD>
 			</TR>
 			[% END %]
 			[% IF ! useredit.nonuid %]
@@ -242,4 +242,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.39 2003/03/14 16:11:44 jamie Exp $
+$Id: getUserAdmin;users;default,v 1.40 2003/03/18 07:55:03 pater Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.626 2004/07/16 18:04:28 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.627 2004/07/16 19:01:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.626 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.627 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1617,8 +1617,8 @@ sub createAccessLog {
 
 	if ( $op eq 'index' && $dat =~ m|^([^/]*)| ) {
 		my $firstword = $1;
-		if ($self->getSkinFromName($firstword)) {
-			$skin_name = $1;
+		if ($self->getSkidFromName($firstword)) {
+			$skin_name = $firstword;
 		}
 	}
 
@@ -1626,8 +1626,8 @@ sub createAccessLog {
 		$dat = $2;
 		$op = 'article';
 		my $firstword = $1;
-		if ($self->getSkinFromName($firstword)) {
-			$skin_name = $1;
+		if ($self->getSkidFromName($firstword)) {
+			$skin_name = $firstword;
 		}
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.166 2004/01/27 19:30:54 tvroom Exp $
+# $Id: adminmail.pl,v 1.167 2004/01/31 00:05:48 tvroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -772,11 +772,11 @@ EOT
 	my $late_modders 		= $stats->getTopModdersNearArchive({limit => 5});
 	my $early_inactive_modders      = $stats->getTopEarlyInactiveDownmodders({limit => 5 });
 	foreach my $mod (@$late_modders){
-		$data{late_modders_report} .= sprintf("%-6d %-20s %5d",$mod->{uid}, $mod->{nickname}, $mod->{count});
+		$data{late_modders_report} .= sprintf("%-6d %-20s %5d \n",$mod->{uid}, $mod->{nickname}, $mod->{count});
 	}
 
 	foreach my $mod (@$early_inactive_modders){
-		$data{early_inactive_modders_report} .= sprintf("%-6d %-20s %5d",$mod->{uid}, $mod->{nickname}, $mod->{count});
+		$data{early_inactive_modders_report} .= sprintf("%-6d %-20s %5d \n",$mod->{uid}, $mod->{nickname}, $mod->{count});
 	}
 
 	my $email = slashDisplay('display', \%data, {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.50 2002/05/31 01:04:38 brian Exp $
+# $Id: slashschema_create.sql,v 1.51 2002/06/04 19:35:06 brian Exp $
 #
 
 #
@@ -735,6 +735,7 @@ CREATE TABLE templates (
 	seclev mediumint UNSIGNED NOT NULL,
 	description text,
 	title varchar(128),
+	last_update timestamp,
 	PRIMARY KEY (tpid),
 	UNIQUE true_template (name,page,section,lang)
 ) TYPE = myisam;

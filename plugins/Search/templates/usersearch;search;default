@@ -11,7 +11,6 @@ en_US
 __name__
 usersearch
 __template__
-[% USE Slash %]
 <TABLE WIDTH="90%" BORDER="0" CELLPADDING="2" CELLSPACING="0">
 	[% FOREACH thisuser=users %]
 		<TR>
@@ -51,4 +50,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: usersearch;search;default,v 1.16 2004/07/02 00:13:51 pudge Exp $
+$Id: usersearch;search;default,v 1.17 2005/02/02 23:18:53 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.26 2004/10/19 03:48:21 jamiemccarthy Exp $
+# $Id: Makefile,v 1.27 2004/10/28 18:30:45 jamiemccarthy Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -158,8 +158,6 @@ install: slash plugins
 
 	$(CP) sql/mysql/slashschema_create.sql $(SLASH_PREFIX)/sql/mysql/schema.sql
 	$(CP) sql/mysql/defaults.sql $(SLASH_PREFIX)/sql/mysql/defaults.sql
-	$(CP) sql/oracle/slashschema_create.sql $(SLASH_PREFIX)/sql/oracle/schema.sql
-	$(CP) sql/postgresql/slashschema_create.sql $(SLASH_PREFIX)/sql/postgresql/schema.sql
 
 	# This needs BSD support (and Solaris)...
 	# ... and the $(SLASH_PREFIX) section is a really ugly hack, too.

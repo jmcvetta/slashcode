@@ -154,7 +154,7 @@ __template__
 
 [% PROCESS titlebar width='100%' title=customize_title %]
 
-<TABLE WIDTH="95%" BORDER="0" CELLPADDING="0" CELLSPACING="0" ALIGN="CENTER">
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0" ALIGN="CENTER">
 [% FOREACH bid = box_order -%]
 	[%- IF loop.index % 3 == 0 -%]
 		<TR BGCOLOR="[% user.colors.bg_2 %]" VALIGN="TOP" ALIGN="LEFT">
@@ -185,4 +185,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: tildeEd;users;default,v 1.20 2004/10/06 21:41:48 jamiemccarthy Exp $
+$Id: tildeEd;users;default,v 1.21 2004/10/06 21:48:08 jamiemccarthy Exp $

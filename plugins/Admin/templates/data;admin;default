@@ -109,3 +109,5 @@ Saved [% form.thisname %]<BR>
 
 __seclev__
 10000
+__version__
+$Id: data;admin;default,v 1.5 2003/03/04 19:07:58 pudge Exp $

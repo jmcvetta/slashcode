@@ -66,3 +66,5 @@ Year [% Slash.createSelect("endyear", years, selectedref.endyear, 1, 1) %]&nbsp;
 </FORM>
 __seclev__
 100
+__version__
+$Id: editevent;eventsadmin;default,v 1.4 2003/03/04 19:07:58 pudge Exp $

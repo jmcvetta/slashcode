@@ -53,3 +53,5 @@ mt_align=""; mt_valign=""; mt_rowspan = 0; mt_colspan=0; mt_width=""; mt_height=
 
 __seclev__
 10000
+__version__
+$Id: maintable_td;misc;default,v 1.8 2003/03/04 19:07:59 pudge Exp $

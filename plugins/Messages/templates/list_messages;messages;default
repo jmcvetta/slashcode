@@ -75,3 +75,5 @@ method.
 [% END ; END %]
 __seclev__
 500
+__version__
+$Id: list_messages;messages;default,v 1.8 2003/03/04 19:07:59 pudge Exp $

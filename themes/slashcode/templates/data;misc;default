@@ -118,3 +118,5 @@ Your [% constants.sitename %] account has expired.
 
 __seclev__
 10000
+__version__
+$Id: data;misc;default,v 1.12 2003/03/04 19:07:59 pudge Exp $

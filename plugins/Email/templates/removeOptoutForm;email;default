@@ -30,3 +30,5 @@ Enter email address to be removed from the opt-out list:<BR>
 <INPUT TYPE="SUBMIT" VALUE="Remove from Opt-out List">
 </FORM>
 
+__version__
+$Id: removeOptoutForm;email;default,v 1.2 2003/03/04 19:07:58 pudge Exp $

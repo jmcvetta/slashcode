@@ -77,3 +77,5 @@ password mailed to you</A> by entering your nickname, uid, or email address.
 [% END %]
 __seclev__
 10000
+__version__
+$Id: newUserForm;users;default,v 1.9 2003/03/04 19:07:59 pudge Exp $

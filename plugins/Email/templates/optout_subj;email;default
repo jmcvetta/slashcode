@@ -16,3 +16,5 @@ __seclev__
 5000
 __template__
 Email-a-Story Opt-out Confirmation
+__version__
+$Id: optout_subj;email;default,v 1.2 2003/03/04 19:07:58 pudge Exp $

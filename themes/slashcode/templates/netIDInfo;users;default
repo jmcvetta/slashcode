@@ -126,3 +126,5 @@ SubnetID [% netid_vis %] has posted [% commentcount %] comments.
 
 __seclev__
 500
+__version__
+$Id: netIDInfo;users;default,v 1.13 2003/03/04 19:07:59 pudge Exp $

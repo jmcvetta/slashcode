@@ -28,3 +28,5 @@ __template__
 [% END %]
 __seclev__
 100
+__version__
+$Id: eventsadmin;misc;default,v 1.4 2003/03/04 19:07:58 pudge Exp $

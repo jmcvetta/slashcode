@@ -97,3 +97,5 @@ BLOCK sub_display -%]
 [% END %]
 __seclev__
 10000
+__version__
+$Id: subEdAdmin;submit;default,v 1.15 2003/03/04 19:07:59 pudge Exp $

@@ -49,3 +49,5 @@ __template__
                 </TD>
         </TR>
 </TABLE>
+__version__
+$Id: topicsearch;search;default,v 1.3 2003/03/04 19:07:59 pudge Exp $

@@ -41,3 +41,5 @@ It is currently scored [% reasons.${comment.reason}.name %] ([% comment.points %
 
 __seclev__
 500
+__version__
+$Id: mod_msg;comments;default,v 1.6 2003/03/04 19:07:59 pudge Exp $

@@ -84,3 +84,5 @@ __template__
 
 __seclev__
 100
+__version__
+$Id: searchform;search;default,v 1.16 2003/03/04 19:07:59 pudge Exp $

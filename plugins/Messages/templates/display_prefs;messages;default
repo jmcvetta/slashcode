@@ -133,3 +133,5 @@ messages, disable it above.
 </FORM>
 __seclev__
 500
+__version__
+$Id: display_prefs;messages;default,v 1.14 2003/03/04 19:07:59 pudge Exp $

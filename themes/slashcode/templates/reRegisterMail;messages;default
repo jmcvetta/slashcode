@@ -30,3 +30,5 @@ send your suggestions to the <A HREF="[% useradmin %]">administrator</A>.
 
 __seclev__
 1000
+__version__
+$Id: reRegisterMail;messages;default,v 1.3 2003/03/04 19:07:59 pudge Exp $

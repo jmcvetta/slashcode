@@ -33,3 +33,5 @@ Enter email address to be removed from further story emailings:<BR>
 <INPUT TYPE="SUBMIT" VALUE"="Opt Out">
 </FORM>
 
+__version__
+$Id: emailOptoutForm;email;default,v 1.2 2003/03/04 19:07:58 pudge Exp $

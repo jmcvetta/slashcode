@@ -30,3 +30,5 @@ has been created.  Go to <A HREF="[% constants.rootdir %]/comments.pl?sid=[% id 
 
 __seclev__
 500
+__version__
+$Id: newdiscussion;comments;default,v 1.11 2003/03/04 19:07:59 pudge Exp $

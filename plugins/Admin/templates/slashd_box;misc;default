@@ -35,3 +35,5 @@ __template__
 	[% END %]
 __seclev__
 10000
+__version__
+$Id: slashd_box;misc;default,v 1.3 2003/03/04 19:07:58 pudge Exp $

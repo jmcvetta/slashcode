@@ -49,3 +49,5 @@ Enter email address to send story to:
 <INPUT TYPE="SUBMIT" VALUE="Send Email">
 </FORM>
 
+__version__
+$Id: emailStoryForm;email;default,v 1.2 2003/03/04 19:07:58 pudge Exp $

@@ -52,3 +52,5 @@ END -%]
 [% END -%]
 </BODY>
 </HTML>
+__version__
+$Id: footer;print;default,v 1.6 2003/03/04 19:07:59 pudge Exp $

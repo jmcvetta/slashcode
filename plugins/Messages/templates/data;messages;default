@@ -56,3 +56,5 @@ Unknown delivery mode '[% mode %]' for user [% uid %]
 [% END %]
 __seclev__
 500
+__version__
+$Id: data;messages;default,v 1.5 2003/03/04 19:07:59 pudge Exp $

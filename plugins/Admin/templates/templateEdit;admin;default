@@ -181,3 +181,5 @@ You don't have privileges to edit the template [% templateref.name %], TPID [% t
 
 __seclev__
 500
+__version__
+$Id: templateEdit;admin;default,v 1.6 2003/03/04 19:07:58 pudge Exp $

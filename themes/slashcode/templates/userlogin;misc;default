@@ -26,3 +26,5 @@ __template__
 <P>[ <B><A HREF="/users.pl?op=newuserform">Create a new account</A></B> ]
 __seclev__
 10000
+__version__
+$Id: userlogin;misc;default,v 1.12 2003/03/04 19:07:59 pudge Exp $

@@ -54,3 +54,5 @@ __template__
 </DIV>
 __seclev__
 1000
+__version__
+$Id: make_graph;stats;default,v 1.3 2003/03/04 19:07:59 pudge Exp $

@@ -53,3 +53,5 @@ on [% Slash.timeCalc(time) %]
 
 __seclev__
 10000
+__version__
+$Id: dispComment;misc;light,v 1.17 2003/03/04 19:07:59 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.58 2002/03/23 00:07:54 brian Exp $
+# $Id: comments.pl,v 1.59 2002/04/02 16:23:37 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -648,7 +648,7 @@ sub validateComment {
 		$$error_message = getError('readonly');
 		$form_success = 0;
 		# editComment('', $$error_message), return unless $preview;
-		return unless $preview;
+		return;
 	}
 
 	if (isTroll()) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.5 2001/12/12 19:20:10 pudge Exp $
+# $Id: Provider.pm,v 1.6 2001/12/18 21:41:33 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar
@@ -232,6 +232,14 @@ sub ident {
 	return "\$stash->get($ident)";
 }
 
+# we don't want multiple USEs for the Slash
+sub use {
+	if ($_[1]->[0][0] eq q"'Slash'") {
+		return;
+	} else {
+		return Template::Directive::use(@_);
+	}
+}
 
 sub template {
 	my($class, $block) = @_;
@@ -244,6 +252,8 @@ sub template {
 	$extra .= "my \$user = Slash::getCurrentUser();\n" if $block =~ /\$user->/;
 	$extra .= "my \$form = Slash::getCurrentForm();\n" if $block =~ /\$form->/;
 	$extra .= "my \$constants = Slash::getCurrentStatic();\n" if $block =~ /\$constants->/;
+# experimental
+	$extra .= "# USE\n\$stash->set('Slash', \$context->plugin('Slash'));\n";
 
 	my $template = <<EOF;
 sub {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.41 2001/12/18 19:09:00 brian Exp $
+# $Id: MySQL.pm,v 1.42 2001/12/18 21:41:32 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1028,7 +1028,7 @@ sub getUserUID {
 # make an earlier one inaccessible.  A better method would be to
 # grab all uid/nicknames that MySQL thinks match, and then to
 # compare them (in order) in perl until a real bit-for-bit match
-# is found. -unknown???
+# is found. -jamie
 # Actually there is a way to optimize a table for binary searches
 # I believe -Brian
 
@@ -2942,7 +2942,6 @@ sub countStoriesTopHits {
 sub countStorySubmitters {
 	my($self) = @_;
 
-	# Shouldn't this just be getCurrentStatic('anonymous_coward_uid') ? - Jamie
 	my $ac_uid = getCurrentAnonymousCoward('uid');
 	my $uid = $self->sqlSelectColArrayref('uid', 'authors_cache');
 	push @$uid, $ac_uid;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.24 2001/12/18 19:09:00 brian Exp $
+# $Id: Slash.pm,v 1.25 2001/12/18 21:41:32 pudge Exp $
 
 package Slash;
 
@@ -86,7 +86,7 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
-	
+
 	# This loop mainly takes apart the array and builds 
 	# a hash with the comments in it.  Each comment is
 	# is in the index of the hash (based on its cid).

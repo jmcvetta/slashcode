@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.16 2001/12/18 19:09:00 brian Exp $
+# $Id: User.pm,v 1.17 2001/12/18 21:41:32 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -357,7 +357,7 @@ sub userdir_handler {
 		my $slashdb = getCurrentDB();
 		my $uid = $slashdb->getUserUID($nick);
 		$nick = fixparam($nick);	# make safe to pass back to script
-		
+
 		# maybe we should refactor this code a bit ...
 		# have a hash that points op to args and script name -- pudge
 		# e.g.:
@@ -373,7 +373,7 @@ sub userdir_handler {
 			$r->args("op=no_user");
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');
-			return OK;
+
 		} elsif ($op eq 'journal') {
 			$r->args("op=display&nick=$nick&uid=$uid");
 			$r->uri('/journal.pl');
@@ -423,8 +423,8 @@ sub userdir_handler {
 			$r->args("nick=$nick&uid=$uid");
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');
-
 		}
+
 		return OK;
 	}
 

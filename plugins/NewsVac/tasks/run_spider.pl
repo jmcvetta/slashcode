@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_spider.pl,v 1.3 2002/04/16 17:55:36 cliff Exp $
+# $Id: run_spider.pl,v 1.4 2002/05/01 00:56:51 cliff Exp $
 #
 # SlashD Task (c) OSDN 2001
 #
@@ -78,15 +78,17 @@ $task{$me}{code} = sub {
 		for my $s (sort keys %{$spiders}) {
 			# Test each timespec in turn.
 			for (@{$spiders->{$s}}) {
+				my $last_run = $_->{last_run};
 				my $next_time = $cron->get_next_execution_time(
-					$_->{timespec}, $_->{last_run}
+					$_->{timespec}, $last_run
 				);
 
+				my $last_time = scalar localtime($last_run);
 				slashdLog(<<EOT) if verbosity() >= 3;
-$s Times: $_->{timespec} | $next_time | $now | $_->{last_run}
+$s Times: $_->{timespec} | $next_time | $now | $last_time
 EOT
 					
-				if ($next_time <= $now || !$_->{last_run}) {
+				if ($next_time <= $now || !$last_run) {
 					# If no user-specified miners, we push
 					# an array ref of:
 					# 	(minername, timespec ID)

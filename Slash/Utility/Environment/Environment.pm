@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.78 2003/03/27 22:25:45 brian Exp $
+# $Id: Environment.pm,v 1.79 2003/03/29 18:35:22 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1761,7 +1761,7 @@ sub getObject {
 			$vuser = $data->{virtual_user};
 
 		} else {
-			my $classes = getCurrentDB()->getClasses();
+			my $classes = getCurrentStatic('classes');
 
 			# try passed db first, then db for given class
 			my $db_type  = $data->{db_type}  || $classes->{$class}{db_type};
@@ -2103,4 +2103,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.78 2003/03/27 22:25:45 brian Exp $
+$Id: Environment.pm,v 1.79 2003/03/29 18:35:22 brian Exp $

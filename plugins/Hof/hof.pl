@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.14 2003/03/04 19:56:32 pudge Exp $
+# $Id: hof.pl,v 1.15 2003/03/29 18:35:22 brian Exp $
 
 use strict;
 use Slash;
@@ -19,7 +19,7 @@ sub main {
 	my($hofDB);
 
 	if ($constants->{backup_db_user}) {
-		$hofDB = getObject('Slash::Hof', $constants->{backup_db_user});
+		$hofDB = getObject('Slash::Hof', { db_type => 'reader' });
 	} else {
 		$hofDB = getObject('Slash::Hof');
 	}

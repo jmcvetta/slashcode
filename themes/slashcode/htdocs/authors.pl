@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: authors.pl,v 1.11 2003/03/04 19:56:32 pudge Exp $
+# $Id: authors.pl,v 1.12 2003/03/29 18:35:22 brian Exp $
 
 use strict;
 use Slash;
@@ -10,12 +10,12 @@ use Slash::Display;
 use Slash::Utility;
 
 sub main {
-	my $slashdb   = getCurrentDB();
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
 
-	my $section = $slashdb->getSection($form->{section});
-	my $list    = $slashdb->getAuthorDescription();
+	my $section = $reader->getSection($form->{section});
+	my $list    = $reader->getAuthorDescription();
 
 	header("$constants->{sitename}: Authors", $section->{section});
 	slashDisplay('main', {

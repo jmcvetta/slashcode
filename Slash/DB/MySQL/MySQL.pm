@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.359 2003/03/24 16:02:30 jamie Exp $
+# $Id: MySQL.pm,v 1.360 2003/03/29 18:35:22 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.359 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.360 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5483,6 +5483,9 @@ sub getSlashConf {
 
 	# for fun ... or something
 	$conf{colors} = $self->sqlSelect("block", "blocks", "bid='colors'");
+
+	# We only need to do this on startup.
+	$conf{classes} = $self->getClasses();
 
 	return \%conf;
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.11 2004/06/17 16:11:54 jamiemccarthy Exp $
+# $Id: Blob.pm,v 1.12 2005/02/01 15:51:37 jamiemccarthy Exp $
 
 package Slash::Blob;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 # there are plenty of other methods out there, this needs to be replaced -- pudge
@@ -84,6 +84,8 @@ sub create {
 	} else {
 		$values->{$prime} = $id;
 		$self->sqlInsert($table, $values);
+		# XXX that sqlInsert should be checked for error, and if
+		# it failed, return false
 	}
 
 	return $found || $id ;
@@ -149,6 +151,8 @@ sub createFileForStory {
 	};
 
 	my $id = $self->create($content);
+	# XXX that $id should be checked for errors, and if it is false,
+	# this method should return false as well
 	my $content_type = $self->get($id, 'content_type');
 
 	my $file_content = {

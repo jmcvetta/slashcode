@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.21 2002/10/21 15:11:34 pudge Exp $
+# $Id: NewsVac.pm,v 1.22 2002/10/25 20:52:30 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -2986,6 +2986,7 @@ sub parse_plaintext {
 			# This is a cute trick, see below.
 			$#{$self->{hp_parsedtext}} = -1;
 			$self->{hp}->parse($msg_body);
+			$self->{hp}->eof;
 			$content_ref->{plaintext} = join('',
 				map { join("", @$_) }
 				@{$self->{hp_parsedtext}}
@@ -6255,4 +6256,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.21 2002/10/21 15:11:34 pudge Exp $
+$Id: NewsVac.pm,v 1.22 2002/10/25 20:52:30 pudge Exp $

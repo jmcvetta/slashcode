@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.147 2004/04/12 17:25:18 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.148 2004/04/13 18:19:34 tvroom Exp $
 #
 
 #
@@ -257,6 +257,8 @@ CREATE TABLE comments (
 	len smallint UNSIGNED DEFAULT '0' NOT NULL,
 	karma smallint DEFAULT '0' NOT NULL,
 	karma_abs smallint UNSIGNED DEFAULT '0' NOT NULL,
+	tweak_orig TINYINT NOT NULL DEFAULT 0,
+	tweak TINYINT NOT NULL DEFAULT 0,
 	PRIMARY KEY (cid),
 	KEY display (sid,points,uid),
 	KEY byname (uid,points),

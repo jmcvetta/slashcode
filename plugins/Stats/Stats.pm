@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.38 2002/07/05 16:55:16 brian Exp $
+# $Id: Stats.pm,v 1.39 2002/07/12 22:39:57 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -417,6 +417,14 @@ sub countDaily {
 		$yesterday_clause, "GROUP BY uid");
 	$returnable{unique_users} = $c->rows;
 	$c->finish;
+
+#	# This code doesn't work yet, I think because of the commented-out
+#	# article .shtml logging code in Slash::Apache::IndexHandler.
+#	# - Jamie 2002/07/12
+#	$returnable{total_static} = $self->sqlCount(
+#		"accesslog",
+#		"$yesterday_clause AND dat='shtml'");
+#	$returnable{total_dynamic} = $returnable{total} - $returnable{static};
 
 	$c = $self->sqlSelectMany("dat, COUNT(*)", "accesslog",
 		"$yesterday_clause AND (op='index' OR dat='index')",

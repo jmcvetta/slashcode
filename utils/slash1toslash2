@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash1toslash2,v 1.2 2001/03/20 20:39:25 brian Exp $
+# $Id: slash1toslash2,v 1.3 2001/03/21 16:24:01 pudge Exp $
 
 use strict;
 use File::Basename;
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Digest::MD5 'md5_hex';
 use vars qw(%my_conf);
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -188,6 +188,7 @@ sub fill_newstories {
 
 	$dbh_new->do('DROP TABLE newstories');
 	$dbh_new->do('CREATE TABLE newstories SELECT * FROM stories');
+	$dbh_new->do('ALTER TABLE newstories ADD PRIMARY KEY (sid)');
 }
 
 ####################################
@@ -775,4 +776,4 @@ to the 2.0 database.
 
 =head1 VERSION
 
-$Id: slash1toslash2,v 1.2 2001/03/20 20:39:25 brian Exp $
+$Id: slash1toslash2,v 1.3 2001/03/21 16:24:01 pudge Exp $

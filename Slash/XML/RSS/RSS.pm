@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.19 2004/11/10 17:56:03 pudge Exp $
+# $Id: RSS.pm,v 1.20 2004/11/10 21:47:01 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -435,8 +435,15 @@ sub rss_item_description {
 	my $constants = getCurrentStatic();
 
 	if ($self->{rdfitemdesc}) {
-		# no HTML, unless we specify HTML allowed
-		unless ($self->{rdfitemdesc_html}) {
+		if ($self->{rdfitemdesc_html}) {
+			# this should not hurt things that don't have
+			# slashized links or slash tags ... but if
+			# we do have a problem, we can move this to
+			# rss_story() -- pudge
+			$desc = parseSlashizedLinks($desc);
+			$desc = processSlashTags($desc);
+
+		} else {
 			$desc = strip_notags($desc);
 			$desc =~ s/\s+/ /g;
 			$desc =~ s/ $//;
@@ -475,4 +482,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.19 2004/11/10 17:56:03 pudge Exp $
+$Id: RSS.pm,v 1.20 2004/11/10 21:47:01 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.55 2003/03/28 21:48:13 brian Exp $
+# $Id: Search.pm,v 1.56 2003/03/28 22:05:21 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -35,9 +35,8 @@ sub new {
 	my($class, $user) = @_;
 	my $self = {};
 
-	my $slashdb = getCurrentDB();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{'Search'};
+	my $plugin = getCurrentStatic('plugin');
+	return unless $plugin->{'Search'};
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;
@@ -83,8 +82,8 @@ sub findComments {
 	$where .= "     AND points >= " .  $self->sqlQuote($form->{threshold})
 			if defined($form->{threshold});
 
-	my $slashdb = getCurrentDB();
-	my $SECT = $slashdb->getSection($form->{section});
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $SECT = $reader->getSection($form->{section});
 	if ($SECT->{type} eq 'collected') {
 		$where .= " AND discussions.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
 			if $SECT->{contained} && @{$SECT->{contained}};
@@ -241,8 +240,8 @@ sub findStory {
 		if $form->{subsection};
 	$where .= " AND displaystatus != -1";
 
-	my $slashdb = getCurrentDB();
-	my $SECT = $slashdb->getSection($form->{section});
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $SECT = $reader->getSection($form->{section});
 	if ($SECT->{type} eq 'collected') {
 		$where .= " AND stories.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
 			if $SECT->{contained} && @{$SECT->{contained}};
@@ -352,6 +351,15 @@ sub findPollQuestion {
 		if $form->{uid};
 	$where .= " AND topic=" . $self->sqlQuote($form->{tid})
 		if $form->{tid};
+
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $SECT = $reader->getSection($form->{section});
+	if ($SECT->{type} eq 'collected') {
+		$where .= " AND pollquestions.section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+			if $SECT->{contained} && @{$SECT->{contained}};
+	} else {
+		$where .= " AND pollquestions.section = " . $self->sqlQuote($SECT->{section});
+	}
 	
 	my $sql = "SELECT $columns FROM $tables WHERE $where $other";
 
@@ -466,8 +474,8 @@ sub findDiscussion {
 		if $form->{type};
 	$where .= " AND topic=" . $self->sqlQuote($form->{tid})
 		if $form->{tid};
-	my $slashdb = getCurrentDB();
-	my $SECT = $slashdb->getSection($form->{section});
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $SECT = $reader->getSection($form->{section});
 	if ($SECT->{type} eq 'collected') {
 		$where .= " AND section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
 			if $SECT->{contained} && @{$SECT->{contained}};

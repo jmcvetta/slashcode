@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.102 2002/09/07 18:30:17 jamie Exp $
+# $Id: users.pl,v 1.103 2002/09/09 22:06:43 pater Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1137,7 +1137,7 @@ sub tildeEd {
 
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
-	my($aidref, $tidref, $sectionref, $section_descref, $order, $tilde_ed, $tilded_msg_box);
+	my($aidref, $aid_order, $tidref, $tid_order, $sectionref, $section_descref, $box_order, $tilde_ed, $tilded_msg_box);
 
 	# users_tilded_title
 	my $title = getTitle('tildeEd_title');
@@ -1145,12 +1145,18 @@ sub tildeEd {
 	# Customizable Authors Thingee
 	my $aids = $slashdb->getDescriptions('all-authors'); #$slashdb->getAuthorNames();
 	my $n = 0;
+
+	@$aid_order = sort { lc %$aids->{$a}{nickname} cmp lc %$aids->{$b}{nickname} } keys %$aids;
+
 	for my $aid (keys %$aids) { #(@$aids) {
 		$aidref->{$aid}{checked}  = ($exaid =~ /'\Q$aid\E'/) ? ' CHECKED' : '';
 		$aidref->{$aid}{nickname} = $aids->{$aid};
 	}
 
 	my $topics = $slashdb->getDescriptions('topics');
+
+	@$tid_order = sort { lc %$topics->{$a}{alttext} cmp lc %$topics->{$b}{alttext} } keys %$topics;
+
 	while (my($tid, $alttext) = each %$topics) {
 		$tidref->{$tid}{checked} = ($extid =~ /'\Q$tid\E'/) ?
 			' CHECKED' : '';
@@ -1178,7 +1184,7 @@ sub tildeEd {
 	for (sort { lc $b->[1] cmp lc $a->[1]} @$sections_description) {
 		my($bid, $title, $boldflag) = @$_;
 
-		unshift(@$order, $bid);
+		unshift(@$box_order, $bid);
 		$section_descref->{$bid}{checked} = ($exboxes =~ /'$bid'/) ?
 			' CHECKED' : '';
 		$section_descref->{$bid}{boldflag} = $boldflag > 0;
@@ -1191,10 +1197,12 @@ sub tildeEd {
 		title			=> $title,
 		tilded_box_msg		=> $tilded_box_msg,
 		aidref			=> $aidref,
+		aid_order		=> $aid_order,
 		tidref			=> $tidref,
+		tid_order		=> $tid_order,
 		sectionref		=> $sectionref,
 		section_descref		=> $section_descref,
-		order			=> $order,
+		box_order		=> $box_order,
 		userspace		=> $userspace,
 		customize_title		=> $customize_title,
 	}, 1);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.48 2002/10/11 01:15:30 jamie Exp $
+# $Id: journal.pl,v 1.49 2002/10/15 19:52:31 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -834,7 +834,7 @@ sub _save_params {
 			@data{qw(subject body discuss posttype tid)};
 
 	# accept a hashref
-	} elsif ((@_ == 1) && (UNIVERSAL::ISA($_[0], 'HASH'))) {
+	} elsif ((@_ == 1) && (UNIVERSAL::isa($_[0], 'HASH'))) {
 		@form{qw(description article journal_discuss posttype tid)} =
 			@{$_[0]}{qw(subject body discuss posttype tid)};
 	} else {

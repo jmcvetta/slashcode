@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.26 2004/07/17 15:30:47 jamiemccarthy Exp $
+# $Id: slashmon,v 1.27 2004/11/05 17:58:23 jamiemccarthy Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -29,7 +29,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -313,16 +313,21 @@ sub getLoadavg {
 sub getQueries {
 	my($db) = @_;
 	my $query = $db->{status_query};
+	$db->{db}->sqlConnect();
 	my $sth = $db->{db}{_dbh}->prepare($query);
 	my($q, $sq);
 	$sth->execute();
+	my $n_rows = 0;
 	while (my($key, $val) = $sth->fetchrow()) {
 		$q = $val, next if $key eq "Questions";
 		$sq = $val      if $key eq "Slow_queries";
+		++$n_rows;
 	}
 	$sth->finish();
 	if (!$q) {
-		print STDERR "getQueries returning q='$q' sq='$sq' for '$query'\n";
+		my $err = $DBI::errstr;
+		$err =~ s/\s+/ /g;
+		print STDERR "getQueries returning q='$q' sq='$sq' ($n_rows rows) for '$query', err '$err'\n";
 	}
 	return($q, $sq);
 }

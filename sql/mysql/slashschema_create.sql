@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.116 2003/06/19 13:49:06 jamie Exp $
+# $Id: slashschema_create.sql,v 1.117 2003/06/20 17:40:08 jamie Exp $
 #
 
 #
@@ -563,7 +563,8 @@ CREATE TABLE rss_raw (
 	UNIQUE uber_signature (link_signature, title_signature, description_signature),
 	FOREIGN KEY (subid) REFERENCES submissions(subid),
 	FOREIGN KEY (bid) REFERENCES blocks(bid),
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	KEY processed (processed)
 ) TYPE=InnoDB;
 
 #

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.24 2002/05/03 13:37:43 pudge Exp $
+# $Id: Apache.pm,v 1.25 2002/05/15 00:43:23 pudge Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -318,7 +318,7 @@ sub IndexHandler {
 	if ($uri =~ m|^/(\w+)/$|) {
 		my $key = $1;
 		my $slashdb = getCurrentDB();
-		my $section = $slashdb->getSection($key);
+		my $section = $slashdb->getSection($key, 'id');
 		if ($section) {
 			my $basedir = $constants->{basedir};
 			my $index_handler = $section->{index_handler}

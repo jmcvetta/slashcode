@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.561 2004/04/15 05:42:15 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.562 2004/04/20 18:39:01 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.561 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.562 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6035,12 +6035,15 @@ sub countSubmissionsByNetID {
 	} elsif ($field eq 'subnetid') {
 		$where = "subnetid='$id'";
 	} else {
-		$where = "ipid='$id' OR subnetid='$id'";
+		my $ipid_cnt = $self->sqlCount("submissions", "ipid='$id'");
+		return wantarray ? ($ipid_cnt, "ipid") : $ipid_cnt if $ipid_cnt;
+		my $subnetid_cnt = $self->sqlCount("submissions", "subnetid='$id'");
+		return wantarray ? ($subnetid_cnt, "subnetid") : $subnetid_cnt;
 	}
 
 	my $count = $self->sqlCount('submissions', $where);
 
-	return $count;
+	return wantarray ? ($count, $field) : $count;
 }
 
 ########################################################
@@ -7272,6 +7275,12 @@ sub getSlashdStatuses {
 sub getMaxCid {
 	my($self) = @_;
 	return $self->sqlSelect("MAX(cid)", "comments");
+}
+
+##################################################################
+sub getMaxModeratorlogId {
+	my($self) = @_;
+	return $self->sqlSelect("MAX(id)", "moderatorlog");
 }
 
 ##################################################################

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.79 2003/03/25 20:27:31 pudge Exp $
+# $Id: submit.pl,v 1.80 2003/04/29 19:28:08 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -405,8 +405,6 @@ sub displayForm {
 
 
 	my $topic = $slashdb->getTopic($form->{tid});
-	$topic->{imageclean} = $topic->{image};
-	$topic->{imageclean} = "$constants->{imagedir}/topics/$topic->{imageclean}" if $topic->{imageclean} =~ /^\w+\.\w+$/;
 
 	my $known = "";
 	if ($form->{email}) {

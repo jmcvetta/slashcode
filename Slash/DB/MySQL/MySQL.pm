@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.380 2003/04/29 19:01:51 pudge Exp $
+# $Id: MySQL.pm,v 1.381 2003/04/29 19:28:08 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.380 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.381 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5287,13 +5287,13 @@ sub createStory {
 	my $rootdir = $section->{rootdir} || $constants->{rootdir};
 
 	my $id = $self->createDiscussion( {
-		title		=> $story->{title},
-		section		=> $story->{section},
-		topic		=> $story->{tid},
-		url		=> "$rootdir/article.pl?sid=$story->{sid}&tid=$story->{topic}",
-		sid		=> $story->{sid},
-		commentstatus	=> $story->{commentstatus},
-		ts		=> $story->{'time'}
+		title	=> $story->{title},
+		section	=> $story->{section},
+		topic	=> $story->{tid},
+		url	=> "$rootdir/article.pl?sid=$story->{sid}&tid=$story->{topic}",
+		sid	=> $story->{sid},
+		commentstatus	=> $story->{commentstatus} || 'enabled',
+		ts	=> $story->{'time'}
 	});
 	unless ($id) {
 		print STDERR "Failed to create discussion for story\n";

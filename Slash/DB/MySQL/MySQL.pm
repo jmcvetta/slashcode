@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.625 2004/07/16 15:11:25 tvroom Exp $
+# $Id: MySQL.pm,v 1.626 2004/07/16 18:04:28 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.625 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.626 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -123,6 +123,9 @@ my %descriptions = (
 
 	'skins-all'
 		=> sub { $_[0]->sqlSelectMany('skid,title', 'skins') },
+
+	'skins-submittable'
+		=> sub { $_[0]->sqlSelectMany('skid,title', 'skins', "submittable='yes'") },
 
 	'static_block'
 		=> sub { $_[0]->sqlSelectMany('bid,bid', 'blocks', "$_[2] >= seclev AND type != 'portald'") },
@@ -1612,17 +1615,20 @@ sub createAccessLog {
 		($ipid, $subnetid) = get_ipids($r->connection->remote_ip);
 	}
 
-	if ($op eq 'index' && $dat =~ m|^([^/]*)/|) {
-		$skin_name = $1;
+	if ( $op eq 'index' && $dat =~ m|^([^/]*)| ) {
+		my $firstword = $1;
+		if ($self->getSkinFromName($firstword)) {
+			$skin_name = $1;
+		}
 	}
 
 	if ($dat =~ /(.*)\/(\d{2}\/\d{2}\/\d{2}\/\d{4,7}).*/) {
-		$skin_name = $1;
 		$dat = $2;
 		$op = 'article';
-#		$self->sqlUpdate('stories', { -hits => 'hits+1' },
-#			'sid=' . $self->sqlQuote($dat)
-#		);
+		my $firstword = $1;
+		if ($self->getSkinFromName($firstword)) {
+			$skin_name = $1;
+		}
 	}
 
 	my $duration;
@@ -4976,7 +4982,8 @@ sub getSubmissionsSkins {
 
 	my $hash = $self->sqlSelectAll("skins.name, note, COUNT(*)",
 		'submissions LEFT JOIN skins ON skins.skid = submissions.primaryskid',
-		"del=$del $skin_clause GROUP BY primaryskid, note");
+		"del=$del AND submittable='yes' $skin_clause",
+		"GROUP BY primaryskid, note");
 
 	return $hash;
 }

@@ -167,7 +167,7 @@ You can only post [% limit %] posts per [% interval %].
 
 [% CASE "cantinsert" %]
 We are apparently having a temporary problem with our database (or maybe
-our random number generator). Please try again later.
+our random formkey generator). Please try again later.
 
 [% CASE "cantinserthc" %]
 We are apparently having a problem with our human-confirmation code.
@@ -186,4 +186,4 @@ If the problem persists, and all other options have been tried, contact the
 __seclev__
 1000
 __version__
-$Id: formkeyErrors;misc;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: formkeyErrors;misc;default,v 1.10 2003/11/10 21:22:50 pudge Exp $

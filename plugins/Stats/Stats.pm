@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.117 2003/08/25 21:48:06 vroom Exp $
+# $Id: Stats.pm,v 1.118 2003/08/26 15:40:24 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -396,29 +396,27 @@ sub getErrorStatuses {
 
 ########################################################
 sub getAverageCommentCountPerStoryOnDay{
-	my ($self, $day, $options) = @_;
+	my($self, $day, $options) = @_;
 	my $col = "avg(commentcount)";
 	my $where = " date_format(time,'%Y-%m-%d') = '$day' ";
 	$where .= " and section = '$options->{section}' " if $options->{section};
-	return $self->sqlSelect($col,"stories",$where);
+	return $self->sqlSelect($col, "stories", $where);
 }
 
 ########################################################
-
 sub getAverageHitsPerStoryOnDay{
-	my ($self, $day, $pages, $other) = @_;
+	my($self, $day, $pages, $other) = @_;
 	my $numStories = $self->getNumberStoriesPerDay($day, $other);
 	return $numStories ? $pages / $numStories : 0;
 }
 
 ########################################################
-
 sub getNumberStoriesPerDay{
-	my ($self, $day, $options) = @_;
+	my($self, $day, $options) = @_;
 	my $col = "count(*)";
 	my $where = " date_format(time,'%Y-%m-%d') = '$day' ";
 	$where .= " and section = '$options->{section}' " if $options->{section};
-	return $self->sqlSelect($col,"stories",$where);
+	return $self->sqlSelect($col, "stories", $where);
 
 }
 
@@ -1419,4 +1417,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.117 2003/08/25 21:48:06 vroom Exp $
+$Id: Stats.pm,v 1.118 2003/08/26 15:40:24 pudge Exp $

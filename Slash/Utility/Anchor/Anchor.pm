@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.55 2003/10/20 14:59:09 pater Exp $
+# $Id: Anchor.pm,v 1.56 2003/10/20 15:39:20 pater Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -531,7 +531,7 @@ sub getAd {
 		# shtml code which *will* generate the actual ad when it's
 		# executed later.
 		return <<EOT;
-<!--#perl sub="sub { use Slash; print Slash::getAd($num); }" -->
+<!--#perl sub="sub { use Slash; print Slash::getAd($num, $need_box); }" -->
 EOT
 	}
 
@@ -612,4 +612,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.55 2003/10/20 14:59:09 pater Exp $
+$Id: Anchor.pm,v 1.56 2003/10/20 15:39:20 pater Exp $

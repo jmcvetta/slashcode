@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.78 2002/07/12 00:53:35 jamie Exp $
+# $Id: admin.pl,v 1.79 2002/07/15 03:27:07 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -25,10 +25,6 @@ sub main {
 	my($tbtitle);
 
 	my $ops = {
-		slashd		=> {
-			function	=> \&displaySlashd,
-			seclev		=> 500,
-		},
 		edit_keyword	=> {
 			function	=> \&editKeyword,
 			seclev		=> 10000,
@@ -106,6 +102,14 @@ sub main {
 
 			function 	=> \&varEdit,
 			seclev		=> 10000,
+		},
+		slashd		=> {
+			function	=> \&displaySlashd,
+			seclev		=> 500,
+		},
+		recent		=> {
+			function	=> \&displayRecent,
+			seclev		=> 500,
 		},
 	};
 
@@ -1536,6 +1540,36 @@ sub displaySlashd {
 	}
 	slashDisplay('slashd_status', {
 		tasks => $answer,
+	});
+}
+
+##################################################################
+sub displayRecent {
+	my($form, $slashdb, $user, $constants) = @_;
+	my($min, $max) = (undef, undef);
+	$min = $form->{min} if defined($form->{min});
+	$max = $form->{max} if defined($form->{max});
+	my $startat = $form->{startat} || undef;
+
+	my $max_cid = $slashdb->sqlSelect("MAX(cid)", "comments");
+	my $recent_comments = $slashdb->getRecentComments({
+		min	=> $min,
+		max	=> $max,
+		startat	=> $startat,
+		num	=> 30,
+	}) || [ ];
+
+	my $id_vislen = $constants->{id_md5_vislength};
+	my $subj_vislen = 30;
+	for my $comm (@$recent_comments) {
+		$comm->{ipid_vis} = substr($comm->{ipid}, 0, $id_vislen);
+		$comm->{subject_vis} = substr($comm->{subject}, 0, $subj_vislen);
+	}
+
+	slashDisplay('recent', {
+		startat		=> $startat,
+		max_cid		=> $max_cid,
+		recent_comments	=> $recent_comments,
 	});
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.256 2002/11/19 19:27:08 brian Exp $
+# $Id: MySQL.pm,v 1.257 2002/11/19 19:44:32 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.256 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.257 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -94,7 +94,17 @@ my %descriptions = (
 		=> sub { $_[0]->sqlSelectMany('tid,alttext', 'topics') },
 
 	'topics_section'
-		=> sub { $_[0]->sqlSelectMany('topics.tid,topics.alttext', 'topics, section_topics', "section='$_[2]' AND section_topics.tid=topics.tid") },
+		=> sub {
+				my $SECT = $_[0]->getSection($_[2]);
+				my $where;
+				if ($SECT->{type} eq 'collected') {
+					$where = " section IN ('" . join("','", @{$SECT->{contained}}) . "')" 
+						if $SECT->{contained} && @{$SECT->{contained}};
+				} else {
+					$where = " section = " . $_[0]->sqlQuote($SECT->{section});
+				}
+				$_[0]->sqlSelectMany('topics.tid,topics.alttext', 'topics, section_topics', "$where AND section_topics.tid=topics.tid") 
+			},
 
 	'topics_section_type'
 		=> sub { $_[0]->sqlSelectMany('topics.tid as tid,topics.alttext as alttext', 'topics, section_topics', "section='$_[2]' AND section_topics.tid=topics.tid AND type= '$_[3]'") },

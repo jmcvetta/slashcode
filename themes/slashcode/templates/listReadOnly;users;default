@@ -21,17 +21,15 @@ __template__
                 <TD BGCOLOR="[% user.fg.4 %]"><B>uid</B></TD>
                 <TD BGCOLOR="[% user.fg.4 %]"><B>IPID</B></TD>
                 <TD BGCOLOR="[% user.fg.4 %]"><B>SubnetID</B></TD>
-                <TD BGCOLOR="[% user.fg.4 %]"><B>Formname</B></TD>
                 <TD BGCOLOR="[% user.fg.4 %]"><B>Reason</B></TD>
         </TR>
                 [% FOREACH readonly = readonlylist %]
         <TR>
-                <TD>[% readonly.0 %]</TD>
-                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.1 %]">[% readonly.1 %]</A></TD>
-                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.2 %]">[% readonly.2 %]</A></TD>
-                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.3 %]">[% readonly.3 %]</A></TD>
-                <TD>[% readonly.4 %]</TD>
-                <TD>[% readonly.5 %]</TD>
+                <TD>[% readonly.ts %]</TD>
+                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.uid %]">[% readonly.uid %]</A></TD>
+                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.ipid %]">[% readonly.ipid %]</A></TD>
+                <TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% readonly.subnetid %]">[% readonly.subnetid %]</A></TD>
+                <TD>[% readonly.reason %]</TD>
         </TR>
                 [% END %]
 </TABLE>
@@ -44,4 +42,4 @@ No readonly users
 __seclev__
 100
 __version__
-$Id: listReadOnly;users;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: listReadOnly;users;default,v 1.4 2003/03/14 20:49:42 jamie Exp $

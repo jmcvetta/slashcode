@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.9 2003/03/14 16:11:44 jamie Exp $
+# $Id: Admin.pm,v 1.10 2003/03/14 20:49:42 jamie Exp $
 
 package Slash::Admin;
 
@@ -15,7 +15,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -86,7 +86,7 @@ sub getAccesslogAbusersByID {
 		"ipid",
 		"ipid, ts, reason",
 		"accesslist",
-		"ipid IN ($ipids) AND FIND_IN_SET('ban', now) AND reason != ''"
+		"ipid IN ($ipids) AND now_ban = 'yes' AND reason != ''"
 	);
 	for my $row (@$ar) {
 		next unless exists $hr->{$row->{ipid}};

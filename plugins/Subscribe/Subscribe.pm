@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.26 2003/10/14 04:35:45 vroom Exp $
+# $Id: Subscribe.pm,v 1.27 2003/10/16 01:38:10 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class) = @_;
@@ -256,7 +256,7 @@ sub convertPagesToDollars {
 #	memo		(optional) subscriber's memo
 #	payment_type    (optional) defaults to "user" 
 #                                  other options are "gift"  or "grant"
-#       puid            (optional) purchaser uid for gifts or grants this
+#       puid		(optional) purchaser uid for gifts or grants this
 #				   will be different than the uid.  If
 #				   none is provided it defaults to uid
 
@@ -336,9 +336,13 @@ sub getSubscriptionsPurchasedByUser {
 	my($self, $puid,$options) = @_;
 	my $slashdb = getCurrentDB();
 	my $restrict;
-	if($options->{only_types}){
-		if(ref $options->{only_types} eq "ARRAY"){
-			$restrict.=" AND payment_type in(". join(',', map { $slashdb->sqlQuote($_)} @{$options->{only_types}}).")";
+	if ($options->{only_types}) {
+		if (ref($options->{only_types}) eq "ARRAY") {
+			$restrict .= " AND payment_type IN ("
+				. join(',', map { $slashdb->sqlQuote($_) }
+					@{$options->{only_types}}
+				)
+				. ")";
 		} 
 	}
 	my $puid_q = $slashdb->sqlQuote($puid);

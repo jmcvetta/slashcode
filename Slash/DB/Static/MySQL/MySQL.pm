@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.114 2003/10/14 14:20:16 vroom Exp $
+# $Id: MySQL.pm,v 1.115 2003/10/16 01:38:10 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1529,9 +1529,13 @@ sub refreshUncommonStoryWords {
 # files and redirect to new
 
 sub getPrevSectionsForSid {
-	my ($self,$sid) = @_;
-	my $old_sect = $self->sqlSelect("value","story_param","name='old_shtml_sections' and sid=".$self->sqlQuote($sid));
-	my @old_sect = grep{ $_ } split(/,/,$old_sect);
+	my($self, $sid) = @_;
+	my $sid_q = $self->sqlQuote($sid);
+	my $old_sect = $self->sqlSelect(
+		"value",
+		"story_param",
+		"name='old_shtml_sections' AND sid=$sid_q");
+	my @old_sect = grep { $_ } split(/,/, $old_sect);
 	return @old_sect;
 }
 
@@ -1542,8 +1546,11 @@ sub getPrevSectionsForSid {
 # have been cleaned up
  
 sub clearPrevSectionsForSid {
-	my ($self,$sid) = @_;
-	$self->sqlDelete("story_param","name='old_shtml_sections' and sid=".$self->sqlQuote($sid));
+	my($self, $sid) = @_;
+	my $sid_q = $self->sqlQuote($sid);
+	$self->sqlDelete(
+		"story_param",
+		"name='old_shtml_sections' AND sid=$sid_q");
 }
 
 ########################################################

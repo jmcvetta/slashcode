@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.33 2003/10/14 14:16:09 vroom Exp $
+# $Id: freshenup.pl,v 1.34 2003/10/16 01:38:10 jamie Exp $
 
 use File::Path;
 use File::Temp;
@@ -172,17 +172,18 @@ $task{$me}{code} = sub {
 		# article
 
 		my @old_sect = $slashdb->getPrevSectionsForSid($sid);
-		if(@old_sect){
-			foreach my $old_sect (@old_sect) {
+		if (@old_sect) {
+			for my $old_sect (@old_sect) {
 				next if $old_sect eq $section;
-				my $url = $constants->{rootdir}."/$section/$sid.shtml";
+				my $url = "$constants->{rootdir}/$section/$sid.shtml";
 				my $fn = "$basedir/$old_sect/$sid.shtml";
-				if(-e $fn){
+				if (-e $fn) {
 					my $fh = gensym();
-					if(!open($fh, ">", $fn)){
+					if (!open($fh, ">", $fn)) {
 						warn("Couldn't open file: $fn for writing");
 					} else {
-						print $fh slashDisplay("articlemoved", { url=> $url },{ Return => 1 } );
+						print $fh slashDisplay("articlemoved", { url => $url },
+							{ Return => 1 } );
 						close $fh;
 					}
 				}

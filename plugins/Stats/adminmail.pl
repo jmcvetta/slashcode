@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.160 2003/10/14 04:43:30 vroom Exp $
+# $Id: adminmail.pl,v 1.161 2003/10/16 01:38:10 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -77,7 +77,6 @@ $task{$me}{code} = sub {
         	        $day[5] + 1900, $day[4] + 1, $day[3];
 		push @ah_days, $day;
 	}
-	
 	
 	
 	# let's do the errors
@@ -433,7 +432,8 @@ EOT
 	}
 	
 	foreach my $day (@ah_days){
-		my $avg = $stats->sqlSelect("value", "stats_daily", "day='$day' and section='all' and name='avg_comments_per_story'");
+		my $avg = $stats->sqlSelect("value", "stats_daily",
+			"day='$day' AND section='all' AND name='avg_comments_per_story'");
 		push @{$data{avg_comments_per_story}}, sprintf("%12.1f", $avg);
 	}
 

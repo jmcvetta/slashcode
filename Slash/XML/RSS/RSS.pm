@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.11 2003/03/24 19:43:55 pudge Exp $
+# $Id: RSS.pm,v 1.12 2003/12/09 18:59:11 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -162,7 +162,7 @@ sub create {
 	my %channel = (
 		title		=> $constants->{sitename},
 		description	=> $constants->{slogan},
-		'link'		=> $constants->{absolutedir} . '/',
+		'link'		=> $constants->{absolutedir_secure} . '/',
 
 		# dc
 		date		=> $self->date2iso8601(),
@@ -447,4 +447,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.11 2003/03/24 19:43:55 pudge Exp $
+$Id: RSS.pm,v 1.12 2003/12/09 18:59:11 pudge Exp $

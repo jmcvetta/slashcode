@@ -2,12 +2,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.121 2002/12/26 19:23:40 jamie Exp $
+# $Id: admin.pl,v 1.122 2003/01/10 19:40:28 pudge Exp $
 
 use strict;
-use Time::HiRes;
+use File::Temp 'tempfile';
 use Image::Size;
-use POSIX qw(O_RDWR O_CREAT O_EXCL tmpnam);
+use Time::HiRes;
 
 use Slash;
 use Slash::Display;
@@ -1347,16 +1347,21 @@ sub editStory {
 ##################################################################
 sub write_to_temp_file {
 	my($data) = @_;
-	local *TMP;
-	my $tmp;
-	do {
-		# Note: don't mount /tmp over NFS, it's a security risk
-		# See Camel3, p. 574
-		$tmp = tmpnam();
-	} until sysopen(TMP, $tmp, O_RDWR|O_CREAT|O_EXCL, 0600);
-	print TMP $data;
-	close TMP;
-	$tmp;
+	my($fh, $file) = tempfile();
+	print $fh $data;
+	close $fh;
+	return $file;
+
+#	local *TMP;
+#	my $tmp;
+#	do {
+#		# Note: don't mount /tmp over NFS, it's a security risk
+#		# See Camel3, p. 574
+#		$tmp = tmpnam();
+#	} until sysopen(TMP, $tmp, O_RDWR|O_CREAT|O_EXCL, 0600);
+#	print TMP $data;
+#	close TMP;
+#	$tmp;
 }
 
 ##################################################################

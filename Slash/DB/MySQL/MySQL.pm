@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.673 2004/09/01 22:19:53 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.674 2004/09/02 03:46:55 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.673 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.674 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4710,8 +4710,12 @@ sub getBanList {
 	} elsif ($mcd && !keys %$banlist_ref) {
 		# If the caller said it was OK to use the cache, but
 		# there's nothing in the cache, try MCD first.
-		$banlist_ref = $mcd->get($mcdkey);
-		return $banlist_ref if $banlist_ref && scalar(keys %$banlist_ref);
+		if ($banlist_ref && scalar(keys %$banlist_ref)) {
+			$banlist_ref = $mcd->get($mcdkey);
+			$self->{_banlist_cache} = $banlist_ref;
+			$self->{_banlist_cache_time} ||= time();
+			return $banlist_ref;
+		}
 	}
 
 	# If there's nothing in the cache, fill it from the DB.
@@ -4799,7 +4803,12 @@ sub getNorssList {
 		# If the caller said it was OK to use the cache, but
 		# there's nothing in the cache, try MCD first.
 		$norsslist_ref = $mcd->get($mcdkey);
-		return $norsslist_ref if $norsslist_ref && scalar(keys %$norsslist_ref);
+		if ($norsslist_ref && scalar(keys %$norsslist_ref)) {
+			$norsslist_ref = $mcd->get($mcdkey);
+			$self->{_norsslist_cache} = $norsslist_ref;
+			$self->{_norsslist_cache_time} ||= time();
+			return $norsslist_ref;
+		}
 	}
 
 	# If there's nothing in the cache, fill it from the DB.
@@ -4864,7 +4873,12 @@ sub getNopalmList {
 		# If the caller said it was OK to use the cache, but
 		# there's nothing in the cache, try MCD first.
 		$nopalmlist_ref = $mcd->get($mcdkey);
-		return $nopalmlist_ref if $nopalmlist_ref && scalar(keys %$nopalmlist_ref);
+		if ($nopalmlist_ref && scalar(keys %$nopalmlist_ref)) {
+			$nopalmlist_ref = $mcd->get($mcdkey);
+			$self->{_nopalmlist_cache} = $nopalmlist_ref;
+			$self->{_nopalmlist_cache_time} ||= time();
+			return $nopalmlist_ref;
+		}
 	}
 
 	if (!keys %$nopalmlist_ref) {

@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: newsvac.pl,v 1.10 2002/04/13 08:04:20 cliff Exp $
+#  $Id: newsvac.pl,v 1.11 2002/04/16 17:55:36 cliff Exp $
 ###############################################################################
 use strict;
 
@@ -476,7 +476,7 @@ sub show_miner_rel_info {
 		}
 	}
 
-	slashDisplay('show_miner_rel_info', { 
+	slashDisplay('showMinerRelInf', { 
 		arrayref 	=> $ar,
 	});
 }
@@ -739,7 +739,7 @@ sub updateSpider {
 			next if !defined $1;
 			my $id = $1;
 
-			# Test the given timespec.
+			# Test the given timespec only if we aren't deleting it.
 			eval {
 				sub dispatch { };
 				
@@ -747,7 +747,7 @@ sub updateSpider {
 				$cron->get_next_execution_time(
 					$form->{"timespec_${id}_timespec"}
 				);
-			};
+			} unless $form->{"timespec_${id}_del"};
 			if ($@) {
 				my $err = <<EOT;
 Error in '$form->{"timespec_${id}_timespec"}': $@

@@ -22,7 +22,7 @@ __template__
 	   IF varsection.value == constants.section;
 	      constants.sitename %]: [% constants.slogan;
 	   ELSE;
-	      section.title;
+	      constants.sitename %]: [% section.title %] - [% constants.slogan;
 	   END;
 	%]
 
@@ -64,4 +64,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.17 2003/08/06 04:50:12 jamie Exp $
+$Id: data;index;default,v 1.18 2003/08/26 17:50:31 pater Exp $

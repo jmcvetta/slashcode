@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dailyStuff,v 1.7 2001/12/02 04:52:22 pudge Exp $
+# $Id: dailyStuff,v 1.8 2001/12/04 02:04:17 pudge Exp $
 
 ###############################################################################
 # dailyStuff - this program runs various housekeeping tasks, sends out the
@@ -123,7 +123,7 @@ sub mailingList {
 
 		dailyStuffLog("Daily Mail ($mailing) begin");
 		for my $key (keys %$mkeys) {
-			my $text = generateDailyMail($mailing, $user);
+			my $text = generateDailyMail($mailing, $user) or next;
 # 			dailyStuffLog("Daily Mail ($mailing) begin: $key");
 			$messages->bulksend(
 				$mkeys->{$key}{mails}, $subj, $text, $code

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.26 2004/10/05 23:48:24 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.27 2005/01/12 20:15:15 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -137,11 +137,12 @@ sub init {
 }
 
 sub log {
-	my($self, $msg, $mode) = @_;
+	my($self, $msg, $mode, $count) = @_;
+	$count = 1 if !$count || $count < 1;
 	my $table = $self->{_log_table};
 	$msg->{user} ||= {};
 
-	$self->sqlInsert($table, {
+	my %data = (
 		id	=> $msg->{id},
 		user	=> (ref($msg->{user})
 				? ($msg->{user}{uid} || 0)
@@ -153,7 +154,10 @@ sub log {
 			   ),
 		code	=> $msg->{code},
 		mode	=> $mode,
-	}, { delayed => 1 });
+	);
+
+	$self->sqlInsert($table, \%data, { delayed => 1 })
+		for 1 .. $count;
 }
 
 sub _create_web {

@@ -36,7 +36,7 @@ __template__
           END;
 
           nlabel = stat.2 | fixparam;
-          IF (!nskid);
+          IF (!nlabel);
              nlabel = '';
           END;
 
@@ -59,4 +59,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: make_graph;stats;default,v 1.10 2004/07/13 17:57:59 tvroom Exp $
+$Id: make_graph;stats;default,v 1.11 2005/01/12 20:15:15 pudge Exp $

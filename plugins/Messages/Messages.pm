@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.30 2004/06/22 23:34:53 pudge Exp $
+# $Id: Messages.pm,v 1.31 2005/01/12 20:15:14 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -558,7 +558,7 @@ sub bulksend {
 	my $subject = $self->callTemplate('msg_email_subj', $msg);
 
 	if (bulkEmail($addrs, $subject, $content)) {
-		$self->log($msg, MSG_MODE_EMAIL);
+		$self->log($msg, MSG_MODE_EMAIL, scalar @$addrs);
 		return 1;
 	} else {
 		messagedLog(getData("send mail error", {
@@ -1094,4 +1094,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.30 2004/06/22 23:34:53 pudge Exp $
+$Id: Messages.pm,v 1.31 2005/01/12 20:15:14 pudge Exp $

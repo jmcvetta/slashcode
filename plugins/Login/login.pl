@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.8 2004/05/07 23:06:04 pudge Exp $
+# $Id: login.pl,v 1.9 2004/05/25 20:15:25 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -389,7 +389,6 @@ sub _validFormkey {
 
 	my $error;
 	for (@checks) {
-		warn "$op: $formname: $_\n";
 		my $err = formkeyHandler($_, $formname, 0, \$error, $options);
 		last if $err || $error;
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.82 2002/06/14 04:09:26 pater Exp $
+# $Id: users.pl,v 1.83 2002/06/21 11:10:34 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -298,7 +298,7 @@ sub main {
 		$site_domain =~ s/^www\.//;
 		$site_domain =~ s/:.+$//;	# strip port, if available
 
-		my $refer_host = $refer->host();
+		my $refer_host = $refer->can("host") ? $refer->host() : "";
 		$refer_host =~ s/^www\.//;
 
 		if ($site_domain eq $refer_host) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.20 2003/03/14 19:08:20 pudge Exp $
+# $Id: MySQL.pm,v 1.21 2003/07/23 06:15:17 jamie Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -195,7 +195,7 @@ sub _create {
 		'send'	=> $send || 'now',
 	});
 
-	my($msg_id) = $self->getLastInsertId($table, $prime);
+	my($msg_id) = $self->getLastInsertId({ table => $table, prime => $prime });
 	return $msg_id;
 }
 

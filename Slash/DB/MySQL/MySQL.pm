@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.429 2003/07/22 22:01:58 pudge Exp $
+# $Id: MySQL.pm,v 1.430 2003/07/23 06:15:17 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.429 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.430 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1295,7 +1295,7 @@ sub getSessionInstance {
 			last_sid	=> $last_sid,
 			last_subid	=> $last_subid
 		});
-		$session_out = $self->getLastInsertId('sessions', 'session');
+		$session_out = $self->getLastInsertId({ table => 'sessions', prime => 'session' });
 	}
 	return $session_out;
 
@@ -1720,7 +1720,7 @@ sub createContentFilter {
 		err_message	=> ''
 	});
 
-	my $filter_id = $self->getLastInsertId('content_filters', 'filter_id');
+	my $filter_id = $self->getLastInsertId({ table => 'content_filters', prime => 'filter_id' });
 
 	return $filter_id;
 }
@@ -1758,7 +1758,7 @@ sub createUser {
 		passwd		=> encryptPassword(changePassword())
 	});
 
-	my $uid = $self->getLastInsertId('users', 'uid');
+	my $uid = $self->getLastInsertId({ table => 'users', prime => 'uid' });
 	unless ($uid) {
 		$self->{_dbh}->rollback;
 		$self->{_dbh}->{AutoCommit} = 1;
@@ -7382,7 +7382,7 @@ sub createTemplate {
 	delete $hash->{version};
 
 	$self->sqlInsert('templates', $hash);
-	my $tpid  = $self->getLastInsertId('templates', 'tpid');
+	my $tpid  = $self->getLastInsertId({ table => 'templates', prime => 'tpid' });
 	return $tpid;
 }
 

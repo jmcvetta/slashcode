@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.26 2002/11/07 21:21:53 pudge Exp $
+# $Id: NewsVac.pm,v 1.27 2002/12/16 20:29:18 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -2812,7 +2812,7 @@ sub parse_miner {
 
 			my $cpt = new Safe;
 			$cpt->permit(qw(:base_core :base_mem :base_loop));
-			$cpt->share(qw($cancel $count $url $title $source $slug $body));
+			$cpt->share(qw($cancel $count $url $title $source $slug $body &uri_unescape));
 			$cpt->reval($tweak_code);
 
 			delete $nugget{$key};
@@ -6269,4 +6269,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.26 2002/11/07 21:21:53 pudge Exp $
+$Id: NewsVac.pm,v 1.27 2002/12/16 20:29:18 pudge Exp $

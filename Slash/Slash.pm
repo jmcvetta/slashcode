@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.106 2003/01/31 00:40:03 brian Exp $
+# $Id: Slash.pm,v 1.107 2003/01/31 01:01:06 jamie Exp $
 
 package Slash;
 
@@ -607,10 +607,14 @@ sub moderatorCommentLog {
 		# Eliminate inactive moderations from the list.
 		$mods = [ grep { $_->{active} } @$mods ];
 	}
-	return unless @$mods; # skip it, if no mods to show
 
 	my($reasons, @return, @reasonHist, $reasonTotal);
 	$reasons = $slashdb->getReasons();
+
+	# Note: Before 2001/01/27 or so, the only things being displayed
+	# in this template were moderations, and if there were none,
+	# we could short-circuit here if @$mods was empty.  But now,
+	# the template handles that decision.
 
 	for my $mod (@$mods) {
 		vislenify($mod); # add $mod->{ipid_vis}

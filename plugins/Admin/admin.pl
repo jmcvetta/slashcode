@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.210 2004/07/01 18:05:21 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.211 2004/07/06 20:58:18 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1353,7 +1353,7 @@ sub editStory {
 		# XXXSECTIONTOPIC this kinda works now, but it should be rewritten
 		my $SECT = $slashdb->getSection($section);
 		$extracolumns			= $slashdb->getNexusExtras($gSkin->{nexus});
-		$storyref->{commentstatus}	= $gSkin->{defaultcommentstatus};
+		$storyref->{commentstatus}	= $constants->{defaultcommentstatus};
 		$storyref->{primaryskid}	= $gSkin->{skid};
 		$storyref->{tid}		= $form->{tid} || $gSkin->{defaulttopic};
 

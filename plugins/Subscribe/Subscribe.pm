@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.25 2003/09/23 22:12:53 jamie Exp $
+# $Id: Subscribe.pm,v 1.26 2003/10/14 04:35:45 vroom Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class) = @_;
@@ -254,9 +254,20 @@ sub convertPagesToDollars {
 #	method		(optional) string representing payment method
 #	data		(optional) any additional data
 #	memo		(optional) subscriber's memo
+#	payment_type    (optional) defaults to "user" 
+#                                  other options are "gift"  or "grant"
+#       puid            (optional) purchaser uid for gifts or grants this
+#				   will be different than the uid.  If
+#				   none is provided it defaults to uid
+
 sub insertPayment {
 	my($self, $payment) = @_;
 	my $slashdb = getCurrentDB();
+	my $constants = getCurrentStatic();
+	my $t_id_len  = $constants->{subscribe_gen_transaction_id_length} || 17;
+	
+	$payment->{payment_type} ||= "user";
+	$payment->{puid} ||= $payment->{uid};
 
 	# Can't buy pages for an Anonymous Coward.
 	return 0 if isAnon($payment->{uid});
@@ -274,7 +285,7 @@ sub insertPayment {
 				Digest::MD5::md5_hex(join(":",
 					$payment->{uid}, $payment->{data},
 					time, $$, rand(2**30)
-				)), 0, 17
+				)), 0, $t_id_len
 			);
 		}
 		$success = $slashdb->sqlInsert("subscribe_payments", $payment);
@@ -284,12 +295,34 @@ sub insertPayment {
 	return $success;
 }
 
+sub grantPagesToUID {
+	my ($self, $pages, $uid) = @_;
+	my $user = getCurrentUser();
+	my $slashdb = getCurrentDB();
+	my $grant = {
+		pages	      => $pages,
+		uid	      => $uid,
+		payment_net   => 0,
+		payment_gross => 0,
+		payment_type  => "grant",
+		puid	      => $user->{uid}		
+
+	};
+	my $rows = $self->insertPayment($grant);
+	if ($rows == 1) {
+		$slashdb->setUser($uid, {
+			"-hits_paidfor" => "hits_paidfor + $pages"
+		});
+	}
+	return $rows;
+}
+
 sub getSubscriptionsForUser {
 	my($self, $uid) = @_;
 	my $slashdb = getCurrentDB();
 	my $uid_q = $slashdb->sqlQuote($uid);
 	my $sp = $slashdb->sqlSelectAll(
-		"ts, email, payment_gross, pages, method, transaction_id",
+		"ts, email, payment_gross, pages, method, transaction_id, puid, payment_type",
 		"subscribe_payments",
 		"uid = $uid_q",
 		"ORDER BY spid",
@@ -298,6 +331,28 @@ sub getSubscriptionsForUser {
 	formatDate($sp, 0);
 	return $sp;
 }
+
+sub getSubscriptionsPurchasedByUser {
+	my($self, $puid,$options) = @_;
+	my $slashdb = getCurrentDB();
+	my $restrict;
+	if($options->{only_types}){
+		if(ref $options->{only_types} eq "ARRAY"){
+			$restrict.=" AND payment_type in(". join(',', map { $slashdb->sqlQuote($_)} @{$options->{only_types}}).")";
+		} 
+	}
+	my $puid_q = $slashdb->sqlQuote($puid);
+	my $sp = $slashdb->sqlSelectAll(
+		"ts, email, payment_gross, pages, method, transaction_id, uid, payment_type",
+		"subscribe_payments",
+		"puid = $puid_q $restrict",
+		"ORDER BY spid",
+	);
+	$sp ||= [ ];
+	formatDate($sp, 0);
+	return $sp;
+}
+
 
 1;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.202 2004/03/02 18:24:46 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.203 2004/03/09 17:06:26 tvroom Exp $
 
 package Slash;
 
@@ -891,12 +891,13 @@ sub moderatorCommentLog {
 		&& $constants->{m2_multicount}
 		&& $options->{show_m2s}){
 		foreach my $m (@$mods){
-			my $key = "$m->{reason}:";
+			my $key;
 			foreach my $m2 (@{$mods_to_m2s->{$m->{id}}}) {
 				$key.="$m2->{uid} $m2->{val},";
 			}
 			$m->{m2_identity} = $key;
 		}
+		@$mods = sort {$a->{reason} <=> $b->{reason} || $a->{m2_identity} cmp $b->{m2_identity}} @$mods;
 	}
 	my $data = {
 		type		=> $type,

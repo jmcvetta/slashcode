@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.408 2003/05/28 21:32:06 brian Exp $
+# $Id: MySQL.pm,v 1.409 2003/06/02 17:03:56 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.408 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.409 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4577,7 +4577,7 @@ sub getCommentReply {
 		"date,date as time,subject,comments.points as points,
 		comment_text.comment as comment,realname,nickname,
 		fakeemail,homepage,comments.cid as cid,sid,
-		users.uid as uid",
+		users.uid as uid,reason",
 		"comments,comment_text,users,users_info,users_comments",
 		"sid=$sid_quoted
 		AND comments.cid=$pid

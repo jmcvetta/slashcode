@@ -114,7 +114,7 @@ __template__
 	Sorry, this is not an option.
 
 [% CASE 'no_uid' %]
-	Sorry, you did not specify a user.
+	Sorry, you did not specify a valid user.
 
 [% CASE 'over_socialized' %]
 	You are over the limit for the number of friends and foes you can have.
@@ -125,4 +125,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;zoo;default,v 1.24 2003/03/04 19:07:59 pudge Exp $
+$Id: data;zoo;default,v 1.25 2003/07/15 05:36:39 pater Exp $

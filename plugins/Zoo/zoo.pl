@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.43 2003/07/15 04:56:47 pater Exp $
+# $Id: zoo.pl,v 1.44 2003/07/15 05:36:39 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -653,7 +653,9 @@ sub check {
 	my($zoo, $constants, $user, $form, $slashdb) = @_;
 
 	my $uid = $form->{uid} || "";
-	if (!$uid) {
+	my $nickname = $slashdb->getUser($uid, 'nickname');
+
+	if (!$uid || $nickname eq '') {
         	# See comment in plugins/Journal/journal.pl for its call of
         	# getSectionColors() as well.
                 Slash::Utility::Anchor::getSectionColors();
@@ -664,7 +666,6 @@ sub check {
 		return;
 	}
 
-	my $nickname = $slashdb->getUser($uid, 'nickname');
 	my $user_change = { };
 	if ($uid != $user->{uid} && !isAnon($uid) && !$user->{is_anon}) {
 		# Store the fact that this user last looked at that user.

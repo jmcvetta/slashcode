@@ -7,7 +7,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::SearchToo';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -186,6 +186,8 @@ sub testSearch {
 [% PROCESS pagination %]
 <p>
 EOT
+
+	$return{rss} = {} if $rss;
 
 	return \%return;
 }

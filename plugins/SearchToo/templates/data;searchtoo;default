@@ -75,33 +75,9 @@ __template__
 		Search [% constants.sitename %]
 	[% END %]
 
-[% CASE 'stories_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Story Search
-
-[% CASE 'comments_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Comment Search
-
-[% CASE 'journals_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Journal Search
-
-[% CASE 'polls_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Poll Search
-
-[% CASE 'users_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Users Search
-
-[% CASE 'submissions_rss_title' %]
-	[% returnme.data_constant = 1 %]
-	constants.sitename Submission Search
-
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;searchtoo;default,v 1.1 2004/12/20 22:46:22 pudge Exp $
+$Id: data;searchtoo;default,v 1.2 2004/12/22 00:30:15 pudge Exp $

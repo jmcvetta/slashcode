@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: vcal.pl,v 1.2 2003/03/04 19:56:32 pudge Exp $
+# $Id: vcal.pl,v 1.3 2003/03/06 03:41:47 jamie Exp $
 
 use strict;
 use Slash;
@@ -16,7 +16,8 @@ sub main {
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
 
-	#Yeah, I am being lazy and paranoid  -Brian
+	# Yeah, I am being lazy and paranoid  -Brian
+	my $story;
 	if (!($user->{author} or $user->{is_admin}) and !$slashdb->checkStoryViewable($form->{sid})) {
 		$story = '';
 	} else {

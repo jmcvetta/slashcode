@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.109 2003/05/06 22:28:10 brian Exp $
+# $Id: Stats.pm,v 1.110 2003/05/13 18:35:42 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -705,6 +705,8 @@ sub countUsersByPage {
 		if $op;
 	$where .= " AND section='$options->{section}' "
 		if $options->{section};
+	$where = "($where) AND $options->{extra_where_clause}"
+		if $options->{extra_where_clause};
 	$self->sqlSelect("COUNT(DISTINCT uid)", "accesslog_temp", $where);
 }
 
@@ -1216,4 +1218,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.109 2003/05/06 22:28:10 brian Exp $
+$Id: Stats.pm,v 1.110 2003/05/13 18:35:42 jamie Exp $

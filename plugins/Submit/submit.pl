@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.88 2004/02/17 00:01:21 pudge Exp $
+# $Id: submit.pl,v 1.89 2004/03/22 16:01:10 cowboyneal Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -472,6 +472,11 @@ sub displayForm {
 		$fixedstory = strip_plaintext(url2html($form->{story}));
 	} else {
 		$fixedstory = strip_html(url2html($form->{story}));
+
+		# some submitters like to add whitespace before and
+		# after their introtext. This is never wanted. --Pater
+		$fixedstory =~ s/^<(?:P|BR)(?:>|\s[^>]*>)//i;
+		$fixedstory =~ s/<(?:P|BR)(?:>|\s[^>]*>)$//i;
 	}
 	$fixedstory = balanceTags($fixedstory);
 

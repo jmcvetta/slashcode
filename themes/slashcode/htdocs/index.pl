@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.101 2004/06/17 16:12:21 jamiemccarthy Exp $
+# $Id: index.pl,v 1.102 2004/06/21 18:42:07 pudge Exp $
 
 use strict;
 use Slash;
@@ -488,18 +488,18 @@ sub displayStories {
 		}
 
 		if ($story->{section} ne $constants->{defaultsection} && (!$form->{section} || $form->{section} eq 'index')) {
-			my $SECT = $reader->getSection($story->{section});
+			my $skin = $reader->getSkin($story->{section});
 			my $url;
 
-			if ($SECT->{rootdir}) {
-				$url = $SECT->{rootdir} . '/';
+			if ($skin->{rootdir}) {
+				$url = $skin->{rootdir} . '/';
 			} elsif ($user->{is_anon}) {
 				$url = $gSkin->{rootdir} . '/' . $story->{section} . '/';
 			} else {
-				$url = $gSkin->{rootdir} . '/index.pl?section=' . $story->{section};
+				$url = $gSkin->{rootdir} . '/' . $gSkin->{index_handler} . '?section=' . $story->{section};
 			}
 
-			push @links, [ $url, $SECT->{hostname} || $SECT->{title} ];
+			push @links, [ $url, $skin->{hostname} || $skin->{title} ];
 		}
 
 		if ($user->{seclev} >= 100) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.10 2002/01/10 14:28:08 pudge Exp $
+# $Id: Data.pm,v 1.11 2002/02/18 19:20:32 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -459,6 +459,8 @@ sub stripByMode {
 	$no_white_fix = defined($no_white_fix) ?
 		$no_white_fix : $fmode == LITERAL;
 
+	$str =~ s/(?:\015?\012|\015)/\n/g;  # change newline to local newline
+
 	# insert whitespace into long words, convert <>& to HTML entities
 	if ($fmode == LITERAL || $fmode == EXTRANS || $fmode == ATTRIBUTE || $fmode == CODE) {
 		# Encode all HTML tags
@@ -486,7 +488,7 @@ sub stripByMode {
 		if ($fmode == CODE) {  # CODE and TT are the same ... ?
 			$str =~ s{((?:  )+)(?: (\S))?} {
 				("&nbsp; " x (length($1)/2)) .
-				($2 ? "&nbsp;$2" : "")
+				(defined($2) ? "&nbsp;$2" : "")
 			}eg;
 			$str = '<TT>' . $str . '</TT>';
 
@@ -513,7 +515,7 @@ sub stripByMode {
 
 	# for use in templates to remove whitespace from inside HREF anchors
 	} elsif ($fmode == ANCHOR) {
-		$str =~ s/[\r\n]+//g;
+		$str =~ s/\n+//g;
 
 	# probably 'html'
 	} else {
@@ -1751,4 +1753,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.10 2002/01/10 14:28:08 pudge Exp $
+$Id: Data.pm,v 1.11 2002/02/18 19:20:32 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.102 2003/06/18 13:03:35 jamie Exp $
+# $Id: MySQL.pm,v 1.103 2003/06/24 02:35:37 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -620,7 +620,7 @@ sub getTop10Comments {
 	}
 
 	# if for any reason we don't get any comments, return now
-	return [] if scalar(@$cids) == 0;
+	return [] unless scalar(@$cids);
 
 	foreach (@$cids) {
 		# Of our prospective hot comments, find the overall time

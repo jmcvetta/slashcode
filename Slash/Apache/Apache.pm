@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.28 2002/06/18 21:27:34 brian Exp $
+# $Id: Apache.pm,v 1.29 2002/07/16 13:29:34 jamie Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -261,8 +261,9 @@ sub ConnectionIsSSL {
 	# That probably didn't work so let's get that data the hard way.
 	my $r = Apache->request;
 	my $subr = $r->lookup_uri($r->uri);
-	my $sess_id = $subr->subprocess_env('SSL_SESSION_ID');
-	return 1 if $sess_id;
+	my $https_on = ($subr && $subr->subprocess_env('HTTPS') eq 'on')
+		? 1 : 0;
+	return 1 if $https_on;
 
 	# Nope, it's not SSL.
 	return 0;

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: search.pl,v 1.4 2000/06/09 17:07:40 pudge Exp $
+#  $Id: search.pl,v 1.5 2000/06/12 14:31:08 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -66,8 +66,14 @@ sub linkSearch {
 		$x =  $C->{$_} if defined $C->{$_};
 		$x =  $I{F}{$_} if defined $I{F}{$_} && !$x;
 		$x =~ s/ /+/g;
-		$r .= "$_=$x&" if defined $x;
+		next if $x eq "";
+		if ($_ eq 'html_query') {
+			$r .= "query=$x&";
+		} else {
+			$r .= "$_=$x&";
+		}
 	}
+	$r =~ s/&$//;
 
 	$r = qq!<A HREF="$ENV{SCRIPT_NAME}?$r">$C->{'link'}</A>!;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.100 2002/10/04 20:55:29 jamie Exp $
+# $Id: admin.pl,v 1.101 2002/10/08 14:34:16 pater Exp $
 
 use strict;
 use Image::Size;
@@ -29,6 +29,7 @@ sub main {
 			function	=> \&displaySlashd,
 			seclev		=> 500,
 			adminmenu	=> 'info',
+			page		=> 'slashd',
 		},
 		edit_keyword	=> {
 			function	=> \&editKeyword,
@@ -70,6 +71,7 @@ sub main {
 
 			seclev		=> 500,
 			adminmenu	=> 'config',
+			page		=> 'blocks',
 		},
 		colors 		=> {	# colored,colorpreview,colorsave,colorrevert,
 					# colororig,colorsavedef,
@@ -77,11 +79,13 @@ sub main {
 			function 	=> \&colorEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
+			page		=> 'colors',
 		},
 		listfilters 	=> {
 			function 	=> \&listFilters, # listfilters
 			seclev		=> 100,
 			adminmenu	=> 'config',
+			page		=> 'filters',
 		},
 		editfilter	=> {
 			function 	=> \&editFilter, # newfilter,updatefilter,deletefilter,
@@ -92,6 +96,7 @@ sub main {
 			function 	=> \&siteInfo,
 			seclev		=> 10000,
 			adminmenu	=> 'info',
+			page		=> 'site',
 		},
 
 		templates 	=> { 	# templatedelete_confirm,templatesection,
@@ -102,6 +107,7 @@ sub main {
 			function 	=> \&templateEdit,
 			seclev		=> 500,
 			adminmenu	=> 'config',
+			page		=> 'templates',
 		},
 
 		topics 		=> {	# topiced,topicnew,topicsave,topicdelete
@@ -109,17 +115,20 @@ sub main {
 			function 	=>  \&topicEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
+			page		=> 'topics',
 		},
 		vars 		=> {	# varsave, varedit
 
 			function 	=> \&varEdit,
 			seclev		=> 10000,
 			adminmenu	=> 'config',
+			page		=> 'vars',
 		},
 		recent		=> {
 			function	=> \&displayRecent,
 			seclev		=> 500,
 			adminmenu	=> 'info',
+			page		=> 'recent',
 		},
 	};
 
@@ -154,7 +163,7 @@ sub main {
 		? " $gmt_ts"
 		: " $local_ts $user->{tzcode} = $gmt_ts GMT";
 	# "backSlash" needs to be in a template or something -- pudge
-	header("backSlash$time_remark$tbtitle", '', { admin => 1 , adminmenu => $ops->{$op}{adminmenu} || 'admin' });
+	header("backSlash$time_remark$tbtitle", '', { admin => 1, adminmenu => $ops->{$op}{adminmenu} || 'admin', page => $ops->{$op}{page} });
 	# admin menu is printed from within the 'header' template
 
 	# it'd be nice to have a legit retval

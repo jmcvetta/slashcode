@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.70 2003/04/17 17:00:50 pudge Exp $
+# $Id: journal.pl,v 1.71 2003/04/23 12:34:02 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -112,18 +112,18 @@ sub displayTop {
 	# this should probably be in a separate template, so the site admins
 	# can select the order themselves -- pudge
 	if ($constants->{journal_top_recent}) {
-		$journals = $journal->topRecent();
+		$journals = $journal->topRecent;
 		slashDisplay('journaltop', { journals => $journals, type => 'recent' });
 	}
 
 	if ($constants->{journal_top_posters}) {
-		$journals = $journal->top();
+		$journals = $journal->top;
 		slashDisplay('journaltop', { journals => $journals, type => 'top' });
 	}
 
 	if ($constants->{journal_top_friend}) {
 		my $zoo   = getObject('Slash::Zoo');
-		$journals = $zoo->topFriends();
+		$journals = $zoo->topFriends;
 		slashDisplay('journaltop', { journals => $journals, type => 'friend' });
 	}
 
@@ -138,7 +138,7 @@ sub displayFriends {
 	_printHead("mainhead");
 
 	my $zoo = getObject('Slash::Zoo');
-	my $friends = $zoo->getFriendsWithJournals();
+	my $friends = $zoo->getFriendsWithJournals;
 	if (@$friends) {
 		slashDisplay('journalfriends', { friends => $friends });
 	} else {
@@ -229,19 +229,30 @@ sub displayTopRSS {
 	my($journal, $constants, $user, $form, $reader) = @_;
 
 	my $journals;
+	my $type;
 	if ($form->{type} eq 'count' && $constants->{journal_top_posters}) {
-		$journals = $journal->top();
+		$type = 'count';
+		$journals = $journal->top;
 	} elsif ($form->{type} eq 'friends' && $constants->{journal_top_friend}) {
-		$journals = $journal->topFriends();
+		$type = 'friends';
+		my $zoo   = getObject('Slash::Zoo');
+		$journals = $zoo->topFriends;
 	} elsif ($constants->{journal_top_recent}) {
-		$journals = $journal->topRecent();
+		$journals = $journal->topRecent;
 	}
 
 	my @items;
 	for my $entry (@$journals) {
-#		my $time = timeCalc($entry->[3]);
+		my $title = $type eq 'count'
+			? "[$entry->[1]] $entry->[0] entries"
+			: $type eq 'friends'
+				? "[$entry->[1]] $entry->[0] friends"
+				: "[$entry->[1]] $entry->[5]";
+
+		$title =~ s/s$// if $entry->[0] == 1 && ($type eq 'count' || $type eq 'friends');
+
 		push @items, {
-			title	=> "[$entry->[1]] $entry->[5]",
+			title	=> $title,
 			'link'	=> "$constants->{absolutedir}/~" . fixparam($entry->[1]) . "/journal/"
 		};
 	}
@@ -304,7 +315,7 @@ sub displayArticleFriends {
 		$back = -1;
 	}
 
-	my $topics = $reader->getTopics();
+	my $topics = $reader->getTopics;
 	for my $article (@$articles) {
 		my $commentcount = $article->[6]
 			? $reader->getDiscussion($article->[6], 'commentcount')
@@ -401,7 +412,7 @@ sub displayArticle {
 		$back = -1;
 	}
 
-	my $topics = $reader->getTopics();
+	my $topics = $reader->getTopics;
 	for my $article (@$articles) {
 		my($date_current) = timeCalc($article->[0], "%A %B %d, %Y");
 		if ($date ne $date_current) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.141 2003/01/16 03:19:53 jamie Exp $
+# $Id: users.pl,v 1.142 2003/01/16 21:48:19 brian Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2105,7 +2105,6 @@ sub saveComm {
 
 	my $max = $constants->{comment_maxscore} - $constants->{comment_minscore};
 	my $min = -$max;
-	my $karma_bonus = ($form->{karma_bonus} !~ /^[\-+]?\d+$/) ? 0 : $form->{karma_bonus};
 	my $new_user_bonus = ($form->{new_user_bonus} !~ /^[\-+]?\d+$/) ? 0 : $form->{new_user_bonus};
 	my $new_user_percent = (($form->{new_user_percent} <= 100 && $form->{new_user_percent} >= 0) 
 			? $form->{new_user_percent}

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.10 2003/07/25 17:40:27 pudge Exp $
+# $Id: print.pl,v 1.11 2003/08/12 21:37:34 pudge Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.10 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -51,7 +51,7 @@ sub main {
 	unless ($sid) {
 		# Where should we redirect to if not to the rootdir? 
 		# Do we care?
-		redirect($constants->{rootdir});
+		redirect("$constants->{rootdir}/");
 		return;
 	}
 
@@ -70,7 +70,7 @@ sub main {
 	unless ($story) {
 		# Again, an error condition, but we're routed to the rootdir so
 		# how is the user supposed to know something is wrong?
-		redirect($constants->{rootdir});
+		redirect("$constants->{rootdir}/");
 		return;
 	}
 

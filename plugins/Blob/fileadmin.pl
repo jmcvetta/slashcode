@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fileadmin.pl,v 1.5 2003/07/25 17:40:27 pudge Exp $
+# $Id: fileadmin.pl,v 1.6 2003/08/12 21:34:33 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -52,7 +52,7 @@ sub main {
 
 	# admin.pl is not for regular users
 	unless ($user->{is_admin}) {
-		redirect("/");
+		redirect("$constants->{rootdir}/");
 		return;
 	}
 

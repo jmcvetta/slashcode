@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.85 2003/04/26 14:13:12 pudge Exp $
+# $Id: Data.pm,v 1.86 2003/05/15 16:55:33 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2807,33 +2807,45 @@ sub sitename2filename {
 }
 
 ##################################################################
+# Why is this here and not a method in Slash::DB::MySQL? - Jamie 2003/05/13
 sub createStoryTopicData {
-	my ($slashdb, $form) = @_;	
+	my($slashdb, $form) = @_;	
 	$form ||= getCurrentForm();
-	# Probably should not be changing stid
-	my @tids;
-	if ($form->{_multi}{stid} eq 'ARRAY') {
-		for (@{$form->{_multi}{stid}}) {
-			push @tids, $_;
-		}
+
+	# Probably should not be changing stid, so set up @tids.
+	my @tids = ( );
+	if ($form->{_multi}{stid} && $form->{_multi}{stid} eq 'ARRAY') {
+		@tids = @{$form->{_multi}{stid}};
+	} elsif ($form->{stid}) {
+		push @tids, $form->{stid};
 	}
-	push @tids, $form->{stid} if $form->{stid};
 	push @tids, $form->{tid} if $form->{tid};
+
+	# Store the list of original topic ids, before we generate the
+	# list of all topic ids including parents.
 	my @original = @tids;
-	my $loop_protection = 0;
+	my %original_seen = map { ($_, 1) } @original;
+
+	my $topics = $slashdb->getTopics();
+	my %seen = map { ($_, 1) } @tids;
 	for my $tid (@tids) {
-		my $new_tid = $slashdb->sqlSelect("parent_topic", "topics", "tid = $tid");
-		push @tids, $new_tid if $new_tid && grep(!/$new_tid/, @tids);
-		#This is here to kill some runaway logic loop
-		$loop_protection++;
-		last if $loop_protection > 30;
+		my $new_tid = $topics->{$tid}{parent_topic};
+		next if !$new_tid || $seen{$new_tid};
+		push @tids, $new_tid;
+		$seen{$new_tid} = 1;
 	}
 
+	# The hashref that we return has an entry for every topic id
+	# associated with this story, including all parent topic ids.
+	# The value for each topic id is a boolean *string* intended
+	# for the database:  "no" if the id is not a parent and is one
+	# of the listed topic ids for the story, or "yes" if the id is
+	# only in the list because it is the parent id of a listed
+	# topic id.
 	my %tid_ref;
 	for my $tid (@tids) {
-		# Jump to the next tid if it is zero
 		next unless $tid;
-		$tid_ref{$tid} = scalar(grep(/^$tid$/, @original)) ? 'no' : 'yes' ;
+		$tid_ref{$tid} = $original_seen{$tid} ? 'no' : 'yes' ;
 	}
 
 	return \%tid_ref;
@@ -2851,4 +2863,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.85 2003/04/26 14:13:12 pudge Exp $
+$Id: Data.pm,v 1.86 2003/05/15 16:55:33 jamie Exp $

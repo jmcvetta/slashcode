@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.11 2002/07/01 18:57:14 pudge Exp $
+# $Id: Messages.pm,v 1.12 2002/07/02 14:24:54 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -703,7 +703,7 @@ The hashref containing the rendered message data.
 
 sub render {
 	my($self, $msg, $notemplate) = @_;
-	my $constants = getCurrentStatic;
+	my $constants = getCurrentStatic();
 	my $slashdb = getCurrentDB();
 
 	$msg->{user}		= $msg->{user}  ? $slashdb->getUser($msg->{user})  : { uid => 0 };
@@ -910,4 +910,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.11 2002/07/01 18:57:14 pudge Exp $
+$Id: Messages.pm,v 1.12 2002/07/02 14:24:54 pudge Exp $

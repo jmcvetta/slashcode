@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.42 2003/02/19 18:26:47 jamie Exp $
+# $Id: Anchor.pm,v 1.43 2003/02/20 00:29:44 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -148,6 +148,7 @@ sub header {
 		unless $options->{noheader};
 
 	$user->{state}{mt}{curcol} = 0;
+	$user->{state}{mt}{currow} = 0;
 	$user->{state}{mt}{cols} = [ ];
 
 	# ssi = 1 IS NOT THE SAME as ssi = 'yes'
@@ -559,4 +560,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.42 2003/02/19 18:26:47 jamie Exp $
+$Id: Anchor.pm,v 1.43 2003/02/20 00:29:44 jamie Exp $

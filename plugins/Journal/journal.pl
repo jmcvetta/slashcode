@@ -2,18 +2,18 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.19 2001/04/26 15:59:49 pudge Exp $
+# $Id: journal.pl,v 1.20 2001/05/04 16:39:47 pudge Exp $
 
 use strict;
-use Slash;
-use Slash::DB;
-use Slash::Utility;
-use Slash::Journal;
-use Slash::Display;
+use Apache;
 use Date::Manip;
 use XML::RSS;
-use Apache;
 
+use Slash;
+use Slash::DB;
+use Slash::Display;
+use Slash::Journal;
+use Slash::Utility;
 
 sub main {
 	my %ops = (
@@ -314,7 +314,7 @@ sub addFriend {
 }
 
 sub deleteFriend {
-	my ($form, $journal) = @_;
+	my($form, $journal) = @_;
 
 	$journal->delete($form->{uid}) if $form->{uid} ;
 	displayDefault(@_);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.9 2001/04/17 14:59:48 pudge Exp $
+# $Id: Journal.pm,v 1.10 2001/05/04 16:39:47 pudge Exp $
 
 package Slash::Journal;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Slash::DB::Utility Slash::DB::MySQL);
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -103,6 +103,20 @@ sub friends {
 	$sql .= " FROM journals as jo, journal_friends as j,users as u ";
 	$sql .= " WHERE j.uid = $uid AND j.friend = u.uid AND j.friend = jo.uid";
 	$sql .= " GROUP BY u.nickname ORDER BY date DESC";
+	$self->sqlConnect;
+	my $friends = $self->{_dbh}->selectall_arrayref($sql);
+
+	return $friends;
+}
+
+sub reverse_friends {
+	my($self) = @_;
+	my $uid = $ENV{SLASH_USER};
+	my $sql;
+	$sql .= " SELECT u.nickname, j.uid";
+	$sql .= " FROM journal_friends as j, users as u";
+	$sql .= " WHERE j.friend = $uid AND j.uid = u.uid";
+	$sql .= " GROUP BY u.nickname ORDER BY uid ASC";
 	$self->sqlConnect;
 	my $friends = $self->{_dbh}->selectall_arrayref($sql);
 

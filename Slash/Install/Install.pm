@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.4 2001/04/24 14:39:35 pudge Exp $
+# $Id: Install.pm,v 1.5 2001/05/04 16:39:47 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use File::Path;
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
 @ISA       = qw(Slash::DB::Utility);
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -197,7 +197,7 @@ sub _install {
 
 	if ($plugin->{"${driver}_dump"}) {
 		if (my $dump_file = "$plugin->{dir}/" . $plugin->{"${driver}_dump"}) {
-			open(DUMP, "< $dump_file");
+			open(DUMP, "< $dump_file") or warn "Can't open $dump_file: $!";
 			while (<DUMP>) {
 				next unless /^INSERT/;
 				chomp;

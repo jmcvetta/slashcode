@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.117 2003/01/31 07:46:47 jamie Exp $
+# $Id: comments.pl,v 1.118 2003/02/03 20:46:03 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1155,9 +1155,9 @@ sub submitComment {
 			$slashdb->setStory($discussion->{sid}, { writestatus => 'dirty' });
 		}
 
-		$slashdb->setUser($user->{uid}, {
+		$slashdb->setUser($clean_comment->{uid}, {
 			-totalcomments => 'totalcomments+1',
-		});
+		}) if !isAnon($clean_comment->{uid});
 
 		my($messages, $reply, %users);
 		if ($form->{pid} || $discussion->{url} =~ /\bjournal\b/ || $constants->{commentnew_msg}) {
@@ -1477,7 +1477,7 @@ sub moderateCid {
 
 		# Next, adjust the appropriate values for the user who
 		# posted the comment.
-		if ($comment->{uid} != $constants->{anonymous_coward_uid}) {
+		if (!isAnon($comment->{uid})) {
 			my $lost_tokens_per_downmod = 1; # XXX should be a var
 			my $cu_changes = { };
 			if ($val < 0) {

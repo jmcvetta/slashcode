@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.216 2004/07/19 21:39:25 tvroom Exp $
+# $Id: Slash.pm,v 1.217 2004/07/19 22:10:06 tvroom Exp $
 
 package Slash;
 
@@ -1431,7 +1431,7 @@ sub displayStory {
 		if ($full) {
 			$story->{bodytext} = parseSlashizedLinks($story->{bodytext});
 			$story->{bodytext} = processSlashTags($story->{bodytext}, { break => 1 });
-			$options->{stid} = $reader->getTopiclistForStory($story->{sid});
+			$options->{topiclist} = $reader->getTopiclistForStory($story->{sid});
 			# if a secondary page, put bodytext where introtext would normally go
 			# maybe this is not the right thing, but is what we are doing for now;
 			# let me know if you have another idea -- pudge

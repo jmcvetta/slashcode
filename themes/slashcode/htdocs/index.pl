@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.53 2002/12/11 00:41:20 brian Exp $
+# $Id: index.pl,v 1.54 2003/01/31 02:58:51 jamie Exp $
 
 use strict;
 use Slash;
@@ -55,12 +55,14 @@ sub main {
 
 	# Old pages which search on issuemode kill the DB performance-wise
 	# so if possible we balance across the two -Brian
-	my($fetchdb);
-	if ($form->{issue} && $constants->{backup_db_user}) {
-		$fetchdb  = getObject('Slash::DB', $constants->{backup_db_user});
+	my $fetchdb;
+	if ($constants->{index_gse_backup_prob}
+		&& $constants->{backup_db_user}
+		&& rand(1) < $constants->{index_gse_backup_prob}) {
+		$fetchdb = getObject('Slash::DB', $constants->{backup_db_user});
 		$fetchdb ||= $slashdb; # In case it fails
 	} else {
-		$fetchdb  = $slashdb;
+		$fetchdb = $slashdb;
 	}
 	$stories = $fetchdb->getStoriesEssentials(
 		$limit, $form->{section},

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.52 2002/06/11 02:54:36 cliff Exp $
+# $Id: slashschema_create.sql,v 1.53 2002/06/18 11:03:36 jamie Exp $
 #
 
 #
@@ -387,7 +387,7 @@ CREATE TABLE moderatorlog (
 
 DROP TABLE IF EXISTS pollanswers;
 CREATE TABLE pollanswers (
-	qid mediumint NOT NULL,
+	qid mediumint UNSIGNED NOT NULL,
 	aid mediumint NOT NULL,
 	answer char(255),
 	votes mediumint,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.96 2003/07/07 18:10:39 pater Exp $
+# $Id: Environment.pm,v 1.97 2003/07/15 22:15:07 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -27,11 +27,12 @@ LONG DESCRIPTION.
 use strict;
 use Apache::ModuleConfig;
 use Digest::MD5 'md5_hex';
+use Time::HiRes;
 
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -69,6 +70,10 @@ use vars qw($VERSION @EXPORT);
 	bakeUserCookie
 	eatUserCookie
 	setCookie
+
+	slashProf
+	slashProfInit
+	slashProfEnd
 
 	createLog
 	errorLog
@@ -2089,6 +2094,108 @@ sub createEnvironment {
 	createCurrentAnonymousCoward($user);
 }
 
+#========================================================================
+{my @prof;
+sub slashProf {
+	return unless getCurrentStatic('use_profiling');
+	my($begin, $end) = @_;
+	$begin ||= '';
+	$end   ||= '';
+	push @prof, [ Time::HiRes::time(), (caller(0))[0, 1, 2, 3], $begin, $end ];
+}
+
+sub slashProfInit {
+	return unless getCurrentStatic('use_profiling');
+	@prof = ();
+}
+
+sub slashProfEnd {
+	return unless getCurrentStatic('use_profiling');
+	return unless @prof;
+
+	my $first = $prof[0][0];
+	my $last  = $first;  # Matthew 20:16
+	my $end   = $prof[-1][0];
+	my $total = ($end - $first) * 1_000;
+
+	$total ||= $first || $end || 1;  # just in case
+
+	print STDERR "\n*** Begin profiling ($$)\n";
+	print STDERR "*** Begin ordered ($$)\n";
+	printf STDERR <<'EOT', "PID", "what", "this #", "pct", "tot. #", "pct";
+%-6.6s: %-64.64s % 6.6s ms (%6.6s%%) / % 6.6s ms (%6.6s%%)
+EOT
+
+	my(%totals, %begin);
+	for my $prof (@prof) {
+		my $t1 = ($prof->[0] - $first) * 1_000;
+		my $t2 = ($prof->[0] - $last) * 1_000;
+		my $p1 = $t1 / $total * 100;
+		my $p2 = $t2 / $total * 100;
+		my $s1 = sprintf('%.2f', $p1);
+		my $s2 = sprintf('%.2f', $p2);
+		$last = $prof->[0];
+
+		# either use passed tag(s), or package/line number
+		my $where;
+		if ($prof->[6]) {
+			$where = "$prof->[6] end";
+		}
+
+		if ($prof->[5]) {
+			$where .= '; ' if $where;
+			$where .= "$prof->[5] begin";
+		}
+		
+		$where ||= sprintf('%56s:%d:', @{$prof}[1, 3]);
+		$where =~ s/[\t\r\n]/ /g;
+		$where =~ s/^ +//;
+		$where =~ s/ +$//;
+
+		# if we know what this is the end of, we want that;
+		# if no begin or end, use that; else, punt
+		if ($prof->[6] && defined $begin{$prof->[6]}) {
+			$totals{$prof->[6]} += $t1 - $begin{$prof->[6]};
+			delete $begin{$prof->[6]};
+		} elsif (!$prof->[5] && !$prof->[6]) {
+			$totals{$where} += $t2;
+		}
+
+		# only take away if an end of something
+		# (note: assume nested)
+		if ($prof->[6]) {
+			for (keys %begin) {
+				$begin{$_} += $t2 unless $_ eq $prof->[5];
+			}
+		}
+
+		# mark new beginning
+		$begin{$prof->[5]} = $t1 if $prof->[5];
+
+		printf STDERR <<'EOT', $$, $where, $t2, $s2, $t1, $s1;
+%-6d: %-64.64s % 6d ms (%6.6s%%) / % 6d ms (%6.6s%%)
+EOT
+	}
+
+	print STDERR "\n*** Begin summary ($$)\n";
+	printf STDERR <<'EOT', "PID", "what", "time", "pct";
+%-6.6s: %-64.64s % 6.6s ms (%6.6s%%)
+EOT
+	for (sort { $totals{$b} <=> $totals{$a} } keys %totals) {
+		my $p = $totals{$_} / $total * 100;
+		my $s = sprintf('%.2f', $p);
+		printf STDERR <<'EOT', $$, $_, $totals{$_}, $s;
+%-6d: %-64.64s % 6d ms (%6.6s%%)
+EOT
+	}
+
+
+	print STDERR "*** End profiling ($$)\n\n";
+
+	@prof = ();
+}
+}
+
 ######################################################################
 # Quick intro -Brian
 sub getCurrentCache {
@@ -2123,4 +2230,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.96 2003/07/07 18:10:39 pater Exp $
+$Id: Environment.pm,v 1.97 2003/07/15 22:15:07 pudge Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.149 2004/05/11 19:01:55 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.150 2004/05/25 17:58:35 tvroom Exp $
 #
 
 #
@@ -265,7 +265,8 @@ CREATE TABLE comments (
 	KEY ipid (ipid),
 	KEY subnetid (subnetid),
 	KEY theusual (sid,uid,points,cid),
-	KEY countreplies (pid,sid)
+	KEY countreplies (pid,sid),
+	KEY uid_date (uid,date)
 ) TYPE=MyISAM;
 
 #

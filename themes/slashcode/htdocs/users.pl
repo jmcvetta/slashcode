@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.256 2004/10/08 20:52:59 jamiemccarthy Exp $
+# $Id: users.pl,v 1.257 2004/10/09 21:30:55 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1577,6 +1577,16 @@ sub tildeEd {
 	my $section_descref = { };
 	my $box_order;
 	my $sections_description = $reader->getSectionBlocks();
+
+	# the names of all the boxes in @{$skinBoxes->{$constants->{mainpage_skid}}}
+	# should be unioned into sections_description.  whether the
+	# values are 0 or 1 is calculated correctly, but we're
+	# missing some 0's that should appear, I think, under
+	# some circumstances.  ah heck, the whole concept of
+	# sectional slashboxes should be redone (why the heck
+	# do we have skinname_more instead of just a block
+	# called olderstories?)
+
 	my $slashboxes_hr = { };
 	my $slashboxes_textlist = $user_edit->{slashboxes};
 	if (!$slashboxes_textlist) {

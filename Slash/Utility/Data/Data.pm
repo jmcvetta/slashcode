@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.110 2004/01/27 18:26:00 tvroom Exp $
+# $Id: Data.pm,v 1.111 2004/02/02 07:35:03 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -66,6 +66,7 @@ use vars qw($VERSION @EXPORT);
 	fixparam
 	fixurl
 	fudgeurl
+	fullhost_to_domain
 	formatDate
 	getArmoredEmail
 	createLogToken
@@ -74,6 +75,7 @@ use vars qw($VERSION @EXPORT);
 	nickFix
 	nick2matchname
 	root2abs
+	roundrand
 	set_rootdir
 	sitename2filename
 	strip_anchor
@@ -153,6 +155,34 @@ sub root2abs {
 	} else {
 		return getCurrentStatic('absolutedir');
 	}
+}
+
+#========================================================================
+
+=head2 roundrand()
+
+Rounds a real value to an integer value, randomly, with the
+two options weighted in linear proportion to the fractional
+component.  E.g. 1.3 is 30% likely to round to 1, 70% to 2.
+And -4.9 is 90% likely to round to -5, 10% to -4.
+
+=over 4
+
+=item Return value
+
+Input value converted to integer.
+
+=back
+
+=cut
+
+sub roundrand {
+	my($real) = @_;
+	return 0 if !$real;
+	my $i = int($real);
+	$i-- if $real < 0;
+	my $frac = $real - $i;
+	return( (rand(1) >= $frac) ? $i : $i+1 );
 }
 
 #========================================================================
@@ -2272,6 +2302,34 @@ sub addDomainTags {
 	return $html;
 }
 
+sub fullhost_to_domain {
+	my($fullhost) = @_;
+	my $info = lc $fullhost;
+	if ($info =~ m/^([\d.]+)\.in-addr\.arpa$/) {
+		$info = join(".", reverse split /\./, $1);
+	}
+	if ($info =~ m/^(\d{1,3}\.){3}\d{1,3}$/) {
+		# leave a numeric IP address alone
+	} elsif ($info =~ m/([\w-]+\.[a-z]{3,4})$/) {
+		# a.b.c.d.com -> d.com
+		$info = $1;
+	} elsif ($info =~ m/([\w-]+\.[a-z]{2,4}\.[a-z]{2})$/) {
+		# a.b.c.d.co.uk -> d.co.uk
+		$info = $1;
+	} elsif ($info =~ m/([\w-]+\.[a-z]{2})$/) {
+		# a.b.c.realdomain.gr -> realdomain.gr
+		$info = $1;
+	} else {
+		# any other a.b.c.d.e -> c.d.e
+		my @info = split /\./, $info;
+		my $num_levels = scalar @info;
+		if ($num_levels >= 3) {
+			$info = join(".", @info[-3..-1]);
+		}
+	}
+	return $info;
+}
+
 sub _url_to_domain_tag {
 	my($href, $link, $body) = @_;
 	my $absolutedir = getCurrentStatic('absolutedir');
@@ -2279,29 +2337,7 @@ sub _url_to_domain_tag {
 	my $uri_str = $uri->as_string;
 	my($info, $host, $scheme) = ("", "", "");
 	if ($uri->can("host") and $host = $uri->host) {
-		$info = lc $host;
-		if ($info =~ m/^([\d.]+)\.in-addr\.arpa$/) {
-			$info = join(".", reverse split /\./, $1);
-		}
-		if ($info =~ m/^(\d{1,3}\.){3}\d{1,3}$/) {
-			# leave a numeric IP address alone
-		} elsif ($info =~ m/([\w-]+\.[a-z]{3,4})$/) {
-			# a.b.c.d.com -> d.com
-			$info = $1;
-		} elsif ($info =~ m/([\w-]+\.[a-z]{2,4}\.[a-z]{2})$/) {
-			# a.b.c.d.co.uk -> d.co.uk
-			$info = $1;
-		} elsif ($info =~ m/([\w-]+\.[a-z]{2})$/) {
-			# a.b.c.realdomain.gr -> realdomain.gr
-			$info = $1;
-		} else {
-			# any other a.b.c.d.e -> c.d.e
-			my @info = split /\./, $info;
-			my $num_levels = scalar @info;
-			if ($num_levels >= 3) {
-				$info = join(".", @info[-3..-1]);
-			}
-		}
+		$info = fullhost_to_domain($host);
 	} elsif ($uri->can("scheme") and $scheme = $uri->scheme) {
 		# Most schemes, like ftp or http, have a host.  Some,
 		# most notably mailto and news, do not.  For those,
@@ -3178,4 +3214,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.110 2004/01/27 18:26:00 tvroom Exp $
+$Id: Data.pm,v 1.111 2004/02/02 07:35:03 jamiemccarthy Exp $

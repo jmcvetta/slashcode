@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.132 2004/03/13 17:17:37 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.133 2004/03/15 18:37:10 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.133 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2150,6 +2150,13 @@ sub getAllTemplateIds {
 	$self->sqlSelectColArrayref(
 		'tpid', 'templates', $where, 'ORDER BY tpid'
 	);
+}
+
+sub getCidForDaysBack {
+	my ($self, $days, $startat_cid) = @_;
+	$days ||= 0;
+	$startat_cid ||= 0;
+	return $self->sqlSelect("min(cid)", "comments", "cid > $startat_cid and date > DATE_SUB(NOW(), INTERVAL $days day)");
 }
 
 1;

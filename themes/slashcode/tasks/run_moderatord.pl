@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.17 2002/09/24 17:11:00 jamie Exp $
+# $Id: run_moderatord.pl,v 1.18 2002/09/25 05:15:48 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -89,7 +89,8 @@ sub give_out_points {
 			$statsSave->addStatDaily("mod_points_gain_granted", $n_grantees);
 			# Reverse-engineer how many tokens that was.
 			my $tokperpt = $constants->{tokensperpoint} || 8;
-			my $n_tokens = $n_grantees * $tokperpt;
+			my $maxpoints = $constants->{maxpoints} || 5;
+			my $n_tokens = $n_grantees * $tokperpt * $maxpoints;
 			$statsSave->addStatDaily("mod_tokens_lost_converted", $n_tokens);
 		}
 	}

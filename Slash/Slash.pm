@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.90 2003/01/14 21:30:31 jamie Exp $
+# $Id: Slash.pm,v 1.91 2003/01/16 00:53:30 brian Exp $
 
 package Slash;
 
@@ -148,6 +148,10 @@ sub selectComments {
 			if ($user->{people}{FOF()}{$C->{uid}});
 		$C->{points} += $user->{people_bonus_eof}
 			if ($user->{people}{EOF()}{$C->{uid}});
+
+		#Karma bonus time
+		$C->{points} += $user->{karma_bonus}
+			if $user->{karma_bonus} && $C->{karma_bonus} eq 'yes';
 
 		# fix points in case they are out of bounds
 		$C->{points} = $min if $C->{points} < $min;

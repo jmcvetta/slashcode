@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.292 2003/01/15 19:36:58 jamie Exp $
+# $Id: MySQL.pm,v 1.293 2003/01/16 00:53:30 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.292 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.293 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4140,7 +4140,7 @@ sub getCommentsForUser {
 	# harder to read/edit variable assignments?  -- pudge
 	my $select = " cid, date, date as time, subject, nickname, homepage, fakeemail, ";
 	$select .= "	users.uid as uid, sig, comments.points as points, pid, pid as original_pid, sid, ";
-	$select .= " lastmod, reason, journal_last_entry_date, ipid, subnetid ";
+	$select .= " lastmod, reason, journal_last_entry_date, ipid, subnetid, karma_bonus ";
 	my $tables = "	comments, users  ";
 	my $where = "	sid=$sid_quoted AND comments.uid=users.uid ";
 

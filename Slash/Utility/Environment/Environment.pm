@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.111 2004/01/27 22:54:37 pudge Exp $
+# $Id: Environment.pm,v 1.112 2004/02/03 21:31:46 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -2004,6 +2004,8 @@ sub getOpAndDatFromStatusAndURI {
 		$uri = 'image';
 	} elsif ($uri =~ /\.png$/) {
 		$uri = 'image';
+	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/ || $ENV{QUERY_STRING} =~ /\bcontent_type=rss\b/) {
+		$uri = 'rss';
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
 	# This is for me, I am getting tired of patching my local copy -Brian
@@ -2013,8 +2015,6 @@ sub getOpAndDatFromStatusAndURI {
 		$uri =~ s|^/(.*)\.rpm$|$1|;
 	} elsif ($uri =~ /\.dmg$/) {
 		$uri =~ s|^/(.*)\.dmg$|$1|;
-	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
-		$uri = 'rss';
 	} elsif ($uri =~ /\.css$/) {
 		$uri = 'css';
 	} elsif ($uri =~ /\.shtml$/) {
@@ -2290,4 +2290,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.111 2004/01/27 22:54:37 pudge Exp $
+$Id: Environment.pm,v 1.112 2004/02/03 21:31:46 pudge Exp $

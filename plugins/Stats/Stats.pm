@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.159 2005/01/18 18:34:21 tvroom Exp $
+# $Id: Stats.pm,v 1.160 2005/01/18 20:54:28 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.159 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -127,7 +127,7 @@ sub new {
 			@PAGES = @{$options->{other_no_op}};
 		} else {
 			@PAGES = qw|index article search comments palm journal rss page users|;
-			@PAGES, @{$constants->{op_extras_countdaily}};
+			push @PAGES, @{$constants->{op_extras_countdaily}};
 		}
 
 		
@@ -1960,4 +1960,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.159 2005/01/18 18:34:21 tvroom Exp $
+$Id: Stats.pm,v 1.160 2005/01/18 20:54:28 pudge Exp $

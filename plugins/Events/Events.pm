@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.5 2002/05/04 06:54:15 brian Exp $
+# $Id: Events.pm,v 1.6 2002/05/04 17:47:23 brian Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -89,7 +89,7 @@ sub getEventsByDay {
 	my $user = getCurrentUser();
 	my $section;
 	$section ||= $user->{section};
-	my $where = "((to_days(begin) >= to_days('$date')) AND (to_days(end) <= to_days('$date')))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
+	my $where = "((to_days(begin) <= to_days('$date')) AND (to_days(end) >= to_days('$date')))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
 	$where .= " AND stories.section = '$section'" if $section;
 	my $order = "ORDER BY tid";
 	$order .= " LIMIT $limit "

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.167 2004/01/31 00:05:48 tvroom Exp $
+# $Id: adminmail.pl,v 1.168 2004/02/02 17:37:31 tvroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -25,7 +25,6 @@ $task{$me}{code} = sub {
 	# These are the ops (aka pages) that we scan for.
 	my @PAGES = qw|index article search comments palm journal rss page users|;
 	my @op_extra_pages = grep{$_} split(/\|/, $constants->{op_extras_countdaily});
-	my $no_op = [ grep {$_} split(/\|/, $constants->{op_exclude_from_countdaily}) ];
 	push @PAGES, @op_extra_pages;
 	$data{extra_pagetypes} = \@op_extra_pages;
 
@@ -266,16 +265,16 @@ EOT
 	slashdLog("Page Counting Begin");
 	my $sdTotalHits = $backupdb->getVar('totalhits', 'value', 1);
 	my $daily_total = $logdb->countDailyByPage('', {
-		no_op => $no_op,
+		no_op => $constants->{op_exclude_from_countdaily},
 	});
 
 	my $anon_daily_total = $logdb->countDailyByPage('', {
-		no_op     => $no_op,
+		no_op     => $constants->{op_exclude_from_countdaily},
 		user_type => "anonymous"
 	});
 
 	my $logged_in_daily_total = $logdb->countDailyByPage('', {
-		no_op     => $no_op,
+		no_op     => $constants->{op_exclude_from_countdaily},
 		user_type => "logged-in"
 	});
 	
@@ -284,7 +283,7 @@ EOT
 	# This doesn't work for the other sites... -Brian
 	my $homepage = $logdb->countDailyByPage('index', {
 		section => 'index',
-		no_op   => $no_op,
+		no_op   => $constants->{op_exclude_from_countdaily},
 	});
 
 	my $unique_users = $logdb->countUsersByPage();
@@ -298,7 +297,7 @@ EOT
 	$data{grand_total_static} = sprintf("%8d", $grand_total_static);
 	my $total_static = $logdb->countDailyByPage('', {
 		static => 'yes',
-		no_op => $no_op 
+		no_op => $constants->{op_exclude_from_countdaily}
 	} );
 	$data{total_static} = sprintf("%8d", $total_static);
 	my $recent_subscribers = $stats->getRecentSubscribers();
@@ -378,7 +377,7 @@ EOT
 		my $uniq = $logdb->countDailyByPageDistinctIPID('', { section => $section });
 		my $pages = $logdb->countDailyByPage('', {
 			section		=> $section,
-			no_op		=> $no_op
+			no_op		=> $constants->{op_exclude_from_countdaily}
 		} );
 		my $bytes = $logdb->countBytesByPage('', { section => $section });
 		my $users = $logdb->countUsersByPage('', { section => $section });
@@ -407,7 +406,7 @@ EOT
 			my $uniq = $logdb->countDailyByPageDistinctIPID($op, { section => $section });
 			my $pages = $logdb->countDailyByPage($op, {
 				section => $section,
-				no_op => $no_op
+				no_op => $constants->{op_exclude_from_countdaily}
 			} );
 			my $bytes = $logdb->countBytesByPage($op, { section => $section });
 			my $users = $logdb->countUsersByPage($op, { section => $section });
@@ -477,7 +476,7 @@ EOT
 
 
 	my $total_bytes = $logdb->countBytesByPage('', {
-		no_op => $no_op
+		no_op => $constants->{op_exclude_from_countdaily}
 	} );
 	my $grand_total_bytes = $logdb->countBytesByPage('');
 

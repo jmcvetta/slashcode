@@ -3,7 +3,9 @@
 	<TITLE>Slashcode FAQ</TITLE>
 <!--#include virtual="/slashhead.inc"-->
 
-<!-- ($VERSION) = '$Id: faq.shtml,v 1.1 2003/01/28 04:24:05 jamie Exp $' =~ /^\$Id: \S+ (\S+) -->
+<!--
+($VERSION) = '$Id: faq.shtml,v 1.2 2003/02/05 19:10:17 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+-->
 
 <H1>Slashcode FAQ</H1>
 
@@ -505,6 +507,6 @@ information on how to contact us.  And thank you!
 
 
 
-<P><EM>Last update: $Id: faq.shtml,v 1.1 2003/01/28 04:24:05 jamie Exp $</EM>
+<P><EM>Last update: $Id: faq.shtml,v 1.2 2003/02/05 19:10:17 jamie Exp $</EM>
 
 <!--#include virtual="/slashfoot.inc"-->

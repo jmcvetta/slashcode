@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.69 2002/08/13 12:31:39 pudge Exp $
+# $Id: submit.pl,v 1.70 2002/10/11 01:15:30 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -45,10 +45,7 @@ sub main {
 
 	# Show submission title on browser's titlebar.
 	my($tbtitle) = $form->{title};
-	if ($tbtitle) {
-		$tbtitle =~ s/^"?(.+?)"?$/"$1"/;
-		$tbtitle = "- $tbtitle";
-	}
+	$tbtitle =~ s/^"?(.+?)"?$/$1/ if $tbtitle;
 
 	my $ops = {
 		# initial form, no formkey needed due to 'preview' requirement
@@ -101,9 +98,11 @@ sub main {
 		! $ops->{$op}{function}
 	);
 
+	my $data = { admin => 1 };
+	$data->{tab_selected} = 'submissions' if $op eq 'list';
 	header(
 		getData('header', { tbtitle => $tbtitle } ),
-		'', { admin => 1 }
+		'', $data
 	);
 
 	if ($user->{seclev} < 100) {

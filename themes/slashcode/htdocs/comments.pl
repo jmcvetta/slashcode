@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.99 2002/10/08 18:51:36 brian Exp $
+# $Id: comments.pl,v 1.100 2002/10/11 01:15:30 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -521,7 +521,7 @@ sub commentIndexCreator {
 			forward		=> $forward,
 			args		=> _buildargs($form),
 			start		=> $start,
-			supress_create	=> 1,
+			suppress_create	=> 1,
 			back		=> $back,
 		});
 	} else {
@@ -568,7 +568,7 @@ sub commentIndexPersonal {
 			forward		=> $forward,
 			args		=> _buildargs($form),
 			start		=> $start,
-			supress_create	=> 1,
+			suppress_create	=> 1,
 			back		=> $back,
 		});
 	} else {

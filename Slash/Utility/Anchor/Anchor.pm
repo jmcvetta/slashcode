@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.34 2002/10/08 14:34:16 pater Exp $
+# $Id: Anchor.pm,v 1.35 2002/10/11 01:15:30 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -158,7 +158,9 @@ sub header {
 	# figure out which admin menu to display and which
 	# tab to highlight
 	$data->{adminmenu} = $options->{adminmenu} || 'admin';
-	$data->{page} = $options->{page} if $options->{page};
+	# Should we also pass thru {page} here or is that outdated?
+#print STDERR "header(options->page) defined: '$options->{page}' for title '$data->{title}'\n" if defined($options->{page});
+	$data->{tab_selected} = $options->{tab_selected} if $options->{tab_selected};
 
 	if ($options->{admin} && $user->{is_admin}) {
 		$user->{state}{adminheader} = 1;
@@ -530,4 +532,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.34 2002/10/08 14:34:16 pater Exp $
+$Id: Anchor.pm,v 1.35 2002/10/11 01:15:30 jamie Exp $

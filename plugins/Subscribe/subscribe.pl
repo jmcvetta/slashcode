@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.16 2002/04/12 03:54:45 jamie Exp $
+# $Id: subscribe.pl,v 1.17 2002/10/11 01:15:30 jamie Exp $
 
 use strict;
 
@@ -52,6 +52,11 @@ sub main {
 	$op = 'default' unless $ops->{$op};
 
 	header("subscribe") unless $op eq 'pause';
+	print createMenu('users', {
+                style =>	'tabbed',
+		justify =>	'right',
+		tab_selected =>	'subscription',
+	});
 
 	my $retval = $ops->{$op}{function}->($form, $slashdb, $user, $constants);
 

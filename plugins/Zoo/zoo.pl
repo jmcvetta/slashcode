@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.29 2002/09/30 20:34:24 brian Exp $
+# $Id: zoo.pl,v 1.30 2002/10/11 01:15:30 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -493,10 +493,15 @@ sub check {
 
 sub _printHead {
 	my($head, $data) = @_;
+	my $slashdb = getCurrentDB();
+	my $useredit = $data->{uid}
+		? $slashdb->getUser($data->{uid})
+		: getCurrentUser();
 	my $title = getData($head, $data);
 	header($title);
 	# Store the title and pass it on to the page -Brian
 	$data->{title} = $title;
+	$data->{useredit} = $useredit;
 	slashDisplay("zoohead", $data);
 }
 

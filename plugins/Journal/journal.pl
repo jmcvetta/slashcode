@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.47 2002/09/27 21:01:50 pudge Exp $
+# $Id: journal.pl,v 1.48 2002/10/11 01:15:30 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -247,7 +247,7 @@ sub displayArticleFriends {
 	my @collection;
 	my $zoo   = getObject('Slash::Zoo');
 
-	if ($form->{uid} or $form->{nick}) {
+	if ($form->{uid} || $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
 		$nickname	= $slashdb->getUser($uid, 'nickname');
 	} else {
@@ -322,7 +322,7 @@ sub displayArticle {
 	my($date, $forward, $back, @sorted_articles, $nickname, $uid, $discussion);
 	my $collection = {};
 
-	if ($form->{uid} or $form->{nick}) {
+	if ($form->{uid} || $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
 		$nickname	= $slashdb->getUser($uid, 'nickname');
 	} else {
@@ -685,7 +685,12 @@ sub _printHead {
 	my $title = getData($head, $data);
 	header($title);
 	if ($new_header) {
-		$data->{page} = 'journal';
+		$data->{selected} = 'journal';
+		my $slashdb = getCurrentDB();
+		my $useredit = $data->{uid}
+			? $slashdb->getUser($data->{uid})
+			: getCurrentUser();
+		$data->{useredit} = $useredit;
 		print createMenu("users");
 		slashDisplay("user_titlebar", $data);
 		print createMenu("journal");

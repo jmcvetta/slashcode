@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.130 2002/11/29 20:48:31 jamie Exp $
+# $Id: users.pl,v 1.131 2002/12/10 20:37:31 brian Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1961,6 +1961,14 @@ sub saveUser {
 			->as_string if $homepage ne '';
 	$homepage = substr($homepage, 0, 100) if $homepage ne '';
 
+	my $calendar_url = $form->{calendar_url};
+	if ($calendar_url) {
+		$calendar_url =~ s/^http:\/\///g;
+		$calendar_url =~ s/^webcal:\/\///g;
+		$calendar_url =~ s/^\/\///g;
+		$calendar_url = substr($calendar_url, 0, 200) if $calendar_url ne '';
+	}
+
 	# for the users table
 	my $user_edits_table = {
 		homepage	=> $homepage,
@@ -1968,6 +1976,11 @@ sub saveUser {
 		pubkey		=> $form->{pubkey},
 		copy		=> $form->{copy},
 		quote		=> $form->{quote},
+		calendar_url	=> $calendar_url,
+		yahoo	=> $form->{yahoo},
+		jabber	=> $form->{jabber},
+		aim	=> $form->{aim},
+		icq	=> $form->{icq},
 	};
 	for (keys %extr) {
 		$user_edits_table->{$_} = $extr{$_} if defined $extr{$_};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.171 2004/08/08 14:19:21 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.172 2004/08/10 01:56:05 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -51,6 +51,20 @@ sub sqlShowSlaveStatus {
 	push @{$statlist}, $_ while $_ = $stat->fetchrow_hashref;
 
 	return $statlist;
+}
+
+sub showQueryCount {
+	my ($self) = @_;
+	$self->sqlConnect();
+	my $sth = $self->{_dbh}->prepare("SHOW STATUS");
+	$sth->execute();
+	my $q;
+	while (my ($key, $val) = $sth->fetchrow()) {
+		$q = $val, last if $key eq "Questions";
+	}
+	$sth->finish();
+	return $q;
+
 }
 
 ########################################################

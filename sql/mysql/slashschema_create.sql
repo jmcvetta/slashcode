@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.96 2003/02/07 20:30:00 brian Exp $
+# $Id: slashschema_create.sql,v 1.97 2003/02/07 20:52:01 brian Exp $
 #
 
 #
@@ -892,7 +892,7 @@ CREATE TABLE templates (
 DROP TABLE IF EXISTS topics;
 CREATE TABLE topics (
 	tid smallint UNSIGNED NOT NULL auto_increment,
-	parent_topic smallint UNSIGNED,
+	parent_topic smallint UNSIGNED DEFAULT 0 NOT NULL,
 	name char(20) NOT NULL,
 	image varchar(100),
 	alttext char(40),

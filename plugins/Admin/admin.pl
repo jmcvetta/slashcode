@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.13 2001/04/25 11:54:50 pudge Exp $
+# $Id: admin.pl,v 1.14 2001/04/25 17:12:39 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -647,7 +647,7 @@ sub colorEdit {
 	my $colorblock;
 	$form->{color_block} ||= 'colors';
 
-	if ($form->{colorpreview}) {
+	if ($form->{colorpreview} || $form->{colorsave}) {
 		$colorblock_clean = $colorblock =
 			join ',', @{$form}{qw[fg0 fg1 fg2 fg3 fg4 bg0 bg1 bg2 bg3 bg4]};
 

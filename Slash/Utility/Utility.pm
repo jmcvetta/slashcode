@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.8 2001/04/24 16:37:24 pudge Exp $
+# $Id: Utility.pm,v 1.9 2001/04/25 17:12:39 pudge Exp $
 
 package Slash::Utility;
 
@@ -39,7 +39,7 @@ use XML::Parser;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(
@@ -354,7 +354,7 @@ sub formatDate {
 
 #========================================================================
 
-=head2 timeCalc(DATE [, FORMAT])
+=head2 timeCalc(DATE [, FORMAT, OFFSET])
 
 Format time strings using user's format preference.
 
@@ -371,6 +371,11 @@ Raw date from database.
 =item FORMAT
 
 Optional format to override user's format.
+
+=item OFFSET
+
+Optional positive or negative integer for offset seconds from GMT,
+to override user's offset.
 
 =back
 

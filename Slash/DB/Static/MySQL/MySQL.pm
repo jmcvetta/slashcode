@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.104 2003/07/15 19:06:08 vroom Exp $
+# $Id: MySQL.pm,v 1.105 2003/07/15 22:25:13 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1665,11 +1665,11 @@ sub countPollQuestion {
 
 ########################################################
 
-sub setCurrentSectionPolls{
-        my($self)=@_;
-        my $section_polls=$self->sqlSelectAllHashrefArray("section,max(date) as date","pollquestions","date<=NOW() and polltype='section'","group by section"); 
-	foreach my $p(@$section_polls){
-                my $poll=$self->sqlSelectHashref("qid,section","pollquestions","section='$p->{section}' and date='$p->{date}'");
+sub setCurrentSectionPolls {
+        my($self) = @_;
+        my $section_polls = $self->sqlSelectAllHashrefArray("section,max(date) as date", "pollquestions", "date<=NOW() and polltype='section'", "group by section"); 
+	foreach my $p (@$section_polls) {
+                my $poll = $self->sqlSelectHashref("qid,section", "pollquestions", "section='$p->{section}' and date='$p->{date}'");
                 $self->setSection($poll->{section}, { qid => $poll->{qid} });
         }
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.31 2003/01/14 21:27:27 jamie Exp $
+# $Id: Journal.pm,v 1.32 2003/01/24 14:56:20 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -285,8 +285,8 @@ sub searchUsers {
 	);
 
 	for my $user (sort { lc $a->{nickname} cmp lc $b->{nickname} } @$find) {
-		my $uid  = $user->[2];
-		my $nick = $user->[1];
+		my $uid  = $user->{uid};
+		my $nick = $user->{nickname};
 		if (exists $journals->{$uid}) {
 			push @users, [
 				$nick, $uid, $journals->{$uid}{date},

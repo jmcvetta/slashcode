@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.29 2002/04/15 14:43:55 pudge Exp $
+# $Id: index.pl,v 1.30 2002/04/15 18:32:32 patg Exp $
 
 use strict;
 use Slash;
@@ -238,11 +238,8 @@ sub displayStories {
 	my $user      = getCurrentUser();
 
 	my($today, $x) = ('', 1);
-	# ??? why is this being changed ???
-	# my $cnt = int($user->{maxstories} / 3);
-	my $cnt = 30; 
-	my $return;
-	my $feature_retrieved;
+	my $cnt = int($user->{maxstories} / 3);
+	my ($return,$counter,$feature_retrieved);
 
 	# shift them off, so we do not display them in the Older
 	# Stuff block later (simulate the old cursor-based
@@ -256,6 +253,7 @@ sub displayStories {
 		    $category = $slashdb->getStory($sid,$constants->{organise_stories});
 		}
 		$category ||= 'stories';
+		$counter->{$category} ||= $x;
 		# feature_retrieved keeps the code from checking again for that section
 		# if the feature story has already been retrieved
 		if ($constants->{feature_story_enabled} && ! $feature_retrieved->{$thissection}) {
@@ -353,9 +351,9 @@ sub displayStories {
 
 		$return->{$category}{full} .= $tmpreturn;
 
-		my($w) = join ' ', (split m/ /, $time)[0 .. 2];
-		$today ||= $w;
-		last if ++$x > $cnt && $today ne $w;
+	    my($w) = join ' ', (split m/ /, $time)[0 .. 2];
+	    $today ||= $w;
+	    last if ++$counter->{$category} > $cnt && $today ne $w;
 	}
 
 	return $return;

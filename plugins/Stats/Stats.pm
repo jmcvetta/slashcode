@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.8 2002/03/12 13:40:22 jamie Exp $
+# $Id: Stats.pm,v 1.9 2002/03/14 13:57:23 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -83,7 +83,9 @@ sub getCommentsByDistinctIPID {
 
 	my $used = $self->sqlSelectColArrayref(
 		'ipid', 'comments', 
-		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",'',{distinct => 1}
+		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
+		'',
+		{distinct => 1}
 	);
 }
 
@@ -105,8 +107,8 @@ sub countSubmissionsByCommentIPID {
 	my $in_list = join(",", map { $slashdb->sqlQuote($_) } @$ipids);
 
 	my $used = $self->sqlCount(
-		'comments', 
-		"(date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59') AND ipid IN ($in_list)"
+		'submissions', 
+		"(time BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59') AND ipid IN ($in_list)"
 	);
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.209 2002/08/12 18:20:52 jamie Exp $
+# $Id: MySQL.pm,v 1.210 2002/08/13 12:21:51 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -589,7 +589,7 @@ sub undoModeration {
 	my $constants = getCurrentStatic();
 
 	# SID here really refers to discussions.id, NOT stories.sid
-	my $cursor = $self->sqlSelectMany("cid,val,active,cuid",
+	my $cursor = $self->sqlSelectMany("cid,val,active,cuid,reason",
 			"moderatorlog",
 			"moderatorlog.uid=$uid and moderatorlog.sid=$sid"
 	);
@@ -600,7 +600,7 @@ sub undoModeration {
 	my $max_karma = $constants->{maxkarma};
 
 	my @removed;
-	while (my($cid, $val, $active, $cuid) = $cursor->fetchrow){
+	while (my($cid, $val, $active, $cuid, $reason) = $cursor->fetchrow){
 
 		# If moderation wasn't actually performed, we skip ahead one.
 		next if ! $active;
@@ -641,7 +641,11 @@ sub undoModeration {
 			"uid=$cuid"
 		);
 
-		push(@removed, $cid);
+		push @removed, {
+			cid	=> $cid,
+			reason	=> $reason,
+			val	=> $val,
+		};
 	}
 
 	return \@removed;

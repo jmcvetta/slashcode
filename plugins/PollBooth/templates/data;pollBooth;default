@@ -24,6 +24,12 @@ __template__
 [% CASE 'edit_poll_title' %]
 	[% IF qid %]Editing Poll #[% qid %][% ELSE %]New Poll[% END %]
 
+[% CASE 'invalid_sid' %]
+	[% returnme.data_constant = 1 %]
+	Invalid Story Id specified.  Please correct and try to save again.
+[% CASE 'attached_to_other' %]
+	[% returnme.data_constant = 1 %]
+	Story is already attatched to a different poll.  Please detach poll from that story before saving.
 [% CASE 'invalid' %]
 	[% returnme.data_constant = 1 %]
 	Invalid poll!<BR>
@@ -66,4 +72,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;pollBooth;default,v 1.4 2003/08/06 04:50:12 jamie Exp $
+$Id: data;pollBooth;default,v 1.5 2003/09/02 02:07:13 vroom Exp $

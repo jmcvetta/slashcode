@@ -40,6 +40,10 @@ __template__
 
 				[% END %]
 				<BR>
+				[% IF type == "story" %]
+				&nbsp;&nbsp;&middot;<A HREF="[% constants.rootdir %]/article.pl?sid=[% question.9 | fixparam %]">[% question.8 %]</A>
+				<BR>
+				[% END %]
 			[% END %]
 		</TD>
 		<TD VALIGN="TOP" ALIGN="RIGHT">
@@ -60,4 +64,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: listpolls;pollBooth;default,v 1.7 2003/07/22 19:36:05 vroom Exp $
+$Id: listpolls;pollBooth;default,v 1.8 2003/09/02 02:07:13 vroom Exp $

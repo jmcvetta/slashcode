@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: searchtoo.pl,v 1.5 2005/01/05 07:21:15 pudge Exp $
+# $Id: searchtoo.pl,v 1.6 2005/01/07 17:27:55 pudge Exp $
 
 use strict;
 use Slash;
@@ -69,7 +69,8 @@ sub main {
 	# this is the bulk of it, where the MAGIC happens!
 	} elsif ($ops->{$form->{op}}) {
 		my %query;
-		for (qw[threshold query author op section journal_only submitter uid]) {
+		$query{points_min} = $form->{threshold} if defined $form->{threshold};
+		for (qw[query author op section journal_only submitter uid]) {
 			$query{$_} = $form->{$_} if defined $form->{$_};
 		}
 
@@ -152,6 +153,7 @@ sub defaultSearch {
 
 	(my $singular_name = $form->{op}) =~ s/([^s])s$/$1/;
 	$singular_name     = 'story' if $singular_name eq 'storie';
+	$singular_name     = 'sub'   if $singular_name eq 'submission';
 
 	$return{template}  = $singular_name . 'search';
 	$return{noresults} = getData('no' . $form->{op});

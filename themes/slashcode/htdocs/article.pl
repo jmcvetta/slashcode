@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.59 2004/07/21 21:44:18 pudge Exp $
+# $Id: article.pl,v 1.60 2004/08/02 11:56:40 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -67,9 +67,9 @@ sub main {
 			# section and series links must be defined as separate
 			# constants in vars
 			my($use_section, $use_series);
-			$use_section = $story->{section} if
-				$constants->{use_prev_next_link_section} &&
-				$SECT->{type} eq 'contained';
+#			$use_section = $story->{section} if
+#				$constants->{use_prev_next_link_section} &&
+#				$SECT->{type} eq 'contained';
 			$use_series  = $story->{tid}     if 
 				$constants->{use_prev_next_link_series} &&
 				$reader->getTopic($story->{tid})->{series} eq 'yes';

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.254 2004/10/08 01:24:28 jamiemccarthy Exp $
+# $Id: users.pl,v 1.255 2004/10/08 04:14:58 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1605,7 +1605,7 @@ sub tildeEd {
 
 	# Userspace.
 
-	my $userspace = $user_edit->{userspace} || "";
+	my $userspace = $user_edit->{mylinks} || "";
 
 	# Titles of stuff.
 

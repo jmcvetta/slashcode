@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.12 2004/11/09 17:52:17 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.13 2004/11/14 23:16:09 jamiemccarthy Exp $
 
 use strict;
 
@@ -53,6 +53,18 @@ $task{$me}{code} = sub {
 		if (!$clean_exit_flag && time() >= $next_check_slashd) {
 			$next_check_slashd = time() + 20;
 			my($not_ok, $response) = check_slashd();
+			if ($not_ok) {
+				# Parent slashd process seems to be gone.  Maybe
+				# it just got killed and sent us the SIGUSR1 and
+				# our $task_exit_flag is already set.  Pause a
+				# moment and check that.
+				sleep 1;
+				if ($task_exit_flag) {
+					# OK, forget this warning, just exit
+					# normally.
+					$not_ok = 0;
+				}
+			}
 			if ($not_ok) {
 				# Parent slashd process is gone, that's not good,
 				# but the channel doesn't need to hear about it

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.244 2002/11/09 03:14:59 brian Exp $
+# $Id: MySQL.pm,v 1.245 2002/11/09 22:55:49 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.244 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.245 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2082,7 +2082,7 @@ sub saveBlock {
 		$self->sqlInsert('blocks', { bid => $bid, seclev => 500 });
 	}
 
-	my($portal, $retrieve) = (0, 0);
+	my($portal, $retrieve, $all_sections) = (0, 0, 0);
 
 	# If someone marks a block as a portald block then potald is a portald
 	# something tell me I may regret this...  -Brian
@@ -2091,6 +2091,7 @@ sub saveBlock {
 	# this is to make sure that a  static block doesn't get
 	# saved with retrieve set to true
 	$form->{retrieve} = 0 if $form->{type} ne 'portald';
+	$form->{all_sections} = 0 if $form->{type} ne 'all_sections';
 
 	# If a block is a portald block then portal=1. type
 	# is done so poorly -Brian
@@ -2113,6 +2114,7 @@ sub saveBlock {
 			items		=> $form->{items},
 			section		=> $form->{section},
 			retrieve	=> $form->{retrieve},
+			all_sections	=> $form->{all_sections},
 			autosubmit	=> $form->{autosubmit},
 			portal		=> $form->{portal},
 		}, 'bid=' . $self->sqlQuote($bid));

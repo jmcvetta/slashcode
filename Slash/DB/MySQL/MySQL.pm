@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.641 2004/07/21 05:34:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.642 2004/07/21 21:44:17 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.641 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.642 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2806,16 +2806,28 @@ sub deleteAuthor {
 
 ########################################################
 sub deleteTopic {
-	my($self, $tid) = @_;
+	my($self, $tid, $newtid) = @_;
 	my $tid_q = $self->sqlQuote($tid);
 	$self->sqlDelete("topics", "tid=$tid_q");
+	$self->sqlDelete("topic_parents", "tid=$tid_q");
+	$self->sqlDelete("topic_nexus", "tid=$tid_q");
+	$self->setVar('topic_tree_lastchange', time());
+
+	if ($newtid) {
+		$self->sqlUpdate('stories', {
+			tid => $newtid
+		}, "tid=$tid_q");
+		$self->sqlUpdate('story_topics_chosen', {
+			tid => $newtid
+		}, "tid=$tid_q");
+	}
 }
 
 ########################################################
 sub revertBlock {
 	my($self, $bid) = @_;
 	my $bid_q = $self->sqlQuote($bid);
-	my $block = $self->sqlSelect("block", "backup_blocks", "bid=bid_q");
+	my $block = $self->sqlSelect("block", "backup_blocks", "bid = $bid_q");
 	$self->sqlUpdate("blocks", { block => $block }, "bid = $bid_q");
 }
 
@@ -2856,44 +2868,47 @@ sub saveTopic {
 	# This seems like a wasted query to me... *shrug* -Cliff
 	my($rows) = $self->sqlSelect('COUNT(*)', 'topics', "tid=$tid");
 
-	my $image = $topic->{image2} ? $topic->{image2} : $topic->{image};
-
-	# Save image info, first. We'll need the ID, later.
-	my $imgid = $self->sqlSelect('id', 'topic_images',
-		'name=' . $self->sqlQuote($topic->{name}) .
-		' AND image=' . $self->sqlQuote($image)
-	);
+	my $image = $topic->{image2} || $topic->{image};
 
 	my $data = {
-		name		=> $topic->{name},
+		keyword		=> $topic->{keyword},
+		textname	=> $topic->{textname},
+		series		=> $topic->{series} eq 'yes' ? 'yes' : 'no',
 		image		=> $image,
 		width		=> $topic->{width},
 		height		=> $topic->{height},
 	};
 
-	my $data2 = {
-		name		=> $topic->{name},
-		default_image	=> $imgid,
-		alttext		=> $topic->{alttext},
-		parent_topic	=> $topic->{parent_topic},
-		series		=> $topic->{series} ? 1 : 0,
-	};
-
-	# Using the topic as the name here probably isn't what is intended, but
-	# it should work just fine for now.     -Cliff
-	if (!$imgid) {
-		$self->sqlInsert('topic_images', $data);
-		$data2->{default_image} = $self->getLastInsertId;
-	} else {
-		$self->sqlUpdate('topic_images', $data, "id=$imgid");
-	}
-
 	if ($rows == 0) {
-		$self->sqlInsert('topics', $data2);
+		$self->sqlInsert('topics', $data);
 		$tid = $self->getLastInsertId;
 	} else {
-		$self->sqlUpdate('topics', $data2, "tid=$tid");
+		$self->sqlUpdate('topics', $data, "tid=$tid");
 	}
+
+	my @parents;
+	if ($topic->{_multi}{parent_topic} && ref($topic->{_multi}{parent_topic}) eq 'ARRAY') {
+		@parents = grep { $_ } @{$topic->{_multi}{parent_topic}};
+	} elsif ($topic->{parent_topic}) {
+		push @parents, $topic->{parent_topic};
+	}
+	my $parent_str = join ',', @parents;
+
+	$self->sqlDelete('topic_parents', "tid=$tid AND parent_tid NOT IN ($parent_str)");
+	for my $parent (@parents) {
+		$self->sqlInsert('topic_parents', {
+			tid		=> $tid,
+			parent_tid	=> $parent
+		});
+	}
+
+	if ($topic->{nexus}) {
+		$self->sqlInsert('topic_nexus', { tid => $tid });
+	} else {
+		$self->sqlDelete('topic_nexus', "tid=$tid");
+	}
+
+	$self->setVar('topic_tree_lastchange', time());
 
 	return $tid;
 }

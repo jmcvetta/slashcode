@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.132 2004/07/16 20:20:13 pudge Exp $
+# $Id: Environment.pm,v 1.133 2004/07/21 21:44:18 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.133 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1594,6 +1594,7 @@ Hashref of cleaned-up data.
 		s subid stid stoid tpid tid qid aid pagenum
 		url_id spider_id miner_id keyword_id
 		st_main_select st_main_select_weights
+		parent_topic
 	);
 
 	# fields that have ONLY a-zA-Z0-9_
@@ -2519,4 +2520,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.132 2004/07/16 20:20:13 pudge Exp $
+$Id: Environment.pm,v 1.133 2004/07/21 21:44:18 pudge Exp $

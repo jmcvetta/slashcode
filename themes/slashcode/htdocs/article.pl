@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.58 2004/07/09 00:43:04 jamiemccarthy Exp $
+# $Id: article.pl,v 1.59 2004/07/21 21:44:18 pudge Exp $
 
 use strict;
 use Slash;
@@ -72,7 +72,7 @@ sub main {
 				$SECT->{type} eq 'contained';
 			$use_series  = $story->{tid}     if 
 				$constants->{use_prev_next_link_series} &&
-				$reader->getTopic($story->{tid})->{series};
+				$reader->getTopic($story->{tid})->{series} eq 'yes';
 
 			$stories{'prev'}   = $reader->getStoryByTime('<', $story);
 			$stories{'next'}   = $reader->getStoryByTime('>', $story)

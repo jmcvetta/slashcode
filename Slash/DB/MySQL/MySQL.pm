@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.462 2003/09/28 01:27:03 jamie Exp $
+# $Id: MySQL.pm,v 1.463 2003/10/14 15:38:13 vroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.462 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.463 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5919,6 +5919,13 @@ sub updateStory {
 
 	$data->{body_length} = length($data->{bodytext});
 	$data->{word_count} = countWords($data->{introtext}) + countWords($data->{bodytext});
+
+	my $prev_section = $self->sqlSelect("section","stories","sid=".$self->sqlQuote($sid));
+	my $old_section_param = $self->sqlSelect("value","story_param","sid=".$self->sqlQuote($sid)." and name ='old_shtml_sections'");
+	if($prev_section and $prev_section ne $data->{section}){
+		$old_section_param .= "$prev_section,";
+		$data->{old_shtml_sections} = $old_section_param;
+	}
 
 	unless ($self->setStory($sid, $data)) {
 		print STDERR "Failed to set topics for story\n";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.13 2001/11/06 20:38:35 brian Exp $
+# $Id: Slash.pm,v 1.14 2001/11/06 21:39:59 brian Exp $
 
 package Slash;
 
@@ -316,7 +316,7 @@ sub printComments {
 		lvl		=> $lvl,
 	});
 
-	return if $user->{state}{nocomment} || $user->{mode} eq 'nocomment';
+	return if (($user->{state}{nocomment} || $user->{mode} eq 'nocomment') && !$form->{comment_override_display});
 
 	my($comment, $next, $previous);
 	if ($cid) {

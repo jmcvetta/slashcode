@@ -43,6 +43,7 @@ __template__
        ELSE;
           nstat = stat | fixparam;
           nsection = section;
+          nlabel = '';
        END;
 
        statstring = statstring _ '&amp;stats_graph_multiple=' _ nstat _ ',' _ nsection _ ',' _ nlabel;
@@ -58,4 +59,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: make_graph;stats;default,v 1.5 2003/05/12 13:15:02 pudge Exp $
+$Id: make_graph;stats;default,v 1.6 2003/05/13 19:04:12 pudge Exp $

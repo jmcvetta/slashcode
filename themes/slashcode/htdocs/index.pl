@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.114 2004/10/06 04:19:28 jamiemccarthy Exp $
+# $Id: index.pl,v 1.115 2004/10/07 22:05:00 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -257,19 +257,20 @@ sub do_rss {
 # absolutely.  we should hide the details there.  but this is in a lot of
 # places (modules, index, users); let's come back to it later.  -- pudge
 sub saveUserBoxes {
-	my(@a) = @_;
+	my(@slashboxes) = @_;
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
-	$user->{exboxes} = @a ? sprintf("'%s'", join "','", @a) : '';
-	$slashdb->setUser($user->{uid}, { exboxes => $user->{exboxes} })
-		unless $user->{is_anon};
+	return if $user->{is_anon};
+	$user->{slashboxes} = join ",", @slashboxes;
+	$slashdb->setUser($user->{uid},
+		{ slashboxes => $user->{slashboxes} });
 }
 
 #################################################################
 sub getUserBoxes {
-	my $boxes = getCurrentUser('exboxes');
+	my $boxes = getCurrentUser('slashboxes');
 	$boxes =~ s/'//g;
-	return split m/,/, $boxes;
+	return split /,/, $boxes;
 }
 
 #################################################################
@@ -329,7 +330,9 @@ sub displayStandardBlocks {
 	# two variants of box cache: one for index with portalmap,
 	# the other for any other section, or without portalmap
 
-	if ($user->{exboxes} && ($getblocks == $constants->{mainpage_skid} || $constants->{slashbox_sections})) {
+	if ($user->{slashboxes}
+		&& ($getblocks == $constants->{mainpage_skid} || $constants->{slashbox_sections})
+	) {
 		@boxes = getUserBoxes();
 		$boxcache = $cache->{slashboxes}{index_map}{$user->{light}} ||= {};
 	} else {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.16 2004/06/17 16:11:41 jamiemccarthy Exp $
+# $Id: DB.pm,v 1.17 2004/10/07 22:04:56 jamiemccarthy Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -2065,7 +2065,7 @@ new point score is 0, "0 but true" is returned.
 
 =back
 
-=head2 countUsersIndexExboxesByBid(KEY)
+=head2 countUsersIndexSlashboxesByBid(KEY)
 
 I am the default documentation, short and stout.
 

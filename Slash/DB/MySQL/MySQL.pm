@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.702 2004/10/07 05:06:53 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.703 2004/10/07 22:04:56 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.702 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.703 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10386,26 +10386,16 @@ sub setUser {
 		users_hits
 	)];
 
-	# special cases for password, exboxes, people
+	# special cases for password, people, and slashboxes
 	if (exists $hashref->{passwd}) {
 		# get rid of newpasswd if defined in DB
 		$hashref->{newpasswd} = '';
 		$hashref->{passwd} = encryptPassword($hashref->{passwd});
 	}
-
-	# Power to the People
 	$hashref->{people} = freeze($hashref->{people}) if $hashref->{people};
-
-	# hm, come back to exboxes later; it works for now
-	# as is, since external scripts handle it -- pudge
-	# a VARARRAY would make a lot more sense for this, no need to
-	# pack either -Brian
-	if (0 && exists $hashref->{exboxes}) {
-		if (ref $hashref->{exboxes} eq 'ARRAY') {
-			$hashref->{exboxes} = sprintf("'%s'", join "','", @{$hashref->{exboxes}});
-		} elsif (ref $hashref->{exboxes}) {
-			$hashref->{exboxes} = '';
-		} # if nonref scalar, just let it pass
+	if (exists $hashref->{slashboxes}) {
+		my @slashboxes = grep /^[\w-]+$/, split /,/, $hashref->{slashboxes};
+		$hashref->{slashboxes} = join ",", @slashboxes;
 	}
 
 	$cache = _genericGetCacheName($self, $tables);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.144 2004/10/05 23:48:23 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.145 2004/10/07 22:05:00 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.144 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.145 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1453,7 +1453,7 @@ sub prepareUser {
 	$user->{story_always_topic}	= _testExStrNumeric($user->{story_always_topic}) if $user->{story_always_topic};
 	$user->{story_always_author}	= _testExStrNumeric($user->{story_always_author}) if $user->{story_always_author};
 	$user->{story_always_nexus}	= _testExStrNumeric($user->{story_always_nexus}) if $user->{story_never_nexus};
-	$user->{exboxes}		= _testExStr($user->{exboxes}) if $user->{exboxes};
+	$user->{slashboxes}		= _testExStr($user->{slashboxes}) if $user->{slashboxes};
 	$user->{points}		= 0 unless $user->{willing}; # No points if you dont want 'em
 	$user->{domaintags}	= 2 if !defined($user->{domaintags}) || $user->{domaintags} !~ /^\d+$/;
 
@@ -2649,4 +2649,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.144 2004/10/05 23:48:23 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.145 2004/10/07 22:05:00 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.10 2004/09/07 22:21:09 jamiemccarthy Exp $
+# $Id: Hof.pm,v 1.11 2004/10/07 22:05:00 jamiemccarthy Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -76,13 +76,10 @@ sub countPollquestions {
 
 ########################################################
 # Not used currently
-sub countUsersIndexExboxesByBid {
+sub countUsersIndexSlashboxesByBid {
 	my($self, $bid) = @_;
-	my($count) = $self->sqlSelect("count(*)", "users_index",
-		qq!exboxes like "%'$bid'%" !
-	);
-
-	return $count;
+	my $bid_q = $self->sqlQuote("\%$bid\%");
+	return $self->sqlCount("users_index", "slashboxes LIKE $bid_q");
 }
 
 ########################################################

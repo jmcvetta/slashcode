@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.31 2004/08/10 15:47:42 tvroom Exp $
+# $Id: Page.pm,v 1.32 2004/10/07 22:05:00 jamiemccarthy Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -358,19 +358,20 @@ sub getStoryTitleContent {
 # absolutely.  we should hide the details there.  but this is in a lot of
 # places (modules, index, users); let's come back to it later.  -- pudge
 sub saveUserBoxes {
-	my(@a) = @_;
+	my(@slashboxes) = @_;
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
-	$user->{exboxes} = @a ? sprintf("'%s'", join "','", @a) : '';
-	$slashdb->setUser($user->{uid}, { exboxes => $user->{exboxes} })
-		unless $user->{is_anon};
+	return if $user->{is_anon};
+	$user->{slashboxes} = join ",", @slashboxes;
+	$slashdb->setUser($user->{uid},
+		{ slashboxes => $user->{slashboxes} });
 }
 
 #################################################################
 sub getUserBoxes {
-	my $boxes = getCurrentUser('exboxes');
+	my $boxes = getCurrentUser('slashboxes');
 	$boxes =~ s/'//g;
-	return split m/,/, $boxes;
+	return split /,/, $boxes;
 }
 
 #################################################################
@@ -431,7 +432,9 @@ sub displayStandardBlocks {
 	# two variants of box cache: one for index with portalmap,
 	# the other for any other section, or without portalmap
 
-	if ($user->{exboxes} && ($getblocks == $constants->{mainpage_skid} || $constants->{slashbox_sections})) {
+	if ($user->{slashboxes}
+		&& ($getblocks == $constants->{mainpage_skid} || $constants->{slashbox_sections})
+	) {
 		@boxes = getUserBoxes();
 		$boxcache = $cache->{slashboxes}{index_map}{$user->{light}} ||= {};
 	} else {

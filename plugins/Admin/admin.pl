@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.213 2004/07/08 18:03:31 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.214 2004/07/08 23:18:22 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1573,30 +1573,34 @@ sub getDescForTopicsRendered {
 					[$val, $_]
 				} @story_nexuses;
 
-	return "This story will not appear." unless @sorted_nexuses;
-	my $first_nexus = shift @sorted_nexuses;
-	my $desc = "This story will be ";
-	if ($first_nexus == $mainpage_nexus_tid) {
-		$desc .= "on the $tree->{$first_nexus}{textname}";
-	} elsif ($first_nexus == $primary_nexus_tid) {
-		$desc .= "in $tree->{$first_nexus}{textname}";
-	}
-	if (@sorted_nexuses) {
-		$desc .= ", and linked from ";
-		if (@sorted_nexuses == 1) {
-			$desc .= "$tree->{$sorted_nexuses[0]}{textname}.";
-		} else {
-			my $last_nexus = pop @sorted_nexuses;
-			my $next_to_last_nexus = pop @sorted_nexuses;
-			foreach (@sorted_nexuses) {
-				$desc .= "$tree->{$_}{textname}, ";
-			}
-			$desc .= "$tree->{$next_to_last_nexus}{textname} and $tree->{$last_nexus}{textname}.";
-		}
+	my $desc;
+	if (!@sorted_nexuses) {
+		$desc = "This story will not appear.";
 	} else {
-		$desc .= ".";
+		$desc = "This story will be ";
+		my $first_nexus = shift @sorted_nexuses;
+		if ($first_nexus == $mainpage_nexus_tid) {
+			$desc .= "on the $tree->{$first_nexus}{textname}";
+		} elsif ($first_nexus == $primary_nexus_tid) {
+			$desc .= "in $tree->{$first_nexus}{textname}";
+		}
+		if (@sorted_nexuses) {
+			$desc .= ", and linked from ";
+			if (@sorted_nexuses == 1) {
+				$desc .= "$tree->{$sorted_nexuses[0]}{textname}.";
+			} else {
+				my $last_nexus = pop @sorted_nexuses;
+				my $next_to_last_nexus = pop @sorted_nexuses;
+				foreach (@sorted_nexuses) {
+					$desc .= "$tree->{$_}{textname}, ";
+				}
+				$desc .= "$tree->{$next_to_last_nexus}{textname} and $tree->{$last_nexus}{textname}.";
+			}
+		} else {
+			$desc .= ".";
+		}
 	}
-	return $desc;
+	return "<b>$desc</b>";
 }
 
 ##################################################################

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.20 2000/08/14 21:15:54 pudge Exp $
+#  $Id: users.pl,v 1.21 2000/08/16 13:56:08 capttofu Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -252,7 +252,7 @@ sub newUser {
 		});
 
 		my($uid) = sqlSelect("LAST_INSERT_ID()");
-		sqlInsert("users_info", { uid => $uid, lastaccess=>'now()' } );
+		sqlInsert("users_info", { uid => $uid, -lastaccess=>'now()' } );
 		sqlInsert("users_prefs", { uid => $uid } );
 		sqlInsert("users_comments", { uid => $uid } );
 		sqlInsert("users_index", { uid => $uid } );

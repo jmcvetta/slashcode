@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.7 2000/06/09 17:07:40 pudge Exp $
+#  $Id: slashdotrc.pl,v 1.8 2000/06/21 00:12:21 cbwood Exp $
 ###############################################################################
 require URI;
 
@@ -74,6 +74,8 @@ my %my_conf = (
 
 # The following variables can be used to tweak your Slash Moderation
 	authors_unlimited	=> 1,   # authors have unlimited moderation
+	comment_minscore	=> -1,	# Minimum score for a specific comment.
+	comment_maxscore	=> 5,	# Maximum score for a specific comment.
 	metamod_sum		=> 3,   # sum of moderations 1 for release
 	maxtokens		=> 40,	# Token threshold that must be hit to get any points
 	tokensperpoint		=> 8,	# Number of tokens per point

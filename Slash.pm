@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.25 2000/06/19 20:41:43 pudge Exp $
+#  $Id: Slash.pm,v 1.26 2000/06/21 00:12:21 cbwood Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -2003,7 +2003,7 @@ EOT
 	print "\n\t</TD></TR>\n" if $lvl; # || ($I{U}{mode} eq "nested" and $lvl);
 	print $lcp;
 
-	print <<EOT if $I{U}{aseclev} || $I{U}{points};
+	print <<EOT if ($I{U}{aseclev} || $I{U}{points}) && $I{U}{uid} > 0;
 	<TR><TD>
 		<P>Have you read the
 		<A HREF="$I{rootdir}/moderation.shtml">Moderator Guidelines</A>
@@ -2260,11 +2260,13 @@ EOT
 			subject => 'Parent'
 		}, $pid);
 
-		if ((	   $I{U}{willing}
+		# UID -MUST- be positive for moderator access.
+		if (((	   $I{U}{willing}
 			&& $I{U}{points} > 0
 			&& $C->{uid} ne $I{U}{uid}
 			&& $C->{lastmod} ne $I{U}{uid})
-		    || ($I{U}{aseclev} > 99 && $I{authors_unlimited})) {
+		    || ($I{U}{aseclev} > 99 && $I{authors_unlimited}))
+			&& $I{U}{uid} > 0) {
 
 			my $o;
 			foreach (0 .. @{$I{reasons}} - 1) {

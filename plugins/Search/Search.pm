@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.72 2004/06/23 15:36:32 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.73 2004/06/23 16:12:03 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -263,7 +263,7 @@ sub findStory {
 	# Don't return just one topic id in tid, make it an arrayref
 	# to all topic ids -- in the preferred order.
 	for my $story (@$stories) {
-		$story->{tid} = $self->getTopiclistForStory($story->{stoid});
+		$story->{tid} = $reader->getTopiclistForStory($story->{stoid});
 	}
 
 	return $stories;

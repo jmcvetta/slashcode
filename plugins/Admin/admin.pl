@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.158 2003/06/06 12:38:22 jamie Exp $
+# $Id: admin.pl,v 1.159 2003/06/10 07:05:57 pater Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1171,6 +1171,11 @@ sub editStory {
 		$storyref->{dept} =~ s/[-\s]+/-/g;
 		$storyref->{dept} =~ s/^-//;
 		$storyref->{dept} =~ s/-$//;
+
+		$storyref->{introtext} =~ s/^<P>//;
+		$storyref->{introtext} =~ s/^<BR>//;
+		$storyref->{introtext} =~ s/<P>$//;
+		$storyref->{introtext} =~ s/<BR>$//;
 
 		for my $field (qw( introtext bodytext )) {
 			$storyref->{$field} = $slashdb->autoUrl(

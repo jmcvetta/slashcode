@@ -2,11 +2,10 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.2 2004/10/15 22:56:53 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.3 2004/10/18 17:05:07 jamiemccarthy Exp $
 
 use strict;
 
-use Net::IRC;
 use Data::Dumper;
 
 use Slash;
@@ -25,6 +24,7 @@ $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;
 	return unless $constants->{ircslash};
+	require "Net::IRC";
 	my $start_time = time;
 
 	ircinit();

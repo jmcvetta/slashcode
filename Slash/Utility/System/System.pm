@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.9 2002/05/24 19:32:07 pudge Exp $
+# $Id: System.pm,v 1.10 2002/05/29 21:37:54 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -30,9 +30,8 @@ use Fcntl qw(:flock :seek);
 use File::Basename;
 use File::Path;
 use File::Spec::Functions;
-use IPC::Open3 'open3';
+use File::Temp 'tempfile';
 use Mail::Sendmail;
-use POSIX 'WNOHANG';
 use Slash::Custom::Bulkmail;	# Mail::Bulkmail
 use Slash::Utility::Environment;
 use Symbol 'gensym';
@@ -40,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -319,18 +318,11 @@ sub prog2file {
 	if (! $handle_err) {
 		$data = `$exec`;
 	} else {
-		# you need to use local() so you don't trample on
-		# someone else's IN/OUT/ERR variables anyway, and
-		# this takes care of the "used only once" warnings
-		# -- pudge
-		local(*IN, *OUT, *ERR);
-		my $pid = open3(*IN, *OUT, *ERR, $exec);
-		my $rc = POSIX::waitpid(-1, WNOHANG);
-		{
-			undef $/;
-			$data = <OUT>;
-			$err = <ERR>;
-		};
+		my($errfh, $errfile) = tempfile();
+		$data = `$exec 2>$errfile`;
+		$err = join '', <$errfh>;
+		close $errfh;
+		unlink $errfile;
 	}
 	my $bytes = length $data;
 
@@ -357,14 +349,20 @@ sub prog2file {
 	$command_base ||= $command;
 	my $success_str = $success ? "" : " FAILED:$err_str";
 	$success_str =~ s/\s+/ /g; chomp $success_str;
-	doLog('slashd', [
-		join(" ", $command_base, $arguments, "bytes=$bytes$success_str")
-	]) if $verbosity >= 2;
+
+	if ($verbosity >= 2) {
+		my $logdata = join(" ", $command_base, $arguments, "bytes=$bytes$success_str");
+		if (defined &main::slashdLog) {
+			main::slashdLog($logdata);
+		} else {
+			doLog('slashd', [$logdata]);
+		}
+	}
 
 	# Old way.
 	return $success if ! $handle_err;
 	# New way.
-	return ($success, $err);
+	return($success, $err);
 }
 
 
@@ -394,4 +392,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.9 2002/05/24 19:32:07 pudge Exp $
+$Id: System.pm,v 1.10 2002/05/29 21:37:54 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.165 2003/08/12 15:16:21 vroom Exp $
+# $Id: Slash.pm,v 1.166 2003/08/12 17:42:56 pater Exp $
 
 package Slash;
 
@@ -164,7 +164,7 @@ sub selectComments {
 
 		# This deals with what will appear.
 		$comments->{$C->{pid}}{visiblekids}++
-			if $C->{points} >= ($user->{threshold} || $min);
+			if $C->{points} >= (defined $user->{threshold} ? $user->{threshold} : $min);
 
 		# Can't mod in a discussion that you've posted in.
 		# Just a point rule -Brian

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.52 2004/10/18 18:05:29 jamiemccarthy Exp $
+# $Id: slashd,v 1.53 2004/10/28 14:21:10 jamiemccarthy Exp $
 
 ############################################################
 #
@@ -391,6 +391,31 @@ EOT
 	}
 	if (@adjusted) {
 		slashdLog("Custom timespecs: @adjusted");
+	}
+
+	# Check the timespecs for the tasks, make sure they are valid.
+	my %invalid_timespec = ( );
+	my $db_time = db_time();
+	for my $file (sort keys %task) {
+		my @timespecs = ( );
+		for my $key (qw( timespec timespec_panic_1 timespec_panic_2 )) {
+			push @timespecs, $task{$file}{$key} if $task{$file}{$key};
+		}
+		CHECK: for my $check_spec (@timespecs) {
+			eval { $cron->get_next_execution_time($check_spec, $db_time) };
+			if ($@) {
+				# If the timespec is invalid, Schedule::Cron calls die().
+				# Trap that and log a warning instead.
+				my $err = "Invalid timespec '$check_spec' for $file, ignoring task. $@";
+				slashdErrnote($err);
+				slashdLog($err);
+				$invalid_timespec{$file} = 1;
+				last CHECK;
+			}
+		}
+	}
+	for my $file (keys %invalid_timespec) {
+		delete $task{$file};
 	}
 
 	# The appropriate data is in $task{"filename.pl"} -- write it all into

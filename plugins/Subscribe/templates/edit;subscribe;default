@@ -36,9 +36,9 @@ You will be able to purchase banner-ad-free pages.
 [%
 	pages = [
 		{ pagename => "index",
-		  descr	   => "<b>Homepage</b> (Plum: The Mysterious Future!)" },
+		  descr	   => "<b>Homepage</b> (Plum: see the Mysterious Future!)" },
 		{ pagename => "article",
-		  descr	   => "<b>Stories</b> (usually with reader comments)" },
+		  descr	   => "<b>Stories</b> (Plum: reading Mysterious Future stories)" },
 		{ pagename => "comments",
 		  descr	   => "<b>Comments</b>" },
 	];
@@ -176,4 +176,4 @@ __seclev__
 10000
 
 __version__
-$Id: edit;subscribe;default,v 1.20 2003/03/14 15:43:16 jamie Exp $
+$Id: edit;subscribe;default,v 1.21 2003/06/03 13:24:51 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.34 2003/03/04 19:56:31 pudge Exp $
+# $Id: Install.pm,v 1.35 2003/03/22 01:13:50 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -312,6 +312,7 @@ sub _install {
 				$dir = '';
 			}
 			my $old = "$hash->{dir}/$oldfilename";
+			1 while $old =~ s{/[^/]+/\.\.}{};
 			my $new = "$instdir$dir/$filename";
 
 			# I don't think we should delete the file first,
@@ -356,11 +357,12 @@ sub _install {
  		}
  	}
 
-	for (@sql) {
-		next unless $_;
-		s/;\s*$//;
-		unless ($self->sqlDo($_)) {
-			print "Failed on :$_:\n";
+	for my $statement (@sql) {
+		next unless $statement;
+		$statement =~ s/;\s*$//;
+		my $rows = $self->sqlDo($statement);
+		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
+			print "Failed on :$statement:\n";
 		}
 	}
 	@sql = ();

@@ -7,7 +7,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::SearchToo';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -43,6 +43,7 @@ sub getOps {
 #################################################################
 sub findRecords {
 	my($self, $type, $query, $opts) = @_;
+
 	my(%processed);
 	my $results = {};
 	my $records = [];
@@ -103,7 +104,6 @@ sub findRecords {
 		for (qw(tid _multi section author submitter)) {
 			$terms{$_} = $processed{$_} if $processed{$_};
 		}
-		$query->{foo} = 'bar';
 
 		$records = $oldsearch->findStory(\%terms, $start, $max, $sort);
 	}
@@ -154,11 +154,6 @@ sub findRecords {
 
 	$self->prepResults($results, $records, $total, $matches, $start, $max);
 	return $results;
-}
-
-### not implemented for this backend
-sub addRecords {
-	return;
 }
 
 #################################################################

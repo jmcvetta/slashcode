@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.182 2002/07/11 22:00:18 brian Exp $
+# $Id: MySQL.pm,v 1.183 2002/07/12 03:58:37 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4551,30 +4551,30 @@ sub getSlashConf {
 		$conf{$key} = $fixup_hash->($conf{$key}) || $conf_fixup_hashes{$key};
 	}
 
-#	if ($conf{comment_nonstartwordchars}) {
-#		# Expand this into a complete regex.  We catch not only
-#		# these chars in their raw form, but also all HTML entities
-#		# (because Windows/MSIE refuses to break before any word
-#		# that starts with either the chars, or their entities).
-#		# Build the regex with qr// and match entities for
-#		# optimal speed.
-#		my $src = $conf{comment_nonstartwordchars};
-#		my @chars = ( );
-#		my @entities = ( );
-#		for my $i (0..length($src)-1) {
-#			my $c = substr($src, $i, 1);
-#			push @chars, "\Q$c";
-#			push @entities, ord($c);
-#			push @entities, sprintf("x%x", ord($c));
-#		}
-#		my $dotchar =
-#			'(?:'
-#			       . '[' . join("", @chars) . ']'
-#			       . '|&#(?:' . join("|", @entities) . ');'
-#		       . ')';
-#		my $regex = '(\s+)' . "((?:<[^>]+>)*$dotchar+)" . '(\S)';
-#		$conf{comment_nonstartwordchars_regex} = qr{$regex}i;
-#	}
+	if ($conf{comment_nonstartwordchars}) {
+		# Expand this into a complete regex.  We catch not only
+		# these chars in their raw form, but also all HTML entities
+		# (because Windows/MSIE refuses to break before any word
+		# that starts with either the chars, or their entities).
+		# Build the regex with qr// and match entities for
+		# optimal speed.
+		my $src = $conf{comment_nonstartwordchars};
+		my @chars = ( );
+		my @entities = ( );
+		for my $i (0..length($src)-1) {
+			my $c = substr($src, $i, 1);
+			push @chars, "\Q$c";
+			push @entities, ord($c);
+			push @entities, sprintf("x%x", ord($c));
+		}
+		my $dotchar =
+			'(?:'
+			       . '[' . join("", @chars) . ']'
+			       . '|&#(?:' . join("|", @entities) . ');'
+		       . ')';
+		my $regex = '(\s+)' . "((?:<[^>]+>)*$dotchar+)" . '(\S)';
+		$conf{comment_nonstartwordchars_regex} = qr{$regex}i;
+	}
 
 	$conf{badreasons} = 4 unless defined $conf{badreasons};
 

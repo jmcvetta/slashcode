@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.640 2004/07/20 21:01:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.641 2004/07/21 05:34:36 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.640 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.641 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9213,7 +9213,7 @@ sub getUser {
 			$answer = \%{ $rawmcdanswer };
 			my $users_hits = $self->sqlSelectAllHashref(
 				"uid", "*", "users_hits",
-				"uid=$uid_q")->{uid};
+				"uid=$uid_q")->{$uid};
 #			my $users_param = $self->sqlSelectAll(
 #				"name, value", "users_param",
 #				"uid=$uid_q");
@@ -9300,10 +9300,14 @@ sub getUser {
 		# If we just got all the data for the user, and
 		# memcached is active, write it into the cache.
 		if ($mcddebug > 2) {
-			print STDERR scalar(gmtime) . " $$ getUser answer: " . Dumper($answer);
+			print STDERR scalar(gmtime) . " $$ getUser val '$val' all '$gtd->{all}' c_u_m '$gtd->{can_use_mcd}' answer: " . Dumper($answer);
 		}
 		if (!$val && $gtd->{all} && $gtd->{can_use_mcd}) {
-			$self->_getUser_write_memcached($answer);
+			# This method overwrites $answer, notably it
+			# deletes the /^hits/ keys.  So make a copy
+			# to pass to it.
+			my %answer_copy = %$answer;
+			$self->_getUser_write_memcached(\%answer_copy);
 		}
 
 	}
@@ -9395,7 +9399,7 @@ sub _getUser_do_selects {
 			$answer->{acl}{$acl} = 1;
 		}
 		if ($mcddebug > 1) {
-			print STDERR scalar(gmtime) . " $$ mcd gU_ds got all acls\n";
+			print STDERR scalar(gmtime) . " $$ mcd gU_ds got all " . scalar(@$acl_ar) . " acls\n";
 		}
 	} elsif (ref($params) eq 'ARRAY' && @$params) {
 		my $param_list = join(",", map { $self->sqlQuote($_) } @$params);
@@ -9411,7 +9415,7 @@ sub _getUser_do_selects {
 		$answer->{$hr->{name}} = $hr->{value};
 	}
 	if ($mcddebug > 1) {
-		print STDERR scalar(gmtime) . " $$ mcd gU_ds params added to answer\n";
+		print STDERR scalar(gmtime) . " $$ mcd gU_ds " . scalar(@$param_ar) . " params added to answer, keys now: '" . join(" ", sort keys %$answer) . "'\n";
 	}
 
 	# We have a bit of cleanup to do before returning;
@@ -9603,7 +9607,7 @@ sub _getUser_get_table_data {
 	}
 
 	if ($mcddebug > 1) {
-		print STDERR scalar(gmtime) . " $$ _getU_gtd cols_needed: " . ($cols_needed ? "'@$cols_needed'" : "(all)") . "\n";
+		print STDERR scalar(gmtime) . " $$ _getU_gtd gtdcachekey '$gtdcachekey' cols_needed: " . ($cols_needed ? "'@$cols_needed'" : "(all)") . " for val:" . Dumper($val);
 	}
 
 	# Now, check to see if we know all the answers for that exact

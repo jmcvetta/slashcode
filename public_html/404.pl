@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA	 02111-1307, USA.
 #
 #
-#	 $Id: 404.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#	 $Id: 404.pl,v 1.3 2000/06/05 20:35:36 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -38,7 +38,7 @@ sub main {
 
 	my $admin = $I{adminmail};
 
-	header("404 File Not Found");
+	header("404 File Not Found", '', '404 File Not Found');
 
 	print "<H1>404 File Not Found</H1>\nThe requested URL ($url) is not found.\n";
 

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.8 2000/06/02 21:49:42 pudge Exp $
+#  $Id: Slash.pm,v 1.9 2000/06/05 20:35:12 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use CGI ();
@@ -1463,12 +1463,12 @@ EOT
 
 ########################################################
 sub header {
-	my($title, $section) = @_;
+	my($title, $section, $status) = @_;
 	my $adhtml = '';
 	$title ||= '';
 
 	unless ($I{F}{ssi}) {
-		print "HTTP/1.1 200 OK$CRLF";
+		printf "HTTP/1.0 %s$CRLF", $status ? $status : '200 OK';
 		print $I{SETCOOKIE} if $I{SETCOOKIE};
 		print "Server: $ENV{SERVER_SOFTWARE}$CRLF" if $ENV{SERVER_SOFTWARE};
 		print "Pragma: no-cache$CRLF"

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.94 2004/06/22 03:39:01 pudge Exp $
+# $Id: submit.pl,v 1.95 2004/06/27 14:42:59 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -228,7 +228,6 @@ sub previewForm {
 			}
 		}
 	}
-
 
 	slashDisplay('previewForm', {
 		submission	=> $sub,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.65 2002/09/12 17:10:24 cliff Exp $
+# $Id: MySQL.pm,v 1.66 2002/09/19 20:01:12 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -771,7 +771,7 @@ sub getLastUser {
 sub pagesServed {
 	my($self) = @_;
 	my $returnable = $self->sqlSelectAll("count(*),ts",
-			"accesslog", "1=1",
+			"accesslog", "to_days(now()) - to_days(ts) <= 1",
 			"GROUP BY ts ORDER BY ts ASC");
 
 	return $returnable;

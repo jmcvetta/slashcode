@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.500 2004/02/03 17:42:40 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.501 2004/02/03 21:08:54 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.500 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.501 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -886,7 +886,7 @@ sub getMetamodCountsForModsByType {
 
 	my($cols, $where);
 	$cols = "mmid, count(*) as count";
-	$where = "mmid in ($id_str)";
+	$where = "mmid in ($id_str) AND active=1 ";
 	if ($type eq "fair") {
 		$where .= " AND val > 0 ";
 	} elsif ($type eq "unfair") {
@@ -6323,6 +6323,7 @@ sub getSlashConf {
 		fixhrefs =>			[ ],
 		lonetags =>			[ ],
 		op_exclude_from_countdaily =>   [qw( rss )],
+		op_extras_countdaily =>   	[ ],
 		mod_stats_reports =>		[ $conf{adminmail_mod} ],
 		stats_reports =>		[ $conf{adminmail} ],
 		stats_sfnet_groupids =>		[ 4421 ],

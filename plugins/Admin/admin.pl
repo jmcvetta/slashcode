@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.241 2004/10/12 19:01:03 tvroom Exp $
+# $Id: admin.pl,v 1.242 2004/10/12 20:20:57 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -924,7 +924,7 @@ sub topicExtrasEdit {
 }
 
 sub updateTopicNexusExtras {
-	my ($tid) = @_;
+	my($tid) = @_;
 	my $form = getCurrentForm();
 	my $slashdb = getCurrentDB();
 	return unless $tid;

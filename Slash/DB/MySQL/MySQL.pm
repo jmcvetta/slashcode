@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.708 2004/10/12 15:07:53 tvroom Exp $
+# $Id: MySQL.pm,v 1.709 2004/10/12 20:20:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.708 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.709 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1518,7 +1518,7 @@ sub getNexusExtrasForChosen {
 }
 
 sub createNexusExtra {
-	my ($self, $tid, $extra) = @_;
+	my($self, $tid, $extra) = @_;
 	$extra ||= {};
 	return unless $tid && $extra->{extras_keyword};
 
@@ -1531,7 +1531,7 @@ sub createNexusExtra {
 }
 
 sub updateNexusExtra {
-	my ($self, $extras_id, $extra) = @_;
+	my($self, $extras_id, $extra) = @_;
 	return unless $extras_id && $extra;
 	
 	$extra->{type}          ||= "text";
@@ -1543,7 +1543,7 @@ sub updateNexusExtra {
 }
 
 sub deleteNexusExtra {
-	my ($self, $extras_id) = @_;
+	my($self, $extras_id) = @_;
 	return unless $extras_id;
 	my $extras_id_q = $self->sqlQuote($extras_id);
 	$self->sqlDelete('topic_nexus_extras', "extras_id = $extras_id_q");

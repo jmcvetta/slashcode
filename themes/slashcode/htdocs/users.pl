@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.125 2002/10/25 18:56:21 jamie Exp $
+# $Id: users.pl,v 1.126 2002/11/01 02:04:22 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1883,13 +1883,6 @@ sub saveUser {
 	my $plugins = $slashdb->getDescriptions('plugins');
 	my $uid;
 	my $user_editfield_flag;
-
-	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
-	});
 
 	$uid = $user->{is_admin} && $form->{uid} ? $form->{uid} : $user->{uid};
 	my $user_edit = $slashdb->getUser($uid);

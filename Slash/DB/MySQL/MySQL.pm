@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.598 2004/06/23 00:00:57 pudge Exp $
+# $Id: MySQL.pm,v 1.599 2004/06/23 00:24:08 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.598 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.599 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7883,7 +7883,7 @@ sub getSimilarStories {
 		# they match with the current story.  Include a multiplier
 		# based on the length of the match.
 		my $s = $stories->{$sid};
-		$stories->{$sid}{displaystatus} = $self->_displaystatus($stories->{stoid});
+		$stories->{$sid}{displaystatus} = $self->_displaystatus($stories->{$sid}{stoid});
 		$s->{weight} = 0;
 		for my $word (@text_uncommon_words) {
 			my $word_weight = 0;

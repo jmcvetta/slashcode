@@ -18,10 +18,10 @@ __template__
 <TD><A HREF="[% gSkin.rootdir %]/search.pl?topic=[% id %]"><IMG
                 SRC="[% image %]"
                 WIDTH="[% width %]" HEIGHT="[% height %]"
-                BORDER="0" ALT="[% alttext %]" TITLE="[% alttext %]"></A>
+                BORDER="0" ALT="[% textname %]" TITLE="[% textname %]"></A>
 </TD>
 
 __seclev__
 10000
 __version__
-$Id: setrectop_img;misc;default,v 1.4 2004/06/17 16:12:26 jamiemccarthy Exp $
+$Id: setrectop_img;misc;default,v 1.5 2004/07/17 14:18:53 tvroom Exp $

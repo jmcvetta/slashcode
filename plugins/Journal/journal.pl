@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.39 2002/03/19 16:18:54 pudge Exp $
+# $Id: journal.pl,v 1.40 2002/04/07 15:21:09 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -21,7 +21,8 @@ sub main {
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
 
-	if ($constants->{journal_soap_enabled}) {
+	# security problem!
+	if (0 && $constants->{journal_soap_enabled}) {
 		my $r = Apache->request;
 		if ($r->header_in('SOAPAction')) {
 			require SOAP::Transport::HTTP;

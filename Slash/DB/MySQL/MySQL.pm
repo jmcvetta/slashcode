@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.706 2004/10/08 01:27:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.707 2004/10/09 18:02:24 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.706 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.707 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2543,6 +2543,10 @@ sub getDB {
 		$found = $cache->{'dbs'}{$db_type};
 		return "" if !$found || !@$found;
 	} else {
+		# XXX No. This is wrong, it's making us do unnecessary
+		# "SELECT FROM dbs" calls.  If the cache is expired,
+		# the proper action is to refill the cache and pull
+		# the data we want out of it with perl. - Jamie 2004/10/09
 		my $dbs = $self->sqlSelectAllHashref('id', '*', 'dbs',
 			'type=' . $self->sqlQuote($db_type) . " AND isalive='yes'"
 		);

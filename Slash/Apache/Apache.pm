@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.46 2003/11/10 21:25:07 pudge Exp $
+# $Id: Apache.pm,v 1.47 2003/12/02 15:45:34 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -312,6 +312,8 @@ sub IndexHandler {
 	return DECLINED unless $r->is_main;
 	my $constants = getCurrentStatic();
 	my $uri = $r->uri;
+	my $is_user = $r->header_in('Cookie') =~ $USER_MATCH;
+
 	if ($constants->{rootdir}) {
 		my $path = URI->new($constants->{rootdir})->path;
 		$uri =~ s/^\Q$path//;
@@ -327,7 +329,7 @@ sub IndexHandler {
 		my $basedir = $constants->{basedir};
 
 		# $USER_MATCH defined above
-		if ($dbon && $r->header_in('Cookie') =~ $USER_MATCH) {
+		if ($dbon && $is_user) {
 			$r->uri("/$constants->{index_handler}");
 			$r->filename("$basedir/$constants->{index_handler}");
 			return OK;
@@ -361,7 +363,7 @@ sub IndexHandler {
 			my $basedir = $constants->{basedir};
 
 			# $USER_MATCH defined above
-			if ($dbon && $r->header_in('Cookie') =~ $USER_MATCH) {
+			if ($dbon && $is_user) {
 				$r->args("section=$key");
 				$r->uri("/$index_handler");
 				$r->filename("$basedir/$index_handler");
@@ -382,7 +384,7 @@ sub IndexHandler {
 		my $filename = $r->filename;
 		my $basedir  = $constants->{basedir};
 
-		if (!$dbon || $r->header_in('Cookie') !~ $USER_MATCH) {
+		if (!$dbon || !$is_user) {
 			$r->uri('/authors.shtml');
 			$r->filename("$basedir/authors.shtml");
 			writeLog('shtml');
@@ -399,18 +401,32 @@ sub IndexHandler {
 		return OK;
 	}
 
-# The vote is still out on whether I will do this or not -Brian
-#	if ($uri =~ /^\/\d\d\/\d\d\/\d\d\/\d*\.shtml/) {
-#		my $basedir  = $constants->{basedir};
-#		my ($realfile)  = split /\?/, $uri;
-#		my $section = $constants->{defaultsection};
-#	print STDERR "DEFAULT $section\n";
-#
-#		$r->uri("/$section/$realfile");
-#		$r->filename("$basedir/$section/$realfile");
-#		writeLog('shtml');
-#		return OK;
-#	}
+	# redirect to static if not a user, and
+	# * var is on
+	# * is article.pl
+	# * no page number > 1 specified
+	# * sid specified
+	# * referrer exists AND is external to our site
+	if ($constants->{referrer_external_static_redirect} && !$is_user && $uri eq '/article.pl') {
+		my $referrer = $r->header_in("Referer");
+		my $referrer_domain = $constants->{referrer_domain} || $constants->{basedomain};
+		my $the_request = $r->the_request;
+		if ($referrer
+			&& $referrer !~ m{^(?:https?:)?(?://)?(?:[\w-.]+\.)?$referrer_domain(?:/|$)}
+			&& $the_request !~ m{\bpagenum=(?:[2-9]|\d\d+)\b}
+			&& $the_request =~ m{\bsid=([\d/]+)}
+		) {
+			my $sid = $1;
+			my $slashdb = getCurrentDB();
+			my $section = $slashdb->getStory($sid, 'section') || $constants->{defaultsection};
+
+			my $newurl = "/$section/$sid.shtml";
+			if (-e "$constants->{basedir}$newurl") {
+				redirect($newurl);
+				return DONE;
+			}
+		}
+	}
 
 	if (!$dbon && $uri !~ /\.shtml/) {
 		my $basedir  = $constants->{basedir};

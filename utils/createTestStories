@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.28 2004/06/29 14:12:56 jamiemccarthy Exp $
+# $Id: createTestStories,v 1.29 2004/07/15 15:57:18 jamiemccarthy Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -87,27 +87,29 @@ $constants = getCurrentStatic();
 			"epoch ".get_time($opts{t})),
 			"%Y-%m-%d %H-%M-%S");
 
-		# 40% of stories have 1 topic ID, 60% have 2
-		my @topics;
-		push @topics,  getRandomTopicID();
-		push @topics, getRandomTopicID() if rand(1) < 0.6;
+		# 40% of stories have 1 topic ID, 40% have 2, 20% have 3
+		my @topics = ( );
+		my $r = rand(1);
+		push @topics, getRandomTopicID();
+		push @topics, getRandomTopicID() if $r < 0.6;
+		push @topics, getRandomTopicID() if $r < 0.2;
 
 		my $topics = {};
 		%$topics = map { $_ => 0 } @topics;
 
-		if (rand (1) < 0.7) {
+		if (rand(1) < 0.5) {
 			# run in the section for each topic
 			foreach (@topics) {
-				$topics->{$_} = 1;
+				$topics->{$_} = 10;
 			}
-		} elsif (rand(1) < 0.8) {
+		} elsif (rand(1) < 0.95) {
 			my $m_tid = $topics[rand @topics];
 			# elevate to mainpage from one tid / sectional from any others
 			foreach (@topics) {
-				$topics->{$_} = $_ == $m_tid ? 4 : 1;
+				$topics->{$_} = $_ == $m_tid ? 30 : 10;
 			}
-		} 
-	
+		}
+
 		my $commentstatus = rand(1) < .95 ? "enabled" : "disabled";
 		
 		my $story = {
@@ -123,6 +125,9 @@ $constants = getCurrentStatic();
 			rendered	=> undef,
 			commentstatus   => $commentstatus
 		};
+
+		# Small chance of ND'ing this story.
+		$story->{neverdisplay} = 1 if rand(1) < 0.1;
 
 		my $sid = $slashdb->createStory($story);
 		my $reloDB = getObject("Slash::Relocate");

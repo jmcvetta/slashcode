@@ -15,5 +15,5 @@ __template__
 <HR>
 __seclev__
 10000
-
-$Id: horiz_rule;misc;default,v 1.1 2004/02/24 20:17:04 tvroom Exp $
+__version__
+$Id: horiz_rule;misc;default,v 1.2 2004/03/09 17:26:27 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.5 2002/02/06 17:00:51 pudge Exp $
+# $Id: messages.pl,v 1.6 2002/03/13 17:45:09 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -35,6 +35,7 @@ sub main {
 		display		=> [ !$user->{is_anon},	\&display_message	],
 		delete_message	=> [ $user_ok,		\&delete_message	],
 		deletemsgs	=> [ $user_ok,		\&delete_messages	],
+
 		# ????
 		default		=> [ 1,			\&list_messages		]
 	);
@@ -72,7 +73,7 @@ sub display_prefs {
 sub save_prefs {
 	my($messages, $constants, $user, $form) = @_;
 
-	my %params;
+	my(%params, %prefs);
 
 	my $messagecodes = $messages->getDescriptions('messagecodes');
 	for my $code (keys %$messagecodes) {
@@ -83,8 +84,13 @@ sub save_prefs {
 			$params{$code} = fixint($form->{"deliverymodes_$code"});
 		}
 	}
-
 	$messages->setPrefs($user->{uid}, \%params);
+
+	for (qw(message_threshold)) {
+		$prefs{$_} = $user->{$_} = $form->{$_};
+	}
+	my $slashdb = getCurrentDB();
+	$slashdb->setUser($user->{uid}, \%prefs);
 
 	display_prefs(@_, getData('prefs saved'));
 }

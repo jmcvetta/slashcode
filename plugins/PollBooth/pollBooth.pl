@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.10 2000/07/12 15:51:23 pudge Exp $
+#  $Id: pollBooth.pl,v 1.11 2000/07/13 16:36:30 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -59,8 +59,8 @@ sub main {
 		print "</CENTER>";
 
 	} else {
-		my $error = vote($I{F}{qid}, $I{F}{aid});
-		printComments($I{F}{qid}) unless getvar("nocomment") || $error;
+		my $vote = vote($I{F}{qid}, $I{F}{aid});
+		printComments($I{F}{qid}) if !getvar("nocomment") && $vote;
 	}
 
 	writelog("pollbooth", $I{F}{qid});
@@ -171,7 +171,7 @@ sub vote {
 		print "Invalid poll!<BR>";
 		# Non-zero denotes error condition and that comments should not be 
 		# printed.
-		return 1;
+		return;
 	}
 
 	my $qid_htm = stripByMode($qid, 'attribute');

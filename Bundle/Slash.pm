@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.29 2004/04/09 15:00:29 pudge Exp $
+# $Id: Slash.pm,v 1.30 2004/05/11 19:05:19 tvroom Exp $
 #
 
 $Bundle::Slash::VERSION = '2.34';
@@ -104,6 +104,8 @@ AppConfig		- Should be installed with TT, but sometimes not?
 Template		- Template Toolkit
 
 LWP::Parallel
+
+Lingua::Stem
 
 
 =head1 DESCRIPTION

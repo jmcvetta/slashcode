@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.5 2002/12/09 21:32:55 pudge Exp $
+# $Id: stats.pl,v 1.6 2002/12/13 21:17:33 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -25,15 +25,16 @@ sub main {
 		: $slashdb;
 	my $stats     = getObject('Slash::Stats', $logdb->{virtual_user});
 
-	my $admin_post = $user->{is_admin} && $user->{state}{post};
+	my $admin      = $user->{seclev} >= $constants->{stats_admin_seclev} || 100;
+	my $admin_post = $admin && $user->{state}{post};
 
 	# possible value of "op" parameter in form
 	my %ops = (
-		report	=> [ $user->{is_admin},	\&report	],
-		graph	=> [ $user->{is_admin},	\&graph		],
+		report	=> [ $admin,		\&report	],
+		graph	=> [ $admin,		\&graph		],
 		list	=> [ $admin_post,	\&list		],
 
-		default	=> [ $user->{is_admin},	\&list		]
+		default	=> [ $admin,		\&list		]
 	);
 
 	# prepare op to proper value if bad value given
@@ -70,7 +71,7 @@ sub graph {
 			next if $day eq 'names';
 			$data->{$day} = $stats_data->{$section}{$day}{$name};
 		}
-		push @data, { data => $data, type => "$name ($sections->{$section})" };
+		push @data, { data => $data, type => "$name / $sections->{$section}" };
 	}
 
 	my $type = 'image/png';

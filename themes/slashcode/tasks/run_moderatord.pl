@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.6 2002/08/28 20:13:11 jamie Exp $
+# $Id: run_moderatord.pl,v 1.7 2002/08/29 01:20:41 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -391,8 +391,9 @@ sub reconcile_stats {
 	my $consensus = $constants->{m2_consensus};
 	my $reasons = $slashdb->getReasons();
 	my @reasons_m2able =
-		sort grep { $reasons->{$_}{m2able} }
-		map { $reasons->{$_}{name} } keys %$reasons;
+		sort map { $reasons->{$_}{name} }
+		grep { $reasons->{$_}{m2able} }
+		keys %$reasons;
 	my $reason_name = $reasons->{$reason}{name};
 
 	# Update the stats.  First create the rows if necessary.

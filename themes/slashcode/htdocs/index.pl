@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.125 2005/03/29 22:22:46 jamiemccarthy Exp $
+# $Id: index.pl,v 1.126 2005/03/31 20:29:07 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -173,6 +173,11 @@ my $start_time = Time::HiRes::time;
 			my $do_offer = $daypass_db->doOfferDaypass();
 			if ($do_offer) {
 				$daypass_plug_text = $daypass_db->getOfferText();
+				# On days where a daypass is being offered, for
+				# users who are eligible, we give them that
+				# message instead of (not in addition to) the
+				# "please subscribe" message.
+				$future_plug = 0;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.72 2002/10/25 05:32:46 jamie Exp $
+# $Id: MySQL.pm,v 1.73 2002/10/25 06:17:16 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -983,7 +983,7 @@ sub factorEligibleModerators {
 	}
 
 	# If the caller wanted to keep stats, prep some stats.
-	if ($info_hr && %$info_hr) {
+	if ($info_hr) {
 		$info_hr->{factor_lowest} = 1;
 		$info_hr->{factor_highest} = 1;
 	}

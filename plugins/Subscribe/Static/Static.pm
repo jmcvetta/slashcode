@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.1 2003/02/14 23:41:58 jamie Exp $
+# $Id: Static.pm,v 1.2 2003/02/26 18:00:19 jamie Exp $
 
 package Slash::Subscribe::Static;
 
@@ -16,10 +16,10 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
-	my($class, $user) = @_;
+	my($class, $vuser) = @_;
 	my $self = { };
 
 	my $slashdb = getCurrentDB();
@@ -29,8 +29,7 @@ sub new {
 	bless($self, $class);
 
 	my $constants = getCurrentStatic();
-	$self->{virtual_user} = $constants->{backup_db_user}
-		|| $slashdb->{virtual_user};
+	$self->{virtual_user} = $vuser;
 	$self->sqlConnect();
 
 	return $self;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.11 2003/03/04 19:56:31 pudge Exp $
+# $Id: Test.pm,v 1.12 2003/03/14 18:27:04 pudge Exp $
 
 package Slash::Test;
 
@@ -58,12 +58,13 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::XML;
 use Data::Dumper;
+use Storable qw(freeze thaw);
 
 use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -71,6 +72,7 @@ use vars qw($VERSION @EXPORT);
 	@Slash::Utility::EXPORT,
 	@Slash::XML::EXPORT,
 	@Data::Dumper::EXPORT,
+	qw(freeze thaw),
 	'slashTest',
 	'Display',
 );
@@ -137,6 +139,11 @@ sub slashTest {
 	$::anon      = getCurrentAnonymousCoward();
 	$::form      = getCurrentForm();
 
+	$::reader_db	= getObject('Slash::DB', { db_type => 'reader' });
+	$::writer_db	= getObject('Slash::DB', { db_type => 'writer' });
+	$::log_db	= getObject('Slash::DB', { db_type => 'log'    });
+	$::search_db	= getObject('Slash::DB', { db_type => 'search' });
+
 	# auto-create plugin variables ... bwahahaha
 	my $plugins = $::slashdb->getDescriptions('plugins');
 	local $Slash::Utility::NO_ERROR_LOG = 1;
@@ -187,4 +194,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.11 2003/03/04 19:56:31 pudge Exp $
+$Id: Test.pm,v 1.12 2003/03/14 18:27:04 pudge Exp $

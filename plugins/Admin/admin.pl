@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.139 2003/03/17 20:18:54 pudge Exp $
+# $Id: admin.pl,v 1.140 2003/03/19 19:19:30 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1272,23 +1272,21 @@ sub editStory {
 		$storyref->{tid}, 1, 0, 1
 	);
 	my @topic_select_sec;
-	if ($section) {
-		for (@stid) {
-			my $current_hash = { %$topic_values };
-			$current_hash->{0} = "$current_hash->{$_} (Delete)";
-			push @topic_select_sec, createSelect('stid',
-				$current_hash,
-				$_, 1, 0, 1
-			);
-		}
-		if (@stid < 2) {
-			my $current_hash = { %$topic_values };
-			$current_hash->{0} = "Add Topic";
-			push @topic_select_sec, createSelect('stid',
-				$current_hash,
-				0, 1, 0, 1
-			);
-		}
+	for (@stid) {
+		my $current_hash = { %$topic_values };
+		$current_hash->{0} = "$current_hash->{$_} (Delete)";
+		push @topic_select_sec, createSelect('stid',
+			$current_hash,
+			$_, 1, 0, 1
+		);
+	}
+	if (@stid < 2) {
+		my $current_hash = { %$topic_values };
+		$current_hash->{0} = "Add Topic";
+		push @topic_select_sec, createSelect('stid',
+			$current_hash,
+			0, 1, 0, 1
+		);
 	}
 
 	$section_select = selectSection('section', $storyref->{section}, $sections, 1) unless $user->{section};

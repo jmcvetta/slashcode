@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.218 2002/09/02 05:05:21 jamie Exp $
+# $Id: MySQL.pm,v 1.219 2002/09/03 01:25:10 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.218 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.219 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -477,7 +477,7 @@ sub getMetamodsForUser {
 			"moderatorlog",
 			"id IN ($mods_saved) AND active=1 AND m2status = 0"
 		);
-		@mods_saved = grep /^\d+$/, split ",", @$mods_not_done;
+		@mods_saved = grep /^\d+$/, @$mods_not_done;
 	}
 
 	# If we need more, get more.
@@ -1706,6 +1706,7 @@ sub deleteModeratorlog {
 	if ($opts->{cid}) {
 		$where = 'cid=' . $self->sqlQuote($opts->{cid});
 	} elsif ($opts->{sid}) {
+		# XXX This will not work. - Jamie 2002/09/02
 		$where = 'sid=' . $self->sqlQuote($opts->{sid});
 	} else {
 		return;

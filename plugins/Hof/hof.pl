@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.11 2002/03/21 16:55:23 jamie Exp $
+# $Id: hof.pl,v 1.12 2002/08/09 01:08:47 brian Exp $
 
 use strict;
 use Slash;
@@ -14,7 +14,7 @@ sub main {
 	my $form	= getCurrentForm();
 	my $constants	= getCurrentStatic();
 
-	header(getData('head'), $form->{section});
+	header(getData('head'));
 
 	my($hofDB);
 

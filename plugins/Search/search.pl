@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.46 2002/07/12 16:24:31 pater Exp $
+# $Id: search.pl,v 1.47 2002/08/09 01:08:47 brian Exp $
 
 use strict;
 use Slash;
@@ -95,7 +95,7 @@ sub main {
 		$form->{op} = 'stories' if !exists($ops_rss{$form->{op}});
 		$ops_rss{$form->{op}}->($form, $constants, $slashdb, $searchDB);
 	} else {
-		header("$constants->{sitename}: Search $form->{query}", $form->{section});
+		header("$constants->{sitename}: Search $form->{query}");
 		titlebar("99%", "Searching $form->{query}");
 		$form->{op} = 'stories' if !exists($ops{$form->{op}});
 

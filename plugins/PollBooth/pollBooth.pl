@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.36 2002/07/19 18:59:44 brian Exp $
+# $Id: pollBooth.pl,v 1.37 2002/08/09 01:08:47 brian Exp $
 
 use strict;
 use Slash;
@@ -36,7 +36,7 @@ sub main {
 		$ops{$op}->($slashdb,$form);
 		# Why not do this in a more generic manner you say? 
 		# Because I am paranoid about this being abused. -Brian
-		my $SECT = $slashdb->getSection($form->{section});
+		my $SECT = $slashdb->getSection();
 		if ($SECT) {
 			my $url = $SECT->{rootdir} || $constants->{real_rootdir};
 			

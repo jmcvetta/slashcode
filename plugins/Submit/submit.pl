@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.67 2002/07/19 14:24:49 pudge Exp $
+# $Id: submit.pl,v 1.68 2002/08/09 01:08:47 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -102,8 +102,7 @@ sub main {
 	);
 
 	header(
-		getData('header', { tbtitle => $tbtitle } ),
-		$section, { admin => 1 }
+		getData('header', { tbtitle => $tbtitle } ), '', { admin => 1 }
 	);
 
 	if ($user->{seclev} < 100) {

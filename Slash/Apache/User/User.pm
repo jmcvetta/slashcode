@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.106 2004/05/04 21:43:32 pudge Exp $
+# $Id: User.pm,v 1.107 2004/05/11 19:13:29 tvroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -167,6 +167,7 @@ sub handler {
 			$uid = 0;
 		} else {
 			($uid, $newpass) = userLogin($tmpuid, $passwd, $logtoken);
+			$slashdb->clearAccountVerifyNeededFlags($uid) if $uid;
 		}
 
 		# here we want to redirect only if the user has requested via

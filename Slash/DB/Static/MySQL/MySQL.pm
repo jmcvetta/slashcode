@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.103 2003/06/24 02:35:37 pudge Exp $
+# $Id: MySQL.pm,v 1.104 2003/07/15 19:06:08 vroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1661,6 +1661,17 @@ sub countPollQuestion {
 		"GROUP BY qid");
 
 	return $answer;
+}
+
+########################################################
+
+sub setCurrentSectionPolls{
+        my($self)=@_;
+        my $section_polls=$self->sqlSelectAllHashrefArray("section,max(date) as date","pollquestions","date<=NOW() and polltype='section'","group by section"); 
+	foreach my $p(@$section_polls){
+                my $poll=$self->sqlSelectHashref("qid,section","pollquestions","section='$p->{section}' and date='$p->{date}'");
+                $self->setSection($poll->{section}, { qid => $poll->{qid} });
+        }
 }
 
 ########################################################

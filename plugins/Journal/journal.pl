@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.22 2001/11/03 03:11:00 brian Exp $
+# $Id: journal.pl,v 1.23 2001/11/06 02:47:47 brian Exp $
 
 use strict;
 use Slash 2.001;	# require Slash 2.1
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use constant ALLOWED	=> 0;
 use constant FUNCTION	=> 1;
@@ -490,15 +490,19 @@ sub friendMeta {
 sub addFriend {
 	my($journal, $constants, $user, $form, $slashdb) = @_;
 
-	$journal->add($form->{uid}) if $form->{uid};
+	$journal->add($user->{uid}, $form->{uid}) if $form->{uid};
 	displayFriends(@_);
 }
 
 sub deleteFriend {
 	my($journal, $constants, $user, $form, $slashdb) = @_;
 
-	for my $uid (grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form) {
-		$journal->delete($uid);
+	if ($form->{delete}) {
+		$journal->delete($form->{delete});
+	} else {
+		for my $uid (grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form) {
+			$journal->delete($uid);
+		}
 	}
 
 	displayFriends(@_);

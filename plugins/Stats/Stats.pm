@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.139 2004/04/13 15:10:26 cowboyneal Exp $
+# $Id: Stats.pm,v 1.140 2004/04/15 14:30:53 cowboyneal Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -293,7 +293,7 @@ sub getRepeatMods {
 		 usersdest.nickname AS destnick,
 		 usersdesti.karma AS destkarma",
 		"users AS usersorg,
-		 users_info AS userorgi,
+		 users_info AS usersorgi,
 		 moderatorlog,
 		 users AS usersdest,
 		 users_info AS usersdesti",
@@ -1689,4 +1689,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.139 2004/04/13 15:10:26 cowboyneal Exp $
+$Id: Stats.pm,v 1.140 2004/04/15 14:30:53 cowboyneal Exp $

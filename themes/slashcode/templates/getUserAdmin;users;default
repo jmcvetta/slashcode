@@ -158,6 +158,12 @@ __template__
 				[% IF accesslist.adminnick %]<B>By:</B> [% accesslist.adminnick %][% END %]
 				</TD>
 			</TR>
+			[% IF useredit.nonuid %]
+			<TR>
+				<TD VALIGN="TOP"><B>Estimated Users</B></TD>
+				<TD>[% accesslist.estimated_users %]</TD>
+			</TR>
+			[% END %]
 			[% IF ! useredit.nonuid %]
 			<TR>
 				<TD WIDTH="100"><B>Hits<B></TD>
@@ -306,4 +312,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.50 2003/11/07 13:46:29 jamie Exp $
+$Id: getUserAdmin;users;default,v 1.51 2003/11/25 06:11:34 vroom Exp $

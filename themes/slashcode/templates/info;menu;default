@@ -25,6 +25,7 @@ __template__
 	{ link = "$constants.rootdir/users.pl?op=listbanned",	label = "Banned",		sel_label = "banned" },
 	{ link = "$constants.rootdir/admin.pl?op=slashd",	label = "Slashd",		sel_label = "slashd" },
 	{ link = "$constants.rootdir/admin.pl?op=recent",	label = "Posting",		sel_label = "recent" },
+	{ link = "$constants.rootdir/admin.pl?op=recent_mods",	label = "Mods",			sel_label = "recent_mods" },
 	{ link = "$constants.rootdir/admin.pl?op=recent_requests", label = "Reqs",		sel_label = "requests" },
 	{ link = "$constants.rootdir/admin.pl?op=recent_subs",	label = "Subs",			sel_label = "subs" },
 	{ link = "$constants.rootdir/admin.pl?op=recent_webheads", label = "Webheads",		sel_label = "webheads" },
@@ -37,4 +38,4 @@ PROCESS tabbedmenu tabs=tabs color=color selected=page lightfontcolor=lightfontc
 __seclev__
 10000
 __version__
-$Id: info;menu;default,v 1.15 2003/11/07 13:46:29 jamie Exp $
+$Id: info;menu;default,v 1.16 2003/11/25 06:11:34 vroom Exp $

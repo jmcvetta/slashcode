@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.24 2002/02/12 21:34:38 brian Exp $
+# $Id: User.pm,v 1.25 2002/03/04 18:00:05 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -206,6 +206,12 @@ sub handler {
 	createCurrentCookie($cookies);
 	createEnv($r) if $cfg->{env};
 	authors($r) if $form->{'slashcode_authors'};
+
+	# a special test mode for getting a new template
+	# object (hence, fresh cache) for each request
+	if ($constants->{template_cache_request}) {
+		undef $dbcfg->{template};
+	}
 
 	# Weird hack for getCurrentCache() till I can code up proper logic for it
 	{

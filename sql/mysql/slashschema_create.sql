@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.94 2003/02/06 20:55:47 brian Exp $
+# $Id: slashschema_create.sql,v 1.95 2003/02/07 16:44:36 jamie Exp $
 #
 
 #
@@ -70,6 +70,7 @@ CREATE TABLE accesslog (
 	static enum("yes","no") DEFAULT "yes",
 	secure tinyint DEFAULT 0 NOT NULL,
 	referer varchar(254),
+	status smallint UNSIGNED DEFAULT 200 NOT NULL,
 	INDEX host_addr_part (host_addr(16)),
 	INDEX op_part (op(12), section),
 	INDEX ts (ts),
@@ -90,7 +91,7 @@ CREATE TABLE accesslog_admin (
 	bytes mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	form MEDIUMBLOB NOT NULL,
 	secure tinyint DEFAULT 0 NOT NULL,
-	status mediumint UNSIGNED DEFAULT 200 NOT NULL,
+	status smallint UNSIGNED DEFAULT 200 NOT NULL,
 	INDEX host_addr (host_addr),
 	INDEX ts (ts),
 	PRIMARY KEY (id)

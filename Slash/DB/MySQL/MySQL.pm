@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.323 2003/02/06 21:46:46 brian Exp $
+# $Id: MySQL.pm,v 1.324 2003/02/07 16:44:36 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.323 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.324 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1368,6 +1368,7 @@ sub createAccessLog {
 	my $local_addr = inet_ntoa(
 		( unpack_sockaddr_in($r->connection()->local_addr()) )[1]
 	);
+	$status ||= $r->status;
 	my $insert = {
 		host_addr	=> $ipid,
 		subnetid	=> $subnetid,
@@ -1406,17 +1407,14 @@ sub createAccessLog {
 ##########################################################
 # This creates an entry in the accesslog for admins -Brian
 sub createAccessLogAdmin {
-	my($self, $op, $dat) = @_;
+	my($self, $op, $dat, $status) = @_;
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
 	my $r = Apache->request;
 
 	# $ENV{SLASH_USER} wasn't working, was giving us some failed inserts
-	# with uid NULL. For details, do a
-	# grep -A1 'cannot be null' /var/log/banjo.slashdot.org_error_log
-	# on the SSL server. - Jamie 2002/12/24
-	# my $uid = $ENV{SLASH_USER};
+	# with uid NULL.
 	my $uid = $user->{uid};
 	my $section = $constants->{section};
 	# The following two are special cases
@@ -1427,6 +1425,7 @@ sub createAccessLogAdmin {
 	}
 	# And just what was the admin doing? -Brian
 	$op = $form->{op} if $form->{op};
+	$status ||= $r->status;
 
 	$self->sqlInsert('accesslog_admin', {
 		host_addr	=> $r->connection->remote_ip,
@@ -1440,6 +1439,7 @@ sub createAccessLogAdmin {
 		query_string	=> $ENV{QUERY_STRING} || '0',
 		user_agent	=> $ENV{HTTP_USER_AGENT} || '0',
 		secure		=> Slash::Apache::ConnectionIsSecure(),
+		status		=> $status,
 	}, { delayed => 1 });
 }
 

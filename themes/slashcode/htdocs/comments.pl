@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.36 2002/01/03 00:39:46 brian Exp $
+# $Id: comments.pl,v 1.37 2002/01/03 17:22:55 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -369,7 +369,7 @@ sub commentIndexUserCreated {
 			$back = -1;
 		}
 
-		slashDisplay('user_discuss_list', {
+		slashDisplay('udiscuss_list', {
 			discussions	=> $discussions,
 			forward		=> $forward,
 			args		=> _buildargs($form),

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.22 2002/06/28 14:56:11 jamie Exp $
+# $Id: Install.pm,v 1.23 2002/07/11 22:22:45 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -193,7 +193,7 @@ sub _process_fh_into_sql {
 	my($fh, $mldhr, $opts) = @_;
 	my @sts = ( ); # new statements
 	my $firstline_regex = $opts->{schema}
-		? qr{^(INSERT|DELETE|REPLACE|UPDATE|ALTER|CREATE)\b}
+		? qr{^(INSERT|DELETE|REPLACE|UPDATE|ALTER|CREATE|DROP)\b}
 		: qr{^(INSERT|DELETE|REPLACE|UPDATE)\b};
 	while (my $line = <$fh>) {
 

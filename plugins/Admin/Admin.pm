@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.6 2003/01/17 01:31:23 jamie Exp $
+# $Id: Admin.pm,v 1.7 2003/01/31 05:46:04 jamie Exp $
 
 package Slash::Admin;
 
@@ -15,7 +15,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -56,11 +56,14 @@ sub getRecentSubs {
 
 sub getAccesslogAbusersByID {
 	my($self, $options) = @_;
+	my $slashdb = $options->{slashdb} || $self;
+	my $logdb = $options->{logdb} || $self;
 	my $min_id = $options->{min_id} || 0;
 	my $thresh_count = $options->{thresh_count} || 100;
 	my $thresh_hps = $options->{thresh_hps} || 0.1;
 	my $limit = 500;
-	my $ar = $self->sqlSelectAllHashrefArray(
+
+	my $ar = $logdb->sqlSelectAllHashrefArray(
 		"COUNT(*) AS c, host_addr AS ipid, op,
 		 MIN(ts) AS mints, MAX(ts) AS maxts,
 		 UNIX_TIMESTAMP(MAX(ts))-UNIX_TIMESTAMP(MIN(ts)) AS secs,
@@ -79,7 +82,7 @@ sub getAccesslogAbusersByID {
 	# as banned and put the reason in too.
 	my @ipids = map { $self->sqlQuote($_->{ipid}) } @$ar;
 	my $ipids = join(",", @ipids);
-	my $hr = $self->sqlSelectAllHashref(
+	my $hr = $slashdb->sqlSelectAllHashref(
 		"ipid",
 		"ipid, ts, reason",
 		"accesslist",

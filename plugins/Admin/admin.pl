@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.130 2003/01/30 00:27:40 brian Exp $
+# $Id: admin.pl,v 1.131 2003/01/31 05:46:04 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1733,7 +1733,11 @@ sub displayRecentRequests {
 
 	my $min_id_ts ||= $logdb->getAccesslog($min_id, 'ts');
 
-	my $options = { min_id => $min_id };
+	my $options = {
+		logdb		=> $logdb,
+		slashdb		=> $slashdb,
+		min_id		=> $min_id,
+	};
 	$options->{thresh_count} = defined($form->{thresh_count}) ? $form->{thresh_count} : 100;
 	$options->{thresh_hps}   = defined($form->{thresh_hps}  ) ? $form->{thresh_hps}   : 0.1;
 

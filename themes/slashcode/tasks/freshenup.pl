@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.57 2004/11/22 00:19:08 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.58 2004/11/22 22:00:53 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -85,12 +85,13 @@ $task{$me}{code} = sub {
 	# while we do them piecemeal.  So instead, we try to take a
 	# big bite out of what needs to be done while there are stories
 	# within the latest 1000 that need this, and then afterwards,
-	# take a smaller bite every 10 minutes at a do_all.
+	# take a smaller bite every 10 minutes at a do_all.  These
+	# actually get processed pretty fast.
 	$stories = $slashdb->getSRDsWithinLatest(1000);
 	if (!@$stories) {
 		if ($do_all) {
 			# Try the smaller bite.
-			$stories = $slashdb->getSRDs(20);
+			$stories = $slashdb->getSRDs($max_stories);
 		} else {
 			# Either there's nothing to be done or there's
 			# nothing urgent enough to be done.  Leave the

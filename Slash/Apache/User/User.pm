@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.49 2003/01/14 20:29:28 jamie Exp $
+# $Id: User.pm,v 1.50 2003/01/15 18:04:16 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -73,15 +73,17 @@ sub handler {
 		$uri =~ s/^\Q$path//;
 	}
 
+	my $is_ssl = Slash::Apache::ConnectionIsSSL();
 	if (!$cfg->{auth} && $uri !~ /\.pl$/ && $uri !~ /\.tmpl$/) {
 		$r->subprocess_env(SLASH_USER => $constants->{anonymous_coward_uid});
 		createCurrentUser();
 		createCurrentForm();
 		createCurrentCookie();
-		if ($constants->{allow_nonadmin_ssl} != 1
-			&& Slash::Apache::ConnectionIsSSL() ) {
+		if ($constants->{allow_nonadmin_ssl} != 1 && $is_ssl) {
 			# Accessing non-dynamic URL on SSL webserver; redirect
-			# to the non-SSL URL.
+			# to the non-SSL URL.  Note that dynamic requests may
+			# be redirected too, but we handle those later on in
+			# this subroutine.
 			my $newloc = $uri;
 			$newloc .= "?" . $r->args if $r->args;
 			$r->err_header_out(Location =>
@@ -236,8 +238,7 @@ EOT
 	# If allow_nonadmin_ssl is 1, then anyone is allowed in.
 	# If allow_nonadmin_ssl is 2, then admins and subscribers are allowed in.
 	my $redirect_to_nonssl = 0;
-	if (Slash::Apache::ConnectionIsSSL()
-		&& !(
+	if ($is_ssl && !(
                         # If the user is trying to log in, they are always
 			# allowed to make the attempt on the SSL server.
 			# Logging in means the users.pl script and either

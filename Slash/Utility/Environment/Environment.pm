@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.153 2004/11/21 02:14:45 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.154 2004/12/07 16:59:57 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1504,7 +1504,8 @@ sub prepareUser {
 		# Make other decisions about subscriber-related attributes
 		# of this page.  Note that we still have $r lying around,
 		# so we can save Subscribe.pm a bit of work.
-		if (my $subscribe = getObject('Slash::Subscribe', { db_type => 'reader' })) {
+		# we don't need or want to do this if not in Apache ...
+		if ($ENV{GATEWAY_INTERFACE} && (my $subscribe = getObject('Slash::Subscribe', { db_type => 'reader' }))) {
 			$user->{state}{page_plummy} = $subscribe->plummyPage($r, $user);
 			$user->{state}{page_buying} = $subscribe->buyingThisPage($r, $user);
 			$user->{state}{page_adless} = $subscribe->adlessPage($r, $user);
@@ -2655,4 +2656,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.153 2004/11/21 02:14:45 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.154 2004/12/07 16:59:57 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.724 2004/11/03 20:08:01 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.725 2004/11/09 17:53:59 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.724 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.725 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8977,6 +8977,9 @@ sub _getMCDStats_percentify {
 # It's ugly, but performs many necessary functions, and anything
 # that replaces it to perform those functions won't be any prettier
 # -- pudge
+# Putting the left-hand side of the s///'s into an array, and the
+# right-hand side into a data template, would be a slightly-
+# prettier compromise.  I'm just saying. - Jamie
 sub autoUrl {
 	my $self = shift;
 	my $section = shift;
@@ -8998,10 +9001,6 @@ sub autoUrl {
 	s|<update>|<B>Update: <date></B> by <author>|ig;
 	s|<date>|$now|g;
 	s|<author>|<B><A HREF="$user->{homepage}">$initials</A></B>:|ig;
-
-	# The delimiters below were once "[%...%]" but that's legacy code from
-	# before Template, and we've since changed it to what you see below.
-	s/\{%\s*(.*?)\s*%\}/$self->getUrlFromTitle($1)/eg if $form->{shortcuts};
 
 	# Assorted ways to add files:
 	s|<import>|importText()|ex;

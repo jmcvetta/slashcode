@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.160 2003/03/06 15:28:11 pater Exp $
+# $Id: users.pl,v 1.161 2003/03/10 17:20:35 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -641,15 +641,22 @@ sub mailPasswd {
 		}
 	}
 
-	my $user_edit = $slashdb->getUser($uid);
-
+	my $user_edit;
 	my $err_name = '';
-	$err_name = 'mailpasswd_notmailed_err' if !$uid || isAnon($uid);
-	$err_name = 'mailpasswd_readonly_err' if !$err_name
-		&& ($slashdb->checkReadOnly('ipid')
-			|| $slashdb->checkReadOnly('subnetid'));
-	$err_name = 'mailpasswd_toooften_err' if !$err_name
-		&& $slashdb->checkMaxMailPasswords($user_edit);
+	if (!$uid || isAnon($uid)) {
+		$err_name = 'mailpasswd_notmailed_err';
+	}
+	if (!$err_name) {
+		$user_edit = $slashdb->getUser($uid);
+		$err_name = 'mailpasswd_readonly_err'
+			if $slashdb->checkReadOnly('ipid')
+				|| $slashdb->checkReadOnly('subnetid');
+	}
+	if (!$err_name) {
+		$err_name = 'mailpasswd_toooften_err'
+			if $slashdb->checkMaxMailPasswords($user_edit);
+	}
+
 	if ($err_name) {
 		print getError($err_name);
 		$slashdb->resetFormkey($form->{formkey});	

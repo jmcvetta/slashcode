@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.156 2003/07/18 06:31:28 jamie Exp $
+# $Id: Slash.pm,v 1.157 2003/08/05 13:52:59 pater Exp $
 
 package Slash;
 
@@ -997,7 +997,7 @@ sub displayThread {
 		# ahead more, counting all the visible kids.	--Pater
 		$skipped += $comment->{totalvisiblekids} if ($user->{mode} eq 'flat' || $user->{mode} eq 'nested');
 		$form->{startat} ||= 0;
-		next if $skipped < $form->{startat};
+		next if $skipped <= $form->{startat};
 		$form->{startat} = 0; # Once We Finish Skipping... STOP
 
 		if ($comment->{points} < $user->{threshold}) {

@@ -75,11 +75,12 @@ __template__
 	[% name %]_reset_saved_tree(list);
 </script>
 
-<input type="button" value="Choose Topics"  onmouseup="[% name %]_show()" name="[% name %]_topic_toggle">
-<input type="button" value="Collapse All"   onmouseup="[% name %]_collapse_all()" name="[% name %]_topic_toggle_all">
+<input type="button" value="Choose Topics"      onmouseup="[% name %]_show()" name="[% name %]_topic_toggle">
+<input type="button" value="Choose Topics - AB" onmouseup="[% name %]_show('ab')" name="[% name %]_ab_topic_toggle">
+<input type="button" value="Collapse All"       onmouseup="[% name %]_collapse_all()" name="[% name %]_topic_toggle_all">
 </td></tr></table>
 
 __seclev__
 10000
 __version__
-$Id: topic_popup_ui_topiced;admin;default,v 1.1 2004/09/24 23:44:11 pudge Exp $
+$Id: topic_popup_ui_topiced;admin;default,v 1.2 2004/10/15 05:43:36 pudge Exp $

@@ -13,7 +13,7 @@ topicEdit
 __template__
 [% PROCESS titlebar width='100%' %]
 <table><tr><td valign="TOP">
-	<form action="[% env.script_name %]" method="POST" name="slashstoryform">
+	<form action="[% env.script_name %]" method="POST" name="slashstoryform" onsubmit="return false;">
 	<input type="HIDDEN" name="op" value="topics">
 	[% PROCESS formLabel value => "Select a topic" comment => "hit the create button if you wish to create a new topic" %]
 	[% Slash.createSelect('nexttid', topic_desc, form.nexttid, 1, 0, 1)%]	
@@ -91,4 +91,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: topicEdit;admin;default,v 1.21 2004/10/12 15:01:15 tvroom Exp $
+$Id: topicEdit;admin;default,v 1.22 2004/10/15 05:43:36 pudge Exp $

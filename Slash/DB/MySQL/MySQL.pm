@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.9 2001/04/12 19:41:32 pudge Exp $
+# $Id: MySQL.pm,v 1.10 2001/04/17 14:59:48 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -2200,13 +2200,13 @@ sub autoUrl {
 	$more =~ s/[a-z]//g;
 	$initials = uc($initials . $more);
 	# CHANGE DATE_ FUNCTION
-	my($now) = $self->sqlSelect('date_format(now(),"m/d h:i p")');
+	my($now) = timeCalc('epoch ' . time(), '%m/%d %H:%M %p %Z', 0);
 
 	# Assorted Automatic Autoreplacements for Convenience
-	s|<disclaimer:(.*)>|<B><A HREF="/about.shtml#disclaimer">disclaimer</A>:<A HREF="$user->{url}">$user->{nickname}</A> owns shares in $1</B>|ig;
+	s|<disclaimer:(.*)>|<B><A HREF="/about.shtml#disclaimer">disclaimer</A>:<A HREF="$user->{homepage}">$user->{nickname}</A> owns shares in $1</B>|ig;
 	s|<update>|<B>Update: <date></B> by <author>|ig;
 	s|<date>|$now|g;
-	s|<author>|<B><A HREF="$user->{url}">$initials</A></B>:|ig;
+	s|<author>|<B><A HREF="$user->{homepage}">$initials</A></B>:|ig;
 	s/\[%(.*?)%\]/$self->getUrlFromTitle($1)/exg;
 
 	# Assorted ways to add files:

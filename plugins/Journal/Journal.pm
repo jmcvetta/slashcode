@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.8 2001/04/16 19:36:05 brian Exp $
+# $Id: Journal.pm,v 1.9 2001/04/17 14:59:48 pudge Exp $
 
 package Slash::Journal;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Slash::DB::Utility Slash::DB::MySQL);
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -148,7 +148,7 @@ sub topFriends {
 	$self->sqlConnect;
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);
 	$sql = "SELECT max(date) FROM journals WHERE uid=";
-	for(@$losers) {
+	for (@$losers) {
 		my $date = $self->{_dbh}->selectrow_array($sql . $_->[2]);
 		push @$_, $date;
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.34 2003/10/10 02:52:22 jamie Exp $
+# $Id: slashd,v 1.35 2003/10/11 13:45:31 jamie Exp $
 
 ############################################################
 #
@@ -430,7 +430,7 @@ sub set_resources {
 			* $task{$task_filename}{resource_locks}{$resource};
 		$resource_info{$resource} = 0 if abs($resource_info{$resource}) < 0.001;
 		if (verbosity() >= 3) {
-			slashdLog("set resource_info '$resource' to $resource_info{$resource}");
+			slashdLog("$task_filename set resource_info '$resource' to $resource_info{$resource}");
 		}
 	}
 }

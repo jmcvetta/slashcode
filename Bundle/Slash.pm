@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.32 2004/07/01 18:05:15 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.33 2004/07/30 17:59:55 jamiemccarthy Exp $
 #
 
 $Bundle::Slash::VERSION = '2.34';
@@ -115,7 +115,11 @@ Lingua::Stem
 mod_perl must be installed by hand, because of the special configuration
 required for it.
 
-Optional but recommended modules include:  Cache::Memcached Silly::Werder
-GD GD::Text Apache::SSI Apache::RegistryFilter GraphViz
+Our optional modules, which are not required for a default install
+and thus not installed by default, but which may become required as
+you edit your site configuration, are: Cache::Memcached Silly::Werder
+GD GD::Text GD::Graph Apache::SSI Apache::RegistryFilter GraphViz
+
+(should LWP::Parallel above be LWP::Parallel::UserAgent?)
 
 =cut

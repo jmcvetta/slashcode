@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.245 2004/11/02 15:06:24 cowboyneal Exp $
+# $Id: admin.pl,v 1.246 2004/11/03 21:18:35 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1295,9 +1295,7 @@ sub editStory {
 		$extracolumns, $commentstatus_select, 
 		$subid, $description);
 	my $extracolref = {};
-	my($fixquotes_check, $autonode_check, 
-		$fastforward_check) =
-		('','','');
+	my($fixquotes_check, $autonode_check, $fastforward_check) = ('','','');
 	my $page = 'index';
 	# If the user is a section only admin, we do that, if they have filled out a form we do that but 
 	# if none of these apply we just do defaultsection -Brian

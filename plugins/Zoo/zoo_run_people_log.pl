@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: zoo_run_people_log.pl,v 1.11 2004/10/27 15:36:02 jamiemccarthy Exp $
+# $Id: zoo_run_people_log.pl,v 1.12 2004/11/03 21:18:35 pudge Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd :people );
@@ -26,7 +26,7 @@ $task{$me}{code} = sub {
 	$stats->createStatDaily("zoo_counts", "0");	
 
 	slashdLog('Zoo fof/eof Begin');
-	my $people = $zoo->getZooUsersForProcessing();
+	my $people = $zoo->getZooUsersForProcessing() || [];
 	slashdLog('Zoo fof/eof Processing ' . scalar(@$people) . ' people');
 	# Each job represents someone who has added or removed someone as a friend/foe. -Brian
 	for my $person (@$people) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.27 2002/07/22 15:47:42 pudge Exp $
+# $Id: Install.pm,v 1.28 2002/07/22 19:47:01 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -492,12 +492,14 @@ sub getSiteTemplates {
 }
 
 sub _parseFilesForTemplates {
-	my ($file, $templates, $no_templates) = @_;
+	my($file, $templates, $no_templates) = @_;
+
 	my $file_handle = gensym;
-	if (!(-e $file)) {
-		print STDERR "Could not open $file\n";
-	} 
-	open($file_handle, "$file");
+	unless (open($file_handle, "< $file\0")) {
+		warn "Can't open $file: $!";
+		return;
+	}
+
 	$file =~ s/PLUGIN//;
 	$file =~ s/THEME//;
 	while (my $line = <$file_handle>) {
@@ -508,7 +510,7 @@ sub _parseFilesForTemplates {
 			my @parts = split /\//, $val;
 			$templates->{pop(@parts)} = "$file/$val";
 		}
-		push @$no_templates, "$val"
+		push @$no_templates, $val
 			if ($key eq 'no-template');
 	}
 }

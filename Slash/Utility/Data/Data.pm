@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.62 2002/11/26 05:21:18 pudge Exp $
+# $Id: Data.pm,v 1.63 2002/11/26 05:27:03 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -510,7 +510,7 @@ my %actions = (
 	newline_to_local => sub {
 			${$_[0]} =~ s/(?:\015?\012|\015)/\n/g;		},
 	trailing_whitespace => sub {
-			${$_[0]} =~ s/[t ]+\n/\n/g;			},
+			${$_[0]} =~ s/[\t ]+\n/\n/g;			},
 	encode_html_amp => sub {
 			${$_[0]} =~ s/&/&amp;/g;			},
 	encode_html_amp_ifnotent => sub {
@@ -2667,4 +2667,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.62 2002/11/26 05:21:18 pudge Exp $
+$Id: Data.pm,v 1.63 2002/11/26 05:27:03 pudge Exp $

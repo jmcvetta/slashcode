@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.89 2004/07/16 16:40:19 cowboyneal Exp $
+# $Id: Display.pm,v 1.90 2004/08/14 19:28:27 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -500,14 +500,21 @@ sub linkStory {
 		}
 	}
 
+	my @extra_attrs_allowed = qw( title class id );
 	if ($render) {
 		my $rendered = '<a href="' . strip_attribute($url) . '"';
-		$rendered .= ' title="' . strip_attribute($story_link->{title}) . '"'
-			if $story_link->{title} ne '';
+		for my $attr (@extra_attrs_allowed) {
+			my $val = $story_link->{$attr};
+			next unless $val;
+			$rendered .=
+				  qq{ $attr="}
+				. strip_attribute($val)
+				. qq{"};
+		}
 		$rendered .= '>' . strip_html($title) . '</a>';
 		return $rendered;
 	} else {
-		return [$url, $title, $story_link->{title}];
+		return [$url, $title, @{$story_link}{@extra_attrs_allowed}];
 	}
 }
 
@@ -1652,4 +1659,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.89 2004/07/16 16:40:19 cowboyneal Exp $
+$Id: Display.pm,v 1.90 2004/08/14 19:28:27 jamiemccarthy Exp $

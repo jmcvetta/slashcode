@@ -30,7 +30,8 @@ __template__
 	</TR>
 		[% END %]
 
-[% storiestoday = 0;
+[% IF storylistref && storylistref.count > 0;
+storiestoday = 0;
 FOREACH story = storylistref %]
 
 [% IF story.td != yesterday && !form.section;
@@ -115,6 +116,9 @@ END %]
 	</TR>
 
 [% END %]
+[% ELSE %]
+<TR><TD><B>No stories.</B></TD></TR>
+[% END %]
 
 </TABLE>
 
@@ -128,4 +132,4 @@ END %]
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.17 2003/03/04 19:07:58 pudge Exp $
+$Id: listStories;admin;default,v 1.18 2003/06/27 15:48:36 pudge Exp $

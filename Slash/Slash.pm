@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.142 2003/06/28 00:17:41 pudge Exp $
+# $Id: Slash.pm,v 1.143 2003/07/01 06:01:26 pater Exp $
 
 package Slash;
 
@@ -929,6 +929,8 @@ sub displayThread {
 			$return .= displayThread($sid, $cid, $lvl+1, $comments, $const);
 			$return .= $const->{indentend} if $indent;
 			$return .= $const->{cageend} if $cagedkids;
+
+			$displayed += @{$comment->{kids}} if ($user->{mode} eq 'flat' || $user->{mode} eq 'nested');
 		}
 
 		$return .= $const->{commentend} if $finish_list;

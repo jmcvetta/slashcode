@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.609 2004/07/05 02:34:30 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.610 2004/07/06 17:31:33 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.609 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.610 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7527,7 +7527,8 @@ sub getStoryList {
 	foreach my $story (@$list) {
 #		$story->{displaystatus} = $self->_displaystatus($story->{stoid}, { no_time_restrict => 1 });
 		$story->{skinname} ||= 'mainpage';
-		$story->{topic} = $self->getTopic($story->{tid})->{keyword};
+		my $topic = $self->getTopic($story->{tid});
+		$story->{topic} = $topic->{keyword} if $topic;
 		push @$stoids, $story->{stoid};
 	}
 

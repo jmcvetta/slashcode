@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.26 2002/03/07 17:14:01 pudge Exp $
+# $Id: search.pl,v 1.27 2002/03/20 22:54:09 brian Exp $
 
 use strict;
 use Slash;
@@ -102,9 +102,10 @@ sub main {
 sub _authors {
 	my $slashdb = getCurrentDB();
 	my $authors = $slashdb->getDescriptions('all-authors');
-	$authors->{''} = getData('all_authors');
+	my %newauthors = %$authors;
+	$newauthors{''} = getData('all_authors');
 
-	return $authors;
+	return \%newauthors;
 }
 
 #################################################################
@@ -120,9 +121,10 @@ sub _topics {
 		$topics = $slashdb->getDescriptions('topics');
 	}
 
-	$topics->{''} = getData('all_topics');
+	my %newtopics = %$topics;
+	$newtopics{''} = getData('all_topics');
 
-	return $topics;
+	return \%newtopics;
 }
 
 #################################################################
@@ -138,9 +140,10 @@ sub _sort {
 sub _sections {
 	my $slashdb = getCurrentDB();
 	my $sections = $slashdb->getDescriptions('sections');
-	$sections->{''} = getData('all_sections');
+	my %newsections = %$sections;
+	$newsections{''} = getData('all_sections');
 
-	return $sections;
+	return \%newsections;
 }
 
 #################################################################

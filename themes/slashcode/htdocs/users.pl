@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.136 2002/12/31 06:35:49 jamie Exp $
+# $Id: users.pl,v 1.137 2003/01/13 19:55:32 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2580,11 +2580,9 @@ sub getUserAdmin {
 			{ $form->{fieldname} => $user_edit->{md5id} } : 
 			$user_edit;
 
-		if ($readonly->{$formname}) {
-			my $aclinfo = $slashdb->getAccessListInfo(
-                                	$formname, 'readonly', $user_chk);
-			$readonly_reasons->{$formname} = $aclinfo->{reason};
-		}
+		my $aclinfo = $slashdb->getAccessListInfo(
+                               	$formname, 'readonly', $user_chk);
+		$readonly_reasons->{$formname} = $aclinfo->{reason};
 	}
 	
 	my $banref = $slashdb->getBanList(1);

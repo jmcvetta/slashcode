@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.263 2004/11/02 15:59:31 cowboyneal Exp $
+# $Id: users.pl,v 1.264 2004/11/24 20:43:04 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -473,7 +473,7 @@ sub checkList {
 	my $constants = getCurrentStatic();
 
 	$string =~ s/[^\w,-]//g;
-	my @items = split /,/, $string;
+	my @items = grep { $_ } split /,/, $string;
 	$string = join ",", @items;
 
 	$len ||= $constants->{checklist_length} || 255;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.30 2004/07/16 13:57:02 jamiemccarthy Exp $
+# $Id: createTestStories,v 1.31 2004/08/10 21:25:44 jamiemccarthy Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -168,7 +168,8 @@ sub get_time {
 		$min = $now;
 		$max = $now + 86400*$direction;
 	}
-	return int(rand($max-$min)) + $min;
+	my $t = int(rand($max-$min)) + $min;
+	return int($t/60) * 60;
 }
 
 sub getRandomAuthorID {

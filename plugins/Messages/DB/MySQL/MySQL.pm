@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.10 2002/03/19 01:36:47 jamie Exp $
+# $Id: MySQL.pm,v 1.11 2002/05/09 22:25:53 brian Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -94,8 +94,12 @@ sub setPrefs {
 	my $prime = $self->{_prefs_prime1};
 	my $where = $prime . '=' . $self->sqlQuote($uid);
 
+	#First we delete, then we insert, this allows us to remove -1 type entries
+	# Basically it keeps defaults out of the DB, and makes it smaller :)
+	$self->sqlDelete("$table", "uid = $uid");
 	for my $code (keys %$prefs) {
-		$self->sqlReplace($table, {
+		next if $prefs->{$code} == -1;
+		$self->sqlInsert($table, {
 			uid	=> $uid,
 			code	=> $code,
 			mode	=> $prefs->{$code},

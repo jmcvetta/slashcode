@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.29 2002/09/09 17:23:58 pudge Exp $
+# $Id: Utility.pm,v 1.30 2003/01/13 19:19:09 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -334,6 +334,7 @@ sub sqlCount {
 	# we just need one stinkin value - count
 	$self->sqlConnect();
 	my $count = $self->{_dbh}->selectrow_array($sql);
+
 	return $count;  # count
 }
 
@@ -595,6 +596,16 @@ sub sqlDo {
 
 	return $rows;
 }
+
+#################################################################
+# Keeps encapsulation
+sub sqlError {
+	my($self) = @_;
+	$self->sqlConnect;
+	return $self->{_dbh}->errstr;
+}
+
+
 
 1;
 

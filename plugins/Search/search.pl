@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.8 2001/04/23 16:51:58 brian Exp $
+# $Id: search.pl,v 1.9 2001/04/23 17:10:42 brian Exp $
 
 use strict;
 use Slash;
@@ -281,8 +281,8 @@ sub userSearchRSS {
 	for my $entry (@$users) {
 			my $time = timeCalc($entry->[3]);
 			$rss->add_item(
-				title	=> xmlencode("$entry->[0]"),
-				'link'	=> xmlencode_plain($constants->{absolutedir} . '/users.pl?nick=' . $entry->[0]),
+				title	=> xmlencode("$entry->[2]"),
+				'link'	=> xmlencode_plain($constants->{absolutedir} . '/users.pl?nick=' . $entry->[2]),
 			);
 	}
 	return $rss->as_string;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.64 2002/09/11 23:32:37 jamie Exp $
+# $Id: MySQL.pm,v 1.65 2002/09/12 17:10:24 cliff Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -116,7 +116,7 @@ sub getNewStoryTopic {
 	# many we snarf down the whole table).  This guesstimate should
 	# work for all sites except those that post tons of duplicate
 	# topic stories.
-	$needed = $needed*3 + 5;
+	$needed = $needed * 3 + 5;
 	my $ar = $self->sqlSelectAllHashrefArray(
 		"alttext, image, width, height, stories.tid AS tid",
 		"stories, topics",
@@ -1439,11 +1439,38 @@ sub createSlashdStatus {
 }
 
 ########################################################
+# Basically, a special-purpose alias to setSlashdStatus()
+sub updateTaskSummary {
+	my($self, $taskname, $summary) = @_;
+
+	$self->setSlashdStatus($taskname, {
+		summary => $summary,
+	});
+}
+
+########################################################
 #freshenup
 sub getSectionsDirty {
 	my($self) = @_;
 
 	$self->sqlSelectColArrayref('section', 'sections', '(writestatus = "dirty") OR ((UNIX_TIMESTAMP(last_update) + rewrite) <  UNIX_TIMESTAMP(now()) )');
+}
+
+########################################################
+# Was once used in template-tool's check_site_templates()
+# but is now deprecated. Left here in case another 
+# application has need of it, but can be removed if
+# necessary.   	- Cliff 2002-09-10
+sub getAllTemplateIds {
+	my($self, $min, $max) = @_;
+	my $where;
+
+	return if $min =~ /\D/ or $max =~ /\D/;
+
+	$where = "tpid BETWEEN $min AND $max" if $min || $max;
+	$self->sqlSelectColArrayref(
+		'tpid', 'templates', $where, 'ORDER BY tpid'
+	);
 }
 
 1;

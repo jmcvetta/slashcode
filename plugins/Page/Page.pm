@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.14 2003/03/17 22:55:20 brian Exp $
+# $Id: Page.pm,v 1.15 2003/04/16 20:38:19 brian Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -171,9 +171,6 @@ sub displayStories {
 			$storystruct->[$i]{widget} = $storycontent;
 		} else {
 			my $storyref = $self->prepareStory($sid);
-			$storyref->{other_topics} = 
-				$self->getStoryTopics($sid, 2);
-
 			my $storycontent = '';
 			$storycontent .= $self->getStoryContent($storyref);
 			$storycontent .= $self->getLinksContent(

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.122 2003/03/28 01:58:54 jamie Exp $
+# $Id: Slash.pm,v 1.123 2003/04/16 20:38:19 brian Exp $
 
 package Slash;
 
@@ -1132,6 +1132,7 @@ sub dispStory {
 		topic	=> $topic,
 		author	=> $author,
 		full	=> $full,
+		stid	=> $other->{stid},
 		magic	=> $other->{magic},
 		width	=> $constants->{titlebar_width},
 	);
@@ -1215,6 +1216,7 @@ sub displayStory {
 	if ($full) {
 		$story->{bodytext} = parseSlashizedLinks($story->{bodytext});
 		$story->{bodytext} = processSlashTags($story->{bodytext}, {});
+		$other->{stid} = $reader->getStoryTopicsJustTids($story->{sid});
 	}
 
 	my $return = dispStory($story, $author, $topic, $full, $other);

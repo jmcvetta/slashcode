@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.369 2003/04/15 19:32:39 pudge Exp $
+# $Id: MySQL.pm,v 1.370 2003/04/16 20:38:19 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.369 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.370 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6284,8 +6284,11 @@ sub getTopics {
 
 ########################################################
 sub getStoryTopicsJustTids {
-	my($self, $sid) = @_;
-	my $answer = $self->sqlSelectColArrayref('tid', 'story_topics', "sid = " . $self->sqlQuote($sid));
+	my($self, $sid, $options) = @_;
+	my $where = "1=1";
+	$where .= " AND is_parent = 'no'" if $options->{no_parents};
+	$where .= " AND sid = " . $self->sqlQuote($sid);
+	my $answer = $self->sqlSelectColArrayref('tid', 'story_topics', $where);
 
 	return  $answer;
 }
@@ -6331,8 +6334,8 @@ sub setStoryTopics {
 
 	$self->sqlDo("DELETE from story_topics where sid = '$sid'");
 
-	for (@{$topic_ref}) {
-	    $self->sqlInsert("story_topics", { sid => $sid, tid => $_ });
+	for my $key (keys %{$topic_ref}) {
+	    $self->sqlInsert("story_topics", { sid => $sid, tid => $key, is_parent  => $topic_ref->{$key} });
 	}
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.6 2003/07/18 03:45:30 jamie Exp $
+# $Id: counthits.pl,v 1.7 2003/07/18 04:44:55 jamie Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 10;
@@ -73,7 +73,7 @@ $task{$me}{code} = sub {
 		);
 		$total_hits += $sid_count{$sid};
 		_update_timehash("update");
-		Time::HiRes::sleep(0.1);
+		Time::HiRes::sleep(0.02);
 		_update_timehash("sleep");
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.14 2004/02/10 23:02:44 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.15 2004/02/11 16:06:49 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -33,13 +33,9 @@ sub new {
 	$self->{virtual_user} = $user;
 	$self->sqlConnect();
 
-	# Use trial and error to find a "fallback" font we like.
-	# If we want to get fancy, we could do the same with some
-	# TTF fonts which could scale, and try to find good point
-	# sizes for them too (names of TTF fonts should be stored
-	# in a var).
 	$self->{imagemargin} = $constants->{hc_q1_margin} || 6;
 
+	# Use a bit of randomness and fallback to find a font we like.
 	my @possible_fonts = @{$constants->{hc_possible_fonts}};
 	@possible_fonts = ( gdMediumBoldFont, gdLargeFont, gdGiantFont ) if !@possible_fonts;
 	@possible_fonts = sort { int(rand(3))-1 } @possible_fonts;

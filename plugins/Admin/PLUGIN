@@ -1,3 +1,4 @@
+# $Id: PLUGIN,v 1.16 2003/08/29 15:21:07 jamie Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump

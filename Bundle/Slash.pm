@@ -1,5 +1,9 @@
 package Bundle::Slash;
 
+#
+# $Id: Slash.pm,v 1.18 2003/08/29 15:21:07 jamie Exp $
+#
+
 $Bundle::Slash::VERSION = '2.32';
 
 1;

@@ -1,3 +1,4 @@
+# $Id: PLUGIN,v 1.17 2003/08/29 15:21:08 jamie Exp $
 name=Stats
 description="Stats system"
 htdoc=stats.pl

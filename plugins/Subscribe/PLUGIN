@@ -1,3 +1,4 @@
+# $Id: PLUGIN,v 1.5 2003/08/29 15:21:08 jamie Exp $
 name=Subscribe
 description="Subscription system"
 htdoc=subscribe.pl

@@ -17,3 +17,5 @@ __template__
 [% END %]
 __seclev__
 10000
+__version__
+$Id: imageLink;misc;default,v 1.5 2003/08/29 15:21:08 jamie Exp $

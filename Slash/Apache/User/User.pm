@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.86 2003/08/26 18:11:10 jamie Exp $
+# $Id: User.pm,v 1.87 2003/08/29 15:21:07 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -596,6 +596,7 @@ Bender:Well I don't have anything else planned for today, let's get drunk!
 Bender:Oh, so, just 'cause a robot wants to kill humans that makes him a radical?
 Bender:Bite my shiny, metal ass!
 Bender:Lick my frozen, metal ass!
+Bender:Life is hilariously cruel.
 Bender:The laws of science be a harsh mistress.
 Bender:In the event of an emergency, my ass can be used as a flotation device.
 Bender:Like most of life's problems, this one can be solved with bending.

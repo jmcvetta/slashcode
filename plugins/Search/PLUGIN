@@ -1,3 +1,4 @@
+# $Id: PLUGIN,v 1.10 2003/08/29 15:21:08 jamie Exp $
 name=Search
 htdoc=search.pl
 mysql_dump=dump

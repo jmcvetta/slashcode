@@ -2,6 +2,9 @@
 # Host: localhost    Database: dump
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
+#
+# $Id: defaults.sql,v 1.142 2003/08/29 15:21:08 jamie Exp $
+#
 
 #
 # Dumping data for table 'abusers'

@@ -2,7 +2,7 @@
 ## This code is a part of Slash, and is released under the GPL.
 ## Copyright 1997-2004 by Open Source Development Network. See README
 ## and COPYING for more information, or see http://slashcode.com/.
-## $Id: report_slashd_errors.pl,v 1.1 2004/04/27 05:02:57 cowboyneal Exp $
+## $Id: report_slashd_errors.pl,v 1.2 2004/06/06 23:31:12 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -18,7 +18,11 @@ $task{$me}{code} = sub {
 
 	my($now, $lastrun) = updateLastRun($virtual_user, $constants, $slashdb, $user);
 
-	$data{errors} = $slashdb->sqlSelectAllHashref('taskname', 'count(ts) as num, taskname, line, errnote, moreinfo', 'slashd_errnotes', "ts BETWEEN $lastrun AND $now','GROUP BY taskname");
+	$data{errors} = $slashdb->sqlSelectAllHashref('taskname',
+		'COUNT(ts) AS num, taskname, line, errnote, moreinfo',
+		'slashd_errnotes',
+		"ts BETWEEN '$lastrun' AND '$now',
+		'GROUP BY taskname");
 
 	my $messages = getObject('Slash::Messages');
 	
@@ -41,8 +45,9 @@ $task{$me}{code} = sub {
 sub updateLastRun {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
-	my $lastrun = $slashdb->getVar('slashd_errnote_lastrun', 'value', 1) || 0;
-	my $now = $slashdb->sqlSelect('now()');A
+	my $lastrun = $slashdb->getVar('slashd_errnote_lastrun', 'value', 1)
+		|| '2004-01-01 00:00:00';
+	my $now = $slashdb->sqlSelect('NOW()');
 	$slashdb->setVar('slashd_errnote_lastrun', $now);
 
 	return($now, $lastrun);
@@ -53,7 +58,8 @@ sub expireOldErrors {
 
 	my $interval = $constants->{slashd_errnote_expire} || 90;
 
-	$slashdb->sqlDelete('slashd_errnotes', "ts < DATE_SUB(now(), INTERVAL $interval DAY");
+	$slashdb->sqlDelete('slashd_errnotes',
+		"ts < DATE_SUB(NOW(), INTERVAL $interval DAY)");
 }
 
 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.68 2004/06/22 03:39:00 pudge Exp $
+# $Id: Search.pm,v 1.69 2004/06/22 13:13:32 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -91,7 +91,7 @@ sub findComments {
 	my $skin = $reader->getSkin($form->{section});
 
 	# XXXSKIN - discussions.section needs to be fixed somehow to new system
-	if ($skin->{skid} eq $constants->{mainpage_skid}) {
+	if ($skin->{skid} == $constants->{mainpage_skid}) {
 		$where .= " AND discussions.section IN ('" . join("','", @{$skin->{contained}}) . "')" 
 			if $skin->{contained} && @{$skin->{contained}};
 	} else {
@@ -197,7 +197,8 @@ sub findStory {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $skin = $reader->getSkin($form->{section});
 
-	if ($skin->{skid} eq $constants->{mainpage_skid}) {
+	# XXXSKIN - stories.section is no more; I think we want to JOIN against story_topics_rendered on the stoid's WHERE s_t_r.tid=$skin->{nexus}
+	if ($skin->{skid} == $constants->{mainpage_skid}) {
 		$where .= " AND stories.section IN ('" . join("','", @{$skin->{contained}}) . "')" 
 			if $skin->{contained} && @{$skin->{contained}};
 	} else {
@@ -494,7 +495,7 @@ sub findDiscussion {
 	my $skin = $reader->getSkin($form->{section});
 
 	# XXXSKIN - discussions.section needs to be fixed somehow to new system
-	if ($skin->{skid} eq $constants->{mainpage_skid}) {
+	if ($skin->{skid} == $constants->{mainpage_skid}) {
 		$where .= " AND section IN ('" . join("','", @{$skin->{contained}}) . "')" 
 			if $skin->{contained} && @{$skin->{contained}};
 	} else {

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump,v 1.8 2004/05/07 21:49:27 pudge Exp $
+# $Id: mysql_dump,v 1.9 2004/05/09 17:57:25 jamiemccarthy Exp $
 #
 
 INSERT INTO humanconf_questions (hcqid, filedir, urlprefix, question) VALUES (1, '/usr/local/slash/site/www.example.com/htdocs/images/hc', 'http://www.example.com/images/hc', 'To confirm you\'re not a script,<BR>please type the text shown in this image:');
@@ -20,4 +20,4 @@ INSERT INTO vars (name, value, description) VALUES ('hc_possible_fonts', '', 'Po
 INSERT INTO vars (name, value, description) VALUES ('hc_sw_comments', '0', 'HumanConf switch for posting comments');
 INSERT INTO vars (name, value, description) VALUES ('hc_sw_mailpasswd', '1', 'HumanConf switch for mailing a password');
 INSERT INTO vars (name, value, description) VALUES ('hc_sw_newuser', '1', 'HumanConf switch for creating a new user');
-INSERT INTO vars (name, value, description) VALUES ('hc_image_format','jpg','Format for HC images (png, jpg, etc.)');
+INSERT INTO vars (name, value, description) VALUES ('hc_image_format','jpeg','Format for HC images (png, jpeg)');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.108 2004/01/23 00:53:04 pudge Exp $
+# $Id: Environment.pm,v 1.109 2004/01/27 18:22:36 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -2002,6 +2002,8 @@ sub getOpAndDatFromStatusAndURI {
 		$uri = 'image';
 	} elsif ($uri =~ /\.tiff$/) {
 		$uri = 'image';
+	} elsif ($uri =~ /\.png$/) {
+		$uri = 'image';
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
 	# This is for me, I am getting tired of patching my local copy -Brian
@@ -2013,15 +2015,15 @@ sub getOpAndDatFromStatusAndURI {
 		$uri =~ s|^/(.*)\.dmg$|$1|;
 	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
 		$uri = 'rss';
+	} elsif ($uri =~ /\.css$/) {
+		$uri = 'css';
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
-		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?(.*)|$1|;
 		my $suspected_handler = $2;
-		my $SECT;
+		my $handler;
 		my $reader = getObject('Slash::DB', { db_type => 'reader' });
-		if ($SECT = $reader->getSection($uri) ) {
-			my $handler = $SECT->{index_handler};
+		if ($handler = $reader->getSection($uri, 'index_handler') ) {
 			$handler =~ s|^(.*)\.pl$|$1|;
 			$uri = $handler if $handler eq $suspected_handler;
 		}
@@ -2029,6 +2031,12 @@ sub getOpAndDatFromStatusAndURI {
 		$uri =~ s|^/(.*)\.html$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
+	
+	# for linux.com -- maps things like /howtos/HOWTO-INDEX/ to howtos which is what we want
+	# if this isn't desirable for other sites we can add a var to control this on a per-site
+	# basis.  --vroom 2004/01/27
+	} elsif($uri =~ m|^/([^/]*)/([^/]*/)+$|){
+		$uri = $1;
 	}
 	($uri, $dat);
 }
@@ -2281,4 +2289,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.108 2004/01/23 00:53:04 pudge Exp $
+$Id: Environment.pm,v 1.109 2004/01/27 18:22:36 tvroom Exp $

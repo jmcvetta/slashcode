@@ -16,9 +16,9 @@ __template__
 
 [% futuretoday = Slash.timeCalc(Slash.db.getTime, "%Y-%m-%d", 0);
    MACRO futurestorywrite(story, nohref) BLOCK;
-   futurecolor = "";
    futuretext  = "";
    futuretime  = "";
+   futurecolor = "#FFFFFF";
 
    IF story.displaystatus > 0;
 	futurecolor = "#CCCCCC";
@@ -61,4 +61,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: futurestorybox;misc;default,v 1.5 2003/07/10 16:43:02 pudge Exp $
+$Id: futurestorybox;misc;default,v 1.6 2003/07/14 14:58:37 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.5 2002/01/14 22:57:01 brian Exp $
+# $Id: Display.pm,v 1.6 2002/01/14 23:52:55 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1086,8 +1086,12 @@ sub _hard_linkComment {
 		# $comment->{threshold}? Hmm. I'm not sure what it
 		# means for a comment to have a threshold. If it's 0,
 		# does the following line do the right thing? - Jamie
+		# You know, I think this is a bug that comes up every so often. But in 
+		# theory when you go to the comment link "threshhold" should follow 
+		# with you. -Brian
 	$display .= "&threshold=" . ($comment->{threshold} || $user->{threshold});
 	$display .= "&commentsort=$user->{commentsort}";
+	$display .= "&tid=$user->{state}{tid}" if $user->{state}{tid};
 	$display .= "&mode=$user->{mode}";
 	$display .= "&startat=$comment->{startat}" if $comment->{startat};
 
@@ -1118,4 +1122,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.5 2002/01/14 22:57:01 brian Exp $
+$Id: Display.pm,v 1.6 2002/01/14 23:52:55 brian Exp $

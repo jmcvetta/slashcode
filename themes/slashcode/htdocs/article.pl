@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.15 2002/01/08 17:22:09 pudge Exp $
+# $Id: article.pl,v 1.16 2002/01/14 23:52:55 brian Exp $
 
 use strict;
 use Slash;
@@ -70,6 +70,8 @@ sub main {
 		});
 
 		my $discussion = $slashdb->getDiscussionBySid($story->{sid});
+		# This is to get tid in comments. It would be a mess to pass it directly to every comment -Brian
+		$user->{state}{tid} = $discussion->{topic};
 		printComments($discussion);
 	} else {
 		my $message = getData('no_such_sid');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.41 2002/01/11 03:59:41 pudge Exp $
+# $Id: comments.pl,v 1.42 2002/01/14 23:52:55 brian Exp $
 
 use strict;
 use HTML::Entities;
@@ -131,10 +131,13 @@ sub main {
 		if ($form->{sid} !~ /^\d+$/) {
 			$discussion = $slashdb->getDiscussionBySid($form->{sid});
 			$section = $discussion->{section};
+			$user->{state}{tid} = $discussion->{topic};
 		} else {
 			$discussion = $slashdb->getDiscussion($form->{sid});
 			$section = $discussion->{section};
 		}
+		# This is to get tid in comments. It would be a mess to pass it directly to every comment -Brian
+		$user->{state}{tid} = $discussion->{topic};
 		if (!$user->{is_admin} and $discussion->{sid}) {
 			unless ($slashdb->checkStoryViewable($discussion->{sid})) {
 				$form->{sid} = '';

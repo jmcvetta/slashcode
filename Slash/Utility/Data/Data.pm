@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.98 2003/09/03 17:28:13 pudge Exp $
+# $Id: Data.pm,v 1.99 2003/09/15 23:51:22 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -334,7 +334,8 @@ Format time strings using user's format preference.
 
 =item DATE
 
-Raw date from database.
+Raw date/time to format.
+Supply a false value here to get the current date/time.
 
 =item FORMAT
 
@@ -367,13 +368,19 @@ sub timeCalc {
 
 	$off_set = $user->{off_set} unless defined $off_set;
 
-	# massage data for YYYYMMDDHHmmSS or YYYYMMDDHHmm
-	$date =~ s/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?$/"$1-$2-$3 $4:$5:" . ($6 || '00')/e;
+	if ($date) {
+		# massage data for YYYYMMDDHHmmSS or YYYYMMDDHHmm
+		$date =~ s/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?$/"$1-$2-$3 $4:$5:" . ($6 || '00')/e;
 
-	# find out the user's time based on personal offset in seconds
-	$date = str2time($date) + $off_set;
+		# find out the user's time based on personal offset in seconds
+		$date = str2time($date) + $off_set;
+	} else {
+		# use current time (plus offset) if no time provided
+		$date = time() + $off_set;
+	}
 
-	# set user's language
+	# set user's language; we only use this if it is defined,
+	# so it's not a performance hit
 	my $lang = getCurrentStatic('datelang');
 
 	# convert the raw date to pretty formatted date
@@ -3030,4 +3037,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.98 2003/09/03 17:28:13 pudge Exp $
+$Id: Data.pm,v 1.99 2003/09/15 23:51:22 pudge Exp $

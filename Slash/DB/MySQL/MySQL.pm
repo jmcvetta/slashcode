@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.263 2002/11/22 00:47:32 brian Exp $
+# $Id: MySQL.pm,v 1.264 2002/11/22 06:18:51 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.263 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.264 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3041,13 +3041,14 @@ sub getNumCommPostedAnonByIPID {
 	$ipid = $self->sqlQuote($ipid);
 	$hours ||= 24;
 	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
-	my($num_comm, $sum_mods) = $self->sqlSelect(
-		"COUNT(*) AS count, SUM(points-pointsorig) AS sum",
+	my $ar = $self->sqlSelectArrayRef(
+		"COUNT(*) AS count, SUM(pointsorig-points) AS sum",
 		"comments",
 		"ipid=$ipid
 		 AND uid=$ac_uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
+	my($num_comm, $sum_mods) = @$ar;
 	$sum_mods ||= 0;
 	if (wantarray()) {
 		return ($num_comm, $sum_mods);
@@ -3064,12 +3065,13 @@ sub getNumCommPostedByUID {
 	my($self, $uid, $hours) = @_;
 	$uid = $self->sqlQuote($uid);
 	$hours ||= 24;
-	my($num_comm, $sum_mods) = $self->sqlSelect(
-		"COUNT(*) AS count, SUM(pointsorig-points) AS sum",
+	my $ar = $self->sqlSelectArrayRef(
+		"COUNT(*) AS count, SUM(points-pointsorig) AS sum",
 		"comments",
 		"uid=$uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
+	my($num_comm, $sum_mods) = @$ar;
 	$sum_mods ||= 0;
 	if (wantarray()) {
 		return ($num_comm, $sum_mods);
@@ -4578,19 +4580,23 @@ sub getStoriesEssentials {
 	# but if we're in "issue" form we have to be careful where we're
 	# starting/ending so we only limit by time in the DB and do the rest
 	# in perl.
+	# Note that, in order to be sure that in issue mode we show enough data
+	# (indeed any data at all) in the Older Stuff box, we need to grab a
+	# great deal of data here and trust that the Older Stuff box will trim
+	# it down to what's necessary.
 	if ($form->{issue}) {
 		# It would be slightly faster to calculate the
 		# yesterday/tomorrow for $form->{issue} in perl so that the
 		# DB only has to manipulate each row's "time" once instead
 		# of twice.  But this works now;  we'll optimize later. - Jamie
-		my $tomorrow_str =
-			'DATE_FORMAT(DATE_ADD(time, INTERVAL 1 DAY),"%Y%m%d")';
-		my $yesterday_str =
+		my $back_one_day_str =
 			'DATE_FORMAT(DATE_SUB(time, INTERVAL 1 DAY),"%Y%m%d")';
+		my $ahead_one_week_str =
+			'DATE_FORMAT(DATE_ADD(time, INTERVAL 7 DAY),"%Y%m%d")';
 #		$where .=
 #			"AND day_published = '$form->{issue}' ";
-		$where .=" AND '$form->{issue}' BETWEEN $yesterday_str AND
-			$tomorrow_str ";
+		$where .=" AND '$form->{issue}' BETWEEN $back_one_day_str AND
+			$ahead_one_week_str ";
 	} else {
 		$other .= "LIMIT $limit ";
 	}

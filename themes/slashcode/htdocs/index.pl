@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.51 2002/11/05 16:43:24 pater Exp $
+# $Id: index.pl,v 1.52 2002/11/22 06:18:51 jamie Exp $
 
 use strict;
 use Slash;
@@ -46,8 +46,12 @@ sub main {
 	my $title = getData('head', { section => $section });
 	header($title, $section->{section});
 
-	my $limit = $section->{type} eq 'collected' ?
-		$user->{maxstories} : $artcount;
+	my $limit = $artcount;
+	if ($form->{issue}) {
+		$limit *= 7;
+	} elsif ($section->{type} eq 'collected') {
+		$limit = $user->{maxstories};
+	}
 
 	# Old pages which search on issuemode kill the DB performance-wise
 	# so if possible we balance across the two -Brian
@@ -63,9 +67,9 @@ sub main {
 		'',
 	);
 
-	# this makes sure that existing sites don't
-	# have to worry about being affected by this
-	# change
+	# displayStories() pops stories off the front of the @$stories array.
+	# Whatever's left is fed to displayStandardBlocks for use in the
+	# index_more block (aka Older Stuff).
 	$Stories = displayStories($stories);
 
 	my $StandardBlocks = displayStandardBlocks($section, $stories);

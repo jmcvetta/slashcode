@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.82 2002/11/20 04:23:39 jamie Exp $
+# $Id: Slash.pm,v 1.83 2002/11/22 06:18:51 jamie Exp $
 
 package Slash;
 
@@ -1085,7 +1085,7 @@ sub getOlderStories {
 		section		=> $section,
 		cur_time	=> time,
 		yesterday	=> $yesterday,
-		start		=> int($artcount/3)+ $form->{start} + scalar(@$stories),
+		start		=> int($artcount/3) + $form->{start} + scalar(@$stories),
 	}, 1);
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.41 2002/08/07 19:50:26 pudge Exp $
+# $Id: Environment.pm,v 1.42 2002/08/14 13:43:14 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1611,11 +1611,11 @@ sub createEnvironment {
 	my($virtual_user) = @_;
 	my %form;
 	unless ($virtual_user) {
-		for (@ARGV) {
-			my($key, $val) = split /=/;
-			last if ! defined $val; # stop processing if key=val stops
+		while (my $pair = shift @ARGV) {
+			my($key, $val) = split /=/, $pair;
+			# stop processing if key=val stops, and put last arg back on
+			unshift(@ARGV, $pair), last if ! defined $val;
 			$form{$key} = $val;
-			shift @ARGV;  # remove it
 		}
 		$virtual_user = $form{'virtual_user'};
 	}
@@ -1699,4 +1699,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.41 2002/08/07 19:50:26 pudge Exp $
+$Id: Environment.pm,v 1.42 2002/08/14 13:43:14 pudge Exp $

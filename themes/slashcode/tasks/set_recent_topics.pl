@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_recent_topics.pl,v 1.9 2003/05/06 11:32:20 pudge Exp $
+# $Id: set_recent_topics.pl,v 1.10 2003/05/08 18:35:51 pater Exp $
 
 # This task (and its associated templates and other changes)
 # was rewritten almost in its entirety, by Shane Zatezalo
@@ -20,7 +20,7 @@ $task{$me}{code} = sub {
 
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
-	updateRecentTopics(@_, '');
+	updateRecentTopics($virtual_user, $constants, $slashdb, $user, '');
 
 	if ($constants->{sections_recenttopics}) {
 		for (@{$constants->{sections_recenttopics}}) {

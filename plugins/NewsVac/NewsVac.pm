@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.23 2002/10/28 14:35:05 pudge Exp $
+# $Id: NewsVac.pm,v 1.24 2002/10/29 13:49:47 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -5827,6 +5827,9 @@ None.
 sub _doLogInit {
 	my($fname) = 'newsvac';
 
+	# Don't reopen STDERR if already tied (see slashd)
+	return if tied(*STDERR);
+
 	my $dir     = getCurrentStatic('logdir');
 	my $file    = catfile($dir, "$fname.log");
 
@@ -6259,4 +6262,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.23 2002/10/28 14:35:05 pudge Exp $
+$Id: NewsVac.pm,v 1.24 2002/10/29 13:49:47 pudge Exp $

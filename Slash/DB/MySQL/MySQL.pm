@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.715 2004/10/20 04:44:24 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.716 2004/10/20 04:45:42 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.715 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.716 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10496,12 +10496,12 @@ sub getSkins {
 		my $color_skid = $colors->{$skid}              ? $skid : $constants->{mainpage_skid};
 
 		# Blank index_handler defaults to index.pl.
-		$skins_ref->{$skin}{index_handler} ||= 'index.pl';
+		$skins_ref->{$skid}{index_handler} ||= 'index.pl';
 
 		# Adjust min and max and warn if wacky value.
-		$skins_ref->{$skin}{artcount_max} = $skins_ref->{$skin}{artcount_min}
-			if $skins_ref->{$skin}{artcount_max} < $skins_ref->{$skin}{artcount_min};
-		warn "skin $skid has artcount_max of 0" if !$skins_ref->{$skin}{artcount_max};
+		$skins_ref->{$skid}{artcount_max} = $skins_ref->{$skid}{artcount_min}
+			if $skins_ref->{$skid}{artcount_max} < $skins_ref->{$skid}{artcount_min};
+		warn "skin $skid has artcount_max of 0" if !$skins_ref->{$skid}{artcount_max};
 
 		# Convert an index_handler of foo.pl to an index_static of
 		# foo.shtml, for convenience.

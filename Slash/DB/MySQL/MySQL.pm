@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.586 2004/06/20 16:50:46 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.587 2004/06/20 17:46:09 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.586 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.587 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5472,7 +5472,6 @@ sub getStoryByTime {
 		$key .= "|$topic";
 	}
 
-	$where .= " AND story_topics_rendered.stoid = stories.stoid";
 	$key .= "|$time" if $key;
 
 	return $cache->{$key} if $key && defined $cache->{$key};
@@ -5481,7 +5480,9 @@ sub getStoryByTime {
 		'stories.stoid, sid, title, stories.tid',
 		'stories, story_text, story_topics_rendered',
 
-		"'$time' > DATE_SUB(NOW(), INTERVAL $bytime_delay DAY)
+		"stories.stoid = story_text.stoid
+		 AND stories.stoid = story_topics_rendered.stoid
+		 AND '$time' > DATE_SUB(NOW(), INTERVAL $bytime_delay DAY)
 		 AND time $sign '$time'
 		 AND time < NOW()
 		 AND in_trash = 'no'

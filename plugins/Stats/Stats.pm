@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.83 2002/12/20 19:43:46 jamie Exp $
+# $Id: Stats.pm,v 1.84 2002/12/20 20:14:30 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -791,12 +791,18 @@ sub getDurationByStaticLocaladdr {
 # the HTTP spec.
 sub getTopReferers {
 	my($self, $options) = @_;
-	my $constants = getCurrentStatic();
 
 	my $count = $options->{count} || 10;
-	my $where = $options->{include_local}
-		? ""
-		: "AND referer NOT LIKE " . $self->sqlQuote($constants->{absolutedir} . "%");
+	my $where;
+	if ($options->{include_local}) {
+		$where = "";
+	} else {
+		my $constants = getCurrentStatic();
+		my $regexp = $constants->{basedomain};
+		$regexp =~ s/\./[.]/g;
+		$regexp = "^https?://([a-z]*[.])?$regexp";
+		$where = " AND referer NOT REGEXP '$regexp'";
+	}
 
 	return $self->sqlSelectAll(
 		"referer, COUNT(*) AS c",
@@ -904,4 +910,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.83 2002/12/20 19:43:46 jamie Exp $
+$Id: Stats.pm,v 1.84 2002/12/20 20:14:30 jamie Exp $

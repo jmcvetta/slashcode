@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.4 2001/04/23 13:57:56 brian Exp $
+# $Id: search.pl,v 1.5 2001/04/23 14:55:42 brian Exp $
 
 use strict;
 use Slash;
@@ -118,6 +118,7 @@ sub commentSearch {
 		back		=> $back,
 		forward		=> $forward,
 		args		=> _buildargs($form),
+		start => $start,
 	});
 }
 
@@ -192,6 +193,7 @@ sub storySearch {
 		back		=> $back,
 		forward		=> $forward,
 		args		=> _buildargs($form),
+		start => $start,
 	});
 }
 

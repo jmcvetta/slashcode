@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.4 2001/04/23 13:57:56 brian Exp $
+# $Id: Search.pm,v 1.5 2001/04/23 14:55:42 brian Exp $
 
 package Slash::Search;
 
@@ -112,7 +112,7 @@ sub findUsers {
 	}
 
 	if ($form->{query}) {
-		$sql .= ' AND ' if @$users_to_ignore;
+		$sql .= ' AND ';
 		my $kw = $self->_keysearch($form->{query}, ['nickname', 'ifnull(fakeemail,"")']);
 		$kw =~ s/as kw$//;
 		$kw =~ s/\+/ OR /g;

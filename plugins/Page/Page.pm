@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.13 2003/03/06 03:54:59 jamie Exp $
+# $Id: Page.pm,v 1.14 2003/03/17 22:55:20 brian Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -160,11 +160,6 @@ sub displayStories {
 		my $title = $story->[2];
 		my $time = $story->[9];
 		my $atstorytime;
-		if ($story->{is_future}) {
-			$atstorytime = $constants->{subscribe_future_name};
-		} else {
-			$atstorytime = $user->{aton} . " " . timeCalc($time, '%B %d, %Y');
-		}
 
 		if ($other->{titles_only}) {
 			my $storycontent = $self->getStoryTitleContent({ 

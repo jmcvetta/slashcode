@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.275 2002/12/12 21:50:34 brian Exp $
+# $Id: MySQL.pm,v 1.276 2002/12/12 21:58:06 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.275 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.276 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1617,6 +1617,8 @@ sub getUserEmail {
 # Yet another method that really should return an arrayref of
 # hashrefs, instead of an arrayref of arrayrefs.  This is
 # currently only used in users.pl  -Jamie
+# If anyone ever rewrites this move the formatDate() out to the template.
+# Display logic belongs in display. -Brian
 sub getCommentsByGeneric {
 	my($self, $where_clause, $num, $min) = @_;
 	$min ||= 0;
@@ -2453,8 +2455,6 @@ sub getPollQuestionList {
 		$where,
 		"ORDER BY date DESC LIMIT $offset,20"
 	);
-
-	formatDate($questions, 2, 2, '%A, %B %e, %Y'); # '%F'
 
 	return $questions;
 }

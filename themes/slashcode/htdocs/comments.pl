@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.102 2002/10/24 01:06:27 jamie Exp $
+# $Id: comments.pl,v 1.103 2002/11/14 03:45:25 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -752,18 +752,21 @@ sub validateComment {
 	# appropriate level).
 	if ($user->{is_anon} && $constants->{comments_perday_anon}
 		&& !$user->{is_admin}) {
-		my $num_comm_posted = $slashdb->getNumCommPostedAnonByIPID(
+		my($num_comm, $sum_score) = $slashdb->getNumCommPostedAnonByIPID(
 			$user->{ipid}, 24);
-		if ($num_comm_posted >= $constants->{comments_perday_anon}) {
+		if ($sum_score
+			- $num_comm + $constants->{comments_perday_anon} <= 0) {
+
 			$$error_message = getError('comments post limit daily', {
 				limit => $constants->{comments_perday_anon}
 			});
 			$form_success = 0;
 			return;
+
 		}
 	} elsif (!$user->{is_anon} && $constants->{comments_perday_bykarma}
 		&& !$user->{is_admin}) {
-		my $num_comm_posted = $slashdb->getNumCommPostedByUID(
+		my($num_comm, $sum_score) = $slashdb->getNumCommPostedByUID(
 			$user->{uid}, 24);
 		my $num_allowed = 9999;
 		K_CHECK: for my $k (sort { $a <=> $b }
@@ -773,12 +776,15 @@ sub validateComment {
 				last K_CHECK;
 			}
 		}
-		if ($num_comm_posted >= $num_allowed) {
+		if (($sum_score-($user->{defaultpoints}*$num_comm))
+			- $num_comm + $num_allowed <= 0) {
+
 			$$error_message = getError('comments post limit daily', {
 				limit => $num_allowed
 			});
 			$form_success = 0;
 			return;
+
 		}
 	}
 

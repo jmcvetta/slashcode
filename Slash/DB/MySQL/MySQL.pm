@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.247 2002/11/11 16:55:43 pater Exp $
+# $Id: MySQL.pm,v 1.248 2002/11/14 03:45:24 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.247 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.248 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2989,31 +2989,47 @@ sub checkReadOnly {
 }
 
 ##################################################################
+# For backwards compatibility, returns just the number of comments if
+# called in scalar context, or a list of (number of comments, sum of
+# their points) in list context.
 sub getNumCommPostedAnonByIPID {
 	my($self, $ipid, $hours) = @_;
 	$ipid = $self->sqlQuote($ipid);
 	$hours ||= 24;
 	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
-	my $num = $self->sqlCount(
+	my($num_comm, $sum_points) = $self->sqlSelect(
+		"COUNT(*) AS count, SUM(points) AS sum",
 		"comments",
 		"ipid=$ipid
 		 AND uid=$ac_uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
-	return $num;
+	if (wantarray()) {
+		return ($num_comm, $sum_points);
+	} else {
+		return $num_comm;
+	}
 }
 
 ##################################################################
+# For backwards compatibility, returns just the number of comments if
+# called in scalar context, or a list of (number of comments, sum of
+# their points) in list context.
 sub getNumCommPostedByUID {
 	my($self, $uid, $hours) = @_;
 	$uid = $self->sqlQuote($uid);
 	$hours ||= 24;
-	my $num = $self->sqlCount(
+	my($num_comm, $sum_points) = $self->sqlSelect(
+		"COUNT(*) AS count, SUM(points) AS sum",
 		"comments",
 		"uid=$uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
-	return $num;
+	if (wantarray()) {
+		return ($num_comm, $sum_points);
+	} else {
+		return $num_comm;
+	}
 }
 
 ##################################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.91 2003/04/03 16:58:06 jamie Exp $
+# $Id: MySQL.pm,v 1.92 2003/04/08 06:04:35 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -622,6 +622,21 @@ sub getTop10Comments {
 	formatDate($comments, 4, 4);
 
 	return $comments;
+}
+
+########################################################
+# For portald
+sub getWhatsPlaying {
+	my($self) = @_;
+
+	my $list = $self->sqlSelectAll(
+		'nickname, value',
+		'users, users_param',
+		"users.uid = users_param.uid
+			AND seclev > 99
+			AND name='playing'",
+		'ORDER BY users.uid ASC');
+	return $list;
 }
 
 ########################################################

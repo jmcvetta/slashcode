@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.32 2003/04/01 02:10:07 brian Exp $
+# $Id: portald,v 1.33 2003/04/08 06:04:35 pater Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -88,7 +88,22 @@ EOT
 
 }
 
+#################################################################
+sub getWhatsPlayingBox {
+	my $list = $slashdb->getWhatsPlaying();
 
+	my $block = '';
+	foreach (@$list) {
+		$block .= "<B>$_->[0]:</B><UL>";
+		my @items = split /|/, $_->[1];
+		foreach (@items) {
+			$block .= "<LI>$_</LI>";
+		}
+		$block .= "</UL><BR>";
+	}
+
+	setblock("whatsplaying", $block);
+}
 
 #################################################################
 sub getSlashdotPoll {
@@ -236,6 +251,7 @@ for (@{$RDFlist}) {
 }
 
 getTop10Comments();
+getWhatsPlayingBox() if $constants->{slashbox_whatsplaying};
 getSlashdotPoll();
 getUptime();
 

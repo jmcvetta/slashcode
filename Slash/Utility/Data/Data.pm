@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.107 2003/12/29 23:08:49 pudge Exp $
+# $Id: Data.pm,v 1.108 2004/01/23 00:41:49 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -185,6 +185,65 @@ sub set_rootdir {
 	return $sectionuri->as_string;
 }
 
+
+#========================================================================
+
+=head2 cleanRedirectUrl(URL)
+
+Clean an untrusted URL for safe redirection.  We do not redirect URLs received
+from outside Slash (such as in $form->{returnto}) to arbitrary sites, only
+to ourself.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item URL
+
+URL to clean.
+
+=back
+
+=item Return value
+
+Fixed URL.
+
+=back
+
+=cut
+
+sub cleanRedirectUrl {
+	my($redirect) = @_;
+	my $constants = getCurrentStatic();
+	my $user = getCurrentUser();
+
+	# We absolutize the return-to URL to our homepage just to
+	# be sure nobody can use the site as a redirection service.
+	# We decide whether to use the secure homepage or not
+	# based on whether the current page is secure.
+	my $base = rootabs();
+	my $clean = URI->new_abs($redirect || $constants->{rootdir}, $base);
+
+	my $site_domain = $constants->{basedomain};
+	$site_domain =~ s/^www\.//;
+	$site_domain =~ s/:.+$//;	# strip port, if available
+
+	my $host = $clean->can('host') ? $clean->host : '';
+	$host =~ s/^www\.//;
+
+	if ($site_domain eq $host) {
+		# Cool, it goes to our site.  Send the user there.
+		$clean = $clean->as_string;
+	} else {
+		# Bogus, it goes to another site.  op=userlogin is not a
+		# URL redirection service, sorry.
+		$clean = url2abs($constants->{rootdir});
+	}
+
+	return $clean;
+}
 
 #========================================================================
 
@@ -3118,4 +3177,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.107 2003/12/29 23:08:49 pudge Exp $
+$Id: Data.pm,v 1.108 2004/01/23 00:41:49 pudge Exp $

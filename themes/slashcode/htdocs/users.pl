@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.163 2003/03/11 20:11:40 jamie Exp $
+# $Id: users.pl,v 1.164 2003/03/11 23:19:23 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -949,6 +949,7 @@ sub showInfo {
 
 	# showInfo's header information is delayed until here, because
 	# the target user's info is not available until here.
+	vislenify($requested_user);
 	header(getMessage('user_header', { useredit => $requested_user, fieldkey => $fieldkey }));
 	# This is a hardcoded position, bad idea and should be fixed -Brian
 	# Yeah, we should pull this into a template somewhere...
@@ -985,12 +986,11 @@ sub showInfo {
 			id => $id,
 			md5id => $netid,
 		};
-		vislenify($data); # add $data->{md5id_vis}, {ipid_vis}, {subnetid_vis}
+		vislenify($data); # add $data->{md5id_vis}
 		$netid_vis = $data->{md5id_vis};
 
 		$title = getTitle('user_netID_user_title', $data);
 
-		
 		$admin_block = getUserAdmin($netid, $fieldkey, 0) if $admin_flag;
 
 		if ($form->{fieldname}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.259 2002/11/20 03:24:47 brian Exp $
+# $Id: MySQL.pm,v 1.260 2002/11/20 03:51:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.259 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.260 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -856,13 +856,13 @@ sub getModeratorCommentLog {
 
 	my $vq = $self->sqlQuote($value);
 	my $where_clause = "";
-	   if ($type eq 'uid') {	$where_clause = "moderatorlog.uid=$vq  AND comments.uid=users.uid"	}
-	elsif ($type eq 'cid') {	$where_clause = "moderatorlog.cid=$vq  AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'cuid') {	$where_clause = "moderatorlog.cuid=$vq AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq     AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'bsubnetid') {	$where_clause = "moderatorlog.subnetid=$vq AND comments.uid=users.uid"	}
-	elsif ($type eq 'bipid') {	$where_clause = "moderatorlog.ipid=$vq     AND comments.uid=users.uid"	}
+	   if ($type eq 'uid') {	$where_clause = "moderatorlog.uid=$vq      AND comments.uid=users.uid"		}
+	elsif ($type eq 'cid') {	$where_clause = "moderatorlog.cid=$vq      AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'cuid') {	$where_clause = "moderatorlog.cuid=$vq     AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq     AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq         AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'bsubnetid') {	$where_clause = "moderatorlog.subnetid=$vq AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'bipid') {	$where_clause = "moderatorlog.ipid=$vq     AND moderatorlog.uid=users.uid"	}
 	return [ ] unless $where_clause;
 
 	my $comments = $self->sqlSelectMany("comments.sid AS sid,
@@ -870,6 +870,7 @@ sub getModeratorCommentLog {
 				 comments.points AS score,
 				 users.uid AS uid,
 				 users.nickname AS nickname,
+				 moderatorlog.ipid AS ipid,
 				 moderatorlog.val AS val,
 				 moderatorlog.reason AS reason,
 				 moderatorlog.ts AS ts,
@@ -3553,9 +3554,12 @@ sub metamodEligible {
 
 	# Easy tests the user can fail to be ineligible to metamod.
 	return 0 if $user->{is_anon} || !$user->{willing} || $user->{karma} < 0;
-	# Technically I believe the next bit should always be right under the doctrine that
-	# an admin should be able to to anything but maybe the cat ate a plant tonight
-  # and thus Jim Jones really did it with the monkey wrench in the blue room -Brian
+
+	# Technically I believe the next bit should always be right under
+	# the doctrine that an admin should be able to to anything but
+	# maybe the cat ate a plant tonight
+	# and thus Jim Jones really did it with the monkey wrench in the
+	# blue room -Brian
 	#return 1 if $user->{is_admin};
 
 	# Not eligible if metamodded too recently.

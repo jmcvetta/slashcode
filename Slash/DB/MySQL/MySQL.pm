@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.484 2003/12/04 22:30:00 jamie Exp $
+# $Id: MySQL.pm,v 1.485 2003/12/05 02:53:29 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.484 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.485 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6785,9 +6785,9 @@ sub getAdmins {
 	my($self, $cache_flag) = @_;
 
 	my $table = 'admins';
-	my $table_cache= '_' . $table . '_cache';
-	my $table_cache_time= '_' . $table . '_cache_time';
-	my $table_cache_full= '_' . $table . '_cache_full';
+	my $table_cache = '_' . $table . '_cache';
+	my $table_cache_time = '_' . $table . '_cache_time';
+	my $table_cache_full = '_' . $table . '_cache_full';
 
 	if (keys %{$self->{$table_cache}} && $self->{$table_cache_full} && !$cache_flag) {
 		my %return = %{$self->{$table_cache}};
@@ -8137,11 +8137,13 @@ sub _genericGetCache {
 		$type  = $values ? 1 : 0;
 	}
 
-	if ($type) {
-		return $self->{$table_cache}{$id}{$values}
-			if (keys %{$self->{$table_cache}{$id}} and !$cache_flag);
-	} else {
-		if (keys %{$self->{$table_cache}{$id}} && !$cache_flag) {
+	# If the value(s) wanted is (are) in that table's cache, and
+	# the cache_flag is not set to true (meaning "don't use cache"),
+	# then return the cached value now.
+	if (keys %{$self->{$table_cache}{$id}} && !$cache_flag) {
+		if ($type) {
+			return $self->{$table_cache}{$id}{$values};
+		} else {
 			my %return = %{$self->{$table_cache}{$id}};
 			return \%return;
 		}
@@ -8255,9 +8257,9 @@ sub _genericGetsCache {
 	return _genericGets(@_) unless getCurrentStatic('cache_enabled');
 
 	my($table, $table_prime, $param_table, $self, $cache_flag) = @_;
-	my $table_cache= '_' . $table . '_cache';
-	my $table_cache_time= '_' . $table . '_cache_time';
-	my $table_cache_full= '_' . $table . '_cache_full';
+	my $table_cache = '_' . $table . '_cache';
+	my $table_cache_time = '_' . $table . '_cache_time';
+	my $table_cache_full = '_' . $table . '_cache_full';
 
 	if (keys %{$self->{$table_cache}} && $self->{$table_cache_full} && !$cache_flag) {
 		my %return = %{$self->{$table_cache}};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.311 2003/01/30 17:18:58 pater Exp $
+# $Id: MySQL.pm,v 1.312 2003/01/31 02:33:15 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.311 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.312 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1353,7 +1353,7 @@ sub createAccessLog {
 	my $local_addr = inet_ntoa(
 		( unpack_sockaddr_in($r->connection()->local_addr()) )[1]
 	);
-	$self->sqlInsert('accesslog', {
+	my $insert = {
 		host_addr	=> $ipid,
 		subnetid	=> $subnetid,
 		dat		=> $dat,
@@ -1369,7 +1369,22 @@ sub createAccessLog {
 		static		=> $user->{state}{_dynamic_page} ? 'no' : 'yes',
 		secure		=> Slash::Apache::ConnectionIsSecure(),
 		referer		=> $ENV{HTTP_REFERER},
-	}, { delayed => 1 });
+	};
+	if ($constants->{accesslog_insert_cachesize}) {
+		# Save up multiple accesslog inserts until we can do them all at once.
+		push @{$self->{_accesslog_insert_cache}}, $insert;
+		my $size = scalar(@{$self->{_accesslog_insert_cache}});
+		if ($size >= $constants->{accesslog_insert_cachesize}) {
+			$self->{_dbh}->{AutoCommit} = 0;
+			while (my $hr = shift @{$self->{_accesslog_insert_cache}}) {
+				$self->sqlInsert('accesslog', $hr, { delayed => 1 });
+			}
+			$self->{_dbh}->commit;
+			$self->{_dbh}->{AutoCommit} = 1;
+		}
+	} else {
+		$self->sqlInsert('accesslog', $insert, { delayed => 1 });
+	}
 }
 
 ##########################################################

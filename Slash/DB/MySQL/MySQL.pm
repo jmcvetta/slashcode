@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.652 2004/08/02 15:43:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.653 2004/08/02 15:50:49 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.652 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.653 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4553,15 +4553,14 @@ sub getBanList {
 	my $expire_time = $constants->{banlist_expire};
 	$expire_time += int(rand(60)) if $expire_time;
 	_genericCacheRefresh($self, 'banlist', $expire_time);
-	my $banlist_ref = $self->{_banlist_cache} ||= {};
 	$banlist_ref = $self->{_banlist_cache} ||= {};
 
-	if (!keys %$banlist_ref && $mcd) {
+	if ($refresh) {
+		%$banlist_ref = ();
+	} elsif (!keys %$banlist_ref && $mcd && !$refresh) {
 		$banlist_ref = $mcd->get($mcdkey);
 		return $banlist_ref if $banlist_ref;
 	}
-
-	%$banlist_ref = () if $refresh;
 
 	if (!keys %$banlist_ref) {
 		if ($debug) {

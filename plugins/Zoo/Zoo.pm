@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.29 2003/01/20 22:54:44 brian Exp $
+# $Id: Zoo.pm,v 1.30 2003/01/21 21:40:59 pudge Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -65,7 +65,7 @@ sub getRelationships {
 
 # Get the details for relationships
 sub getFriendsUIDs {
-	my ($self, $uid) = @_;
+	my($self, $uid) = @_;
 
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
@@ -205,8 +205,8 @@ sub topFriends {
 }
 
 sub count {
-  my($self, $uid) = @_;
-  $self->sqlCount('people', "uid = $uid AND type is not NULL");
+	my($self, $uid) = @_;
+	$self->sqlCount('people', "uid = $uid AND type is not NULL");
 } 
 
 
@@ -265,7 +265,7 @@ SQL
 }
 
 sub getZooUsersForProcessing {
-	my ($self, $time) = @_;
+	my($self, $time) = @_;
 	my $people = $self->sqlSelectAll('uid', 'people', "last_update > '$time' ");
 	my $people2 = $self->sqlSelectAll('uid', 'people_nthdegree', "last_update > '$time' ");
 
@@ -283,7 +283,7 @@ sub getZooUsersForProcessing {
 }
 
 sub rebuildUser {
-	my ($self, $uid) = @_;
+	my($self, $uid) = @_;
 	my $first =  $self->sqlSelectAllHashrefArray('*', 'people', "uid = $uid");
 	my $second =  $self->sqlSelectAllHashrefArray('*', 'people_nthdegree', "uid = $uid");
 	my $people;

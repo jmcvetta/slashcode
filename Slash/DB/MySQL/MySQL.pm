@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.205 2002/07/30 14:18:42 jamie Exp $
+# $Id: MySQL.pm,v 1.206 2002/07/30 15:55:51 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4503,21 +4503,23 @@ sub getSlashConf {
 	$conf{rootdir}		||= "//$conf{basedomain}";
 	$conf{real_rootdir}	||= $conf{rootdir};  # for when rootdir changes
 	$conf{absolutedir}	||= "http://$conf{basedomain}";
-	$conf{absolutedir_secure} ||= "https://$conf{basedomain}";
+		# If absolutedir_secure is not defined, it defaults to the
+		# same as absolutedir.
+	$conf{absolutedir_secure} ||= $conf{absolutedir};
 	$conf{basedir}		||= "$conf{datadir}/public_html";
 	$conf{imagedir}		||= "$conf{rootdir}/images";
 	$conf{rdfimg}		||= "$conf{imagedir}/topics/topicslash.gif";
 	$conf{index_handler}	||= 'index.pl';
 	$conf{cookiepath}	||= URI->new($conf{rootdir})->path . '/';
-	$conf{maxkarma}		= 999  unless defined $conf{maxkarma};
-	$conf{minkarma}		= -999 unless defined $conf{minkarma};
-	$conf{expiry_exponent}	= 1 unless defined $conf{expiry_exponent};
+	$conf{maxkarma}		  =  999 unless defined $conf{maxkarma};
+	$conf{minkarma}		  = -999 unless defined $conf{minkarma};
+	$conf{expiry_exponent}	  = 1 unless defined $conf{expiry_exponent};
 	$conf{panic}		||= 0;
 	$conf{textarea_rows}	||= 10;
 	$conf{textarea_cols}	||= 50;
 	$conf{allow_deletions}  ||= 1;
-	$conf{authors_unlimited} = 100 if ( (! defined $conf{authors_unlimited})
-		|| ($conf{authors_unlimited} == 1) );
+	$conf{authors_unlimited}  = 100 if !defined $conf{authors_unlimited}
+		|| $conf{authors_unlimited} == 1;
 	# For all fields that it is safe to default to -1 if their
 	# values are not present...
 	for (qw[min_expiry_days max_expiry_days min_expiry_comm max_expiry_comm]) {

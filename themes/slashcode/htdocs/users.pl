@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.179 2003/05/08 16:06:11 jamie Exp $
+# $Id: users.pl,v 1.180 2003/05/12 13:14:24 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1898,7 +1898,8 @@ sub saveUserAdmin {
 		$user_edits_table->{tokens} = $form->{tokens};
 		$user_edits_table->{m2info} = $form->{m2info};
 
-		my $was_author = ($slashdb->getAuthor($id)->{author}) ? 1 : 0;
+		my $author = $slashdb->getAuthor($id);
+		my $was_author = ($author && $author->{author}) ? 1 : 0;
 
 		$slashdb->setUser($id, $user_edits_table);
 		$note .= getMessage('saveuseradmin_saveduser', { field => $user_editfield_flag, id => $id });

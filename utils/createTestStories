@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.21 2003/08/18 17:13:12 jamie Exp $
+# $Id: createTestStories,v 1.22 2003/08/26 17:41:54 pater Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -86,6 +86,7 @@ $constants = getCurrentStatic();
 			"epoch ".get_time($opts{t})),
 			"%Y-%m-%d %H-%M-%S");
 		my $tid = getRandomTopicID();
+		my $stid = getRandomTopicID();
 		my $section = getRandomSection();
 		my $displaystatus = 0;
 		if ($section =~ /^(articles|index)$/) {
@@ -102,6 +103,7 @@ $constants = getCurrentStatic();
 			subid		=> '',
 			uid		=> $author,
 			tid		=> $tid,
+			stid		=> $stid,
 			dept		=> $dept,
 			'time'		=> $time,
 			title		=> $title,
@@ -115,6 +117,7 @@ $constants = getCurrentStatic();
 
 # This logic is not quite right -Brian
 		my $sid = $slashdb->createStory($story);
+		$slashdb->setStoryTopics($story->{sid}, createStoryTopicData($self, $story);
 		my $reloDB = getObject("Slash::Relocate");
 		if ($reloDB && $sid) {
 			$slashdb->setStory($sid, { 

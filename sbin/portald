@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.28 2003/01/30 00:27:40 brian Exp $
+# $Id: portald,v 1.29 2003/02/25 19:15:30 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -174,11 +174,18 @@ sub getRDF {
 	} else {
 		my $str;
 		my $i = 0;
+		my $bd_regex = qr{\Q$constants->{basedomain}};
 		for my $item (@{$rss->{items}}) {
 			# hopefully this xmldecode() will break nothing
 			for (keys %{$item}) {
-			    $item->{$_} = xmldecode($item->{$_});
+				$item->{$_} = xmldecode($item->{$_});
 			}
+			# convert links to sections of our own site
+			# into a non-scheme-specific format
+			my $uri = URI->new($item->{link});
+			my $auth = $uri->authority();
+			$uri->scheme(undef) if $auth =~ /\b$bd_regex\Z/;
+			$item->{link} = $uri->as_string;
 			# this is if you want a nice numbering 
 			# layout in your block <ol> works, but 
 			# is ugly

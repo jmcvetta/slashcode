@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.68 2002/08/28 20:13:11 jamie Exp $
+# $Id: slashschema_create.sql,v 1.69 2002/09/20 20:10:14 brian Exp $
 #
 
 #
@@ -62,7 +62,7 @@ CREATE TABLE accesslog (
 	section varchar(30) DEFAULT 'index' NOT NULL,
 	bytes mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	INDEX host_addr_part (host_addr(16)),
-	INDEX op_part (op(12)),
+	INDEX op_part (op(12), section),
 	INDEX ts (ts),
 	PRIMARY KEY (id)
 ) TYPE = myisam;

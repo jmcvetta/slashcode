@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.57 2002/10/17 16:48:27 jamie Exp $
+# $Id: search.pl,v 1.58 2002/10/22 12:11:32 pudge Exp $
 
 use strict;
 use Slash;
@@ -325,7 +325,7 @@ sub storySearch {
 		}
 
 		for (@$stories) {
-			$_->{introtext} = substr(strip_nohtml($_->{introtext}),0,$constants->{search_text_length});
+			$_->{introtext} = substr(strip_notags($_->{introtext}),0,$constants->{search_text_length});
 			$_->{introtext} =~ s/(.*) .*$/$1.../g;
 		}
 
@@ -618,7 +618,7 @@ sub journalSearch {
 		}
 
 		for (@$entries) {
-			$_->{article} = substr(strip_nohtml($_->{article}),0,$constants->{search_text_length});
+			$_->{article} = substr(strip_notags($_->{article}),0,$constants->{search_text_length});
 			$_->{article} =~ s/(.*) .*$/$1.../g;
 		}
 
@@ -700,7 +700,7 @@ sub submissionSearch {
 		}
 
 		for (@$entries) {
-			$_->{story} = substr(strip_nohtml($_->{story}),0,$constants->{search_text_length});
+			$_->{story} = substr(strip_notags($_->{story}),0,$constants->{search_text_length});
 			$_->{story} =~ s/(.*) .*$/$1.../g;
 		}
 

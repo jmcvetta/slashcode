@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.133 2003/05/23 14:03:35 pudge Exp $
+# $Id: Slash.pm,v 1.134 2003/05/27 16:56:25 brian Exp $
 
 package Slash;
 
@@ -1268,6 +1268,9 @@ sub getOlderStories {
 		$story->{month} = $month;
 		$story->{day} = $day;
 		$story->{secs} = $secs;
+		unless ($story->{issue}) {
+			$story->{issue} = timeCalc($story->{time}, '%Y%m%d');
+		}
 		$story->{'link'} = linkStory({
 			'link'  => $story->{title},
 			sid     => $story->{sid},

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.21 2002/04/22 19:38:32 jamie Exp $
+# $Id: Data.pm,v 1.22 2002/05/03 02:54:29 cliff Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -49,6 +49,7 @@ use vars qw($VERSION @EXPORT);
 	changePassword
 	chopEntity
 	countWords
+	delFromList
 	encryptPassword
 	fixHref
 	fixint
@@ -58,6 +59,7 @@ use vars qw($VERSION @EXPORT);
 	formatDate
 	getArmoredEmail
 	html2text
+	inList
 	root2abs
 	strip_anchor
 	strip_attribute
@@ -1891,6 +1893,7 @@ sub countWords {
 	my($body) = @_;
 
 	# Sanity check.
+	$body = ${$body} if ref $body eq 'SCALAR';
 	return 0 if ref $body;
 
 	# Get rid of nasty print artifacts that may screw up counts.
@@ -1911,6 +1914,89 @@ sub countWords {
 	return scalar @words / 2;
 }
 
+=head2 inList(list, value)
+
+Returns TRUE or FALSE depending on if a given value is in an array.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item @$list
+
+A reference to the list in question.
+
+=item $value
+
+The value you wish to search for.
+
+=back
+
+=item Return value
+
+The position in the list of the first occurance of $value or undef if $value is not in
+the list.
+
+=back
+
+=cut
+
+
+sub inList {
+	my($list, $value) = @_;
+
+	my $c = 0;
+	for (@{$list}) {
+		return $c if $_ eq $value;
+		$c++;
+	}
+	return;
+}
+
+=head2 delFromList(list, value)
+
+Returns list with all instances of a given value removed.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item @$list
+
+A reference to the array we wish to modify.
+
+=item $value
+
+the value to remove.
+
+=back
+
+=item Return value
+
+A list which is a copy of @$list with all instances of $value, removed.
+
+=back
+
+=cut
+
+
+sub delFromList {
+	my($list, $value) = @_;
+
+	my(@newlist) = ();
+	for (@{$list}) {
+		next if $_ eq $value;
+		
+		push @newlist, $_;
+	}
+
+	return @newlist;
+}
+
 
 1;
 
@@ -1923,4 +2009,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.21 2002/04/22 19:38:32 jamie Exp $
+$Id: Data.pm,v 1.22 2002/05/03 02:54:29 cliff Exp $

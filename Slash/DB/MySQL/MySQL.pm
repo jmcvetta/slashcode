@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.148 2002/04/30 19:05:00 brian Exp $
+# $Id: MySQL.pm,v 1.149 2002/05/03 02:54:29 cliff Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -183,6 +183,9 @@ my %descriptions = (
 
 	'journal_discuss'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='journal_discuss'") },
+
+	'section_extra_types'
+		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='extra_types'") },
 
 );
 
@@ -1520,6 +1523,35 @@ sub createSection {
 	my($self, $hash) = @_;
 
 	$self->sqlInsert('sections', $hash);
+}
+
+########################################################
+
+sub createSubSection {
+	my($self, $section, $subsection, $artcount) = @_;
+
+	$self->sqlInsert('subsections', {
+		title	=> $subsection,
+		section	=> $section,
+		artcount=> $artcount || 0,
+	});
+}
+
+########################################################
+
+sub removeSubSection {
+	my($self, $section, $subsection) = @_;
+
+	my $where;
+	if ($subsection =~ /^\d+$/) {
+		$where = 'id=' . $self->sqlQuote($subsection);
+	} else {
+		$where = sprintf 'name=%s AND title=%s',
+			$self->sqlQuote($section),
+			$self->sqlQuote($subsection);
+	}
+
+	$self->sqlDelete('subsections', $where);
 }
 
 ########################################################
@@ -5066,6 +5098,20 @@ sub getSections {
 ########################################################
 sub getSubSections {
 	my $answer = _genericGetsCache('subsections', 'id', '', @_);
+	return $answer;
+}
+
+########################################################
+
+sub getSubSectionsBySection {
+	my($self, $section) = @_;
+
+	my $answer = $self->sqlSelectAllHashrefArray(
+		'*',
+		'subsections',
+		'section=' . $self->sqlQuote($section)
+	);
+
 	return $answer;
 }
 

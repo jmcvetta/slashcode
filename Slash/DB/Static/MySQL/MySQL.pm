@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.28 2002/04/11 16:14:30 jamie Exp $
+# $Id: MySQL.pm,v 1.29 2002/04/14 15:24:01 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -176,6 +176,9 @@ sub deleteRecycledComments {
 	);
 
 	my $rtotal = 0;
+	# This *must* be made faster, it seems to do about 4 per minute
+	# unless the comments being deleted are mostly-threaded.  Maybe
+	# it's time to make _deleteThread not be recursive.
 	for my $comment (@$comments) {
 		next if !$comment or ref($comment) ne 'ARRAY' or !@$comment;
 		my $local_count = $self->_deleteThread($comment->[0]);

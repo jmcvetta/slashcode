@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.102 2002/03/15 21:09:32 jamie Exp $
+# $Id: MySQL.pm,v 1.103 2002/03/15 21:18:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -560,8 +560,9 @@ sub undoModeration {
 		my $adjust = -$val;
 		$adjust =~ s/^([^+-])/+$1/;
 		$comm_update->{-points} =
-			"GREATEST($min_score,"
-			. " LEAST($max_score, points $adjust))";
+			$adjust > 0
+			? "LEAST($max_score, points $adjust)"
+			: "GREATEST($min_score, points $adjust)";
 
 		# Recalculate the comment's reason.
 		$comm_update->{reason} = $self->getCommentMostCommonReason($cid)
@@ -574,8 +575,9 @@ sub undoModeration {
 		# here's a place to take it out.
 		$self->sqlUpdate(
 			"users_info",
-			{ -karma =>	"GREATEST($min_karma,"
-					. " LEAST($max_karma, karma $adjust))" },
+			{ -karma =>	$adjust > 0
+					? "LEAST($max_karma, karma $adjust)"
+					: "GREATEST($min_karma, karma $adjust)" },
 			"uid=$cuid"
 		);
 

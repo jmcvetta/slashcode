@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.719 2004/11/03 21:52:38 pudge Exp $
+# $Id: upgrades,v 1.720 2004/11/04 15:02:25 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -1789,7 +1789,7 @@ ALTER TABLE sections CHANGE COLUMN defaultsubsection defaultsubsection SMALLINT 
 
 ALTER TABLE discussions CHANGE topic topic smallint UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE discussions ADD INDEX topic (topic);
-ALTER TABLE discussions ADD FOREIGN KEY (topic) REFERENCES topics(tid);
+#ALTER TABLE discussions ADD FOREIGN KEY (topic) REFERENCES topics(tid);
 
 ALTER TABLE metamodlog CHANGE COLUMN mmid mmid INT UNSIGNED DEFAULT '0' NOT NULL;
 ALTER TABLE metamodlog ADD FOREIGN KEY (mmid) REFERENCES moderatorlog(id);

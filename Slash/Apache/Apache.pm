@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.59 2004/07/03 18:57:40 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.60 2004/07/05 02:36:40 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -340,9 +340,10 @@ sub IndexHandler {
 	# definitely need $gSkin set to do our manipulation of $uri.
 	# ARGH.  Or, do we need to call this every time through, because
 	# otherwise we get old data from previous click?
-	if (!$gSkin->{skid}) {
+#	if (!$gSkin->{skid}) {
 		setCurrentSkin(determineCurrentSkin());
-	}
+		$gSkin = getCurrentSkin();
+#	}
 
 	my $uri = $r->uri;
 	my $is_user = $r->header_in('Cookie') =~ $USER_MATCH;
@@ -379,12 +380,12 @@ sub IndexHandler {
 			my($base) = split(/\./, $gSkin->{index_handler});
 			$base = $constants->{index_handler_noanon}
 				if $constants->{index_noanon};
-			if ($constants->{static_section}) {
-				$r->filename("$basedir/$constants->{static_section}/$base.shtml");
-				$r->uri("/$constants->{static_section}/$base.shtml");
-			} else {
+			if ($gSkin->{skid} == $constants->{mainpage_skid}) {
 				$r->filename("$basedir/$base.shtml");
 				$r->uri("/$base.shtml");
+			} else {
+				$r->filename("$basedir/$gSkin->{name}/$base.shtml");
+				$r->uri("/$gSkin->{name}/$base.shtml");
 			}
 			writeLog('shtml');
 			return OK;
@@ -401,10 +402,13 @@ sub IndexHandler {
 		}
 
 		my $slashdb = getCurrentDB();
-		my $section = $slashdb->getSection($key);
-		my $index_handler = $section->{index_handler}
-			|| $gSkin->{index_handler};
-		if ($section && $section->{id} && $index_handler ne 'IGNORE') {
+		my $new_skin = $slashdb->getSkin($key);
+		my $new_skid = $new_skin->{skid} || $constants->{mainpage_skid};
+		setCurrentSkin($new_skid);
+		$gSkin = getCurrentSkin();
+
+		my $index_handler = $gSkin->{index_handler};
+		if ($index_handler ne 'IGNORE') {
 			my $basedir = $constants->{basedir};
 
 			# $USER_MATCH defined above

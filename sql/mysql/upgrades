@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.727 2004/11/11 16:52:28 jamiemccarthy Exp $
+# $Id: upgrades,v 1.728 2004/11/11 20:25:59 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2686,8 +2686,6 @@ ALTER TABLE users TYPE=InnoDB;
 # (We're going to change searching soon, so this last MyISAM requirement
 # may go away.  Stay tuned.)
 
-# SLASHCLUSTER LAST UPDATED HERE
-
 # End of T_2_5_0_34, Start of T_2_5_0_35 - 2004/10/26
 
 ALTER TABLE remarks ADD COLUMN rid mediumint UNSIGNED NOT NULL auto_increment PRIMARY KEY FIRST;
@@ -2721,6 +2719,8 @@ ALTER TABLE pollquestions CHANGE COLUMN discussion discussion mediumint UNSIGNED
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+# SLASHCLUSTER LAST UPDATED HERE
 
 # End of T_2_5_0_36, Start of T_2_5_0_37 - 2004/11/08
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.16 2002/03/26 22:32:53 jamie Exp $
+# $Id: portald,v 1.17 2002/04/06 08:12:41 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -120,13 +120,16 @@ sub getUptime {
 
 	my $stats = $x;
 
-	my($today, $yesterday) = $backupdb->getAccesslogCountTodayAndYesterday();
+# This can take a long while on inno.  Since we're doing this every hour,
+# and since this isn't terribly interesting data, skip it.
+#	my($today, $yesterday) = $backupdb->getAccesslogCountTodayAndYesterday();
+#	my $tc = $constants->{totalComments};
 	my $th = $constants->{totalhits};
-	my $tc = $constants->{totalComments};
 
-	$stats .= "<B>yesterday:</B> $yesterday<BR>
-		<B>today:</B> $today<BR>
-		<B>ever:</B> $th<BR>";
+#	$stats .= "<B>yesterday:</B> $yesterday<BR>
+#		<B>today:</B> $today<BR>
+#		<B>ever:</B> $th<BR>";
+	$stats .= "<B>totalhits:</B> $th<BR>";
 
 	setblock('uptime', $stats);
 }

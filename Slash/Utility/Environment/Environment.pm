@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.72 2003/02/13 22:01:32 brian Exp $
+# $Id: Environment.pm,v 1.73 2003/02/20 02:02:19 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1201,16 +1201,16 @@ sub prepareUser {
 		# save in user's state
 		$user_types{$type} = $virtual_user;
 	}
+
 	$uid = $constants->{anonymous_coward_uid} unless defined($uid) && $uid ne '';
 
 	my $reader = getObject('Slash::DB', { db_type => $user_types{'reader'} });
-	$reader ||= $slashdb;
 
 	if (isAnon($uid)) {
 		if ($ENV{GATEWAY_INTERFACE}) {
 			$user = getCurrentAnonymousCoward();
 		} else {
-			$user = $slashdb->getUser($constants->{anonymous_coward_uid});
+			$user = $reader->getUser($constants->{anonymous_coward_uid});
 		}
 		$user->{is_anon} = 1;
 
@@ -1316,7 +1316,6 @@ sub prepareUser {
 		$user->{seclev} = 1;
 		$user->{state}{lostprivs} = 1;
 	}
-
 
 	return $user;
 }
@@ -2089,4 +2088,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.72 2003/02/13 22:01:32 brian Exp $
+$Id: Environment.pm,v 1.73 2003/02/20 02:02:19 pudge Exp $

@@ -1,8 +1,8 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.55 2003/02/13 22:01:32 brian Exp $
+# $Id: index.pl,v 1.56 2003/02/20 02:02:19 pudge Exp $
 
 use strict;
 use Slash;
@@ -15,8 +15,6 @@ sub main {
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-	$reader ||= $slashdb;
-
 
 	my($stories, $Stories, $section);
 	if ($form->{op} eq 'userlogin' && !$user->{is_anon}

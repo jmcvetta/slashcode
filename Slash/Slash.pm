@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.112 2003/02/19 19:02:03 brian Exp $
+# $Id: Slash.pm,v 1.113 2003/02/20 02:02:19 pudge Exp $
 
 package Slash;
 
@@ -92,7 +92,6 @@ sub selectComments {
 		$thisComment = $slashdb->getCommentsForUser($header->{id}, $cid, $cache_read_only);
 	} else {
 		my $reader = getObject('Slash::DB', { db_type => 'reader' });
-		$reader ||= $slashdb;
 		$thisComment = $reader->getCommentsForUser($header->{id}, $cid, $cache_read_only);
 	}
 

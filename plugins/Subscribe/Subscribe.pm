@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.17 2003/02/14 23:41:58 jamie Exp $
+# $Id: Subscribe.pm,v 1.18 2003/02/27 08:19:59 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -55,6 +55,9 @@ sub _subscribeDecisionPage {
         return 0 if !$user
                 ||  !$uid
                 ||   $user->{is_anon};
+
+	# Any part of the code can set this user state variable at any time.
+	return 1 if $user->{state}{buyingpage};
 
 	# If the user hasn't paid for any pages, or has already bought
 	# (used up) all the pages they've paid for, then they are not

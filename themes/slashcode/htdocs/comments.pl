@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.120 2003/02/11 16:27:44 pudge Exp $
+# $Id: comments.pl,v 1.121 2003/02/27 08:19:59 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -136,15 +136,20 @@ sub main {
 			$discussion = $slashdb->getDiscussion($form->{sid});
 			$section = $discussion->{section};
 		}
-		# This is to get tid in comments. It would be a mess to pass it directly to every comment -Brian
+		# This is to get tid in comments. It would be a mess to pass it
+		# directly to every comment -Brian
 		$user->{state}{tid} = $discussion->{topic};
-		if (!$user->{is_admin} and $discussion->{sid}) {
+		if (!$user->{is_admin} && $discussion->{sid}) {
 			unless ($slashdb->checkStoryViewable($discussion->{sid})) {
 				$form->{sid} = '';
 				$discussion = '';
 				$op = 'default';
 				$section = '';
 			}
+		}
+		if ($discussion && $slashdb->checkDiscussionIsInFuture($discussion)) {
+			$discussion->{is_future} = 1;
+			$user->{state}{buyingpage} = 1;
 		}
 	}
 

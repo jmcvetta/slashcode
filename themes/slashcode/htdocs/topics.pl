@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.18 2003/02/17 21:06:09 brian Exp $
+# $Id: topics.pl,v 1.19 2003/02/27 08:20:00 jamie Exp $
 
 use strict;
 use Slash;
@@ -89,8 +89,9 @@ sub topTopics {
 			? 10 : $top->{cnt} < 3 || $form->{all}
 			? 3 : $top->{cnt};
 
+		my $ess_hr = $slashdb->getStoriesEssentials($limit, $section->{section}, $top->{tid});
 		$top->{stories} = getOlderStories(
-			$slashdb->getStoriesEssentials($limit, $section->{section}, $top->{tid}),
+			$ess_hr->{stories},
 			$section
 		);
 		if ($top->{image} =~ /^\w+\.\w+$/) {

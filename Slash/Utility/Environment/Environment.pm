@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.160 2005/02/03 05:33:44 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.161 2005/02/15 00:41:12 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2484,8 +2484,10 @@ sub determineCurrentSkin {
 		$hostname =~ s/:\d+$//;
  
 		my $skins = $reader->getSkins;
-		($skin) = grep { lc $skins->{$_}{hostname} eq lc $hostname }
-			sort { $a <=> $b } keys %$skins;
+		($skin) = grep {
+				(my $tmp = lc $skins->{$_}{hostname}) =~ s/:\d+$//;
+				$tmp eq lc $hostname
+			} sort { $a <=> $b } keys %$skins;
 
 		# don't bother warning if $hostname is numeric IP
 		if (!$skin && $hostname !~ /^\d+\.\d+\.\d+\.\d+$/) {
@@ -2701,4 +2703,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.160 2005/02/03 05:33:44 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.161 2005/02/15 00:41:12 pudge Exp $

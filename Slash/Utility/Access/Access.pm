@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.20 2003/12/19 18:07:43 pudge Exp $
+# $Id: Access.pm,v 1.21 2004/01/27 18:29:11 tvroom Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -238,6 +238,8 @@ sub intervalString {
 sub formkeyHandler {
 	# ok, I know we don't like refs, but I don't wanna rewrite the 
 	# whole damned system
+
+
 	my($formkey_op, $formname, $formkey, $message_ref, $options) = @_;
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
@@ -287,7 +289,8 @@ sub formkeyHandler {
 		# check interval from this attempt to last successful post
 		if (my $interval = $slashdb->checkPostInterval($formname)) {	
 			$msg = formkeyError('speed', $formname, $interval);
-			$error_flag = 1;
+			# give the user a preview form so they can post after time limit
+			$error_flag = -1;
 		}
 	} elsif ($formkey_op eq 'formkey_check') {
 		# check if form already used
@@ -800,4 +803,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.20 2003/12/19 18:07:43 pudge Exp $
+$Id: Access.pm,v 1.21 2004/01/27 18:29:11 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_archive.pl,v 1.22 2003/07/30 17:46:47 jamie Exp $
+# $Id: daily_archive.pl,v 1.23 2003/07/31 12:44:03 jamie Exp $
 
 use strict;
 
@@ -43,9 +43,10 @@ $task{$me}{code} = sub {
 	}
 
 	# Takes approx. 60 seconds on Slashdot
+	my $logdb = getObject('Slash::DB', { db_type => 'log_slave' });
 	slashdLog('Update Total Counts Begin');
 	my $totalHits = $slashdb->getVar("totalhits", '', 1);
-	my $count = $slashdb->countAccesslogDaily();
+	my $count = $logdb->countAccesslogDaily();
 	$slashdb->setVar("totalhits", $totalHits);
 	slashdLog('Update Total Counts End');
 

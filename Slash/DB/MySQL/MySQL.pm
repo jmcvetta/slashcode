@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.743 2004/12/07 17:09:57 tvroom Exp $
+# $Id: MySQL.pm,v 1.744 2004/12/09 04:03:40 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.743 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.744 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3360,6 +3360,7 @@ sub deleteAuthor {
 # the deleted topic can be re-established.
 sub deleteTopic {
 	my($self, $tid, $newtid) = @_;
+	my $constants = getCurrentStatic();
 	my $tid_q = $self->sqlQuote($tid);
 	my $newtid_q = $self->sqlQuote($newtid);
 	my $tree = $self->getTopicTree();
@@ -3432,10 +3433,12 @@ sub deleteTopic {
 	# have the new tid.  Stories are a special case so skip those
 	# for now.
 	# These tables have topics stored as 'tid'.
-	$self->sqlUpdate("submissions",   { tid => $newtid },   "tid=$tid_q");
-	$self->sqlUpdate("journals",      { tid => $newtid },   "tid=$tid_q");
-	$self->sqlUpdate("discussions",   { topic => $newtid }, "topic=$tid_q");
-	$self->sqlUpdate("pollquestions", { topic => $newtid }, "topic=$tid_q");
+	$self->sqlUpdate("submissions",		{ tid => $newtid },	"tid=$tid_q");
+	if ($constants->{plugin}{Journal}) {
+		$self->sqlUpdate("journals",	{ tid => $newtid },	"tid=$tid_q");
+	}
+	$self->sqlUpdate("discussions",		{ topic => $newtid },	"topic=$tid_q");
+	$self->sqlUpdate("pollquestions",	{ topic => $newtid },	"topic=$tid_q");
 
 	# OK, for stories, it's a little more complicated because we have
 	# not just a tid column, but two other tables.  First we mark

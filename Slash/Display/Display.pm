@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.27 2003/08/04 17:29:29 pudge Exp $
+# $Id: Display.pm,v 1.28 2003/08/05 21:18:27 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -470,7 +470,14 @@ is best to stick with the filter, which is most likely faster anyway.
 
 =cut
 
+sub _ref { ref $_[0] }
+
+my %hash_ops = (
+	'ref'		=> \&_ref,
+);
+
 my %list_ops = (
+	'ref'		=> \&_ref,
 	'rand'		=> sub {
 		my $list = $_[0];
 		return $list->[rand @$list];
@@ -501,6 +508,7 @@ my %list_ops = (
 );
 
 my %scalar_ops = (
+	'ref'		=> \&_ref,
 	'int'		=> sub { int $_[0] },
 	'abs'		=> sub { abs $_[0] },
 	'uc'		=> sub { uc $_[0] },
@@ -522,6 +530,7 @@ my %scalar_ops = (
 	},
 );
 
+@{$Template::Stash::HASH_OPS}  {keys %hash_ops}   = values %hash_ops;
 @{$Template::Stash::LIST_OPS}  {keys %list_ops}   = values %list_ops;
 @{$Template::Stash::SCALAR_OPS}{keys %scalar_ops} = values %scalar_ops;
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.3 2004/11/15 14:43:59 jamiemccarthy Exp $
+# $Id: balance_readers.pl,v 1.4 2004/11/15 23:14:32 jamiemccarthy Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -206,7 +206,7 @@ sub check_readers {
 		# Now find the query that's the most bogged-down, and how
 		# bogged it is.  The "most bogged-down" is the query that,
 		# of its processes running it that have been running for
-		# 3 seconds or more, has the largest sum of times.
+		# 1 second or more, has the largest sum of times.
 		my $bog_query = undef;
 		my @queries = sort keys %{ $process{$vu}{query} };
 		my $max_bog_time = 0;
@@ -214,7 +214,7 @@ sub check_readers {
 		for my $query (@queries) {
 			my @bog_times =
 				sort { $a <=> $b }
-				grep { $_ >= 3 }
+				grep { $_ >= 1 }
 				@{ $process{$vu}{query}{$query} };
 			# There must be at least 3 similar queries for us
 			# to care about it.  Otherwise we assume it's a

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.749 2005/01/04 21:06:17 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.750 2005/01/11 18:43:39 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.749 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.750 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5736,9 +5736,11 @@ sub countSubmissionsFromUID {
 	my $constants = getCurrentStatic();
 	my $days_back = $options->{days_back} || $constants->{submission_count_days};
 	my $uid_q = $self->sqlQuote($uid);
+	my $del_clause;
+	$del_clause = " AND del = ".$self->sqlQuote($options->{del}) if defined $options->{del};
 	return $self->sqlCount("submissions",
 		"uid=$uid_q
-		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY)");
+		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY) $del_clause");
 }
 
 sub countSubmissionsWithEmaildomain {
@@ -5747,9 +5749,11 @@ sub countSubmissionsWithEmaildomain {
 	my $constants = getCurrentStatic();
 	my $days_back = $options->{days_back} || $constants->{submission_count_days};
 	my $emaildomain_q = $self->sqlQuote($emaildomain);
+	my $del_clause;
+	$del_clause = " AND del = ".$self->sqlQuote($options->{del}) if defined $options->{del};
 	return $self->sqlCount("submissions USE INDEX (time_emaildomain)",
 		"emaildomain=$emaildomain_q
-		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY)");
+		 AND time >= DATE_SUB(NOW(), INTERVAL $days_back DAY) $del_clause");
 }
 
 ##################################################################

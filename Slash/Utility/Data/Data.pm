@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.147 2005/03/30 05:23:51 pudge Exp $
+# $Id: Data.pm,v 1.148 2005/04/01 23:52:28 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -45,7 +45,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2162,6 +2162,8 @@ my $finder = Slash::Utility::Data::URI::Find->new(sub {
 sub url2html {
 	my($text) = @_;
 
+	return $text if getCurrentStatic('url2html_skip');
+
 	my $scheme_regex = _get_scheme_regex();
 
 	# we know this can break real URLs, but probably will
@@ -3637,4 +3639,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.147 2005/03/30 05:23:51 pudge Exp $
+$Id: Data.pm,v 1.148 2005/04/01 23:52:28 pudge Exp $

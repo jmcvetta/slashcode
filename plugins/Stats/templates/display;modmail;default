@@ -52,7 +52,22 @@ constants.absolutedir_secure %]/~[% hr.orgnick | fixparam %] ([% hr.orguid %]): 
 	END;
 END; %]
 
+[% IF late_modders_report %]
+---------------------------------
+Top Moderators Near Archive Time
+
+UID     Nickname              Count
+[% late_modders_report %]
+[% END %]
+
+[% IF early_inactive_modders_report %]
+---------------------------------
+Top Early Down Moderators with Inactive Mods
+
+UID     Nickname              Count
+[% early_inactive_modders_report %]
+[% END %]
 __seclev__
 100
 __version__
-$Id: display;modmail;default,v 1.15 2003/09/02 19:55:56 vroom Exp $
+$Id: display;modmail;default,v 1.16 2004/02/03 20:51:21 tvroom Exp $

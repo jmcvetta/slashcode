@@ -185,22 +185,7 @@ Count  Nickname
 [% crawling_subscribers %]
 
 [% END %]
-[% IF late_modders_report %]
----------------------------------
-Top Moderators Near Archive Time
-
-UID     Nickname              Count
-[% late_modders_report %]
-[% END %]
-
-[% IF early_inactive_modders_report %]
----------------------------------
-Top Early Down Moderators with Inactive Mods
-
-UID     Nickname              Count
-[% early_inactive_modders_report %]
-[% END %]
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.67 2004/01/27 19:33:27 tvroom Exp $
+$Id: display;adminmail;default,v 1.68 2004/02/03 20:51:21 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.14 2001/04/17 17:31:54 brian Exp $
+# $Id: journal.pl,v 1.15 2001/04/18 17:46:55 pudge Exp $
 
 use strict;
 use Slash;
@@ -60,7 +60,7 @@ sub main {
 		$r->status(200);
 		$r->send_http_header;
 		$r->rflush;
-		if($form->{content} eq 'top') {
+		if ($form->{content} eq 'top') {
 			$r->print(displayTopRSS($form, $journal, $constants));
 		} else {
 			$r->print(displayRSS($form, $journal, $constants));
@@ -187,7 +187,8 @@ sub displayTopRSS {
 			my $time = timeCalc($entry->[3]);
 			$rss->add_item(
 				title	=> xmlencode("$entry->[1] ($time)"),
-				'link'	=> (xmlencode($constants->{absolutedir} . '/journal.pl?op=display') . '&amp;' . xmlencode('uid=' . $entry->[2])),
+				'link'	=> xmlencode($constants->{absolutedir}
+					. '/journal.pl?op=display&uid=' . $entry->[2]),
 			);
 	}
 	return $rss->as_string;
@@ -373,9 +374,9 @@ sub editArticle {
 
 sub getArticle {
 	my($form, $journal, $constants) = @_;
-	# This is where we figure out what is happening
-	my $article = $journal->get($form->{id}, [ qw( article date description ) ]);
-	my $theme = getCurrentUser('journal-theme');
+	my $slashdb = getCurrentDB();
+	my $article = $journal->get($form->{id});
+	my $theme = $slashdb->getUser($article->{uid}, 'journal-theme');
 	$theme ||= $constants->{journal_default_theme};
 	slashDisplay($theme, {
 		articles	=> [{ day => $article->{date}, article => [ $article ] }],

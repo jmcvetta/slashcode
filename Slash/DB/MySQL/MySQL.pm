@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.10 2001/04/17 14:59:48 pudge Exp $
+# $Id: MySQL.pm,v 1.11 2001/04/18 17:46:55 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -2199,7 +2199,6 @@ sub autoUrl {
 	my $more = substr $user->{nickname}, 1;
 	$more =~ s/[a-z]//g;
 	$initials = uc($initials . $more);
-	# CHANGE DATE_ FUNCTION
 	my($now) = timeCalc('epoch ' . time(), '%m/%d %H:%M %p %Z', 0);
 
 	# Assorted Automatic Autoreplacements for Convenience

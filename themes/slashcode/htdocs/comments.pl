@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.104 2002/11/16 22:28:25 jamie Exp $
+# $Id: comments.pl,v 1.105 2002/11/19 04:58:09 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -224,23 +224,28 @@ sub main {
 		# CALL THE OP
 		my $retval = $ops->{$op}{function}->($form, $slashdb, $user, $constants, $discussion);
 
-		# this has to happen - if this is a form that you updated the formkey val ('formkey_check')
-		# you need to call updateFormkey to update the timestamp (time of successful submission) and
-		# note: maxCid and length aren't really required - this is legacy from when formkeys was 
-		# comments specific, but it can't hurt to put some sort of length in there.. perhaps
-		# the length of the primary field in your form would be a good choice.
+		# this has to happen - if this is a form that you updated
+		# the formkey val ('formkey_check') you need to call
+		# updateFormkey to update the timestamp (time of successful
+		# submission) and note: maxCid and length aren't really
+		# required - this is legacy from when formkeys was comments
+		# specific, but it can't hurt to put some sort of length
+		# in there.. perhaps the length of the primary field in
+		# your form would be a good choice.
 		if ($ops->{$op}{update_formkey}) {
 			if($retval) {
-				my $field_length= $form->{postercomment} ? 
-					length($form->{postercomment}) : length($form->{postercomment});
+				my $field_length = $form->{postercomment}
+					? length($form->{postercomment})
+					: 0;
 
 				# do something with updated? ummm.
 				my $updated = $slashdb->updateFormkey($formkey, $field_length); 
 
-			# updateFormkeyVal updated the formkey before the function call, 
-			# but the form somehow had an error in the function it called 
-			# unrelated to formkeys so reset the formkey because this is 
-			# _not_ a successful submission
+			# updateFormkeyVal updated the formkey before the
+			# function call, but the form somehow had an error
+			# in the function it called unrelated to formkeys
+			# so reset the formkey because this is _not_
+			# a successful submission
 			} else {
 				my $updated = $slashdb->resetFormkey($formkey);
 			}

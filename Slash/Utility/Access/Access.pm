@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.15 2002/10/24 01:06:27 jamie Exp $
+# $Id: Access.pm,v 1.16 2002/11/19 04:58:09 jamie Exp $
 
 package Slash::Utility::Access;
 
@@ -34,7 +34,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -192,7 +192,7 @@ sub formkeyError {
 
 	} elsif ($value eq 'usedform') {
 		if (my $interval = $slashdb->getFormkeyTs($form->{formkey},1)) {
-			$hashref->{interval} = intervalString( time() - $slashdb->getFormkeyTs($form->{formkey},1) );
+			$hashref->{interval} = intervalString( time() - $interval );
 		}
 		$hashref->{value} = $value;
 	} elsif ($value eq 'cantinsert') {
@@ -775,4 +775,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.15 2002/10/24 01:06:27 jamie Exp $
+$Id: Access.pm,v 1.16 2002/11/19 04:58:09 jamie Exp $

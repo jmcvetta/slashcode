@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.67 2003/04/08 13:30:29 jamie Exp $
+# $Id: User.pm,v 1.68 2003/04/16 17:09:04 brian Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -192,7 +192,7 @@ sub handler {
 	my $user = prepareUser($uid, $form, $uri, $cookies, $method);
 	# "_dynamic_page" or any hash key name beginning with _ or .
 	# cannot be accessed from templates -- pudge
-	if ($uri =~ /\.pl$/ && $uri =~ /\.tmpl$/) {
+	if ($uri =~ /\.pl$/ || $uri =~ /\.tmpl$/) {
 		$user->{state}{_dynamic_page} = 1;
 	}
 	$user->{state}{ssl} = $is_ssl;

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.152 2004/06/20 17:09:49 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.153 2004/06/21 12:52:51 jamiemccarthy Exp $
 #
 
 #
@@ -678,7 +678,6 @@ DROP TABLE IF EXISTS skins;
 CREATE TABLE skins (
 	skid SMALLINT UNSIGNED NOT NULL DEFAULT 0 AUTO_INCREMENT,
 	nexus SMALLINT UNSIGNED NOT NULL,
-	min_weight FLOAT UNSIGNED DEFAULT 1 NOT NULL,
 	artcount_min MEDIUMINT UNSIGNED DEFAULT '10' NOT NULL,
 	artcount_max MEDIUMINT UNSIGNED DEFAULT '30' NOT NULL,
 	name VARCHAR(30) NOT NULL,

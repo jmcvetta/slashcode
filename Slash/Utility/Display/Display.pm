@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.80 2004/04/06 19:04:44 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.81 2004/05/11 20:24:48 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -488,10 +488,10 @@ sub linkStory {
 	}
 
 	if ($render) {
-		my $rendered = '<A HREF="' . strip_attribute($url) . '"';
-		$rendered .= ' TITLE="' . strip_attribute($story_link->{title}) . '"'
+		my $rendered = '<a href="' . strip_attribute($url) . '"';
+		$rendered .= ' title="' . strip_attribute($story_link->{title}) . '"'
 			if $story_link->{title} ne '';
-		$rendered .= '>' . strip_html($title) . '</A>';
+		$rendered .= '>' . strip_html($title) . '</a>';
 		return $rendered;
 	} else {
 		return [$url, $title, $story_link->{title}];
@@ -1612,4 +1612,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.80 2004/04/06 19:04:44 jamiemccarthy Exp $
+$Id: Display.pm,v 1.81 2004/05/11 20:24:48 pudge Exp $

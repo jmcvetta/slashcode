@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.195 2004/05/11 18:58:49 tvroom Exp $
+# $Id: comments.pl,v 1.196 2004/05/11 20:24:49 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -946,7 +946,7 @@ sub validateComment {
 
 	if (!$user->{is_anon} && $form->{postanon} && $user->{karma} < 0) {
 		$$error_message = getError('postanon_option_disabled');
-		return
+		return;
 	}
 		
 	my $post_restrictions = $slashdb->getNetIDPostingRestrictions("subnetid", $user->{subnetid});	
@@ -1500,8 +1500,6 @@ sub moderate {
 		return;
 	}
 
-
-
 	if ($discussion->{type} eq 'archived'
 		&& !$constants->{comments_moddable_archived}) {
 		$message .= getData('archive_error');
@@ -1519,7 +1517,7 @@ sub moderate {
 			|| $user->{acl}{modpoints_always};
 
 
-	if($skip_moderation){
+	if ($skip_moderation) {
 		print $message;
 		if ($user->{is_admin}) {
 			$meta_mods_performed = metaModerate();		
@@ -1528,7 +1526,6 @@ sub moderate {
 		return;
 	} else {
 		slashDisplay('mod_header');
-		
 
 		# Handle Deletions, Points & Reparenting
 		# It would be nice to sort these by current score of the comments

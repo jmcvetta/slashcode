@@ -35,8 +35,9 @@ __template__
 		is likely the reason you're having difficult logging in at the moment.
 	</p>
 	<p>
-		Please check your e-mail for your updated login information or <a href="[% constants.real_rootdir %]/login.pl?op=mailpasswdform">have the updated password mailed to you</a>.
-		
+		Please check your e-mail for your updated login information or
+		<a href="[% constants.real_rootdir %]/login.pl?op=mailpasswdform">have
+		the updated password mailed to you</a>.		
 	</p>
 	[% END %]
 
@@ -84,4 +85,4 @@ if you don't have one already.<br>
 __seclev__
 500
 __version__
-$Id: loginForm;login;default,v 1.4 2004/05/11 18:46:12 tvroom Exp $
+$Id: loginForm;login;default,v 1.5 2004/05/11 20:24:48 pudge Exp $

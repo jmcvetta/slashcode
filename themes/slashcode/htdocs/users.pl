@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.242 2004/05/11 18:52:22 tvroom Exp $
+# $Id: users.pl,v 1.243 2004/05/11 20:24:49 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2684,7 +2684,6 @@ sub listAbuses {
 }
 
 #################################################################
-
 sub forceAccountVerify {
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
@@ -2694,7 +2693,7 @@ sub forceAccountVerify {
 	my $uid = $form->{uid};
 	my $useredit = $slashdb->getUser($uid);
 	
-	if($useredit->{uid}){
+	if ($useredit->{uid}) {
 		my $newpasswd = $slashdb->resetUserAccount($uid);
 		$slashdb->deleteLogToken($uid, 1);
 		my $emailtitle = getTitle('reset_acct_email_title', {
@@ -2707,9 +2706,9 @@ sub forceAccountVerify {
 		}, 1);
 		
 		$slashdb->setUser($useredit->{uid}, {
-					waiting_for_account_verify => 1,
-					account_verify_request_time => $slashdb->getTime()
-				  });
+			waiting_for_account_verify => 1,
+			account_verify_request_time => $slashdb->getTime()
+		});
 		
 		doEmail($useredit->{uid}, $emailtitle, $msg) if $useredit->{uid};
 	}

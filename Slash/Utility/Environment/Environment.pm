@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.87 2003/04/26 13:38:03 jamie Exp $
+# $Id: Environment.pm,v 1.88 2003/04/29 19:06:29 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1827,6 +1827,7 @@ sub getObject {
 		# see if module has been loaded in already ...
 		(my $file = $class) =~ s|::|/|g;
 		# ... because i really hate eval
+		local $@; # $@ won't get cleared unless eval is performed
 		eval "require $class" unless exists $INC{"$file.pm"};
 
 		if ($@) {
@@ -2119,4 +2120,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.87 2003/04/26 13:38:03 jamie Exp $
+$Id: Environment.pm,v 1.88 2003/04/29 19:06:29 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.99 2005/03/11 19:58:08 pudge Exp $
+# $Id: journal.pl,v 1.100 2005/03/23 18:35:54 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -240,7 +240,7 @@ sub displayRSS {
 				tid		=> $article->[5],
 			},
 			title		=> $article->[2],
-			description	=> url2html(strip_mode($article->[1], $article->[4])),
+			description	=> strip_mode($article->[1], $article->[4]),
 			'link'		=> root2abs() . '/~' . fixparam($nickname) . "/journal/$article->[3]",
 		};
 	}
@@ -378,7 +378,7 @@ sub displayArticleFriends {
 
 		# should get comment count, too -- pudge
 		push @collection, {
-			article		=> url2html(strip_mode($article->[1], $article->[4])),
+			article		=> strip_mode($article->[1], $article->[4]),
 			date		=> $article->[0],
 			description	=> strip_notags($article->[2]),
 			topic		=> $topics->{$article->[5]},
@@ -492,7 +492,7 @@ sub displayArticle {
 				: 0;
 		}
 
-		my $stripped_article = url2html(strip_mode($article->[1], $article->[4]));
+		my $stripped_article = strip_mode($article->[1], $article->[4]);
 		$stripped_article = noFollow($stripped_article)
 			unless $karma > $constants->{goodkarma};
 
@@ -765,7 +765,7 @@ sub editArticle {
 	$posttype ||= $user->{'posttype'};
 
 	if ($article->{article}) {
-		my $strip_art = url2html(strip_mode($article->{article}, $posttype));
+		my $strip_art = strip_mode($article->{article}, $posttype);
 		my $strip_desc = strip_notags($article->{description});
 
 		my $commentcount = $article->{discussion}

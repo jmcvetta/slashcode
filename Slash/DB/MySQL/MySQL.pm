@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.103 2002/03/15 21:18:33 jamie Exp $
+# $Id: MySQL.pm,v 1.104 2002/03/17 20:38:45 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4094,10 +4094,8 @@ sub createDiscussion {
 ########################################################
 sub createStory {
 	my($self, $story) = @_;
-	unless ($story) {
-		$story ||= getCurrentForm();
-	}
-	#Create a sid
+	$story ||= getCurrentForm();
+	# Create a sid
 	my($sec, $min, $hour, $mday, $mon, $year) = localtime;
 	$year = $year % 100;
 	# yes, this format is correct, don't change it :-)

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.27 2000/11/29 15:14:07 pudge Exp $
+#  $Id: admin.pl,v 1.28 2001/02/16 11:06:01 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -982,8 +982,7 @@ sub importImage {
 		return "<image:not found>";
 	}
 
-	use imagesize;
-	my($w, $h) = imagesize::imagesize("/tmp/slash/$tf");
+	my($w, $h) = imgsize("/tmp/slash/$tf");
 	return qq[<IMG SRC="$I{rootdir}/$section/] .  getsiddir() . $filename
 		. qq[" WIDTH="$w" HEIGHT="$h" ALT="$section">];
 }

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.61 2001/01/18 13:12:29 pudge Exp $
+#  $Id: Slash.pm,v 1.62 2001/02/16 11:06:01 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1109,7 +1109,10 @@ sub sqlUpdate {
 	}
 	chop $sql;
 	$sql .= "\nWHERE $where\n";
-	return $I{dbh}->do($sql) or apacheLog($sql);
+
+	my $return = $I{dbh}->do($sql);
+	apacheLog($sql) unless $return;
+	return $return;
 }
 
 ########################################################
@@ -1132,7 +1135,10 @@ sub sqlReplace {
 
 	my $sql = "REPLACE INTO $table ($names) VALUES($values)\n";
 	sqlConnect();
-	return $I{dbh}->do($sql) or apacheLog($sql);
+
+	my $return = $I{dbh}->do($sql);
+	apacheLog($sql) unless $return;
+	return $return;
 }
 
 ########################################################
@@ -1156,7 +1162,10 @@ sub sqlInsert {
 	my $p = 'DELAYED' if $delay;
 	my $sql = "INSERT $p INTO $table ($names) VALUES($values)\n";
 	sqlConnect();
-	return $I{dbh}->do($sql) or apacheLog($sql) && kill 9, $$;
+
+	my $return = $I{dbh}->do($sql);
+	apacheLog($sql) unless $return;
+	return $return;
 }
 
 ########################################################
@@ -2611,6 +2620,8 @@ my $timeformats = {
 	'%U' => '%U',
 	'%u' => '%W',
 	'%%' => '%%'
+	'%Z' => '__TIMEZONE__',
+	'%z' => '__TIMEZONE__',
 };
 
 sub timeCalc {
@@ -2645,6 +2656,8 @@ sub timeCalc {
 
 	# convert the raw date to pretty formatted date
 	$date = UnixDate($date, $I{U}{perlformat});
+	# if there were %z's, flip 'em to the real timezone
+	$date =~ s/__TIMEZONE__/\U$I{U}{tzcode}/g;
 
 	# return the new pretty date
 	return $date;

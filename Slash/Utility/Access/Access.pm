@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.14 2002/07/30 18:43:58 jamie Exp $
+# $Id: Access.pm,v 1.15 2002/10/24 01:06:27 jamie Exp $
 
 package Slash::Utility::Access;
 
@@ -34,7 +34,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -556,7 +556,7 @@ sub compressOk {
 	# "wsfactor" is the whitespace factor;  normal is 1.0, but the
 	# larger the value the more difficult to accept a comment with lots
 	# of whitespace.  Values between 0.2 and 5 probably make sense.
-	my $slice_size = 500;
+	my $slice_size = $constants->{comment_compress_slice} || 500;
 	my $nbsp_space = " " x (1 + int(11 * $wsfactor));
 	my $breaktag_space = " " x (1 + int(3 * $wsfactor));
 	my $spacerun_min = 1 + int(4 / $wsfactor);
@@ -775,4 +775,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.14 2002/07/30 18:43:58 jamie Exp $
+$Id: Access.pm,v 1.15 2002/10/24 01:06:27 jamie Exp $

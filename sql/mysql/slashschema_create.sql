@@ -1,16 +1,19 @@
+<<<<<<< slashschema_create.sql
+=======
 #	MySQL dump 8.10
 #
 # Host: localhost	  Database: dump
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.22 2002/02/14 19:49:08 brian Exp $
+# $Id: slashschema_create.sql,v 1.23 2002/02/14 20:58:06 patg Exp $
 #
 
 #
 # Table structure for table 'abusers'
 #
 
+>>>>>>> 1.22
 DROP TABLE IF EXISTS abusers;
 CREATE TABLE abusers (
 	abuser_id mediumint UNSIGNED NOT NULL auto_increment,
@@ -574,7 +577,7 @@ CREATE TABLE story_topics (
   FOREIGN KEY (tid) REFERENCES topics(tid),
   PRIMARY KEY  (id),
   INDEX tid (tid),
-  INDEX sidtid (sid,tid)
+  INDEX sid (sid),
 ) TYPE=MyISAM;
 
 #

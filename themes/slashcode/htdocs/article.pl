@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.61 2004/08/12 17:19:06 jamiemccarthy Exp $
+# $Id: article.pl,v 1.62 2004/08/12 21:05:44 pudge Exp $
 
 use strict;
 use Slash;
@@ -122,8 +122,8 @@ sub main {
 		my $meta_desc = "$story->{title} -- article related to $a.";
 
 		header($links, $story->{section}, {
-			story_title => $story->{title},
-			meta_desc => $meta_desc,
+			story_title	=> $story->{title},
+			meta_desc	=> $meta_desc,
 		}) or return;
 
 		# Can't do this before getStoryByTime because

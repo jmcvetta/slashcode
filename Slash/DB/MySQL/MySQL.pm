@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.664 2004/08/10 23:26:27 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.665 2004/08/12 21:05:43 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.664 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.665 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2300,8 +2300,9 @@ sub getDB {
 
 } # end closure surrounding getDBs and getDB
 
+#################################################################
 sub getDBVirtualUsers {
-	my ($self) = @_;
+	my($self) = @_;
 	return $self->sqlSelectColArrayref('virtual_user', 'dbs')
 }
 
@@ -2994,7 +2995,8 @@ sub saveTopic {
 				errorLog("$DBI::errstr");
 				# only try a few times before giving up
 				# Don't we want to return false on failure? - Jamie
-				return -1 if ++$tries > 5;
+				# i copied it from createComment ... but you're right i think -- pudge
+				return 0 if ++$tries > 5;
 				goto RETRY;
 			}
 		}

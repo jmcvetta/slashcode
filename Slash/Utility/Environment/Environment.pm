@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.12 2002/01/25 22:22:30 brian Exp $
+# $Id: Environment.pm,v 1.13 2002/01/26 05:22:41 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1159,6 +1159,18 @@ sub prepareUser {
 			$sid = $slashdb->getSessionInstance($uid);
 		}
 		setCookie('session', $sid) if $sid;
+		if ($constants->{admin_check_clearpass}
+			&& !Slash::Apache::ConnectionIsSecure()) {
+			$user->{state}{admin_clearpass_thisclick} = 1;
+		}
+	}
+	if ($user->{seclev} > 1
+		&& $constants->{admin_clearpass_disable}
+		&& ($user->{state}{admin_clearpass_thisclick} || $user->{admin_clearpass})) {
+		# User temporarily loses their admin privileges until they
+		# change their password.
+		$user->{seclev} = 1;
+		$user->{state}{lostprivs} = 1;
 	}
 
 	return $user;
@@ -1560,4 +1572,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.12 2002/01/25 22:22:30 brian Exp $
+$Id: Environment.pm,v 1.13 2002/01/26 05:22:41 jamie Exp $

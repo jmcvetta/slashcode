@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.10 2002/01/08 17:22:08 pudge Exp $
+# $Id: Log.pm,v 1.11 2002/01/26 05:22:41 jamie Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -66,6 +66,13 @@ sub UserLog {
 				$user_update->{-hits_bought} = 'hits_bought+1';
 			}
 		}
+	}
+	if ($constants->{admin_check_clearpass}
+		&&  $user->{state}{admin_clearpass_thisclick}
+		&& !$user->{admin_clearpass}) {
+		# This could be any value as long as it's true.
+		$user_update->{admin_clearpass} = join(" ",
+			$r->connection->remote_ip, scalar(gmtime));
 	}
 	$slashdb->setUser($user->{uid}, $user_update) if $user_update;
 

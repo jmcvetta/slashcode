@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+# $Id: Anchor.pm,v 1.7 2002/01/26 05:22:41 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -159,6 +159,24 @@ sub header {
 	slashDisplay('header', $title);
 
 	print createMenu('admin') if $user->{is_admin};
+	if ($constants->{admin_check_clearpass}
+		&& ($user->{state}{admin_clearpass_thisclick} || $user->{admin_clearpass})
+	) {
+		if ($user->{currentPage} eq 'users'
+			&& $form->{op} eq 'savepasswd') {
+			# The user is trying to save a new password with this
+			# very click. They may or may not succeed. Their admin
+			# privs for this click were already taken away in
+			# prepareUser() but just in case the savepasswd
+			# succeeded, don't print the warning message this time.
+		} else {
+			print slashDisplay('data',
+				{ value => 'clearpass-warning',
+				  moreinfo => $user->{admin_clearpass} },
+				{ Return => 1, Nocomm => 1, Page => 'admin' }
+			);
+		}
+	}
 }
 
 #========================================================================
@@ -373,4 +391,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+$Id: Anchor.pm,v 1.7 2002/01/26 05:22:41 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.11 2002/01/25 23:42:04 brian Exp $
+# $Id: Apache.pm,v 1.12 2002/01/26 05:22:41 jamie Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -210,6 +210,46 @@ sub ProxyRemoteAddr ($) {
         
 	return OK;
 }
+
+sub ConnectionIsSSL {
+	# If the connection is made over an SSL connection, it's secure.
+	# %ENV won't contain all its fields this early in mod_perl but
+	# it's quick to check just in case.
+	return 1 if $ENV{SSL_SESSION_ID};
+
+	# That probably didn't work so let's get that data the hard way.
+	my $r = Apache->request;
+	my $subr = $r->lookup_uri($r->uri);
+	my $sess_id = $subr->subprocess_env('SSL_SESSION_ID');
+	return 1 if $sess_id;
+
+	# Nope, it's not SSL.
+	return 0;
+}
+
+sub ConnectionIsSecure {
+	return 1 if ConnectionIsSSL;
+
+	# If the connection comes from a local IP or a network deemed
+	# secure by the admin, it's secure.  (The too-clever-by-half
+	# way of doing this would be to check this machine's routing
+	# tables.  Instead we have the admins set a regex in a var.)
+	my $r = Apache->request;
+	my $ip = $r->connection->remote_ip;
+	my $constants = getCurrentStatic();
+	my $secure_ip_regex = $constants->{admin_secure_ip_regex};
+	# Check the IP against the regex.  Assume we don't need to wrap
+	# this in an "eval" -- it might break, but whoever set it should
+	# know what they're doing.  Since this isn't s/// there's no 
+	# chance of evaluating it, so this is not exploitable to gain
+	# security or damage the site (beyond causing errors for every
+	# click) even if it were compromised.
+	return 1 if $secure_ip_regex && $ip =~ /$secure_ip_regex/;
+ 
+	# Non-SSL connection, from a network not known to be secure.
+	# Call it insecure.
+	return 0;
+ }
 
 sub IndexHandler {
 	my($r) = @_;

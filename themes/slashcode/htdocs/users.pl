@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.53 2002/01/18 22:35:44 pudge Exp $
+# $Id: users.pl,v 1.54 2002/01/26 05:22:41 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1515,6 +1515,15 @@ sub savePasswd {
 
 		if ($form->{uid} eq $user->{uid}) {
 			setCookie('user', $pass, $user_edits_table->{session_login});
+		}
+
+		if ($user->{admin_clearpass}
+			&& !$user->{state}{admin_clearpass_thisclick}) {
+			# User is an admin who sent their password in the clear
+			# some time ago; now that it's been changed, we'll forget
+			# about that incident, unless this click was sent in the
+			# clear as well.
+			$user_edits_table->{admin_clearpass} = '';
 		}
 
 		$slashdb->setUser($uid, $user_edits_table) ;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.54 2004/07/22 22:06:19 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.55 2004/09/20 22:53:47 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -433,8 +433,8 @@ sub sqlSelectMany {
 	if ($sth->execute) {
 		return $sth;
 	} else {
-		$sth->finish;
 		$self->sqlErrorLog($sql);
+		$sth->finish;
 		$self->sqlConnect;
 		return undef;
 	}
@@ -558,6 +558,11 @@ sub sqlSelectColArrayref {
 	$self->sqlConnect() or return undef;
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->{_dbh}->prepare($sql);
+	unless ($sth) {
+		$self->sqlErrorLog($sql);
+		$self->sqlConnect;
+		return;
+	}
 
 	my $array = $self->{_dbh}->selectcol_arrayref($sth);
 	unless (defined($array)) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.699 2004/10/06 04:19:14 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.700 2004/10/06 18:24:38 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.699 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.700 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2219,7 +2219,7 @@ sub _logtoken_delete_memcached {
 			"users_logtokens",
 			"uid=$uid_q");
 		for my $data (@$logtokens_ar) {
-			my($temp_str, $locationid) = @$data;
+			my($temp_str, $locationid) = ($data->{temp}, $data->{locationid});
 			my $lt_str = $uid
 				. ":" . ($temp_str eq 'yes' ? 1 : 0)
 				. ":" . $locationid;

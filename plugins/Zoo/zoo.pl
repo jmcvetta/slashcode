@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.14 2002/02/11 18:22:31 pudge Exp $
+# $Id: zoo.pl,v 1.15 2002/06/27 01:06:19 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -310,6 +310,10 @@ sub action {
 		print getData("over_socialized");
 		return;
 	} else {
+		if ($zoo->count($form->{uid}) > $constants->{people_max}) {
+			print getData("over_socialized");
+			return 0;
+		}
 		if ( $form->{op} eq 'delete' || $form->{type} eq 'neutral') {
 			if ($form->{uid}) {
 				$zoo->delete($user->{uid}, $form->{uid});

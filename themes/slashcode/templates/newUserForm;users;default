@@ -40,6 +40,8 @@ __template__
 		<B>Real Email</B> <BR>
 		<INPUT TYPE="HIDDEN" NAME="op" VALUE="newuser">
 		<INPUT TYPE="TEXT" NAME="email" VALUE="" SIZE="40"><BR>
+		<B>Retype Real Email</B> (these two email addresses must match)<BR>
+		<INPUT TYPE="TEXT" NAME="email2" VALUE="" SIZE="40"><BR>
 		<INPUT TYPE="CHECKBOX" NAME="comment_reply" VALUE="1" CHECKED> Replies to my comments will be mailed to me<BR>
 		<INPUT TYPE="CHECKBOX" NAME="newsletter" VALUE="1"> Send me the newsletter<BR>
 		<INPUT TYPE="CHECKBOX" NAME="headlines" VALUE="1"> Send me the daily headlines<BR>
@@ -94,4 +96,4 @@ password mailed to you</A> by entering your nickname, uid, or email address.
 __seclev__
 10000
 __version__
-$Id: newUserForm;users;default,v 1.12 2003/06/24 11:59:36 pater Exp $
+$Id: newUserForm;users;default,v 1.13 2003/08/19 02:55:25 vroom Exp $

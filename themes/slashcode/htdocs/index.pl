@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.15 2001/11/03 03:05:02 brian Exp $
+# $Id: index.pl,v 1.16 2001/12/12 20:54:31 brian Exp $
 
 use strict;
 use Slash;
@@ -246,10 +246,17 @@ sub displayStories {
 			section	=> $thissection
 		});
 
+		my $link;
+
+		if ($constants->{body_bytes}) {
+			$link = length($story->{bodytext}) . ' ' .  getData('bytes');
+		} else {
+			my $count = split(/ /, $story->{introtext}) + split(/ /, $story->{bodytext});
+			$link = $count . ' ' .  getData('words');
+		}
 		if ($story->{bodytext} || $cc) {
 			push @links, linkStory({
-				'link'	=> length($story->{bodytext}) . ' ' .
-					   getData('bytes'),
+				'link'	=> $link,
 				sid	=> $sid,
 				mode	=> 'nocomment',
 				section	=> $thissection

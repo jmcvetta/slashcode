@@ -62,6 +62,9 @@ SWITCH gtitle;
 
   CASE 'Hits';
   IF (form.stats_section && form.stats_section != 'all');
+      %] <B>[% gtitle %]</B> graph for [% form.stats_section %] is unavailable.
+	Try the <B>Pages</B> graph instead.
+     [%
 #      PROCESS make_graph
 #         showtotal => 1,
 #         section   => form.stats_section,
@@ -247,4 +250,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: graphs;stats;default,v 1.8 2003/06/03 18:18:10 pudge Exp $
+$Id: graphs;stats;default,v 1.9 2003/07/17 23:36:37 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.105 2004/12/07 17:07:08 tvroom Exp $
+# $Id: submit.pl,v 1.106 2004/12/13 17:46:14 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -244,7 +244,7 @@ sub previewForm {
 
 	slashDisplay('previewForm', {
 		submission	=> $sub,
-		submitter	=> $sub->{uid},
+		submitter	=> $reader->getUser($sub->{uid}),
 		subid		=> $form->{subid},
 		topic		=> $topic,
 		ipid		=> $sub->{ipid},

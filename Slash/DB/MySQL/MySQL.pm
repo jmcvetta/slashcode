@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.719 2004/10/26 01:17:42 tvroom Exp $
+# $Id: MySQL.pm,v 1.720 2004/10/26 14:52:43 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.719 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.720 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2738,8 +2738,6 @@ sub createUser {
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
 	$self->sqlDo("SET AUTOCOMMIT=1");
-
-	$self->sqlInsert("users_count", { uid => $uid });
 
 	$self->setUser_delete_memcached($uid);
 
@@ -6942,6 +6940,8 @@ sub setCommentForMod {
 	# We have to select cid here because LOCK IN SHARE MODE
 	# only works when an indexed column is returned.
 	# Of course, this isn't actually going to work at all
+	# (unless you keep your main DB all-InnoDB and put the
+	# MyISAM FULLTEXT indexes onto a slave search-only DB)
 	# since the comments table is MyISAM.  Eventually, though,
 	# we'll pull the indexed blobs out and into comments_text
 	# and make the comments table InnoDB and this will work.

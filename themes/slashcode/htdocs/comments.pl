@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.212 2004/11/25 15:06:00 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.213 2004/11/27 18:50:11 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -781,14 +781,20 @@ sub previewForm {
 		or return;
 
 	$tempComment = addDomainTags($tempComment);
+
+	# XXX We really should be calling dispComment() here, rather than
+	# duplicating code.
+
 	$tempComment = parseDomainTags($tempComment,
 		!$form->{postanon} && $user->{fakeemail});
 
 	my $sig = $user->{sig};
-	if ($user->{sigdash} && $user->{sig}) {
+	if ($sig) {
 		$sig =~ s/^\s*-{1,5}\s*<(?:P|BR)>//i;
-		$sig = "--<BR>$sig";
+		$sig = getData('sigdash', {}, 'comments')
+			. $sig;
 	}
+
 	my $discussion = $slashdb->getDiscussion($form->{sid}) || 0;	
 	my $extras = [];	
 	my $disc_skin = $slashdb->getSkin($discussion->{primaryskid});

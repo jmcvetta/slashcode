@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.742 2004/11/25 04:04:16 pudge Exp $
+# $Id: upgrades,v 1.743 2004/11/27 18:50:11 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2786,3 +2786,6 @@ ALTER TABLE submissions ADD INDEX time_emaildomain (time, emaildomain);
 # SLASHDOT LAST UPDATED HERE
 
 # End of T_2_5_0_39, Start of T_2_5_0_40 - 2004/11/24
+
+DELETE FROM users_param WHERE name='sigdash';
+

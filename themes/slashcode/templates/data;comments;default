@@ -74,13 +74,15 @@ __template__
 	<P>[% num %] MetaModeration(s) Completed.
 
 [% CASE 'moderating' %]
+	[% returnme.data_constant = 1 %]
 	Moderating...
 
 [% CASE 'metamoderating' %]
+	[% returnme.data_constant = 1 %]
 	MetaModerating...
 
 [% CASE 'deletecid' %]
-	Delete form.cid
+	Delete [% form.cid || strip_nohtml %]
 
 [% CASE 'try_journals' %]
 	No discussion or comments found for this request.
@@ -91,9 +93,13 @@ __template__
 	    to create a journal entry.)
 	[% END %]
 
+[% CASE 'sigdash' %]
+	[% returnme.data_constant = 1 %]
+	--<br>
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;comments;default,v 1.21 2004/06/17 16:12:24 jamiemccarthy Exp $
+$Id: data;comments;default,v 1.22 2004/11/27 18:50:11 jamiemccarthy Exp $

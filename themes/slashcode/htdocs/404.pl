@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.16 2004/06/17 16:12:20 jamiemccarthy Exp $
+# $Id: 404.pl,v 1.17 2004/12/02 02:19:30 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -24,13 +24,14 @@ sub main {
 		my $story = $reader->getStory($sid); # get section, check if story exists
 		if ($story->{sid}) {
 			my $skin = $reader->getSkin($story->{primaryskid});
-			# XXXSKIN - hardcode as with Slash::Utility::Display
-			my $skinname = $skin->{name} eq 'mainpage' ? 'articles' : $skin->{name};
-			if (-e catfile($constants->{basedir}, $skinname, "$sid.shtml")) {
-				my $url = "$gSkin->{rootdir}/$skinname/$sid.shtml";
-				$url .= "?$extra" if $extra;
-				redirect($url);
-				return;
+			# if not in skin ... should be in articles
+			for my $skinname ($skin->{name}, 'articles') {
+				if (-e catfile($constants->{basedir}, $skinname, "$sid.shtml")) {
+					my $url = "$gSkin->{rootdir}/$skinname/$sid.shtml";
+					$url .= "?$extra" if $extra;
+					redirect($url);
+					return;
+				}
 			}
 		}
 	}

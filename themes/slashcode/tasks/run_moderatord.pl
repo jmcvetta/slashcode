@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.21 2002/10/24 02:50:58 jamie Exp $
+# $Id: run_moderatord.pl,v 1.22 2002/10/24 02:54:48 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -179,7 +179,7 @@ sub give_out_tokens {
 	my $stirredpoints = $slashdb->stirPool();
 	$num_tokens += $stirredpoints * $tokperpt;
 
-	if ($stirredpoints && my $statsSave = getObject('Slash::Stats::Writer')) {
+	if ($stirredpoints and my $statsSave = getObject('Slash::Stats::Writer')) {
 		$statsSave->addStatDaily("mod_points_lost_stirred", $stirredpoints);
 		# Unfortunately, we reverse-engineer how many tokens
 		# were lost in the stirring.

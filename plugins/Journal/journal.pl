@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.72 2003/07/25 17:40:27 pudge Exp $
+# $Id: journal.pl,v 1.73 2003/07/29 17:56:40 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -573,6 +573,7 @@ sub saveArticle {
 				$form->{tid} = $article->{tid};
 			}
 			my $did = $slashdb->createDiscussion({
+				section	=> $constants->{real_section}, # for now, journals should be section-agnostic
 				title	=> $description,
 				topic	=> $form->{tid},
 				commentstatus	=> $form->{journal_discuss},
@@ -612,6 +613,7 @@ sub saveArticle {
 		if ($constants->{journal_comments} && $form->{journal_discuss} ne 'disabled') {
 			my $rootdir = $constants->{'rootdir'};
 			my $did = $slashdb->createDiscussion({
+				section	=> $constants->{real_section}, # for now, journals should be section-agnostic
 				title	=> $description,
 				topic	=> $form->{tid},
 				commentstatus	=> $form->{journal_discuss},

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.35 2002/05/07 22:12:59 jamie Exp $
+# $Id: MySQL.pm,v 1.36 2002/05/07 22:47:23 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -990,7 +990,7 @@ sub createAuthorCache {
 	$sql .= "SELECT users.uid, nickname, GREATEST(fakeemail, ''),
 		GREATEST(homepage, ''), 0, GREATEST(bio, ''), author ";
 	$sql .= "FROM users, users_info ";
-	$sql .= "WHERE users.author=1";
+	$sql .= "WHERE users.author=1 ";
 	$sql .= "AND users.uid=users_info.uid";
 
 	$self->sqlDo($sql);

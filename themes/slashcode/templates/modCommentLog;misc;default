@@ -285,7 +285,9 @@ IF num_modifiers > 0 %]
 	</TR>
 	[% END;
 END %]
-
+	[% IF mod_admin %]
+	<TR><TD><B>Comment Karma:</B></TD><TD>&nbsp;</TD><TD ALIGN="RIGHT"><B>[% mods.0.karma %]</B></TD><TD></TD></TR>
+	[% END %]
 </TABLE>
 
 [% END %]
@@ -354,4 +356,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: modCommentLog;misc;default,v 1.32 2004/03/09 17:00:01 tvroom Exp $
+$Id: modCommentLog;misc;default,v 1.33 2004/03/16 14:32:08 tvroom Exp $

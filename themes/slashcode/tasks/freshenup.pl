@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.40 2004/06/23 00:22:05 tvroom Exp $
+# $Id: freshenup.pl,v 1.41 2004/07/08 23:20:20 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -135,8 +135,6 @@ $task{$me}{code} = sub {
 		my $mp_tid = $constants->{mainpage_nexus_tid};
 		my $displaystatus = $slashdb->_displaystatus($story->{stoid});
 		
-		slashdLog("Displaystatus $displaystatus for sid '$sid'");
-
 		slashdLog("Updating $sid") if verbosity() >= 3;
 		$dirty_skins{$skid} = 1;
 		if ($displaystatus == 0) {

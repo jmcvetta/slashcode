@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.189 2004/10/15 22:56:51 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.190 2004/10/19 18:18:52 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.189 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.190 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -300,6 +300,20 @@ sub forgetRemarks {
 	my $days_back = $constants->{remarks_expire_days} || 30;
 	return $self->sqlDelete("remarks",
 		"DATE_ADD(time, INTERVAL $days_back DAY) < NOW()");
+}
+
+########################################################
+# For daily_forget.pl
+sub forgetStoryTextRendered {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+	my $days_back = $constants->{freshenup_text_render_daysback} || 7;
+	return $self->sqlUpdate(
+		"story_text, stories",
+		{ rendered => undef },
+		"story_text.stoid = stories.stoid
+		 AND rendered IS NOT NULL
+		 AND time < DATE_SUB(NOW(), INTERVAL $days_back DAY)");
 }
 
 ########################################################
@@ -1913,23 +1927,24 @@ sub getSRDs {
 # We have an index on just 1 char of story_text.rendered, and
 # its only purpose is to make this select into a lookup instead
 # of a table scan.
-# XXXSECTIONTOPICS - This is broken, I'm fixing - Jamie
 sub getStoriesNeedingRender {
 	my($self, $limit) = @_;
 	$limit ||= 10;
-	
-	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
-	
-	my $returnable = $self->sqlSelectColArrayref(
-		"stories.stoid",
+	my $constants = getCurrentStatic();
+	my $mp_tid = $constants->{mainpage_nexus_tid};
+	return [ ] unless $mp_tid;
+	my $daysback = $constants->{freshenup_text_render_daysback} || 7;
+
+	return $self->sqlSelectAllHashrefArray(
+		"stories.stoid, last_update",
 		"stories, story_text, story_topics_rendered", 
 		"stories.stoid = story_text.stoid
+		 AND stories.time > DATE_SUB(NOW(), INTERVAL $daysback DAY)
 		 AND stories.stoid = story_topics_rendered.stoid 
 		 AND story_topics_rendered.tid = $mp_tid
 		 AND rendered IS NULL",
 		"ORDER BY time DESC LIMIT $limit"
 	);
-	return $returnable;
 }
 
 ########################################################

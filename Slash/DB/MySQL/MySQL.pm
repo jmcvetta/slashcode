@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.571 2004/05/07 23:06:02 pudge Exp $
+# $Id: MySQL.pm,v 1.572 2004/05/11 18:27:17 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.571 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.572 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1871,6 +1871,18 @@ sub getNewPasswd {
 	return $newpasswd;
 }
 
+########################################################
+# reset's a user's account forcing them to get the
+# new password via their registered mail account.  
+sub resetUserAccount {
+	my($self, $uid) = @_;
+	my $newpasswd = changePassword();
+	$self->sqlUpdate('users', {
+		newpasswd => $newpasswd,
+		passwd	  => encryptPassword($newpasswd)
+	}, 'uid=' . $self->sqlQuote($uid));
+	return $newpasswd;
+}
 ########################################################
 # get proper cookie location
 sub _getLogTokenCookieLocation {
@@ -3853,13 +3865,15 @@ sub checkReadOnly {
 }
 
 sub getKnownOpenProxy {
-	my($self, $ip) = @_;
+	my($self, $ip, $ip_col) = @_;
 	return 0 unless $ip;
+	my $col = "ip";
+	$col = "ipid" if $ip_col eq "ipid";
 	my $ip_q = $self->sqlQuote($ip);
 	my $hours_back = getCurrentStatic('comments_portscan_cachehours') || 48;
 	my $port = $self->sqlSelect("port",
 		"open_proxies",
-		"ip = $ip_q AND ts >= DATE_SUB(NOW(), INTERVAL $hours_back HOUR)");
+		"$col = $ip_q AND ts >= DATE_SUB(NOW(), INTERVAL $hours_back HOUR)");
 #print STDERR scalar(localtime) . " getKnownOpenProxy returning " . (defined($port) ? "'$port'" : "undef") . " for ip '$ip'\n";
 	return $port;
 }
@@ -3882,6 +3896,7 @@ sub setKnownOpenProxy {
 		port =>	$port,
 		-ts =>	'NOW()',
 		xff =>	$xff,
+		-ipid => "md5('$ip')"
 	});
 }
 
@@ -9516,6 +9531,14 @@ sub getRandomSpamArmor {
 
 	# array index automatically int'd
 	return $ret->{$armor_keys[rand($#armor_keys + 1)]};
+}
+########################################################
+sub clearAccountVerifyNeededFlags {
+	my ($self, $uid) = @_;
+	$self->setUser($uid, {
+		waiting_for_account_verify 	=> "",
+		account_verify_request_time 	=> "" 
+	});
 }
 
 ########################################################

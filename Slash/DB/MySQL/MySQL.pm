@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.206 2002/07/30 15:55:51 jamie Exp $
+# $Id: MySQL.pm,v 1.207 2002/07/30 19:26:38 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.207 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4403,7 +4403,10 @@ sub createStory {
 			-karma => $newkarma },
 		"uid=$suid") if !isAnon($suid);
 
-		$self->setSubmission($story->{subid}, { del => 2, sid => $story->{sid} });
+		$self->setSubmission($story->{subid}, {
+			del	=> 2,
+			sid	=> $story->{sid}
+		});
 	}
 
 	$story->{submitter}	= $story->{submitter} ?

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.23 2000/10/23 13:16:40 pudge Exp $
+#  $Id: comments.pl,v 1.24 2000/11/27 16:12:47 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -631,9 +631,7 @@ EOT
 ##################################################################
 # Saves the Comment
 sub submitComment {
-	$I{F}{postersubj} = stripByMode(
-		$I{F}{postersubj}, 'nohtml', $I{U}{aseclev}, ''
-	);
+	$I{F}{postersubj} = stripByMode($I{F}{postersubj}, 'nohtml');
 	$I{F}{postercomment} = stripByMode($I{F}{postercomment}, $I{F}{posttype});
 
 	($I{F}{postercomment}, $I{F}{postersubj}) =

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.35 2003/01/14 21:30:31 jamie Exp $
+# $Id: zoo.pl,v 1.36 2003/01/15 17:49:39 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -637,7 +637,7 @@ sub check {
 
 	my $nickname = $slashdb->getUser($uid, 'nickname');
 	my $user_change = { };
-	if ($uid != $user->{uid}) {
+	if ($uid != $user->{uid} && !isAnon($uid)) {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.138 2003/01/14 21:30:31 jamie Exp $
+# $Id: users.pl,v 1.139 2003/01/15 17:49:39 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -901,7 +901,8 @@ sub showInfo {
 	}
 
 	my $user_change = { };
-	if ($fieldkey eq 'uid' && !$user->{is_anon} && $uid != $user->{uid}) {
+	if ($fieldkey eq 'uid' && !$user->{is_anon}
+		&& $uid != $user->{uid} && !isAnon($uid)) {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;

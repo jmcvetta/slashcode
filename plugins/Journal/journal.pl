@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.64 2003/01/14 21:30:31 jamie Exp $
+# $Id: journal.pl,v 1.65 2003/01/15 17:49:39 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -343,7 +343,7 @@ sub displayArticle {
 	if ($form->{uid} || $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
 		$nickname	= $slashdb->getUser($uid, 'nickname');
-		if ($uid && $uid != $user->{uid}) {
+		if ($uid && $uid != $user->{uid} && !isAnon($uid)) {
 			# Store the fact that this user last looked at that user.
 			# For maximal convenience in stalking.
 			$user_change->{lastlookuid} = $uid;

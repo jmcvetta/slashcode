@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.18 2002/03/18 22:28:37 brian Exp $
+# $Id: Utility.pm,v 1.19 2002/03/18 22:32:59 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -511,8 +511,8 @@ sub sqlInsert {
 	my($names, $values);
 	# oddly enough, this hack seems to work for all DBs -- pudge
 	# Its an ANSI sql comment I believe -Brian
-	$delayed = $options->{delayed} ? " /*! DELAYED */" : "";
-	$ignore = $options->{ignore} ? " /*! IGNORE */" : "";
+	my $delayed = $options->{delayed} ? " /*! DELAYED */" : "";
+	my $ignore = $options->{ignore} ? " /*! IGNORE */" : "";
 
 	for (keys %$data) {
 		if (/^-/) {

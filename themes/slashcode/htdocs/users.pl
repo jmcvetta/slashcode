@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.38 2001/11/22 19:13:40 brian Exp $
+# $Id: users.pl,v 1.39 2001/11/24 18:18:30 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1558,6 +1558,7 @@ sub saveComm {
 
 	my($min, $max) = ($constants->{comment_minscore}, 
 			  $constants->{comment_maxscore});
+	my $most_adj = $max-$min;
 	my @reasons = ();
 	@reasons = @{$constants->{reasons}}
 		if $constants->{reasons} and ref($constants->{reasons}) eq 'ARRAY';
@@ -1574,6 +1575,9 @@ sub saveComm {
 #			if $answer < $min;
 #		$answer  = $constants->{comment_maxscore}
 #			if $answer > $max;
+# Do you mean this? -Jamie
+#		$answer  = -$most_adj if $answer < -$most_adj;
+#		$answer  =  $most_adj if $answer >  $most_adj;
 		$users_comments_table->{"reason_alter_$_"} = ($answer == 0) ? '' : $answer;
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.198 2004/11/03 20:04:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.199 2004/11/08 03:49:51 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.198 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1990,7 +1990,7 @@ sub getStoriesToDelete {
 # For freshenup.pl
 #
 # Returns up to $limit stories that need to have their .shtml
-# files rewritted (which mainly means they have a row present
+# files rewritten (which mainly means they have a row present
 # in the story_dirty table), starting with the most recent.
 sub getStoriesToRefresh {
 	my($self, $limit, $tid) = @_;
@@ -1999,7 +1999,7 @@ sub getStoriesToRefresh {
 	$tid_clause = " AND story_topics_rendered.tid = $tid" if $tid;
 
 	my $retval = $self->sqlSelectAllHashrefArray(
-		"stories.stoid AS stoid, sid, primaryskid, title, time",
+		"DISTINCT stories.stoid AS stoid, sid, primaryskid, title, time",
 		"stories, story_text, story_topics_rendered
 		 LEFT JOIN story_dirty ON stories.stoid=story_dirty.stoid",
 		"time < NOW()

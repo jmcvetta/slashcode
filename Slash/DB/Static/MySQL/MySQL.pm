@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.150 2004/05/25 20:15:23 pudge Exp $
+# $Id: MySQL.pm,v 1.151 2004/05/25 21:51:48 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2303,7 +2303,6 @@ sub avgDynamicDurationForMinutesBack {
 	$start_id ||= 0;
 	my $page_types = [@$ops];
 	my $op_clause  = join ',', map { $_ = $self->sqlQuote("$_") } @$page_types;
-	print STDERR ("op_clause: $op_clause");
 	return $self->sqlSelectAllHashref("op",
 		"op, AVG(duration) as avg", "accesslog",
 		"id >= $start_id AND ts >= DATE_SUB(NOW(), INTERVAL $minutes MINUTE) AND static='no' AND op in($op_clause)",

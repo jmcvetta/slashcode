@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.51 2002/06/04 19:35:06 brian Exp $
+# $Id: slashschema_create.sql,v 1.52 2002/06/11 02:54:36 cliff Exp $
 #
 
 #
@@ -669,7 +669,7 @@ CREATE TABLE string_param (
 	param_id smallint UNSIGNED NOT NULL auto_increment,
 	type varchar(32) NOT NULL,
 	code varchar(32) NOT NULL,
-	name varchar(32) NOT NULL,
+	name varchar(64) NOT NULL,
 	UNIQUE code_key (type,code),
 	PRIMARY KEY (param_id)
 ) TYPE = myisam;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.755 2005/02/02 15:44:55 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.756 2005/02/02 16:10:43 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.755 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.756 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5841,7 +5841,7 @@ sub _get_insert_and_where_accesslist {
 
 	$user_check ||= getCurrentUser();
 	if ($user_check) {
-		if ($user_check->{uid} =~ /^\d+$/ && !isAnon($user_check->{uid})) {
+		if ($user_check->{uid} && $user_check->{uid} =~ /^\d+$/ && !isAnon($user_check->{uid})) {
 			$where_ary = [ "uid = $user_check->{uid}" ];
 			$insert_hr->{uid} = $user_check->{uid};
 		} elsif ($user_check->{ipid}) {

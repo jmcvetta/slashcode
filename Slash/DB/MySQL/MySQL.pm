@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.61 2002/01/28 17:22:39 pudge Exp $
+# $Id: MySQL.pm,v 1.62 2002/01/29 01:25:59 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -663,7 +663,7 @@ sub getStoryDiscussions {
 	$limit ||= 50; # Sanity check in case var is gone
 	$start ||= 0; # Sanity check in case var is gone
 	my $where = "displaystatus != -1 AND discussions.sid=stories.sid AND time <= NOW() AND writestatus != 'delete' AND writestatus != 'archived'";
-	$where .= " AND section = '$section'"
+	$where .= " AND discussions.section = '$section'"
 		if $section;
 
 	my $discussion = $self->sqlSelectAll("discussions.sid, discussions.title, discussions.url",

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.38 2002/01/08 17:22:09 pudge Exp $
+# $Id: comments.pl,v 1.39 2002/01/10 15:59:55 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -822,7 +822,8 @@ sub submitComment {
 	my $pts = 0;
 
 	if (!$user->{is_anon} && !$form->{postanon}) {
-		$pts = ($user->{karma} < 0) ? 0 : $user->{defaultpoints};
+		$pts = $user->{defaultpoints};
+		$pts-- if $user->{karma} < 0;
 		$pts-- if $user->{karma} < $constants->{badkarma};
 		$pts++ if $pts >= 1 && $user->{karma} > $constants->{goodkarma}
 			&& !$form->{nobonus};

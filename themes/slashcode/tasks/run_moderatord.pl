@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.35 2003/10/09 19:48:29 jamie Exp $
+# $Id: run_moderatord.pl,v 1.36 2003/10/11 13:45:50 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -17,8 +17,8 @@ use Data::Dumper;
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '18 0-23 * * *';
-$task{$me}{timespec_panic_1} = '18 0-10/2 * * *';	# night only
+$task{$me}{timespec} = '18 0-23/4 * * *';
+$task{$me}{timespec_panic_1} = '18 1,10 * * *';		# night only
 $task{$me}{timespec_panic_2} = '';			# don't run
 $task{$me}{resource_locks} = { log_slave => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;

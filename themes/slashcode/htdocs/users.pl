@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.196 2003/09/22 17:42:46 pater Exp $
+# $Id: users.pl,v 1.197 2003/10/27 18:23:12 vroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2751,6 +2751,8 @@ sub getUserAdmin {
 	if ($constants->{subscribe} and my $subscribe = getObject('Slash::Subscribe')) {
 		$user_edit->{subscribe_payments} =
 			$subscribe->getSubscriptionsForUser($user_edit->{uid});
+		$user_edit->{subscribe_purchases} =
+			$subscribe->getSubscriptionsPurchasedByUser($user_edit->{uid});
 	}
 
 	return slashDisplay('getUserAdmin', {

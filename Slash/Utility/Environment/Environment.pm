@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.93 2003/05/23 14:04:39 pudge Exp $
+# $Id: Environment.pm,v 1.94 2003/05/25 23:11:49 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1921,7 +1921,17 @@ sub writeLog {
 sub createLog {
 	my($uri, $dat, $status) = @_;
 	my $constants = getCurrentStatic();
-	my $logdb = getObject('Slash::DB', { db_type => 'log' });
+
+	# At this point, if we have short-circuited the
+	# "PerlAccessHandler  Slash::Apache::User"
+	# by returning an apache code like DONE before that processing
+	# could take place (which currently happens in Banlist.pm), then
+	# prepareUser() has not been called, thus the $user->{state}{dbs}
+	# table is not set up.  So to make sure we write to the proper
+	# logging DB (assuming there is one), we have to use the old-style
+	# arguments to getObject(), instead of passing in {db_type=>'log'}.
+	# - Jamie 2003/05/25
+	my $logdb = getObject('Slash::DB', { virtual_user => $constants->{log_db_user} });
 
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
@@ -2112,4 +2122,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.93 2003/05/23 14:04:39 pudge Exp $
+$Id: Environment.pm,v 1.94 2003/05/25 23:11:49 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.136 2003/03/13 22:08:22 brian Exp $
+# $Id: admin.pl,v 1.137 2003/03/14 18:31:13 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -24,7 +24,6 @@ sub main {
 	my $op = lc($form->{op});
 
 	my($tbtitle);
-
 
 	my $ops = {
 		slashd		=> {
@@ -1162,7 +1161,7 @@ sub editStory {
 				$storyref->{$field});
 		}
 
-		$topic = $slashdb->getTopic($storyref->{tid});
+		#$topic = $slashdb->getTopic($storyref->{tid});
 		$form->{uid} ||= $user->{uid};
 		#$author = $slashdb->getAuthor($form->{uid});
 		$subid = $form->{subid};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.168 2003/08/19 02:49:03 vroom Exp $
+# $Id: Slash.pm,v 1.169 2003/08/19 03:08:39 pudge Exp $
 
 package Slash;
 
@@ -586,7 +586,7 @@ sub printComments {
 	my $total = ($user->{mode} eq 'flat' || $user->{mode} eq 'nested') ? $comments->{$cidorpid}{totalvisiblekids} : $cc;
 
 	my $lcp = linkCommentPages($discussion->{id}, $pid, $cid, $total);
-	
+
 	my $comment_html = slashDisplay('printCommComments', {
 		can_moderate	=> _can_mod($comment),
 		comment		=> $comment,

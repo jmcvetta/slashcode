@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.12 2002/05/10 03:53:38 brian Exp $
+# $Id: MySQL.pm,v 1.13 2002/05/13 18:38:52 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -96,7 +96,7 @@ sub setPrefs {
 
 	# First we delete, then we insert, this allows us to remove MSG_MODE_NONE type entries
 	# Basically it keeps defaults out of the DB, and makes it smaller :)
-	$self->sqlDelete("$table", "uid = $uid");
+	$self->sqlDelete($table, "uid = $uid");
 	for my $code (keys %$prefs) {
 		next if $prefs->{$code} == MSG_MODE_NONE;
 		$self->sqlInsert($table, {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.21 2002/02/05 18:44:23 cliff Exp $
+# $Id: MySQL.pm,v 1.22 2002/02/15 21:15:17 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -192,7 +192,7 @@ sub _deleteThread {
 		return 0;
 	}
 
-	my $count = 1;
+	my $count = 0;
 	my @delList;
 	$comments_deleted = \@delList if !$level;
 
@@ -203,10 +203,19 @@ sub _deleteThread {
 	for (@{$delkids}) {
 		my($cid) = @{$_};
 		push @{$comments_deleted}, $cid;
-		$count += $self->_deleteThread($cid, $level+1, $comments_deleted);
+		$self->_deleteThread($cid, $level+1, $comments_deleted);
 	}
-	# And now delete $cid.
-	$count += $self->deleteComment($cid);
+	my %comment_hash;
+	for (@{$comments_deleted}) {
+		$comment_hash{$_} = 1;
+	}
+	@{$comments_deleted} = keys %comment_hash;
+
+	if (!$level) {
+		for (@{$comments_deleted}) {
+			$count += $slashdb->deleteComment($_);
+		print STDERR "DELETING $_ : $count \n";
+	}
 
 	return $count;
 }

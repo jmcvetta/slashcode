@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.12 2002/03/11 21:29:54 jamie Exp $
+# $Id: Log.pm,v 1.13 2002/09/02 05:06:13 jamie Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -56,35 +56,33 @@ sub UserLog {
 	my $user_update = undef;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
-	if ($constants->{subscribe}) {
-		my $is_subscriber = $user->{hits_paidfor}
-			&& $user->{hits_bought} < $user->{hits_paidfor};
-		if ($is_subscriber || !$constants->{subscribe_hits_only}) {
-			$user_update = { -hits => 'hits+1' };
-			my $subscribe = getObject('Slash::Subscribe');
-			my $buying = 0;
-			if ($subscribe && $subscribe->buyingThisPage($r)) {
-				$user_update->{-hits_bought} = 'hits_bought+1';
-				$buying = 1;
-			}
-			my @gmt = gmtime;
-			my $today = sprintf("%04d%02d%02d",
-				$gmt[5]+1900, $gmt[4]+1, $gmt[3]);
-			if ($today eq substr($user->{lastclick}, 0, 8)) {
-				# User may or may not be a subscriber, and may or may not
-				# be buying this page.  The day has not rolled over.
-				# Increment hits_bought_today iff they are buying this page.
-				$user_update->{-hits_bought_today} = 'hits_bought_today+1'
-					if $buying;
-			} else {
-				# User may or may not be a subscriber, and may or may not
-				# be buying this page.  The day has rolled over since their
-				# last click.  Set hits_bought_today to 0 if they are not
-				# buying this page, or 1 if they are.  Note that we do not
-				# want to set it to the empty string, as that would delete
-				# the param row.
-				$user_update->{hits_bought_today} = $buying ? 1 : 0;
-			}
+	if ($constants->{subscribe}
+		&& ($user->{is_subscriber} || !$constants->{subscribe_hits_only})
+	) {
+		$user_update = { -hits => 'hits+1' };
+		my $subscribe = getObject('Slash::Subscribe');
+		my $buying = 0;
+		if ($subscribe && $subscribe->buyingThisPage($r)) {
+			$user_update->{-hits_bought} = 'hits_bought+1';
+			$buying = 1;
+		}
+		my @gmt = gmtime;
+		my $today = sprintf("%04d%02d%02d",
+			$gmt[5]+1900, $gmt[4]+1, $gmt[3]);
+		if ($today eq substr($user->{lastclick}, 0, 8)) {
+			# User may or may not be a subscriber, and may or may not
+			# be buying this page.  The day has not rolled over.
+			# Increment hits_bought_today iff they are buying this page.
+			$user_update->{-hits_bought_today} = 'hits_bought_today+1'
+				if $buying;
+		} else {
+			# User may or may not be a subscriber, and may or may not
+			# be buying this page.  The day has rolled over since their
+			# last click.  Set hits_bought_today to 0 if they are not
+			# buying this page, or 1 if they are.  Note that we do not
+			# want to set it to the empty string, as that would delete
+			# the param row.
+			$user_update->{hits_bought_today} = $buying ? 1 : 0;
 		}
 	}
 	if ($constants->{admin_check_clearpass}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.163 2004/07/17 15:31:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.164 2004/07/19 03:18:35 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -579,24 +579,21 @@ sub getDailyMail {
 	$where .= "AND users.uid=stories.uid AND stories.stoid=story_text.stoid AND story_topics_rendered.stoid = stories.stoid ";
 
 	# XXXSECTIONTOPICS - The 'sectioncollapse' bit now means:
-	# 0 - only want stories in the mainpage nexus mail
+	# 0 - only want stories in the mainpage nexus mailed
 	# 1 - want all stories in the mainpage nexus, or any
 	# other nexuses linked to it, mailed
-	# We should probably have a MySQL.pm method that gets the
-	# list of all nexuses linked to the mainpage nexus
-	# I'll work on that - 
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
-	my $nexuses = $self->getNexusChildrenTids($mp_tid);
-	my $nexus_clause = join ',', @$nexuses, $mp_tid;
 	if ($user->{sectioncollapse}) {
-		$where .= "AND story_topics_rendered.tid in ($nexus_clause) ";
+		my $nexuses = $self->getNexusChildrenTids($mp_tid);
+		my $nexus_clause = join ',', @$nexuses, $mp_tid;
+		$where .= "AND story_topics_rendered.tid IN ($nexus_clause) ";
 	} else {
 		$where .= "AND story_topics_rendered.tid = $mp_tid ";
 	}
 
-	$where .= "AND story_topics_rendered.tid not in ($user->{extid}) "
+	$where .= "AND story_topics_rendered.tid NOT IN ($user->{extid}) "
 		if $user->{extid};
-	$where .= "AND stories.uid not in ($user->{exaid}) "
+	$where .= "AND stories.uid NOT IN ($user->{exaid}) "
 		if $user->{exaid};
 # XXXSKIN !!!!
 #	$where .= "AND section not in ($user->{exsect}) "

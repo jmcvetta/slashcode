@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.106 2004/07/18 19:59:40 jamiemccarthy Exp $
+# $Id: index.pl,v 1.107 2004/07/19 03:18:35 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -95,6 +95,7 @@ my $start_time = Time::HiRes::time;
 	my $gse_hr = { tid => $gSkin->{nexus} };
 	$gse_hr->{limit} = $user_maxstories if !$user->{is_anon} && $user_maxstories;
 	$gse_hr->{issue} = $issue if $issue;
+	$gse_hr->{sectioncollapse} = $user->{sectioncollapse} if $user->{sectioncollapse};
 	$stories = $reader->getStoriesEssentials($gse_hr);
 #use Data::Dumper;
 #print STDERR "index.pl gse_hr: " . Dumper($gse_hr);

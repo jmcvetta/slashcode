@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.6 2004/07/16 15:23:33 jamiemccarthy Exp $
+# $Id: PopupTree.pm,v 1.7 2004/08/24 23:47:33 pudge Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -69,6 +69,8 @@ sub getPopupTree {
 	my $constants	= getCurrentStatic();
 	my $tree	= $reader->getTopicTree;
 
+	$constants->{topic_popup_open} = 1 unless defined $constants->{topic_popup_open};
+
 	my $data;
 	my %topics;
 	for my $tid (map  { $_->[0] }
@@ -76,8 +78,9 @@ sub getPopupTree {
 	             map  { [ $_, lc $tree->{$_}{textname} ] } keys %$tree) {
 		next unless $tid; # just in case someone added a bad tid
 		my $top = $tree->{$tid};
-		@{$topics{$tid}}{qw(value label height width image)} = (
-			$tid, @{$top}{qw(textname height width image)}
+		@{$topics{$tid}}{qw(value label height width image open)} = (
+			$tid, @{$top}{qw(textname height width image)},
+			$constants->{topic_popup_open} ? 1 : 0
 		);
 
 		if (scalar keys %{$top->{parent}}) {
@@ -154,4 +157,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.6 2004/07/16 15:23:33 jamiemccarthy Exp $
+$Id: PopupTree.pm,v 1.7 2004/08/24 23:47:33 pudge Exp $

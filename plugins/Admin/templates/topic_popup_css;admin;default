@@ -48,7 +48,7 @@ __template__
    and starts them hidden */
 .hpts-block {
    margin-left:      24px;
-   display:          block;
+   display:          none;
 }
 
 /* style for the button bar at the bottom of the widget */
@@ -85,4 +85,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_css;admin;default,v 1.1 2004/06/25 06:45:44 pudge Exp $
+$Id: topic_popup_css;admin;default,v 1.2 2004/08/24 23:47:33 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.19 2002/09/04 22:22:18 brian Exp $
+# $Id: Zoo.pm,v 1.20 2002/09/04 22:52:40 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -43,8 +43,14 @@ sub getRelationships {
 	my $slashdb = getCurrentDB();
 	my $people = $slashdb->getUser($uid, 'people');
 	my @people;
-	for (keys %{$people->{$type}}) {
-		push @people, $_;
+	if ($type) {
+		@people = keys %{$people->{$type}};
+	} else {
+		for my $type (keys %$people) {
+			for (keys %{$people->{$type}}) {
+				push @people, $_;
+			}
+		}
 	}
 	return [qw()] unless @people;
 	

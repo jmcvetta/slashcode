@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.21 2002/09/04 22:22:18 brian Exp $
+# $Id: zoo.pl,v 1.22 2002/09/04 22:52:40 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -367,7 +367,8 @@ sub all {
 		$nick = $user->{nick};
 	}
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	my $people = $zoo->getAll($uid);
+	#my $people = $zoo->getAll($uid);
+	my $people = $zoo->getRelationships($uid);
 
 	if ($form->{content_type} eq 'rss') {
 		_rss($people, $nick, 'people');
@@ -378,7 +379,7 @@ sub all {
 			_printHead("yourhead",{ nickname => $nick });
 		}
 		if (@$people) {
-			slashDisplay('alllist', { people => $people, editable => $editable });
+			slashDisplay('plainlist', { people => $people, editable => $editable });
 		} else {
 			if ($editable) {
 				print getData('yournoall');

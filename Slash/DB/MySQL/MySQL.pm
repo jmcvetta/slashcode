@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.723 2004/10/29 22:45:43 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.724 2004/11/03 20:08:01 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.723 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.724 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9220,6 +9220,9 @@ sub getSlashdStatus {
 		table_prime	=> 'task',
 		arguments	=> \@_,
 	});
+	for my $field (qw( last_completed next_begin )) {
+		$answer->{"${field}_secs"} = timeCalc($answer->{$field}, "%s", 0);
+	}
 	return $answer;
 }
 
@@ -9238,6 +9241,11 @@ sub getAccesslog {
 sub getSlashdStatuses {
 	my($self) = @_;
 	my $answer = _genericGets('slashd_status', 'task', '', @_);
+	for my $task (keys %$answer) {
+		for my $field (qw( last_completed next_begin )) {
+			$answer->{$task}{"${field}_secs"} = timeCalc($answer->{$task}{$field}, "%s", 0);
+		}
+	}
 	return $answer;
 }
 

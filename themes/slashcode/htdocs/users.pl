@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.208 2003/12/16 18:58:11 vroom Exp $
+# $Id: users.pl,v 1.209 2003/12/16 20:48:33 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2889,7 +2889,7 @@ sub getOtherUserParams {
 # $defaults - hashref of defaults to set to something other 
 #             than the empty string
 sub setToDefaults {
-	my ($data, $skip, $defaults) = @_;
+	my($data, $skip, $defaults) = @_;
 	foreach my $key (keys %$data) {
 		next if $skip->{$key};
 		$data->{$key} = exists $defaults->{$key} ? $defaults->{$key} : "";

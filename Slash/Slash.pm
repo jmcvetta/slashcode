@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.158 2003/08/05 14:04:56 vroom Exp $
+# $Id: Slash.pm,v 1.159 2003/08/05 15:07:04 pater Exp $
 
 package Slash;
 
@@ -577,7 +577,7 @@ sub printComments {
 	# Flat and theaded mode don't index, even on large stories, so they
 	# need to use more, smaller pages. if $cid is 0, then we get the
 	# totalviskids for the story 		--Pater
-	my $total = ($user->{mode} eq 'flat' || $user->{mode} eq 'nested') ? $comments->{$cid}{totalvisiblekids} : $cc;
+	my $total = ($user->{mode} eq 'flat' || $user->{mode} eq 'nested') ? $comments->{$cidorpid}{totalvisiblekids} : $cc;
 
 	my $lcp = linkCommentPages($discussion->{id}, $pid, $cid, $total);
 	my $comment_html = slashDisplay('printCommComments', {

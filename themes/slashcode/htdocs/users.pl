@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.201 2003/11/25 21:10:24 pudge Exp $
+# $Id: users.pl,v 1.202 2003/12/04 17:56:05 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1143,7 +1143,7 @@ sub showInfo {
 			subcount		=> $subcount,
 			submissions		=> $submissions,
 			modval			=> $modval,
-			trollpoint		=> $trollpoint,
+			trollpoint		=> sprintf("%0.3f", $trollpoint),
 			hr_hours_back		=> $ipid_hoursback
 		});
 

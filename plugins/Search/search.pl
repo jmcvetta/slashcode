@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.79 2004/06/23 16:12:03 jamiemccarthy Exp $
+# $Id: search.pl,v 1.80 2004/06/23 19:17:13 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -283,6 +283,7 @@ sub storySearch {
 		}
 
 		for (@$stories) {
+			next if length($_->{introtext}) <= $constants->{search_text_length};
 			$_->{introtext} = substr(strip_notags($_->{introtext}),0,$constants->{search_text_length});
 			$_->{introtext} =~ s/(.*) .*$/$1.../g;
 		}

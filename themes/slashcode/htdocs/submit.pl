@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.20 2000/07/11 11:45:01 pudge Exp $
+#  $Id: submit.pl,v 1.21 2000/07/12 14:18:29 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -414,7 +414,7 @@ USER
 		my @strs = (substr($subj, 0, 35), substr($name, 0, 20), substr($email, 0, 20));
 		# Adds proper section for form editor.
 		my $sec = $section ne $I{defaultsection} ? "&section=$section" : "";
-		my $stitle = '&title=' . fixurl($subj, 1);
+		my $stitle = '&title=' . fixparam($subj);
 		$stitle =~ s/%/%%/g; # for sprintf
 
 		printf(($admin ? <<ADMIN : <<USER), @strs);

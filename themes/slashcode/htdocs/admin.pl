@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.17 2000/07/11 11:45:01 pudge Exp $
+#  $Id: admin.pl,v 1.18 2000/07/12 14:18:29 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1385,7 +1385,7 @@ EOT
 
 		print qq[\t<TR BGCOLOR="$bgcolor"><TD ALIGN="RIGHT">\n];
 		if ($I{U}{aid} eq $aid || $I{U}{aseclev} > 100) {
-			my $tbtitle = fixurl($title, 1);
+			my $tbtitle = fixparam($title);
 			print qq!\t\t[<A HREF="$ENV{SCRIPT_NAME}?title=$tbtitle&op=edit&sid=$sid">$x</A>\n]!;
 
 		} else {

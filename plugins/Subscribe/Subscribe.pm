@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.16 2002/11/29 20:48:31 jamie Exp $
+# $Id: Subscribe.pm,v 1.17 2003/02/14 23:41:58 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -198,42 +198,6 @@ sub insertPayment {
 	}
 
 	return $success;
-}
-
-########################################################
-# Pass in start and end dates in TIMESTAMP format, i.e.,
-# YYYYMMDDhhmmss.  The hhmmss is optional.  The end date is
-# optional.  Thus pass the single argument "20010101" to get
-# only subscribers who signed up on Jan. 1, 2001.  The start
-# date is optional too;  no arguments means start and end
-# dates are the beginning and end of yesterday (in MySQL's
-# timezone, which means GMT).
-sub getSubscriberList {
-	my($self, $start, $end) = @_;
-	my $slashdb = getCurrentDB();
-	$start = $slashdb->sqlSelect(
-		'DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), "%Y%m%d")'
-	) if !$start;
-	$start .= '0' while length($start) < 14;
-	$end = substr($start, 0, 8) . "235959" if !$end;
-	$end   .= '0' while length($end)   < 14;
-	# Just return all the columns that might be useful;  probably not all
-	# of them will actually be used, oh well.
-	return $slashdb->sqlSelectAllHashref(
-		"spid",
-		"spid,
-		 subscribe_payments.uid as uid,
-		 email, ts, payment_gross, payment_net, pages, 
-		 method, transaction_id, data,
-		 nickname, realemail, seclev, author,
-		 karma, m2fair, m2unfair, upmods, downmods, created_at,
-		 users_hits.hits as hits, hits_bought, hits_paidfor",
-		"subscribe_payments, users, users_info, users_hits",
-		"ts BETWEEN '$start' AND '$end'
-		 AND subscribe_payments.uid = users.uid
-		 AND subscribe_payments.uid = users_info.uid
-		 AND subscribe_payments.uid = users_hits.uid"
-	);
 }
 
 sub getSubscriptionsForUser {

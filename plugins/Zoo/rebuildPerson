@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rebuildPerson,v 1.2 2003/01/20 19:07:18 brian Exp $
+# $Id: rebuildPerson,v 1.3 2003/02/02 19:06:43 brian Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Slash::Constants ':people';
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -28,7 +28,9 @@ $slashdb = getCurrentDB();
 $constants = getCurrentStatic();
 my $zoo = getObject("Slash::Zoo");
 
-$zoo->rebuildUser($opts{'U'});
+my $people = $zoo->rebuildUser($opts{'U'});
+$slashdb->setUser($opts{'U'}, { people => $people});
+
 
 sub usage {
 	print "*** $_[0]\n" if $_[0];

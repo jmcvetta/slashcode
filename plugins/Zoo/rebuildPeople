@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rebuildPeople,v 1.11 2003/01/30 00:30:43 brian Exp $
+# $Id: rebuildPeople,v 1.12 2003/02/02 19:06:43 brian Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Slash::Constants ':people';
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -62,8 +62,9 @@ my @people = keys %people;
 
 my $zoo = getObject("Slash::Zoo");
 for (@people) {
-	$zoo->rebuildUser($_);
-	print "Rebuilding $_\n";
+	my $people = $zoo->rebuildUser($_);
+	$slashdb->setUser($_, { people => $people});
+
 }
 
 $slashdb->sqlUpdate('vars', { -value => 'now()'}, 'name="zoo_timer"');

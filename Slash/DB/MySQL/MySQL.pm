@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.112 2002/03/29 01:02:42 brian Exp $
+# $Id: MySQL.pm,v 1.113 2002/03/29 02:12:02 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1856,7 +1856,7 @@ sub getPollQuestionList {
 	for (qw(section exclude_section)) {
 		# Usage issue. Some folks may add an "s" to the key name.
 		$other->{$_} ||= $other->{"${_}s"} if exists $other->{"${_}s"};
-		if (exists $other->{$_}) {
+		if (exists $other->{$_} && $other->{$_}) {
 			if (!ref $other->{$_}) {
 				$other->{$_} = [$other->{$_}];
 			} elsif (ref $other->{$_} eq 'HASH') {
@@ -1868,16 +1868,10 @@ sub getPollQuestionList {
 		}
 	}
 
-	if ($other->{section}) {
-		if (ref ${$other->{section}} ne "ARRAY") {
-			$where = 'section = ' . $self->sqlQuote($other->{section});
-		} else {
-			$where = sprintf 'section IN (%s)', join(',', @{$other->{section}});
-		}
-	}
-
+	$where = sprintf 'section IN (%s)', join(',', @{$other->{section}})
+		if $other->{section};
 	$where = sprintf 'section NOT IN (%s)', join(',', @{$other->{exclude_section}})
-		if $other->{exclude_section};
+		if $other->{exclude_section} && @{$other->{section}};
 
 	my $questions = $self->sqlSelectAll(
 		'qid, question, date',

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.184 2003/11/26 00:24:17 pater Exp $
+# $Id: Slash.pm,v 1.185 2003/12/01 22:22:06 jamie Exp $
 
 package Slash;
 
@@ -454,7 +454,7 @@ sub _can_mod {
 		       $constants->{authors_unlimited}
 		    && $user->{seclev} >= $constants->{authors_unlimited}
 		) || (
-		       $user->{acl}{alwaysmodpoints}
+		       $user->{acl}{modpoints_always}
 		) );
 
 	return $retval;

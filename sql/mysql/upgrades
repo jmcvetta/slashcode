@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.482 2003/11/25 06:26:27 vroom Exp $
+# $Id: upgrades,v 1.483 2003/12/01 22:22:06 jamie Exp $
 #
 
 # BEGIN tf23's additions 
@@ -1953,3 +1953,6 @@ ALTER TABLE links add stats_type VARCHAR(24);
 
 
 ALTER TABLE accesslist ADD estimated_users SMALLINT UNSIGNED DEFAULT 1;
+
+REPLACE INTO vars SET description='Seclev for which authors have unlimited comment-moderation and -deletion power (see also the ACLs)' WHERE name='authors_unlimited';
+

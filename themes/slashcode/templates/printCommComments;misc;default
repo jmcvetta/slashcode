@@ -85,7 +85,8 @@ __template__
 		yet?
 		<INPUT TYPE="HIDDEN" NAME="op" VALUE="moderate">
 		<INPUT TYPE="SUBMIT" VALUE="moderate">
-	[% IF constants.authors_unlimited && user.seclev >= constants.authors_unlimited %]
+	[% IF (constants.authors_unlimited && user.seclev >= constants.authors_unlimited)
+		|| user.acl.candelcomments_always %]
 		<BR><B>NOTE: Checked comments will be deleted.</B>
 	[% END %]
 	</TD></TR></FORM>
@@ -96,4 +97,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.10 2003/03/04 19:07:59 pudge Exp $
+$Id: printCommComments;misc;default,v 1.11 2003/12/01 22:22:06 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.58 2004/07/03 17:25:54 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.59 2004/07/03 18:57:40 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -338,6 +338,8 @@ sub IndexHandler {
 	# If the client is anonymous, Slash::Apache::User::handler has
 	# not been called, so setCurrentSkin hasn't been called, and we
 	# definitely need $gSkin set to do our manipulation of $uri.
+	# ARGH.  Or, do we need to call this every time through, because
+	# otherwise we get old data from previous click?
 	if (!$gSkin->{skid}) {
 		setCurrentSkin(determineCurrentSkin());
 	}

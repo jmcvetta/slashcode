@@ -62,9 +62,6 @@ __template__
 [% CASE 'SLASH-UNKNOWN-IMAGE' %]
 <b>[Unknown Image]</b>
 
-[% CASE 'SLASH-UNKNOWN-IMAGE' %]
-<b>[Unknown Image]</b>
-
 [% CASE 'SLASH-UNKNOWN-STORY' %]
 <b>[Unknown Story]</b>
 
@@ -151,4 +148,4 @@ Any of these three possible issues can be resolved at
 __seclev__
 10000
 __version__
-$Id: data;misc;default,v 1.14 2003/03/10 00:59:27 brian Exp $
+$Id: data;misc;default,v 1.15 2003/03/10 19:13:37 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.4 2003/03/10 00:59:27 brian Exp $
+# $Id: Blob.pm,v 1.5 2003/03/10 19:13:37 pudge Exp $
 
 package Slash::Blob;
 
@@ -15,32 +15,32 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 my %mimetypes = (
 	jpeg => 'image/jpeg',
-	jpg => 'image/jpeg',
-	gif => 'image/gif',
-	png => 'image/png',
+	jpg  => 'image/jpeg',
+	gif  => 'image/gif',
+	png  => 'image/png',
 	tiff => 'image/tiff',
-	tif => 'image/tiff',
-	ps => 'application/postscript',
-	eps => 'application/postscript',
-	zip => 'application/zip',
-	doc => 'application/msword',
-	pdf => 'application/pdf',
-	gz => 'application/x-gzip',
-	bz2 => 'application/x-bzip2',
-	rpm => 'application/x-rpm',
-	mp3 => 'audio/mp3',
-	ra => 'audio/x-realaudio',
+	tif  => 'image/tiff',
+	ps   => 'application/postscript',
+	eps  => 'application/postscript',
+	zip  => 'application/zip',
+	doc  => 'application/msword',
+	pdf  => 'application/pdf',
+	gz   => 'application/x-gzip',
+	bz2  => 'application/x-bzip2',
+	rpm  => 'application/x-rpm',
+	mp3  => 'audio/mp3',
+	ra   => 'audio/x-realaudio',
 	html => 'text/html',
-	htm => 'text/html',
-	txt => 'text/plain',
+	htm  => 'text/html',
+	txt  => 'text/plain',
 	text => 'text/plain',
-	xml => 'text/xml',
-	rtf => 'text/rtf',
+	xml  => 'text/xml',
+	rtf  => 'text/rtf',
 );
 
 sub new {
@@ -91,54 +91,55 @@ sub create {
 }
 
 sub delete {
-	my ($self, $sig) = @_;
+	my($self, $sig) = @_;
 
 	$self->sqlDo("UPDATE $self->{'_table'} SET reference_count=(reference_count -1) WHERE id = '$sig'");
 }
 
 sub clean {
-	my ($self, $sig) = @_;
+	my($self, $sig) = @_;
 
 	$self->sqlDo("DELETE FROM $self->{'_table'} WHERE reference_count < 1");
 }
 
 sub getFilesForStories {
-	my ($self) = @_;
+	my($self) = @_;
 	$self->sqlSelectAllHashrefArray('*', 'story_files', '', "ORDER BY sid,description");
 }
 
 sub getFilesForStory {
-	my ($self, $sid) = @_;
+	my($self, $sid) = @_;
 	return unless $sid;
 	$self->sqlSelectAllHashrefArray('*', 'story_files', "sid=" . $self->sqlQuote($sid), "ORDER BY description");
 }
 
 sub createFileForStory {
-	my ($self, $values) = @_;
-		return unless $values->{sid} && $values->{data};
+	my($self, $values) = @_;
+	return unless $values->{sid} && $values->{data};
 
-		my $content = {
-			seclev => $values->{seclev},
-			filename => $values->{filename},
-			content_type => $values->{content_type},
-			data => $values->{data},
-		};
-		my $id = $self->create($content);
-		my $content_type = $self->get($id, 'content_type');
+	my $content = {
+		seclev       => $values->{seclev},
+		filename     => $values->{filename},
+		content_type => $values->{content_type},
+		data         => $values->{data},
+	};
 
-		my $file_content = {
-			sid => $values->{sid},
-			description => $values->{description} || $values->{filename} || $content_type,
-			isimage => ($content_type =~ /^image/) ? 'yes': 'no',
-			file_id => $id,
-		};
+	my $id = $self->create($content);
+	my $content_type = $self->get($id, 'content_type');
+
+	my $file_content = {
+		sid         => $values->{sid},
+		description => $values->{description} || $values->{filename} || $content_type,
+		isimage     => ($content_type =~ /^image/) ? 'yes': 'no',
+		file_id     => $id,
+	};
 	$self->sqlInsert('story_files', $file_content);
 
 	return $self->getLastInsertId();
 }
 
-sub	deleteStoryFile {
-	my ($self, $id) = @_;
+sub deleteStoryFile {
+	my($self, $id) = @_;
 	my $file_id = $self->sqlSelect("file_id", "story_files", "id =" . $self->sqlQuote($id));
 	$self->delete($file_id);
 	$self->sqlDelete("story_files", "id=" . $self->sqlQuote($id));

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.11 2002/02/14 20:44:50 pudge Exp $
+# $Id: sections.pl,v 1.12 2002/02/14 22:38:27 brian Exp $
 
 use strict;
 use Slash;
@@ -151,7 +151,7 @@ sub saveSection {
 	if ($found) {
 		my $return = $slashdb->setSection($form->{section}, {
 			qid		=> $form->{qid},
-			title		=> $form->{section},
+			title		=> $form->{title},
 			issue		=> $form->{issue},
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},
@@ -167,7 +167,7 @@ sub saveSection {
 		my $return = $slashdb->createSection({
 			section		=> $form->{section},
 			qid		=> $form->{qid},
-			title		=> $form->{section},
+			title		=> $form->{title},
 			issue		=> $form->{issue},
 			isolate		=> $form->{isolate},
 			artcount	=> $form->{artcount},

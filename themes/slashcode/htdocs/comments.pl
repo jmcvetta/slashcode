@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.173 2004/03/02 19:36:39 pudge Exp $
+# $Id: comments.pl,v 1.174 2004/03/16 15:59:11 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -370,6 +370,10 @@ sub displayComments {
 			mode		=> $user->{mode},
 			commentsort	=> $user->{commentsort}
 		});
+	}
+
+	if(defined $form->{show_m2s} and $user->{is_admin}){
+		$slashdb->setUser($user->{uid}, { m2_with_comm_mod => $form->{show_m2s}} );
 	}
 
 	if ($form->{cid}) {

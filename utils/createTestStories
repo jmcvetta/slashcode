@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.3 2002/01/08 17:22:10 pudge Exp $
+# $Id: createTestStories,v 1.4 2002/03/21 08:02:22 jamie Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault
 
 BEGIN {
@@ -26,7 +26,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -228,7 +228,7 @@ sub make_werds {
 		http://www.linux.org.uk/diary/	http://hepwww.ph.qmw.ac.uk/HEPpc/
 		http://www.w3.org		http://peipa.essex.ac.uk/tp-linux/
 		http://www.crosswinds.net/~tvquotes/futurama/2.html
-		http://www.google.com/search?q=cache:h58W7o4qU-w:www.space.com/sciencefiction/tv/futurama_gore_000516_wg.html+Futurama+Fry&hl=en
+		http://www.google.com/search?q=cache:h58W7o4qU-w:www.space.com/sciencefiction/tv/futurama_gore_000516_wg.html+Futurama+Fry&amp;hl=en
 		http://dmoz.org/Regional/Europe/United_Kingdom/Wales/Isle_of_Anglesey/Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch/
 		www.google.com			bad_link b.a.d l.i.n.k . .. ... ....
 		mailto:jamie@slashdot.org	mailto:pater@slashdot.org

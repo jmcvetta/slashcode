@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.117 2003/03/10 00:59:27 brian Exp $
+# $Id: Slash.pm,v 1.118 2003/03/20 17:44:51 jamie Exp $
 
 package Slash;
 
@@ -1159,6 +1159,7 @@ sub displayStory {
 
 	# And now we're also calling parseSlashizedLinks. - 2002/05/24 Jamie
 
+	$story->{storytime} = timeCalc($story->{'time'});
 	if ($story->{is_future} && !($user->{author} || $user->{is_admin})) {
 		$story->{atstorytime} = $constants->{subscribe_future_name};
 	} else {

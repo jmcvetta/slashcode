@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.214 2004/07/08 23:18:22 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.215 2004/07/12 20:56:53 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1351,7 +1351,6 @@ sub editStory {
 	} else { # New Story
 
 		# XXXSECTIONTOPIC this kinda works now, but it should be rewritten
-		my $SECT = $slashdb->getSection($section);
 		$extracolumns			= $slashdb->getNexusExtras($gSkin->{nexus});
 		$storyref->{commentstatus}	= $constants->{defaultcommentstatus};
 		$storyref->{primaryskid}	= $gSkin->{skid};
@@ -1539,9 +1538,16 @@ sub extractChosenFromForm {
 	my $chosen_hr = { };
 	my $chosen_names_hr = { };
 	if (defined $form->{topic_source} && $form->{topic_source} eq "submission" && $form->{subid}) {
-		$chosen_hr->{$form->{tid}} = 1;
-		my $chosen_topic = $slashdb->getTopic($form->{tid});
-		$chosen_names_hr->{$form->{tid}} = $chosen_topic->{textname} if $chosen_topic && $chosen_topic->{tid};
+		my @topics = ($form->{tid});
+		if ($form->{skid}) {
+			my $nexus = $slashdb->getNexusFromSkid($form->{skid});
+			push @topics, $nexus if $nexus;
+		}
+		for my $tid (@topics) {
+			$chosen_hr->{$tid} = 1;
+			my $chosen_topic = $slashdb->getTopic($tid);
+			$chosen_names_hr->{$tid} = $chosen_topic->{textname} if $chosen_topic && $chosen_topic->{tid};
+		}
 	} else {
 		for my $i (0..$#{$form->{st_main_select}}) {
 			$chosen_hr->{$form->{st_main_select}[$i]}

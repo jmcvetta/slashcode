@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.87 2004/06/23 20:02:59 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.88 2004/06/23 20:06:25 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -420,7 +420,7 @@ sub linkStory {
 	my($url, $script, $title, %params);
 	$script = 'article.pl';
 	$params{sid} = $story_link->{sid};
-	$params{mode} = $story_link->{mode} || $user->{mode};
+	$params{mode} = $story_link->{mode} if $story_link->{mode};
 	$params{threshold} = $story_link->{threshold} if exists $story_link->{threshold};
 
 	# Setting $dynamic properly is important.  When generating the
@@ -1652,4 +1652,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.87 2004/06/23 20:02:59 jamiemccarthy Exp $
+$Id: Display.pm,v 1.88 2004/06/23 20:06:25 jamiemccarthy Exp $

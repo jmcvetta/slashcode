@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.73 2002/09/10 15:10:19 brian Exp $
+# $Id: Slash.pm,v 1.74 2002/09/12 16:50:20 brian Exp $
 
 package Slash;
 
@@ -1221,7 +1221,7 @@ sub _hard_dispComment {
 		} else {
 			if ($user->{people}{FRIEND()}{$person}) {
 				my $title = $user->{people}{people_bonus_friend} ? "Friend ($user->{people}{people_bonus_friend})" : "Friend";
-				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/friend.gif" ALT="$title" TITLE="$title"></A>|;
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/friend.gif" ALT="$title" TITLE="$title"></A>|;
 			} 
 			if ($user->{people}{FOE()}{$person}) {
 				my $title = $user->{people}{people_bonus_foe} ? "Foe ($user->{people}{people_bonus_foe})" : "Foe";
@@ -1236,8 +1236,8 @@ sub _hard_dispComment {
 				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/freak.gif" ALT="$title" TITLE="$title"></A> |;
 			} 
 			if ($user->{people}{FOF()}{$person}) {
-				my $title = $user->{people}{people_bonus_friend} ? "Friend of a Friend ($user->{people}{people_bonus_fof})" : "Friend of a Friend";
-				$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/fof.gif" ALT="$title" TITLE="$title"></A>|;
+				my $title = $user->{people}{people_bonus_fof} ? "Friend of a Friend ($user->{people}{people_bonus_fof})" : "Friend of a Friend";
+				$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=check&amp;uid=$person"><IMG BORDER="0" SRC="$constants->{imagedir}/fof.gif" ALT="$title" TITLE="$title"></A>|;
 			} 
 			if ($user->{people}{EOF()}{$person}) {
 				my $title = $user->{people}{people_bonus_eof} ? "Foe of a Friend ($user->{people}{people_bonus_eof})" : "Foe of a Friend";

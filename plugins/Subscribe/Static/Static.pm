@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.5 2003/10/28 18:00:04 vroom Exp $
+# $Id: Static.pm,v 1.6 2003/11/10 19:20:40 vroom Exp $
 
 package Slash::Subscribe::Static;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $vuser) = @_;
@@ -69,6 +69,55 @@ sub countCurrentRenewingSubs {
                         'GROUP BY users_hits.uid HAVING c > 1'
                 )
         } );
+}
+
+sub countTotalGiftSubs {
+	my($self) = @_;
+	my @gift_uids = $self->_getUidsForPaymentType("gift");
+	return 0 unless @gift_uids;
+	return $self->sqlSelect("count(DISTINCT uid)","subscribe_payments","payment_type='gift' and uid in(".join(',',@gift_uids).")");
+}
+
+sub countCurrentGiftSubs {
+	my($self) = @_;
+	my @gift_uids = $self->_getUidsForPaymentType("gift");
+	return 0 unless @gift_uids;
+	return $self->sqlCount('users_hits',
+		'hits_paidfor > 0 AND hits_paidfor > hits_bought AND uid in('.join(',',@gift_uids).')');
+}
+
+sub countTotalRenewingGiftSubs {
+        my($self) = @_;
+	my @gift_uids = $self->_getUidsForPaymentType("gift");
+	return 0 unless @gift_uids;
+	return scalar( @{
+                $self->sqlSelectColArrayref(
+                        'users_hits.uid, COUNT(*) AS c',
+                        'users_hits LEFT JOIN subscribe_payments ON users_hits.uid = subscribe_payments.uid AND users_hits.uid in('.join(',',@gift_uids).')',
+                        'hits_paidfor > 0',
+                        'GROUP BY users_hits.uid HAVING c > 1'
+                )
+        } );
+}
+
+sub countCurrentRenewingGiftSubs {
+        my($self) = @_;
+	my @gift_uids = $self->_getUidsForPaymentType("gift");
+	return 0 unless @gift_uids;
+        return scalar( @{
+                $self->sqlSelectColArrayref(
+                        'users_hits.uid, COUNT(*) AS c',
+                        'users_hits LEFT JOIN subscribe_payments ON users_hits.uid = subscribe_payments.uid',
+                        'hits_paidfor > 0 AND hits_paidfor > hits_bought AND users_hits.uid in('.join(',',@gift_uids).')',
+                        'GROUP BY users_hits.uid HAVING c > 1'
+                )
+        } );
+}
+
+sub _getUidsForPaymentType {
+	my ($self, $type) = @_;
+	my $ar = $self->sqlSelectColArrayref("DISTINCT uid", "subscribe_payments","payment_type = ".$self->sqlQuote($type));
+	return @$ar;
 }
 
 ########################################################

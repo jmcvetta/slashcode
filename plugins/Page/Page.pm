@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.30 2004/07/15 14:40:31 tvroom Exp $
+# $Id: Page.pm,v 1.31 2004/08/10 15:47:42 tvroom Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -206,7 +206,9 @@ sub prepareStory {
 	}
 
 	$storyref->{introtext} = parseSlashizedLinks($storyref->{introtext});
+	$storyref->{introtext} = processSlashTags($storyref->{introtext});
 	$storyref->{bodytext} =  parseSlashizedLinks($storyref->{bodytext});
+	$storyref->{bodytext} =  processSlashTags($storyref->{bodytext});
 
 	$storyref->{authorref} = $self->getAuthor($storyref->{uid});
 

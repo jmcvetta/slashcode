@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.14 2002/05/14 20:26:52 pudge Exp $
+# $Id: MySQL.pm,v 1.15 2002/07/15 12:55:59 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -143,8 +143,14 @@ sub log {
 
 	$self->sqlInsert($table, {
 		id	=> $msg->{id},
-		user	=> $msg->{user}{uid} || 0,
-		fuser	=> (ref($msg->{fuser}) ? $msg->{fuser}{uid} : $msg->{fuser}),
+		user	=> (ref($msg->{user})
+				? ($msg->{user}{uid} || 0)
+				: ($msg->{user} || 0)
+			   ),
+		fuser	=> (ref($msg->{fuser})
+				? ($msg->{fuser}{uid} || 0)
+				: ($msg->{fuser} || 0)
+			   ),
 		code	=> $msg->{code},
 		mode	=> $mode,
 	}, { delayed => 1 });
@@ -390,8 +396,11 @@ sub _getMailingUsers {
 	my($self, $code) = @_;
 	return unless $code =~ /^-?\d+$/;
 	
-	my $users = $self->_getMailingUsersRaw($code);
-	my $fields = ['realemail', 'exsect', 'extid', 'exaid', 'sectioncollapse']; # 'nickname', 
+	my $users  = $self->_getMailingUsersRaw($code);
+	my $fields = [qw(
+		realemail exsect extid exaid
+		sectioncollapse daily_mail_special
+	)];
 	$users     = { map { $_ => $self->getUser($_, $fields) } @$users };
 	return $users;
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.13 2002/07/11 14:55:50 pudge Exp $
+# $Id: Messages.pm,v 1.14 2002/07/15 12:55:59 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -498,7 +498,7 @@ sub quicksend {
 }
 
 sub bulksend {
-	my($self, $addrs, $subj, $message, $code) = @_;
+	my($self, $addrs, $subj, $message, $code, $uid) = @_;
 	my $constants = getCurrentStatic();
 	my $slashdb = getCurrentDB();
 
@@ -510,7 +510,7 @@ sub bulksend {
 	($code, my($type)) = $self->getDescription('messagecodes', $code);
 	$code = -1 unless defined $code;
 
-	my $uid = 0;
+	$uid ||= 0;
 	my $msg = {
 		id		=> 0,
 		fuser		=> 0,
@@ -925,4 +925,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.13 2002/07/11 14:55:50 pudge Exp $
+$Id: Messages.pm,v 1.14 2002/07/15 12:55:59 pudge Exp $

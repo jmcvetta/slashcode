@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: index.shtml,v 1.10 2003/06/06 13:25:29 malda Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: index.shtml,v 1.11 2003/06/16 15:07:24 malda Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -267,6 +267,7 @@ mean?</a></b></li>
 <b><a href="accounts.shtml">Accounts</a></b></h2>
 
 <ul>
+  <li> <b><a href="accounts.shtml#ac050">Why should i Log in?</a></b></li>
   <li> <b><a href="accounts.shtml#ac100">Can I change my nickname?</a></b></li>
   <li> <b><a href="accounts.shtml#ac105">How do I change my password or email address?</a></b></li>
   <li> <b><a href="accounts.shtml#ac200">How can I delete my account?</a></b></li>

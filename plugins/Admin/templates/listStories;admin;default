@@ -57,8 +57,7 @@ END;
 		bgcolor = '#999999';
 END %]
 
-	<TR BGCOLOR="[% bgcolor %]" ALT="[% story.displaystatus %]">
-
+	<TR BGCOLOR="[% bgcolor %]">
 		<TD ALIGN="RIGHT">
 		<FONT SIZE="2">
 		[<A HREF="[% gSkin.rootdir %]/admin.pl?op=edit&amp;sid=[% story.sid %]">[% story.x %]</A>]
@@ -118,4 +117,4 @@ END %]
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.21 2004/06/17 16:11:53 jamiemccarthy Exp $
+$Id: listStories;admin;default,v 1.22 2004/06/21 15:26:53 tvroom Exp $

@@ -50,7 +50,7 @@ gstatic total:        -          -    [% grand_total_static %]
 
 -----------------------
 [% FOREACH section = sections -%]
-[% IF section.pages == 0 ; NEXT ; END %]
+[% IF section.pages < 1 ; NEXT ; END %]
 For [% section.section_name %]
                   Pages      IPs   Bandwidth    Users
         total: [% section.pages %] [% section.ipids %] [% section.bytes %] [% section.users %]
@@ -58,7 +58,7 @@ For [% section.section_name %]
         index: [% section.index.pages %] [% section.index.ipids %] [% section.index.bytes %] [% section.index.users %]
 [% END -%]
 [% IF section.page.pages > 0 -%]
-     page: [% section.page.pages %] [% section.page.ipids %] [% section.page.bytes %] [% section.page.users %]
+         page: [% section.page.pages %] [% section.page.ipids %] [% section.page.bytes %] [% section.page.users %]
 [% END -%]
 [% IF section.comments.pages > 0 -%]
      comments: [% section.comments.pages %] [% section.comments.ipids %] [% section.comments.bytes %] [% section.comments.users %]
@@ -113,4 +113,4 @@ END %]
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.51 2003/03/19 20:43:08 brian Exp $
+$Id: display;adminmail;default,v 1.52 2003/03/19 21:03:54 brian Exp $

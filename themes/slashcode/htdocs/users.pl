@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.98 2002/08/30 02:30:21 jamie Exp $
+# $Id: users.pl,v 1.99 2002/09/02 05:25:40 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -2381,6 +2381,12 @@ sub getUserAdmin {
 
 	if (!ref $iplist or scalar(@$iplist) < 1) {
 		undef $iplist;
+	}
+
+	my $m2total = ($user_edit->{m2fair} || 0) + ($user_edit->{m2unfair} || 0);
+	if ($m2total) {
+		$user_edit->{m2unfairpercent} = sprintf("%.2f",
+			$user_edit->{m2unfair}*100/$m2total);
 	}
 
 	return slashDisplay('getUserAdmin', {

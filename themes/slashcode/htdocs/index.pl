@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.72 2003/05/22 19:11:52 brian Exp $
+# $Id: index.pl,v 1.73 2003/05/29 15:58:38 brian Exp $
 
 use strict;
 use Slash;
@@ -74,7 +74,7 @@ sub main {
 	my $future_plug = 0;
 
 	# Just check the first story since they are in order -Brian
-	if ($stories->[0]{is_future} && !$user->{is_subscriber} && $constants->{subscribe_future_plug}) {
+	if ($stories->[0]{is_future} && !$user->{is_subscriber} && !$user->{is_anon} && $constants->{subscribe_future_plug}) {
 		$future_plug = 1;
 	}
 

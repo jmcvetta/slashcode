@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.156 2002/05/26 22:10:35 jamie Exp $
+# $Id: MySQL.pm,v 1.157 2002/05/30 17:26:02 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4784,6 +4784,12 @@ sub getSimilarStories {
 	$not_original_sid = " AND stories.sid != "
 		. $self->sqlQuote($not_original_sid)
 		if $not_original_sid;
+	my $backupdb;
+	if ($constants->{backup_db_user}) {
+		$backupdb = getObject('Slash::DB', $constants->{backup_db_user})
+	} else {
+		$backupdb = getCurrentDB();
+	}
 
 	my $text = "$title $introtext $bodytext";
 	# Find a list of all the words in the current story.
@@ -4820,7 +4826,7 @@ sub getSimilarStories {
 	}
 	$where = join(" OR ", @where_clauses);
 	my $n_days = $constants->{similarstorydays} || 30;
-	my $stories = $self->sqlSelectAllHashref(
+	my $stories = $backupdb->sqlSelectAllHashref(
 		"sid",
 		"stories.sid AS sid, title, introtext, bodytext,
 			time, displaystatus",

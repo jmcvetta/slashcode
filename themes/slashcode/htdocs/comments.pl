@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.107 2002/11/28 02:58:01 jamie Exp $
+# $Id: comments.pl,v 1.108 2002/12/03 20:31:24 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1004,6 +1004,9 @@ sub submitComment {
 
 	my $id = $form->{sid};
 	my $label = getData('label');
+
+	# Couple of rules on how to treat the discussion depending on how mode is set -Brian
+	$discussion->{type} = isDiscussionOpen($discussion);
 
 	if ($discussion->{type} eq 'archived') {
 		print getData('archive_error');

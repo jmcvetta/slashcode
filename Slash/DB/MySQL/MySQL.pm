@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.268 2002/11/27 22:12:30 jamie Exp $
+# $Id: MySQL.pm,v 1.269 2002/12/03 20:31:24 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.268 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.269 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -131,7 +131,10 @@ my %descriptions = (
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='displaycodes_sectional'") },
 
 	'commentcodes'
-		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='commentcodes'") },
+		=> sub { my $user = getCurrentUser(); 
+						my $where = " OR type='commentcodes_extended'" if ($user->{is_admin} || $user->{is_subscriber}); 
+						$_[0]->sqlSelectMany('code,name', 'string_param', "type='commentcodes'" . $where) 
+			},
 
 	'sections'
 		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', 'type="contained"', 'order by title') },
@@ -4936,12 +4939,16 @@ sub createDiscussion {
 	#If no type is specified we assume the value is zero
 	$discussion->{section} ||= getCurrentStatic('defaultsection');
 	$discussion->{type} ||= 'open';
+	$discussion->{commentstatus} ||= getCurrentStatic('defaultcommentstatus');
 	$discussion->{sid} ||= '';
 	$discussion->{ts} ||= $self->getTime();
 	$discussion->{uid} ||= getCurrentUser('uid');
 	# commentcount and flags set to defaults
 
-	$self->sqlInsert('discussions', $discussion);
+	# Either create the discussion or bail with a "0"
+	unless($self->sqlInsert('discussions', $discussion)) {
+		return 0;
+	}
 
 	my $discussion_id = $self->getLastInsertId();
 
@@ -5024,6 +5031,7 @@ sub updateStory {
 		? $self->getTime()
 		: $story->{'time'};
 
+	# Should be a getSection call in here to find the right rootdir -Brian
 	my $data = {
 		sid	=> $story->{sid},
 		title	=> $story->{title},
@@ -5046,7 +5054,6 @@ sub updateStory {
 		title		=> $story->{title},
 		section		=> $story->{section},
 		displaystatus	=> $story->{displaystatus},
-		commentstatus	=> $story->{commentstatus},
 		writestatus	=> $story->{writestatus},
 	};
 

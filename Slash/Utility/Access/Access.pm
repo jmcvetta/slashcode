@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.16 2002/11/19 04:58:09 jamie Exp $
+# $Id: Access.pm,v 1.17 2002/12/03 20:31:24 brian Exp $
 
 package Slash::Utility::Access;
 
@@ -30,11 +30,12 @@ use Slash::Display;
 use Slash::Utility::Data;
 use Slash::Utility::Environment;
 use Slash::Utility::System;
+use Slash::Constants qw(:web :people);
 
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -47,6 +48,7 @@ use vars qw($VERSION @EXPORT);
 	allowExpiry
 	setUserExpired
 	intervalString
+	isDiscussionOpen
 );
 
 # really, these should not be used externally, but we leave them
@@ -763,6 +765,41 @@ sub setUserExpired {
 	}
 }
 
+####################################################
+# Basically do the discussion logic bit to find the
+# state of the discussion (takes a discussion and 
+# returns the state -Brian
+sub isDiscussionOpen {
+	my ($discussion) = @_;
+	return 'archived' 
+		if $discussion->{commentstatus} eq 'disabled';
+	return $discussion->{type}
+		if $discussion->{type} eq 'archived';
+	return $discussion->{type}
+		if $discussion->{commentstatus} eq 'enabled';
+	return $discussion->{type}
+		if $discussion->{uid} eq getCurrentUser('uid');
+
+	# Now for the more complicated possibilities -Brian
+	my $slashdb = getCurrentDB();
+	my $user = getCurrentUser();
+	my $people = $slashdb->getUser($discussion->{uid}, 'people');
+	if ($discussion->{commentstatus} eq  'friends_only' || $discussion->{commentstatus} eq  'friends_fof_only') {
+		my $orig = $discussion->{type};
+		$discussion->{type} = 'archived';
+		$discussion->{type} = $orig
+			if $people && $people->{FRIEND()} && $people->{FRIEND()}{$user->{uid}};
+		$discussion->{type} = $orig
+			if $discussion->{commentstatus} eq 'friends_fof_only' && $people && $people->{FOF()} && $people->{FOF()}{$user->{uid}};
+	} elsif (($discussion->{commentstatus} eq  'no_foe' || $discussion->{commentstatus} eq  'no_foe_eof') && $people) {
+		$discussion->{type} = 'archived' 
+			if $people && $people->{FOE()} && $people->{FOE()}{$user->{uid}};
+		$discussion->{type} = 'archived' 
+			if $people && $people->{EOF()} && $discussion->{commentstatus} == 5 && $people->{EOF()}{$user->{uid}};
+	}
+	return $discussion->{type};
+}
+
 
 1;
 
@@ -775,4 +812,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.16 2002/11/19 04:58:09 jamie Exp $
+$Id: Access.pm,v 1.17 2002/12/03 20:31:24 brian Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.26 2002/05/08 18:11:54 brian Exp $
+# $Id: Search.pm,v 1.27 2002/05/08 18:14:01 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -223,7 +223,7 @@ sub findStory {
 	$columns .= "users.nickname as nickname, stories.title as title, stories.sid as sid, "; 
 	$columns .= "time, commentcount, stories.section as section,";
 	$columns .= "stories.tid as tid ";
-	$columns .= ", TRUNCATE((((MATCH (stories.title) AGAINST($query) + (MATCH (introtext,bodytext) AGAINST($query)))) / 2), 1) as scored "
+	$columns .= ", TRUNCATE((((MATCH (stories.title) AGAINST($query) + (MATCH (introtext,bodytext) AGAINST($query)))) / 2), 1) as score "
 		if ($form->{query} && $sort == 2);
 
 	my $tables = "stories,users";

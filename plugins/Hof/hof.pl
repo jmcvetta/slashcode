@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.12 2002/08/09 01:08:47 brian Exp $
+# $Id: hof.pl,v 1.13 2002/12/06 06:58:50 jamie Exp $
 
 use strict;
 use Slash;
@@ -83,7 +83,7 @@ sub main {
 # 		}
 # 	}
 
-	footer($form->{ssi});
+	footer();
 }
 
 #################################################################

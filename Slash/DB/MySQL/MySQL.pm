@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.645 2004/07/22 22:32:11 pudge Exp $
+# $Id: MySQL.pm,v 1.646 2004/07/23 14:53:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.645 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.646 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2808,8 +2808,11 @@ sub deleteAuthor {
 sub deleteTopic {
 	my($self, $tid, $newtid) = @_;
 	my $tid_q = $self->sqlQuote($tid);
+	my $newtid_q = $self->sqlQuote($newtid);
 
 	return 0;  # too dangerous to use right now
+
+	# Abort if $tid == $newtid !
 
 	my @delete_tables = qw(
 		topics topic_nexus topic_nexus_dirty topic_nexus_extras
@@ -2844,10 +2847,12 @@ sub deleteTopic {
 			{ ignore => 1 });
 		$self->sqlDelete('topic_parents', "parent_tid=$tid_q");
 		# Second, update the to-be-deleted topic's parents to instead
-		# be pointed-to by its replacement.
+		# be pointed-to by its replacement.  In case one of the topic's
+		# parents _is_ the replacement, don't make it loop to itself
+		# (and the resulting busted row will be deleted, same as above).
 		$self->sqlUpdate('topic_parents',
 			{ tid => $newtid },
-			"tid=$tid_q",
+			"tid=$tid_q AND parent_tid != $newtid_q",
 			{ ignore => 1 });
 		$self->sqlDelete('topic_parents', "tid=$tid_q");
 

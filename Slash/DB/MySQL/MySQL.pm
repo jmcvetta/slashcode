@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.167 2002/06/25 14:08:50 jamie Exp $
+# $Id: MySQL.pm,v 1.168 2002/06/28 18:24:32 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -116,10 +116,13 @@ my %descriptions = (
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='commentcodes'") },
 
 	'sections'
-		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', 'isolate=0', 'order by title') },
+		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', 'isolate=0 AND type="contained"', 'order by title') },
+
+	'sections-contained'
+		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', 'type="contained"', 'order by title') },
 
 	'sections-all'
-		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', '', 'ORDER BY title') },
+		=> sub { $_[0]->sqlSelectMany('section,title', 'sections', '', 'order by title') },
 
 	'static_block'
 		=> sub { $_[0]->sqlSelectMany('bid,bid', 'blocks', "$_[2] >= seclev AND type != 'portald'") },
@@ -3034,17 +3037,23 @@ sub getPortalsCommon {
 	$self->{_boxes} = {};
 	$self->{_sectionBoxes} = {};
 	my $sth = $self->sqlSelectMany(
-			'bid,title,url,section,portal,ordernum',
+			'bid,title,url,section,portal,ordernum,all_sections',
 			'blocks',
 			'',
 			'ORDER BY ordernum ASC'
 	);
+	my $sections = $self->getDescriptions('sections-all');
 	# We could get rid of tmp at some point
 	my %tmp;
 	while (my $SB = $sth->fetchrow_hashref) {
 		$self->{_boxes}{$SB->{bid}} = $SB;  # Set the Slashbox
 		next unless $SB->{ordernum} > 0;  # Set the index if applicable
 		push @{$tmp{$SB->{section}}}, $SB->{bid};
+		if ($SB->{all_sections}) {
+			for my $section (keys %$sections) {
+				push @{$tmp{$section}}, $SB->{bid};
+			}
+		}
 	}
 	$self->{_sectionBoxes} = \%tmp;
 	$sth->finish;

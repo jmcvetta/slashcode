@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.12 2002/04/29 15:37:05 pudge Exp $
+# $Id: Display.pm,v 1.13 2002/06/28 18:24:32 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -261,22 +261,11 @@ sub selectSection {
 	my($label, $default, $SECT, $return, $all) = @_;
 	my $slashdb = getCurrentDB();
 
-	$SECT ||= {};
-	if ($SECT->{isolate}) {
-		slashDisplay('sectionisolate',
-			{ name => $label, section => $default });
-		return;
-	}
-
 	my $seclev = getCurrentUser('seclev');
+	my $sections = $slashdb->getDescriptions('sections');
 	my $sectionbank = $slashdb->getSections();
-	my %sections = map {
-		($_, $sectionbank->{$_}{title})
-	} grep {
-		!($sectionbank->{$_}{isolate} && $seclev < 500)
-	} keys %$sectionbank;
 
-	createSelect($label, \%sections, $default, $return);
+	createSelect($label, $sections, $default, $return);
 }
 
 #========================================================================
@@ -1135,4 +1124,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.12 2002/04/29 15:37:05 pudge Exp $
+$Id: Display.pm,v 1.13 2002/06/28 18:24:32 brian Exp $

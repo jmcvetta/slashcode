@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.74 2002/06/20 14:49:02 jamie Exp $
+# $Id: admin.pl,v 1.75 2002/06/28 18:24:32 brian Exp $
 
 use strict;
 use Image::Size;
@@ -710,7 +710,7 @@ sub topicEdit {
 	if ($user->{section} && $user->{seclev} <= 9000) {
 		$sections->{$user->{section}} = $slashdb->getSection($user->{section},'title');
 	} else {
-		$sections = $slashdb->getDescriptions('sections-all', '', 1);
+		$sections = $slashdb->getDescriptions('sections-contained', '', 1);
 	}
 
 	my $section_topics_arref = $slashdb->getSectionTopicType($form->{nexttid});

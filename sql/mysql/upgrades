@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.540 2004/03/11 22:43:53 jamiemccarthy Exp $
+# $Id: upgrades,v 1.541 2004/03/13 17:17:37 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2168,4 +2168,6 @@ INSERT INTO vars (name, value, description) VALUES ('submissions_listing_page_si
 # End of T_2_3_0_142, Start of T_2_3_0_143 - 2004/03/10
 
 INSERT INTO vars (name, value, description) VALUES ('accesslog_imageregex', '^/images/hc/', 'Image hits will only be written into accesslog if their URL path matches this regex, empty string for all, NONE for none');
+
+INSERT INTO vars (name, value, description) VALUES ('m2_consequences_repeats','3=-4|5=-12|10=-100','Token penalties for modding same user multiple times, applied at M2 reconcile time');
 

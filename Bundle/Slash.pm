@@ -1,10 +1,10 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.28 2004/04/09 14:13:26 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.29 2004/04/09 15:00:29 pudge Exp $
 #
 
-$Bundle::Slash::VERSION = '2.33';
+$Bundle::Slash::VERSION = '2.34';
 
 1;
 

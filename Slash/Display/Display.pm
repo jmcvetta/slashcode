@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.24 2003/03/27 21:49:28 pudge Exp $
+# $Id: Display.pm,v 1.25 2003/03/29 00:19:03 brian Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -155,7 +155,7 @@ sub slashDisplay {
 	return unless $name;
 
 	my $constants = getCurrentStatic();
-	my $slashdb   = getCurrentDB();
+	my $reader = getObject('Slash::DB', { db_type => 'reader' }); 
 	my $user      = getCurrentUser();
 
 	# save for later (local() seems not to work ... ?)
@@ -194,7 +194,7 @@ sub slashDisplay {
 		# it is cached the performance hit is generally light,
 		# and this is the only good way to get the actual name,
 		# page, section, we bite the bullet and do it
-		my $tempdata = $slashdb->getTemplateByName($name, [qw(tpid page section)]);
+		my $tempdata = $reader->getTemplateByName($name, [qw(tpid page section)]);
 		$TEMPNAME = "ID $tempdata->{tpid}, " .
 			"$name;$tempdata->{page};$tempdata->{section}";
 	}

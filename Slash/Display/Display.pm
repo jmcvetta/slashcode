@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.32 2004/03/08 18:21:00 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.33 2004/03/09 23:00:51 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -212,7 +212,7 @@ sub slashDisplay {
 	}
 
 	# template_show_comments == 0		never show HTML comments
-	# template_show_comments == 1		show them iff $opt->{Nocomm}
+	# template_show_comments == 1		show them if !$opt->{Nocomm}
 	# template_show_comments == 2		always show them - debug only!
 
 	my $show_comm = $constants->{template_show_comments} ? 1 : 0;

@@ -4,7 +4,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: template-tool,v 1.29 2004/03/09 17:50:45 jamiemccarthy Exp $
+# $Id: template-tool,v 1.30 2004/03/09 23:00:52 pudge Exp $
 
 # First version by Brian, brian@tangent.org
 # Updated by Patrick Galbraith, capttofu@slashdot.org
@@ -26,7 +26,7 @@ use Slash::Install;
 use Getopt::Std;
 use Cwd;
 
-(my $VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
@@ -144,7 +144,7 @@ if ($opts{'s'}) {
 					if ($tsemi ne $t2semi || $tsemi ne $filename) {
 						print "\tWARNING: name of file ($filename) is not name of template it contains ($t2semi)\n";
 					}
-# Mac OS 9 is flea-bitten Darwin carcasses, or something like that.
+# Mac OS is flea-bitten Darwin carcasses, or something like that.
 #					if (length($filename) > 31) {
 #						print "\tWARNING: length of filename ($filename) is over 31 chars (Mac-unfriendly)\n";
 #					}
@@ -220,7 +220,7 @@ if ($opts{'s'}) {
 		if (defined $temp2 && $temp2->{page} eq $template->{page}
 			&& $temp2->{section} eq $template->{section}
 		) {
-# Mac OS 9 is flea-bitten Darwin carcasses, or something like that.
+# Mac OS is flea-bitten Darwin carcasses, or something like that.
 #			if (length($filename) > 31) {
 #				print "\tWARNING: length of filename ($filename) is over 31 chars (Mac-unfriendly)\n";
 #			}
@@ -271,7 +271,7 @@ if ($opts{'s'}) {
 						if ($tsemi ne $t2semi || $tsemi ne $filename) {
 							print "\tWARNING: name of file ($filename) is not name of template it contains ($t2semi)\n";
 						}
-# Mac OS 9 is flea-bitten Darwin carcasses, or something like that.
+# Mac OS is flea-bitten Darwin carcasses, or something like that.
 #						if (length($filename) > 31) {
 #							print "\tWARNING: length of filename ($filename) is over 31 chars (Mac-unfriendly)\n";
 #						}

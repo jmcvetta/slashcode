@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.4 2002/01/08 17:22:09 pudge Exp $
+# $Id: Subscribe.pm,v 1.5 2002/02/05 16:05:29 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -78,11 +78,45 @@ sub buyingThisPage {
 	return $self->_subscribeDecisionPage(0, $r);
 }
 
+# By default, allow readers to buy x pages for $y, 2x pages for $2y,
+# etc.  If you want to have n-for-the-price-of-m sales or whatever,
+# change the logic here.
+sub convertDollarsToPages {
+	my($self, $amount) = @_;
+	my $constants = getCurrentStatic();
+	return sprintf("%0.0f", $amount*$constants->{paypal_num_pages}/
+		$constants->{paypal_amount});
+}
+
+# When readers cancel a subscription, how much money to refund?
+sub convertPagesToDollars {
+	my($self, $pages) = @_;
+	my $constants = getCurrentStatic();
+	return sprintf("%0.02f", $pages*$constants->{paypal_amount}/
+		$constants->{paypal_num_pages});
+}
+
+
+########################################################
+# Keys expected in the $payment hashref are:
+#	uid		user id
+#	email		user email address, or blank
+#	payment_gross	total payment before fees
+#	payment_net	payment received by site after fees
+#	pages		number of pages user will receive
+#	transaction_id	(optional) any ID you'd use to identify this payment
+#	data		(optional) any additional data
+sub insertPayment {
+	my($self, $payment) = @_;
+	my $slashdb = getCurrentDB();
+	return $slashdb->sqlInsert("subscribe_payments", $payment);
+}
+
 1;
 
 __END__
 
-# Below is the stub of documentation for your module. You better edit it!
+# Below is the stub of documentation.
 
 =head1 NAME
 
@@ -94,7 +128,8 @@ Slash::Subscribe - Let users buy adless pages
 
 =head1 DESCRIPTION
 
-This plugin lets users purchase adless pages at /subscribe.pl.
+This plugin lets users purchase adless pages at /subscribe.pl, with
+built-in (but optional) support for using Paypal.
 
 Understanding its code will be easier after recognizing that one of its
 design goals was to distinguish the act of "paying for" adless pages,

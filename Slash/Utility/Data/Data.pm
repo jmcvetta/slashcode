@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.121 2004/05/14 17:33:51 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.122 2004/05/17 12:23:10 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -43,7 +43,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2230,9 +2230,9 @@ sub parseDomainTags {
 		);
 
 	if ($want_tags && !$notags) {
-		$html =~ s{</A ([^>]+)>}{</A> [$1]}gi;
+		$html =~ s{</a ([^<>]+)>}{</a> [$1]}gi;
 	} else {
-		$html =~ s{</A[^>]+>}{</A>}gi;
+		$html =~ s{</a[^<>]+>}   {</a>}gi;
 	}
 
 	return $html;
@@ -3339,4 +3339,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.121 2004/05/14 17:33:51 jamiemccarthy Exp $
+$Id: Data.pm,v 1.122 2004/05/17 12:23:10 jamiemccarthy Exp $

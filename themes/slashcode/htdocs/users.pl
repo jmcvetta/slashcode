@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.247 2004/09/28 20:37:21 cowboyneal Exp $
+# $Id: users.pl,v 1.248 2004/09/28 20:51:12 cowboyneal Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2555,14 +2555,9 @@ sub saveHome {
 	setToDefaults($users_index_table, {}, $defaults) if $form->{restore_defaults};
 	if ($form->{restore_exbox_defaults}) {
 		my $exboxdef = "'";
-		my @exboxlist;
 		my($boxBank, $skinBoxes) = $slashdb->getPortalsCommon();
 
-		foreach my $bid (keys %$boxBank) {
-			push @exboxlist, $bid;
-		}		
-
-		$exboxdef .= join "','", @exboxlist;
+		$exboxdef .= join "','", @{$skinBoxes->{$constants->{mainpage_skid}}};
 		$exboxdef .= "'";
 
 		my $default_boxes = {

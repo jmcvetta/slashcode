@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.356 2003/03/22 01:10:59 jamie Exp $
+# $Id: MySQL.pm,v 1.357 2003/03/23 01:29:17 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.356 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.357 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3313,6 +3313,8 @@ sub getUIDStruct {
 
 	my $uidlist = $self->sqlSelectAll("DISTINCT uid ", "comments", $where);
 
+	# XXX This could be more efficient, but this method is only called
+	# by admin hits, so it's not crucial. - Jamie 2003/03/22
 	for (@$uidlist) {
 		my $uid;
 		$uid->{nickname} = $self->getUser($_->[0], 'nickname');
@@ -4647,9 +4649,9 @@ sub getComments {
 sub getSubmissionsByNetID {
         my($self, $id, $field, $limit) = @_;
 
-        $limit = 'LIMIT ' . $limit if $limit;
+	$limit = "LIMIT $limit" if $limit;
 	my $where;
-	
+
 	if ($field eq 'ipid') {
 		$where = "ipid='$id'";
 	} elsif ($field eq 'subnetid') {
@@ -4658,9 +4660,9 @@ sub getSubmissionsByNetID {
 		$where = "ipid='$id' OR subnetid='$id'";
 	}
 
-        my $answer = $self->sqlSelectAllHashrefArray(
-                'uid,name,subid,subj,time',
-                'submissions', $where,
+	my $answer = $self->sqlSelectAllHashrefArray(
+		'uid,name,subid,subj,time',
+		'submissions', $where,
 		"ORDER BY time DESC $limit");
 
 	return $answer;

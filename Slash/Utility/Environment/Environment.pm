@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.75 2003/03/06 03:54:59 jamie Exp $
+# $Id: Environment.pm,v 1.76 2003/03/23 01:29:17 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1379,7 +1379,8 @@ Hashref of cleaned-up data.
 
 	# fields that have ONLY a-zA-Z0-9_
 	my %alphas = map {($_ => 1)} qw(
-		formkey commentstatus hcanswer mode op section type
+		fieldname formkey commentstatus
+		hcanswer mode op section type
 	);
 
 	# regexes to match dynamically generated numeric fields
@@ -2093,4 +2094,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.75 2003/03/06 03:54:59 jamie Exp $
+$Id: Environment.pm,v 1.76 2003/03/23 01:29:17 jamie Exp $

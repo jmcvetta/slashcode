@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.36 2002/01/26 01:59:27 jamie Exp $
+# $Id: Slash.pm,v 1.37 2002/01/29 01:57:20 jamie Exp $
 
 package Slash;
 
@@ -411,33 +411,42 @@ The 'modCommentLog' template block.
 =cut
 
 sub moderatorCommentLog {
-	my($cid) = @_;
+	my($type, $value) = @_;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 
 	my $seclev = getCurrentUser('seclev');
 	my $mod_admin = $seclev >= $constants->{modviewseclev} ? 1 : 0;
 
-	my $comments = $slashdb->getModeratorCommentLog($cid);
+	my $asc_desc = $type eq 'cid' ? 'ASC' : 'DESC';
+	my $limit = $type eq 'cid' ? 0 : 100;
+	my $mods = $slashdb->getModeratorCommentLog($asc_desc, $limit,
+		$type, $value);
+
 	if (!$mod_admin) {
 		# Eliminate inactive moderations from the list.
-		$comments = [ grep { $_->{active} } @$comments ];
+		$mods = [ grep { $_->{active} } @$mods ];
 	}
-	return unless @$comments; # skip it, if no mods to show
+	return unless @$mods; # skip it, if no mods to show
 
 	my(@return, @reasonHist, $reasonTotal);
 
-	for my $comment (@$comments) {
-		$reasonHist[$comment->{reason}]++;
+	for my $mod (@$mods) {
+		next unless $mod->{active};
+		$reasonHist[$mod->{reason}]++;
 		$reasonTotal++;
 	}
 
+	my $show_cid    = ($type eq 'cid') ? 0 : 1;
+	my $show_modder = $mod_admin ? 1 : 0;
 	slashDisplay('modCommentLog', {
 		# modviewseclev
 		mod_admin	=> $mod_admin, 
-		comments	=> $comments,
+		mods		=> $mods,
 		reasonTotal	=> $reasonTotal,
 		reasonHist	=> \@reasonHist,
+		show_cid	=> $show_cid,
+		show_modder	=> $show_modder,
 	}, { Return => 1, Nocomm => 1 });
 }
 

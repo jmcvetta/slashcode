@@ -2,7 +2,7 @@
 ## This code is a part of Slash, and is released under the GPL.
 ## Copyright 1997-2004 by Open Source Development Network. See README
 ## and COPYING for more information, or see http://slashcode.com/.
-## $Id: report_slashd_errors.pl,v 1.5 2004/10/15 02:14:42 jamiemccarthy Exp $
+## $Id: report_slashd_errors.pl,v 1.6 2004/10/28 16:48:36 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -51,8 +51,6 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	expireOldErrors($virtual_user, $constants, $slashdb, $user);
-
 	return $num_errors;
 };
 
@@ -65,15 +63,6 @@ sub updateLastRun {
 	$slashdb->setVar('slashd_errnote_lastrun', $now);
 
 	return($now, $lastrun);
-}
-
-sub expireOldErrors {
-	my($virtual_user, $constants, $slashdb, $user) = @_;
-
-	my $interval = $constants->{slashd_errnote_expire} || 90;
-
-	$slashdb->sqlDelete('slashd_errnotes',
-		"ts < DATE_SUB(NOW(), INTERVAL $interval DAY)");
 }
 
 1;

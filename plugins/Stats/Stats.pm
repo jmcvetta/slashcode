@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.29 2002/05/16 04:47:19 jamie Exp $
+# $Id: Stats.pm,v 1.30 2002/05/16 19:50:34 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -120,7 +120,8 @@ sub getAdminModsInfo {
 	# Get the history of moderation fairness for all admins from the
 	# last month.  This reads the last 30 days worth of stats_daily
 	# data (not counting today, which will be added to that table
-	# shortly).
+	# shortly).  Set up both the {count} and {nickname} fields for
+	# each combination of uid and 1/-1 fairness.
 	my $m2_history_mo_hr = $self->sqlSelectAllHashref(
 		"name",
 		"name, SUM(value)",
@@ -133,7 +134,23 @@ sub getAdminModsInfo {
 		my($fairness, $uid) = $name =~ /^m2_((?:un)?fair)_admin_(\d+)$/;
 		next unless defined($fairness);
 		$fairness = ($fairness eq 'unfair') ? -1 : 1;
-		$m2_uid_val_mo_hr->{$uid}{$fairness} = $m2_history_mo_hr->{$name};
+		$m2_uid_val_mo_hr->{$uid}{$fairness}{count} = $m2_history_mo_hr->{$name};
+	}
+	if (%$m2_uid_val_mo_hr) {
+		my $m2_uid_nickname = $self->sqlSelectAllHashref(
+			"uid",
+			"uid, nickname",
+			"users",
+			"uid IN (" . join(",", keys %$m2_uid_val_mo_hr) . ")"
+		);
+		for my $uid (keys %$m2_uid_nickname) {
+			for my $fairness (qw( -1 1 )) {
+				$m2_uid_val_mo_hr->{$uid}{$fairness}{nickname} =
+					$m2_uid_nickname->{$uid}{nickname};
+				$m2_uid_val_mo_hr->{$uid}{$fairness}{count} +=
+					$m2_uid_val_hr->{$uid}{$fairness}{count};
+			}
+		}
 	}
 
 	# For comparison, get the same stats for all users on the site and
@@ -223,8 +240,8 @@ sub getAdminModsInfo {
 			$hr->{$nickname}{m2_text} .= " " x  12;
 		}
 		# Also calculate overall-month percentage.
-		my $nfair_mo   = $m2_uid_val_mo_hr->{$uid} {1} || 0;
-		my $nunfair_mo = $m2_uid_val_mo_hr->{$uid}{-1} || 0;
+		my $nfair_mo   = $m2_uid_val_mo_hr->{$uid} {1}{count} || 0;
+		my $nunfair_mo = $m2_uid_val_mo_hr->{$uid}{-1}{count} || 0;
 		$percent = ($nfair_mo+$nunfair_mo > 0)
 			? $nunfair_mo*100/($nfair_mo+$nunfair_mo)
 			: 0;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.158 2003/11/18 20:41:04 pater Exp $
+# $Id: comments.pl,v 1.159 2003/11/19 01:25:53 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -80,6 +80,12 @@ sub main {
 			checks			=> 
 			[ qw ( max_post_check valid_check interval_check 
 				formkey_check regen_formkey ) ],
+		},
+		delete_forum		=> {
+			function		=> \&deleteForum,
+			seclev			=> 1000,
+			formname		=> 'discussions',
+			checks			=> ['generate_formkey'],
 		},
 		reply			=> {
 			function		=> \&editComment,
@@ -646,6 +652,17 @@ sub commentIndexPersonal {
 	} else {
 		print getData('users_no_discussions');
 	}
+}
+
+##################################################################
+# for ubb_like_forums
+sub deleteForum {
+	my($form, $slashdb, $user, $constants, $error_message) = @_;
+
+	$slashdb->deleteDiscussion($form->{sid}) if $constants->{ubb_like_forums};
+	commentIndexUserCreated(@_);
+
+	return;
 }
 
 ##################################################################

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hc_maintain_pool.pl,v 1.1 2002/04/17 15:39:25 jamie Exp $
+# $Id: hc_maintain_pool.pl,v 1.2 2002/05/06 06:18:00 jamie Exp $
 
 use strict;
 use Slash::Utility;
@@ -17,7 +17,7 @@ $task{$me}{code} = sub {
 
 	my $humanconf = getObject('Slash::HumanConf::Static');
 	unless ($humanconf) {
-		slashdLog("$me: could not instantiate Slash::HumanConf::Static object");
+		slashdLog("$me: could not instantiate Slash::HumanConf::Static object, is GD.pm properly installed?");
 		return ;
 	}
 

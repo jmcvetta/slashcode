@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.105 2003/12/19 18:07:43 pudge Exp $
+# $Id: Environment.pm,v 1.106 2003/12/30 00:07:34 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1228,7 +1228,7 @@ sub prepareUser {
 		$user->{state} = {};
 	} else {
 		$user = $reader->getUser($uid);
-		$user->{logtoken} = $reader->getLogToken($uid);
+		$user->{logtoken} = bakeUserCookie($uid, $reader->getLogToken($uid));
 		$user->{is_anon} = 0;
 	}
 
@@ -1430,7 +1430,7 @@ Hashref of cleaned-up data.
 	# special few
 	my %special = (
 		logtoken	=> sub { $_[0] = '' unless
-					 $_[0] =~ m|^(\d+)::[A-Za-z0-9/+]{22}$|	},
+					 $_[0] =~ m|^\d+::[A-Za-z0-9]{22}$|	},
 		sid		=> sub { $_[0] =~ s|[^A-Za-z0-9/._]||g		},
 		flags		=> sub { $_[0] =~ s|[^a-z0-9_,]||g		},
 		query		=> sub { $_[0] =~ s|[\000-\040<>\177-\377]+| |g;
@@ -2265,4 +2265,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.105 2003/12/19 18:07:43 pudge Exp $
+$Id: Environment.pm,v 1.106 2003/12/30 00:07:34 pudge Exp $

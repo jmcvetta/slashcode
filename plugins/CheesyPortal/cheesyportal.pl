@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: cheesyportal.pl,v 1.7 2003/07/25 17:40:27 pudge Exp $
+# $Id: cheesyportal.pl,v 1.8 2004/04/02 00:43:03 pudge Exp $
 
 use strict;
 use Slash;

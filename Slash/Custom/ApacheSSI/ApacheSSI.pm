@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ApacheSSI.pm,v 1.1 2004/02/03 22:21:36 pudge Exp $
+# $Id: ApacheSSI.pm,v 1.2 2004/04/02 00:42:59 pudge Exp $
 
 # this merely overrides a "broken" method in Apache::SSI,
 # where include directives don't work for mixing with Apache::Compress
@@ -18,7 +18,7 @@ use vars qw($VERSION);
 
 use Apache::Constants qw(:common OPT_INCNOEXEC);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub ssi_perl {
   my($self, $args, $margs) = @_;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.8 2003/12/08 23:44:34 jamie Exp $
+# $Id: Relocate.pm,v 1.9 2004/04/02 00:43:04 pudge Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash1toslash2.2,v 1.9 2003/03/04 19:56:33 pudge Exp $
+# $Id: slash1toslash2.2,v 1.10 2004/04/02 00:43:06 pudge Exp $
 
 use strict;
 use File::Basename;
@@ -11,7 +11,7 @@ use DBIx::Password;
 use Digest::MD5 'md5_hex';
 use vars qw(%my_conf);
 
-(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -1504,7 +1504,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2003 by Open Source Development Network. See README
+Copyright 1997-2004 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT
@@ -1898,4 +1898,4 @@ if they so desire.
 
 =head1 VERSION
 
-$Id: slash1toslash2.2,v 1.9 2003/03/04 19:56:33 pudge Exp $
+$Id: slash1toslash2.2,v 1.10 2004/04/02 00:43:06 pudge Exp $

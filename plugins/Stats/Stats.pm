@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.136 2004/03/28 19:06:17 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.137 2004/04/02 00:43:04 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -1684,4 +1684,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.136 2004/03/28 19:06:17 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.137 2004/04/02 00:43:04 pudge Exp $

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.22 2004/02/17 00:25:28 pudge Exp $
+# $Id: messages.pl,v 1.23 2004/04/02 00:43:03 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -15,7 +15,7 @@ use Slash::Utility;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 my $start_time = Time::HiRes::time;

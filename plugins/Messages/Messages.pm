@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.26 2004/03/02 19:34:50 pudge Exp $
+# $Id: Messages.pm,v 1.27 2004/04/02 00:43:03 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -1093,4 +1093,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.26 2004/03/02 19:34:50 pudge Exp $
+$Id: Messages.pm,v 1.27 2004/04/02 00:43:03 pudge Exp $

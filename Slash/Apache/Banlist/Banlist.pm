@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.23 2004/02/27 20:04:06 jamiemccarthy Exp $
+# $Id: Banlist.pm,v 1.24 2004/04/02 00:42:59 pudge Exp $
 
 package Slash::Apache::Banlist;
 
@@ -16,7 +16,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;

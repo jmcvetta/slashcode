@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_cids.pl,v 1.5 2004/03/16 21:46:54 jamiemccarthy Exp $
+# $Id: set_cids.pl,v 1.6 2004/04/02 00:43:06 pudge Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,7 +13,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '5-59/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important

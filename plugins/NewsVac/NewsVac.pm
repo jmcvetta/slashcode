@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.29 2003/07/30 22:21:51 jamie Exp $
+# $Id: NewsVac.pm,v 1.30 2004/04/02 00:43:04 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -6281,4 +6281,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.29 2003/07/30 22:21:51 jamie Exp $
+$Id: NewsVac.pm,v 1.30 2004/04/02 00:43:04 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TemplatePages.pm,v 1.7 2004/02/12 19:28:42 jamiemccarthy Exp $
+# $Id: TemplatePages.pm,v 1.8 2004/04/02 00:42:59 pudge Exp $
 
 package Slash::Apache::TemplatePages;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.

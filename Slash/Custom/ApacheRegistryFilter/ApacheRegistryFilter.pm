@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ApacheRegistryFilter.pm,v 1.2 2004/03/02 19:36:01 pudge Exp $
+# $Id: ApacheRegistryFilter.pm,v 1.3 2004/04/02 00:42:59 pudge Exp $
 
 # this merely overrides a "broken" method in Apache::SSI,
 # where include directives don't work for mixing with Apache::Compress
@@ -18,7 +18,7 @@ use vars qw($VERSION);
 
 use Apache::Constants qw(:common);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler ($$) {
   my ($class, $r) = @_ > 1 ? (shift, shift) : (__PACKAGE__, shift);

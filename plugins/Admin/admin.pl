@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2003 by Open Source Development Network. See README
+# Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.197 2004/03/30 20:50:14 pudge Exp $
+# $Id: admin.pl,v 1.198 2004/04/02 00:43:02 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.54 2003/07/29 18:42:47 pudge Exp $
+# $Id: Anchor.pm,v 1.55 2003/10/20 14:59:09 pater Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -519,8 +519,10 @@ sub prepAds {
 
 ########################################################
 sub getAd {
-	my($num) = @_;
+	my($num, $need_box) = @_;
 	$num ||= 1;
+	$need_box ||= 0;
+	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
 	unless ($ENV{SCRIPT_NAME}) {
@@ -536,7 +538,6 @@ EOT
 	# If this is the first time that getAd() is being called, we have
 	# to set up all the ad data at once before we can return anything.
 	if (!defined $user->{state}{ad}) {
-		my $constants = getCurrentStatic();
 		if ($constants->{use_minithin} && $constants->{plugin}{MiniThin}) {
 			# new way
 			my $minithin = getObject('Slash::MiniThin', { db_type => 'reader' });
@@ -547,7 +548,14 @@ EOT
 		}
 	}
 
-	return $user->{state}{ad}{$num} || "";
+	if ($num == 2 && $need_box) {
+		# we need the ad wrapped in a fancybox
+		if ($user->{state}{ad}{$num}) {
+			return fancybox($constants->{fancyboxwidth}, 'Advertisement', $user->{state}{ad}{$num}, 1, 1);
+		} else { return ""; }
+	} else {
+		return $user->{state}{ad}{$num} || "";
+	}
 }
 
 
@@ -604,4 +612,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.54 2003/07/29 18:42:47 pudge Exp $
+$Id: Anchor.pm,v 1.55 2003/10/20 14:59:09 pater Exp $

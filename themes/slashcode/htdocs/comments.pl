@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.159 2003/11/19 01:25:53 pater Exp $
+# $Id: comments.pl,v 1.160 2003/11/19 17:37:32 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -496,6 +496,8 @@ sub commentIndexUserCreated {
 		$section_select = createSelect('section', $sections, $form->{section}, 1);
 		for (my $i=0; $i < @$discussions; $i++) {
 			$discussions->[$i]{comment} = $slashdb->getForumDescription($discussions->[$i]{id});
+			$discussions->[$i]{num_parents} = $slashdb->getForumParents($discussions->[$i]{id});
+			$discussions->[$i]{last_comment} = $slashdb->getForumLastPostHashref($discussions->[$i]{id});
 		}
 	}
 

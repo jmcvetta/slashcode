@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.465 2003/10/21 01:21:03 pudge Exp $
+# $Id: MySQL.pm,v 1.466 2003/10/23 15:23:57 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.465 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.466 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7446,6 +7446,16 @@ sub getUser {
 		
 	}
 
+	# If no such user, we can return now.
+	if (!$answer || !%$answer) {
+		if ($mcddebug) {
+			my $elapsed = sprintf("%6.4f", Time::HiRes::time - $start_time);
+			print STDERR scalar(gmtime) . " $$ mcd getUser '$mcdkey$uid' elapsed=$elapsed no such user can '$gtd->{can_use_mcd}' rawmcdanswer: " . Dumper($rawmcdanswer);
+		}
+		return undef;
+	}
+
+	# Fill in the uid field.
 	$answer->{uid} ||= $uid;
 
 	if ($mcddebug > 2) {

@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.57 2003/09/15 18:48:02 vroom Exp $
+# $Id: THEME,v 1.58 2003/10/14 05:18:59 vroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -94,6 +94,7 @@ task=tasks/run_portald.pl
 task=tasks/set_recent_topics.pl
 task=tasks/spamarmor.pl
 template=templates/admin;menu;default
+template=templates/articlemoved;misc;default
 template=templates/bannedtext_ipid;misc;default
 template=templates/bannedtext_palm;misc;default
 template=templates/bannedtext_rss;misc;default

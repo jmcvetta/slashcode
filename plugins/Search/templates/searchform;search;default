@@ -2,8 +2,6 @@ __section__
 default
 __description__
 
-The multitopic portion of the search form is stored in the template:
-	topicsearch;search;<section>
 __title__
 
 __page__
@@ -140,4 +138,4 @@ END %]</li>
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.26 2004/10/11 17:56:42 jamiemccarthy Exp $
+$Id: searchform;search;default,v 1.27 2004/10/11 18:18:06 jamiemccarthy Exp $

@@ -1,13 +1,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.4 2001/11/21 07:09:59 brian Exp $
+# $Id: Zoo.pm,v 1.5 2001/12/06 23:33:48 brian Exp $
 
 package Slash::Zoo;
 
 use strict;
 use DBIx::Password;
 use Slash;
+use Slash::Constants ':people';
 use Slash::Utility;
 use Slash::DB::Utility;
 
@@ -15,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -56,7 +57,7 @@ sub _get {
 	my($self, $uid, $type) = @_;
 
 	my $people = $self->sqlSelectAll(
-		'people.uid, nickname, journal_last_entry_date',
+		'users.uid, nickname, journal_last_entry_date',
 		'people, users',
 		"people.uid = $uid AND type =\"$type\" AND person = users.uid"
 	);
@@ -75,17 +76,21 @@ sub _getOpposite {
 }
 
 sub setFriend {
-	_set(@_, 'friend');
+	_set(@_, 'friend', FRIEND);
 }
 
 sub setFoe {
-	_set(@_, 'foe');
+	_set(@_, 'foe', FOE);
 }
 
 sub _set {
-	my($self, $uid, $person, $type) = @_;
+	my($self, $uid, $person, $type, $const) = @_;
 
-	$self->sqlDo("REPLACE INTO people (uid,person,type) VALUES ($uid, $person, $type)");
+	$self->sqlDo("REPLACE INTO people (uid,person,type) VALUES ($uid, $person, '$type')");
+	my $slashdb = getCurrentDB();
+	my $people = $slashdb->getUser($uid, 'people');
+	$people->{$person} = {$const};
+	$slashdb->setUser($uid, { people => $people })
 }
 
 sub isFriend {
@@ -113,6 +118,12 @@ sub isFoe {
 sub delete {
 	my($self, $uid, $person) = @_;
 	$self->sqlDo("DELETE FROM people WHERE uid=$uid AND person=$person");
+	my $slashdb = getCurrentDB();
+	my $people = $slashdb->getUser($uid, 'people');
+	if ($people) {
+		delete $people->{$person};
+		$slashdb->setUser($uid, { people => $people })
+	}
 }
 
 

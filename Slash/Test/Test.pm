@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.15 2003/12/20 06:32:22 jamie Exp $
+# $Id: Test.pm,v 1.16 2004/01/29 00:15:07 jamiemccarthy Exp $
 
 package Slash::Test;
 
@@ -94,7 +94,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -187,6 +187,8 @@ sub slashTest {
 			${"main::$name"} = $object;
 		}
 	}
+
+	$Data::Dumper::Sortkeys = 1;
 }
 
 #========================================================================
@@ -277,4 +279,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.15 2003/12/20 06:32:22 jamie Exp $
+$Id: Test.pm,v 1.16 2004/01/29 00:15:07 jamiemccarthy Exp $

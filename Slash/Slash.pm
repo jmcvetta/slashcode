@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.222 2004/09/12 15:18:46 cowboyneal Exp $
+# $Id: Slash.pm,v 1.223 2004/09/12 18:43:30 cowboyneal Exp $
 
 package Slash;
 
@@ -508,7 +508,7 @@ sub printComments {
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
 
-        if ($constants->{clampe_stats}) {
+        if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME}) {
                 my $fname = catfile('clampe', $user->{ipid});
 		my $sc = defined $form->{'savechanges'} ? 1 : 0;
                 my $savelog = "IPID: $user->{ipid} UID: $user->{uid} Thresh: $user->{threshold} Dispmode: $user->{mode} Sort: $user->{commentsort} SaveChanges: $sc";

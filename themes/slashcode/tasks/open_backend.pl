@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.16 2003/10/20 17:21:51 pater Exp $
+# $Id: open_backend.pl,v 1.17 2004/01/23 00:39:33 pudge Exp $
 
 use strict;
 use Slash;
@@ -55,7 +55,7 @@ sub save2file {
 		close $fh;
 		my $new = $d;
 		# normalize ...
-		s|<dc:date>[^<]*</dc:date>|| for $current, $new;
+		s|[dD]ate>[^<]+</|| for $current, $new;
 		return if $current eq $new;
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.16 2001/04/23 09:57:57 pudge Exp $
+# $Id: journal.pl,v 1.17 2001/04/25 11:19:55 pudge Exp $
 
 use strict;
 use Slash;
@@ -146,7 +146,7 @@ sub displayRSS {
 	for my $article (@$articles) {
 			$rss->add_item(
 				title		=> xmlencode($article->[2]),
-				description	=> xmlencode("$nickname wrote: " . strip_mode($article->[1], $article->[4]))
+				description	=> xmlencode("$nickname wrote: " . strip_mode($article->[1], $article->[4])),
 				'link'		=> xmlencode_plain("$constants->{absolutedir}/journal.pl?op=get&id=$article->[3]"),
 		);
 	}

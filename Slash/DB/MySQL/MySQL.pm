@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.307 2003/01/27 21:09:50 pater Exp $
+# $Id: MySQL.pm,v 1.308 2003/01/27 21:24:41 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.307 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.308 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3195,7 +3195,7 @@ sub getUIDStruct {
 
 	for (@$uidlist) {
 		my $uid;
-		$uid->{nickname} = $slashdb->getUser($_->[0], 'nickname');
+		$uid->{nickname} = $self->getUser($_->[0], 'nickname');
 		$uid->{comments} = 1;
 		$uidstruct->{$_->[0]} = $uid;
 	}
@@ -3207,7 +3207,7 @@ sub getUIDStruct {
 			$uidstruct->{$_->[0]}{submissions} = 1;
 		} else {
 			my $uid;
-			$uid->{nickname} = $slashdb->getUser($_->[0], 'nickname');
+			$uid->{nickname} = $self->getUser($_->[0], 'nickname');
 			$uid->{submissions} = 1;
 			$uidstruct->{$_->[0]} = $uid;
 		}
@@ -3220,9 +3220,10 @@ sub getUIDStruct {
 			$uidstruct->{$_->[0]}{moderatorlog} = 1;
 		} else {
 			my $uid;
-			$uid->{nickname} = $slashdb->getUser($_->[0], 'nickname');
+			$uid->{nickname} = $self->getUser($_->[0], 'nickname');
 			$uid->{moderatorlog} = 1;
 			$uidstruct->{$_->[0]} = $uid;
+		}
 	}
 
 	return $uidstruct;

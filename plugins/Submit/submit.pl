@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.72 2002/11/12 15:50:03 pater Exp $
+# $Id: submit.pl,v 1.73 2002/11/12 17:05:16 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -198,7 +198,7 @@ sub previewForm {
 		submitter	=> $sub->{uid},
 		subid		=> $form->{subid},
 		topic		=> $topic,
-		ipid		=> $ipid,
+		ipid		=> $sub->{ipid},
 		ipid_vis	=> $ipid_vis,
 		admin_flag 	=> $admin_flag,
 		extras 		=> $extracolumns,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.415 2003/06/16 17:14:40 pater Exp $
+# $Id: MySQL.pm,v 1.416 2003/06/26 19:19:31 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.415 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.416 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1920,6 +1920,15 @@ sub checkStoryViewable {
 	my($column_time, $where_time) = $self->_stories_time_clauses({
 		try_future => 1, must_be_subscriber => 1
 	});
+
+	# if there is no sid in the DB, assume that it is an old poll
+	# or something that has a "fake" sid
+	my $exists = $self->sqlCount(
+		'stories',
+		"sid='$sid'"
+	);
+	return 1 unless $exists;
+
 	my $count = $self->sqlCount(
 		'stories',
 		"sid='$sid' AND displaystatus != -1 AND $where_time",

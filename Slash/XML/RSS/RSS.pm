@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.13 2003/12/16 21:11:30 pudge Exp $
+# $Id: RSS.pm,v 1.14 2004/01/27 23:02:59 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -367,8 +367,10 @@ sub rss_story {
 
 	my $topics = $slashdb->getTopics();
 
-	$encoded_item->{title}  = $self->encode($story->{title});
-	$encoded_item->{'link'} = $self->encode("$channel->{'link'}article.pl?sid=$story->{sid}", 'link');
+	$encoded_item->{title}  = $self->encode($story->{title})
+		if $story->{title};
+	$encoded_item->{'link'} = $self->encode("$channel->{'link'}article.pl?sid=$story->{sid}", 'link')
+		if $story->{sid};
 
 	if ($version >= 0.91) {
 		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
@@ -378,15 +380,21 @@ sub rss_story {
 	if ($version >= 1.0) {
 		my $slashdb   = getCurrentDB();
 
-		$encoded_item->{dc}{date}    = $self->encode($self->date2iso8601($story->{'time'}));
-		$encoded_item->{dc}{subject} = $self->encode($topics->{$story->{tid}}{name});
-		$encoded_item->{dc}{creator} = $self->encode($slashdb->getUser($story->{uid}, 'nickname'));
+		$encoded_item->{dc}{date}    = $self->encode($self->date2iso8601($story->{'time'}))
+			if $story->{'time'};
+		$encoded_item->{dc}{subject} = $self->encode($topics->{$story->{tid}}{name})
+			if $story->{tid};
+		$encoded_item->{dc}{creator} = $self->encode($slashdb->getUser($story->{uid}, 'nickname'))
+			if $story->{uid};
 
-		$encoded_item->{slash}{section}    = $self->encode($story->{section});
-		$encoded_item->{slash}{comments}   = $self->encode($story->{commentcount});
-		$encoded_item->{slash}{hitparade}  = $self->encode($story->{hitparade});
+		$encoded_item->{slash}{section}    = $self->encode($story->{section})
+			if $story->{section};
+		$encoded_item->{slash}{comments}   = $self->encode($story->{commentcount})
+			if $story->{commentcount};
+		$encoded_item->{slash}{hitparade}  = $self->encode($story->{hitparade})
+			if $story->{hitparade};
 		$encoded_item->{slash}{department} = $self->encode($story->{dept})
-			if $constants->{use_dept};
+			if $story->{dept} && $constants->{use_dept};
 	}
 
 	return $encoded_item;
@@ -463,4 +471,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.13 2003/12/16 21:11:30 pudge Exp $
+$Id: RSS.pm,v 1.14 2004/01/27 23:02:59 pudge Exp $

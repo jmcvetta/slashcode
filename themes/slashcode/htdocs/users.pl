@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.135 2002/12/18 21:25:29 jamie Exp $
+# $Id: users.pl,v 1.136 2002/12/31 06:35:49 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -845,11 +845,6 @@ sub showInfo {
 			$form->{userfield} = $uid if $admin_flag;
 		}
 
-		# no can do boss-man
-		if (isAnon($uid)) {
-			return displayForm();
-		}
-
 	} elsif ($user->{is_admin}) {
 		$id ||= $form->{userfield} || $user->{uid};
 		if ($id =~ /^\d+$/) {
@@ -899,8 +894,14 @@ sub showInfo {
 		$requested_user = $slashdb->getUser($uid);
 	}
 
+	# Can't get user data for the anonymous user.
+	if (isAnon($uid)) {
+		header(getMessage('user_header'));
+		return displayForm();
+	}
+
 	my $user_change = { };
-	if ($fieldkey eq 'uid' && $uid != $user->{uid}) {
+	if ($fieldkey eq 'uid' && !$user->{is_anon} && $uid != $user->{uid}) {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
@@ -2422,6 +2423,8 @@ sub displayForm {
 		savemiscopts	=> 'loginForm',
 		default		=> 'loginForm'
 	};
+
+	$op = 'default' if !defined($ops->{$op});
 
 	my($title, $title2, $msg1, $msg2) = ('', '', '', '');
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.1 2002/04/17 15:39:25 jamie Exp $
+# $Id: Static.pm,v 1.2 2002/04/19 21:38:23 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -17,7 +17,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -31,7 +31,6 @@ sub new {
 	bless($self, $class);
 	$self->{virtual_user} = $user;
 	$self->sqlConnect();
-print STDERR "HumanConf::Static new user '$user' dbh '$self->{_dbh}'\n";
 
 	# Use trial and error to find a "fallback" font we like.
 	# If we want to get fancy, we could do the same with some
@@ -55,7 +54,6 @@ print STDERR "HumanConf::Static new user '$user' dbh '$self->{_dbh}'\n";
 			$self->{font} = $font;
 			$smallest_diff = $diff;
 		}
-print STDERR "HumanConf::Static new font '$font' diff '$diff'\n";
 	}
 
 	return $self;
@@ -70,7 +68,6 @@ sub deleteOldFromPool {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 	my $max_fill = $constants->{hc_poolmaxfill} || 100;
-print STDERR "HumanConf::Static deleteOldFromPool max_fill '$max_fill'\n";
 
 	my $cursize = $self->getPoolSize();
 	my $max_delete = int(($cursize-100)/2);
@@ -94,7 +91,6 @@ sub fillPool {
 	my $wantedsize = $constants->{hc_poolsize} || 10000;
 	my $max_fill = $constants->{hc_poolmaxfill} || 100;
 	my $needmore = $wantedsize - $cursize;
-print STDERR "HumanConf::Static fillPool needmore '$needmore' max_fill '$max_fill'\n";
 	return if $needmore <= 0;
 	$needmore = $max_fill if $needmore > $max_fill;
 
@@ -151,7 +147,6 @@ sub addPool {
 	}
 	my $full_dir = $full_filename;
 	$full_dir =~ s{/[^/]+$}{};
-#print STDERR "addPool hcpid '$hcpid' filename '$filename' dir '$dir' full_filename '$full_filename' full_dir '$full_dir'\n";
 	my @created_dirs = File::Path::mkpath($full_dir, 0, 0755);
 	$self->writeBlankIndexes(@created_dirs) if @created_dirs;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.9 2002/03/04 19:59:27 jamie Exp $
+# $Id: Anchor.pm,v 1.10 2002/03/05 03:14:21 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -318,9 +318,6 @@ sub ssiFoot {
 ########################################################
 sub prepAds {
 
-print STDERR "prepAds $$ SCRIPT_NAME '$ENV{SCRIPT_NAME}'"
-	. " AD_BANNER_1 '$ENV{AD_BANNER_1}' AD_BANNER_6 '$ENV{AD_BANNER_6}'\n";
-
 	# If invoked from a slashd task or from the command line in general,
 	# just skip it since $user->{state}{ad} won't be used anyway, this
 	# would just be a waste of time.  Store something in the field so
@@ -398,8 +395,6 @@ print STDERR "prepAds $$ SCRIPT_NAME '$ENV{SCRIPT_NAME}'"
 			$user->{state}{ad}{$num} = "\n<!-- no ad $num -->\n";
 		}
 	}
-use Data::Dumper;
-print STDERR "prepAds state: " . Dumper($user->{state}{ad});
 }
 
 ########################################################
@@ -408,18 +403,12 @@ sub getAd {
 	$num ||= 1;
 	my $user = getCurrentUser();
 
-use Data::Dumper;
-print STDERR "getAd $$ num '$num' log '$log' SCRIPT_NAME '$ENV{SCRIPT_NAME}' user->{state}{ad} '"
-	. (defined($user->{state}{ad}) ? Dumper($user->{state}{ad}) : "(undef)")
-	. "' AD_BANNER_1 '$ENV{AD_BANNER_1}' AD_BANNER_6 '$ENV{AD_BANNER_6}'\n";
-
 	unless ($ENV{SCRIPT_NAME}) {
 		# When run from a slashd task (or from the command line in
 		# general), don't generate the actual ad, just generate some
 		# shtml code which *will* generate the actual ad when it's
 		# executed later.
 		$log = $log ? " Slash::createLog('$log');" : "";
-print STDERR "getAd $$ return perl sub\n";
 		return <<EOT;
 <!--#perl sub="sub { use Slash;$log print Slash::getAd($num); }" -->
 EOT
@@ -428,8 +417,6 @@ EOT
 	# If this is the first time that getAd() is being called, we have
 	# to set up all the ad data at once before we can return anything.
 	prepAds() if !defined($user->{state}{ad});
-
-print STDERR "getAd $$ return '$user->{state}{ad}{$num}'\n";
 
 	return $user->{state}{ad}{$num};
 }
@@ -487,4 +474,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.9 2002/03/04 19:59:27 jamie Exp $
+$Id: Anchor.pm,v 1.10 2002/03/05 03:14:21 jamie Exp $

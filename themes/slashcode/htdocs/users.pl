@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.120 2002/10/23 03:22:38 jamie Exp $
+# $Id: users.pl,v 1.121 2002/10/23 12:27:43 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1235,7 +1235,6 @@ sub tildeEd {
 	my $constants = getCurrentStatic();
 	my($aidref, $aid_order, $tidref, $tid_order, $sectionref, $section_descref, $box_order, $tilde_ed, $tilded_msg_box);
 
-	# users_tilded_title
 	my $title = getTitle('tildeEd_title');
 
 	# Customizable Authors Thingee
@@ -1267,15 +1266,12 @@ sub tildeEd {
 		$sectionref->{$section}{title} = $title;
 	}
 
-	my $customize_title = getTitle('tildeEd_customize_title');
-
-	my $tilded_customize_msg = getMessage('users_tilded_customize_msg',
+	my $tilded_customize_msg = getMessage('tilded_customize_msg',
 		{ userspace => $userspace });
 
 	my $sections_description = $slashdb->getSectionBlocks();
 
-	# repeated from above?
-	$customize_title = getTitle('tildeEd_customize_title');
+	my $customize_title = getTitle('tildeEd_customize_title');
 
 	for (sort { lc $b->[1] cmp lc $a->[1]} @$sections_description) {
 		my($bid, $title, $boldflag) = @$_;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.611 2004/07/07 18:15:15 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.612 2004/07/07 20:43:20 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.611 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.612 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8378,7 +8378,7 @@ sub setStoryRenderedFromChosen {
 		}
 	}
 
-	return ($primaryskid, $tids);
+	return($primaryskid, $tids);
 }
 
 sub getPrimarySkidFromRendered {
@@ -8647,8 +8647,8 @@ sub getSection {
 	$skin->{rewrite} = $skin->{max_rewrite_secs};
 	$skin->{section} = $skin->{name};
 	$skin->{type} = $skin->{name} =~ /^(index|mainpage)$/ ? 'collected' : 'contained'; # XXXSECTIONTOPICS this is a hack guess and probably wrong in at least one case
-	my $topic_tree = $self->getTopicTree();
-	$skin->{writestatus} = $topic_tree->{$skin->{nexus}}{nexus_dirty} ? 'dirty' : 'ok'; # XXXSECTIONTOPICS check this
+	my $tree = $self->getTopicTree();
+	$skin->{writestatus} = $tree->{$skin->{nexus}}{nexus_dirty} ? 'dirty' : 'ok'; # XXXSECTIONTOPICS check this
 
 	return $skin->{$value} if $value;
 	return $skin;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.49 2004/11/09 20:28:11 pudge Exp $
+# $Id: zoo.pl,v 1.50 2004/12/09 17:36:33 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -123,6 +123,9 @@ sub main {
 		redirect("$gSkin->{rootdir}/");
 		return;
 	}
+
+	# We really should have a $zoo_reader that we also pass to
+	# these functions. - Jamie
 
 	$ops->{$op}->{function}->($zoo, $constants, $user, $form, $slashdb, $gSkin);
 	my $r;

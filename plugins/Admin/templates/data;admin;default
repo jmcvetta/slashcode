@@ -128,7 +128,7 @@ CASE "not enough points" %]
 
 [% CASE "moderate_recent_message_returnto" %]
 	<P>Return to the set of
-	<A HREF="[% returnto %]">comments</A> you were just moderating.</P>
+	<A HREF="[% Slash.cleanRedirectUrl(returnto) %]">comments</A> you were just moderating.</P>
 
 [% CASE "no-mcd-stats" %]
 	<p>Looks like memcached is not running, it's turned off in vars,
@@ -139,4 +139,4 @@ CASE "not enough points" %]
 __seclev__
 10000
 __version__
-$Id: data;admin;default,v 1.12 2004/02/25 16:48:05 jamiemccarthy Exp $
+$Id: data;admin;default,v 1.13 2004/02/25 17:17:04 pudge Exp $

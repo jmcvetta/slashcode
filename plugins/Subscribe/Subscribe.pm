@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.14 2002/08/01 20:08:57 jamie Exp $
+# $Id: Subscribe.pm,v 1.15 2002/11/05 02:45:57 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -69,7 +69,8 @@ sub _subscribeDecisionPage {
 	return 0 if !$constants->{run_ads};
 
 	# Has the user exceeded the maximum number of pages they want
-	# to buy *today*?
+	# to buy *today*?  (Here is where the algorithm decides that
+	# "today" is a GMT day.)
 	my @gmt = gmtime;
 	my $today = sprintf("%04d%02d%02d", $gmt[5]+1900, $gmt[4]+1, $gmt[3]);
 	if ($today eq substr($user->{lastclick}, 0, 8)) {

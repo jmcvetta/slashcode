@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
-# this attempts top make sure there are no dependency conflicts.
+# this attempts to make sure there are no dependency conflicts.
 # run it every once in awhile if you care to.
 #
-# $Id: dependencies.plx,v 1.6 2003/08/29 22:08:02 pudge Exp $
+# $Id: dependencies.plx,v 1.7 2003/09/02 18:47:21 jamie Exp $
 #
 
 sub warner { warn @_ unless $_[0] =~ /(?:Use of uninitialized value|[Ss]ubroutine \S+ redefined)/ }

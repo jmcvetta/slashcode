@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.6 2002/02/25 23:24:48 brian Exp $
+# $Id: YASS.pm,v 1.7 2002/02/25 23:32:28 brian Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -55,7 +55,7 @@ sub getActive {
 		"story_param.sid as sid, story_param.value as url, title", 
 		"story_param, stories", 
 		"story_param.sid IN ($in_list) AND story_param.name = 'url' AND stories.sid = story_param.sid",
-		"ORDER BY title DESC");
+		"ORDER BY title ASC");
 
 	return $all;
 }

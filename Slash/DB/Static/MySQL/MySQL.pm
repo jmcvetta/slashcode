@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.111 2003/09/10 21:56:55 jamie Exp $
+# $Id: MySQL.pm,v 1.112 2003/10/09 02:51:26 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -948,7 +948,7 @@ sub fetchEligibleModerators_accesslog {
 	return $self->sqlSelectAllHashref(
 		"uid",
 		"uid, COUNT(*) AS c",
-		"accesslog USE INDEX (op_part)",
+		"accesslog FORCE INDEX (op_part)",
 		"op='article' OR op='comments'",
 		"GROUP BY uid
 		 HAVING c >= $hitcount");

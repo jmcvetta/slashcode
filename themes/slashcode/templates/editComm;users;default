@@ -218,7 +218,7 @@ __template__
 		<P><B>Comment Byte Limit</B> (number of bytes of comments
 		to display. If this is reached before comment limit, break
 		the page, else use above comment limit)<BR>
-		<INPUT TYPE="TEXT" NAME="bytelimit" SIZE="6" VALUE="[% user_edit.bytelimit %]">
+		[% bytelimit_select %]<br>
 
 		<P><B>Index Spill</B> (When an article has this many comments,
 		it switches to indexed mode)<BR>
@@ -290,4 +290,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.36 2003/08/05 16:33:41 pudge Exp $
+$Id: editComm;users;default,v 1.37 2003/08/05 17:57:07 pater Exp $

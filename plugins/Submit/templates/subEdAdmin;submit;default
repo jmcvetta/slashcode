@@ -59,10 +59,8 @@ __template__
 
 <P>
 
-<INPUT TYPE="SUBMIT" NAME="op" VALUE="Update">
-[% IF form.note == 'Quik' %]
-<INPUT TYPE="SUBMIT" NAME="op" VALUE="GenQuickies">
-[% END %]
+<INPUT TYPE="SUBMIT" NAME="op" VALUE="Delete">
+<INPUT TYPE="SUBMIT" NAME="op" VALUE="Merge">
 
 </FORM>
 
@@ -98,4 +96,4 @@ BLOCK sub_display -%]
 __seclev__
 10000
 __version__
-$Id: subEdAdmin;submit;default,v 1.15 2003/03/04 19:07:59 pudge Exp $
+$Id: subEdAdmin;submit;default,v 1.16 2003/05/16 19:24:58 pudge Exp $

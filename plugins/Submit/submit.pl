@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.80 2003/04/29 19:28:08 brian Exp $
+# $Id: submit.pl,v 1.81 2003/05/16 19:24:58 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -78,13 +78,13 @@ sub main {
 			seclev		=> $constants->{submiss_view} ? 0 : 100,
 			function	=> \&previewForm,
 		},
-		update		=> {
+		delete		=> {
 			seclev		=> 100,
-			function	=> \&updateSubmissions,
+			function	=> \&deleteSubmissions,
 		},
-		genquickies	=> {
+		merge		=> {
 			seclev		=> 100,
-			function	=> \&genQuickies,
+			function	=> \&mergeSubmissions,
 		},
 	};
 
@@ -133,9 +133,9 @@ sub main {
 }
 
 #################################################################
-sub updateSubmissions {
+sub deleteSubmissions {
 	my($constants, $slashdb, $user, $form) = @_;
-	my @subids = $slashdb->deleteSubmission();
+	my @subids = $slashdb->deleteSubmission;
 	submissionEd(@_, getData('updatehead', { subids => \@subids }));
 }
 
@@ -212,13 +212,22 @@ sub previewForm {
 }
 
 #################################################################
-sub genQuickies {
+sub mergeSubmissions {
 	my($constants, $slashdb, $user, $form) = @_;
-	my $submissions = $slashdb->getQuickies();
-	my $stuff = slashDisplay('genQuickies', { submissions => $submissions },
-		{ Return => 1, Nocomm => 1 });
-	$slashdb->setQuickies($stuff);
-	submissionEd(@_, getData('quickieshead'));
+
+	my $submissions = $slashdb->getSubmissionsMerge;
+	if (@$submissions) {
+		my $stuff = slashDisplay('mergeSub',
+			{ submissions => $submissions },
+			{ Return => 1, Nocomm => 1 }
+		);
+		$slashdb->setSubmissionsMerge($stuff);
+	}
+
+	# need to do this even if nothing is checked, so we update notes etc.
+	my @subids = $slashdb->deleteSubmission;
+
+	submissionEd(@_, getData('mergehead', { subids => \@subids }));
 }
 
 #################################################################
@@ -239,7 +248,7 @@ sub submissionEd {
 		$cur_section = $form->{section} || $def_section;
 	}
 	$cur_note	= $form->{note} || $def_note;
-	$sections = $slashdb->getSubmissionsSections();
+	$sections = $slashdb->getSubmissionsSections;
 
 	for (@$sections) {
 		my($section, $note, $cnt) = @$_;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.12 2003/03/04 19:56:31 pudge Exp $
+# $Id: DB.pm,v 1.13 2003/05/16 19:26:42 pudge Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -2216,7 +2216,7 @@ Fixed KEY.
 
 =back
 
-=head2 getQuickies(KEY)
+=head2 getSubmissionsMerge(KEY)
 
 I am the default documentation, short and stout.
 
@@ -2238,7 +2238,7 @@ Fixed KEY.
 
 =back
 
-=head2 setQuickies(KEY)
+=head2 setSubmissionsMerge(KEY)
 
 I am the default documentation, short and stout.
 

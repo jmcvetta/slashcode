@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.15 2002/02/23 20:56:06 jamie Exp $
+# $Id: Utility.pm,v 1.16 2002/03/18 21:54:24 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -243,9 +243,10 @@ sub sqlConnect {
 # Useful SQL Wrapper Functions
 ########################################################
 sub sqlSelectMany {
-	my($self, $select, $from, $where, $other) = @_;
+	my($self, $select, $from, $where, $other, $options) = @_;
 
-	my $sql = "SELECT $select ";
+	my $distinct = ($options && $options->{distinct}) ? "DISTINCT" : "";
+	my $sql = "SELECT $distinct $select ";
 	$sql .= "   FROM $from " if $from;
 	$sql .= "  WHERE $where " if $where;
 	$sql .= "        $other" if $other;

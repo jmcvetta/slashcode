@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.18 2004/12/09 04:41:39 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.19 2004/12/14 17:53:15 jamiemccarthy Exp $
 
 use strict;
 
@@ -499,6 +499,7 @@ my $next_report_bad_dbs = $^T + 60;
 sub possible_check_dbs {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
+	return if $hushed;
 	if (!$task_exit_flag && time() >= $next_check_dbs) {
 		$next_check_dbs = time() + 20;
 		my $dbs = $slashdb->getDBs();

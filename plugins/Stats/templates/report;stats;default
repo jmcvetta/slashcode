@@ -111,6 +111,7 @@ gstatic total:        -          -    [% ints(stats_data.grand_total_static) %]
 [%
       PROCESS graphs gtitle => 'Pages';
       PROCESS graphs gtitle => 'Hits';
+      PROCESS graphs gtitle => 'Total Users';
       PROCESS graphs gtitle => 'Comment Scores';
       PROCESS graphs gtitle => 'Total Bytes';
       PROCESS graphs gtitle => 'Section Pages';
@@ -187,6 +188,10 @@ current subscribers: [% ints3(stats_data.subscribers_current) %]
   new subscriptions: [% ints3(stats_data.subscribe_new_users) %]
 </PRE> 
 [%
+      PROCESS graphs gtitle => 'New Subscriptions';
+      PROCESS graphs gtitle => 'Total Subscribers';
+      PROCESS graphs gtitle => 'Total Renewing Subscribers';
+      PROCESS graphs gtitle => 'Subscriber Pages';
       END;
 END %]
 
@@ -206,4 +211,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.26 2003/05/13 14:49:33 pudge Exp $
+$Id: report;stats;default,v 1.27 2003/05/13 19:04:36 pudge Exp $

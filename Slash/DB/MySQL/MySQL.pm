@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.748 2004/12/20 22:58:33 pudge Exp $
+# $Id: MySQL.pm,v 1.749 2005/01/04 21:06:17 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.748 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.749 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7456,8 +7456,6 @@ sub getCommentsForUser {
 	$where .= " AND points > pointsorig " if $options->{only_upmodded};
 
 	my $comments = $self->sqlSelectAllHashrefArray($select, $tables, $where, $other);
-
-	my $archive = $cache_read_only;
 
 	return $comments;
 }

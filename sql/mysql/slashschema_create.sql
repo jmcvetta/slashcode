@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.184 2004/11/25 04:01:45 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.185 2005/01/04 21:07:56 jamiemccarthy Exp $
 #
 
 #
@@ -1337,7 +1337,7 @@ CREATE TABLE vars (
 ALTER TABLE backup_blocks ADD FOREIGN KEY (bid) REFERENCES blocks(bid);
 ALTER TABLE comment_text ADD FOREIGN KEY (cid) REFERENCES comments(cid);
 #ALTER TABLE discussions ADD FOREIGN KEY (topic) REFERENCES topics(tid);
-ALTER TABLE metamodlog ADD FOREIGN KEY (mmid) REFERENCES moderatorlog(id);
+#ALTER TABLE metamodlog ADD FOREIGN KEY (mmid) REFERENCES moderatorlog(id);
 ALTER TABLE pollquestions ADD FOREIGN KEY (discussion) REFERENCES discussions(id);
 ALTER TABLE pollquestions ADD FOREIGN KEY (uid) REFERENCES users(uid);
 # This doesn't work, makes createStory die

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.340 2003/03/03 17:02:17 jamie Exp $
+# $Id: MySQL.pm,v 1.341 2003/03/04 01:19:02 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.340 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.341 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3519,7 +3519,10 @@ sub getAccessList {
 	my $max = $min + 100;
 
 	my $where = "$flag = 1";
-	$self->sqlSelectAll('ts, uid, ipid, subnetid, formname, reason', 'accesslist', $where, "ORDER BY ts DESC LIMIT $min, $max");
+	$self->sqlSelectAll('ts, uid, ipid, subnetid, formname, reason',
+		'accesslist',
+		$where,
+		"ORDER BY ts DESC LIMIT $min, $max");
 }
 
 ##################################################################
@@ -3551,45 +3554,55 @@ sub getAccessListInfo {
 
 	my $constants = getCurrentStatic();
 	my $ref = {};
-	my $aclinfo = {};
-	my $where = '';
+	my $where_ary;
 
 	if ($user_check) {
 		if ($user_check->{uid} =~ /^\d+$/ && !isAnon($user_check->{uid})) {
-			$where = "uid = $user_check->{uid}";
+			$where_ary = [ "uid = $user_check->{uid}" ];
 		} elsif ($user_check->{md5id}) {
-			$where = "(ipid = '$user_check->{md5id}' OR subnetid = '$user_check->{md5id}')";
+			$where_ary = [
+				"ipid = '$user_check->{md5id}'",
+				"subnetid = '$user_check->{md5id}'",
+			];
 		} elsif ($user_check->{ipid}) {
-			$where = "ipid = '$user_check->{ipid}'";
+			$where_ary = [ "ipid = '$user_check->{ipid}'" ];
 		} elsif ($user_check->{subnetid}) {
-			$where = "subnetid = '$user_check->{subnetid}'";
+			$where_ary = [ "subnetid = '$user_check->{subnetid}'" ];
 		} else {
 			return {};
 		}
 	} else {
 		$user_check = $self->getCurrentUser();
-		$where = "(ipid = '$user_check->{ipid}' OR subnetid = '$user_check->{subnetid}')";
+		$where_ary = [
+			"ipid = '$user_check->{ipid}'",
+			"subnetid = '$user_check->{subnetid}'",
+		];
 	}
 
-	if ($column eq 'isbanned') {
-		$where .= " AND (isbanned = 1 OR wasbanned = 1)";
-	} else {
-		$where .= " AND (readonly = 1 OR wasreadonly = 1) AND formname = '$formname' AND reason != 'expired'";
+	for my $where (@$where_ary) {
+		if ($column eq 'isbanned') {
+			$where .= " AND (isbanned = 1 OR wasbanned = 1)";
+		} else {
+			$where .= " AND (readonly = 1 OR wasreadonly = 1) AND formname = '$formname' AND reason != 'expired'";
+		}
 	}
 	
-
-	$ref = $self->sqlSelectAll("reason, ts", 'accesslist', $where);
+	my $aclinfo = {};
 	$aclinfo->{reason} = '';
-
-	for (@$ref) {
-		if ($aclinfo->{reason} eq '') {
-			$aclinfo->{reason}   = $_->[0];
-			$aclinfo->{datetime} = $_->[1];
-		} elsif ($aclinfo->{reason} ne $_->[0]) {
-			$aclinfo->{reason}   = 'multiple';
-			$aclinfo->{datetime} = 'multiple';
-
-			return $aclinfo;
+	for my $where (@$where_ary) {
+		$ref = $self->sqlSelectAll("reason, ts", 'accesslist', $where);
+		for my $row (@$ref) {
+			if ($aclinfo->{reason} eq '') {
+				$aclinfo->{reason}   = $row->[0];
+				$aclinfo->{datetime} = $row->[1];
+			} elsif ($aclinfo->{reason} ne $row->[0]) {
+				$aclinfo->{reason}   = 'multiple';
+				$aclinfo->{datetime} = 'multiple';
+				# At this point we're done, since the
+				# reason and time can't change anymore,
+				# so short-circuit out of the loop.
+				return $aclinfo;
+			}
 		}
 	}
 

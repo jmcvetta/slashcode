@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.23 2002/06/01 22:59:41 jamie Exp $
+# $Id: article.pl,v 1.24 2002/06/17 14:44:35 pudge Exp $
 
 use strict;
 use Slash;
@@ -52,8 +52,9 @@ sub main {
 
 		my $links = {
 			title	=> $title,
+			story	=> $story,
 			'link'	=> {
-				section	=> $SECT->{title},
+				section	=> $SECT,
 				prev	=> $prev,
 				'next'	=> $next,
 				author	=> $story->{uid},

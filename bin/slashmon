@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashmon,v 1.30 2004/11/23 20:18:16 pudge Exp $
+# $Id: slashmon,v 1.31 2004/11/25 12:48:37 jamiemccarthy Exp $
 
 use File::Basename;
 use Getopt::Std;
@@ -29,7 +29,7 @@ use vars qw(
 	$lines_since_header
 );
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 init();
 run();
@@ -66,16 +66,11 @@ sub init {
 	my $dbs = $slashdb->getDBs;
 
 	my %vus_hash = ( );
-	my @types = sort keys %$dbs;
-	for my $type (@types) {
-		my @dbids_usable =
-		        sort { $a <=> $b }
-			grep { $dbs->{$type}{$_}{weight_total} > 0 }
-			keys %{ $dbs->{$type} };
-		for my $dbid (@dbids_usable) {
-			my $vu = $dbs->{$type}{$dbid}{virtual_user};
-			$vus_hash{$vu} = 1;
-		}
+	my @dbids = sort { $a <=> $b } keys %$dbs;
+	my @dbids_usable = grep { $dbs->{$_}{weight_total} > 0 } @dbids;
+	for my $dbid (@dbids_usable) {
+		my $vu = $dbs->{$dbid}{virtual_user};
+		$vus_hash{$vu} = 1;
 	}
 
 	my $vus = [ (

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.22 2005/02/08 18:37:34 tvroom Exp $
+# $Id: ircslash.pl,v 1.23 2005/03/11 00:08:14 pudge Exp $
 
 use strict;
 
@@ -308,7 +308,7 @@ sub cmd_daddypants {
 
 	if ($info->{text} =~ /^\s*([a-zA-Z]+)/) {
 		$args{when} = $1;
-	} elsif ($info->{text} =~ /^\s*(\d+\s+days)/) {
+	} elsif ($info->{text} =~ /^\s*(-?\d+\s+(?:minute|hour|day)s?)/) {
 		$args{when} = $1;
 	} elsif ($info->{text} && $info->{text} =~ /^(-?\d+)/) {
 		$args{time} = $info->{text};

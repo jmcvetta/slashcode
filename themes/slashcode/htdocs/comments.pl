@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.119 2003/02/07 21:51:04 jamie Exp $
+# $Id: comments.pl,v 1.120 2003/02/11 16:27:44 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1639,7 +1639,7 @@ sub send_mod_msg {
 			reasons		=> $slashdb->getReasons(),
 		};
 		$messages->create($users->[0],
-			MSG_CODE_COMMENT_MODERATE, $data, 0, '', 'defer'
+			MSG_CODE_COMMENT_MODERATE, $data, 0, '', 'collective'
 		);
 	}
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.4 2001/12/12 05:58:45 jamie Exp $
+# $Id: Anchor.pm,v 1.5 2001/12/21 18:28:45 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -305,7 +305,7 @@ sub getAd {
 	my $constants = getCurrentStatic();
 	if ($constants->{subscribe}) {
 		my $subscribe = getObject('Slash::Subscribe');
-		if ($subscribe and $subscribe->buyingThisPage()) {
+		if ($subscribe and $subscribe->adlessPage()) {
 			return "\n<!-- subscriber, no ad -->\n";
 		}
 	}
@@ -373,4 +373,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.4 2001/12/12 05:58:45 jamie Exp $
+$Id: Anchor.pm,v 1.5 2001/12/21 18:28:45 jamie Exp $

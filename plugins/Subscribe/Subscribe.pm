@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.2 2001/12/12 05:58:45 jamie Exp $
+# $Id: Subscribe.pm,v 1.3 2001/12/21 18:28:45 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -31,11 +31,9 @@ sub new {
 }
 
 ########################################################
-# Called during an Apache request.  If the caller happens to have
-# Apache->request already, pass it in and it'll be used, otherwise
-# it'll just be generated.
-sub buyingThisPage {
-	my($self, $r) = @_;
+# Internal.
+sub _subscribeDecisionPage {
+	my($self, $trueOnOther, $r) = @_;
 
         my $user = getCurrentUser();
 	my $uid = $user->{uid} || 0;
@@ -47,7 +45,7 @@ sub buyingThisPage {
                 || ( $user->{hits_bought}
 			&& $user->{hits_bought} >= $user->{hits_paidfor} );
 
-	my $buying = 0;
+	my $decision = 0;
         $r ||= Apache->request;
         my $uri = $r->uri;
         if ($uri eq '/') {
@@ -56,18 +54,28 @@ sub buyingThisPage {
                 $uri =~ s{^.*/([^/]+)\.pl$}{$1};
         }
 	if ($uri =~ /^(index|article|comments)$/) {
-		$buying = 1 if $user->{"buypage_$uri"};
-	} else {
-		$buying = 1 if $user->{buypage_index}
+		$decision = 1 if $user->{"buypage_$uri"};
+	} elsif ($trueOnOther) {
+		$decision = 1 if $user->{buypage_index}
 			or $user->{buypage_article}
 			or $user->{buypage_comments};
 	}
 	if (getCurrentStatic('subscribe_debug')) {
-		print STDERR "buyingThisPage $buying $user->{uid}"
+		print STDERR "_subscribeDecisionPage $trueOnOther $decision $user->{uid}"
 			. " $user->{hits_bought} $user->{hits_paidfor}"
 			. " uri '$uri'\n";
 	}
-	return $buying;
+	return $decision;
+}
+
+sub adlessPage {
+	my($self, $r) = @_;
+	return $self->_subscribeDecisionPage(1, $r);
+}
+
+sub buyingThisPage {
+	my($self, $r) = @_;
+	return $self->_subscribeDecisionPage(0, $r);
 }
 
 1;

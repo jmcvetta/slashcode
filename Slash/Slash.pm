@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.151 2003/07/15 21:22:14 jamie Exp $
+# $Id: Slash.pm,v 1.152 2003/07/15 23:28:17 jamie Exp $
 
 package Slash;
 
@@ -615,7 +615,7 @@ sub printComments {
 		? 1 : 0;
 
 	# loop here, pull what cids we can
-	my $cids_needed_ar = $user->{state}{cids};
+	my $cids_needed_ar = $user->{state}{cids} || [ ];
 	my $mcd_debug = { start_time => Time::HiRes::time }
 		if $constants->{memcached_debug};
 	$mcd_debug->{total} = scalar @$cids_needed_ar if $mcd_debug;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.22 2002/09/04 22:52:40 brian Exp $
+# $Id: zoo.pl,v 1.23 2002/09/05 02:56:33 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -151,7 +151,7 @@ sub friends {
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $friends = $zoo->getFriends($uid); 
-	my $friends = $zoo->getRelationships($user->{uid}, FRIEND);
+	my $friends = $zoo->getRelationships($uid, FRIEND);
 		
 	if ($form->{content_type} eq 'rss') {
 		_rss($friends, $nick, 'friends');
@@ -188,7 +188,7 @@ sub fof {
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $friends = $zoo->getFof($uid); 
-	my $friends = $zoo->getRelationships($user->{uid}, FOF);
+	my $friends = $zoo->getRelationships($uid, FOF);
 		
 	if ($form->{content_type} eq 'rss') {
 		_rss($friends, $nick, 'fof');
@@ -225,7 +225,7 @@ sub enof {
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $friends = $zoo->getEof($uid); 
-	my $friends = $zoo->getRelationships($user->{uid}, EOF);
+	my $friends = $zoo->getRelationships($uid, EOF);
 		
 	if ($form->{content_type} eq 'rss') {
 		_rss($friends, $nick, 'friends');
@@ -262,7 +262,7 @@ sub foes {
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $foes = $zoo->getFoes($uid); 
-	my $foes = $zoo->getRelationships($user->{uid}, FOE);
+	my $foes = $zoo->getRelationships($uid, FOE);
 
 	if ($form->{content_type} eq 'rss') {
 		_rss($foes, $nick, 'foes');
@@ -298,7 +298,7 @@ sub fans {
 	}
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $fans = $zoo->getFans($uid);
-	my $fans = $zoo->getRelationships($user->{uid}, FAN);
+	my $fans = $zoo->getRelationships($uid, FAN);
 
 	if ($form->{content_type} eq 'rss') {
 		_rss($fans, $nick, 'fans');
@@ -333,7 +333,7 @@ sub freaks {
 	}
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	#my $freaks = $zoo->getFreaks($uid);
-	my $freaks = $zoo->getRelationships($user->{uid}, FREAK);
+	my $freaks = $zoo->getRelationships($uid, FREAK);
 
 	if ($form->{content_type} eq 'rss') {
 		_rss($freaks, $nick, 'freaks');

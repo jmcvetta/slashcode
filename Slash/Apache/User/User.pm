@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.11 2001/11/30 05:46:43 pudge Exp $
+# $Id: User.pm,v 1.12 2001/12/05 17:24:10 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -327,6 +327,14 @@ sub userdir_handler {
 				$r->filename($constants->{basedir} . '/users.pl');
 			} elsif ($op eq 'password') {
 				$r->args("op=changepasswd");
+				$r->uri('/users.pl');
+				$r->filename($constants->{basedir} . '/users.pl');
+			} elsif ($op eq 'logout') {
+				$r->args("op=userclose");
+				$r->uri('/users.pl');
+				$r->filename($constants->{basedir} . '/users.pl');
+			} elsif ($op eq 'misc') {
+				$r->args("op=editmiscopts");
 				$r->uri('/users.pl');
 				$r->filename($constants->{basedir} . '/users.pl');
 			} else {

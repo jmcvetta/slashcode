@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.19 2003/03/04 19:56:32 pudge Exp $
+# $Id: MySQL.pm,v 1.20 2003/03/14 19:08:20 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -439,7 +439,7 @@ sub _getMailingUsers {
 	my $users  = $self->_getMailingUsersRaw($code);
 	my $fields = [qw(
 		realemail exsect extid exaid
-		sectioncollapse daily_mail_special
+		sectioncollapse daily_mail_special seclev
 	)];
 	$users     = { map { $_ => $self->getUser($_, $fields) } @$users };
 	return $users;

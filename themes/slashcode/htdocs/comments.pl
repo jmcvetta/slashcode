@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.125 2003/03/14 16:11:44 jamie Exp $
+# $Id: comments.pl,v 1.126 2003/03/14 19:08:20 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1643,8 +1643,7 @@ sub send_mod_msg {
 		my $discussion = $slashdb->getDiscussion($sid);
 		if ($discussion->{sid}) {
 			# Story discussion, link to it.
-			$discussion->{realurl} =
-				"$constants->{absolutedir}/article.pl?sid=$discussion->{sid}";
+			$discussion->{realurl} = "/article.pl?sid=$discussion->{sid}";
 		} else {
 			# Some other kind of discussion,
 			# probably poll, journal entry, or
@@ -1655,8 +1654,7 @@ sub send_mod_msg {
 			# for journal.pl or pollBooth.pl etc.,
 			# but that is not great.  maybe a field in discussions
 			# for whether or not url is trusted. -- pudge
-			$discussion->{realurl} =
-				"$constants->{absolutedir}/comments.pl?sid=$discussion->{id}";
+			$discussion->{realurl} = "/comments.pl?sid=$discussion->{id}";
 		}
 
 		my $data  = {

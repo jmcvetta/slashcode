@@ -25,14 +25,14 @@ __template__
 
 [% reply.nickname %] has posted a comment in reply to your journal entry.
     [% reply.subject | decode_entities %]
-    [% constants.absolutedir %]/comments.pl?sid=[% reply.sid %]&cid=[% reply.cid %]
+    [% absolutedir %]/comments.pl?sid=[% reply.sid %]&cid=[% reply.cid %]
 
 Attached to:
     [% discussion.title | decode_entities %]
-    [% Slash.url2abs(discussion.url) %]
+    [% Slash.url2abs(discussion.url, absolutedir) %]
 
 [% END %]
 __seclev__
 500
 __version__
-$Id: journrep;comments;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: journrep;comments;default,v 1.5 2003/03/14 19:08:20 pudge Exp $

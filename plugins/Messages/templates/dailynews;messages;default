@@ -26,7 +26,7 @@ In this issue:[% FOR story = stories.reverse %]
 	IF constants.use_dept;
 		box("  from the $story.dept dept.");
 	END;
-	thisurl = Slash.db.getSection(story.section, 'url') || constants.absolutedir;
+	thisurl = Slash.url2abs(Slash.db.getSection(story.section, 'rootdir'), absolutedir) || absolutedir;
 
 	stime = Slash.timeCalc(story.time, "%A %B %d, @%H:%M");
 	box("  posted by $story.author on $stime ($topicname)");
@@ -57,4 +57,4 @@ Copyright 1997-2003 [% constants.sitepublisher %].  All rights reserved.
 __seclev__
 500
 __version__
-$Id: dailynews;messages;default,v 1.9 2003/03/04 19:56:32 pudge Exp $
+$Id: dailynews;messages;default,v 1.10 2003/03/14 19:08:20 pudge Exp $

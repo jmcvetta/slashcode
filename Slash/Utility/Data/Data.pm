@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.76 2003/03/10 19:10:27 pudge Exp $
+# $Id: Data.pm,v 1.77 2003/03/14 19:08:20 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -193,6 +193,7 @@ Fixed URL.
 
 sub url2abs {
 	my($url, $base) = @_;
+	my $newurl;
 
 	# set base only if not already set, and rootdir exists
 	if (!$base && getCurrentStatic('rootdir')) {
@@ -200,12 +201,14 @@ sub url2abs {
 	}
 
 	if ($base) {
-		$url = URI->new_abs($url, $base)->canonical->as_string;
+		$newurl = URI->new_abs($url, $base)->canonical->as_string;
 	} elsif ($url !~ m|^https?://|i) {	# no base or rootdir, best we can do
-		$url =~ s|^/*|/|;
+		$newurl =~ s|^/*|/|;
 	}
 
-	return $url;
+	$newurl =~ s|/$|| if $url !~ m|/$|;
+
+	return $newurl;
 }
 
 #========================================================================
@@ -2811,4 +2814,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.76 2003/03/10 19:10:27 pudge Exp $
+$Id: Data.pm,v 1.77 2003/03/14 19:08:20 pudge Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.172 2004/10/19 18:37:55 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.173 2004/10/23 18:23:35 jamiemccarthy Exp $
 #
 
 #
@@ -1145,16 +1145,6 @@ CREATE TABLE users_comments (
 	threshold tinyint DEFAULT '0' NOT NULL,
 	PRIMARY KEY (uid)
 ) TYPE=InnoDB;
-
-#
-# Table structure for table 'users_count'
-#
-
-DROP TABLE IF EXISTS users_count;
-CREATE TABLE users_count (
-	uid mediumint UNSIGNED NOT NULL,
-	PRIMARY KEY (uid)
-) TYPE=MyISAM;
 
 #
 # Table structure for table 'users_hits'

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.53 2004/10/22 18:12:43 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.54 2004/10/23 18:23:34 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -27,6 +27,7 @@ $task{$me}{code} = sub {
 	my $vu = "virtual_user=$virtual_user";
 	my $args = "$vu ssi=yes";
 	my %dirty_skins = ( );
+	my $stories;
 
 	# Every tenth invocation, we do a big chunk of work.  The other
 	# nine times, we update the top three stories and the front
@@ -66,7 +67,11 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	my $stories;
+	############################################################
+	# users_count update (memcached and var)
+	############################################################
+
+	$slashdb->countUsers({ write_actual => 1 });
 
 	############################################################
 	# story_topics_rendered updates

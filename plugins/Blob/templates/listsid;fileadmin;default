@@ -31,3 +31,5 @@ File to upload: <INPUT TYPE="FILE" NAME="file_content"><BR>
 
 __seclev__
 10000
+__version__
+$Id: listsid;fileadmin;default,v 1.2 2003/07/01 21:22:34 pudge Exp $

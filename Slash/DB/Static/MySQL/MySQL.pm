@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.6 2001/04/24 17:17:51 brian Exp $
+# $Id: MySQL.pm,v 1.7 2001/04/25 02:41:56 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use Slash::Utility;
 use URI ();
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Bite my shiny, metal ass! 
 
@@ -78,13 +78,13 @@ sub setStoryIndex {
 	for my $sid (@sids) {
 		$stories{$sid} = $self->sqlSelectHashref("*","stories","sid='$sid'");
 	}
-	$self->{_dbh}->sqlTransactionStart("LOCK TABLES newstories WRITE");
+	$self->sqlTransactionStart("LOCK TABLES newstories WRITE");
 
 	foreach my $sid (keys %stories) {
 		$self->sqlReplace("newstories", $stories{$sid}, "sid='$sid'");
 	}
 
-	$self->{_dbh}->sqlTransactionFinish();
+	$self->sqlTransactionFinish();
 }
 
 ########################################################

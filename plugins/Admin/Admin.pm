@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.5 2002/12/13 01:43:25 jamie Exp $
+# $Id: Admin.pm,v 1.6 2003/01/17 01:31:23 jamie Exp $
 
 package Slash::Admin;
 
@@ -15,7 +15,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -35,8 +35,23 @@ sub new {
 }
 
 sub getAccesslogMaxID {
-	my ($self) = @_;
-	return  $self->sqlSelect("max(id)", "accesslog");
+	my($self) = @_;
+	return $self->sqlSelect("MAX(id)", "accesslog");
+}
+
+sub getRecentSubs {
+	my($self, $startat) = @_;
+	my $slashdb = getCurrentDB();
+	my $subs = $slashdb->sqlSelectAllHashrefArray(
+		"spid, subscribe_payments.uid,
+		 nickname,
+		 email, ts, payment_gross, pages,
+		 transaction_id, method",
+		"subscribe_payments, users",
+		"subscribe_payments.uid=users.uid",
+		"ORDER BY spid DESC
+		 LIMIT $startat, 30");
+	return $subs;
 }
 
 sub getAccesslogAbusersByID {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.123 2003/01/13 20:56:22 brian Exp $
+# $Id: admin.pl,v 1.124 2003/01/17 01:31:23 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -141,6 +141,12 @@ sub main {
 			seclev		=> 500,
 			adminmenu	=> 'info',
 			tab_selected	=> 'requests',
+		},
+		recent_subs		=> {
+			function	=> \&displayRecentSubs,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'subs',
 		},
 	};
 
@@ -1730,6 +1736,20 @@ sub displayRecentRequests {
 		thresh_hps	=> $options->{thresh_hps},
 		data		=> $data,
 		select_secs	=> sprintf("%0.3f", $duration),
+	});
+}
+
+##################################################################
+sub displayRecentSubs {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	my $admindb = getObject("Slash::Admin",
+		$constants->{backup_db_user} || $constants->{log_db_user});
+
+	my $startat = $form->{startat} || 0;
+	my $subs = $admindb->getRecentSubs($startat);
+	slashDisplay('recent_subs', {
+		subs		=> $subs,
 	});
 }
 

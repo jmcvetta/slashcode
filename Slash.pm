@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.37 2000/07/10 18:55:24 pudge Exp $
+#  $Id: Slash.pm,v 1.38 2000/07/10 21:37:34 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1363,7 +1363,7 @@ sub fixurl {
 	# different char set if destined to be a query string parameter
 	if ($parameter) {
 		$url =~ s/([^\w.!*'(),;:@\$\/% -])/sprintf "%%%02X", ord $1/ge;
-		$url =~ s/ /+/g;
+		$url =~ s/ /%20/g;
 	} else {
 		$url =~ s/[" ]//g;
 		$url =~ s/^'(.+?)'$/$1/g;

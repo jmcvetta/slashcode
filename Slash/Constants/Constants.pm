@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.10 2002/02/08 20:25:54 brian Exp $
+# $Id: Constants.pm,v 1.11 2002/02/25 15:48:38 pudge Exp $
 
 package Slash::Constants;
 
@@ -29,7 +29,7 @@ use strict;
 use base 'Exporter';
 use vars qw(@ISA $VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS %CONSTANTS);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 constants();
 @EXPORT		= qw();
@@ -111,6 +111,16 @@ These constants are for message delivery modes and message type codes.
 
 # -2 -1 0 1 2 3 4 5 6 7 8 9
 
+=pod
+
+	MSG_IUM_ANYONE
+	MSG_IUM_FRIENDS
+	MSG_IUM_NOFOES
+
+=cut
+
+# 1 2 3
+	
 =head2 web
 
 These constants are used for web programs, for the op hashes.
@@ -124,8 +134,12 @@ These constants are used for web programs, for the op hashes.
 
 =head2 strip
 
-These constants are used to define the modes passed to stripByMode().
+These constants are used to define the modes passed to stripByMode().  Only
+user-definable constants (for journals, comments) should be E<gt>= 1.  All
+else should be E<lt> 1.  If adding new user-definable modes, make sure to
+change Slash::Data::strip_mode() to allow the new value.
 
+	ANCHOR
 	NOTAGS
 	ATTRIBUTE
 	LITERAL
@@ -134,11 +148,10 @@ These constants are used to define the modes passed to stripByMode().
 	HTML
 	EXTRANS
 	CODE
-	ANCHOR
 
 =cut
 
-# -3 -2 -1 0 1 2 3 4 5
+# -4 -3 -2 -1 0 1 2 3 4
 
 =head2 people
 
@@ -169,4 +182,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.10 2002/02/08 20:25:54 brian Exp $
+$Id: Constants.pm,v 1.11 2002/02/25 15:48:38 pudge Exp $

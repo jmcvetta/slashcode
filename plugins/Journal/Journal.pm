@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.28 2002/12/11 05:48:26 pudge Exp $
+# $Id: Journal.pm,v 1.29 2003/01/10 16:54:50 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -185,7 +185,7 @@ sub top {
 	my($self, $limit) = @_;
 	$limit ||= getCurrentStatic('journal_top') || 10;
 	my $sql;
-	$sql .= "SELECT count(j.uid) as c, u.nickname, j.uid, max(date)";
+	$sql .= "SELECT count(j.uid) as c, u.nickname, j.uid, max(date), j.description";
 	$sql .= " FROM journals as j,users as u WHERE ";
 	$sql .= " j.uid = u.uid";
 	$sql .= " GROUP BY u.nickname ORDER BY c DESC";

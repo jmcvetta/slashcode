@@ -2,8 +2,8 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.20 2003/06/18 14:10:37 jamie Exp $
-# Based on Cliff's createTestComments, bugs are probably his fault
+# $Id: createTestStories,v 1.21 2003/08/18 17:13:12 jamie Exp $
+# Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
 	{
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -85,9 +85,18 @@ $constants = getCurrentStatic();
 		my $time = UnixDate(ParseDateString(
 			"epoch ".get_time($opts{t})),
 			"%Y-%m-%d %H-%M-%S");
-		my $displaystatus = (rand(1) < 0.7) ? 0 : ((rand(1) < 0.9) ? 1 : -1);
 		my $tid = getRandomTopicID();
 		my $section = getRandomSection();
+		my $displaystatus = 0;
+		if ($section =~ /^(articles|index)$/) {
+			if (rand(1) < 0.1) {
+				$displaystatus = -1;
+			}
+		} elsif (rand(1) < 0.7) {
+			$displaystatus = 1;
+		} elsif (rand(1) < 0.1) {
+			$displaystatus = -1;
+		}
 
 		my $story = {
 			subid		=> '',
@@ -170,12 +179,22 @@ sub getRandomTopicID {
 
 sub getRandomSection {
 	# Yes, inefficient.  I do not care.
-	my $sections = $slashdb->sqlSelectAll("section", "sections", "1=1 AND type='contained'", "ORDER BY RAND()");
-	my @sections = map { $_->[0] } @$sections;
-	my $num = rand @sections;
-	$num = 0 if rand(1) < 1/3;
-        my $rand_section = $sections[$num];
-        return $rand_section;
+	my $sections = $slashdb->sqlSelectAll(
+		"section, hostname",
+		"sections",
+		"type='contained' AND index_handler='index.pl'");
+	my @sections = ( );
+	for my $sect (@$sections) {
+		push @sections, $sect->[0];
+		if (!$sect->[1]) {
+			# Sections with no hostname are probably 'articles'
+			# and are more likely to be chosen.
+			for (1..8) {
+				push @sections, $sect->[0];
+			}
+		}
+	}
+	return $sections[rand @sections];
 }
 
 sub getRandomUserID {

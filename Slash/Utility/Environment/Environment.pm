@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.74 2003/03/04 19:56:32 pudge Exp $
+# $Id: Environment.pm,v 1.75 2003/03/06 03:54:59 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1169,8 +1169,9 @@ sub prepareUser {
 	$slashdb = getCurrentDB();
 	$constants = getCurrentStatic();
 
+	my $r;
 	if ($ENV{GATEWAY_INTERFACE}) {
-		my $r = Apache->request;
+		$r = Apache->request;
 		$hostip = $r->connection->remote_ip;
 	} else {
 		$hostip = '';
@@ -1288,8 +1289,12 @@ sub prepareUser {
 
 	if ($constants->{subscribe}
 		&& $user->{hits_paidfor}
-		&& $user->{hits_bought} < $user->{hits_paidfor}) {
+		&& $user->{hits_bought} < $user->{hits_paidfor}
+	) {
 		$user->{is_subscriber} = 1;
+		if (my $subscribe = getObject('Slash::Subscribe')) {
+			$user->{state}{plummy_page} = $subscribe->plummyPage($r);
+		}
 	}
 
 	if ($user->{seclev} >= 100) {
@@ -2088,4 +2093,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.74 2003/03/04 19:56:32 pudge Exp $
+$Id: Environment.pm,v 1.75 2003/03/06 03:54:59 jamie Exp $

@@ -98,7 +98,7 @@ __template__
 	[% END %]
 
 		<INPUT TYPE="submit" NAME="op" VALUE="Change">
-		[% UNLESS user.state.discussion_archived %]
+		[% UNLESS user.state.discussion_archived || user.state.discussion_future_nopost %]
 			<INPUT TYPE="submit" NAME="op" VALUE="Reply">
 		[% END %]
 		</FONT>
@@ -118,4 +118,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.14 2003/03/04 19:07:59 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.15 2003/03/06 03:54:59 jamie Exp $

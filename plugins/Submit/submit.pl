@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.104 2004/11/30 18:24:53 tvroom Exp $
+# $Id: submit.pl,v 1.105 2004/12/07 17:07:08 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -448,7 +448,7 @@ sub displayForm {
 	}
 
 	my $skins = $slashdb->getSkins();
-	my $topic_values = $slashdb->getDescriptions('topics-submittable');
+	my $topic_values = $slashdb->getDescriptions('non_nexus_topics-submittable');
 	my $skin_values = $slashdb->getDescriptions('skins-submittable');
 
 	$form->{tid} ||= 0;

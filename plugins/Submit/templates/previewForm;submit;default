@@ -95,7 +95,7 @@ TITLE="[% topic.textname %]"></A>
 	[% END %]
 		<BR>
 	[% Slash.createSelect('primaryskid', Slash.db.getDescriptions('skins'), submission.primaryskid, 1, 0, 1) %]
-	[% Slash.createSelect('tid', Slash.db.getDescriptions('topics-submittable'), submission.tid, 1, 0, 1) %]
+	[% Slash.createSelect('tid', Slash.db.getDescriptions('highlighted-topics-submittable'), submission.tid, 1, 0, 1) %]
 
 		<INPUT TYPE="submit" NAME="op" VALUE="preview"><BR>
 		<BR>Intro Copy<BR>
@@ -134,4 +134,4 @@ TITLE="[% topic.textname %]"></A>
 __seclev__
 10000
 __version__
-$Id: previewForm;submit;default,v 1.42 2004/11/20 00:12:37 jamiemccarthy Exp $
+$Id: previewForm;submit;default,v 1.43 2004/12/07 17:07:08 tvroom Exp $

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.3 2000/05/17 22:55:28 pudge Exp $
+#  $Id: Slash.pm,v 1.4 2000/05/20 01:45:57 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use CGI ();
@@ -1917,7 +1917,7 @@ EOT
 			}
 		}
 		print qq!\t</TD></TR>\n\t<TR><TD BGCOLOR="$I{bg}[2]" ALIGN="CENTER">\n!;
-		print "\t\t&lt;&lt", linkComment($comments->[$p], 1) if $p;
+		print "\t\t&lt;&lt;", linkComment($comments->[$p], 1) if $p;
 		print ' | ', linkComment($comments->[$pid], 1) if $C->{pid};
 		print ' | ', linkComment($comments->[$n], 1), "&gt;&gt;\n" if $n;
 		print qq!\t</TD></TR>\n\t<TR><TD ALIGN="CENTER">!;
@@ -2144,11 +2144,9 @@ sub dispComment  {
 <B><FONT SIZE="${\( $I{fontbase} + 2 )}">($C->{fakeemail})</FONT></B>
 EOT
 
-	$C->{nickname} =~ s/ /+/g;
-
-	(my $anon_name = $I{anon_name}) =~ s/ /+/g;
-	my $userinfo = <<EOT unless $C->{nickname} eq $anon_name;
-(<A HREF="$I{rootdir}/users.pl?op=userinfo\&nick=$C->{nickname}">User Info</A>)
+	(my $nickname  = $C->{nickname}) =~ s/ /+/g;
+	my $userinfo = <<EOT unless $C->{nickname} eq $I{anon_name};
+(<A HREF="$I{rootdir}/users.pl?op=userinfo\&nick=$nickname">User Info</A>)
 EOT
 
 	my $userurl = qq!<A HREF="$C->{homepage}">$C->{homepage}</A><BR>!

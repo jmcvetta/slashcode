@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Writer.pm,v 1.1 2002/09/20 19:31:27 brian Exp $
+# $Id: Writer.pm,v 1.2 2002/09/23 18:59:20 jamie Exp $
 
 package Slash::Stats::Writer;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -66,6 +66,16 @@ sub updateStatDaily {
 	return $self->sqlUpdate('stats_daily', {
 		-value =>	$update_clause,
 	}, $where);
+}
+
+########################################################
+sub addStatDaily {
+	my($self, $name, $add) = @_;
+	$add += 0;
+	return 0 if !$add;
+	$add = "+$add" if $add !~ /^[-+]/;
+	$self->createStatDaily($name, 0);
+	return $self->updateStatDaily($name, "value $add");
 }
 
 

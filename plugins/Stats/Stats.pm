@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.61 2002/09/20 20:40:45 jamie Exp $
+# $Id: Stats.pm,v 1.62 2002/09/23 18:59:20 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -174,6 +174,19 @@ sub getModM2Ratios {
 		"active=1 AND reason IN ($reasons_m2able)",
 		"GROUP BY day, m2count"
 	);
+
+	# Also count the number of moderations which are not M2'able.
+	my $non_hr = $self->sqlSelectAllHashref(
+		"day",
+		"SUBSTRING(ts, 1, 10) AS day,
+		 COUNT(*) AS c",
+		"moderatorlog",
+		"active=1 AND reason NOT IN ($reasons_m2able)",
+		"GROUP BY day"
+	);
+	for my $day (keys %$non_hr) {
+		$hr->{$day}{non}{c} = $non_hr->{$day}{c};
+	}
 
 	return $hr;
 }

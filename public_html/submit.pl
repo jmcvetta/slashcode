@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.35 2000/12/01 21:00:24 pudge Exp $
+#  $Id: submit.pl,v 1.36 2001/01/08 09:55:57 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -502,7 +502,7 @@ EOT
 
 EOT
 
-		print processSub($fakeemail, $user,
+		print scalar processSub($fakeemail, $user,
 			stripByMode(url2html($I{F}{story}), 'html')
 		);
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.158 2003/10/09 19:48:29 jamie Exp $
+# $Id: adminmail.pl,v 1.159 2003/10/11 13:46:58 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -16,6 +16,7 @@ use vars qw( %task $me );
 # your audience and admins.
 $task{$me}{timespec} = '50 6 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, dailyStuff can wait
+$task{$me}{resource_locks} = { log_slave => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;

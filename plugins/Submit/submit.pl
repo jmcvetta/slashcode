@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.99 2004/08/12 20:29:49 tvroom Exp $
+# $Id: submit.pl,v 1.100 2004/08/13 22:47:34 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -549,7 +549,8 @@ sub saveSub {
 			$submission->{$key} = strip_nohtml($form->{$key}) if $form->{$key};
 		}
 	}
-	$submission->{subid} = $slashdb->createSubmission($submission);
+	my $messagesub = { %$submission };
+	$messagesub->{subid} = $slashdb->createSubmission($submission);
 	# $slashdb->formSuccess($form->{formkey}, 0, length($form->{subj}));
 
 	my $messages = getObject('Slash::Messages');
@@ -558,12 +559,12 @@ sub saveSub {
 		my $data  = {
 			template_name	=> 'messagenew',
 			subject		=> { template_name => 'messagenew_subj' },
-			submission	=> $submission,
+			submission	=> $messagesub,
 		};
 		for (@$users) {
 # XXXSKIN - no "section" restriction
 #			my $user_section = $slashdb->getUser($_, 'section');
-#			next if ($user_section && $user_section ne $submission->{section});
+#			next if ($user_section && $user_section ne $messagesub->{section});
 			$messages->create($_, MSG_CODE_NEW_SUBMISSION, $data);
 		}
 	}

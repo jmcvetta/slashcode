@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: shifts.pl,v 1.1 2005/03/08 22:33:35 pudge Exp $
+# $Id: shifts.pl,v 1.2 2005/03/09 21:28:14 pudge Exp $
 
 # shifts.pl -- Part of the ScheduleShifts plugin.
 
@@ -17,7 +17,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -70,7 +70,7 @@ sub getDaddyList {
 	my $link = "$gSkin->{absolutedir}/admin.pl";
 
 	my $shift_types = @$daddies > 1
-		? [ split /,/, $constants->{shift_shift_types} ]
+		? $schedule->{shift_types}
 		: [ $when ];
 
 	my $editors = $schedule->getEditors;
@@ -121,8 +121,6 @@ sub showShifts {
 	my $num_weeks = $constants->{shift_schedule_weeks};
 	my $shifts = $schedule->getCurrentShifts($num_weeks);
 
-	my $shift_types = [ split /,/, $constants->{shift_shift_types} ];
-	
 	my $schedule_weeks;
 	my $cur_week = $schedule->getCurrentGregorianWeek;
 	for (0 .. $num_weeks) {
@@ -142,7 +140,7 @@ sub showShifts {
 		days_of_week	=> \@dow,
 		default_shifts	=> $defaults,
 		shifts 		=> $shifts,
-		shift_types 	=> $shift_types,
+		shift_types 	=> $schedule->{shift_types},
 		weeks		=> $schedule_weeks,
 		curr_day	=> $day,
 	});

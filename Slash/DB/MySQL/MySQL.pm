@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.545 2004/03/30 20:33:24 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.546 2004/03/30 20:50:13 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.545 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.546 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5375,12 +5375,13 @@ sub createMetaMod {
 		my $mod_uid = $self->getModeratorLog($mmid, 'uid');
 		my $is_fair = $m2s->{$mmid}{is_fair};
 
-		if($constants->{m2_use_sliding_consensus}){
-			my ($cid, $reason ) = $self->sqlSelect("cid,reason","moderatorlog","id=$mmid");
-			my $count = $self->sqlCount("moderatorlog","cid=$cid and reason=$reason");
+		if ($constants->{m2_use_sliding_consensus}) {
+			my ($cid, $reason ) = $self->sqlSelect("cid,reason", "moderatorlog", "id=$mmid");
+			my $count = $self->sqlCount("moderatorlog", "cid=$cid and reason=$reason");
 			my $index = $count - 1;
 			$index = 0 if $index < 1;
-			$index = @{$constants->{m2_sliding_consensus}} - 1 if $index > @{$constants->{m2_sliding_consensus}} -1;
+			$index = @{$constants->{m2_sliding_consensus}} - 1
+				if $index > (@{$constants->{m2_sliding_consensus}} - 1);
 			$consensus = $constants->{m2_sliding_consensus}[$index];
 
 			print STDERR "mmid: $mmid  cid: $cid reason $reason count: $count consensus: $consensus\n";

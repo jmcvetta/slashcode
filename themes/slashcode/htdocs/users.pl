@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.232 2004/03/30 16:39:15 tvroom Exp $
+# $Id: users.pl,v 1.233 2004/03/30 20:50:15 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -528,7 +528,7 @@ sub newUser {
 		print getError('emailexists_err', 0, 1);
 		return;
 	} elsif ($matchname ne '' && $form->{newusernick} ne '') {
-		if($constants->{newuser_portscan}) {
+		if ($constants->{newuser_portscan}) {
 			my $is_trusted = $slashdb->checkIsTrusted($user->{ipid});
 			if ($is_trusted ne 'yes') {
 				my $is_proxy = $slashdb->checkForOpenProxy($user->{hostip});

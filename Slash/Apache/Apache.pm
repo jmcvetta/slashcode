@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.52 2004/03/30 20:33:24 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.53 2004/03/30 20:50:13 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -219,6 +219,8 @@ sub SlashCompileTemplates ($$$) {
 	}
 
 	# Pudge, any reason we still need this Begin/Done debug log? - Jamie
+	# Yes, sometimes it takes a long time to do it, and you want to know
+	# what is going on ... -- pudge
 	print STDERR "$cfg->{VirtualUser} ($$): Compiling All Templates Done\n";
 
 	$cfg->{template} = Slash::Display::get_template(0, 0, 1);
@@ -336,9 +338,10 @@ sub IndexHandler {
 			$r->uri("/$constants->{index_handler}");
 			$r->filename("$basedir/$constants->{index_handler}");
 			return OK;
-		} elsif(!$dbon) {
-			# no db
-			$r->uri("/index.shtml");
+		} elsif (!$dbon) {
+			# no db (you may wish to symlink index.shtml to your real
+			# home page if you don't have one already)
+			$r->uri('/index.shtml');
 			return DECLINED;
 		} else {
 			# user not logged in
@@ -366,7 +369,7 @@ sub IndexHandler {
 		my $key = $1;
 		
 		if (!$dbon) {
-			$r->uri("/index.shtml");
+			$r->uri('/index.shtml');
 			return DECLINED;
 		}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.121 2004/03/29 22:27:06 tvroom Exp $
+# $Id: Environment.pm,v 1.122 2004/03/30 20:50:14 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -146,9 +146,9 @@ sub dbAvailable {
 	# if we're doing a general check for dbAvailability we set
 	# the token to empty-string and store the lastchecked status
 	# and lastval check in the hashrefs with that as the key
-	$token ||="";
+	$token ||= '';
 
-	if (defined $dbAvailable_lastcheck->{$token} && time < $dbAvailable_lastcheck->{$token} +5) {
+	if (defined $dbAvailable_lastcheck->{$token} && time < ($dbAvailable_lastcheck->{$token} + 5)) {
 		return $dbAvailable_lastval->{$token};
 	}
 
@@ -2363,4 +2363,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.121 2004/03/29 22:27:06 tvroom Exp $
+$Id: Environment.pm,v 1.122 2004/03/30 20:50:14 pudge Exp $

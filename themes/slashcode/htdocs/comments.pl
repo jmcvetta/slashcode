@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.185 2004/03/30 20:06:25 tvroom Exp $
+# $Id: comments.pl,v 1.186 2004/03/30 20:50:14 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -842,7 +842,7 @@ sub validateComment {
 	my $message = '';
 
 	my $read_only;
-	if(!dbAvailable("write_comments")) {
+	if (!dbAvailable("write_comments")) {
 		$$error_message = getError('comment_db_down');
 		$form_success = 0;
 		return;

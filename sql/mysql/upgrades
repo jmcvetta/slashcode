@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.772 2005/03/01 19:11:52 tvroom Exp $
+# $Id: upgrades,v 1.773 2005/03/02 04:51:32 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2861,3 +2861,6 @@ INSERT INTO message_codes (code, type, seclev, modes, send, subscribe) VALUES (1
 
 
 INSERT INTO misc_user_opts (name, optorder, seclev, default_val, vals_regex, short_desc, long_desc, opts_html) VALUES ('disable_submit_bin_refresh',100,100,'0',NULL,'Disable bin refresh?','Do you want to disable refreshing the submissions bin?',NULL);
+
+# End of T_2_5_0_50, Start of T_2_5_0_51 - 2005/03/01
+

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.7 2001/04/17 14:59:48 pudge Exp $
+# $Id: Slash.pm,v 1.8 2001/04/23 17:31:53 pudge Exp $
 
 package Slash;
 
@@ -192,7 +192,7 @@ sub selectTopic {
 	my %topics = map {
 		($_, $topicbank->{$_}{alttext})
 	} keys %$topicbank;
-	delete $topics{''} unless $all;
+	delete $topics{$slashdb->TopicAllKey} unless $all;
 
 	createSelect($label, \%topics, $default, $return);
 }
@@ -264,7 +264,7 @@ sub selectSection {
 	} grep {
 		!($sectionbank->{$_}{isolate} && $seclev < 500)
 	} keys %$sectionbank;
-	delete $sections{''} unless $all;
+	delete $sections{$slashdb->SectionAllKey} unless $all;
 
 	createSelect($label, \%sections, $default, $return);
 }

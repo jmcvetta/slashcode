@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.3 2001/04/09 20:07:51 pudge Exp $
+# $Id: User.pm,v 1.4 2001/04/23 17:31:53 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -20,7 +20,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES);
 
 @ISA		= qw(DynaLoader);
 $VERSION	= '2.000000';	# v2.0.0
-($REVISION)	= ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -73,12 +73,6 @@ sub handler {
 	}
 
 	$slashdb->sqlConnect;
-	#Ok, this solves the annoying issue of not having true OOP in perl
-	# You can comment this out if you want if you only use one database type
-	# long term, it might be nice to create new classes for each slashdb
-	# object, and set @ISA for each class, or make each other class inherit
-	# from Slash::DB instead of vice versa ...
-	$slashdb->fixup;
 
 	my $method = $r->method;
 	# Don't remove this. This solves a known bug in Apache -- brian

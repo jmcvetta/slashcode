@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.34 2002/06/04 07:33:11 brian Exp $
+# $Id: Stats.pm,v 1.35 2002/06/04 08:47:39 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -369,7 +369,11 @@ sub countDailyByPageDistinctIPID {
 	my $where = "op='$op' AND "
 		if $op;
 	$where .= "section='$options->{section}' AND "
-		if $options->{section};
+		if $options->{section} && !$options->{index};
+	$where .= "section='index' AND "
+		if $options->{index} && !$options->{section};
+	$where .= "(section='$options->{section}' OR section='index') AND "
+		if $options->{index} && $options->{section};
 	$where .= "ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'";
 	$self->sqlSelect("count(DISTINCT host_addr)", "accesslog", $where);
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.584 2004/06/17 16:11:42 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.585 2004/06/18 16:47:34 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.584 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.585 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1859,7 +1859,7 @@ sub createBadPasswordLog {
 	# at the time the password was tried, so later, if the password
 	# is cracked and the account stolen, there is a record of who
 	# the real owner is.
-	my $realemail = $self->getUser($uid, 'realemail');
+	my $realemail = $self->getUser($uid, 'realemail') || '';
 
 	my($ip, $subnet) = get_ipids($r->connection->remote_ip, 1);
 	$self->sqlInsert("badpasswords", {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.198 2002/07/18 19:44:21 brian Exp $
+# $Id: MySQL.pm,v 1.199 2002/07/19 04:02:12 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.198 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5412,7 +5412,7 @@ sub getSections {
 	my $answer = _genericGetsCache('sections', 'section', '', @_);
 
 	my $rootdir = getCurrentStatic('rootdir');
-	for my $section (%$answer) {
+	for my $section (keys %$answer) {
 		# add rootdir, form figured dynamically -- pudge
 		$answer->{$section}{rootdir} = set_rootdir(
 			$answer->{$section}{url}, $rootdir

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.3 2002/01/08 17:22:10 pudge Exp $
+# $Id: counthits.pl,v 1.4 2002/06/01 22:58:29 jamie Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -11,8 +11,9 @@ use Slash;
 use Slash::DB;
 use Slash::Display;
 use Slash::Utility;
+use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my $me = 'counthits.pl';
 

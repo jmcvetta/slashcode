@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.3 2001/11/15 15:46:09 pudge Exp $
+# $Id: run_moderatord.pl,v 1.4 2002/06/01 22:58:29 jamie Exp $
 
 use strict;
 
@@ -8,12 +8,14 @@ use Slash 2.003;	# require Slash 2.3.x
 use Slash::Constants qw(:messages);
 use Slash::DB;
 use Slash::Utility;
+use Slash::Constants ':slashd';
 
 use vars qw( %task $me );
 
 $task{$me}{timespec} = '18 0-23/2 * * *';
 $task{$me}{timespec_panic_1} = '18 0-10/2 * * *';	# night only
 $task{$me}{timespec_panic_2} = '';			# don't run
+$task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 
 	my($virtual_user, $constants, $slashdb, $user) = @_;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.3 2001/03/22 10:19:09 pudge Exp $
+# $Id: Slash.pm,v 1.4 2001/03/23 20:01:02 pudge Exp $
 
 package Slash;
 
@@ -83,6 +83,8 @@ The name for the HTML entity.
 
 A hashref containing key-value pairs for the list.
 Keys are list values, and values are list labels.
+If an arrayref is passed, it is converted to a
+hashref, where the keys and values are the same.
 
 =item DEFAULT
 
@@ -122,7 +124,11 @@ The 'select' template block.
 sub createSelect {
 	my($label, $hashref, $default, $return, $nsort, $ordered) = @_;
 
-	return unless keys %$hashref;
+	if (ref $hashref eq 'ARRAY') {
+	    $hashref = { map { ($_, $_) } @$hashref };
+	}
+
+      	return unless (ref $hashref eq 'HASH' && keys %$hashref);
 
 	my $display = {
 		label	=> $label,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.3 2001/03/22 10:19:09 pudge Exp $
+# $Id: MySQL.pm,v 1.4 2001/03/23 20:01:02 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -1339,11 +1339,11 @@ sub createAbuse {
 	my($self, $reason, $remote_addr, $script_name, $query_string) = @_;
 	# logem' so we can banem'
 	$self->sqlInsert("abusers", {
-		host_name => $remote_addr,
-		pagename  => $script_name,
-		querystring => $query_string,
-		reason    => $reason,
-		-ts   => 'now()',
+		host_name	=> $remote_addr,
+		pagename	=> $script_name,
+		querystring	=> $query_string,
+		reason		=> $reason,
+		-ts		=> 'now()',
 	});
 }
 
@@ -2647,7 +2647,8 @@ sub setUser {
 	# What is worse, a select+update or a replace?
 	# I should look into that.
 	for (@param)  {
-		$self->sqlReplace('users_param', { uid => $uid, name => $_->[0], value => $_->[1]});
+		$self->sqlReplace('users_param', { uid => $uid, name => $_->[0], value => $_->[1]})
+			if defined $_->[1];
 	}
 }
 

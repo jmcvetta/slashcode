@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.557 2004/04/12 21:47:46 tvroom Exp $
+# $Id: MySQL.pm,v 1.558 2004/04/13 04:23:08 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.557 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.558 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5205,7 +5205,7 @@ sub metamodEligible {
 
 	# Not eligible if metamodded too recently.
 	my $constants = getCurrentStatic();
-	my $m2_freq = $constants->{m2_freq} || 86400;
+	my $m2_freq = $self->getVar('m2_freq', 'value', 1) || 86400;
 	my $cutoff_str = time2str("%Y-%m-%d %H:%M:%S",
 		time() - $m2_freq, 'GMT');
 	return 0 if $user->{lastmm} ge $cutoff_str;
@@ -5535,7 +5535,8 @@ sub createMetaMod {
 			"id=$mmid AND m2status=0
 			 AND m2count < m2needed AND active=1",
 			{ assn_order => [qw( -m2count -m2status )] },
-		) unless $m2_user->{tokens} < $self->getVar("m2_mintokens", "value", 1);
+		) unless $m2_user->{tokens} < $self->getVar("m2_mintokens", "value", 1) &&
+			 !$m2_user->{is_admin};
 
 		$rows += 0; # if no error, returns 0E0 (true!), we want a numeric answer
 		my $ui_hr = { };

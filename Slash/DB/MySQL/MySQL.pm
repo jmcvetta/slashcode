@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.504 2004/02/09 18:41:49 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.505 2004/02/10 20:10:52 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.504 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.505 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6700,6 +6700,7 @@ sub getRecentComments {
 		$constants->{comment_maxscore});
 	$min = $options->{min} if defined $options->{min};
 	$max = $options->{max} if defined $options->{max};
+	my $sid = $options->{sid} if defined $options->{sid};
 	$max = $min if $max < $min;
 	my $startat = $options->{startat} || 0;
 	my $num = $options->{num} || 100; # should be a var
@@ -6707,6 +6708,16 @@ sub getRecentComments {
 	my $max_cid = $self->getMaxCid();
 	my $start_cid = $max_cid - ($startat+($num*5-1));
 	my $end_cid = $max_cid - $startat;
+
+	my ($limit_clause, $where_extra);
+	if($sid) {
+		$where_extra  = " AND comments.sid = ".$self->sqlQuote($sid);
+		$limit_clause = " LIMIT $startat, $num ";
+	} else {
+		$where_extra  = " AND comments.cid BETWEEN $start_cid and $end_cid ";
+		$limit_clause = " LIMIT $num"; 
+	}
+
 	my $ar = $self->sqlSelectAllHashrefArray(
 		"comments.sid AS sid, comments.cid AS cid,
 		 date, comments.ipid AS ipid,
@@ -6725,10 +6736,10 @@ sub getRecentComments {
 		"comments.uid=users.uid
 		 AND comments.cid = comment_text.cid
 		 AND comments.points BETWEEN $min AND $max
-		 AND comments.cid BETWEEN $start_cid AND $end_cid",
+		 $where_extra",
 		"GROUP BY comments.cid
 		 ORDER BY comments.cid DESC
-		 LIMIT $num"
+		 $limit_clause"
 	);
 
 	return $ar;

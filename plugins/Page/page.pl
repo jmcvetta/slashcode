@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: page.pl,v 1.1 2002/06/14 20:57:05 patg Exp $
+# $Id: page.pl,v 1.2 2002/07/11 00:26:21 slashteam Exp $
 
 use strict;
 use Slash;
@@ -24,21 +24,15 @@ sub main {
 		return;
 	}
 
-	my $section;
-	if ($form->{section}) {
-		$section = $slashdb->getSection($form->{section});
-	} else {
-		$section->{section} = 'index';
-		$section->{issue} = 1;
-	}
+	my $section = $slashdb->getSection($form->{section});
 
 	my $title = getData('head', { section => $section });
-	header($title, $section->{section} ne 'index' ? $section->{section} : '');
+	header($title, $section->{section});
 	slashDisplay('index', { index => $index});
 
 	footer();
 
-	writeLog($form->{section});
+	writeLog();
 }
 #################################################################
 createEnvironment();

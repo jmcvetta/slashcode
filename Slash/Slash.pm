@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.22 2001/11/26 17:35:24 pudge Exp $
+# $Id: Slash.pm,v 1.23 2001/11/30 01:36:39 jamie Exp $
 
 package Slash;
 
@@ -865,6 +865,7 @@ sub getOlderStories {
 	for (@$stories) {
 		my($sid, $sect, $title, $time, $commentcount, $day, $hp, $secs) = @{$_}; 
 		my($w, $m, $d, $h, $min, $ampm) = split m/ /, $time;
+		$d =~ s/^0//;
 		push @$newstories, {
 			sid		=> $sid,
 			section		=> $sect,

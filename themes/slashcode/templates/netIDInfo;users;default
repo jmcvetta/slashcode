@@ -64,5 +64,5 @@ __template__
 
 __seclev__
 500
-
-$Id: netIDInfo;users;default,v 1.16 2004/02/24 20:25:52 tvroom Exp $
+__version__
+$Id: netIDInfo;users;default,v 1.17 2004/02/25 10:16:55 pudge Exp $

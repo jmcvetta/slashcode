@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.24 2001/12/19 23:32:53 brian Exp $
+# $Id: admin.pl,v 1.25 2001/12/21 19:20:22 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1021,7 +1021,7 @@ sub editStory {
 					future => $future,
 				}, { Return => 1 });
 
-	my $authorbox = fancybox($constants->{fancyboxwidth}, 'Story admin', $authortext, 0, 1);
+	my $authorbox = fancybox($constants->{fancyboxwidth}, 'Story Admin', $authortext, 0, 1);
 	slashDisplay('editStory', {
 		storyref 		=> $storyref,
 		story			=> $story,

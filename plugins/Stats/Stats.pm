@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.124 2003/10/09 19:48:29 jamie Exp $
+# $Id: Stats.pm,v 1.125 2003/11/25 06:23:41 vroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -405,6 +405,13 @@ sub getErrorStatuses {
 	$where .= " AND status BETWEEN 500 AND 600 ";
 
 	$self->sqlSelectAllHashrefArray("status, count(op) as count, op", "accesslog_temp_errors", $where, " GROUP BY status ORDER BY status ");
+}
+
+########################################################
+sub getStoryHitsForDay {
+	my ($self, $day, $options) = @_;
+	my $sids = $self->sqlSelectAllHashrefArray("sid,hits","stories","day_published=".$self->sqlQuote($day));
+	return $sids;
 }
 
 ########################################################
@@ -890,6 +897,7 @@ sub countUsersByPage {
 ########################################################
 sub countDailyByPage {
 	my($self, $op, $options) = @_;
+	my $constants = getCurrentStatic();
 	$options ||= {};
 
 	my $where = "1=1 ";
@@ -899,6 +907,8 @@ sub countDailyByPage {
 		if $options->{section};
 	$where .= " AND static='$options->{static}'"
 		if $options->{static};
+	$where .=" AND uid = $constants->{anonymous_coward_uid} " if $options->{user_type} eq "anonymous";
+	$where .=" AND uid != $constants->{anonymous_coward_uid} " if $options->{user_type} eq "logged-in";
 
 	# The "no_op" option can take either a scalar for one op to exclude,
 	# or an arrayref of multiple ops to exclude.
@@ -916,11 +926,15 @@ sub countDailyByPage {
 sub countDailyByPageDistinctIPID {
 	# This is so lame, and so not ANSI SQL -Brian
 	my($self, $op, $options) = @_;
+	my $constants = getCurrentStatic();
+	
 	my $where = "1=1 ";
 	$where .= "AND op='$op' "
 		if $op;
 	$where .= " AND section='$options->{section}' "
 		if $options->{section};
+	$where .=" AND uid = $constants->{anonymous_coward_uid} " if $options->{user_type} eq "anonymous";
+	$where .=" AND uid != $constants->{anonymous_coward_uid} " if $options->{user_type} eq "logged-in";
 	$self->sqlSelect("COUNT(DISTINCT host_addr)", "accesslog_temp", $where);
 }
 
@@ -1311,6 +1325,48 @@ sub countSfNetIssues {
 	return $hr;
 }
 
+#######################################################
+
+sub getRelocatedLinksSummary {
+	my ($self) = @_;
+	return $self->sqlSelectAllHashrefArray("query_string, count(query_string) as cnt","accesslog_temp_errors","op='relocate-undef' AND dat = '/relocate.pl'",
+		"GROUP by query_string order by cnt desc");
+}
+
+########################################################
+#  expects arrayref returned by getRelocatedLinksSummary
+
+sub getRelocatedLinkHitsByType {
+	my ($self,$ls) = @_;
+	my $summary;
+	foreach my $l(@$ls){
+		my ($id) = $l->{query_string} =~/id=([^&]*)/;
+		my $type = $self->sqlSelect("stats_type","links","id=".$self->sqlQuote($id));
+		$summary->{$type} += $l->{cnt}; 
+	}
+	return $summary;
+}
+
+########################################################
+
+sub getSubscribersWithRecentHits {
+	my ($self) = @_;
+	return $self->sqlSelectColArrayref("uid", "users_hits", "hits_paidfor > hits_bought and lastclick >= date_sub(now(), interval 3 day)", "order by uid");
+}
+
+########################################################
+
+sub getSubscriberCrawlers {
+	my ($self,$uids) = @_;
+	return [] unless @$uids;
+	my $uid_list = join(',',@$uids);
+	return $self->sqlSelectAllHashrefArray("uid, count(*) as cnt", "accesslog_temp", 
+						"uid in ($uid_list) and op='users' and query_string like '\%min_comment\%'",
+						" group by uid having cnt >= 5 order by cnt desc limit 10");
+
+
+}
+
 ########################################################
 sub setGraph {
 	my($self, $data) = @_;
@@ -1520,4 +1576,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.124 2003/10/09 19:48:29 jamie Exp $
+$Id: Stats.pm,v 1.125 2003/11/25 06:23:41 vroom Exp $

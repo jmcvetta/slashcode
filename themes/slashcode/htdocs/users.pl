@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.234 2004/04/02 00:43:06 pudge Exp $
+# $Id: users.pl,v 1.235 2004/04/12 19:53:21 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1131,7 +1131,9 @@ sub showInfo {
 			replies		=> $replies,
 			ipid		=> $comment->{ipid},
 			ipid_vis	=> $comment->{ipid_vis},
-			karma		=> $comment->{karma}
+			karma		=> $comment->{karma},
+			tweak		=> $comment->{tweak},
+			tweak_orig	=> $comment->{tweak_orig},
 		
 		};
 		#Karma bonus time

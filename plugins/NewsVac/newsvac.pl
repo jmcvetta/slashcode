@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: newsvac.pl,v 1.17 2004/04/02 00:43:04 pudge Exp $
+# $Id: newsvac.pl,v 1.18 2004/10/11 17:01:16 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -15,7 +15,7 @@ use Schedule::Cron;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -140,9 +140,8 @@ sub editMiner {
 	for my $field (@fields) {
 		# set checkbox if field has (?i) at beginning
 		warn $field;
-		$checkboxes{$field} = ' CHECKED' if
-			$miner->{$field} &&
-			$miner->{$field} !~ s{^\(\?i\)}{};
+		$checkboxes{$field} = $constants->{markup_checked_attribute}
+			if $miner->{$field} && $miner->{$field} !~ s{^\(\?i\)}{};
 	}
 
 	for my $field (grep /_regex$/, @fields) {

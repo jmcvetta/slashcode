@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.693 2004/10/10 17:13:46 jamiemccarthy Exp $
+# $Id: upgrades,v 1.694 2004/10/11 17:01:18 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2610,4 +2610,6 @@ DELETE FROM users_param WHERE value ='+1' AND name IN ('karma_bonus');
 DELETE FROM users_param WHERE value =  2  AND name IN ('domaintags');
 
 # End of T_2_5_0_31, Start of T_2_5_0_32 - 2004/10/10
+
+INSERT INTO vars (name, value, description) VALUES ('markup_checked_attribute',' CHECKED','The checked attribute that is used on the "input" HTML element, CHECKED for HTML 3.2 and checked="checked" for HTML 4.0 and beyond. Must include leading space!');
 

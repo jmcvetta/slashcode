@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.206 2004/10/10 14:53:50 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.207 2004/10/11 17:01:16 jamiemccarthy Exp $
 #
 
 #
@@ -831,6 +831,7 @@ INSERT INTO vars (name, value, description) VALUES ('mailpass_max_num','2','Mail
 INSERT INTO vars (name, value, description) VALUES ('mainfontface','verdana,helvetica,arial','Fonts');
 INSERT INTO vars (name, value, description) VALUES ('mainpage_skid','1','ID of the skin considered "mainpage", the front page, what used to be meant by "always display"');
 INSERT INTO vars (name, value, description) VALUES ('mainpage_nexus_tid','1','Topic ID of the nexus considered "mainpage", the front page, what used to be meant by "always display" -- this should be determinable from mainpage_skid but for now it is a separate var');
+INSERT INTO vars (name, value, description) VALUES ('markup_checked_attribute',' CHECKED','The checked attribute that is used on the "input" HTML element, CHECKED for HTML 3.2 and checked="checked" for HTML 4.0 and beyond. Must include leading space!');
 INSERT INTO vars (name, value, description) VALUES ('max_comments_allowed','30','maximum number of posts per day allowed');
 INSERT INTO vars (name, value, description) VALUES ('max_comments_unusedfk','10','How many unused formkeys are permitted');
 INSERT INTO vars (name, value, description) VALUES ('max_depth','7','max depth for nesting of comments');

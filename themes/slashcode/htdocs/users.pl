@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.30 2001/04/12 16:08:37 pudge Exp $
+# $Id: users.pl,v 1.31 2001/04/16 16:46:41 pudge Exp $
 
 use strict;
 use Date::Manip;
@@ -583,8 +583,14 @@ sub saveUser {
 
 		$note .= getMessage('changeemail_msg', { realemail => $user_email->{realemail} }, 1);
 
-		my $saveuser_emailtitle = getTitle('saveUser_email_title', { nickname => $user_email->{nickname} }, 1);
-		my $saveuser_email_msg = getMessage('saveuser_email_msg', { nickname => $user_email->{nickname} }, 1);
+		my $saveuser_emailtitle = getTitle('saveUser_email_title', {
+			nickname  => $user_email->{nickname},
+			realemail => $form->{realemail}
+		}, 1);
+		my $saveuser_email_msg = getMessage('saveuser_email_msg', {
+			nickname  => $user_email->{nickname},
+			realemail => $form->{realemail}
+		}, 1);
 		sendEmail($user_email->{realemail}, $saveuser_emailtitle, $saveuser_email_msg);
 	}
 

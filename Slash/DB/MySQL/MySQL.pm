@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.485 2003/12/05 02:53:29 jamie Exp $
+# $Id: MySQL.pm,v 1.486 2003/12/09 04:28:16 vroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.485 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.486 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -870,7 +870,8 @@ sub getTemplateList {
 
 ########################################################
 sub getModeratorCommentLog {
-	my($self, $asc_desc, $limit, $type, $value) = @_;
+	my($self, $asc_desc, $limit, $type, $value, $options) = @_;
+	$options ||= {};
 	$asc_desc ||= 'ASC';
 	$asc_desc = uc $asc_desc;
 	$asc_desc = 'ASC' if $asc_desc ne 'DESC';
@@ -894,8 +895,12 @@ sub getModeratorCommentLog {
 	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq         AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'bsubnetid') {	$where_clause = "moderatorlog.subnetid=$vq AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'bipid') {	$where_clause = "moderatorlog.ipid=$vq     AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'global') {	$where_clause = "1=1 "								}
+	elsif ($type eq 'global') {	$where_clause = "moderatorlog.uid=users.uid "								}
 	return [ ] unless $where_clause;
+
+	my $time_clause;
+	$time_clause = " AND ts > DATE_SUB(now(), INTERVAL $options->{hours_back} HOUR)" if $options->{hours_back};
+
 
 	my $qlid = $self->_querylog_start("SELECT", "moderatorlog, users, comments");
 	my $sth = $self->sqlSelectMany("comments.sid AS sid,
@@ -911,7 +916,8 @@ sub getModeratorCommentLog {
 		 $select_extra",
 		"moderatorlog, users, comments",
 		"$where_clause
-		 AND moderatorlog.cid=comments.cid",
+		 AND moderatorlog.cid=comments.cid 
+		 $time_clause",
 		"ORDER BY ts $asc_desc $limit"
 	);
 	my(@comments, $comment);

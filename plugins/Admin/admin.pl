@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.103 2002/10/24 01:06:27 jamie Exp $
+# $Id: admin.pl,v 1.104 2002/10/28 15:52:49 pater Exp $
 
 use strict;
 use Image::Size;
@@ -38,14 +38,17 @@ sub main {
 		save		=> {
 			function	=> \&saveStory,
 			seclev		=> 100,
+			tab_selected	=> 'stories',
 		},
 		update		=> {
 			function	=> \&updateStory,
 			seclev		=> 100,
+			tab_selected	=> 'stories',
 		},
 		list		=> {
 			function	=> \&listStories,
 			seclev		=> 100,
+			tab_selected	=> 'stories',
 		},
 		default		=> {
 			function	=> \&listStories,
@@ -55,6 +58,7 @@ sub main {
 		'delete'		=> {
 			function 	=> \&listStories,
 			seclev		=> 10000,
+			tab_selected	=> 'stories',
 		},
 		preview		=> {
 			function 	=> \&editStory,
@@ -91,6 +95,7 @@ sub main {
 			function 	=> \&editFilter, # newfilter,updatefilter,deletefilter,
 			seclev		=> 100,
 			adminmenu	=> 'config',
+			tab_selected	=> 'filters',
 		},
 		siteinfo	=> {
 			function 	=> \&siteInfo,

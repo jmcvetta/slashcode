@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.15 2002/01/17 21:07:48 patg Exp $
+# $Id: slashschema_create.sql,v 1.16 2002/01/25 16:39:58 patg Exp $
 #
 
 #
@@ -425,8 +425,10 @@ CREATE TABLE sections (
 	isolate tinyint DEFAULT '0' NOT NULL,
 	issue tinyint DEFAULT '0' NOT NULL,
 	extras mediumint DEFAULT '0',
+	feature_story char(16) NOT NULL,
 	KEY (section),
 	FOREIGN KEY (qid) REFERENCES pollquestions(qid),
+	FOREIGN KEY (feature_story) REFERENCES stories(sid),
 	PRIMARY KEY (id)
 ) TYPE = myisam;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.17 2002/05/16 00:03:56 jamie Exp $
+# $Id: Install.pm,v 1.18 2002/05/21 06:09:23 brian Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -408,6 +408,36 @@ sub getThemeList {
 	# Don't care about installorder for themes, since only one
 	# gets installed.
 	return $theme_list;
+}
+
+sub getSiteTemplates {
+	my($self) = @_;
+	my @files;
+	my @templates;
+	my $prefix = $self->get('base_install_directory');
+	$prefix = $prefix->{value};
+	my $theme = $self->get('theme');
+	$theme = $theme->{value};
+	push(@files, "$prefix/themes/$theme/THEME");
+	my $plugins = $self->get('plugin');
+	my @plugins;
+	for(keys %$plugins) {
+		push @files, "$prefix/plugins/$plugins->{$_}{value}/PLUGIN";
+	}
+	for my $file (@files) {
+		my $file_handle = gensym;
+		open($file_handle, "$file");
+		$file =~ s/PLUGIN//;
+		$file =~ s/THEME//;
+		while(my $line = <$file_handle>) {
+			chomp($line);
+			my($key, $val) = split(/=/, $line, 2);
+			$key = lc $key;
+			push @templates, "$file/$val"
+				if ($key eq 'template');
+		}
+	}
+	return \@templates;
 }
 
 sub _getList {

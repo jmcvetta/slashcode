@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.24 2002/07/17 21:27:37 jamie Exp $
+# $Id: portald,v 1.25 2002/09/04 23:33:38 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -74,13 +74,18 @@ sub geturl {
 sub getTop10Comments {
 	my $A =	$backupdb->getTop10Comments();
 
+	my $reasons = $slashdb->getReasons();
+
 	my $block;
 	foreach (@$A) {
 		my($sid, $title, $cid, $subj, $d, $nickname, $points, $reason) = @$_;
 		$block .= <<EOT;
 
 &middot; <B><A HREF="$constants->{rootdir}/comments.pl?sid=$sid&amp;cid=$cid">$subj</A>
-	($points points, $constants->{reasons}[$reason]) by $nickname</B> on $d <FONT SIZE="1">attached to
+	($points points, $reasons->{$reason}{name})
+	by $nickname</B>
+	on $d
+	<FONT SIZE="1">attached to
 	<A HREF="$constants->{rootdir}/article.pl?sid=$sid">$title</A></FONT><BR>
 EOT
 	}

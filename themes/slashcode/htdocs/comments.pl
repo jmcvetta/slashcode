@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.208 2004/10/14 19:33:37 pudge Exp $
+# $Id: comments.pl,v 1.209 2004/11/09 20:14:29 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -599,7 +599,7 @@ sub validateComment {
 		return;
 	}
 
-	my $post_restrictions = $reader->getNetIDPostingRestrictions("subnetid", $user->{subnetid});	
+	my $post_restrictions = $reader->getNetIDPostingRestrictions("subnetid", $user->{subnetid});
 	if ($user->{is_anon} || $form->{postanon}) {
 		if ($post_restrictions->{no_anon}) {
 			my $logged_in_allowed = ! $post_restrictions->{no_post};
@@ -609,7 +609,7 @@ sub validateComment {
 				});
 			return;
 		}
-	} elsif ($post_restrictions->{no_post}) {
+	} elsif (!$user->{is_admin} && $post_restrictions->{no_post}) {
 		$$error_message = getError('troll message', {
 			unencoded_ip 		=> $ENV{REMOTE_ADDR},
 		});

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: portald,v 1.6 2000/07/31 17:16:26 pudge Exp $
+#  $Id: portald,v 1.7 2000/08/24 12:48:48 pudge Exp $
 ###############################################################################
 
 =head1 Welcome to Portald
@@ -34,7 +34,7 @@ Slashdot.  Exciting?  Nope.
 =cut
 
 use strict;
-use vars '%I';
+use vars qw(%I %savedBlocks);
 use Slash;
 use LWP::UserAgent;
 use HTTP::Request;
@@ -42,7 +42,6 @@ use URI::Escape;
 use XML::Parser;
 
 *I = getSlashConf();
-my %savedBlocks;
 #my ($basedir,$datadir)=getvars("basedir","datadir");
 
 sub makeTmp {

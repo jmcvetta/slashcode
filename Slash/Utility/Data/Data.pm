@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.137 2004/12/11 00:18:59 pudge Exp $
+# $Id: Data.pm,v 1.138 2005/02/01 20:18:54 tvroom Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2325,6 +2325,10 @@ required, the user can choose to leave it up to us.
 
 Boolean overriding RECOMMENDED; it strips out all domain tags if true.
 
+=item NOTITLE
+
+Boolean which strips out title attributes for links if true
+
 =back
 
 =item Return value
@@ -2336,7 +2340,7 @@ The parsed HTML.
 =cut
 
 sub parseDomainTags {
-	my($html, $recommended, $notags) = @_;
+	my($html, $recommended, $notags, $notitle) = @_;
 	return "" if !defined($html) || $html eq "";
 
 	my $user = getCurrentUser();
@@ -2360,6 +2364,8 @@ sub parseDomainTags {
 		$html =~ s{</a[^<>]+>}   {</a>}gi;
 	}
 
+	$html =~ s{<a([^>]*) title="([^"]+")>} {<a$1>}gi if $notitle;
+	
 	return $html;
 }
 
@@ -3531,4 +3537,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.137 2004/12/11 00:18:59 pudge Exp $
+$Id: Data.pm,v 1.138 2005/02/01 20:18:54 tvroom Exp $

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.12 2002/04/15 14:43:55 pudge Exp $
+# $Id: NewsVac.pm,v 1.13 2002/04/16 02:12:12 brian Exp $
 
 package Slash::NewsVac;
 
@@ -72,7 +72,7 @@ use HTTP::Cookies;
 use Slash::Display;
 use Slash::Utility;
  
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;      
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;      
 
 use vars qw($VERSION $callback_ref);
 
@@ -2343,7 +2343,7 @@ Foooooooo.
 =cut
 
 sub get_parse_code_method {
-	my $self, $code) = @_;
+	my ($self, $code) = @_;
 
 	return \&parse_html_linkextor	if $code eq 'html_linkextor';
 	return \&parse_miner		if $code eq 'miner';
@@ -6073,4 +6073,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.12 2002/04/15 14:43:55 pudge Exp $
+$Id: NewsVac.pm,v 1.13 2002/04/16 02:12:12 brian Exp $

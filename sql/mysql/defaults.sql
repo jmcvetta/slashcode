@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.149 2004/01/23 00:43:22 pudge Exp $
+# $Id: defaults.sql,v 1.150 2004/01/29 15:49:10 jamiemccarthy Exp $
 #
 
 #
@@ -690,6 +690,7 @@ INSERT INTO vars (name, value, description) VALUES ('comments_response_limit','5
 INSERT INTO vars (name, value, description) VALUES ('comments_speed_limit','120','seconds delay before repeat posting');
 INSERT INTO vars (name, value, description) VALUES ('comments_wsfactor','1.0','Whitespace factor');
 INSERT INTO vars (name, value, description) VALUES ('commentstatus','0','default comment code');
+INSERT INTO vars (name, value, description) VALUES ('common_story_words', '', 'Words which are considered too common to be used in detecting "similar" stories');
 INSERT INTO vars (name, value, description) VALUES ('content_type_webpage','text/html; charset=iso-8859-1','The Content-Type header for webpages');
 INSERT INTO vars (name, value, description) VALUES ('cookiedomain','','Domain for cookie to be active (normally leave blank)');
 INSERT INTO vars (name, value, description) VALUES ('cookiepath','/','Path on server for cookie to be active');

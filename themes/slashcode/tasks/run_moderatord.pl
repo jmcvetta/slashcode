@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.36 2003/10/11 13:45:50 jamie Exp $
+# $Id: run_moderatord.pl,v 1.37 2004/01/29 15:49:12 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -282,7 +282,7 @@ sub reconcile_m2 {
 	# hashrefs with values title, url, subject, vote, reason).
 	my %m2_results = ( );
 
-	# We load the optional plugin object here.
+	# We load the optional plugin objects here.
 	my $messages = getObject('Slash::Messages');
 	my $statsSave = getObject('Slash::Stats::Writer');
 

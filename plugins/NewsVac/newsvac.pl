@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: newsvac.pl,v 1.11 2002/04/16 17:55:36 cliff Exp $
+#  $Id: newsvac.pl,v 1.12 2002/04/25 18:13:11 brian Exp $
 ###############################################################################
 use strict;
 
@@ -1018,17 +1018,6 @@ sub main {
 	# Display who is logged in right now.
 	footer();
 }
-
-sub notDoneYet {
-	my($slashdb, $form, $user, $udbt) = @_;
-
-	titlebar('100%', <<EOT);
-Op '$form->{op}' -- This functionality hasn't been written yet!
-EOT
-
-	listMiners(@_);
-}
-
 
 main();
 1;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.11 2002/04/12 18:23:08 pudge Exp $
+# $Id: slashd,v 1.12 2002/04/25 18:13:12 brian Exp $
 
 ############################################################
 #
@@ -465,6 +465,9 @@ sub main {
 				# Sadly, at this point there is no easy way to
 				# get $summary back from this child to the
 				# parent process for logging.
+				# What do you mean by this? Do you mean having the child write to the log file,
+				# or are you talking about something different? We can open up a pipe if you 
+				# directly want some information. 	-Brian
 				exit;
 			}
 			waitpid($pid, 0);

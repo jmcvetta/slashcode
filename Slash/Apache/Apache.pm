@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.22 2002/04/12 15:29:23 pudge Exp $
+# $Id: Apache.pm,v 1.23 2002/04/25 18:13:11 brian Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -335,6 +335,19 @@ sub IndexHandler {
 		writeLog('shtml');
 		return OK;
 	}
+
+# The vote is still out on whether I will do this or not -Brian
+#	if ($uri =~ /^\/\d\d\/\d\d\/\d\d\/\d*\.shtml/) {
+#		my $basedir  = $constants->{basedir};
+#		my ($realfile)  = split /\?/, $uri;
+#		my $section = $constants->{defaultsection};
+#	print STDERR "DEFAULT $section\n";
+#
+#		$r->uri("/$section/$realfile");
+#		$r->filename("$basedir/$section/$realfile");
+#		writeLog('shtml');
+#		return OK;
+#	}
 
 	if (!$dbon && $uri !~ /\.shtml/) {
 		my $basedir  = $constants->{basedir};

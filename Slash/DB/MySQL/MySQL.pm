@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.612 2004/07/07 20:43:20 pudge Exp $
+# $Id: MySQL.pm,v 1.613 2004/07/08 15:49:16 cowboyneal Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.612 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.613 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10022,42 +10022,6 @@ sub getMenus {
 	}
 
 	return $menus;
-}
-
-########################################################
-# for ubb_like_forums
-sub getForumDescription {
-	my($self, $forum_id) = @_;
-
-	my $desc = $self->sqlSelect('comment', 'comments, comment_text', "comments.cid=comment_text.cid AND sid=$forum_id", 'ORDER BY comments.cid ASC LIMIT 1');
-
-	return $desc;
-}
-
-########################################################
-# for ubb_like_forums
-sub getForumParents {
-	my($self, $forum_id) = @_;
-
-	my $num_parents = $self->sqlSelect('count(*)', 'comments', "sid=$forum_id AND pid=0");
-
-	return $num_parents;
-}
-
-########################################################
-# for ubb_like_forums
-sub getForumFirstPostHashref {
-	my($self, $forum_id) = @_;
-
-	return $self->sqlSelectHashref("*", 'comments', "sid=$forum_id", 'ORDER BY comments.cid ASC LIMIT 1');
-}
-
-########################################################
-# for ubb_like_forums
-sub getForumLastPostHashref {
-	my($self, $forum_id) = @_;
-
-	return $self->sqlSelectHashref("*", 'comments', "sid=$forum_id", 'ORDER BY comments.cid DESC LIMIT 1');
 }
 
 ########################################################

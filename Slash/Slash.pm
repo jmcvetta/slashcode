@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.214 2004/07/05 01:43:32 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.215 2004/07/08 15:45:46 cowboyneal Exp $
 
 package Slash;
 
@@ -141,23 +141,10 @@ sub selectComments {
 		} @$thisComment;
 	}
 
-	my $forum_desc;
-	if ($constants->{ubb_like_forums} && $user->{mode} eq 'parents') {
-		# don't display the comment that describes the forums
-		# we get the comment here and save it for later use
-		$forum_desc = $slashdb->getForumFirstPostHashref($discussion->{id});
-	}
-
 	# This loop mainly takes apart the array and builds 
 	# a hash with the comments in it.  Each comment is
 	# is in the index of the hash (based on its cid).
 	for my $C (@$thisComment) {
-		# If this is a forum, we skip the first comment in a
-		# discussion, since it's the description
-		next if $constants->{ubb_like_forums}
-			&& ($user->{mode} eq 'parents')
-			&& ($C->{cid} == $forum_desc->{cid});
-
 		# So we save information. This will only have data if we have 
 		# happened through this cid while it was a pid for another
 		# comments. -Brian

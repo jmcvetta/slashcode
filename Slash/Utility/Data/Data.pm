@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.126 2004/06/26 14:03:04 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.127 2004/07/08 15:47:39 cowboyneal Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -3329,34 +3329,14 @@ sub countTotalVisibleKids {
 	$pid               ||= 0;
 
 	$total += $comments->{$pid}{visiblekids};
-	if ($constants->{ubb_like_forums}) {
-		$last_updated     = $comments->{$pid}{date};
-		$last_updated_uid = $comments->{$pid}{uid};
-	}
 
 	for my $cid (@{$comments->{$pid}{kids}}) {
 		my($num_kids, $date_test, $uid) =
 			countTotalVisibleKids($comments, $cid);
 		$total += $num_kids;
-
-		if ($constants->{ubb_like_forums}) {
-			if ($date_test gt $last_updated) {
-				$last_updated     = $date_test;
-				$last_updated_uid = $uid;
-			}
-			if ($comments->{$cid}{date} gt $last_updated) {
-				$last_updated     = $comments->{$cid}{date};
-				$last_updated_uid = $comments->{$cid}{uid};
-			}
-		}
 	}
 
 	$comments->{$pid}{totalvisiblekids} = $total;
-	# don't do the next two if pid=0
-	if ($pid && $constants->{ubb_like_forums}) {
-		$comments->{$pid}{last_updated}     = $last_updated;
-		$comments->{$pid}{last_updated_uid} = $last_updated_uid;
-	}
 
 	return($total, $last_updated, $last_updated_uid);
 }
@@ -3418,4 +3398,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.126 2004/06/26 14:03:04 jamiemccarthy Exp $
+$Id: Data.pm,v 1.127 2004/07/08 15:47:39 cowboyneal Exp $

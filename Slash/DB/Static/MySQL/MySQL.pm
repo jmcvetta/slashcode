@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.177 2004/09/14 19:05:38 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.178 2004/09/16 04:32:54 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1854,7 +1854,7 @@ sub getSRDsWithinLatest {
 		$srd_latest = $self->sqlSelectColArrayref(
 			"stoid",
 			"story_render_dirty",
-			"stoid > " . $max_stoid - $num_latest);
+			"stoid > " . ($max_stoid - $num_latest));
 	} else {
 		$srd_latest = $self->sqlSelectColArrayref(
 			"stoid",

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.34 2002/07/16 23:51:30 brian Exp $
+# $Id: pollBooth.pl,v 1.35 2002/07/17 13:10:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -158,7 +158,7 @@ sub savepoll {
 	slashDisplay('savepoll');
 	#We are lazy, we just pass along $form as a $poll
 	my $qid = $slashdb->savePollQuestion($form);
-	
+
 	# we have a problem here.  if you attach the poll to an SID,
 	# and then unattach it, it will still be attached to that SID
 	# until you either change it manually in the DB, or attach it

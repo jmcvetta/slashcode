@@ -11,7 +11,7 @@ use vars qw($VERSION);
 use base 'Slash::SearchToo';
 use base 'Slash::SearchToo::Classic';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -269,7 +269,7 @@ sub getRecords {
 # handle delete too?
 sub storeRecords {
 	my($self, $type, $data, $opts) = @_;
-
+return;
 	return unless $self->_handled($type);
 
 	my $slashdb = getCurrentDB();
@@ -278,7 +278,7 @@ sub storeRecords {
 
 	my $count = 0;
 	for my $record (@$data) {
-		next unless keys %$record;
+		next unless $record;
 
 		# deal with multiple instances of same type => id
 		$count++ if $slashdb->sqlInsert('search_index_dump', {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.37 2003/03/17 18:43:44 brian Exp $
+# $Id: Apache.pm,v 1.38 2003/03/27 00:30:39 brian Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -255,7 +255,7 @@ sub ConnectionIsSSL {
 	return 1 if $https_on;
 
 	return 1 
-		if $r->connection->remote_ip eq '127.0.0.1' && $r->header_in('X-SSL-On') eq 'yes'; 
+		if $r->header_in('X-SSL-On') eq 'yes'; 
 
 	# Nope, it's not SSL.  We're out of ideas, if the above didn't
 	# work we must not be on SSL.

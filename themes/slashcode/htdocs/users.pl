@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.243 2004/05/11 20:24:49 pudge Exp $
+# $Id: users.pl,v 1.244 2004/05/11 21:19:10 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -287,6 +287,7 @@ sub main {
 		force_acct_verify => {
 			function	=> \&forceAccountVerify,
 			seclev		=> 100,
+			post		=> 1,
 			formname 	=> $formname,
 			checks		=> []
 		}	

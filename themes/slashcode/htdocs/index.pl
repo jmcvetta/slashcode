@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.102 2004/06/21 18:42:07 pudge Exp $
+# $Id: index.pl,v 1.103 2004/06/21 19:00:16 pudge Exp $
 
 use strict;
 use Slash;
@@ -433,12 +433,12 @@ sub displayStories {
 		my $storytext = displayStory($story->{sid}, '', $other);
 
 		$tmpreturn .= $storytext;
-	
+
 		push @links, linkStory({
 			'link'	=> $msg->{readmore},
 			sid	=> $story->{sid},
 			tid	=> $story->{tid},
-			skin	=> $story->{section}
+			skin	=> $story->{primaryskid}
 		}, "", $ls_other);
 
 		my $link;
@@ -456,7 +456,7 @@ sub displayStories {
 				sid	=> $story->{sid},
 				tid	=> $story->{tid},
 				mode	=> 'nocomment',
-				section	=> $story->{section}
+				skin	=> $story->{primaryskid}
 			}, "", $ls_other) if $story->{body_length};
 
 			my @commentcount_link;
@@ -469,7 +469,7 @@ sub displayStories {
 						tid		=> $story->{tid},
 						threshold	=> $user->{threshold},
 						'link'		=> $thresh,
-						section		=> $story->{section}
+						skin		=> $story->{primaryskid}
 					}, "", $ls_other);
 				}
 			}
@@ -479,7 +479,7 @@ sub displayStories {
 				tid		=> $story->{tid},
 				threshold	=> -1,
 				'link'		=> $story->{commentcount} || 0,
-				section		=> $story->{section}
+				skin		=> $story->{primaryskid}
 			}, "", $ls_other);
 
 			push @commentcount_link, $thresh, ($story->{commentcount} || 0);
@@ -487,16 +487,16 @@ sub displayStories {
 				if $story->{commentcount} || $thresh;
 		}
 
-		if ($story->{section} ne $constants->{defaultsection} && (!$form->{section} || $form->{section} eq 'index')) {
-			my $skin = $reader->getSkin($story->{section});
+		if ($story->{primaryskid} != $constants->{mainpage_skid} && $gSkin->{skid} == $constants->{mainpage_skid}) {
+			my $skin = $reader->getSkin($story->{primaryskid});
 			my $url;
 
 			if ($skin->{rootdir}) {
 				$url = $skin->{rootdir} . '/';
 			} elsif ($user->{is_anon}) {
-				$url = $gSkin->{rootdir} . '/' . $story->{section} . '/';
+				$url = $gSkin->{rootdir} . '/' . $story->{name} . '/';
 			} else {
-				$url = $gSkin->{rootdir} . '/' . $gSkin->{index_handler} . '?section=' . $story->{section};
+				$url = $gSkin->{rootdir} . '/' . $gSkin->{index_handler} . '?section=' . $skin->{name};
 			}
 
 			push @links, [ $url, $skin->{hostname} || $skin->{title} ];

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.28 2004/07/13 17:57:59 tvroom Exp $
+# $Id: stats.pl,v 1.29 2005/02/08 23:31:55 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -154,8 +154,8 @@ sub csv {
 	http_send({
 		content_type	=> 'text/csv',
 		filename	=> $filename,
-		attachment	=> 1,
 		do_etag		=> 1,
+		dis_type	=> 'attachment',
 		content		=> $content
 	});
 }
@@ -198,6 +198,7 @@ sub graph {
 		content_type	=> $type,
 		filename	=> $filename,
 		do_etag		=> 1,
+		dis_type	=> 'inline',
 		content		=> $content
 	});
 }

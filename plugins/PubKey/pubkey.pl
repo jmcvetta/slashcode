@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pubkey.pl,v 1.6 2004/04/02 00:43:04 pudge Exp $
+# $Id: pubkey.pl,v 1.7 2005/02/08 23:31:55 pudge Exp $
 
 use strict;
 use Slash 2.001;	# require Slash 2.1
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -31,6 +31,7 @@ sub main {
 		content_type	=> 'text/plain',
 		filename	=> "pubkey-$uid.asc",
 		do_etag		=> 1,
+		dis_type	=> 'inline',
 		content		=> $content
 	});
 }

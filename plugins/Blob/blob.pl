@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: blob.pl,v 1.10 2004/06/17 16:11:54 jamiemccarthy Exp $
+# $Id: blob.pl,v 1.11 2005/02/08 23:31:55 pudge Exp $
 
 use strict;
 use Slash;
@@ -32,6 +32,11 @@ sub main {
 		content_type	=> $data->{content_type},
 		filename	=> $data->{filename},
 		do_etag		=> 1,
+		dis_type	=> 'inline',	# best to default to inline,
+						# users can choose to download
+						# if they wish, and most file
+						# types will auto-download anyway,
+						# even if set to inline
 		content		=> $data->{data}
 	});
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.75 2005/01/26 04:59:46 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.76 2005/02/08 23:31:51 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -280,7 +280,11 @@ sub http_send {
 	if ($opt->{filename}) {
 		$opt->{filename} =~ s/[^\w_.-]/_/g;
 		my $val = "filename=$opt->{filename}";
-		$val = "attachment; $val" if $opt->{attachment};
+		# none by default, MSIE etc. had problems?
+		if ($opt->{dis_type}) {
+			$opt->{dis_type} =~ s/\W+//;
+			$val = "$opt->{dis_type}; $val";
+		}
 		$r->header_out('Content-Disposition', $val);
 	}
 
@@ -738,4 +742,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.75 2005/01/26 04:59:46 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.76 2005/02/08 23:31:51 pudge Exp $

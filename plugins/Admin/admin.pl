@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.182 2003/11/07 13:46:29 jamie Exp $
+# $Id: admin.pl,v 1.183 2003/11/25 06:22:39 vroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -147,6 +147,12 @@ sub main {
 			seclev		=> 500,
 			adminmenu	=> 'info',
 			tab_selected	=> 'recent',
+		},
+		recent_mods		=> {
+			function	=> \&displayRecentMods,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'recent_mods',
 		},
 		recent_requests		=> {
 			function	=> \&displayRecentRequests,
@@ -1863,6 +1869,11 @@ sub moderate {
 
 
 ##################################################################
+sub displayRecentMods {
+	my($form, $slashdb, $user, $constants) = @_;
+	slashDisplay('recent_mods');
+}
+
 sub displayRecent {
 	my($form, $slashdb, $user, $constants) = @_;
 	my($min, $max) = (undef, undef);

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.19 2003/11/07 13:46:29 jamie Exp $
+# $Id: PLUGIN,v 1.20 2003/11/25 06:22:38 vroom Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
@@ -23,6 +23,7 @@ template=templates/messages;admin;default
 template=templates/otherLinks;admin;default
 template=templates/recent;admin;default
 template=templates/recent_requests;admin;default
+template=templates/recent_mods;admin;default
 template=templates/recent_subs;admin;default
 template=templates/recent_webheads;admin;default
 template=templates/relatedlinks;admin;default

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: precache_gse.pl,v 1.3 2004/07/19 18:50:22 jamiemccarthy Exp $
+# $Id: precache_gse.pl,v 1.4 2004/07/19 18:54:29 jamiemccarthy Exp $
 
 # Calls getStoriesEssentials, on each DB that might perform
 # its SQL, a few seconds before the top of each minute, so
@@ -17,7 +17,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "0-59 * * * *";
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -51,26 +51,26 @@ $task{$me}{code} = sub {
 
 	# We'll try precaching two queries for each virtual user,
 	# one with Collapse Sections and one without.  Look ahead
-	# 30 seconds because that is guaranteed to cross the next
+	# 40 seconds because that is guaranteed to cross the next
 	# minute boundary.
 	my $mp_tid = $constants->{mainpage_nexus_tid};
 	my $default_maxstories = getCurrentAnonymousCoward("maxstories");
 	my @gse_hrs = (
-		{ fake_secs_ahead => 30,
+		{ fake_secs_ahead => 40,
 		  tid => $mp_tid,
 		  limit => $default_maxstories	},
-		{ fake_secs_ahead => 30,
+		{ fake_secs_ahead => 40,
 		  tid => $mp_tid,
 		  limit => $default_maxstories,
 		  sectioncollapse => 1		},
 	);
 
-	# Sleep until :45 after the top of the minute.
+	# Sleep until :30 after the top of the minute.
 	my $time = time;
 	my $now_secs = $time % 60;
-	return "started too late" if $now_secs > 50;
-	sleep 45 - $now_secs if $now_secs < 45;
-	my $max_time = time - $now_secs + 57;
+	return "started too late" if $now_secs > 40;
+	sleep 30 - $now_secs if $now_secs < 30;
+	my $max_time = time - $now_secs + 55;
 
 	# Make each gSE query to each virtual user.
 	for my $vu (@virtual_users) {

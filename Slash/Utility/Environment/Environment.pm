@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.157 2005/01/06 03:41:13 pudge Exp $
+# $Id: Environment.pm,v 1.158 2005/01/08 00:46:45 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2181,6 +2181,11 @@ Returns 0;
 sub errorLog {
 	return if $Slash::Utility::NO_ERROR_LOG;
 
+	# if set to 0, goes until no more callers found
+	my $max_level = defined $Slash::Utility::MAX_ERROR_LOG_LEVEL
+		? $Slash::Utility::MAX_ERROR_LOG_LEVEL
+		: 2;
+
 	my $level = 1;
 	$level++ while (caller($level))[3] =~ /log/i;  # ignore other logging subs
 
@@ -2188,8 +2193,13 @@ sub errorLog {
 
 	($package, $filename, $line) = caller($level++);
 	push @errors, ":$package:$filename:$line:@_";
-	($package, $filename, $line) = caller($level++);
-	push @errors, "Which was called by:$package:$filename:$line:@_" if $package;
+	$max_level--;
+
+	while ($max_level--) {
+		($package, $filename, $line) = caller($level++);
+		last unless $package;
+		push @errors, "Which was called by:$package:$filename:$line";
+	}
 
 	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
 		$errors[0] = $ENV{SCRIPT_NAME} . $errors[0];
@@ -2668,4 +2678,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.157 2005/01/06 03:41:13 pudge Exp $
+$Id: Environment.pm,v 1.158 2005/01/08 00:46:45 pudge Exp $

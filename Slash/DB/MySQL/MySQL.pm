@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.447 2003/09/08 18:27:29 pater Exp $
+# $Id: MySQL.pm,v 1.448 2003/09/09 03:49:35 vroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,8 +15,9 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
+use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.447 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.448 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1330,7 +1331,7 @@ sub setContentFilter {
 ########################################################
 # This creates an entry in the accesslog
 sub createAccessLog {
-	my($self, $op, $dat, $status) = @_;
+	my($self, $op, $dat, $status) = @_;	
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
@@ -1618,7 +1619,50 @@ sub createBadPasswordLog {
 		ip =>           $hostip,
 		subnet =>       $subnet,
 	} );
+
+	my $warn_interval = $constants->{bad_password_warn_user_interval} || 0;
+	my $bp_count = $self->getBadPasswordCountByUID($uid);
+	
+	# we only warn a user every X bad password attempts.  We don't want to
+	# generate a message for every bad attempt over a threshold
+	if($bp_count and $warn_interval and ($bp_count % $warn_interval == 0)){
+
+		my $messages = getObject("Slash::Messages");
+		return unless $messages;
+		my $users  = $messages->checkMessageCodes(
+                	MSG_CODE_BADPASSWORD, [$uid]
+        	);
+		if(@$users){
+			my $nick = $self->sqlSelect("nickname","users","uid='$uid'");
+			my $bp = $self->getBadPasswordsByUID($uid);
+			my $data  = {
+				template_name   => 'badpassword_msg',
+				subject         => 'Bad login attempts warning',
+				nickname	=> $nick,
+				uid		=> $uid,
+				bad_passwords	=> $bp
+                	};
+		
+			$messages->create($users->[0],
+				MSG_CODE_BADPASSWORD, $data, 0, '', 'now'
+			);
+		}
+	}
 }
+
+########################################################
+sub getBadPasswordsByUID{
+	my ($self, $uid) = @_;
+	my $ar = $self->sqlSelectAllHashrefArray('ip,password,date_format(ts,"%Y-%m-%d %h:%i:%s") as ts',"badpasswords","uid='$uid' and ts > date_sub(now(),interval 1 day)");
+	return $ar;
+}
+
+########################################################
+sub getBadPasswordCountByUID{
+	my ($self, $uid) = @_;
+	return $self->sqlSelect("count(*)","badpasswords","uid='$uid' and ts > date_sub(now(),interval 1 day)");
+}
+
 
 ########################################################
 # Make a new password, save it in the DB, and return it.

@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.180 2004/07/03 17:18:38 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.181 2004/07/09 20:57:46 pudge Exp $
 #
 
 #
@@ -706,7 +706,7 @@ INSERT INTO vars (name, value, description) VALUES ('debug_maintable_border','0'
 INSERT INTO vars (name, value, description) VALUES ('default_maxcommentsize','4096','Default user pref value, if you change the schema default for users_comments.maxcommentsize, change this too');
 INSERT INTO vars (name, value, description) VALUES ('default_rss_template','default','name of default rss template used by portald');
 INSERT INTO vars (name, value, description) VALUES ('defaultbytelimit', 5, 'The default setting for comment bytelimit');
-INSERT INTO vars (name, value, description) VALUES ('defaultcommentstatus','0','default code for article comments- normally 0=posting allowed');
+INSERT INTO vars (name, value, description) VALUES ('defaultcommentstatus','enabled','default code for article comments- normally "enabled"');
 INSERT INTO vars (name, value, description) VALUES ('defaultdisplaystatus','0','Default display status ...');
 INSERT INTO vars (name, value, description) VALUES ('defaultsection','articles','Default section to display');
 INSERT INTO vars (name, value, description) VALUES ('defaulttopic','1','Default topic to use');

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.613 2004/07/09 07:30:35 pudge Exp $
+# $Id: upgrades,v 1.614 2004/07/09 20:57:47 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2386,4 +2386,8 @@ DELETE FROM blocks WHERE bid LIKE '%more' AND skin='mainpage' AND bid != 'mainpa
 
 # SLASHCLUSTER LAST UPDATED HERE
 
-# End of T_2_5_0_5, Start of T_2_5_0_6 - 2004/07/08
+# End of T_2_5_0_6, Start of T_2_5_0_7 - 2004/07/08
+
+UPDATE vars SET description = 'default code for article comments- normally "enabled"' WHERE name = 'defaultcommentstatus';
+UPDATE vars SET value = 'enabled' WHERE name = 'defaultcommentstatus' AND value  = '0';
+

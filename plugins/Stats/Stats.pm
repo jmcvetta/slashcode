@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.95 2003/01/31 07:23:01 jamie Exp $
+# $Id: Stats.pm,v 1.96 2003/02/11 20:05:32 brian Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -56,7 +56,8 @@ sub new {
 		$self->sqlDo($rows->[1]);
 		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid(uid)");
 		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX section(section)");
-		$self->sqlDo("INSERT INTO accesslog_temp SELECT * FROM accesslog WHERE ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59' FOR UPDATE");
+		# The status line =200 is temp till I can go through and fix more of this to make use of if -Brian
+		$self->sqlDo("INSERT INTO accesslog_temp SELECT * FROM accesslog WHERE ts BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59' AND status=200 FOR UPDATE");
 		if(!($count = $self->sqlSelect("count(id)", "accesslog_temp"))) {
 			for (1..4) {
 				sleep 5;
@@ -1088,4 +1089,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.95 2003/01/31 07:23:01 jamie Exp $
+$Id: Stats.pm,v 1.96 2003/02/11 20:05:32 brian Exp $

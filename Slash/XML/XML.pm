@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: XML.pm,v 1.5 2003/03/04 19:56:32 pudge Exp $
+# $Id: XML.pm,v 1.6 2003/07/25 17:40:27 pudge Exp $
 
 package Slash::XML;
 
@@ -31,7 +31,7 @@ use Slash::Utility;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = qw(xmlDisplay);
 
 # FRY: There must be layers and layers of old stuff down there!
@@ -115,6 +115,7 @@ sub xmlDisplay {
 		$r->content_type('text/xml');
 		$r->status(200);
 		$r->send_http_header;
+		return 1 if $r->header_only;
 		$r->rflush;
 		$r->print($content);
 		$r->status(200);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.167 2003/07/22 22:25:17 pudge Exp $
+# $Id: admin.pl,v 1.168 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -185,7 +185,7 @@ sub main {
 		adminmenu => $ops->{$op}{adminmenu} || 'admin',
 		tab_selected => $ops->{$op}{tab_selected},
 	};
-	header("backSlash$time_remark$tbtitle", '', $data);
+	header("backSlash$time_remark$tbtitle", '', $data) or return;
 	# admin menu is printed from within the 'header' template
 
 	# it'd be nice to have a legit retval

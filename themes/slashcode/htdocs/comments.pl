@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.145 2003/07/15 17:17:08 jamie Exp $
+# $Id: comments.pl,v 1.146 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -180,7 +180,7 @@ sub main {
 
 	$form->{pid} ||= "0";
 
-	header($discussion ? $discussion->{'title'} : 'Comments', $section);
+	header($discussion ? $discussion->{'title'} : 'Comments', $section) or return;
 
 	if ($user->{is_anon} && length($form->{upasswd}) > 1) {
 		print getError('login error');

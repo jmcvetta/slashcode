@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: relocate.pl,v 1.3 2003/05/13 01:47:31 jamie Exp $
+# $Id: relocate.pl,v 1.4 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -19,7 +19,7 @@ sub main {
 		my $constants = getCurrentStatic();
 		redirect("$constants->{rootdir}/404.pl");
 	} elsif ($link->{is_alive} eq 'no') {
-		header("D'Oh"); # Needs to be templated -Brian
+		header("D'Oh") or return; # Needs to be templated -Brian
 		printDeadPage($link);
 		footer();
 	} else {

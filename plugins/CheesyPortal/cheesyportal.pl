@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: cheesyportal.pl,v 1.6 2003/03/04 19:56:32 pudge Exp $
+# $Id: cheesyportal.pl,v 1.7 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -16,7 +16,7 @@ sub main {
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 
-	header(getData('head'));
+	header(getData('head')) or return;
 
 	my @portals;
 	my $portals = $slashdb->getPortals();

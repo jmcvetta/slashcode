@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.49 2003/05/13 19:25:11 pudge Exp $
+# $Id: Anchor.pm,v 1.50 2003/07/25 17:40:27 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -138,6 +138,7 @@ sub header {
 # 		}
 
 		$r->send_http_header;
+		return if $r->header_only;
 	}
 
 	$user->{currentSection} = $section || $constants->{section};
@@ -589,4 +590,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.49 2003/05/13 19:25:11 pudge Exp $
+$Id: Anchor.pm,v 1.50 2003/07/25 17:40:27 pudge Exp $

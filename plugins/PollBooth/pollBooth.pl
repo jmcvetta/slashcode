@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.51 2003/07/22 19:51:08 vroom Exp $
+# $Id: pollBooth.pl,v 1.52 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -59,7 +59,7 @@ sub main {
 #		}
 #	}
 #
-	header(getData('title'), $form->{section}, { tab_selected => 'poll'});
+	header(getData('title'), $form->{section}, { tab_selected => 'poll'}) or return;
 
 	$ops{$op}->($form, $slashdb, $constants);
 

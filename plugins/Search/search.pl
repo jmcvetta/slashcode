@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.71 2003/07/22 22:28:58 pudge Exp $
+# $Id: search.pl,v 1.72 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -78,7 +78,7 @@ sub main {
 	} else {
 		# Yep, these are hardcoded, and someday this should change... -Brian 
 		my $text = strip_notags($form->{query});
-		header("$constants->{sitename}: Search  $text");
+		header("$constants->{sitename}: Search  $text") or return;
 		titlebar("100%", "Searching For:  $text");
 		$form->{op} = 'stories' if !exists($ops{$form->{op}});
 

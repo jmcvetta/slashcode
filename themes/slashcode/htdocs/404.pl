@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.12 2003/03/25 18:27:06 brian Exp $
+# $Id: 404.pl,v 1.13 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -25,7 +25,7 @@ sub main {
 	my $url = strip_literal(substr($ENV{REQUEST_URI}, 1));
 	my $admin = $constants->{adminmail};
 
-	header('404 File Not Found', $form->{section});
+	header('404 File Not Found', $form->{section}) or return;
 
 	my($new_url, $errnum) = fixHref($ENV{REQUEST_URI}, 1);
 

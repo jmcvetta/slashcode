@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.24 2003/03/04 19:56:32 pudge Exp $
+# $Id: metamod.pl,v 1.25 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -18,7 +18,7 @@ sub main {
 	my $op = getCurrentForm('op');
 	my $section = $slashdb->getSection($form->{section});
 
-	header(getData('header'), $section->{section});
+	header(getData('header'), $section->{section}) or return;
 
 	if (!$constants->{allow_moderation}) {
 		print getData('no_moderation');

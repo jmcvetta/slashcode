@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: newsvac.pl,v 1.15 2003/03/04 19:56:32 pudge Exp $
+# $Id: newsvac.pl,v 1.16 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -15,7 +15,7 @@ use Schedule::Cron;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -62,7 +62,7 @@ sub main {
 		$form->{op} = $op = 'default';
 	}
 
-	header("vacSlash $user->{tzcode} $user->{offset}");
+	header("vacSlash $user->{tzcode} $user->{offset}") or return;
 
 	if ($allowed) {
 		$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $newsvac);

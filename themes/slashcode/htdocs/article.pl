@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.45 2003/07/15 19:44:58 vroom Exp $
+# $Id: article.pl,v 1.46 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -73,7 +73,7 @@ sub main {
 				author	=> $story->{uid},
 			},
 		};
-		header($links, $story->{section});
+		header($links, $story->{section}) or return;
 
 		# Can't do this before getStoryByTime because
 		# $story->{time} is passed to an SQL request.
@@ -110,7 +110,7 @@ sub main {
 				);
 		}
 	} else {
-		header('Error', $form->{section});
+		header('Error', $form->{section}) or return;
 		my $message;
 		if ($future_err) {
 			$message = getData('article_nosubscription');

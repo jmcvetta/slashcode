@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.33 2003/03/22 23:10:24 brian Exp $
+# $Id: sections.pl,v 1.34 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -94,7 +94,7 @@ sub main {
 	}
 
 
-	header(getData('head'), '', { admin => 1 } );
+	header(getData('head'), '', { admin => 1 } ) or return;
 
 	# Next up for dispatch hash conversion!
 	#

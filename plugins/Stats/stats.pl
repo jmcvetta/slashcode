@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.21 2003/05/23 16:48:25 pudge Exp $
+# $Id: stats.pl,v 1.22 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -54,7 +54,7 @@ sub main {
 	# from data;SCRIPTNAME;default
 	#getData('head')
 	unless ($op eq 'graph' || $op eq 'csv') {
-		header('', '', { admin => 1, adminmenu => 'info', tab_selected => 'stats' } );
+		header('', '', { admin => 1, adminmenu => 'info', tab_selected => 'stats' } ) or return;
 		print createMenu('stats');
 	}
 
@@ -158,6 +158,7 @@ sub csv {
 	$r->header_out('Content-Disposition', "attachment; filename=$filename.csv");
 	$r->status(200);
 	$r->send_http_header;
+	return 1 if $r->header_only;
 	$r->rflush;
 	$r->print($content);
 	$r->status(200);
@@ -198,6 +199,7 @@ sub graph {
 	$r->header_out('Pragma', 'no-cache');
 	$r->status(200);
 	$r->send_http_header;
+	return 1 if $r->header_only;
 	$r->rflush;
 	$r->print($content);
 	$r->status(200);

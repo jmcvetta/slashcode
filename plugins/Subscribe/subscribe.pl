@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.25 2003/05/13 01:20:33 jamie Exp $
+# $Id: subscribe.pl,v 1.26 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 
@@ -55,7 +55,7 @@ sub main {
 		# "pause" is special, it does a 302 redirect so we need
 		# to not output any HTML.  Everything else gets this,
 		# header and menu.
-		header("subscribe");
+		header("subscribe") or return;
 		print createMenu('users', {
 			style =>	'tabbed',
 			justify =>	'right',

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.9 2003/03/04 19:56:32 pudge Exp $
+# $Id: print.pl,v 1.10 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.9 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -84,7 +84,7 @@ sub main {
 
 	(my $adm, $user->{is_admin}) = ($user->{is_admin}, 0);
 
-	header($sect_title, 'print');
+	header($sect_title, 'print') or return;
 	$user->{is_admin} = $adm;
 
 	# To print the links, we extract all <A..> tags from the introtext and 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.19 2003/05/19 13:59:19 pudge Exp $
+# $Id: messages.pl,v 1.20 2003/07/25 17:40:27 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -119,7 +119,7 @@ sub edit_message {
 
 EOT
 
-	header(getData('header'));
+	header(getData('header')) or return;
 	# print edit screen
 	slashDisplay(\$template, {error_message => $error_message});
 	footer();
@@ -174,7 +174,7 @@ sub send_message {
 	}, $user->{uid});
 
 
-	header();
+	header() or return;
 	footer();	
 
 	# print success screen
@@ -197,7 +197,7 @@ sub display_prefs {
 	my $prefs = $messages->getPrefs($uid);
 	my $userm = $slashdb->getUser($uid); # so we can modify a different user other than ourself
 
-	header(getData('header'));
+	header(getData('header')) or return;
 	print createMenu('users', {
 		style =>	'tabbed',
 		justify =>	'right',
@@ -258,7 +258,7 @@ sub list_messages {
 	my $messagecodes = $messages->getDescriptions('messagecodes');
 	my $message_list = $messages->getWebByUID();
 
-	header(getData('header'));
+	header(getData('header')) or return;
 # Spank me, this won't be here for long (aka Pater's cleanup will remove it) -Brian
 	print createMenu('users', {
 		style =>	'tabbed',
@@ -295,14 +295,14 @@ sub display_message {
 		if ($message->{message} =~ /^<URL:(\S+)>$/) {
 			redirect($1);
 		} else {
-			header(getData('header'));
+			header(getData('header')) or return;
 			slashDisplay('display', {
 				message		=> $message,
 			});
 			footer();
 		}
 	} else {
-		header(getData('header'));
+		header(getData('header')) or return;
 		print getData('message not found', {
 			id		=> $form->{id},
 		});

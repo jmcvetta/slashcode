@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.16 2003/04/01 02:10:07 brian Exp $
+# $Id: hof.pl,v 1.17 2003/07/25 17:40:27 pudge Exp $
 
 use strict;
 use Slash;
@@ -14,7 +14,7 @@ sub main {
 	my $form	= getCurrentForm();
 	my $constants	= getCurrentStatic();
 
-	header(getData('head'));
+	header(getData('head')) or return;
 
 	my $hofDB = getObject('Slash::Hof', { db_type => 'reader' });
 

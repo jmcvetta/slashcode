@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.161 2003/11/25 06:13:23 vroom Exp $
+# $Id: comments.pl,v 1.162 2003/11/25 23:19:12 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -786,6 +786,12 @@ sub editComment {
 		$form->{postersubj} = "Re:$form->{postersubj}";
 	}
 
+	my($sections, $section_select);
+	if ($constants->{ubb_like_forums} && $form->{section} && $form->{newdiscussion}) {
+		$sections = $slashdb->getDescriptions('forums');
+		$section_select = createSelect('section', $sections, $form->{section}, 1);
+	}
+
 	my $gotmodwarning;
 	$gotmodwarning = 1 if (($error_message eq getError("moderations to be lost")) || $form->{gotmodwarning});
 	slashDisplay('edit_comment', {
@@ -796,7 +802,8 @@ sub editComment {
 		preview		=> $preview,
 		reply		=> $reply,
 		gotmodwarning	=> $gotmodwarning,
-		newdiscussion	=> $form->{newdiscussion}
+		newdiscussion	=> $form->{newdiscussion},
+		section_select  => $section_select,
 	});
 }
 

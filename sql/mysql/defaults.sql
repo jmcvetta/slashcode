@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.202 2004/10/06 22:59:14 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.203 2004/10/07 00:10:21 jamiemccarthy Exp $
 #
 
 #
@@ -758,7 +758,7 @@ INSERT INTO vars (name, value, description) VALUES ('index_gse_backup_prob','0',
 INSERT INTO vars (name, value, description) VALUES ('index_handler','index.pl','The perl servlet to call for connections to the root of the server.');
 INSERT INTO vars (name, value, description) VALUES ('index_handler_noanon','home','The shtml page to call if a user is anon and index_noanon is set');
 INSERT INTO vars (name, value, description) VALUES ('index_noanon','0','Redirect all anonymous users to index_handler_noanon instead of index.shtml. Set to 1 to activate, 0 to remove.');
-INSERT INTO vars (name, value, description) VALUES ('issue_lookback_days','7','Number of days to look back in issue mode');
+INSERT INTO vars (name, value, description) VALUES ('issue_lookback_days','90','Number of days to look back in issue mode');
 INSERT INTO vars (name, value, description) VALUES ('istroll_downmods_ip','4','Downmods at which an IP is considered a troll');
 INSERT INTO vars (name, value, description) VALUES ('istroll_downmods_subnet','6','Downmods at which a subnet is considered a troll');
 INSERT INTO vars (name, value, description) VALUES ('istroll_downmods_user','4','Downmods at which a user is considered a troll');

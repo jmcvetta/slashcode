@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.183 2002/07/12 03:58:37 jamie Exp $
+# $Id: MySQL.pm,v 1.184 2002/07/12 16:03:06 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.184 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2675,6 +2675,34 @@ sub checkReadOnly {
 }
 
 ##################################################################
+sub getNumCommPostedAnonByIPID {
+	my($self, $ipid, $hours) = @_;
+	$ipid = $self->sqlQuote($ipid);
+	$hours ||= 24;
+	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
+	my $num = $self->sqlCount(
+		"comments",
+		"ipid=$ipid
+		 AND uid=$ac_uid
+		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
+	);
+	return $num;
+}
+
+##################################################################
+sub getNumCommPostedByUID {
+	my($self, $uid, $hours) = @_;
+	$uid = $self->sqlQuote($uid);
+	$hours ||= 24;
+	my $num = $self->sqlCount(
+		"comments",
+		"uid=$uid
+		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
+	);
+	return $num;
+}
+
+##################################################################
 sub getUIDList {
 	my($self, $column, $id) = @_;
 
@@ -4541,6 +4569,7 @@ sub getSlashConf {
 		# var name			# default hash of keys/values
 		# --------			# --------------------
 		ad_messaging_sections =>	[ ],
+		comments_perday_bykarma =>	[  -1 => 2,		25 => 25,	99999 => 50          ],
 		karma_adj =>			[ -10 => 'Terrible',	-1 => 'Bad',	    0 => 'Neutral',
 						   12 => 'Positive',	25 => 'Good',	99999 => 'Excellent' ],
 	);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.72 2002/07/11 16:07:39 pudge Exp $
+# $Id: comments.pl,v 1.73 2002/07/12 16:03:06 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -708,6 +708,43 @@ sub validateComment {
 		$form_success = 0;
 		# editComment('', $$error_message), return unless $preview;
 		return;
+	}
+
+	# New check (July 2002):  there is a max number of posts per 24-hour
+	# period, either based on IPID for anonymous users, or on UID for
+	# logged-in users.  Logged-in users get a max number of posts that
+	# is related to their karma.  The comments_perday_bykarma var
+	# controls it (that var is turned into a hashref in MySQL.pm when
+	# the vars table is read in, whose keys we loop over to find the
+	# appropriate level).
+	if ($user->{is_anon} && $constants->{comments_perday_anon}) {
+		my $num_comm_posted = $slashdb->getNumCommPostedAnonByIPID(
+			$user->{ipid}, 24);
+		if ($num_comm_posted >= $constants->{comments_perday_anon}) {
+			$$error_message = getError('comments post limit daily', {
+				limit => $constants->{comments_perday_anon}
+			});
+			$form_success = 0;
+			return;
+		}
+	} elsif (!$user->{is_anon} && $constants->{comments_perday_bykarma}) {
+		my $num_comm_posted = $slashdb->getNumCommPostedByUID(
+			$user->{uid}, 24);
+		my $num_allowed = 9999;
+		K_CHECK: for my $k (sort { $a <=> $b }
+			keys %{$constants->{comments_perday_bykarma}}) {
+			if ($user->{karma} < $k) {
+				$num_allowed = $constants->{comments_perday_bykarma}{$k};
+				last K_CHECK;
+			}
+		}
+		if ($num_comm_posted >= $num_allowed) {
+			$$error_message = getError('comments post limit daily', {
+				limit => $num_allowed
+			});
+			$form_success = 0;
+			return;
+		}
 	}
 
 	if (isTroll()) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.392 2003/05/12 23:07:43 brian Exp $
+# $Id: MySQL.pm,v 1.393 2003/05/13 00:11:10 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.392 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.393 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4542,26 +4542,6 @@ sub getCommentsForUser {
 	my $comments = $self->sqlSelectAllHashrefArray($select, $tables, $where);
 
 	my $archive = $cache_read_only;
-#	my $cids = [];
-#	for my $comment (@$comments) {
-#		$comment->{time_unixepoch} = timeCalc($comment->{date}, "%s", 0);
-#		push @$cids, $comment->{cid};# if $comment->{points} >= $user->{threshold};
-#	}
-
-	# We have a list of all the cids in @$comments.  Get the texts of
-	# all these comments, all at once.
-	# XXX This algorithm could be (significantly?) sped up for users
-	# with hardthresh=0 (most of them) by only getting the text of
-	# comments we're going to be displaying.  As it is now, if you
-	# display a thread with threshold=5, it (above) SELECTs all the
-	# comments you _won't_ see just so it can count them -- and (here)
-	# grabs their full text as well.  Wasteful.  We could probably
-	# just refuse to push $comment (above) when
-	# ($comment->{points} < $user->{threshold}). - Jamie
-	# That has side effects and doesn't do that much good anyway,
-	# see SF bug 452558. - Jamie
-	# OK, now we're not getting the comment texts here, we'll get
-	# them later. - Jamie 2003/03/20
 
 	return $comments;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.99 2002/10/04 16:38:26 pater Exp $
+# $Id: admin.pl,v 1.100 2002/10/04 20:55:29 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -918,7 +918,7 @@ sub getRelated {
 	if ($rl) {
 		my @matchkeys =
 			sort grep {
-				$rl->{$_}{keyword} =~ /^_topic_$tid/
+				$rl->{$_}{keyword} =~ /^_topic_$tid(?!\d)/
 				||
 				$rl->{$_}{keyword} !~ /^_topic_/
 					&& $story_content =~ /\b$rl->{$_}{keyword}\b/i

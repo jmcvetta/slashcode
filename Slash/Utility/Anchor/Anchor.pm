@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.70 2004/07/26 21:54:41 pudge Exp $
+# $Id: Anchor.pm,v 1.71 2004/08/12 17:19:05 jamiemccarthy Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -148,9 +148,15 @@ sub header {
 	setCurrentSkin($skin_name || determineCurrentSkin());
 	getSkinColors();
 
-	# This is ALWAYS displayed. Let the template handle title.
+	# This is ALWAYS displayed. Let the template handle the title
+	# of the whole webpage itself.
 	my $template_vars = { title => $data->{title} };
-	$template_vars->{meta_desc} = $options->{meta_desc} if $options->{meta_desc};
+	# Other data that the template may want:  the text for the
+	# meta-description tag, and if a story is being displayed,
+	# the title of the story.
+	for my $key (qw( meta_desc story_title )) {
+		$template_vars->{$key} = $options->{$key} if $options->{$key};
+	}
 	slashDisplay('html-header', $template_vars, { Nocomm => 1,  Return => $options->{Return}, Page => $options->{Page} })
 		unless $options->{noheader};
 
@@ -725,4 +731,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.70 2004/07/26 21:54:41 pudge Exp $
+$Id: Anchor.pm,v 1.71 2004/08/12 17:19:05 jamiemccarthy Exp $

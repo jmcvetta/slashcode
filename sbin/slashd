@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.16 2002/05/30 18:55:44 pudge Exp $
+# $Id: slashd,v 1.17 2002/05/31 20:16:14 brian Exp $
 
 ############################################################
 #
@@ -509,6 +509,8 @@ slashdLog("Beginning while(1) loop");
 		# Get its information and wait until it's ready.
 		my $subref = $task{$task_filename}{code};
 		my $fork = $task{$task_filename}{fork};
+		$fork ||= SLASHD_WAIT
+			if $constants->{fork_all_tasks};
 		$fork = undef unless defined($fork) &&
 			($fork == SLASHD_WAIT || $fork == SLASHD_NOWAIT);
 		$fork = SLASHD_WAIT unless defined $fork;

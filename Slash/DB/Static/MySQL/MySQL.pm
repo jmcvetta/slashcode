@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.115 2003/10/16 01:38:10 jamie Exp $
+# $Id: MySQL.pm,v 1.116 2003/10/21 17:12:15 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -783,7 +783,7 @@ sub convert_tokens_to_points {
 
 	# Sanity check.
 	my $n_users = $self->countUsers();
-	$n_wanted = int($n_users/100) if $n_wanted > int($n_users)/100;
+	$n_wanted = int($n_users/10) if $n_wanted > int($n_users)/10;
 
 	my $maxtokens = $constants->{maxtokens} || 60;
 	my $tokperpt = $constants->{tokensperpoint} || 8;

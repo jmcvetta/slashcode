@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.65 2003/03/25 20:23:53 pudge Exp $
+# $Id: User.pm,v 1.66 2003/04/08 01:21:46 brian Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -74,25 +74,6 @@ sub handler {
 	}
 
 	my $is_ssl = Slash::Apache::ConnectionIsSSL();
-	if (!$cfg->{auth} && $uri !~ /\.pl$/ && $uri !~ /\.tmpl$/) {
-		$r->subprocess_env(SLASH_USER => $constants->{anonymous_coward_uid});
-		createCurrentUser();
-		createCurrentForm();
-		createCurrentCookie();
-		if ($constants->{allow_nonadmin_ssl} != 1 && $is_ssl) {
-			# Accessing non-dynamic URL on SSL webserver; redirect
-			# to the non-SSL URL.  Note that dynamic requests may
-			# be redirected too, but we handle those later on in
-			# this subroutine.
-			my $newloc = $uri;
-			$newloc .= "?" . $r->args if $r->args;
-			$r->err_header_out(Location =>
-				URI->new_abs($newloc,
-					$constants->{absolutedir}) );
-			return REDIRECT;
-		}
-		return OK;
-	}
 
 	$slashdb->sqlConnect;
 
@@ -211,7 +192,9 @@ sub handler {
 	my $user = prepareUser($uid, $form, $uri, $cookies, $method);
 	# "_dynamic_page" or any hash key name beginning with _ or .
 	# cannot be accessed from templates -- pudge
-	$user->{state}{_dynamic_page} = 1;
+	if ($uri =~ /\.pl$/ && $uri =~ /\.tmpl$/) {
+		$user->{state}{_dynamic_page} = 1;
+	}
 	$user->{state}{ssl} = $is_ssl;
 	createCurrentUser($user);
 	createCurrentForm($form);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.94 2003/04/26 22:12:50 pudge Exp $
+# $Id: MySQL.pm,v 1.95 2003/05/06 00:06:42 pater Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1711,6 +1711,20 @@ sub getSectionsDirty {
 	my($self) = @_;
 
 	$self->sqlSelectColArrayref('section', 'sections', '(writestatus = "dirty") OR ((UNIX_TIMESTAMP(last_update) + rewrite) <  UNIX_TIMESTAMP(now()) )');
+}
+
+########################################################
+# for new_headfoot.pl
+sub getHeadFootPages {
+	my($self, $section, $headfoot) = @_;
+
+	return () unless $headfoot eq 'header' || $headfoot eq 'footer';
+
+	my $list = $self->sqlSelectAll(
+		'page',
+		'templates',
+		"section = '$section' AND name='$headfoot'");
+	return $list;
 }
 
 ########################################################

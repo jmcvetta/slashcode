@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.149 2003/07/03 20:14:24 pater Exp $
+# $Id: Slash.pm,v 1.150 2003/07/10 16:44:46 pudge Exp $
 
 package Slash;
 
@@ -1211,7 +1211,8 @@ sub displayStory {
 
 	# There are many cases when we'd not want to return the pre-rendered text
 	# from the DB.
-	if (	   $story->{rendered} && !$options->{get_cacheable}
+	if (	   !$constants->{no_prerendered_stories}
+		&& $story->{rendered} && !$options->{get_cacheable}
 		&& !$form->{light} && !$user->{light}
 		&& (!$form->{ssi} || $form->{ssi} ne 'yes')
 		&& !$user->{noicons}

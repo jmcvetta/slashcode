@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.17 2004/04/02 00:43:03 pudge Exp $
+# $Id: Static.pm,v 1.18 2004/05/01 06:56:50 pudge Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -247,12 +247,13 @@ sub fillPool {
 
 sub addPool {
 	my($self, $question) = @_;
-	my $answer;
-	my $extension;
-	my $retval;
+	my($answer, $extension, $method, $retval);
+	my $image_format = getCurrentStatic('hc_image_format') || 'jpeg';
+	$image_format =~ s/\W+//g;
 
 	if ($question == 1) {
-		$extension = ".jpg";
+		$extension = $image_format =~ /^jpe?g$/ ? '.jpg' : ".$image_format";
+		$method = $image_format;
 		($answer, $retval) = $self->drawImage();
 	} else {
 		warn "HumanConf warning: addPool called with"
@@ -298,7 +299,7 @@ sub addPool {
 			warn "HumanConf warning: addPool could not create"
 				. " '$full_filename', '$!'";
 		} else {
-			print $fh $retval->jpeg;
+			print $fh $retval->$method;
 			close $fh;
 		}
 		my($width, $height) = $retval->getBounds();
@@ -485,4 +486,3 @@ sub writeBlankIndexes {
 }
 
 1;
-

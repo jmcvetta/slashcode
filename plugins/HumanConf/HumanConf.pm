@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.8 2004/04/02 00:43:03 pudge Exp $
+# $Id: HumanConf.pm,v 1.9 2004/05/01 06:56:50 pudge Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -69,7 +69,7 @@ sub createFormkeyHC {
 
 	# Loop until we successfully get an answer/html pair (one time
 	# in a zillion we'll have to try more than once).
-	my $secs = $constants->{hc_pool_secs_before_use} || 3600;
+	my $secs = $constants->{hc_pool_secs_before_use} || 10;
 	my($hcpid, $html) = ('', '');
 	while (1) {
 
@@ -205,4 +205,3 @@ sub validFormkeyHC {
 }
 
 1;
-

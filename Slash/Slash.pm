@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.138 2003/06/05 15:59:04 brian Exp $
+# $Id: Slash.pm,v 1.139 2003/06/05 17:30:47 brian Exp $
 
 package Slash;
 
@@ -1192,7 +1192,7 @@ sub displayStory {
 		$story = $reader->getStory($sid);
 	}
 	# Sites without an "index" section will never use this, which is probably ok.
-	if (!$form->{light} && !$user->{no_icons} && !$form->{issue} && $constants->{section} eq 'index' && $story->{rendered} && !$full && !$options->{get_cacheable} && !$options->{is_future}) {
+	if (!$form->{light} && !$user->{no_icons} && !$user->{light} && !$form->{issue} && $constants->{section} eq 'index' && $story->{rendered} && !$full && !$options->{get_cacheable} && !$options->{is_future}) {
 		$return = $story->{rendered};
 	} else {
 		my $author = $reader->getAuthor($story->{uid},

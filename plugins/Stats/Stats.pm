@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.92 2003/01/30 04:43:08 jamie Exp $
+# $Id: Stats.pm,v 1.93 2003/01/30 09:18:51 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -825,7 +825,6 @@ sub getDurationByStaticOpHour {
 		"op IN ($ops)",
 		"GROUP BY static, op, hour, dur_round"
 	);
-use Data::Dumper; print "ile_hr " . Dumper($ile_hr);
 
 	_calc_percentiles($hr, $ile_hr, 3);
 
@@ -1075,4 +1074,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.92 2003/01/30 04:43:08 jamie Exp $
+$Id: Stats.pm,v 1.93 2003/01/30 09:18:51 jamie Exp $

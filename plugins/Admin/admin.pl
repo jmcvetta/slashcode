@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.235 2004/09/21 01:51:49 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.236 2004/09/21 16:32:22 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -143,7 +143,7 @@ sub main {
 		},
 		recent		=> {
 			function	=> \&displayRecent,
-			seclev		=> 500,
+			seclev		=> 100,
 			adminmenu	=> 'security',
 			tab_selected	=> 'recent',
 		},

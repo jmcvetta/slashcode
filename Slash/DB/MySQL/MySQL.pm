@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.261 2002/11/20 05:39:46 pudge Exp $
+# $Id: MySQL.pm,v 1.262 2002/11/20 21:38:28 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.261 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.262 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3024,21 +3024,22 @@ sub checkReadOnly {
 ##################################################################
 # For backwards compatibility, returns just the number of comments if
 # called in scalar context, or a list of (number of comments, sum of
-# their points) in list context.
+# the mods done to them) in list context.
 sub getNumCommPostedAnonByIPID {
 	my($self, $ipid, $hours) = @_;
 	$ipid = $self->sqlQuote($ipid);
 	$hours ||= 24;
 	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
-	my($num_comm, $sum_points) = $self->sqlSelect(
-		"COUNT(*) AS count, SUM(points) AS sum",
+	my($num_comm, $sum_mods) = $self->sqlSelect(
+		"COUNT(*) AS count, SUM(points-pointsorig) AS sum",
 		"comments",
 		"ipid=$ipid
 		 AND uid=$ac_uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
+	$sum_mods ||= 0;
 	if (wantarray()) {
-		return ($num_comm, $sum_points);
+		return ($num_comm, $sum_mods);
 	} else {
 		return $num_comm;
 	}
@@ -3047,19 +3048,20 @@ sub getNumCommPostedAnonByIPID {
 ##################################################################
 # For backwards compatibility, returns just the number of comments if
 # called in scalar context, or a list of (number of comments, sum of
-# their points) in list context.
+# the mods done to them) in list context.
 sub getNumCommPostedByUID {
 	my($self, $uid, $hours) = @_;
 	$uid = $self->sqlQuote($uid);
 	$hours ||= 24;
-	my($num_comm, $sum_points) = $self->sqlSelect(
-		"COUNT(*) AS count, SUM(points) AS sum",
+	my($num_comm, $sum_mods) = $self->sqlSelect(
+		"COUNT(*) AS count, SUM(pointsorig-points) AS sum",
 		"comments",
 		"uid=$uid
 		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
 	);
+	$sum_mods ||= 0;
 	if (wantarray()) {
-		return ($num_comm, $sum_points);
+		return ($num_comm, $sum_mods);
 	} else {
 		return $num_comm;
 	}

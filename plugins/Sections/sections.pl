@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.10 2002/02/14 02:22:19 brian Exp $
+# $Id: sections.pl,v 1.11 2002/02/14 20:44:50 pudge Exp $
 
 use strict;
 use Slash;
@@ -64,7 +64,7 @@ sub listSections {
 	my $section_titles = $slashdb->getDescriptions('sections-all');
 	my @values;
 	for (keys %$section_titles) {
-		push @values, [ $_ , $section_titles->{$_}] ;
+		push @values, [$_ , $section_titles->{$_}] ;
 	}
 
 	slashDisplay('listSections', {
@@ -150,13 +150,13 @@ sub saveSection {
 	my $found = $slashdb->getSection($form->{section}, 'section');
 	if ($found) {
 		my $return = $slashdb->setSection($form->{section}, {
-			qid => $form->{qid},
-			title => $form->{section},
-			issue => $form->{issue},
-			isolate	=> $form->{isolate},
-			artcount => $form->{artcount},
-			url => $form->{url},
-			hostname => $form->{hostname},
+			qid		=> $form->{qid},
+			title		=> $form->{section},
+			issue		=> $form->{issue},
+			isolate		=> $form->{isolate},
+			artcount	=> $form->{artcount},
+			url		=> $form->{url},
+			hostname	=> $form->{hostname},
 		});
 		if ($return) {
 			print getData('update', { section => $section });
@@ -165,14 +165,14 @@ sub saveSection {
 		}
 	} else {
 		my $return = $slashdb->createSection({
-			section => $form->{section},
-			qid => $form->{qid},
-			title => $form->{section},
-			issue => $form->{issue},
-			isolate	=> $form->{isolate},
-			artcount => $form->{artcount},
-			url => $form->{url},
-			hostname => $form->{hostname},
+			section		=> $form->{section},
+			qid		=> $form->{qid},
+			title		=> $form->{section},
+			issue		=> $form->{issue},
+			isolate		=> $form->{isolate},
+			artcount	=> $form->{artcount},
+			url		=> $form->{url},
+			hostname	=> $form->{hostname},
 		});
 		if ($return) {
 			print getData('insert', { section => $section });

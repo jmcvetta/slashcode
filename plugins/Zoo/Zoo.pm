@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.11 2002/02/14 03:51:18 brian Exp $
+# $Id: Zoo.pm,v 1.12 2002/02/14 20:45:13 pudge Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -182,7 +182,6 @@ sub addFof {
 	my($self, $uid, $person) = @_;
 	my $slashdb = getCurrentDB();
 
-
 	# First we do the main person
 	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
 		$self->sqlUpdate('people', { -fof => "fof+1" }, "uid = $uid AND person = $person");
@@ -199,7 +198,6 @@ sub addEof {
 	my($self, $uid, $person) = @_;
 	my $slashdb = getCurrentDB();
 
-
 	# First we do the main person
 	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
 		$self->sqlUpdate('people', { -fof => "fof+1" }, "uid = $uid AND person = $person");
@@ -215,7 +213,6 @@ sub addEof {
 sub deleteFof {
 	my($self, $uid, $person) = @_;
 	my $slashdb = getCurrentDB();
-
 
 	# First we do the main person
 	my $number = $self->sqlSelect('fof', 'people', "uid = $uid AND person = $person");
@@ -237,7 +234,6 @@ sub deleteFof {
 sub deleteEof {
 	my($self, $uid, $person) = @_;
 	my $slashdb = getCurrentDB();
-
 
 	# First we do the main person
 	my $number = $self->sqlSelect('eof', 'people', "uid = $uid AND person = $person");

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.9 2002/02/14 03:07:45 brian Exp $
+# $Id: hof.pl,v 1.10 2002/02/14 20:43:45 pudge Exp $
 
 use strict;
 use Slash;
@@ -11,12 +11,12 @@ use Slash::Utility;
 
 ##################################################################
 sub main {
-	my $form    = getCurrentForm();
-	my $constants    = getCurrentStatic();
+	my $form	= getCurrentForm();
+	my $constants	= getCurrentStatic();
 
 	header(getData('head'), $form->{section});
 
-	my ($hofDB);
+	my($hofDB);
 
 	if ($constants->{backup_db_user}) {
 		$hofDB = getObject('Slash::Hof', $constants->{backup_db_user});

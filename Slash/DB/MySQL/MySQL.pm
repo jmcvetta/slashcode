@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.77 2002/02/14 20:08:18 brian Exp $
+# $Id: MySQL.pm,v 1.78 2002/02/14 20:48:40 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3121,9 +3121,9 @@ sub getCommentsForUser {
 		$sql .= "	)";
 	}
 
-	if ( $user->{commentsort} == 1 || $user->{commentsort} == 5 || $user->{commentsort} == '3') {
+	if ($user->{commentsort} == 1 || $user->{commentsort} == 5 || $user->{commentsort} == 3) {
 		$sql .= "	  ORDER BY ";
-		$sql .= "comments.points DESC, " if $user->{commentsort} == '3';
+		$sql .= "comments.points DESC, " if $user->{commentsort} == 3;
 		$sql .= " cid ";
 		$sql .= 'DESC' 
 			if ($user->{commentsort} == 1 || $user->{commentsort} == 5);

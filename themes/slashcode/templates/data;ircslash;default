@@ -52,6 +52,9 @@ __template__
 [% CASE 'slashd_parentpid' %]
 	Parent slashd running as pid [% process.pid %], lifetime [% process.pctcpu %]% cpu, in state [% process.state %]
 
+[% CASE 'slashd_parent_gone' %]
+	ATTENTION: my parent slashd process is gone. Since this task is still around, the parent's death is probably unplanned. Restarting it would be good.
+
 [% CASE DEFAULT %]
 	-- MISSING USER MESSAGE SEGMENT -- [[% value %]] block not found.
 
@@ -60,4 +63,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;ircslash;default,v 1.4 2004/11/03 20:08:05 jamiemccarthy Exp $
+$Id: data;ircslash;default,v 1.5 2004/11/08 03:59:40 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.17 2002/03/18 23:47:20 brian Exp $
+# $Id: Stats.pm,v 1.18 2002/03/20 23:57:36 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -185,9 +185,6 @@ sub countDaily {
 		"to_days(now()) - to_days(ts)=1 GROUP BY uid");
 	$returnable{'unique_users'} = $c->rows;
 	$c->finish;
-
-	$returnable{'journals'}  = $self->sqlSelect("count(*)", "accesslog",
-		"op='journal' AND to_days(now()) - to_days(ts)=1 ");
 
 	$c = $self->sqlSelectMany("dat,count(*)", "accesslog",
 		"to_days(now()) - to_days(ts)=1 AND

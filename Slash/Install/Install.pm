@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.37 2003/04/15 18:46:46 jamie Exp $
+# $Id: Install.pm,v 1.38 2003/07/15 14:30:35 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -183,9 +183,9 @@ sub _munge_line {
 	my($line, $mldhr) = @_;
 	chomp($line);
 	return "" if $line =~ /^\s*\#/;
-	$line =~ s{www\.example\.com}	{$mldhr->{hostname}}g;
-	$line =~ s{admin\@example\.com}	{$mldhr->{email}}g;
-	$line =~ s{/usr/local/slash}	{$mldhr->{slash_prefix}}g;
+	$line =~ s{(www\.)?example\.com}	{$mldhr->{hostname}}g;
+	$line =~ s{admin\@example\.com}		{$mldhr->{email}}g;
+	$line =~ s{/usr/local/slash}		{$mldhr->{slash_prefix}}g;
 	$line;
 };
 

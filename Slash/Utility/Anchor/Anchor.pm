@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.57 2003/10/30 14:54:09 pater Exp $
+# $Id: Anchor.pm,v 1.58 2003/10/30 15:18:17 pater Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -552,7 +552,7 @@ EOT
 		# we need the ad wrapped in a fancybox
 		if (defined $user->{state}{ad}{$num}
 			&& $user->{state}{ad}{$num} !~ /^<!--/) {
-			return fancybox($constants->{fancyboxwidth}, 'Advertisement', $user->{state}{ad}{$num}, 1, 1);
+			return fancybox($constants->{fancyboxwidth}, 'Advertisement', "<CENTER>" . $user->{state}{ad}{$num} . "</CENTER>", 1, 1);
 		} else { return ""; }
 	} else {
 		return $user->{state}{ad}{$num} || "";
@@ -613,4 +613,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.57 2003/10/30 14:54:09 pater Exp $
+$Id: Anchor.pm,v 1.58 2003/10/30 15:18:17 pater Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.16 2004/04/02 00:43:03 pudge Exp $
+# $Id: message_delivery.pl,v 1.17 2004/05/04 16:22:40 tvroom Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -100,7 +100,7 @@ $task{$me}{code} = sub {
 			];
 
 			$msg->{message} = $message;
-			$msg->{subject} = $type;
+			$msg->{subject} = $type unless $msg->{use_subject_for_collected};
 			$msg->{date}    = $date;
 			push @$msgs, $msg;
 		}

@@ -52,6 +52,12 @@ Some of your past moderations have been meta-moderated by other
 [%- END %]
 [% END %]
 [%- END -%]
+[% IF (m2_summary.fair + m2_summary.unfair) > 0;
+	"Summary of your recent moderation: " ;
+	Slash.getData("percentage", { sum => m2_summary.fair, count => (m2_summary.fair + m2_summary.unfair )}, "misc");
+	" Fair";
+	IF msg.mode == 1; "<P>"; END;
+END %]
 [%
 	msg1 = '';
 	msg2 = '';
@@ -73,4 +79,4 @@ For your [% msg1 %] moderation, you have been [% msg2 %].
 __seclev__
 500
 __version__
-$Id: msg_m2;messages;default,v 1.11 2003/09/03 05:58:53 pudge Exp $
+$Id: msg_m2;messages;default,v 1.12 2004/05/04 16:22:40 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.75 2003/12/01 23:03:50 pudge Exp $
+# $Id: Display.pm,v 1.76 2004/02/17 21:00:43 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -456,7 +456,9 @@ sub linkStory {
 	$story_link->{'link'} = $reader->getStory($story_link->{sid}, 'title') if $story_link->{'link'} eq '';
 	$title       = $story_link->{'link'};
 	$section     = $story_link->{section} ||= $reader->getStory($story_link->{sid}, 'section');
-	$params{tid} = $reader->getStoryTopicsJustTids($story_link->{sid});
+	if ($constants->{tids_in_urls}) {
+		$params{tid} = $reader->getStoryTopicsJustTids($story_link->{sid});
+	}
 
 	my $SECT = $reader->getSection($story_link->{section});
 	$url = $SECT->{rootdir} || $constants->{real_rootdir} || $constants->{rootdir};
@@ -473,8 +475,8 @@ sub linkStory {
 		chop $url;
 	} else {
 		$url .= '/' . $section . '/' . $story_link->{sid} . '.shtml';
-		# manually add the tid for now
-		if ($params{tid}) {
+		# manually add the tid(s), if wanted
+		if ($constants->{tids_in_urls} && $params{tid}) {
 			$url .= '?';
 			if (ref $params{tid} eq 'ARRAY') {
 				$url .= 'tid=' . fixparam($_) . '&' for @{$params{tid}};
@@ -1208,7 +1210,8 @@ sub _hard_linkComment {
 # with you. -Brian
 	$display .= "&amp;threshold=" . ($comment->{threshold} || $user->{threshold});
 	$display .= "&amp;commentsort=$user->{commentsort}";
-	$display .= "&amp;tid=$user->{state}{tid}" if $user->{state}{tid};
+	$display .= "&amp;tid=$user->{state}{tid}"
+		if $constants->{tids_in_urls} && $user->{state}{tid};
 	$display .= "&amp;mode=$user->{mode}";
 	$display .= "&amp;startat=$comment->{startat}" if $comment->{startat};
 
@@ -1606,4 +1609,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.75 2003/12/01 23:03:50 pudge Exp $
+$Id: Display.pm,v 1.76 2004/02/17 21:00:43 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.52 2003/09/23 22:01:40 pudge Exp $
+# $Id: article.pl,v 1.53 2004/02/17 21:00:58 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -142,11 +142,13 @@ sub main {
 		if ($story->{discussion}) {
 			my $discussion = $reader->getDiscussion($story->{discussion});
 			$discussion->{is_future} = $story->{is_future};
-			# This is to get tid in comments. It would be a mess to pass it
-			# directly to every comment -Brian
-			my $tids = $reader->getStoryTopicsJustTids($story->{sid}); 
-			my $tid_string = join('&amp;tid=', @$tids);
-			$user->{state}{tid} = $tid_string;
+			if ($constants->{tids_in_urls}) {
+				# This is to get tid in comments. It would be a mess to
+				# pass it directly to every comment -Brian
+				my $tids = $reader->getStoryTopicsJustTids($story->{sid}); 
+				my $tid_string = join('&amp;tid=', @$tids);
+				$user->{state}{tid} = $tid_string;
+			}
 			# If no comments ever have existed and commentstatus is disabled,
 			# just skip the display of the comment header bar -Brian
 			printComments($discussion)

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.512 2004/02/13 17:48:47 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.513 2004/02/17 21:00:42 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.512 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.513 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6163,9 +6163,13 @@ sub createStory {
 		title		=> $story->{title},
 		section		=> $story->{section},
 		topic		=> $story->{tid},
-		url		=> "$rootdir/article.pl?sid=$story->{sid}&tid=$story->{topic}",
+		url		=> "$rootdir/article.pl?sid=$story->{sid}"
+					. ($constants->{tids_in_urls}
+					  ? "&tid=$story->{topic}" : ""),
 		sid		=> $story->{sid},
-		commentstatus	=> $comment_codes->{$story->{commentstatus}} ? $story->{commentstatus} : getCurrentStatic('defaultcommentstatus'),
+		commentstatus	=> $comment_codes->{$story->{commentstatus}}
+				   ? $story->{commentstatus}
+				   : $constants->{defaultcommentstatus},
 		ts		=> $story->{'time'}
 	};
 	my $id = $self->createDiscussion($discussion);

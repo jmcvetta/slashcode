@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.169 2004/02/10 04:17:52 pudge Exp $
+# $Id: comments.pl,v 1.170 2004/02/17 21:00:58 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -136,16 +136,20 @@ sub main {
 		if ($form->{sid} !~ /^\d+$/) {
 			$discussion = $slashdb->getDiscussionBySid($form->{sid});
 			$section = $discussion->{section};
-			my $tids = $slashdb->getStoryTopicsJustTids($form->{sid}); 
-			my $tid_string = join('&amp;tid=', @$tids);
-			$user->{state}{tid} = $tid_string;
+			if ($constants->{tids_in_urls}) {
+				my $tids = $slashdb->getStoryTopicsJustTids($form->{sid}); 
+				my $tid_string = join('&amp;tid=', @$tids);
+				$user->{state}{tid} = $tid_string;
+			}
 		} else {
 			$discussion = $slashdb->getDiscussion($form->{sid});
 			$section = $discussion->{section};
+			if ($constants->{tids_in_urls}) {
+				# This is to get tid in comments. It would be a mess to
+				# pass it directly to every comment -Brian
+				$user->{state}{tid} = $discussion->{topic};
+			}
 		}
-		# This is to get tid in comments. It would be a mess to pass it
-		# directly to every comment -Brian
-		$user->{state}{tid} = $discussion->{topic};
 		# The is_future field isn't automatically added by getDiscussion
 		# like it is with getStory.  We have to add it manually here.
 		$discussion->{is_future} = 1 if $slashdb->checkDiscussionIsInFuture($discussion);

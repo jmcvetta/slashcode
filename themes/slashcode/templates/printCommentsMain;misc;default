@@ -84,9 +84,9 @@ __template__
 		<FORM ACTION="[% constants.rootdir %]/comments.pl">
 		<FONT SIZE="2">
 		<INPUT TYPE="HIDDEN" NAME="sid" VALUE="[% sid %]">
-		<INPUT TYPE="HIDDEN" NAME="cid" VALUE="[% cid %]">
-		<INPUT TYPE="HIDDEN" NAME="pid" VALUE="[% pid %]">
-		<INPUT TYPE="HIDDEN" NAME="startat" VALUE="[% form.startat %]">
+		[% IF cid %]<INPUT TYPE="HIDDEN" NAME="cid" VALUE="[% cid %]">[% END %]
+		[% IF pid %]<INPUT TYPE="HIDDEN" NAME="pid" VALUE="[% pid %]">[% END %]
+		[% IF form.startat %]<INPUT TYPE="HIDDEN" NAME="startat" VALUE="[% form.startat %]">[% END %]
 
 		Threshold: [%
 			Slash.selectThreshold(comments.0.totals);
@@ -120,4 +120,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.17 2003/11/19 22:31:25 pater Exp $
+$Id: printCommentsMain;misc;default,v 1.18 2004/02/17 21:00:59 jamiemccarthy Exp $

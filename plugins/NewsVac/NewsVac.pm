@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.5 2002/04/03 21:39:10 cliff Exp $
+# $Id: NewsVac.pm,v 1.6 2002/04/08 18:49:05 cliff Exp $
 
 package Slash::NewsVac;
 
@@ -70,7 +70,7 @@ use HTTP::Cookies;
 use Slash::Utility;
 #use Slash::DB::Utility;
  
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;      
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;      
 
 use vars qw($VERSION $callback_ref);
 
@@ -696,8 +696,8 @@ sub add_urls_return_ids {
 			url		=> $_,
 			url_digest	=> $digest{$_},
 		}, 'IGNORE'); 
-    	}
-    	$self->urls_to_ids(@urls);
+	}
+   	$self->urls_to_ids(@urls);
 }
 
 ############################################################
@@ -1241,24 +1241,25 @@ Foooooooo.
 =cut
 
 sub info_to_nugget_url {
-    my ($self, $dest_url, $title, $source, $slug) = @_;
+	my ($self, $dest_url, $title, $source, $slug) = @_;
 
-    $dest_url = $self->canonical($dest_url)->as_string();
-    $title = tag_space_squeeze($title);
-    $source = tag_space_squeeze($source);
-    $slug = tag_space_squeeze($slug);
-    my %nugget_data = (
-        url     =>      $dest_url,
-        title   =>      $title,
-        source  =>      $source,
-        slug    =>      $slug,
-    );
-    my $nugget_url = $self->canonical(
-        'nugget://' . join('&',
-            map { "$_=" . uri_escape($nugget_data{$_}, '\W') }
-            sort keys %nugget_data
-        )
-    );
+	$dest_url = $self->canonical($dest_url)->as_string();
+	$title = tag_space_squeeze($title);
+	$source = tag_space_squeeze($source);
+	$slug = tag_space_squeeze($slug);
+	
+	my %nugget_data = (
+		url     =>      $dest_url,
+		title   =>      $title,
+		source  =>      $source,
+		slug    =>      $slug,
+	);
+	
+	my $nugget_url = $self->canonical(
+		'nugget://' .
+		join('&', map { "$_=" . uri_escape($nugget_data{$_}, '\W') })
+		sort keys %nugget_data
+	);
     
     return $nugget_url;
 }
@@ -1291,15 +1292,15 @@ Foooooooo.
 =cut
 
 sub nugget_url_to_info {
-    my ($self, $nugget_url) = @_;
-    my %info = ( );
+	my ($self, $nugget_url) = @_;
+	my %info = ( );
 
-    $nugget_url =~ s{^nugget://}{};
-    while ($nugget_url =~ /(url|title|source|slug)=([^&]+)/g) {
-    	$info{$1} = uri_unescape($2);
-    }
-    
-    return \%info;
+	$nugget_url =~ s{^nugget://}{};
+	while ($nugget_url =~ /(url|title|source|slug)=([^&]+)/g) {
+		$info{$1} = uri_unescape($2);
+	}
+   
+	return \%info;
 }
 
 ############################################################
@@ -4995,4 +4996,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.5 2002/04/03 21:39:10 cliff Exp $
+$Id: NewsVac.pm,v 1.6 2002/04/08 18:49:05 cliff Exp $

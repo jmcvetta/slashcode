@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.53 2002/03/21 16:55:23 jamie Exp $
+# $Id: Slash.pm,v 1.54 2002/04/19 18:20:10 jamie Exp $
 
 package Slash;
 
@@ -90,7 +90,13 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
-	return ( {}, 0 ) unless $thisComment;
+	if (!$thisComment) {
+		if ($form->{ssi} && $header->{sid}) {
+			my $fake_hp = join(",", (("0") x ($max-$min)));
+			print STDERR "count 0, hitparade $fake_hp\n";
+		}
+		return ( {}, 0 );
+	}
 
 	# We first loop through the comments and assign bonuses and
 	# and such.

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: page.pl,v 1.9 2002/09/09 21:52:42 patg Exp $
+# $Id: page.pl,v 1.10 2002/10/24 16:37:28 brian Exp $
 
 use strict;
 use Slash;
@@ -24,7 +24,7 @@ sub main {
 		return;
 	}
 
-	my $section = $slashdb->getSection();
+	my $section = $slashdb->getSection($form->{section});
 
 	my $title = getData('head', { section => $section->{section} });
 	header($title, $section->{section});

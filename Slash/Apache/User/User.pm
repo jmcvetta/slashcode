@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.50 2003/01/15 18:04:16 jamie Exp $
+# $Id: User.pm,v 1.51 2003/01/24 05:10:33 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -614,6 +614,10 @@ Bender:Care to contribute to the Anti-Mugging-You Fund?
 Bender:Want me to smack the corpse around a little?
 Bender:My full name is Bender Bending Rodriguez.
 Bender:My life, and by extension everyone else's, is meaningless.
+Bender:I'm tired of this room and everyone in it!
+Bender:Wait!  My cheating unit malfunctioned!  You gotta give me a do-over!
+Bender:Gimme your biggest, strongest, cheapest drink.
+Bender:I'm a fraud.  A poor, lazy, sexy fraud.
 Fry:Why couldn't she be the other kind of mermaid, with the fish part on the top and the human part on the bottom?
 Fry:There's a lot about my face you don't know.
 Fry:Drugs are for losers.  And hypnosis is for losers with big weird eyebrows.
@@ -654,6 +658,7 @@ Fry:That doesn't look like an "L", unless you count lower case.
 Fry:Hardy Boys: too easy.  Nancy Drew: too hard!
 Fry:And then when I feel so stuffed I can't eat any more, I just use the restroom, and then I *can* eat more!
 Fry:I'm going to continue never washing this cheek again.
+Fry:I haven't had time off since I was twenty-one through twenty-four.
 EOT
 
 1;

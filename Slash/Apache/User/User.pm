@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.69 2003/04/26 12:48:24 jamie Exp $
+# $Id: User.pm,v 1.70 2003/04/29 19:01:04 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -60,8 +60,6 @@ sub handler {
 	my $constants = getCurrentStatic();
 	my $slashdb = $dbcfg->{slashdb};
 	my $apr = Apache::Request->new($r);
-	
-	my $hostname = $r->header_in('host');
 
 	$r->header_out('X-Powered-By' => "Slash $Slash::VERSION");
 	random($r);

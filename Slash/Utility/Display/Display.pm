@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.64 2003/08/05 22:23:25 pudge Exp $
+# $Id: Display.pm,v 1.65 2003/08/05 22:27:16 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -467,6 +467,7 @@ sub linkStory {
 		$url .= '/' . $section . '/' . $story_link->{sid} . '.shtml';
 		# manually add the tid for now
 		if ($params{tid}) {
+			$url .= '?';
 			if (ref $params{tid} eq 'ARRAY') {
 				$url .= 'tid=' . fixparam($_) . '&' for @{$params{tid}};
 			} else {
@@ -1542,4 +1543,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.64 2003/08/05 22:23:25 pudge Exp $
+$Id: Display.pm,v 1.65 2003/08/05 22:27:16 pudge Exp $

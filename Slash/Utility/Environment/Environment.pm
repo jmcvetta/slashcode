@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.9 2001/12/18 16:00:38 jamie Exp $
+# $Id: Environment.pm,v 1.10 2002/01/17 18:56:53 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -987,9 +987,12 @@ sub setCookie {
 	);
 
 	$cookie->expires('+1y') unless $session;
-	$cookie->domain($domain) if $domain;
 
 	$cookie->bake;
+	if ($domain) {
+		$cookie->domain($domain);
+		$cookie->bake;
+	}
 }
 
 #========================================================================
@@ -1546,4 +1549,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.9 2001/12/18 16:00:38 jamie Exp $
+$Id: Environment.pm,v 1.10 2002/01/17 18:56:53 brian Exp $

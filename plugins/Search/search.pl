@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.35 2002/05/03 02:34:02 brian Exp $
+# $Id: search.pl,v 1.36 2002/05/03 05:56:30 brian Exp $
 
 use strict;
 use Slash;
@@ -826,37 +826,27 @@ createEnvironment();
 main();
 
 #=======================================================================
-#package Slash::Search::SOAP;
-#use Slash::Utility;
-#
-#sub findStory {
-#	my($class, $id) = @_;
-#	my($slashdb, $searchDB);
-#	if ($constants->{search_db_user}) {
-#		$slashdb  = getObject('Slash::DB', $constants->{search_db_user});
-#		$searchDB = getObject('Slash::Search', $constants->{search_db_user});
-#	} else {
-#		$slashdb  = getCurrentDB();
-#		$searchDB = Slash::Search->new(getCurrentVirtualUser());
-#	}
-#	my $constants = getCurrentStatic();
-#	my $slashdb   = getCurrentDB();
-#
-#	my $start = $form->{start} || 0;
-#	my $stories;
-#	if ($constants->{panic} >= 1 or $constants->{search_google}) {
-#		$stories = [ ];
-#	} else {
-#		$stories = $searchDB->findStory($form, $start, 15, $form->{sort});
-#	}
-#
-#	my @items;
-#	for my $entry (@$stories) {
-#		my $time = timeCalc($entry->[3]);
-#		push @items, {
-#			title	=> "$entry->[1] ($time)",
-#			'link'	=> ($constants->{absolutedir} . '/article.pl?sid=' . $entry->[2]),
-#		};
-#	}
-#	return $entry;
-#}
+package Slash::Search::SOAP;
+use Slash::Utility;
+
+sub findStory {
+	my($class, $query) = @_;
+	my($slashdb, $searchDB);
+	my $constants = getCurrentStatic();
+	if ($constants->{search_db_user}) {
+		$slashdb  = getObject('Slash::DB', $constants->{search_db_user});
+		$searchDB = getObject('Slash::Search', $constants->{search_db_user});
+	} else {
+		$slashdb  = getCurrentDB();
+		$searchDB = Slash::Search->new(getCurrentVirtualUser());
+	}
+
+	my $stories;
+	if ($constants->{panic} >= 1 or $constants->{search_google}) {
+		$stories = [ ];
+	} else {
+		$stories = $searchDB->findStory({ query => $query }, 0, 15);
+	}
+
+	return $stories;
+}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.55 2002/08/05 19:43:05 jamie Exp $
+# $Id: Data.pm,v 1.56 2002/08/06 17:31:25 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -154,10 +154,10 @@ sub set_rootdir {
 
 #========================================================================
 
-=head2 url2abs(URL)
+=head2 url2abs(URL [, BASE])
 
 Take URL and make it absolute.  It takes a URL,
-and adds rootdir to the beginning if necessary, and
+and adds base to the beginning if necessary, and
 adds the protocol to the beginning if necessary, and
 then uses URI->new_abs() to get the correct string.
 
@@ -171,6 +171,10 @@ then uses URI->new_abs() to get the correct string.
 
 URL to make absolute.
 
+=item BASE
+
+URL base.  If not provided, uses rootdir.
+
 =back
 
 =item Return value
@@ -182,12 +186,16 @@ Fixed URL.
 =cut
 
 sub url2abs {
-	my($url) = @_;
+	my($url, $base) = @_;
 
-	if (getCurrentStatic('rootdir')) {	# rootdir strongly recommended
-		my $rootdir = root2abs($url);
-		$url = URI->new_abs($url, $rootdir)->canonical->as_string;
-	} elsif ($url !~ m|^https?://|i) {	# but not required
+	# set base only if not already set, and rootdir exists
+	if (!$base && getCurrentStatic('rootdir')) {
+		$base = root2abs($url);
+	}
+
+	if ($base) {
+		$url = URI->new_abs($url, $base)->canonical->as_string;
+	} elsif ($url !~ m|^https?://|i) {	# no base or rootdir, best we can do
 		$url =~ s|^/*|/|;
 	}
 
@@ -2608,4 +2616,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.55 2002/08/05 19:43:05 jamie Exp $
+$Id: Data.pm,v 1.56 2002/08/06 17:31:25 pudge Exp $

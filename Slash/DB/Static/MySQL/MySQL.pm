@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.175 2004/08/12 21:05:43 pudge Exp $
+# $Id: MySQL.pm,v 1.176 2004/08/14 00:04:29 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.175 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -662,6 +662,7 @@ sub getTop10Comments {
 		($constants->{comment_minscore}, $constants->{comment_maxscore});
 
 	my $num_wanted = $constants->{top10comm_num} || 10;
+	my $daysback = $constants->{top10comm_days} || 1;
 
 	my $cids = [];
 	my $comments = [];
@@ -682,7 +683,7 @@ sub getTop10Comments {
 			'cid',
 			'comments',
 			"cid >= $min_cid
-				AND date >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+				AND date >= DATE_SUB(NOW(), INTERVAL $daysback DAY)
 				AND points >= $max_score",
 			'ORDER BY date DESC');
 

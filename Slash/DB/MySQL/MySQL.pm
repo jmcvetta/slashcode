@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.208 2002/07/31 22:14:30 brian Exp $
+# $Id: MySQL.pm,v 1.209 2002/08/12 18:20:52 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.208 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -355,6 +355,9 @@ sub setModeratorLog {
 #this is broke right now -Brian
 #
 # Work, dammit! - Cliff
+# 
+# This is the method that returns the list of comments for a user to
+# metamod, at any given time.
 sub getMetamodComments {
 	my($self, $user, $num_comments) = @_;
 
@@ -390,7 +393,7 @@ sub getMetamodComments {
 			             $maxMod - $modpos < $num_comments;
 		my $cond = "moderatorlog.uid != $user->{uid}
 			AND moderatorlog.cuid != $user->{uid}
-			AND moderatorlog.reason < 8
+			AND moderatorlog.reason <= 8
 			AND moderatorlog.id > $modpos
 			AND moderatorlog.m2count < $thresh";
 		{
@@ -400,7 +403,7 @@ sub getMetamodComments {
 		}
 
 		my $result = $self->sqlSelectAllHashrefArray(
-			'id, cid as mcid, reason as modreason',
+			'id, cid AS mcid, reason AS modreason',
 			'moderatorlog',
 			$cond,
 			"ORDER BY id LIMIT $num"

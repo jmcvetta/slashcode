@@ -22,12 +22,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.28 2000/09/22 15:25:19 pudge Exp $
+#  $Id: submit.pl,v 1.29 2000/11/21 14:26:58 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
 use vars '%I';
 use Slash;
+use URI;
 
 #################################################################
 sub main {
@@ -143,8 +144,13 @@ sub previewForm {
 
 	$introtext =~ s/\n\n/\n<P>/gi;
 	$introtext .= " ";
-	$introtext =~  s{(?<!"|=|>)(http|ftp|gopher|telnet)://(.*?)(\W\s)?[\s]}
-			{<A HREF="$1://$2">$1://$2</A> }gi;
+	$introtext =~  s{(?<!["=>])(http|ftp|gopher|telnet)://([$URI::uric#]+)}{
+		my($proto, $url) = ($1, $2);
+		my $extra = '';
+		$extra = ',' if $url =~ s/,$//;
+		$extra = ')' . $extra if $url !~ /\(/ && $url =~ s/\)$//;
+		qq[<A HREF="$proto://$url">$proto://$url</A>$extra];
+	}ogie;
 	$introtext =~ s/\s+$//;
 	$introtext = qq!<I>"$introtext"</I>! if $name;
 

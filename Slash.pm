@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.51 2000/10/23 13:16:40 pudge Exp $
+#  $Id: Slash.pm,v 1.52 2000/11/21 14:26:58 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1390,20 +1390,14 @@ sub fixparam {
 sub fixurl {
 	my($url, $parameter) = @_;
 
-	# RFC 2396
-	my $mark = quotemeta(q"-_.!~*'()");
-	my $alphanum = 'a-zA-Z0-9';
-	my $unreserved = $alphanum . $mark;
-	my $reserved = quotemeta(';|/?:@&=+$,');
-	my $extra = quotemeta('%#');
-
 	if ($parameter) {
-		$url =~ s/([^$unreserved])/sprintf "%%%02X", ord $1/ge;
+		$url =~ s/([^$URI::unreserved])/$URI::Escape::escapes{$1}/oge;
 		return $url;
 	} else {
 		$url =~ s/[" ]//g;
 		$url =~ s/^'(.+?)'$/$1/g;
-		$url =~ s/([^$unreserved$reserved$extra])/sprintf "%%%02X", ord $1/ge;
+		# add '#' to allowed characters
+		$url =~ s/([^$URI::uric#])/$URI::Escape::escapes{$1}/oge;
 		$url = fixHref($url) || $url;
 		my $decoded_url = decode_entities($url);
 		return $decoded_url =~ s|^\s*\w+script\b.*$||i ? undef : $url;

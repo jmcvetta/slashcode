@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.12 2000/08/17 20:25:54 pudge Exp $
+#  $Id: metamod.pl,v 1.13 2000/11/21 14:26:58 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -131,7 +131,7 @@ sub metaModerate {
 
 	print "<BR><BR>" if $y && $I{U}{aseclev} > 10;		# Break HTML properly.
 	print <<EOT;
-$y comments have been meta moderated.  Thanks for participating.
+$y moderations have been meta moderated.  Thanks for participating.
 You may wanna go back <A HREF="$I{rootdir}/">home</A> or perhaps to
 <A HREF="$I{rootdir}/users.pl">your user page</A>.
 EOT

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.24 2002/09/11 20:29:43 brian Exp $
+# $Id: zoo.pl,v 1.25 2002/09/11 20:56:17 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -161,11 +161,11 @@ sub friends {
 			_printHead("yourfriendshead");
 			$implied = FRIEND;
 		} else {
-			_printHead("friendshead", { nickname => $nick });
+			_printHead("friendshead", { nickname => $nick, uid => $uid });
 		}
 		
 		if (@$friends) {
-			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofriends');
@@ -204,7 +204,7 @@ sub fof {
 		}
 		
 		if (@$friends) {
-			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofriendsoffriends');
@@ -239,11 +239,11 @@ sub enof {
 			_printHead("yourfriendsenemieshead");
 			$implied = EOF;
 		} else {
-			_printHead("friendsenemieshead", { nickname => $nick });
+			_printHead("friendsenemieshead", { nickname => $nick, uid => $uid });
 		}
 		
 		if (@$friends) {
-			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $friends, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofriendsenemies');
@@ -278,11 +278,11 @@ sub foes {
 			_printHead("yourfoeshead");
 			$implied = FOE;
 		} else {
-			_printHead("foeshead", { nickname => $nick });
+			_printHead("foeshead", { nickname => $nick, uid => $uid });
 		}
 		
 		if (@$foes) {
-			slashDisplay('plainlist', { people => $foes, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $foes, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofoes');
@@ -316,10 +316,10 @@ sub fans {
 			_printHead("yourfanshead");
 			$implied = FAN;
 		} else {
-			_printHead("fanshead",{ nickname => $nick });
+			_printHead("fanshead",{ nickname => $nick, uid => $uid });
 		}
 		if (@$fans) {
-			slashDisplay('plainlist', { people => $fans, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $fans, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofans');
@@ -354,10 +354,10 @@ sub freaks {
 			$implied = FREAK;
 			
 		} else {
-			_printHead("freakshead",{ nickname => $nick });
+			_printHead("freakshead",{ nickname => $nick, uid => $uid });
 		}
 		if (@$freaks) {
-			slashDisplay('plainlist', { people => $freaks, editable => $editable, implied => $implied });
+			slashDisplay('plainlist', { people => $freaks, editable => $editable, implied => $implied, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournofreaks');
@@ -389,10 +389,10 @@ sub all {
 		if ($editable) {
 			_printHead("yourall");
 		} else {
-			_printHead("yourhead",{ nickname => $nick });
+			_printHead("yourhead",{ nickname => $nick, uid => $uid });
 		}
 		if (@$people) {
-			slashDisplay('plainlist', { people => $people, editable => $editable });
+			slashDisplay('plainlist', { people => $people, editable => $editable, nickname => $nick });
 		} else {
 			if ($editable) {
 				print getData('yournoall');

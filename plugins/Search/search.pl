@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.52 2002/08/14 18:55:45 pudge Exp $
+# $Id: search.pl,v 1.53 2002/09/11 20:56:17 brian Exp $
 
 use strict;
 use Slash;
@@ -104,7 +104,7 @@ sub main {
 		# Here, panic mode is handled without needing to call the
 		# individual search subroutines;  we're going to tell the
 		# user the same thing in each case anyway.
-		if ($constants->{panic} >= 1 or $constants->{search_google}) {
+		if ($constants->{panic} >= 1 or $constants->{search_google} or !$searchDB) {
 			slashDisplay('nosearch');
 		} else {
 			if ($ops{$form->{op}}) {

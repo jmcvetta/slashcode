@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.92 2004/11/17 17:34:39 pudge Exp $
+# $Id: Display.pm,v 1.93 2004/12/15 03:55:15 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -629,12 +629,10 @@ The 'currentAdminUsers' template block.
 =cut
 
 sub currentAdminUsers {
-	my $html_to_display;
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
-# 	my $now = UnixDate(ParseDate($slashdb->getTime()), "%s");
 	my $now = timeCalc($slashdb->getTime(), "%s", 0);
 	my $aids = $slashdb->currentAdmin();
 	for my $data (@$aids) {
@@ -642,7 +640,7 @@ sub currentAdminUsers {
 		if ($usernick eq $user->{nickname}) {
 			$usertime = "-";
 		} else {
-			$usertime = $now - timeCalc($usertime, "%s", 0); # UnixDate(ParseDate($usertime), "%s");
+			$usertime = $now - timeCalc($usertime, "%s", 0);
 			if ($usertime <= 99) {
 				$usertime .= "s";
 			} elsif ($usertime <= 3600) {
@@ -655,9 +653,12 @@ sub currentAdminUsers {
 		@$data = ($usernick, $usertime, $lasttitle, $uid);
 	}
 
+	my @reader_vus = $slashdb->getDBVUsForType("reader");
+
 	return slashDisplay('currentAdminUsers', {
 		ids		=> $aids,
 		can_edit_admins	=> $user->{seclev} > 10000,
+		reader_vus	=> \@reader_vus,
 	}, 1);
 }
 
@@ -1663,4 +1664,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.92 2004/11/17 17:34:39 pudge Exp $
+$Id: Display.pm,v 1.93 2004/12/15 03:55:15 jamiemccarthy Exp $

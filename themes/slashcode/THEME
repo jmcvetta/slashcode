@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.83 2004/12/07 21:52:27 pudge Exp $
+# $Id: THEME,v 1.84 2004/12/15 03:55:16 jamiemccarthy Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -86,6 +86,7 @@ task=tasks/counthits.pl
 task=tasks/daily.pl
 task=tasks/daily_archive.pl
 task=tasks/daily_forget.pl
+task=tasks/dbsparklines.pl
 task=tasks/delete_accesslog.pl
 task=tasks/expire.pl
 task=tasks/flush_formkeys.pl
@@ -125,6 +126,7 @@ template=templates/data;metamod;default
 template=templates/data;misc;default
 template=templates/data;topics;default
 template=templates/data;users;default
+template=templates/dbsparkline;misc;default
 template=templates/default;portald;default
 template=templates/del_message;comments;default
 template=templates/deleted_cids;comments;default

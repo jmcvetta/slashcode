@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.208 2004/12/09 04:41:38 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.209 2004/12/15 03:55:15 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.208 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -221,6 +221,56 @@ sub getArchiveList {
 	);
 
 	return $returnable;
+}
+
+########################################################
+# For dbsparklines.pl
+# This is a bit tricky because some moments may not have rows in
+# the table, and times may not be exactly $resolution apart.
+# We get the key-value hashref and walk it looking for
+# appropriate rows.
+sub getSparklineData {
+	my($self, $dbid, $col, $now, $resolution, $secs_back, $max, $multiplier) = @_;
+	$multiplier ||= 1;
+ 
+	my $now_ut = timeCalc($now, "%s", 0);
+	my $start_ut = $now_ut - $secs_back;
+	my $now_q = $self->sqlQuote($now);
+	my $kv_hr = $self->sqlSelectAllKeyValue(
+		"UNIX_TIMESTAMP(ts) AS ut, $col",
+		"dbs_readerstatus",
+		"dbid=$dbid
+		 AND ts >= DATE_SUB($now_q, INTERVAL $secs_back SECOND)");
+	return [ ] unless %$kv_hr;
+
+	my @ut = sort { $a <=> $b } keys %$kv_hr;
+	my @quantized = ( );
+	my $t = $start_ut;
+	T: while ($t < $now_ut) {
+		my @q = ( );
+		for my $t1 ($t .. $t + $resolution-1) {
+			push @q, $kv_hr->{$t1} * $multiplier if defined $kv_hr->{$t1};
+		}
+
+		# If nothing was found, no value for this quantized
+		# time value, push undef (GD::Graph knows what to
+		# do with that).  Otherwise push the mean of the
+		# value(s) found.
+		my $q = undef;
+		for my $val (@q) {
+			$q ||= 0;
+			$q += $val;
+		}
+		if (defined $q) {
+			$q /= scalar @q;
+			$q = $max if $q > $max;
+		}
+		push @quantized, $q;
+
+		$t += $resolution;
+	}
+ 
+	return \@quantized;
 }
 
 ########################################################

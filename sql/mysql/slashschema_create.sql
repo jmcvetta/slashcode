@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.98 2003/03/10 00:59:27 brian Exp $
+# $Id: slashschema_create.sql,v 1.99 2003/03/10 17:09:44 pudge Exp $
 #
 
 #
@@ -815,7 +815,7 @@ CREATE TABLE story_files (
   sid varchar(16) NOT NULL default '',
   description varchar(80) NOT NULL default '',
   file_id varchar(32) NOT NULL default '',
-	isimage enum("yes","no") DEFAULT "no" NOT NULL,
+  isimage enum("yes","no") DEFAULT "no" NOT NULL,
   PRIMARY KEY (id)
 ) TYPE = myisam;
 

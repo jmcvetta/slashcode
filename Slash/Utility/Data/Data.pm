@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.127 2004/07/08 15:47:39 cowboyneal Exp $
+# $Id: Data.pm,v 1.128 2004/09/01 22:19:54 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -75,6 +75,7 @@ use vars qw($VERSION @EXPORT);
 	createLogToken
 	grepn
 	html2text
+	issueAge
 	nickFix
 	nick2matchname
 	root2abs
@@ -170,6 +171,43 @@ sub emailValid {
 	return 0 unless $valid->rfc822($email);
 
 	return 1;
+}
+
+#========================================================================
+
+=head2 issueAge(ISSUE)
+
+Returns the "age" in days of an issue, given in issue mode form: yyyymmdd.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item ISSUE
+
+Which issue, in yyyymmdd form (matches /^\d{8}$/)
+
+=back
+
+=item Return value
+
+Age in days of that issue (a decimal number).  Takes current user's
+timezone into account.  Return value of 0 indicates error.
+
+=back
+
+=cut
+
+sub issueAge {
+	my($issue) = @_;
+	return 0 unless $issue =~ /^\d{8}$/;
+	my $user = getCurrentUser();
+	my $issue_unix_timestamp = timeCalc("${issue}0000", "%s", -$user->{off_set});
+	my $age = (time - $issue_unix_timestamp) / 86400;
+	$age = 0.00001 if $age == 0; # don't return 0 on success
+	return $age;
 }
 
 #========================================================================
@@ -3398,4 +3436,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.127 2004/07/08 15:47:39 cowboyneal Exp $
+$Id: Data.pm,v 1.128 2004/09/01 22:19:54 jamiemccarthy Exp $

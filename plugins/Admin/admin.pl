@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.222 2004/07/16 15:33:32 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.223 2004/07/16 20:30:51 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1324,6 +1324,7 @@ sub editStory {
 
 		if ($form->{firstpreview}) {
 			$display_check = 'CHECKED';
+			$storyref->{commentstatus}	= $constants->{defaultcommentstatus};
 		} else {
 			$display_check = $form->{display} ? 'CHECKED' : '';
 		}

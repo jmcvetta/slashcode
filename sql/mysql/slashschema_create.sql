@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.129 2003/10/21 01:44:30 pudge Exp $
+# $Id: slashschema_create.sql,v 1.130 2003/11/07 13:46:29 jamie Exp $
 #
 
 #
@@ -1003,6 +1003,8 @@ CREATE TABLE users (
 
 #
 # Table structure for table 'users_acl'
+# (The redundant key on uid is there for when FOREIGN KEY starts
+# working with InnoDB...)
 #
 
 DROP TABLE IF EXISTS users_acl;
@@ -1012,6 +1014,7 @@ CREATE TABLE users_acl (
 	acl varchar(32) NOT NULL,
 	UNIQUE uid_key (uid,acl),
 	KEY uid (uid),
+	KEY acl (acl),
 	PRIMARY KEY (id)
 ) TYPE=InnoDB;
 

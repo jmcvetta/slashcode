@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.73 2003/09/25 19:44:13 pudge Exp $
+# $Id: Display.pm,v 1.74 2003/11/07 13:46:29 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -60,7 +60,7 @@ use vars qw($VERSION @EXPORT);
 
 #========================================================================
 
-=head2 createSelect(LABEL, DATA [, DEFAULT, RETURN, NSORT, ORDERED])
+=head2 createSelect(LABEL, DATA [, DEFAULT, RETURN, NSORT, ORDERED, MULTIPLE])
 
 Creates a drop-down list in HTML.  List is sorted by default
 alphabetically according to list values.
@@ -92,7 +92,7 @@ See "Return value" below.
 
 =item NSORT
 
-Sort numerically, not alphabetically.
+Boolean: sort numerically, not alphabetically.
 
 =item ORDERED
 
@@ -100,6 +100,10 @@ If an arrayref is passed, an already-sorted array reference of keys.
 If non-ref, then an arrayref of hash keys is created sorting the
 hash values, alphabetically and case-insensitively.
 If ORDERED is passed in either form, then the NSORT parameter is ignored.
+
+=item MULTIPLE
+
+Boolean: do <SELECT MULTIPLE...> instead of <SELECT...>
 
 =back
 
@@ -120,7 +124,7 @@ The 'select' template block.
 =cut
 
 sub createSelect {
-	my($label, $hashref, $default, $return, $nsort, $ordered) = @_;
+	my($label, $hashref, $default, $return, $nsort, $ordered, $multiple) = @_;
 
 	if (ref $hashref eq 'ARRAY') {
 		$hashref = { map { ($_, $_) } @$hashref };
@@ -164,6 +168,7 @@ sub createSelect {
 		default	=> $default,
 		numeric	=> $nsort,
 		ordered	=> $ordered,
+		multiple => $multiple,
 	};
 
 	if ($return) {
@@ -1601,4 +1606,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.73 2003/09/25 19:44:13 pudge Exp $
+$Id: Display.pm,v 1.74 2003/11/07 13:46:29 jamie Exp $

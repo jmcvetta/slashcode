@@ -95,9 +95,12 @@ Site Template Editor
 [% CASE 'varEdit-title' %]
 Variable Editor
 
+[% CASE 'aclEdit-title' %]
+ACL Editor
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: titles;admin;default,v 1.7 2003/04/25 01:04:02 brian Exp $
+$Id: titles;admin;default,v 1.8 2003/11/07 13:46:29 jamie Exp $

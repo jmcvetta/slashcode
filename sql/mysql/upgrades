@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.476 2003/10/28 21:43:40 pudge Exp $
+# $Id: upgrades,v 1.477 2003/11/07 13:46:29 jamie Exp $
 #
 
 # BEGIN tf23's additions 
@@ -1933,3 +1933,6 @@ INSERT INTO vars VALUES ('subscribe_gift_testing','1','When this is on only admi
 # USEPERL LAST UPDATED HERE
 
 # End of T_2_3_0_122, Start of T_2_3_0_123 - 2003/10/28
+
+ALTER TABLE users_acl ADD INDEX acl (acl);
+

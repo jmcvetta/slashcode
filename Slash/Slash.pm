@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.175 2003/09/24 19:45:21 jamie Exp $
+# $Id: Slash.pm,v 1.176 2003/11/07 13:46:29 jamie Exp $
 
 package Slash;
 
@@ -420,7 +420,7 @@ sub _can_mod {
 	$comment->{time_unixepoch} = time unless $comment;
 	$comment->{time_unixepoch} = timeCalc($comment->{date}, "%s", 0)
 		unless $comment->{time_unixepoch};
-	return
+	my $retval =
 		   !$user->{is_anon}
 		&& $constants->{allow_moderation}
 		&& !$comment->{no_moderation}
@@ -440,7 +440,11 @@ sub _can_mod {
 		) || (
 		       $constants->{authors_unlimited}
 		    && $user->{seclev} >= $constants->{authors_unlimited}
+		) || (
+		       $user->{acl}{alwaysmodpoints}
 		) );
+use Data::Dumper; print STDERR "_can_mod returning '$retval' for: " . Dumper($user);
+	return $retval;
 }
 
 #========================================================================

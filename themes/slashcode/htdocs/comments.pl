@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.54 2002/02/26 07:45:02 jamie Exp $
+# $Id: comments.pl,v 1.55 2002/03/01 07:44:05 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -705,8 +705,8 @@ sub validateComment {
 		# so all tags present are legal and uppercased.
 		my $breaktags = $constants->{'approvedtags_break'}
 			|| [qw(HR BR LI P OL UL BLOCKQUOTE DIV)];
-		my $breaktags_1_regex = "</?(?:" . join("|", @$breaktags) . ")>";
-		my $breaktags_2_regex = "</?(?:" . join("|", grep /^(P|BLOCKQUOTE)$/, @$breaktags) . ")>";
+		my $breaktags_1_regex = "<(?:" . join("|", @$breaktags) . ")>";
+		my $breaktags_2_regex = "<(?:" . join("|", grep /^(P|BLOCKQUOTE)$/, @$breaktags) . ")>";
 		my $num_lines = 0;
 		$num_lines++ while $check_prefix =~ /$breaktags_1_regex/g;
 		$num_lines++ while $check_prefix =~ /$breaktags_2_regex/g;

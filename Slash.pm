@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.60 2000/12/18 14:11:57 pudge Exp $
+#  $Id: Slash.pm,v 1.61 2001/01/18 13:12:29 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1436,8 +1436,10 @@ sub fixurl {
 		$url = fixHref($url) || $url;
 		if ($stripauth) {
 			my $uri = new URI $url;
-			$uri->authority($uri->host);
-			$url = $uri->as_string;
+			if ($uri && $uri->can('host')) {
+				$uri->authority($uri->host);
+				$url = $uri->as_string;
+			}
 		}
 		my $decoded_url = decode_entities($url);
 		return $decoded_url =~ s|^\s*\w+script\b.*$||i ? undef : $url;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: page.pl,v 1.13 2004/04/02 00:43:04 pudge Exp $
+# $Id: page.pl,v 1.14 2004/07/09 07:32:33 pudge Exp $
 
 use strict;
 use Slash;
@@ -24,11 +24,17 @@ sub main {
 		return;
 	}
 
-	my $section = $slashdb->getSection($form->{section});
+	my $skin_name = $form->{section};
+	my $skid = $skin_name
+		? $slashdb->getSkidFromName($skin_name)
+		: determineCurrentSkin();
+	setCurrentSkin($skid);
+	my $gSkin = getCurrentSkin();
+	$skin_name = $gSkin->{name};
 
-	my $title = getData('head', { section => $section->{section} });
-	header($title, $section->{section}) or return;
-	slashDisplay('index', { 'index' => $index, section => $section->{section} });
+	my $title = getData('head', { section => $skin_name });
+	header($title, $skin_name) or return;
+	slashDisplay('index', { 'index' => $index, section => $skin_name });
 
 	footer();
 

@@ -34,7 +34,7 @@ __template__
 			[% PROCESS formLabel value => "Alt Text", comment => "" %]
 			<INPUT TYPE="TEXT" NAME="alttext" VALUE="[% FILTER strip_attribute %][% topic.alttext %][% END %]">
 			[% PROCESS formLabel value => "Parent Topic", comment => "" %]
-			[% Slash.createSelect('parent_topic', parent_topic_values, form.parent_topic, 1, 0, 1)%]	
+			[% Slash.createSelect('parent_topic', parent_topic_values, topic.parent_topic, 1, 0, 1)%]	
 
 			[% PROCESS formLabel value => "Dimensions", comment => "leave blank to determine automatically" %]
 			Width: <INPUT TYPE="TEXT" NAME="width" VALUE="[% topic.width %]" SIZE="4">
@@ -93,4 +93,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: topicEdit;admin;default,v 1.10 2003/04/28 20:23:36 brian Exp $
+$Id: topicEdit;admin;default,v 1.11 2003/06/10 14:07:09 pater Exp $

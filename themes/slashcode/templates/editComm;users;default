@@ -253,7 +253,7 @@ __template__
 		<INPUT TYPE="checkbox" NAME="nosubscriberbonus"[% sb_check %]>
 [% END %]
 
-[% IF constants.allow_anonymous && user.karma > -1 %]
+[% IF constants.allow_anonymous && (user.karma > -1 || p_check) %]
 		<P><B>Post Anonymously</B>
 		<INPUT TYPE="hidden" NAME="postanon_present" VALUE="1">
 		<INPUT TYPE="checkbox" NAME="postanon"[% p_check %]>
@@ -295,4 +295,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.45 2004/12/14 15:50:08 cowboyneal Exp $
+$Id: editComm;users;default,v 1.46 2005/01/11 18:44:24 tvroom Exp $

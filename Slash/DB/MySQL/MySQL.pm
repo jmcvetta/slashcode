@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.299 2003/01/20 19:38:23 pater Exp $
+# $Id: MySQL.pm,v 1.300 2003/01/20 20:32:34 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.299 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.300 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5791,7 +5791,16 @@ sub getSectionTopicType {
 ########################################################
 sub getTopics {
 	my $answer = _genericGetsCache('topics', 'tid', '', @_);
+
 	return $answer;
+}
+
+########################################################
+sub getStoryTopicsJustTids {
+	my($self, $sid) = @_;
+	my $answer = $self->sqlSelectColArrayref('tid', 'story_topics', "sid = " . $self->sqlQuote($sid));
+
+	return  $answer;
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.113 2004/02/12 19:28:43 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.114 2004/02/12 23:12:35 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -135,7 +135,6 @@ sub dbAvailable {
 	# much as possible since this will be called at least twice
 	# per click.
 	my($token) = @_;
-print STDERR scalar(localtime) . " dbAvailable\n";
 	return 0 if -e "/usr/local/slash/dboff";
 	return 1 unless $token && $token =~ /^(\w+)/;
 	return 0 if -e "/usr/local/slash/dboff_$1";
@@ -2339,4 +2338,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.113 2004/02/12 19:28:43 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.114 2004/02/12 23:12:35 jamiemccarthy Exp $

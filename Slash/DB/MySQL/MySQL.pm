@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.8 2001/04/05 11:46:19 pudge Exp $
+# $Id: MySQL.pm,v 1.9 2001/04/12 19:41:32 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -2046,7 +2046,7 @@ sub createStory {
 		);
 	}
 
-	$self->sqlInsert('stories',{
+	my $data = {
 		sid		=> $sid,
 		uid		=> $story->{uid},
 		tid		=> $story->{tid},
@@ -2060,7 +2060,10 @@ sub createStory {
 		relatedtext	=> $story->{relatedtext},
 		displaystatus	=> $story->{displaystatus},
 		commentstatus	=> $story->{commentstatus}
-	});
+	};
+
+	$self->sqlInsert('stories', $data);
+	$self->sqlInsert('newstories', $data);
 	$self->_saveExtras($story);
 
 	return $sid;

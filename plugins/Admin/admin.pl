@@ -2,9 +2,10 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.115 2002/12/11 21:11:01 jamie Exp $
+# $Id: admin.pl,v 1.116 2002/12/12 03:18:49 jamie Exp $
 
 use strict;
+use Time::HiRes;
 use Image::Size;
 use POSIX qw(O_RDWR O_CREAT O_EXCL tmpnam);
 
@@ -1701,10 +1702,13 @@ sub displayRecentRequests {
 	# but the intent is to keep from locking up the DB too much.
 	my $min_id = $form->{min_id};
 	my $max_id = $admindb->getAccesslogMaxID();
-	$min_id = $max_id - 10_000 if !$min_id;
-	$min_id = $max_id          if $min_id < $max_id - 200_000;
+	$min_id = $max_id - 10_000 > 1 ? $max_id : 1	if !$min_id;
+	$min_id = $max_id + $min_id			if  $min_id < 0;
+	$min_id = $max_id				if  $min_id < $max_id - 200_000;
 
+	my $start_time = Time::HiRes::time;
 	my $min_id_ts ||= $slashdb->getAccesslog($min_id, 'ts');
+	my $duration = Time::HiRes::time - $start_time;
 
 	my $options = { min_id => $min_id };
 	$options->{thresh_count} = defined($form->{thresh_count}) ? $form->{thresh_count} : 100;
@@ -1726,6 +1730,7 @@ sub displayRecentRequests {
 		thresh_secs	=> $options->{thresh_secs},
 		thresh_hps	=> $options->{thresh_hps},
 		data		=> $data,
+		select_secs	=> sprintf("%0.3f", $duration),
 	});
 }
 

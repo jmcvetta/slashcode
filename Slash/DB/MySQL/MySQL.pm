@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.481 2003/11/25 06:18:09 vroom Exp $
+# $Id: MySQL.pm,v 1.482 2003/11/25 20:51:52 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.481 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.482 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -893,8 +893,8 @@ sub getModeratorCommentLog {
 	elsif ($type eq 'subnetid') {	$where_clause = "comments.subnetid=$vq     AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'ipid') {	$where_clause = "comments.ipid=$vq         AND moderatorlog.uid=users.uid"	}
 	elsif ($type eq 'bsubnetid') {	$where_clause = "moderatorlog.subnetid=$vq AND moderatorlog.uid=users.uid"	}
-	elsif ($type eq 'bipid') {	$where_clause = "moderatorlog.ipid=$vq     AND moderatorlog.uid=users.uid"	}      elsif ($type eq 'global'){	$where_clause = "1=1 "
- }
+	elsif ($type eq 'bipid') {	$where_clause = "moderatorlog.ipid=$vq     AND moderatorlog.uid=users.uid"	}
+	elsif ($type eq 'global') {	$where_clause = "1=1 "								}
 	return [ ] unless $where_clause;
 
 	my $qlid = $self->_querylog_start("SELECT", "moderatorlog, users, comments");
@@ -5657,9 +5657,7 @@ sub getSubmissionForUser {
 	return $submissions;
 }
 
-
 ########################################################
-
 sub calcTrollPoint {
 	my ($self, $type, $good_behavior) = @_;
 	my $constants = getCurrentStatic();
@@ -5672,6 +5670,7 @@ sub calcTrollPoint {
 
 	return $trollpoint;
 }
+
 ########################################################
 sub calcModval {
 	my($self, $where_clause, $halflife, $minicache) = @_;

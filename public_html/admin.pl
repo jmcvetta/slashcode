@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.7 2000/06/09 17:07:40 pudge Exp $
+#  $Id: admin.pl,v 1.8 2000/06/14 19:31:19 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1453,9 +1453,9 @@ sub editFilter {
 EOT
 	my($regex, $modifier, $field, $ratio, $minimum_match,
 		$minimum_length, $maximum_length, $err_message) =
-	sqlSelect("regex,modifier,field,ratio,minimum_match," .
-		"minimum_length,maximum_length,err_message",
-		"content_filters","filter_id=$filter_id");
+		sqlSelect("regex,modifier,field,ratio,minimum_match," .
+			"minimum_length,maximum_length,err_message",
+			"content_filters","filter_id=$filter_id");
 
 	# this has to be here - it really screws up the block editor
 	my $textarea = <<EOT;

@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.22 2000/06/14 14:31:31 pudge Exp $
+#  $Id: Slash.pm,v 1.23 2000/06/14 19:31:19 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1241,8 +1241,8 @@ sub fixHref {
 
 	for my $qr (@{$I{fixhrefs}}) {
 		if ($rel_url =~ $qr->[0]) {
-		my @ret = $qr->[1]->($rel_url);
-		return $print_errs ? @ret : $ret[0];
+			my @ret = $qr->[1]->($rel_url);
+			return $print_errs ? @ret : $ret[0];
 		}
 	}
 

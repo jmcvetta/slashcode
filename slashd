@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashd,v 1.10 2000/06/12 19:38:37 pudge Exp $
+#  $Id: slashd,v 1.11 2000/06/14 19:31:19 pudge Exp $
 ###############################################################################
 use sigtrap;
 use strict;
@@ -267,7 +267,7 @@ sub sectionHeaders {
 	header("", $section, "thread");
 	close FH;
 
-	$I{F}{ssi} = '';
+	$I{F}{ssi} = 1;
 	open FH, ">$I{basedir}/$section/slashfoot.inc"
 		or die "Can't open $I{basedir}/$section/slashfoot.inc: $!";
 	*STDOUT = *FH;
@@ -281,7 +281,7 @@ sub sectionHeaders {
 	header("", $section, "flat");
 	close FH;
 
-	$I{F}{ssi} = '';
+	$I{F}{ssi} = 0;
 	open FH, ">$I{basedir}/$section/slashfoot_F.inc"
 		or die "Can't open $I{basedir}/$section/slashfoot_F.inc: $!";
 	*STDOUT = *FH;

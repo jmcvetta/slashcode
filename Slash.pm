@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.14 2000/06/09 17:07:40 pudge Exp $
+#  $Id: Slash.pm,v 1.15 2000/06/09 17:14:04 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -2658,11 +2658,13 @@ sub getFormkeyId {
 	# if user logs in during submission of form, after getting
 	# formkey as AC, check formkey with user as AC
 	if ($I{query}->param('rlogin') && length($I{F}{upasswd}) > 1) {
-		$id = crypt($ENV{REMOTE_ADDR}, reverse $ENV{REMOTE_ADDR});
+		# id includes '&' to prevent uid's and IPs
+		# from potentially being the same
+		$id = '-1&' . $ENV{REMOTE_ADDR};
 	} elsif ($uid > 0) {
 		$id = $uid;
 	} else {
-		$id = crypt($ENV{REMOTE_ADDR}, reverse $ENV{REMOTE_ADDR});
+		$id = '-1&' . $ENV{REMOTE_ADDR};
 	}
 	return($id);
 }

@@ -79,6 +79,8 @@ __template__
 [%
       PROCESS graphs gtitle => 'Comment Scores';
       PROCESS graphs gtitle => 'Total Comments';
+      PROCESS graphs gtitle => 'Total Comments By Source';
+      PROCESS graphs gtitle => 'Comment IPIDs';
       PROCESS graphs gtitle => 'Total Moderations';
       PROCESS graphs gtitle => 'Total Metamoderations';
       END;
@@ -119,4 +121,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.28 2003/05/23 14:15:07 pudge Exp $
+$Id: report;stats;default,v 1.29 2003/06/03 18:18:10 pudge Exp $

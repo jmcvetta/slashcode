@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.30 2002/05/16 19:50:34 jamie Exp $
+# $Id: Stats.pm,v 1.31 2002/05/17 18:41:39 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -124,7 +124,7 @@ sub getAdminModsInfo {
 	# each combination of uid and 1/-1 fairness.
 	my $m2_history_mo_hr = $self->sqlSelectAllHashref(
 		"name",
-		"name, SUM(value)",
+		"name, SUM(value) AS count",
 		"stats_daily",
 		"name LIKE 'm%fair_%' AND day > DATE_SUB(NOW(), INTERVAL 732 HOUR)",
 		"GROUP BY name"
@@ -134,7 +134,8 @@ sub getAdminModsInfo {
 		my($fairness, $uid) = $name =~ /^m2_((?:un)?fair)_admin_(\d+)$/;
 		next unless defined($fairness);
 		$fairness = ($fairness eq 'unfair') ? -1 : 1;
-		$m2_uid_val_mo_hr->{$uid}{$fairness}{count} = $m2_history_mo_hr->{$name};
+		$m2_uid_val_mo_hr->{$uid}{$fairness}{count} =
+			$m2_history_mo_hr->{$name}{count};
 	}
 	if (%$m2_uid_val_mo_hr) {
 		my $m2_uid_nickname = $self->sqlSelectAllHashref(

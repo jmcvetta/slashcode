@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.117 2003/06/20 17:40:08 jamie Exp $
+# $Id: slashschema_create.sql,v 1.118 2003/06/25 21:52:26 pudge Exp $
 #
 
 #
@@ -670,6 +670,23 @@ CREATE TABLE section_topics (
 	FOREIGN KEY (tid) REFERENCES topics(tid),
 	PRIMARY KEY (section,type,tid)
 ) TYPE=InnoDB;
+
+
+#
+# Table structure for table 'soap_methods'
+#
+
+DROP TABLE IF EXISTS soap_methods;
+CREATE TABLE soap_methods (
+        id MEDIUMINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+        class VARCHAR(100) NOT NULL,
+        method VARCHAR(100) NOT NULL,
+        seclev MEDIUMINT DEFAULT 1000 NOT NULL,
+        subscriber_only TINYINT DEFAULT 0 NOT NULL,
+        formkeys VARCHAR(255) DEFAULT '' NOT NULL,
+        PRIMARY KEY (id),
+        UNIQUE soap_method(class, method)
+);
 
 #
 # Table structure for table 'subsections'

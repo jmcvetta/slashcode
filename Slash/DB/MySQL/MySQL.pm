@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.732 2004/11/21 03:34:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.733 2004/11/21 21:31:26 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.732 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.733 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1790,7 +1790,8 @@ sub createSubmission {
 	$data->{subnetid} = getCurrentUser('subnetid');
 	$data->{email} = delete $submission->{email} || '';
 	my $emailuri = URI->new($data->{email});
-	my $emailhost = $emailuri ? $emailuri->host() : "";
+	my $emailhost = "";
+	$emailhost = $emailuri->host() if $emailuri && $emailuri->can("host");
 	$data->{emaildomain} = fullhost_to_domain($emailhost);
 	$data->{uid} = delete $submission->{uid} || getCurrentStatic('anonymous_coward_uid'); 
 	$data->{'-time'} = delete $submission->{'time'};

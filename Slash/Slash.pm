@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.132 2003/05/22 19:11:51 brian Exp $
+# $Id: Slash.pm,v 1.133 2003/05/23 14:03:35 pudge Exp $
 
 package Slash;
 
@@ -585,7 +585,8 @@ sub printComments {
 
 	# Now we get fresh with the comment text. We take all of the cids that we have found and we then 
 	# speed through the text replacing the tags that were there to hold them.
-	my $comment_text = $slashdb->getCommentText($user->{state}{cids});
+	my $comment_text = $slashdb->getCommentText($user->{state}{cids}) || {};
+
 	for my $cid (keys %$comment_text) {
 		if ($form->{mode} ne 'archive'
 			&& $comments->{$cid}->{len} > $user->{maxcommentsize}
@@ -1268,11 +1269,11 @@ sub getOlderStories {
 		$story->{day} = $day;
 		$story->{secs} = $secs;
 		$story->{'link'} = linkStory({
-				'link'  => $story->{title},
-				sid     => $story->{sid},
-				tid     => $story->{tid},
-				section => $story->{section},
-				});
+			'link'  => $story->{title},
+			sid     => $story->{sid},
+			tid     => $story->{tid},
+			section => $story->{section},
+		});
 	}
 
 	my $yesterday;

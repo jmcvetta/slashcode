@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.91 2003/09/23 22:04:45 jamie Exp $
+# $Id: User.pm,v 1.92 2003/10/06 04:43:41 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -76,12 +76,38 @@ sub handler {
 
 	$slashdb->sqlConnect;
 
-	my $method = $r->method;
+	##################################################
 	# Don't remove this. This solves a known bug in Apache -- brian
 	# i really wish we knew WHAT bug, and how this solves it -- pudge
-	$r->method('GET');
+	#
+	# OK, let's try to clear this up. See:
+	# http://www.apache.org/dist/perl/mod_perl-1.28/faq/mod_perl_api.pod
+	# The issue is that we use Apache::Request's methods to parse an
+	# incoming POST request;  it reads Content-length bytes from STDIN
+	# and converts them into params which we assign into a form hash in
+	# filter_params().  If another module later tries to do the same
+	# thing, it will hang forever waiting to read Content-length more
+	# bytes from STDIN when of course none are left to read.  The main
+	# danger is that someone will 'use CGI' along with Slash -- CGI.pm
+	# automatically parses that data and so will hang.  There is no
+	# good way to share that data between the two modules, so what we
+	# do instead is munge what Apache::Request considers the incoming
+	# data to be, so no later code will try to read from it.  Maybe we
+	# should do this in filter_params itself, but for now it's here.
+	# -- jamie
+
+	my $method = $r->method;
 
 	my $form = filter_params($apr);
+
+	$r->method('GET');
+	$r->method_number(M_GET);
+	$r->headers_in->unset('Content-length');
+
+	# And now the request is safe for CGI.pm or anything else to try
+	# to work with -- or at least it won't hang.
+	##################################################
+
 	$form->{query_apache} = $apr;
 	@{$form}{keys  %{$constants->{form_override}}} =
 		values %{$constants->{form_override}};

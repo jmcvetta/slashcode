@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.7 2002/11/09 23:36:01 brian Exp $
+# $Id: Events.pm,v 1.8 2003/04/19 18:18:44 jamie Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -179,6 +179,7 @@ sub createCal {
 	return $cal->as_HTML;
 }
 
+1;
 
 __END__
 

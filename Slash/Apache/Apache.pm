@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.44 2003/10/21 01:47:04 pudge Exp $
+# $Id: Apache.pm,v 1.45 2003/10/29 18:50:26 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -304,7 +304,7 @@ sub ConnectionIsSecure {
 	# Non-SSL connection, from a network not known to be secure.
 	# Call it insecure.
 	return 0;
- }
+}
 
 sub IndexHandler {
 	my($r) = @_;
@@ -355,10 +355,10 @@ sub IndexHandler {
 		my $key = $1;
 		my $slashdb = getCurrentDB();
 		my $section = $slashdb->getSection($key);
-		if ($section && $section->{id}) {
+		my $index_handler = $section->{index_handler}
+			|| $constants->{index_handler};
+		if ($section && $section->{id} && $index_handler ne 'IGNORE') {
 			my $basedir = $constants->{basedir};
-			my $index_handler = $section->{index_handler}
-				|| $constants->{index_handler};
 
 			# $USER_MATCH defined above
 			if ($dbon && $r->header_in('Cookie') =~ $USER_MATCH) {

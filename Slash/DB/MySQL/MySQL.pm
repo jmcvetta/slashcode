@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.552 2004/04/10 21:17:51 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.553 2004/04/12 15:15:12 cowboyneal Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.552 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.553 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2153,6 +2153,8 @@ sub existsEmail {
 sub createUser {
 	my($self, $matchname, $email, $newuser) = @_;
 	return unless $matchname && $email && $newuser;
+
+	$email =~ s/\s//g; # strip whitespace from emails
 
 	return if ($self->sqlSelect(
 		"uid", "users",

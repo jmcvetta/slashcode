@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.163 2003/08/05 22:45:17 pudge Exp $
+# $Id: Slash.pm,v 1.164 2003/08/06 03:42:18 jamie Exp $
 
 package Slash;
 
@@ -1499,26 +1499,27 @@ sub getData {
 	my $opts_getname = $opts; $opts_getname->{GetName} = 1;
 
 	my $name = slashDisplayName('data', $hashref, $opts_getname);
-	my $var  = $cache->{getdata}{ $name->{tempdata}{tpid} };
+	my $var  = $cache->{getdata}{ $name->{tempdata}{tpid} } ||= { };
 
 	if (defined $var->{$value}) {
-#		print STDERR "getData $$ value='$value' cache_hit\n";
+#		print STDERR "getData $$ value='$value' tpid='$name->{tempdata}{tpid}' len=" . length($var->{$value}) . " cache_hit\n";
 		return $var->{$value};
 	}
 
 	my $str = slashDisplay($name, $hashref, $opts);
+	return undef if !defined($str);
 
 	if ($hashref->{returnme}{data_constant}) {
-		$cache->{getdata}{_last_refresh} = time unless $cache->{getdata}{_last_refresh};
+		$cache->{getdata}{_last_refresh} ||= time;
 		$var->{$value} = $str;
 	}
-#	print STDERR "Slash.pm getData $$ value='$value' tpid='$name->{tempdata}{tpid}' cache_miss\n";
+#	print STDERR "getData $$ value='$value' tpid='$name->{tempdata}{tpid}' len=" . length($str) . " cache_miss\n";
 	return $str;
 }
 
 sub _dataCacheRefresh {
 	my($cache) = @_;
-	if ($cache->{getdata}{_last_refresh} < (time() - $cache->{getdata}{_expiration})) {
+	if ($cache->{getdata}{_last_refresh} < time - $cache->{getdata}{_expiration}) {
 		$cache->{getdata} = {};
 		$cache->{getdata}{_last_refresh} = time;
 		$cache->{getdata}{_expiration} = getCurrentStatic('block_expire');

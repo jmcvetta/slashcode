@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.58 2004/11/22 22:00:53 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.59 2004/11/23 18:48:03 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -274,7 +274,8 @@ $task{$me}{code} = sub {
 			$do_log ||= (verbosity() >= 1);
 			if ($stderr_text =~ /\b(ID \d+, \w+;\w+;\w+) :/) {
 				# template error, skip
-				next;
+				slashdErrnote("template error updating $sid: $stderr_text");
+				next STORIES_FRESHEN;
 			}
 		}
 

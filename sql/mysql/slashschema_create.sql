@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.103 2003/03/21 18:39:14 brian Exp $
+# $Id: slashschema_create.sql,v 1.104 2003/03/21 19:07:15 brian Exp $
 #
 
 #
@@ -287,7 +287,7 @@ CREATE TABLE dbs (
 	id mediumint UNSIGNED NOT NULL auto_increment,
 	virtual_user varchar(100) NOT NULL,
 	isalive enum("no","yes") DEFAULT "no" NOT NULL,
-	type enum("writer","reader","log","search", "log-slave") DEFAULT "reader" NOT NULL,
+	type enum("writer","reader","log","search", "log_slave") DEFAULT "reader" NOT NULL,
 	PRIMARY KEY (id)
 ) TYPE = myisam;
 

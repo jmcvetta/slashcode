@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.657 2004/08/03 21:10:50 pudge Exp $
+# $Id: MySQL.pm,v 1.658 2004/08/04 05:37:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.657 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.658 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2276,22 +2276,21 @@ sub getDB {
 	my($self, $db_type) = @_;
 
 	my $cache = getCurrentCache();
+	my $found = [];
 	if ($cache->{'dbs'} && (($_getDBs_cached_nextcheck || 0) > time)) {
-		my $vu_ar = $cache->{'dbs'}{$db_type};
-#		print STDERR gmtime() . " $$ getDB returning cache for '$db_type'"
-#			. " time='" . time . "'"
-#			. " nextcheck in " . ($_getDBs_cached_nextcheck - time) . " secs\n";
-		return "" if !$vu_ar || !@$vu_ar;
-		return $vu_ar->[ rand @$vu_ar ];
+		$found = $cache->{'dbs'}{$db_type};
+		return "" if !$found || !@$found;
+	} else {
+		my $dbs = $self->sqlSelectAllHashref('id', '*', 'dbs',
+			'type=' . $self->sqlQuote($db_type) . " AND isalive='yes'"
+		);
+		for (keys %$dbs) {
+			my $db = $dbs->{$_};
+			push @$found, ($db) x $db->{weight};
+		}
 	}
 
-	my $users = $self->sqlSelectColArrayref('virtual_user', 'dbs',
-		'type=' . $self->sqlQuote($db_type) . " AND isalive='yes'");
-	my $weighted = [];
-	for my $db (@$users) {
-		push @$weighted, ($db) x $db->{weight};
-	}
-	return $weighted->[rand @$weighted];
+	return $found->[rand @$found]{virtual_user};
 }
 
 } # end closure surrounding getDBs and getDB

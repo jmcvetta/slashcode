@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.325 2003/02/08 00:30:05 brian Exp $
+# $Id: MySQL.pm,v 1.326 2003/02/10 20:48:38 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.325 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.326 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3605,7 +3605,13 @@ sub setAccessList {
 
 	if ($setflag == 0) {
 		if ($rows > 0) {
-			$self->sqlDo("UPDATE accesslist SET $column=0, $newcol=1 WHERE $where");
+			my $return = $self->sqlUpdate("accesslist", {
+				"-$column" => $setflag,
+				"-$newcol" => 1,
+				reason     => $reason,
+			}, $where);
+
+			return $return ? 1 : 0;
 		}
 	} else {
 		if ($rows > 0) {

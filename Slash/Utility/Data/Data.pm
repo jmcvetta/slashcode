@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.9 2002/01/08 17:22:09 pudge Exp $
+# $Id: Data.pm,v 1.10 2002/01/10 14:28:08 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -663,7 +663,7 @@ The text to be fixed.
 
 =item MAX_WORD_LENGTH
 
-The maximum length of a word.  Default is 50.
+The maximum length of a word.  Default is 50 (breakhtml_wordlength in vars).
 
 =back
 
@@ -675,33 +675,36 @@ The text.
 
 =cut
 
-{
-	# this should be defined in vars table
-	my %is_break_tag = map { uc, 1 } qw(HR BR LI P OL UL BLOCKQUOTE DIV);
+sub breakHtml {
+	my($text, $mwl) = @_;
+	my($new, $l, $c, $in_tag, $this_tag, $cwl);
 
-	sub breakHtml {
-		my($text, $mwl) = @_;
-		my($new, $l, $c, $in_tag, $this_tag, $cwl);
+	my $constants = getCurrentStatic();
 
-		$mwl = $mwl || 50;
-		$l = length $text;
+	# these are tags that "break" a word;
+	# a<P>b</P> breaks words, y<B>z</B> does not
+	my $approvedtags_break = $constants->{'approvedtags_break'}
+		|| [qw(HR BR LI P OL UL BLOCKQUOTE DIV)];
+	my %is_break_tag = map { uc, 1 } @$approvedtags_break;
 
-		for (my $i = 0; $i < $l; $new .= $c, ++$i) {
-			$c = substr($text, $i, 1);
-			if ($c eq '<')		{ $in_tag = 1 }
-			elsif ($c eq '>')	{
-				$in_tag = 0;
-				$this_tag =~ s{^/?(\S+).*}{\U$1};
-				$cwl = 0 if $is_break_tag{$this_tag};
-				$this_tag = '';
-			}
-			elsif ($in_tag)		{ $this_tag .= $c }
-			elsif ($c =~ /\s/)	{ $cwl = 0 }
-			elsif (++$cwl > $mwl)	{ $new .= ' '; $cwl = 1 }
+	$mwl = $mwl || $constants->{'breakhtml_wordlength'} || 50;
+	$l = length $text;
+
+	for (my $i = 0; $i < $l; $new .= $c, ++$i) {
+		$c = substr($text, $i, 1);
+		if ($c eq '<')		{ $in_tag = 1 }
+		elsif ($c eq '>')	{
+			$in_tag = 0;
+			$this_tag =~ s{^/?(\S+).*}{\U$1};
+			$cwl = 0 if $is_break_tag{$this_tag};
+			$this_tag = '';
 		}
-
-		return $new;
+		elsif ($in_tag)		{ $this_tag .= $c }
+		elsif ($c =~ /\s/)	{ $cwl = 0 }
+		elsif (++$cwl > $mwl)	{ $new .= ' '; $cwl = 1 }
 	}
+
+	return $new;
 }
 
 #========================================================================
@@ -1748,4 +1751,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.9 2002/01/08 17:22:09 pudge Exp $
+$Id: Data.pm,v 1.10 2002/01/10 14:28:08 pudge Exp $

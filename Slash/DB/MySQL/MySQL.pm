@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.199 2002/07/19 04:02:12 jamie Exp $
+# $Id: MySQL.pm,v 1.200 2002/07/19 20:34:24 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.200 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4580,10 +4580,18 @@ sub getSlashConf {
 						   12 => 'Positive',	25 => 'Good',	99999 => 'Excellent' ],
 	);
 	for my $key (keys %conf_fixup_arrays) {
-		$conf{$key} = $fixup     ->($conf{$key}) || $conf_fixup_arrays{$key};
+		if (defined($conf{$key})) {
+			$conf{$key} = $fixup->($conf{$key});
+		} else {
+			$conf{$key} = $conf_fixup_arrays{$key};
+		}
 	}
 	for my $key (keys %conf_fixup_hashes) {
-		$conf{$key} = $fixup_hash->($conf{$key}) || $conf_fixup_hashes{$key};
+		if (defined($conf{$key})) {
+			$conf{$key} = $fixup_hash->($conf{$key});
+		} else {
+			$conf{$key} = $conf_fixup_hashes{$key};
+		}
 	}
 
 	if ($conf{comment_nonstartwordchars}) {

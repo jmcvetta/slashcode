@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.130 2004/07/03 17:18:38 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.131 2004/07/16 15:14:49 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1574,8 +1574,8 @@ Hashref of cleaned-up data.
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
-		approved artcount bseclev
-		buymore cid clbig clsmall
+		approved artcount art_offset bseclev
+		buymore cid clbig clsmall cm_offset
 		commentlimit commentsort commentspill
 		del displaystatus
 		filter_id hbtm height highlightthresh
@@ -1583,7 +1583,7 @@ Hashref of cleaned-up data.
 		maxcommentsize maximum_length maxstories
 		min min_comment minimum_length minimum_match next
 		nobonus_present
-		nosubscriberbonus_present
+		nosubscriberbonus_present nv_offset 
 		ordernum pid
 		postanon_present posttype ratio retrieve
 		show_m1s show_m2s
@@ -2499,4 +2499,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.130 2004/07/03 17:18:38 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.131 2004/07/16 15:14:49 tvroom Exp $

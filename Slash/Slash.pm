@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.123 2003/04/16 20:38:19 brian Exp $
+# $Id: Slash.pm,v 1.124 2003/04/21 22:04:19 brian Exp $
 
 package Slash;
 
@@ -1124,8 +1124,6 @@ sub dispStory {
 
 	my $section = $reader->getSection($story->{section});
 
-	$topic->{image} = "$constants->{imagedir}/topics/$topic->{image}" 
-		if $topic->{image} =~ /^\w+\.\w+$/; 
 	my %data = (
 		story	=> $story,
 		section => $section,

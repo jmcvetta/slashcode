@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.371 2003/04/17 16:50:17 pudge Exp $
+# $Id: MySQL.pm,v 1.372 2003/04/21 22:04:19 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.371 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.372 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -90,6 +90,9 @@ my %descriptions = (
 
 	'topics'
 		=> sub { $_[0]->sqlSelectMany('tid,alttext', 'topics') },
+
+	'topic_images_section'
+		=> sub { $_[0]->sqlSelectMany('concat(tid, "|", section), topic_image', 'topic_image_sections') },
 
 	'topics_all'
 		=> sub { $_[0]->sqlSelectMany('tid,alttext', 'topics') },
@@ -6279,6 +6282,32 @@ sub getSectionTopicType {
 ########################################################
 sub getTopics {
 	my $answer = _genericGetsCache('topics', 'tid', '', @_);
+
+	return $answer;
+}
+
+########################################################
+sub getTopicImage {
+	my $answer = _genericgetcache({
+		table		=> 'topic_images',
+		table_prime	=> 'id',
+		arguments	=> \@_,
+	});
+
+	return $answer;
+}
+
+########################################################
+sub getTopicImageBySection {
+	my ($self, $topic, $section, $values, $cache) = @_;
+	my $image_sections = $self->getDescriptions("topic_images_section");
+	my $image_id = $image_sections->{"$topic->{tid}|$section"} || $topic->{default_image};	
+	print STDERR "TOPIC $topic->{tid}|$section:$topic->{default_image}:$image_id\n";
+	my $answer = _genericGetCache({
+		table		=> 'topic_images',
+		table_prime	=> 'id',
+		arguments	=> [($self,$image_id,$values,$cache)],
+	});
 
 	return $answer;
 }

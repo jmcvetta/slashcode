@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.16 2003/03/04 19:56:31 pudge Exp $
+# $Id: Log.pm,v 1.17 2003/04/21 22:04:19 brian Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -40,6 +40,17 @@ sub handler {
 	}
 
 	createLog($uri, $dat, $r->status);
+	my $slashdb = getCurrentDB();
+	print STDERR "Kids  $slashdb->{_dbh}->{Kids} \n";
+	print STDERR "AKids  $slashdb->{_dbh}->{ActiveKids} \n";
+	for my $key (keys %{$slashdb->{_dbh}{CachedKids}}) {
+		my $valu = $slashdb->{_dbh}->{CachedKids}{$_};
+		if (ref($valu) eq 'ARRAY') {
+			print STDERR "CKids  $_:@$valu\n ";
+		} else {
+			print STDERR "CKids  $_:$valu  \n";
+		}
+	}
 	return OK;
 }
 

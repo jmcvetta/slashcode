@@ -4,7 +4,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: faq.shtml,v 1.2 2003/02/05 19:10:17 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: faq.shtml,v 1.3 2003/08/27 20:26:47 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <H1>Slashcode FAQ</H1>
@@ -212,12 +212,14 @@ opportunities to help out.
 <H3><A NAME="Slashcodecom7">Who are you?</A></H3>
 
 <P>
-Slash is developed full-time by three people: Patrick Galbraith (CaptTofu),
-Chris Nandor (pudge), and Brian Aker (Krow).  It was, of course, started by
-Rob Malda (CmdrTaco).  Jonathon Pater (CowboyNeal) still works on the code,
-and other Slashdot authors Clifton Wood (Cliff) and Jamie McCarthy (jamie)
-put in a lot of time on it.  Of course, there is plenty of additional help
-given by the users of the code and the various sites, other OSDN
+Slash is currently (August 2003) developed full-time by four people: Jamie
+McCarthy (Jamie), Chris Nandor (Pudge), Jonathon Pater (CowboyNeal), and
+Tim Vroom (Vroom).  It was, of course, started by Rob Malda (CmdrTaco)
+who still oversees its development;  Patrick Galbraith (CaptTofu) and
+Brian Aker (Krow) modernized it;  and Clifton Wood (Cliff) has put in a
+lot of time on it.  Of course, there is plenty of additional help given
+by the users of the code and the various sites -- we have accepted some
+excellent patches and more are always welcome -- and by other OSDN
 programmers and sysadmins, etc.  Thanks!
 See the <A HREF="http://slashcode.com/authors.pl">authors</A> page for some more information.
 </P>
@@ -507,6 +509,6 @@ information on how to contact us.  And thank you!
 
 
 
-<P><EM>Last update: $Id: faq.shtml,v 1.2 2003/02/05 19:10:17 jamie Exp $</EM>
+<P><EM>Last update: $Id: faq.shtml,v 1.3 2003/08/27 20:26:47 jamie Exp $</EM>
 
 <!--#include virtual="/slashfoot.inc"-->

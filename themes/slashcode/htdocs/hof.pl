@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: hof.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: hof.pl,v 1.3 2000/06/13 07:45:03 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -142,7 +142,7 @@ sub topComments {
 	$cursor->execute;
 
 	my $x = $I{F}{min};
-	while (my($section, $sid, $aid, $title, $pid, $subj, $sdate, $cdate,
+	while (my($section, $sid, $aid, $title, $pid, $subj, $cdate, $sdate,
 		$uid, $cid, $score) = $cursor->fetchrow) {
 		my($cname, $cemail) = sqlSelect("nickname,fakeemail",
 			"users","uid=$uid");

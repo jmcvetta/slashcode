@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.59 2004/06/17 16:11:59 jamiemccarthy Exp $
+# $Id: pollBooth.pl,v 1.60 2004/08/02 12:04:05 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -117,6 +117,7 @@ sub link_story_to_poll {
 	}
 	
 	# clear current story.qid
+	# XXX this needs to call setStory_delete_memcached
 	$slashdb->sqlUpdate("stories", { qid=>"" }, "sid = ".$slashdb->sqlQuote($form->{sid}));
 
 	slashDisplay('linkstory', {
@@ -147,6 +148,7 @@ sub detachpoll {
 		my $where = "sid=".$slashdb->sqlQuote($sid)." AND qid=".$slashdb->sqlQuote($qid);
 		my $count=$slashdb->sqlCount("stories",$where);
 		print STDERR "count $count\n";
+		# XXX this needs to call setStory_delete_memcached
 		if($count){
 			$slashdb->sqlUpdate("stories",{ qid => "" } , $where); 
 		} elsif ( $form->{force} ){

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.97 2002/03/09 02:40:47 cliff Exp $
+# $Id: MySQL.pm,v 1.98 2002/03/10 14:41:27 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4204,40 +4204,34 @@ sub getSlashConf {
 		] if $_[0];
 	};
 
-	$conf{fixhrefs} = [];  # fix later
-	$conf{stats_reports} = $fixup->($conf{stats_reports}) ||
-		[$conf{adminmail}];
-
-	$conf{submit_categories} = $fixup->($conf{submit_categories}) ||
-		[];
-
-	$conf{approvedtags} = $fixup->($conf{approvedtags}) ||
-		[qw(B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV)];
-
-	$conf{approvedtags_break} = $fixup->($conf{approvedtags_break}) ||
-		[qw(P LI OL UL BR BLOCKQUOTE DIV HR)];
-
-	$conf{lonetags} = $fixup->($conf{lonetags}) ||
-		[];
-
-	$conf{reasons} = $fixup->($conf{reasons}) ||
-		[
-			'Normal',	# "Normal"
-			'Offtopic',	# Bad Responses
-			'Flamebait',
-			'Troll',
-			'Redundant',
-			'Insightful',	# Good Responses
-			'Interesting',
-			'Informative',
-			'Funny',
-			'Overrated',	# The last 2 are "Special"
-			'Underrated'
-		];
-
-	# See <http://www.iana.org/assignments/uri-schemes>
-	$conf{approved_url_schemes} = $fixup->($conf{approved_url_schemes}) ||
-		[qw( ftp http gopher mailto news nntp telnet wais https )];
+	my %conf_fixup_arrays = (
+		# var name			# default array value
+		# --------			# -------------------
+						# See <http://www.iana.org/assignments/uri-schemes>
+		approved_url_schemes =>		[qw( ftp http gopher mailto news nntp telnet wais https )],
+		approvedtags =>			[qw( B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV )],
+		approvedtags_break =>		[qw( P LI OL UL BR BLOCKQUOTE DIV HR )],
+		fixhrefs =>			[ ],
+		lonetags =>			[ ],
+		reasons =>			[qw( Normal Offtopic Flamebait Troll Redundant
+						     Insightful Interesting Informative Funny
+						     Overrated Underrated )],
+		stats_reports =>		[ $conf{adminmail} ],
+		submit_categories =>		[ ],
+	);
+	my %conf_fixup_hashes = (
+		# var name			# default list of keys
+		# --------			# --------------------
+		ad_messaging_sections =>	[ ],
+	);
+	for my $key (keys %conf_fixup_arrays) {
+		$conf{$key} = $fixup->($conf{$key}) || $conf_fixup_arrays{$key};
+	}
+	for my $key (keys %conf_fixup_hashes) {
+		$conf{$key} = { map { $_, 1 }
+			@{$fixup->($conf{$key}) || $conf_fixup_hashes{$key}}
+		};
+	}
 
 	$conf{badreasons} = 4 unless defined $conf{badreasons};
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.258 2002/11/20 02:21:22 brian Exp $
+# $Id: MySQL.pm,v 1.259 2002/11/20 03:24:47 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.258 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.259 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3553,7 +3553,10 @@ sub metamodEligible {
 
 	# Easy tests the user can fail to be ineligible to metamod.
 	return 0 if $user->{is_anon} || !$user->{willing} || $user->{karma} < 0;
-	return 1 if $user->{is_admin};
+	# Technically I believe the next bit should always be right under the doctrine that
+	# an admin should be able to to anything but maybe the cat ate a plant tonight
+  # and thus Jim Jones really did it with the monkey wrench in the blue room -Brian
+	#return 1 if $user->{is_admin};
 
 	# Not eligible if metamodded too recently.
 	my $constants = getCurrentStatic();

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.8 2002/01/08 17:22:09 pudge Exp $
+# $Id: Provider.pm,v 1.9 2002/12/31 06:21:37 jamie Exp $
 
 package Slash::Display::Provider;
 
@@ -21,7 +21,7 @@ Slash::Display::Provider - Template Toolkit provider for Slash
 
 This here module provides templates to a Template Toolkit processor
 by way of the Slash API (which basically means that it grabs templates
-from the blocks table in the database).  It caches them, too.  It also
+from the templates table in the database).  It caches them, too.  It also
 can process templates passed in as text, like the base Provider module,
 but this one will create a unique name for the "anonymous" template so
 it can be cached.  Overriden methods include C<fetch>, C<_load>,
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar

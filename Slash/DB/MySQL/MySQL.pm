@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.647 2004/07/26 18:11:46 tvroom Exp $
+# $Id: MySQL.pm,v 1.648 2004/07/26 21:36:18 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.647 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.648 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5726,7 +5726,7 @@ sub getStoryByTimeAdmin {
 		"ORDER BY time $order LIMIT $limit"
 	);
 	foreach my $story (@$returnable) {
-		$story->{displaystatus} = $self->_displaystatus($story->{stoid}, { no_time_restrict => 1});
+		$story->{displaystatus} = $self->_displaystatus($story->{stoid}, { no_time_restrict => 1 });
 	}
 	return $returnable;
 }
@@ -8156,7 +8156,7 @@ sub getSimilarStories {
 		# they match with the current story.  Include a multiplier
 		# based on the length of the match.
 		my $s = $stories->{$sid};
-		$stories->{$sid}{displaystatus} = $self->_displaystatus($stories->{$sid}{stoid}, { no_time_restrict => 1});
+		$stories->{$sid}{displaystatus} = $self->_displaystatus($stories->{$sid}{stoid}, { no_time_restrict => 1 });
 		$s->{weight} = 0;
 		for my $word (@text_uncommon_words) {
 			my $word_weight = 0;

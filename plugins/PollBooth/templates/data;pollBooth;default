@@ -47,9 +47,15 @@ __template__
 [% CASE 'reject' %]
 	Your vote ([% aid %]) was rejected.
 
+[% CASE 'noquestion' %]
+	You must provide a question.
+
+[% CASE 'noanswer' %]
+	You must provide one or more answers.
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;pollBooth;default,v 1.2 2003/03/04 19:07:59 pudge Exp $
+$Id: data;pollBooth;default,v 1.3 2003/04/14 21:28:48 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.47 2003/04/09 19:38:13 pudge Exp $
+# $Id: pollBooth.pl,v 1.48 2003/04/14 21:28:48 pudge Exp $
 
 use strict;
 use Slash;
@@ -169,6 +169,23 @@ sub savepoll {
 		default(@_);
 		return;
 	}
+
+	if ($form->{question} !~ /\S/) {
+		print getData('noquestion');
+		editpoll(@_);
+		return;
+	} else {
+		my $q = 0;
+		for (my $i = 1; $i < 9; $i++) {
+			$q++ if $form->{"aid$i"} =~ /\S/;
+		}
+		if (!$q) {
+			print getData('noanswer');
+			editpoll(@_);
+			return;
+		}
+	}
+
 	slashDisplay('savepoll');
 	#We are lazy, we just pass along $form as a $poll
 	# Correct section for sectional editor first -Brian

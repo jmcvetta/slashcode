@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.208 2004/06/23 20:53:15 pudge Exp $
+# $Id: admin.pl,v 1.209 2004/06/25 06:45:43 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1529,13 +1529,13 @@ sub extractChosenFromForm {
 	if (defined $form->{topic_source} && $form->{topic_source} eq "submission" && $form->{subid}) {
 		$chosen_hr->{$form->{tid}} = 1;
 		my $chosen_topic = $slashdb->getTopic($form->{tid});
-		$chosen_names_hr->{$form->{tid}} = $chosen_topic->{textname} if $chosen_topic and $chosen_topic->{tid};
+		$chosen_names_hr->{$form->{tid}} = $chosen_topic->{textname} if $chosen_topic && $chosen_topic->{tid};
 	} else {
-		for my $i (0..$#{$form->{slashtopics_main_select}}) {
-			$chosen_hr->{$form->{slashtopics_main_select}[$i]}
-				= $form->{slashtopics_main_select_weights}[$i];
-			$chosen_names_hr->{$form->{slashtopics_main_select}[$i]}
-				= $form->{slashtopics_main_select_ids}[$i];
+		for my $i (0..$#{$form->{st_main_select}}) {
+			$chosen_hr->{$form->{st_main_select}[$i]}
+				= $form->{st_main_select_weights}[$i];
+			$chosen_names_hr->{$form->{st_main_select}[$i]}
+				= $form->{st_main_select_ids}[$i];
 		}
 	}
 	return($chosen_hr, $chosen_names_hr);

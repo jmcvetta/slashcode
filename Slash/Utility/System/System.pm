@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.23 2004/06/21 17:10:18 pudge Exp $
+# $Id: System.pm,v 1.24 2004/06/25 06:45:43 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -40,7 +40,7 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -49,6 +49,7 @@ use vars qw($VERSION @EXPORT @EXPORT_OK);
 	doLogInit
 	doLogPid
 	doLogExit
+	save2file
 	prog2file
 	makeDir
 );
@@ -328,6 +329,32 @@ sub doLog {
 	close $fh;
 }
 
+# Originally from open_backend.pl
+# will write out any data to a given file, but first check to see
+# if the data has changed, so clients don't
+# re-FETCH the file; if they send an If-Modified-Since, Apache
+# will just return a header saying the file has not been modified
+
+# $fudge is an optional coderef to munge the data before comparison
+
+sub save2file {
+	my($file, $data, $fudge) = @_;
+
+	if (open my $fh, '<', $file) {
+		my $current = do { local $/; <$fh> };
+		close $fh;
+		my $new = $data;
+		($current, $new) = $fudge->($current, $new) if $fudge;
+		return if $current eq $new;
+	}
+
+	open my $fh, '>', $file or die "Can't open > $file: $!";
+	print $fh $data;
+	close $fh;
+}
+
+
+
 # Originally from slashd/runtask
 #
 # prog2file executes a command (as the unix user specified in your
@@ -455,4 +482,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.23 2004/06/21 17:10:18 pudge Exp $
+$Id: System.pm,v 1.24 2004/06/25 06:45:43 pudge Exp $

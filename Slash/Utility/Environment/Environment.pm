@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.128 2004/06/22 03:38:59 pudge Exp $
+# $Id: Environment.pm,v 1.129 2004/06/25 06:45:43 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1567,9 +1567,9 @@ Hashref of cleaned-up data.
 {
 	my %multivalue = map {($_ => 1)} qw(
 		section_multiple
-		slashtopics_main_select
-		slashtopics_main_select_weights
-		slashtopics_main_select_ids
+		st_main_select
+		st_main_select_weights
+		st_main_select_ids
 	);
 
 	# fields that are numeric only
@@ -1593,7 +1593,7 @@ Hashref of cleaned-up data.
 		textarea_rows textarea_cols tokens
 		s subid stid stoid tpid tid qid aid pagenum
 		url_id spider_id miner_id keyword_id
-		slashtopics_main_select slashtopics_main_select_weights
+		st_main_select st_main_select_weights
 	);
 
 	# fields that have ONLY a-zA-Z0-9_
@@ -2499,4 +2499,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.128 2004/06/22 03:38:59 pudge Exp $
+$Id: Environment.pm,v 1.129 2004/06/25 06:45:43 pudge Exp $

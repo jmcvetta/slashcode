@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.20 2004/06/22 03:39:01 pudge Exp $
+# $Id: open_backend.pl,v 1.21 2004/06/25 06:45:44 pudge Exp $
 
 use strict;
 use Slash;
@@ -41,28 +41,10 @@ $task{$me}{code} = sub {
 	return;
 };
 
-sub save2file {
-	my($f, $d) = @_;
-	my $fh = gensym();
-
-	# don't rewrite the file if it is has not changed, so clients don't
-	# re-FETCH the file; if they send an If-Modified-Since, Apache
-	# will just return a header saying the file has not been modified
-	# -- pudge
-	# on the other hand, don't abort if the file doesn't exist; that
-	# probably means the site is newly installed - Jamie 2003/09/05
-	if (open $fh, "<$f") {
-		my $current = do { local $/; <$fh> };
-		close $fh;
-		my $new = $d;
-		# normalize ...
-		s|[dD]ate>[^<]+</|| for $current, $new;
-		return if $current eq $new;
-	}
-
-	open $fh, ">$f" or die "Can't open $f: $!";
-	print $fh $d;
-	close $fh;
+sub fudge {
+	my($current, $new) = @_;
+	s|[dD]ate>[^<]+</|| for $current, $new;
+	return($current, $new);
 }
 
 sub _do_rss {
@@ -88,7 +70,7 @@ sub _do_rss {
 	}, 1);
 
 	my $ext = $version == 0.9 ? 'rdf' : 'rss';
-	save2file("$constants->{basedir}/$file.$ext", $rss);
+	save2file("$constants->{basedir}/$file.$ext", $rss, \&fudge);
 }
 
 sub newrdf { _do_rss(@_, "0.9") } # RSS 0.9
@@ -126,7 +108,7 @@ EOT
 	$x .= "</backslash>\n";
 
 	my $file = sitename2filename($name);
-	save2file("$constants->{basedir}/$file.xml", $x);
+	save2file("$constants->{basedir}/$file.xml", $x, \&fudge);
 }
 
 1;

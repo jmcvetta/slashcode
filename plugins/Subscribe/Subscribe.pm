@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.20 2003/03/06 03:54:59 jamie Exp $
+# $Id: Subscribe.pm,v 1.21 2003/03/06 18:31:35 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -118,6 +118,12 @@ sub _subscribeDecisionPage {
 	if ($trueOnOther && !$useMaxNotToday) {
 		# If ads aren't on, the user isn't buying this one.
 		return 0 if !$constants->{run_ads};
+		# Otherwise, if the user is not a subscriber, this page
+		# is not adless (though it may not actually have an ad,
+		# that logic is elsewhere).
+		return 0 if !$user->{hits_paidfor}
+			|| ( $user->{hits_bought}
+				&& $user->{hits_bought} >= $user->{hits_paidfor} );
 	}
 
 	my $today_max_def = $constants->{subscribe_hits_btmd} || 10;
@@ -130,9 +136,6 @@ sub _subscribeDecisionPage {
 			return 0;
 		}
 	} else {
-		my $today_max = $today_max_def;
-		$today_max = $user->{hits_bought_today_max}
-			if defined($user->{hits_bought_today_max});
 		# Has the user exceeded the maximum number of pages they want
 		# to buy *today*?  (Here is where the algorithm decides that
 		# "today" is a GMT day.)

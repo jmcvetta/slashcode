@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.57 2002/08/26 17:38:17 pudge Exp $
+# $Id: Data.pm,v 1.58 2002/10/21 20:23:34 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -686,7 +686,7 @@ See C<stripByMode> for details.
 
 sub strip_mode {
 	my($string, $mode, @args) = @_;
-	return if !$mode || $mode < 1 || $mode > 4;	# user-supplied modes are 1-4
+	return "" if !$mode || $mode < 1 || $mode > 4;	# user-supplied modes are 1-4
 	return stripByMode($string, $mode, @args);
 }
 
@@ -2616,4 +2616,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.57 2002/08/26 17:38:17 pudge Exp $
+$Id: Data.pm,v 1.58 2002/10/21 20:23:34 pudge Exp $

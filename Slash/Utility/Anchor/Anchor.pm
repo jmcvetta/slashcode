@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.69 2004/07/08 18:03:31 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.70 2004/07/26 21:54:41 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -696,8 +696,8 @@ sub getSkinColors {
 		my $colors = {};
 		for (my $i=0; $i < $n_colors/2; $i++) {
 			my $j = $i + $n_colors/2;
-			$colors->{fg_$i} = $tempcolors[$i];
-			$colors->{bg_$i} = $tempcolors[$j];
+			$colors->{"fg_$i"} = $tempcolors[$i];
+			$colors->{"bg_$i"} = $tempcolors[$j];
 		}
 		$user->{colors} = $colors;
 		return 1;
@@ -725,4 +725,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.69 2004/07/08 18:03:31 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.70 2004/07/26 21:54:41 pudge Exp $

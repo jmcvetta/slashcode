@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.3 2001/11/06 14:18:17 pudge Exp $
+# $Id: Data.pm,v 1.4 2001/11/10 00:19:49 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -1240,7 +1240,7 @@ sub balanceTags {
 	# on certain editors (vim AND xemacs).  -- Cliff
 	# maybe you should use a REAL editor, like BBEdit.  :) -- pudge
 	while ($html =~ m|(<(\/?)($match)\b[^>]*>)|igo) { # loop over tags
-		($tag, $close, $whole) = ($3, $2, $1);
+		($tag, $close, $whole) = (uc($3), $2, $1);
 
 		if ($close) {
 			if (@stack && $tags{$tag}) {
@@ -1285,6 +1285,7 @@ sub balanceTags {
 	# add on any unclosed tags still on stack
 	$html .= join '', map { "</$_>" } grep {! exists $lone{$_}} reverse @stack;
 
+	return $html;
 }
 
 #========================================================================
@@ -1749,4 +1750,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.3 2001/11/06 14:18:17 pudge Exp $
+$Id: Data.pm,v 1.4 2001/11/10 00:19:49 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.23 2004/04/02 00:43:03 pudge Exp $
+# $Id: messages.pl,v 1.24 2004/04/12 01:17:52 jamiemccarthy Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -15,7 +15,7 @@ use Slash::Utility;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 my $start_time = Time::HiRes::time;
@@ -52,9 +52,9 @@ my $start_time = Time::HiRes::time;
 	}
 
 	# dispatch of op
-printf STDERR scalar(localtime) . " messages.pl before $$ op $op uid $user->{uid} elapsed %5.3f\n", (Time::HiRes::time - $start_time);
+#printf STDERR scalar(localtime) . " messages.pl before $$ op $op uid $user->{uid} elapsed %5.3f\n", (Time::HiRes::time - $start_time);
 	$ops{$op}[FUNCTION]->($messages, $constants, $user, $form);
-printf STDERR scalar(localtime) . " messages.pl after  $$ op $op uid $user->{uid} elapsed %5.3f\n", (Time::HiRes::time - $start_time);
+#printf STDERR scalar(localtime) . " messages.pl after  $$ op $op uid $user->{uid} elapsed %5.3f\n", (Time::HiRes::time - $start_time);
 
 	# writeLog('SOME DATA');	# if appropriate
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.112 2002/10/15 14:28:28 jamie Exp $
+# $Id: users.pl,v 1.113 2002/10/15 17:50:16 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2401,6 +2401,11 @@ sub getUserAdmin {
 	if ($m2total) {
 		$user_edit->{m2unfairpercent} = sprintf("%.2f",
 			$user_edit->{m2unfair}*100/$m2total);
+	}
+	my $mod_total = ($user_edit->{totalmods} || 0) + ($user_edit->{stirred} || 0);
+	if ($mod_total) {
+		$user_edit->{stirredpercent} = sprintf("%.2f",
+			$user_edit->{stirred}*100/$mod_total);
 	}
 
 	return slashDisplay('getUserAdmin', {

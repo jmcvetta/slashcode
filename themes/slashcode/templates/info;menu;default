@@ -4,6 +4,7 @@ __description__
 Display admin menu.
 
 * items = arrayref of hashref of menu items (value (link), label)
+* lightfontcolor = optional value for the font color of in the light mode menu
 
 __title__
 
@@ -27,9 +28,9 @@ __template__
 	{ link = "$constants.rootdir/admin.pl?op=topics",	label = "Config",		sel_label = "config" },
 	{ link = "$constants.rootdir/slashguide.shtml",		label = "Help",			sel_label = "help" },
 ];
-PROCESS tabbedmenu tabs=tabs color=color selected=page; %]
+PROCESS tabbedmenu tabs=tabs color=color selected=page lightfontcolor=lightfontcolor || ""; %]
 
 __seclev__
 10000
 __version__
-$Id: info;menu;default,v 1.13 2003/07/09 13:40:50 vroom Exp $
+$Id: info;menu;default,v 1.14 2003/09/16 19:14:10 vroom Exp $

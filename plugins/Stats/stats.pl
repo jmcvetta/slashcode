@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.17 2003/05/12 18:12:04 pudge Exp $
+# $Id: stats.pl,v 1.18 2003/05/13 13:54:00 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -25,7 +25,8 @@ sub main {
 	# for now ... writer
 	my $stats     = getObject('Slash::Stats', { db_type => 'writer' } );
 
-	my $admin      = $user->{acl}{stats}; #$user->{seclev} >= ($constants->{stats_admin_seclev} || 100);
+	# maybe eventually make this acl-only
+	my $admin      = ($user->{acl}{stats} || ($user->{seclev} >= ($constants->{stats_admin_seclev} || 100)));
 	my $admin_post = $admin && $user->{state}{post};
 
 	# possible value of "op" parameter in form

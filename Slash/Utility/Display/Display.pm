@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.33 2002/11/28 21:25:10 jamie Exp $
+# $Id: Display.pm,v 1.34 2003/01/14 21:30:31 jamie Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1018,7 +1018,9 @@ sub createMenu {
 	if ($menu eq 'users'
 		&& $user->{lastlookuid}
 		&& $user->{lastlookuid} =~ /^\d+$/
-		&& $user->{lastlookuid} != $user->{uid}) {
+		&& $user->{lastlookuid} != $user->{uid}
+		&& ($user->{lastlooktime} || 0) >= time - ($constants->{lastlookmemory} || 3600)
+	) {
 		my $lastlook_user = $slashdb->getUser($user->{lastlookuid});
 		my $nick_fix = fixparam($lastlook_user->{nickname});
 		my $nick_attribute = strip_attribute($lastlook_user->{nickname});
@@ -1227,4 +1229,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.33 2002/11/28 21:25:10 jamie Exp $
+$Id: Display.pm,v 1.34 2003/01/14 21:30:31 jamie Exp $

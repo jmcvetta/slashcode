@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.34 2002/10/25 05:59:00 jamie Exp $
+# $Id: zoo.pl,v 1.35 2003/01/14 21:30:31 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -152,7 +152,9 @@ sub friends {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -219,7 +221,9 @@ sub fof {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -286,7 +290,9 @@ sub enof {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -348,7 +354,9 @@ sub foes {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -410,7 +418,9 @@ sub fans {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -470,7 +480,9 @@ sub freaks {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -532,7 +544,9 @@ sub all {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
@@ -627,7 +641,9 @@ sub check {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 	}
 	_printHead("confirm", {
 		nickname	=> $nickname,

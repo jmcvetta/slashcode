@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.137 2003/01/13 19:55:32 pater Exp $
+# $Id: users.pl,v 1.138 2003/01/14 21:30:31 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -905,7 +905,9 @@ sub showInfo {
 		# Store the fact that this user last looked at that user.
 		# For maximal convenience in stalking.
 		$user_change->{lastlookuid} = $uid;
+		$user_change->{lastlooktime} = time;
 		$user->{lastlookuid} = $uid;
+		$user->{lastlooktime} = time;
 		$hr->{tab_selected_1} = 'otheruser';
 	}
 

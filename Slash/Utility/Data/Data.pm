@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.67 2002/12/18 21:30:16 jamie Exp $
+# $Id: Data.pm,v 1.68 2003/01/14 21:30:31 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -53,6 +53,7 @@ use vars qw($VERSION @EXPORT);
 	chopEntity
 	countWords
 	decode_entities
+	ellipsify
 	encryptPassword
 	findWords
 	fixHref
@@ -2425,6 +2426,60 @@ sub vislenify {
 
 #========================================================================
 
+=head2 ellipsify (TEXT [, LEN])
+
+Given any text, makes sure it's not too long by shrinking its
+length to at most LEN, putting an ellipse in the middle.  If the
+LEN is too short to allow an ellipse in the middle, it just does
+an ellipse at the end, or in the worst case, a substr.
+
+=over 4
+
+=item Parameters
+
+=over 4
+
+=item TEXT
+
+Any text.
+
+=item LEN
+
+Usually not necessary;  if present, overrides the var
+comments_max_email_len (email is what this function was designed to
+work on).
+
+=back
+
+=item Return value
+
+New value.
+
+=back
+
+=cut
+
+sub ellipsify {
+	my($text, $len) = @_;
+	$len ||= getCurrentStatic('comments_max_email_len') || 40;
+	if (length($text) > $len) {
+		my $len2 = int(($len-7)/2);
+		if ($len2 >= 4) {
+			$text = substr($text, 0, $len2)
+				. " ... "
+				. substr($text, -$len2);
+		} elsif ($len >= 8) {
+			$text = substr($text, 0, $len-4)
+				. " ...";
+		} else {
+			$text = substr($text, 0, $len);
+		}
+	}
+	return $text;
+}
+
+#========================================================================
+
 =head2 getArmoredEmail (UID)
 
 Returns a Spam Armored email address for the user associated with the
@@ -2685,4 +2740,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.67 2002/12/18 21:30:16 jamie Exp $
+$Id: Data.pm,v 1.68 2003/01/14 21:30:31 jamie Exp $

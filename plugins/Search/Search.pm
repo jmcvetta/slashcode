@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.71 2004/06/23 02:04:28 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.72 2004/06/23 15:36:32 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -158,13 +158,13 @@ sub findStory {
 	$form->{query} = $self->_cleanQuery($form->{query});
 	my $query = $self->sqlQuote($form->{query});
 	my $columns;
-	$columns .= "title, stories.stoid AS stoid, "; 
-	$columns .= "time, commentcount, stories.primaryskid AS skid,";
-	$columns .= "introtext ";
-	$columns .= ", TRUNCATE((( " . $self->_score('title', $form->{query}, $constants->{search_method}) . "  + " .  $self->_score('introtext,bodytext', $form->{query}, $constants->{search_method}) .") / 2), 1) as score "
+	$columns .= "title, stories.stoid AS stoid, sid, "; 
+	$columns .= "time, commentcount, stories.primaryskid AS skid, ";
+	$columns .= "introtext, ";
+	$columns .= "TRUNCATE((( " . $self->_score('title', $form->{query}, $constants->{search_method}) . "  + " .  $self->_score('introtext,bodytext', $form->{query}, $constants->{search_method}) .") / 2), 1) as score "
 		if $form->{query};
 
-	my $tables = "stories,story_text";
+	my $tables = "stories, story_text";
 
 	my $other;
 	$other .= " HAVING score > 0 "
@@ -259,12 +259,11 @@ sub findStory {
 	
 	$other .= " LIMIT $start, $limit" if $limit;
 	my $stories = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
-	# fetch all the topics
+
+	# Don't return just one topic id in tid, make it an arrayref
+	# to all topic ids -- in the preferred order.
 	for my $story (@$stories) {
-		$story->{tid} = $self->sqlSelectColArrayref(
-			'tid', 'story_topics_rendered',
-			'sid=' . $self->sqlQuote($story->{stoid})
-		);
+		$story->{tid} = $self->getTopiclistForStory($story->{stoid});
 	}
 
 	return $stories;

@@ -72,7 +72,7 @@ END %]
 							WIDTH="[% image.width %]" HEIGHT="[% image.height %]" BORDER="0"
 							ALIGN="RIGHT" HSPACE="20" VSPACE="10"
 							ALT="[% topic.alttext %]"
-							TITLE="[%topic.alttext %]"></A><BR>
+							TITLE="[% topic.alttext %]"></A><BR>
 				[% END %]
 				[% FOREACH tid = stid %]
 					[% IF story.tid == tid ; NEXT ; END %]
@@ -88,7 +88,7 @@ END %]
 								WIDTH="[% image.width %]" HEIGHT="[% image.height %]" BORDER="0"
 								HSPACE="20" VSPACE="10"
 								ALT="[% topic.alttext %]"
-								TITLE="[%topic.alttext %]"></A><BR>
+								TITLE="[% topic.alttext %]"></A><BR>
 					[% END %]
 				[% END %]
 </TD></TR></TABLE>
@@ -127,4 +127,4 @@ END -%]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.26 2003/04/24 04:44:39 jamie Exp $
+$Id: dispStory;misc;default,v 1.27 2003/04/25 19:30:11 brian Exp $

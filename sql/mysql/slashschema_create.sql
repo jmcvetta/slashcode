@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.8 2001/12/02 04:53:28 pudge Exp $
+# $Id: slashschema_create.sql,v 1.9 2001/12/06 23:41:08 brian Exp $
 #
 
 #
@@ -764,6 +764,7 @@ CREATE TABLE users_info (
 	user_expiry_days smallint UNSIGNED DEFAULT '1' NOT NULL,
 	user_expiry_comm smallint UNSIGNED DEFAULT '1' NOT NULL,
 	created_at datetime DEFAULT '0000-00-00 00:00' NOT NULL,
+	people blob,
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	PRIMARY KEY (uid)
 ) TYPE = myisam;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.6 2001/03/26 11:10:52 pudge Exp $
+# $Id: journal.pl,v 1.7 2001/03/26 12:15:22 pudge Exp $
 
 use strict;
 use Slash;
@@ -177,7 +177,7 @@ sub displayArticle {
 			push @sorted_articles, $collection if ($date and (keys %$collection));
 			$collection = {};
 			$date = $date_current;
-			$collection->{day} = $date;
+			$collection->{day} = $article->[0];
 			push @{$collection->{article}}, {
 				article		=> strip_mode($article->[1], $article->[4]),
 				date		=> $article->[0],
@@ -226,7 +226,7 @@ sub saveArticle {
 			posttype	=> $form->{posttype},
 		});
 	} else {
-		$journal->create($description, $form->{article},
+		$journal->create($description,
 			$form->{article}, $form->{posttype});
 	}
 	listArticle(@_);

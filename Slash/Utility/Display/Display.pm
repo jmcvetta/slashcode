@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.61 2003/07/22 22:22:50 pudge Exp $
+# $Id: Display.pm,v 1.62 2003/08/05 18:07:25 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -56,58 +56,6 @@ use vars qw($VERSION @EXPORT);
 	selectTopic
 	titlebar
 );
-
-#========================================================================
-
-=head2 getData(VALUE [, PARAMETERS, PAGE])
-
-Returns snippets of data associated with a given page.
-
-=over 4
-
-=item Parameters
-
-=over 4
-
-=item VALUE
-
-The name of the data-snippet to process and retrieve.
-
-=item PARAMETERS
-
-Data stored in a hashref which is to be passed to the retrieved snippet.
-
-=item PAGE
-
-The name of the page to which VALUE is associated.
-
-=back
-
-=item Return value
-
-Returns data snippet with all necessary data interpolated.
-
-=item Dependencies
-
-Gets little snippets of data, determined by the value parameter, from
-a data template. A data template is a colletion of data snippets
-in one template, which are grouped together for efficiency. Each
-script can have it's own data template (specified by the PAGE
-parameter). If PAGE is unspecified, snippets will be retrieved from
-the last page visited by the user as determined by Slash::Apache::User.
-
-=back
-
-=cut
-
-sub getData {
-	my($value, $hashref, $page) = @_;
-	$hashref ||= {};
-	$hashref->{value} = $value;
-	my %opts = ( Return => 1, Nocomm => 1 );
-	$opts{Page} = $page || 'NONE' if defined $page;
-	return slashDisplay('data', $hashref, \%opts);
-}
 
 #========================================================================
 
@@ -1406,7 +1354,7 @@ sub processSlashTags {
 		if (ref($slashTags->{$type}) eq 'CODE') {
 			$slashTags->{$type}($tokens, $token, \$newtext);
 		} else {
-			my $content = getData('SLASH-UNKNOWN-TAG', { tag => $token->[0] });
+			my $content = Slash::getData('SLASH-UNKNOWN-TAG', { tag => $token->[0] });
 			print STDERR "BAD TAG $token->[0]:$type\n";
 			$newtext =~ s/\Q$token->[3]\E/$content/;
 		}
@@ -1440,7 +1388,7 @@ sub _slashImage {
 		Return => 1,
 		Nocomm => 1,
 	});
-	$content ||= getData('SLASH-UNKNOWN-IMAGE');
+	$content ||= Slash::getData('SLASH-UNKNOWN-IMAGE');
 
 	$$newtext =~ s/\Q$token->[3]\E/$content/;
 }
@@ -1455,7 +1403,7 @@ sub _slashStory {
 		sid	=> $token->[1]{story},
 		title	=> $token->[1]{title},
 	});
-	$content ||= getData('SLASH-UNKNOWN-STORY');
+	$content ||= Slash::getData('SLASH-UNKNOWN-STORY');
 
 	$$newtext =~ s#\Q$token->[3]$text</SLASH>\E#$content#is;
 }
@@ -1470,7 +1418,7 @@ sub _slashUser {
 		Return => 1,
 		Nocomm => 1,
 	});
-	$content ||= getData('SLASH-UNKNOWN-USER');
+	$content ||= Slash::getData('SLASH-UNKNOWN-USER');
 
 	$$newtext =~ s/\Q$token->[3]\E/$content/;
 }
@@ -1490,7 +1438,7 @@ sub _slashFile {
 		Return => 1,
 		Nocomm => 1,
 	});
-	$content ||= getData('SLASH-UNKNOWN-FILE');
+	$content ||= Slash::getData('SLASH-UNKNOWN-FILE');
 
 	$$newtext =~ s#\Q$token->[3]$text</SLASH>\E#$content#is;
 }
@@ -1511,7 +1459,7 @@ sub _slashLink {
 			Nocomm => 1,
 		});
 	}
-	$content ||= getData('SLASH-UNKNOWN-LINK');
+	$content ||= Slash::getData('SLASH-UNKNOWN-LINK');
 
 	$$newtext =~ s#\Q$token->[3]$text</SLASH>\E#$content#is;
 }
@@ -1589,4 +1537,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.61 2003/07/22 22:22:50 pudge Exp $
+$Id: Display.pm,v 1.62 2003/08/05 18:07:25 pudge Exp $

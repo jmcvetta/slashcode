@@ -49,7 +49,7 @@ __template__
 		[% form.newusernick %], UID [% uid %]</A></P>
 	[% ELSE %]
 	<P>Once you receive your password, you can
-	<A HREF="[% gSkin.rootdir %]/users.pl">log in and set your account up.</A>
+	<A HREF="[% gSkin.rootdir %]/[% IF plugins.Login %]login.pl[% ELSE %]users.pl[% END %]">log in and set your account up.</A>
 	[% END %]
 
 [% CASE 'reset_acct_msg' %]
@@ -193,4 +193,4 @@ please contact the site administrator immediately.
 __seclev__
 10000
 __version__
-$Id: messages;users;default,v 1.27 2004/07/02 00:13:58 pudge Exp $
+$Id: messages;users;default,v 1.28 2004/07/04 14:25:05 jamiemccarthy Exp $

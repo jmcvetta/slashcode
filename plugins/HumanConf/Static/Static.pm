@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.9 2003/04/19 18:18:44 jamie Exp $
+# $Id: Static.pm,v 1.10 2003/07/01 21:56:30 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -309,7 +309,9 @@ sub addPool {
 			"/",
 			$filename,
 			qq{" width=$width height=$height border=0 },
-			qq{alt="(random letters)">}
+			qq{alt="random letters - if you are visually impaired, please email us at }
+				. fixparam($constants->{adminmail})
+				. qq{">}
 		);
 	}
 

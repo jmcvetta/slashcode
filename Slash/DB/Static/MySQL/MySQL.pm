@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.7 2001/04/25 02:41:56 brian Exp $
+# $Id: MySQL.pm,v 1.8 2001/05/07 17:59:57 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use Slash::Utility;
 use URI ();
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Bite my shiny, metal ass! 
 
@@ -462,12 +462,11 @@ sub maxAccessLog {
 ########################################################
 # For tailslash
 sub getAccessLogInfo {
-	my ($self, $id) = @_;
-	my $returnable = $self->sqlSelectAll("host_addr,uid,op,dat,
-				date_format(ts,\"\%H:\%i\") as ts,id",
+	my($self, $id) = @_;
+	my $returnable = $self->sqlSelectAll("host_addr,uid,op,dat,ts,id",
 				"accesslog","id > $id",
 				"ORDER BY ts DESC");
-
+	formatDate($returnable, 4, 4, '%H:%M');
 	return $returnable;
 }
 

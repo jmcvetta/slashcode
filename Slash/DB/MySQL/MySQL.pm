@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.15 2001/05/05 13:07:45 brian Exp $
+# $Id: MySQL.pm,v 1.16 2001/05/07 17:59:57 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -115,6 +115,7 @@ my %descriptions = (
 
 );
 
+########################################################
 sub _whereFormkey {
 	my($self, $formkey_id) = @_;
 	my $where;
@@ -159,10 +160,9 @@ sub init {
 # Wrapper to get the latest ID from the database
 sub getLastInsertId {
 	my($self,$table,$col) = @_;
- 	my ($answer) = $self->sqlSelect('LAST_INSERT_ID()');
+ 	my($answer) = $self->sqlSelect('LAST_INSERT_ID()');
 	return $answer;
 }
-
 
 ########################################################
 # Yes, this is ugly, and we can ditch it in about 6 months
@@ -2041,6 +2041,7 @@ sub createStory {
 	#Create a sid 
 	my($sec, $min, $hour, $mday, $mon, $year) = localtime;
 	$year = $year % 100;
+	# yes, this format is correct, don't change it :-)
 	my $sid = sprintf('%02d/%02d/%02d/%02d%0d2%02d',
 		$year, $mon+1, $mday, $hour, $min, $sec);
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.9 2001/04/25 17:12:39 pudge Exp $
+# $Id: Utility.pm,v 1.10 2001/05/07 17:59:57 pudge Exp $
 
 package Slash::Utility;
 
@@ -39,7 +39,7 @@ use XML::Parser;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(
@@ -2520,7 +2520,7 @@ sub filter_params {
 		del displaystatus filter_id height
 		highlightthresh isolate issue maillist max
 		maxcommentsize maximum_length maxstories min minimum_length
-		minimum_match ordernum pid
+		minimum_match ordernum pid start
 		retrieve seclev startat uid uthreshold voters width
 		writestatus ratio posttype
 	);

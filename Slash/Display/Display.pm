@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.2 2001/03/20 20:22:21 brian Exp $
+# $Id: Display.pm,v 1.3 2001/05/07 17:59:57 pudge Exp $
 
 package Slash::Display;
 
@@ -48,7 +48,7 @@ use Slash::Display::Provider ();
 use Slash::Utility;
 use Template;
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 
@@ -425,6 +425,15 @@ my %scalar_ops = (
 	'lc'		=> sub { lc $_[0] },
 	'ucfirst'	=> sub { ucfirst $_[0] },
 	'lcfirst'	=> sub { lcfirst $_[0] },
+	'substr'        => sub {
+		if (@_ == 2) {
+			substr($_[0], $_[1]);
+		} elsif (@_ == 3) {
+			substr($_[0], $_[1], $_[2])
+		} else {
+			return $_[0];
+		}
+	},
 );
 
 @{$Template::Stash::LIST_OPS}  {keys %list_ops}   = values %list_ops;

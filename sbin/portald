@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.15 2002/03/23 08:00:18 jamie Exp $
+# $Id: portald,v 1.16 2002/03/26 22:32:53 jamie Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -52,16 +52,19 @@ END {
 
 ################################################################################
 sub geturl {
+	my($url, $options) = @_;
 	my $ua = new LWP::UserAgent;
-	my $request = new HTTP::Request('GET', $_[0]);
+	my $request = new HTTP::Request('GET', $url);
 	$ua->proxy(http => $constants->{http_proxy}) if $constants->{http_proxy};
-	$ua->timeout(30);
+	my $timeout = 30;
+	$timeout = $options->{timeout} if $options->{timeout};
+	$ua->timeout($timeout);
 	my $result = $ua->request($request);
 
 	if ($result->is_success) {
 		return $result->content;
 	} else {
-		return 0;
+		return "";
 	}
 }
 

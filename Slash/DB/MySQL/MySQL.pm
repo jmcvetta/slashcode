@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.338 2003/02/27 08:19:59 jamie Exp $
+# $Id: MySQL.pm,v 1.339 2003/02/28 06:01:15 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.338 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.339 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4869,15 +4869,11 @@ EOT
 		formatDate([$data], 7, 7, '%s');
 		next if $form->{issue} && $data->[5] > $form->{issue};
 		push @stories, [@$data];
-		$seeing_future = 1 if $data->[10];
 		last if ++$count >= $limit;
 	}
 	$cursor->finish;
 
-	return {
-		seeing_future	=> $seeing_future,
-		stories		=> \@stories,
-	};
+	return \@stories;
 }
 
 

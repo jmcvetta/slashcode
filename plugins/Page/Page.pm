@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.10 2003/02/27 08:19:59 jamie Exp $
+# $Id: Page.pm,v 1.11 2003/02/28 06:01:15 jamie Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -145,11 +145,9 @@ sub displayStories {
 
 	my $storystruct = [];
 
-	my $ess_hr = $self->getStoriesEssentials(
+	my $stories = $self->getStoriesEssentials(
 		$limit, $section, $tid, $misc
 	);
-	my $stories = $ess_hr->{stories};
-	$user->{state}{buyingpage} = 1 if $ess_hr->{seeing_future};
 
 	my $i = 0;
 
@@ -164,6 +162,7 @@ sub displayStories {
 		my $atstorytime;
 		if ($story->{is_future}) {
 			$atstorytime = $constants->{subscribe_future_name};
+			$user->{state}{buyingpage} = 1;
 		} else {
 			$atstorytime = $user->{aton} . " " . timeCalc($time, '%B %d, %Y');
 		}
@@ -202,6 +201,7 @@ sub prepareStory {
 	my($self, $sid) = @_;	
 
 	my $constants = getCurrentStatic();
+	my $user = getCurrentUser();
 
 	# get the body, introtext... 
 	my $storyref = $self->getStory($sid);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: XML.pm,v 1.6 2003/07/25 17:40:27 pudge Exp $
+# $Id: XML.pm,v 1.7 2003/12/09 19:00:15 pudge Exp $
 
 package Slash::XML;
 
@@ -31,7 +31,7 @@ use Slash::Utility;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = qw(xmlDisplay);
 
 # FRY: There must be layers and layers of old stuff down there!
@@ -70,6 +70,13 @@ be the same as if the hashref were C<{ Return =E<gt> 1 }>.
 Boolean for whether to print (false) or return (true) the
 processed template data.  Default is to print output via
 Apache, with full HTML headers.
+
+=item filename
+
+A name for the generated filename Apache sends out.  "Unsafe"
+chars are replaced, and ".xml" is appended if there is no "."
+in the name already.  "foo bar" becomes "foo_bar.xml" and
+"foo bar.rss" becomes "foo_bar.rss".
 
 =back
 
@@ -111,8 +118,13 @@ sub xmlDisplay {
 		return $content;
 	} else {
 		my $r = Apache->request;
-		$r->header_out('Cache-Control', 'private');
 		$r->content_type('text/xml');
+		$r->header_out('Cache-Control', 'private');
+		if ($opt->{filename}) {
+			$opt->{filename} =~ s/[^\w.-]/_/;
+			$opt->{filename} .= '.xml' unless $opt->{filename} =~ /\./;
+			$r->header_out('Content-Disposition', "filename=$opt->{filename}");
+		}
 		$r->status(200);
 		$r->send_http_header;
 		return 1 if $r->header_only;

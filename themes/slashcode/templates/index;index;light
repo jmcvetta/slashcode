@@ -47,6 +47,12 @@ message_count.read %] old message[% message_count.read == 1 ? "" : "s";
 %]</B>.<BR>
 [% END; END %]
 
+[% IF future_plug %]
+There's another story coming up soon, stay tuned.
+<A HREF="[% constants.rootdir %]/subscribe.pl">Subscribe now</A>
+and we'll let you read it! :)<BR>
+[% END %]
+
 	[% group    = ['Flock', 'Swarm', 'Barrel', 'Team', 'Squadron',
 	               'Group', 'Cadre'];
 	   modifier = ['Rabid', 'Uber', 'Psycho', 'Attack', 'Circus',
@@ -72,4 +78,4 @@ message_count.read %] old message[% message_count.read == 1 ? "" : "s";
 __seclev__
 10000
 __version__
-$Id: index;index;light,v 1.12 2003/03/04 19:07:59 pudge Exp $
+$Id: index;index;light,v 1.13 2003/04/24 23:05:48 jamie Exp $

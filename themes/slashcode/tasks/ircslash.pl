@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.1 2004/10/15 18:11:39 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.2 2004/10/15 22:56:53 jamiemccarthy Exp $
 
 use strict;
 
@@ -31,7 +31,8 @@ $task{$me}{code} = sub {
 
 	while (!$task_exit_flag) {
 		$irc->do_one_loop();
-		Time::HiRes::sleep(0.5);
+		sleep 2;
+		handleRemarks();
 	}
 
 	ircshutdown();
@@ -109,6 +110,20 @@ sub on_public {
 	if ($arg =~ /^$nick\b/) {
 		$self->privmsg($channel, "I don't respond intelligently yet.");
 	}
+}
+
+sub handleRemarks {
+	my $slashdb = getCurrentDB();
+	my $lastremarktime = $slashdb->getVar('ircslash_lastremarktime', 'value', 1) || "";
+	my $remarks_ar = $slashdb->getRemarksSince($lastremarktime);
+	$lastremarktime = $slashdb->sqlSelect('NOW()');
+	for my $remark_hr (@$remarks_ar) {
+		my $stoid = $remark_hr->{stoid};
+		my $uid = $remark_hr->{uid};
+		my $remark = $remark_hr->{remark};
+		$conn->privmsg($channel, "Subscriber Remark: $stoid $uid $remark");
+	}
+	$slashdb->setVar('ircslash_lastremarktime', $lastremarktime);
 }
 
 1;

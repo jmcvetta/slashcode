@@ -71,9 +71,12 @@ __template__
 [% CASE 'edit' %]
 	Edit
 
+[% CASE 'remark_thanks' %]
+	<p><b>Thanks for your remark to our editors!</b><p>
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.22 2004/07/02 00:13:56 pudge Exp $
+$Id: data;index;default,v 1.23 2004/10/15 22:56:53 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.188 2004/10/12 16:25:23 tvroom Exp $
+# $Id: MySQL.pm,v 1.189 2004/10/15 22:56:51 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.188 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.189 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -293,27 +293,14 @@ sub _deleteThread {
 }
 
 ########################################################
-# For dailystuff
-# This just updates the counts for the day before
-# -Brian
-# This is now done more efficiently throughout the day,
-# by the counthits.pl task - Jamie
-#sub updateStoriesCounts {
-#	my($self) = @_;
-#	my $constants = getCurrentStatic();
-#	my $counts = $self->sqlSelectAll(
-#		'dat,count(*)',
-#		'accesslog',
-#		"op='article' AND dat !='' AND to_days(now()) - to_days(ts) = 1",
-#		'GROUP BY(dat)'
-#	);
-#
-#	for my $count (@$counts) {
-#		$self->sqlUpdate('stories', { -hits => "hits+$count->[1]" },
-#			'sid=' . $self->sqlQuote($count->[0])
-#		);
-#	}
-#}
+# For daily_forget.pl
+sub forgetRemarks {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+	my $days_back = $constants->{remarks_expire_days} || 30;
+	return $self->sqlDelete("remarks",
+		"DATE_ADD(time, INTERVAL $days_back DAY) < NOW()");
+}
 
 ########################################################
 # For daily_forget.pl

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.55 2004/09/20 22:53:47 pudge Exp $
+# $Id: Utility.pm,v 1.56 2004/10/15 22:56:52 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -499,11 +499,6 @@ sub sqlSelectHash {
 	return map { $_ => $hash->{$_} } keys %$hash;
 }
 
-##########################################################
-# selectCount 051199
-# inputs: scalar string table, scaler where clause
-# returns: via ref from input
-# Simple little function to get the count of a table
 ##########################################################
 sub sqlCount {
 	my($self, $table, $where) = @_;

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.170 2004/10/12 16:18:33 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.171 2004/10/15 22:56:52 jamiemccarthy Exp $
 #
 
 #
@@ -640,6 +640,21 @@ CREATE TABLE related_links (
 	link varchar(128) NOT NULL,
 	KEY (keyword),
 	PRIMARY KEY (id)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'remarks'
+#
+
+DROP TABLE IF EXISTS remarks;
+CREATE TABLE remarks (
+	uid mediumint UNSIGNED NOT NULL,
+	stoid MEDIUMINT UNSIGNED NOT NULL,
+	time DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
+	remark varchar(100),
+	INDEX uid (uid),
+	INDEX stoid (stoid),
+	INDEX time (time)
 ) TYPE=InnoDB;
 
 #

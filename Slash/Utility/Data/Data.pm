@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.132 2004/10/12 06:07:52 pudge Exp $
+# $Id: Data.pm,v 1.133 2004/10/15 22:56:52 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.133 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -60,6 +60,7 @@ use vars qw($VERSION @EXPORT);
 	commify
 	countTotalVisibleKids
 	countWords
+	createSid
 	decode_entities
 	ellipsify
 	emailValid
@@ -79,6 +80,7 @@ use vars qw($VERSION @EXPORT);
 	issueAge
 	nickFix
 	nick2matchname
+	regexSid
 	root2abs
 	roundrand
 	set_rootdir
@@ -133,6 +135,12 @@ sub nick2matchname {
 	$nick = lc $nick;
 	$nick =~ s/[^a-zA-Z0-9]//g;
 	return $nick;
+}
+
+#========================================================================
+# If you change createSid() for your site, change regexSid() too.
+sub regexSid {
+	return qr{\b(\d{2}/\d{2}/\d{2}/\d{6,8})\b};
 }
 
 #========================================================================
@@ -3184,6 +3192,43 @@ sub countWords {
 }
 
 ########################################################
+# If you change createSid() for your site, change regexSid() too.
+sub createSid {
+	my($bogus_sid) = @_;
+	# yes, this format is correct, don't change it :-)
+	my $sidformat = '%02d/%02d/%02d/%02d%0d2%02d';
+	# Create a sid based on the current time.
+	my @lt;
+	my $start_time = time;
+	if ($bogus_sid) {
+		# If we were called being told that there's at
+		# least one sid that is invalid (already taken),
+		# then look backwards in time until we find it,
+		# then go one second further.
+		my $loops = 1000;
+		while (--$loops) {
+			$start_time--;
+			@lt = localtime($start_time);
+			$lt[5] %= 100; $lt[4]++; # year and month
+			last if $bogus_sid eq sprintf($sidformat, @lt[reverse 0..5]);
+		}
+		if ($loops) {
+			# Found the bogus sid by looking
+			# backwards.  Go one second further.
+			$start_time--;
+		} else {
+			# Something's wrong.  Skip ahead in
+			# time instead of back (not sure what
+			# else to do).
+			$start_time = time + 1;
+		}
+	}
+	@lt = localtime($start_time);
+	$lt[5] %= 100; $lt[4]++; # year and month
+	return sprintf($sidformat, @lt[reverse 0..5]);
+}
+
+########################################################
 # A very careful extraction of all the words from HTML text.
 # URLs count as words.  (A different algorithm than countWords
 # because countWords just has to be fast; this has to be
@@ -3484,4 +3529,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.132 2004/10/12 06:07:52 pudge Exp $
+$Id: Data.pm,v 1.133 2004/10/15 22:56:52 jamiemccarthy Exp $

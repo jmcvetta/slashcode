@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.23 2002/05/10 21:53:46 cliff Exp $
+# $Id: Data.pm,v 1.24 2002/05/13 18:35:47 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -1913,9 +1913,13 @@ sub countWords {
 	return scalar @words / 2;
 }
 
+#========================================================================
+
 =head2 inList(list, value)
 
 Returns the 1-based position of the first occurance of $value in @$list.
+
+[ That is not actually the case at all! ]
 
 =over 4
 
@@ -1935,9 +1939,9 @@ The value you wish to search for.
 
 =item Return value
 
-The position in the list of the first occurance of $value or undef if $value is not in
-the list. Please note that the returned list is a 1-based value, not a 0-based value
-ala perl arrays.
+The position in the list of the first occurance of $value or undef if $value
+is not in the list. Please note that the returned list is a 1-based value,
+not a 0-based value, like perl arrays.
 
 =back
 
@@ -1955,7 +1959,6 @@ sub grepn {
 	return;
 }
 
-
 1;
 
 __END__
@@ -1967,4 +1970,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.23 2002/05/10 21:53:46 cliff Exp $
+$Id: Data.pm,v 1.24 2002/05/13 18:35:47 pudge Exp $

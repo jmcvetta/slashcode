@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.23 2000/07/12 16:15:20 pudge Exp $
+#  $Id: submit.pl,v 1.24 2000/07/28 23:05:09 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -243,6 +243,7 @@ sub rmSub {
 					delete $sub{note};
 					$sub{-note} = 'NULL';
 				}
+				$sub{comment} =~ s/\"/\'/g if $sub{comment};
 
 				sqlUpdate("submissions", \%sub,
 					"subid=" . $I{dbh}->quote($n));

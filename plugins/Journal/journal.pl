@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.50 2002/10/17 16:48:27 jamie Exp $
+# $Id: journal.pl,v 1.51 2002/10/18 15:10:27 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -771,8 +771,9 @@ sub add_entry {
 	my $form = _save_params(0, @_) || {};
 
 	$form->{posttype}		||= $user->{posttype};
-	$form->{journal_discuss}	||= $user->{journal_discuss};
 	$form->{tid}			||= $constants->{journal_default_topic};
+	$form->{journal_discuss}	= $user->{journal_discuss}
+		unless defined $form->{journal_discuss};
 
 	no strict 'refs';
 	my $saveArticle = *{ $user->{state}{packagename} . '::saveArticle' };

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.41 2003/03/04 19:56:32 pudge Exp $
+# $Id: zoo.pl,v 1.42 2003/03/17 19:32:22 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -119,7 +119,7 @@ sub main {
 	errorLog("zoo.pl error_flag '$error_flag'") if $error_flag;
 
 	if (!$op || !exists $ops->{$op} || !$ops->{$op}->{check}) {
-		redirect($constants->{rootdir});
+		redirect("$constants->{rootdir}/");
 		return;
 	}
 
@@ -641,10 +641,10 @@ sub action {
 	}
 	# This is just to make sure the next view gets it right
 	if ($form->{type} eq 'foe') {
-		redirect($constants->{rootdir} . "/my/foes/");
+		redirect("$constants->{rootdir}/my/foes/");
 		return;
 	} else {
-		redirect($constants->{rootdir} . "/my/friends/");
+		redirect("$constants->{rootdir}/my/friends/");
 		return;
 	}
 }

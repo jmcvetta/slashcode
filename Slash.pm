@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.29 2000/06/29 19:20:56 pudge Exp $
+#  $Id: Slash.pm,v 1.30 2000/06/29 19:52:01 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -58,6 +58,7 @@ BEGIN {
 		getDateFormat dispComment getDateOffset linkComment redirect
 		insertFormkey getFormkeyId checkSubmission checkTimesPosted
 		updateFormkeyId formSuccess formAbuse formFailure errorMessage
+		fixurl
 	);
 	$CRLF = "\015\012";
 }
@@ -2334,16 +2335,6 @@ EOT
 
 	$topicicon .= '</A>';
 	$topicicon .= ' ] ' if $I{U}{noicons};
-
-        $S->{introtext} =~ s|__CPANURL__|http://www.perl.com/CPAN|g;
-        $S->{introtext} =~ s|__CPANMOD__|http://search.cpan.org/search?module=|g;
-        $S->{introtext} =~ s|__CPANDIST__|http://search.cpan.org/search?dist=|g;
-
-        if ($S->{bodytext}) {
-            $S->{bodytext} =~ s|__CPANURL__|http://www.perl.com/CPAN|g;
-            $S->{bodytext} =~ s|__CPANMOD__|http://search.cpan.org/search?module=|g;
-            $S->{bodytext} =~ s|__CPANDIST__|http://search.cpan.org/search?dist=|g;
-        }
 
 	my $execme = getWidgetBlock('story');
 	print eval $execme;

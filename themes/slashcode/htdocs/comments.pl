@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.167 2004/01/02 00:14:33 jamie Exp $
+# $Id: comments.pl,v 1.168 2004/02/02 07:37:06 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1444,20 +1444,19 @@ sub moderate {
 		if ($can_del && $key =~ /^del_(\d+)$/) {
 			$total_deleted += deleteThread($sid, $1);
 		} elsif (!$hasPosted && $key =~ /^reason_(\d+)$/) {
-			my $ret_val = $slashdb->moderateComment($sid, $1, $form->{$key});
-			
-			# error conditions -- need to call getError
+			my $cid = $1;
+			my $ret_val = $slashdb->moderateComment($sid, $cid, $form->{$key});
+			# If an error was returned, tell the user what
+			# went wrong.
 			if ($ret_val < 0) {
 				if ($ret_val == -1) {
 					print getError('no points');
 				} elsif ($ret_val == -2){
 					print getError('not enough points');
 				}
-			
 			} else {
 				$was_touched += $ret_val;
 			}
-			
 		}
 	}
 	$slashdb->setDiscussionDelCount($sid, $total_deleted);

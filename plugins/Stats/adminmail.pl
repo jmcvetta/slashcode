@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.153 2003/08/29 19:54:41 pudge Exp $
+# $Id: adminmail.pl,v 1.154 2003/09/04 18:56:06 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -161,6 +161,9 @@ EOT
 		: 0;
 
 	my $metamodlogs = $stats->countMetamodLog({
+		active_only	=> 1,
+	});
+	my $unm2dmods = $stats->countUnmetamoddedMods({
 		active_only	=> 1,
 	});
 	my $metamodlogs_yest_fair = $stats->countMetamodLog({
@@ -482,6 +485,9 @@ EOT
 	$statsSave->createStatDaily("metamodlog_inactive_percent", $metamodlog_inactive_percent);
 	$statsSave->createStatDaily("modlog_yest", $modlogs_yest);
 	$statsSave->createStatDaily("modlog_inactive_percent_yest", $modlog_inactive_percent_yest);
+	for my $m2c_hr (@$unm2dmods) {
+		$statsSave->createStatDaily("modlog_m2count_$m2c_hr->{m2count}", $m2c_hr->{cnt});
+	}
 	$statsSave->createStatDaily("metamodlog_yest", $metamodlogs_yest_total);
 	$statsSave->createStatDaily("xmodlog_yest", $modlogs_needmeta_yest ? $metamodlogs_yest_total/$modlogs_needmeta_yest : 0);
 	$statsSave->createStatDaily("metamodlog_inactive_percent_yest", $metamodlog_inactive_percent_yest);

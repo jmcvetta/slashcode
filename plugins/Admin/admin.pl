@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.92 2002/07/30 22:52:37 brian Exp $
+# $Id: admin.pl,v 1.93 2002/08/06 17:31:41 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1028,7 +1028,7 @@ sub editStory {
 			my $temp_body;
 			$form->{bodytext} = '';
 			my $fh = $upload->fh;
-			while(<$fh>) {
+			while (<$fh>) {
 				$form->{bodytext} .= $_;
 			}
 		}

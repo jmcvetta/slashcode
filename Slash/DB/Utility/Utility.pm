@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.16 2002/03/18 21:54:24 brian Exp $
+# $Id: Utility.pm,v 1.17 2002/03/18 22:26:47 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -507,11 +507,13 @@ sub sqlDelete {
 
 ########################################################
 sub sqlInsert {
-	my($self, $table, $data, $delayed) = @_;
+	my($self, $table, $data, $delayed, $options) = @_;
 	my($names, $values);
 	# oddly enough, this hack seems to work for all DBs -- pudge
 	# Its an ANSI sql comment I believe -Brian
 	$delayed = $delayed ? " /*! DELAYED */" : "";
+	$delayed = $options->{delayed} ? " /*! DELAYED */" : "";
+	$ignore = $options->{ignore} ? " /*! IGNORE */" : "";
 
 	for (keys %$data) {
 		if (/^-/) {
@@ -526,7 +528,7 @@ sub sqlInsert {
 	chop($names);
 	chop($values);
 
-	my $sql = "INSERT$delayed INTO $table ($names) VALUES($values)\n";
+	my $sql = "INSERT $ignore $delayed INTO $table ($names) VALUES($values)\n";
 	return $self->sqlDo($sql);
 }
 

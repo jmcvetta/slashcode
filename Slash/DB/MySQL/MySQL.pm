@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.104 2002/03/17 20:38:45 jamie Exp $
+# $Id: MySQL.pm,v 1.105 2002/03/18 22:26:47 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -927,7 +927,7 @@ sub createAccessLog {
 		-ts		=> 'NOW()',
 		query_string	=> $ENV{QUERY_STRING} || '0',
 		user_agent	=> $ENV{HTTP_USER_AGENT} || '0',
-	}, 1);
+	}, { delayed => 1 });
 
 =pod
 
@@ -991,7 +991,7 @@ CREATE TABLE palmlog (
 		@palmlog{@direct} = map { defined $_ ? $_ : '' } @ENV{@direct};
 		@palmlog{@base64} = map { decode_base64($_) } @ENV{@base64};
 
-		$self->sqlInsert('palmlog', \%palmlog, 1);
+		$self->sqlInsert('palmlog', \%palmlog, { delayed => 1 });
 	}
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.605 2004/06/28 15:20:16 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.606 2004/06/28 20:16:15 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.605 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.606 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2710,7 +2710,6 @@ sub deleteSubmission {
 				my %sub = (
 					note	=> $form->{"note_$n"},
 					comment	=> $form->{"comment_$n"},
-					section	=> $form->{"section_$n"}
 				);
 
 				if (!$sub{note}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.27 2001/12/21 16:20:19 brian Exp $
+# $Id: Slash.pm,v 1.28 2002/01/04 06:46:17 brian Exp $
 
 package Slash;
 
@@ -1049,9 +1049,9 @@ sub _hard_dispComment {
 	my $people_display;
 	unless ($user->{is_anon} || isAnon($comment->{uid}) || $comment->{uid} == $user->{uid}) {
 		if ($user->{people}{$comment->{uid}} == FRIEND) {
-			$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=delecheck&amp&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/friend.gif" ALT="Friend"></A>|;
+			$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=deletecheck&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/friend.gif" ALT="Friend"></A>|;
 		} elsif ($user->{people}{$comment->{uid}} == FOE) {
-			$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=deletecheck&amp;amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/foe.gif" ALT="Foe"></A> |;
+			$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=deletecheck&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/foe.gif" ALT="Foe"></A> |;
 		} else {
 			$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=addcheck&amp;type=friend&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/neutral.gif" ALT="Alter Relationship"></A>|;
 		}

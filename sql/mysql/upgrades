@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.632 2004/07/20 00:34:38 tvroom Exp $
+# $Id: upgrades,v 1.633 2004/07/20 12:54:48 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2315,6 +2315,7 @@ INSERT INTO vars (name, value, description) VALUES ('m2_oldest_zone_mult', '2', 
 INSERT INTO vars (name, value, description) VALUES ('m2_oldzone', '0', 'Starting id (youngest) of the old-zone of moderations that still require M2 (the oldest certain percentile)');
 
 # End of T_2_3_0_154, Start of T_2_3_0_155 - 2004/05/18
+
 INSERT INTO vars (name, value, description) VALUES ('cur_performance_stats', '', 'Stores current performance stats in a var for display to admins');
 INSERT INTO vars (name, value, description) VALUES ('cur_performance_stats_disp', '1', 'Show current performance stats?');
 INSERT INTO vars (name, value, description) VALUES ('cur_performance_stat_ops', 'article|comments|index', 'ops to show current performance stats for');
@@ -2439,3 +2440,4 @@ INSERT INTO vars (name, value, description) VALUES ('freshenup_small_cc','30','H
 # SLASHDOT LAST UPDATED HERE, to T_2_5_0_13
 
 INSERT INTO vars (name, value, description) VALUES ('cur_performance_pps', '', 'Pages per second the site is running at');
+

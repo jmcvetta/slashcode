@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.39 2002/02/26 02:42:17 cliff Exp $
+# $Id: admin.pl,v 1.40 2002/02/27 16:33:12 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -863,6 +863,7 @@ sub getRelated {
 	# And slurp in all the URLs just for good measure
 	while ($story_content =~ m|<A(.*?)>(.*?)</A>|sgi) {
 		my($url, $label) = ($1, $2);
+		$label = strip_notags($label);
 		$label =~ s/(\S{30})/$1 /g;
 		my $str = qq[<LI><A$url>$label</A></LI>\n];
 		$related_text .= $str unless $related_text =~ /\Q$str\E/

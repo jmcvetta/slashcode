@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.195 2004/10/28 20:23:16 pudge Exp $
+# $Id: MySQL.pm,v 1.196 2004/10/28 20:31:58 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.196 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -290,16 +290,6 @@ sub _deleteThread {
 	}
 
 	return $count;
-}
-
-########################################################
-# For daily_forget.pl
-sub forgetRemarks {
-	my($self) = @_;
-	my $constants = getCurrentStatic();
-	my $days_back = $constants->{remarks_expire_days} || 30;
-	return $self->sqlDelete("remarks",
-		"DATE_ADD(time, INTERVAL $days_back DAY) < NOW()");
 }
 
 ########################################################

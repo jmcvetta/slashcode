@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.41 2002/07/17 16:04:57 patg Exp $
+# $Id: index.pl,v 1.42 2002/07/17 16:49:52 brian Exp $
 
 use strict;
 use Slash;
@@ -36,8 +36,7 @@ sub main {
 
 	$section = $slashdb->getSection($form->{section});
 
-	$section->{artcount} = $user->{maxstories} unless $user->{is_anon};
-	$section->{mainsize} = int($section->{artcount} / 3);
+	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
 
 	my $title = getData('head', { section => $section });
 	
@@ -237,7 +236,7 @@ sub displayStories {
 
 	my($today, $x) = ('', 1);
 	my $cnt = int($user->{maxstories} / 3);
-	my($return, $counter, $feature_retrieved);
+	my($return, $counter);
 
 	# shift them off, so we do not display them in the Older
 	# Stuff block later (simulate the old cursor-based

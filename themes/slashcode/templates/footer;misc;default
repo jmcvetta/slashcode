@@ -26,7 +26,7 @@ __template__
 
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 	<TR BGCOLOR="[% user.bg.3 %]">
-		<TD COLSPAN="3"><IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="1" HEIGHT="1"></TD>
+		<TD COLSPAN="3"><IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="1" HEIGHT="1" ALT=""></TD>
 	</TR>
 	<TR BGCOLOR="[% user.bg.1 %]">
 		<TD ALIGN="LEFT"><IMG SRC="[% constants.imagedir %]/660000.gif" WIDTH="1" HEIGHT="60" ALT=""></TD>
@@ -46,7 +46,7 @@ __template__
 		<TD ALIGN="RIGHT"><IMG SRC="[% constants.imagedir %]/660000.gif" WIDTH="1" HEIGHT="60" ALT=""></TD>
 	</TR>
 	<TR BGCOLOR="[% user.bg.3 %]">
-		<TD COLSPAN="3"><IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="1" HEIGHT="1"></TD>
+		<TD COLSPAN="3"><IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="1" HEIGHT="1" ALT=""></TD>
 	</TR>
 </TABLE>
 
@@ -69,4 +69,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: footer;misc;default,v 1.11 2004/01/29 23:51:35 pudge Exp $
+$Id: footer;misc;default,v 1.12 2004/02/17 19:34:16 pudge Exp $

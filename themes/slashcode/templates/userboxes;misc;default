@@ -202,9 +202,9 @@ URLs showing abuse (the cid link please!).
 	END;
 END %]
 
-<IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="[% constants.fancyboxwidth + 10 %]" HEIGHT="1" BORDER="0">
+<IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="[% constants.fancyboxwidth + 10 %]" HEIGHT="1" BORDER="0" ALT="">
 
 __seclev__
 1000
 __version__
-$Id: userboxes;misc;default,v 1.18 2003/08/28 17:45:41 pater Exp $
+$Id: userboxes;misc;default,v 1.19 2004/02/17 19:34:16 pudge Exp $

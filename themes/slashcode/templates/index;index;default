@@ -84,7 +84,7 @@ and we'll let you read it! :)<BR>
 [% PROCESS maintable_td mt_width=(constants.fancyboxwidth + 10) mt_height="1" mt_align="CENTER" mt_valign="TOP" %]
 [% IF boxes;
 	boxes %]
-	<IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="[% constants.fancyboxwidth + 10 %]" HEIGHT="1" BORDER="0">
+	<IMG SRC="[% constants.imagedir %]/pix.gif" WIDTH="[% constants.fancyboxwidth + 10 %]" HEIGHT="1" BORDER="0" ALT="">
 [% ELSE %]
 	&nbsp;
 [% END %]
@@ -94,4 +94,4 @@ and we'll let you read it! :)<BR>
 __seclev__
 10000
 __version__
-$Id: index;index;default,v 1.20 2003/04/24 23:05:48 jamie Exp $
+$Id: index;index;default,v 1.21 2004/02/17 19:34:16 pudge Exp $

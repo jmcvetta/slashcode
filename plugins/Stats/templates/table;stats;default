@@ -16,6 +16,11 @@ __template__
 <H2 ALIGN="CENTER">[% period %] Report for [% constants.sitename %]</H2>
 
 <P ALIGN="CENTER">
+<A HREF="[% constants.rootdir %]/stats.pl?[% env.query_string | replace('op=table', 'op=csv') %]"
+>Download CSV data for spreadsheet</A>
+</P>
+
+<P ALIGN="CENTER">
 <TABLE BORDER="2" CELLPADDING="2" CELLSPACING="2">
 
 	<TR>
@@ -44,4 +49,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: table;stats;default,v 1.2 2003/05/23 14:15:07 pudge Exp $
+$Id: table;stats;default,v 1.3 2003/05/23 16:48:25 pudge Exp $

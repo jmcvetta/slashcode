@@ -111,7 +111,7 @@ __template__
       plotdata.push([]);
       plotdata.${plotdata.max}.${alldata.0.max} = nums.${alldata.0.max};
       mytype = this.label || this.type;
-      IF (form.op != 'table');
+      IF (form.op != 'table' && form.op != 'csv');
          mytype = mytype _ " (" _ Slash.commify(nums.${alldata.0.max}) _ ")";
       END;
       alltypes.push(mytype);
@@ -135,13 +135,13 @@ __template__
       CALL plotdata.splice(1, 0, []);
       plotdata.1.${alldata.0.max} = nums.${alldata.0.max};
       mytype = 'Totals';
-      IF (form.op != 'table');
+      IF (form.op != 'table' && form.op != 'csv');
          mytype = mytype _ " (" _ Slash.commify(nums.${alldata.0.max}) _ ")";
       END;
       CALL alltypes.splice(0, 0, mytype);
    END;
 
-   IF ((form.type == 'areastackedindex' || form.showtotal) && form.op != 'table');
+   IF ((form.type == 'areastackedindex' || form.showtotal) && form.op != 'table' && form.op != 'csv');
       USE dataloop = iterator(alldata);
       FOREACH this = dataloop;
          thisindex = dataloop.index;
@@ -165,4 +165,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: calculate;stats;default,v 1.4 2003/05/23 14:15:07 pudge Exp $
+$Id: calculate;stats;default,v 1.5 2003/05/23 16:48:25 pudge Exp $

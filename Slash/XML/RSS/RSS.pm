@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.3 2002/01/08 17:22:09 pudge Exp $
+# $Id: RSS.pm,v 1.4 2002/03/12 18:27:34 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -403,12 +403,22 @@ sub rss_item_description {
 
 	my $constants = getCurrentStatic();
 
-	if ($constants->{rdfitemdesc} == 1) {
-		# keep $desc as-is
-	} elsif ($constants->{rdfitemdesc}) {
-		# limit length of $desc
-		$desc = balanceTags(chopEntity($desc, $constants->{rdfitemdesc}));
-		return $desc;
+	if ($constants->{rdfitemdesc}) {
+		# no HTML
+		$desc = strip_nohtml($desc);
+		$desc =~ s/\s+/ /g;
+		$desc =~ s/ $//;
+
+		# keep $desc as-is if == 1
+		if ($constants->{rdfitemdesc} != 1) {
+			if (length($desc) > $constants->{rdfitemdesc}) {
+				$desc = substr($desc, 0, $constants->{rdfitemdesc});
+				$desc =~ s/\S+$//;
+				$desc .= '...';
+			}
+		}
+
+		$desc = xmlEscapeStr($desc);		
 	} else {
 		undef $desc;
 	}
@@ -427,4 +437,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.3 2002/01/08 17:22:09 pudge Exp $
+$Id: RSS.pm,v 1.4 2002/03/12 18:27:34 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.39 2004/06/17 16:12:23 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.40 2004/06/23 00:22:05 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -133,11 +133,8 @@ $task{$me}{code} = sub {
 		$skinname = $slashdb->getSkin($skid)->{name} if $skid;
 
 		my $mp_tid = $constants->{mainpage_nexus_tid};
-		my $viewable_anywhere = $slashdb->checkStoryViewable($story->{stoid}, $mp_tid);
-		my $mainpaged = $slashdb->checkStoryInNexus($story->{stoid}, $mp_tid);
-		my $displaystatus = -1;
-		$displaystatus = 1 if $viewable_anywhere;
-		$displaystatus = 0 if $mainpaged;
+		my $displaystatus = $slashdb->_displaystatus($story->{stoid});
+		
 		slashdLog("Displaystatus $displaystatus for sid '$sid'");
 
 		slashdLog("Updating $sid") if verbosity() >= 3;

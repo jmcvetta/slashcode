@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.29 2002/05/02 22:40:55 brian Exp $
+# $Id: search.pl,v 1.30 2002/05/02 22:56:13 brian Exp $
 
 use strict;
 use Slash;
@@ -34,7 +34,7 @@ sub main {
 
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
-	my $user = getCurrentForm();
+	my $user = getCurrentUser();
 
 	my($slashdb, $searchDB);
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.47 2002/10/20 20:33:56 jamie Exp $
+# $Id: Search.pm,v 1.48 2002/10/25 05:32:46 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -515,9 +515,10 @@ sub _score {
 		# will do for now. - Jamie 2002/10/20
 		my @terms = ( );
 		for my $term (split / /, $query) {
-			$term =~ /^\s*(.*?)\s*$/; $term = $1;
+			$term =~ /^\s*(.*?)\s*$/;
+			$term = $1;
 			next unless $term;
-			push @terms, $self->sqlQuote($_);
+			push @terms, $self->sqlQuote($term);
 		}
 		return "0" if !@terms;
 		my $terms = join(",", @terms);

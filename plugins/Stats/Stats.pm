@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.70 2002/10/24 01:06:27 jamie Exp $
+# $Id: Stats.pm,v 1.71 2002/10/25 05:32:46 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -58,6 +58,23 @@ sub new {
 sub getPointsInPool {
 	my($self) = @_;
 	return $self->sqlSelect('SUM(points)', 'users_comments');
+}
+
+########################################################
+sub getTokenConversionPoint {
+	my($self) = @_;
+	# We can't actually predict what the exact token value will be
+	# where they get converted to mod points;  we'd have to predict
+	# number of comments posted and run the same logic as
+	# run_moderatord.pl to find that.  But we can make a good
+	# educated guess that's probably off by a maximum of 1 token.
+	my $limit = 100; # XXX need to determine this based off a stat, probably mod_tokens_lost_converted/(24*40)
+	return +(@{$self->sqlSelectColArrayref(
+		"tokens",
+		"users_info",
+		"tokens > 20", # sanity check, also appears in run_moderatord algorithm
+		"ORDER BY tokens DESC LIMIT $limit"
+	)})[-1];
 }
 
 ########################################################

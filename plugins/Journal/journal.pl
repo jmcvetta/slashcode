@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.54 2002/10/23 03:22:38 jamie Exp $
+# $Id: journal.pl,v 1.55 2002/10/25 05:32:46 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -326,20 +326,31 @@ sub displayArticle {
 	my($journal, $constants, $user, $form, $slashdb) = @_;
 	my($date, $forward, $back, @sorted_articles, $nickname, $uid, $discussion);
 	my $collection = {};
+	my $user_change = {};
+	my $head_data = {};
 
 	if ($form->{uid} || $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
 		$nickname	= $slashdb->getUser($uid, 'nickname');
+		if ($uid && $uid != $user->{uid}) {
+			# Store the fact that this user last looked at that user.
+			# For maximal convenience in stalking.
+			$user_change->{lastlookuid} = $uid;
+			$user->{lastlookuid} = $uid;
+		}
 	} else {
 		$nickname	= $user->{nickname};
 		$uid		= $user->{uid};
 	}
+	$head_data->{nickname} = $nickname;
+	$head_data->{uid} = $uid;
 
 	if (isAnon($uid)) {
+		# Don't write user_change.
 		return displayFriends(@_);
 	}
 
-	_printHead("userhead", { nickname => $nickname, uid => $uid }, 1);
+	_printHead("userhead", $head_data, 1);
 
 	# clean it up
 	my $start = fixint($form->{start}) || 0;
@@ -349,6 +360,9 @@ sub displayArticle {
 
 	unless ($articles && @$articles) {
 		print getData('noentries_found');
+		if ($user_change && %$user_change) {
+			$slashdb->setUser($user->{uid}, $user_change);
+		}
 		return;
 	}
 
@@ -422,6 +436,10 @@ sub displayArticle {
 
 	if ($show_discussion) {
 		printComments($discussion);
+	}
+
+	if ($user_change && %$user_change) {
+		$slashdb->setUser($user->{uid}, $user_change);
 	}
 }
 

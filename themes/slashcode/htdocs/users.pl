@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.123 2002/10/24 17:46:00 pater Exp $
+# $Id: users.pl,v 1.124 2002/10/25 05:32:46 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -284,6 +284,12 @@ sub main {
 			checks		=> [],
 		},
 	} ;
+
+	# Note this is NOT the default op.  "userlogin" or "userinfo" is
+	# the default op, and it's set either 5 lines down or about 100
+	# lines down, depending.  Yes, that's dumb.  Yes, we should
+	# change it.  It would require tracing through a fair bit of logic
+	# though and I don't have the time right now. - Jamie
 	$ops->{default} = $ops->{displayform};
 
 	my $errornote = "";
@@ -1063,12 +1069,6 @@ sub showInfo {
 						"%Y-%m-%d",
 						$user->{off_set} + $hours*3600
 					);
-# Older and much slower way of doing this; required Date::Manip, ick!
-#					$requested_user->{points_expire} = timeCalc(
-#						UnixDate(DateCalc($lastgranted, "+ $hours hours"),
-#							"%C"),
-#						'%Y-%m-%d'
-#					);
 				}
 			}
 

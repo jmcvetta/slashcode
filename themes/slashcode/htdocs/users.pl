@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.89 2002/07/18 15:50:20 cliff Exp $
+# $Id: users.pl,v 1.90 2002/07/19 01:27:47 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -268,11 +268,17 @@ sub main {
 	}
 
 	if ($op eq 'userlogin' && ! $user->{is_anon}) {
-		# why disable "returnto" ?  What's going on? -- pudge
-		# no one responded, so i am changing it back
-# 		my $refer = URI->new_abs($constants->{rootdir},
+		# We absolutize the return-to URL to our homepage just to
+		# be sure nobody can use the site as a redirection service.
+		# We decide whether to use the secure homepage or not
+		# based on whether the current page is secure.
+		my $abs_dir =
+			( $constants->{absolutedir_secure}
+				&& Slash::Apache::ConnectionIsSSL() )
+			? $constants->{absolutedir_secure}
+			: $constants->{absolutedir};
 		my $refer = URI->new_abs($form->{returnto} || $constants->{rootdir},
-			$constants->{absolutedir});
+			$abs_dir);
 
 		# Tolerate redirection with or without a "www.", this is a
 		# little sloppy but it may help avoid a subtle misbehavior

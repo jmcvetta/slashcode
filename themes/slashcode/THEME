@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.71 2004/04/28 13:48:15 cowboyneal Exp $
+# $Id: THEME,v 1.72 2004/05/05 14:42:38 pudge Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -256,6 +256,7 @@ misc=misc/spamarmors
 plugin=Admin
 plugin=FAQ
 plugin=Journal
+plugin=Login
 plugin=Hof
 plugin=Messages
 plugin=PollBooth

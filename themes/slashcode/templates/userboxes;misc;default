@@ -151,6 +151,13 @@ IF !useredit.is_anon;
                         '<BR><HR NOSHADE SIZE="1">';
 			useredit.bio;
                 END;
+
+		IF user.is_admin AND hits;
+			'<BR><HR NOSHADE SIZE="1">';
+			'This story been viewed ';
+			hits;
+			' times.';
+		END;
 	END;
 	Slash.fancybox(constants.fancyboxwidth, title, contents, 1, 1);
 
@@ -200,4 +207,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: userboxes;misc;default,v 1.16 2003/07/01 13:18:22 pater Exp $
+$Id: userboxes;misc;default,v 1.17 2003/08/13 17:44:09 pater Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.14 2002/07/02 14:24:54 pudge Exp $
+# $Id: System.pm,v 1.15 2002/11/22 19:14:57 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -132,7 +132,13 @@ sub sendEmail {
 		$data{precedence} = 'bulk';
 	}
 
-	if (sendmail(%data)) {
+	my $mail_sent;
+	{
+		local $^W; # sendmail() should't warn to STDERR
+		$mail_sent = sendmail(%data);
+	}
+
+	if ($mail_sent) {
 		return 1;
 	} else {
 		errorLog("Can't send mail '$subject' to $addr: $Mail::Sendmail::error")
@@ -419,4 +425,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.14 2002/07/02 14:24:54 pudge Exp $
+$Id: System.pm,v 1.15 2002/11/22 19:14:57 pudge Exp $

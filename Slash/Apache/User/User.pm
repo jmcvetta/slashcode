@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.84 2003/08/12 21:33:52 pudge Exp $
+# $Id: User.pm,v 1.85 2003/08/19 22:50:43 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -623,6 +623,10 @@ Bender:I've gone too far! Who does that guy think I am?
 Bender:Down with Bender!
 Bender:Listen up, cause I got a climactic speech.
 Bender:I choose to not understand these signs!
+Bender:Aw, this bends!
+Bender:Farewell, big blue ball of idiots!
+Bender:This guy's not making any sense.  Can I kill him?  Please?
+Bender:Hooray, we don't have to do anything!
 Fry:There's a lot about my face you don't know.
 Fry:These new hands are great. I'm gonna break them in tonight.
 Fry:I refuse to testify on the grounds that my organs will be chopped up into a patty.
@@ -654,6 +658,9 @@ Fry:I'm literally angry with rage!
 Fry:The butter in my pocket is melting!
 Fry:Stop abducting me!
 Fry:What kind of bozos would start a Bender protest group?
+Fry:I can burp the alphabet.  A, B, D ... no, wait ...
+Fry:Why use my own legs like an idiot when I can use a Chickenwalker?
+Fry:Hooray, we don't have to do anything!
 EOT
 
 1;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.178 2003/09/23 22:01:40 pudge Exp $
+# $Id: admin.pl,v 1.179 2003/10/20 04:14:53 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -153,6 +153,12 @@ sub main {
 			seclev		=> 500,
 			adminmenu	=> 'info',
 			tab_selected	=> 'subs',
+		},
+		recent_webheads		=> {
+			function	=> \&displayRecentWebheads,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'webheads',
 		},
 	};
 
@@ -1893,6 +1899,38 @@ sub displayRecentSubs {
 	my $subs = $admindb->getRecentSubs($startat);
 	slashDisplay('recent_subs', {
 		subs		=> $subs,
+	});
+}
+
+##################################################################
+sub displayRecentWebheads {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	my $admindb = getObject("Slash::Admin", { db_type => 'log' });
+
+	my $data_hr = $admindb->getRecentWebheads();
+
+	# We need the list of all webheads too.
+	my %webheads = ( );
+	for my $min (keys %$data_hr) {
+		my @webheads = keys %{$data_hr->{$min}};
+		for my $wh (@webheads) {
+			$webheads{$wh} = 1;
+		}
+	}
+	my $webheads_ar = [ sort keys %webheads ];
+
+	# Format the times.
+	for my $min (keys %$data_hr) {
+		for my $wh (keys %{$data_hr->{$min}}) {
+			$data_hr->{$min}{$wh}{dur} = sprintf("%0.3f",
+				$data_hr->{$min}{$wh}{dur});
+		}
+	}
+
+	slashDisplay('recent_webheads', {
+		data		=> $data_hr,
+		webheads	=> $webheads_ar,
 	});
 }
 

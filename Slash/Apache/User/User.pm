@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.47 2002/12/29 18:58:50 jamie Exp $
+# $Id: User.pm,v 1.48 2002/12/31 15:00:38 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -348,7 +348,7 @@ sub userdir_handler {
 	}
 
 	# /my/ or /my can match, but not /mything
-	if (($uri =~ m[^/~/(.+)]) or ($uri =~ m[^/my (?: /(.*) | /? ) $]x)) {
+	if (($saveuri =~ m[^/(?:%7[eE]|~)/] && $uri =~ m[^/~/(.+)]) or ($uri =~ m[^/my (?: /(.*) | /? ) $]x)) {
 		my $match = $1;
 		if ($r->header_in('Cookie') =~ $USER_MATCH) {
 			my($op, $extra) = split /\//, $match, 2;
@@ -448,7 +448,6 @@ sub userdir_handler {
 	# will change if somehow Apache/mod_perl no longer decodes before
 	# returning the data. -- pudge
 	if ($saveuri =~ m[^/(?:%7[eE]|~)(.+)]) {
-		# this won't work if the nick has a "/" in it ...
 		my($nick, $op, $extra) = split /\//, $1, 4;
 		for ($nick, $op, $extra) {
 			s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.215 2004/07/08 15:45:46 cowboyneal Exp $
+# $Id: Slash.pm,v 1.216 2004/07/19 21:39:25 tvroom Exp $
 
 package Slash;
 
@@ -1338,7 +1338,7 @@ sub dispStory {
 		topic	=> $topic,
 		author	=> $author,
 		full	=> $full,
-#		stid	=> $other->{stid},
+		stid	=> $other->{stid},
 		topics	=> $other->{topics_chosen},
 		topiclist => $other->{topiclist},
 		magic	=> $other->{magic},

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.3 2002/12/02 20:43:46 pudge Exp $
+# $Id: stats.pl,v 1.4 2002/12/02 20:51:46 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -43,11 +43,11 @@ sub main {
 
 	# from data;SCRIPTNAME;default
 	#getData('head')
-	header('', '', { admin => 1 } ) unless $op eq 'graph'
-		if $ops{$op}[ALLOWED];
+	header('', '', { admin => 1 } ) unless $op eq 'graph';
 
 	# dispatch of op
-	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $stats);
+	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $stats)
+		if $ops{$op}[ALLOWED];
 
 	footer() unless $op eq 'graph';
 }

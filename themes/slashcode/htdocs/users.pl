@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.83 2002/06/21 11:10:34 jamie Exp $
+# $Id: users.pl,v 1.84 2002/06/21 17:24:23 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -507,7 +507,7 @@ sub newUser {
 
 			$title = getTitle('newUser_title');
 
-			$form->{pubkey} = $plugins->{'Pubkey'} ? strip_nohtml($form->{pubkey}, 1) : '';
+			$form->{pubkey} = $plugins->{'PubKey'} ? strip_nohtml($form->{pubkey}, 1) : '';
 			print getMessage('newuser_msg', { 
 				suadmin_flag	=> $suadmin_flag, 
 				title		=> $title, 
@@ -1252,7 +1252,7 @@ sub editUser {
 		useredit 		=> $user_edit,
 		admin_flag		=> $admin_flag,
 		title			=> $title,
-		editkey 		=> $plugins->{'Pubkey'} ? editKey($user_edit->{uid}) : '',
+		editkey 		=> $plugins->{'PubKey'} ? editKey($user_edit->{uid}) : '',
 		admin_block		=> $admin_block
 	});
 }
@@ -1734,7 +1734,7 @@ sub saveUser {
 	# We should do some conformance checking on a user's pubkey,
 	# make sure it looks like one of the known types of public
 	# key.  Until then, just make sure it doesn't have HTML.
-	$form->{pubkey} = $plugins->{'Pubkey'} ? strip_nohtml($form->{pubkey}, 1) : '';
+	$form->{pubkey} = $plugins->{'PubKey'} ? strip_nohtml($form->{pubkey}, 1) : '';
 
 	my $homepage = $form->{homepage};
 	$homepage = '' if $homepage eq 'http://';

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.70 2003/04/29 19:01:04 pudge Exp $
+# $Id: User.pm,v 1.71 2003/06/03 15:45:27 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -601,6 +601,7 @@ Bender:Let's commence preparations for rumbling!
 Bender:Woohoo, I'm popular!
 Bender:Ah crap, I'm some sort of robot!
 Bender:When will man learn that all races are equally inferior to robots?
+Bender:Curse my natural showmanship!
 Fry:There's a lot about my face you don't know.
 Fry:Drugs are for losers. And hypnosis is for losers with big weird eyebrows.
 Fry:These new hands are great. I'm gonna break them in tonight.

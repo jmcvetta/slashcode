@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.85 2003/07/25 17:40:27 pudge Exp $
+# $Id: submit.pl,v 1.86 2003/09/02 14:53:32 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -78,6 +78,10 @@ sub main {
 			seclev		=> $constants->{submiss_view} ? 0 : 100,
 			function	=> \&previewForm,
 		},
+		update		=> {
+			seclev		=> 100,
+			function	=> \&updateSubmissions,
+		},
 		delete		=> {
 			seclev		=> 100,
 			function	=> \&deleteSubmissions,
@@ -130,6 +134,14 @@ sub main {
 	}
 
 	footer();
+}
+
+#################################################################
+# update the notes and sections fields but don't delete anything.
+sub updateSubmissions {
+	my($constants, $slashdb, $user, $form) = @_;
+	$slashdb->deleteSubmission(0, 1);
+	submissionEd(@_);
 }
 
 #################################################################

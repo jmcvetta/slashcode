@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.40 2003/03/04 19:56:32 pudge Exp $
+# $Id: Zoo.pm,v 1.41 2003/03/25 20:24:55 pudge Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -72,7 +72,7 @@ sub getFriendsUIDs {
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
 	my $people = $slashdb->getUser($uid, 'people');
-	if ($uid == $uid) {
+	if ($uid == $user->{uid}) {
 		$people = $user->{people};
 	} else {
 		$people = $slashdb->getUser($uid, 'people');

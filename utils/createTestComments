@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.4 2002/01/08 17:22:10 pudge Exp $
+# $Id: createTestComments,v 1.5 2002/01/10 22:05:36 brian Exp $
 
 BEGIN {
 	{
@@ -24,7 +24,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -161,19 +161,18 @@ $werder = new Silly::Werder;
 		if (rand(1) < 0.2) {
 			$subj =~ s/\W*$/ +((qw( . ! ? ))[rand 3]) x (2+rand 5) /e;
 		}
-	        my $pid = getRandomParent();
-	        my $cid = $slashdb->createComment(
-			{
-	                        postercomment   => $comment,
-        	                sid             => $discussion_id,
-                	        pid             => $pid,
-	                        postersubj      => $subj,
-        	                postanon        => 0,
-                	},
-	                $user,
-			$score,
-			$constants->{anonymous_coward_uid}
-        	);
+		my $pid = getRandomParent();
+		my $clean_comment = {
+				comment         => $comment,
+				sid             => $discussion_id,
+				pid             => $pid,
+				ipid            => $user->{ipid},
+				subnetid        => $user->{subnetid},
+				subject         => $subj,
+				uid             => $user->{uid},
+				points          => $score,
+		};
+		my $cid = $slashdb->createComment($clean_comment);
 		$slashdb->setStory($sid, { writestatus => 'dirty' }) if $sid;
 	        $family_tree{$cid} = $pid if ! $opts{T};
 		$deep_tree{$cid} = $deep_tree{$pid}+1 if $opts{t};

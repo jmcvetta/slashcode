@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.20 2002/10/27 15:49:07 jamie Exp $
+# $Id: subscribe.pl,v 1.21 2002/12/17 18:37:43 jamie Exp $
 
 use strict;
 
@@ -204,7 +204,7 @@ sub makepayment {
 		print "<p>Payment confirmed\n";
 	} else {
 		use Data::Dumper;
-		my $warning = "WARNING: Payment accepted but record "
+		my $warning = "DEBUG: Payment accepted but record "
 			. "not added to database! rows='$rows'\n"
 			. Dumper($payment);
 		print STDERR $warning;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.460 2003/09/24 16:15:30 jamie Exp $
+# $Id: MySQL.pm,v 1.461 2003/09/24 19:45:21 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.460 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.461 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7436,7 +7436,7 @@ sub getUser {
 		# Specific column(s) are needed.
 		my $return_hr = { };
 		for my $col (@$val) {
-			$return_hr->{$col} = $answer->{$val};
+			$return_hr->{$col} = $answer->{$col};
 		}
 		$answer = $return_hr;
 	} elsif ($val) {
@@ -7471,6 +7471,9 @@ sub _getUser_do_selects {
 	# WHERE users.uid=123 AND users_blurb.uid=123 AND so on.
 	# Note if we're being asked to get only params, we skip this.
 	my $answer = { };
+	if ($mcddebug > 1) {
+		print STDERR scalar(gmtime) . " $$ mcd gU_ds selecthashref: '$select' '$from' '$where'\n";
+	}
 	$answer = $self->sqlSelectHashref($select, $from, $where) if $select && $from && $where;
 	if ($mcddebug > 1) {
 		print STDERR scalar(gmtime) . " $$ mcd gU_ds got answer '$select' '$from' '$where'\n";
@@ -7699,7 +7702,7 @@ sub _getUser_get_table_data {
 	}
 
 	if ($mcddebug > 1) {
-		print STDERR scalar(gmtime) . " $$ _getU_gtd cols_needed: '@$cols_needed'\n";
+		print STDERR scalar(gmtime) . " $$ _getU_gtd cols_needed: " . ($cols_needed ? "'@$cols_needed'" : "(all)") . "\n";
 	}
 
 	# Now, check to see if we know all the answers for that exact

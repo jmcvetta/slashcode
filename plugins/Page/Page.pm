@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.16 2003/05/02 15:30:01 jamie Exp $
+# $Id: Page.pm,v 1.17 2003/05/06 22:28:10 brian Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -36,8 +36,8 @@ sub new {
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
 
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{'Page'};
+	my $plugin = getCurrentStatic('plugin');
+	return unless $plugin->{'Page'};
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;

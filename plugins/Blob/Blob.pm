@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.5 2003/03/10 19:13:37 pudge Exp $
+# $Id: Blob.pm,v 1.6 2003/05/06 22:28:10 brian Exp $
 
 package Slash::Blob;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 my %mimetypes = (
@@ -47,9 +47,8 @@ sub new {
 	my($class, $user) = @_;
 	my $self = {};
 
-	my $slashdb = getCurrentDB();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{'Blob'};
+	my $plugin = getCurrentStatic('plugin');
+	return unless $plugin->{'Blob'};
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;

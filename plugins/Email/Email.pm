@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Email.pm,v 1.3 2003/04/19 15:32:17 jamie Exp $
+# $Id: Email.pm,v 1.4 2003/05/06 22:28:10 brian Exp $
 
 package Slash::Email;
 
@@ -15,7 +15,7 @@ use base "Slash::DB::MySQL";
 
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 
@@ -23,9 +23,8 @@ sub new {
 	my($class, $user) = @_;
 	my $self = {};
 
-	my $slashdb = getCurrentDB();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{'Email'};
+	my $plugin = getCurrentStatic('plugin');
+	return unless $plugin->{'Email'};
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.6 2003/04/19 15:32:17 jamie Exp $
+# $Id: HumanConf.pm,v 1.7 2003/05/06 22:28:10 brian Exp $
 
 package Slash::HumanConf;
 
@@ -16,15 +16,14 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
 	my $self = {};
 
-	my $slashdb = getCurrentDB();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return undef unless $plugins->{HumanConf};
+	my $plugin = getCurrentStatic('plugin');
+	return unless $plugin->{'HumanConf'};
 
 	my $constants = getCurrentStatic();
 	return undef unless $constants->{hc};

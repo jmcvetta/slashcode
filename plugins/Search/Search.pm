@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.40 2002/07/29 19:11:54 jamie Exp $
+# $Id: Search.pm,v 1.41 2002/07/29 19:19:09 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -467,6 +467,7 @@ sub findRSS {
 ####################################################################################
 sub findDiscussion {
 	my($self, $form, $start, $limit, $sort) = @_;
+	my $constants = getCurrentStatic();
 	$start ||= 0;
 
 	my $query = $self->sqlQuote($form->{query});

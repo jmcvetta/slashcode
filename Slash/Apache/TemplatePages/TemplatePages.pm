@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TemplatePages.pm,v 1.1 2002/04/11 22:00:06 brian Exp $
+# $Id: TemplatePages.pm,v 1.2 2002/04/12 16:40:22 brian Exp $
 
 package Slash::Apache::TemplatePages;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -46,11 +46,11 @@ __END__
 
 =head1 NAME
 
-Slash::Apache::Log - Handles logging for slashdot
+Slash::Apache::TemplatePages - Handles logging for slashdot
 
 =head1 SYNOPSIS
 
-	use Slash::Apache::Log;
+	use Slash::Apache::TemplatePages;
 
 =head1 DESCRIPTION
 

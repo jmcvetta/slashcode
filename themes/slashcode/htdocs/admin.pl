@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.9 2000/06/21 00:12:21 cbwood Exp $
+#  $Id: admin.pl,v 1.10 2000/06/22 02:32:23 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1023,7 +1023,7 @@ sub autoUrl {
 	my $more = substr $I{U}{aid}, 1;
 	$more =~ s/[a-z]//g;
 	$initials = uc($initials . $more);
-	my($now) = sqlSelect('date_format(now(),"m/d h:i")');
+	my($now) = sqlSelect('date_format(now(),"m/d h:i p")');
 
 	# Assorted Automatic Autoreplacements for Convenience
 	s|<disclaimer:(.*)>|<B><A HREF="/about.shtml#disclaimer">disclaimer</A>:<A HREF="$I{U}{url}">$I{U}{aid}</A> owns shares in $1</B>|ig;

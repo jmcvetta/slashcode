@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.53 2004/06/17 16:11:45 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.54 2004/07/22 22:06:19 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -729,7 +729,13 @@ sub sqlUpdate {
 	# (And if we tried to proceed we'd generate an SQL error.)
 	return 0 if !keys %$data;
 
-	my $sql = "UPDATE $table SET ";
+	my $sql = "UPDATE ";
+	# What's inside /*! */ will be treated as a comment by most
+	# other SQL servers, but MySQL will parse it.  Kinda pointless
+	# since we've basically given up on ever supporting DBs other
+	# than MySQL, but what the heck.
+	$sql .= "/*! IGNORE */ " if $options->{ignore};
+	$sql .= "$table SET ";
 
 	my @data_fields = ( );
 	my $order_hr = { };
@@ -789,9 +795,11 @@ sub sqlDelete {
 sub sqlInsert {
 	my($self, $table, $data, $options) = @_;
 	my($names, $values);
-	# oddly enough, this hack seems to work for all DBs -- pudge
-	# Its an ANSI sql comment I believe -Brian
 	# Hmmmmm... we can trust getCurrentStatic here? - Jamie
+	# What's inside /*! */ will be treated as a comment by most
+	# other SQL servers, but MySQL will parse it.  Kinda pointless
+	# since we've basically given up on ever supporting DBs other
+	# than MySQL, but what the heck.
 	my $delayed = ($options->{delayed} && !getCurrentStatic('delayed_inserts_off'))
 		? " /*! DELAYED */" : "";
 	my $ignore = $options->{ignore} ? " /*! IGNORE */" : "";

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.18 2002/04/06 21:44:01 jamie Exp $
+# $Id: portald,v 1.19 2002/04/13 00:07:14 patg Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -175,6 +175,11 @@ sub getRDF {
 			for (keys %{$item}) {
 			    $item->{$_} = xmldecode($item->{$_});
 			}
+			# this is if you want a nice numbering 
+			# layout in your block <ol> works, but 
+			# is ugly
+			$item->{counter} = $i;
+			$item->{counter} += 1;
 			$str .= slashDisplay($template_name, {
 				item	=> $item,
 			}, {
@@ -244,7 +249,11 @@ for (@{$RDFlist}) {
 getTop10Comments();
 getSlashdotPoll();
 getUptime();
-setblock("rand", $slashdb->randomBlock()); # NOT backupdb!
+
+my $randbid = $slashdb->getBlock('rand','bid');
+if ($randbid) {
+    setblock("rand", $slashdb->randomBlock()); # NOT backupdb!
+}
 
 foreach (keys %savedBlocks) {
 	# NOT backupdb!

@@ -1,7 +1,7 @@
 # This code is released under the GPL.
 # Copyright 2001 by Brian Aker. See README
 # and COPYING for more information, or see http://software.tangent.org/.
-# $Id: Events.pm,v 1.3 2002/03/19 01:18:17 brian Exp $
+# $Id: Events.pm,v 1.4 2002/04/13 00:07:14 patg Exp $
 
 package Slash::Events;
 
@@ -19,7 +19,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -68,7 +68,6 @@ sub setDates {
 	my ($self, $sid, $begin, $end) = @_;
 	$self->sqlDo("INSERT INTO event_dates (sid,begin,end) VALUES ('$sid', '$begin', '$end')");
 }
-
 sub minDate {
 	my ($self, $sid) = @_;
 	return $self->sqlSelect("MIN(begin)", 'event_dates', "sid = '$sid'" );
@@ -85,12 +84,12 @@ sub deleteDates {
 }
 
 sub getEventsByDay {
-	my ($self, $date, $limit) = @_;
+	my ($self, $begin, $end, $limit) = @_;
 
 	my $user = getCurrentUser();
 	my $section;
 	$section ||= $user->{section};
-	my $where = "((to_days('$date') >= to_days(begin)) AND (to_days('$date') <= to_days(end)))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
+	my $where = "((to_days(begin) >= to_days('$begin')) AND (to_days(end) <= to_days('$end')))  AND stories.sid = event_dates.sid AND topics.tid = stories.tid";
 	$where .= " AND stories.section = '$section'" if $section;
 	my $order = "ORDER BY tid";
 	$order .= " LIMIT $limit "
@@ -106,11 +105,16 @@ sub getEventsByDay {
 }
 
 sub getEvents {
-	my ($self, $date, $limit, $section, $topic)  = @_;
+	my ($self, $begin, $end, $limit, $section, $topic)  = @_;
+
+	my $begin ||= timeCalc($self->getTime(), '%Y-%m-%d');
 
 	my $user = getCurrentUser();
 	$section ||= $user->{section};
-	my $where = "(to_days('$date') <= to_days(begin)) AND stories.sid = event_dates.sid";
+	my $where = " to_days(begin) >= to_days('$begin') "; 
+	$where = " ($where AND to_days(end) <= to_days('$end')) " if $end; 
+	$where .= " AND stories.sid = event_dates.sid";
+
 	$where .= " AND topics.tid = stories.tid";
 
 	$where .= " AND stories.tid = $topic" if $topic;

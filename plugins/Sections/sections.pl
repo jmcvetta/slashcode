@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.23 2002/04/09 18:45:48 brian Exp $
+# $Id: sections.pl,v 1.24 2002/04/13 00:07:14 patg Exp $
 
 use strict;
 use Slash;
@@ -184,6 +184,9 @@ sub saveSection {
 	$form->{cookiedomain} 	  ||= '';
 	$form->{hostname} ||= '';
 	$form->{artcount} ||= 0;
+
+	print STDERR "url $form->{url}\n";
+	print STDERR "hostname $form->{hostname}\n";
 
 	my $found = $slashdb->getSection($section, 'section', 1);
 	if ($found) {

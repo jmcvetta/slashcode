@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.30 2003/07/29 19:19:46 pudge Exp $
+# $Id: topics.pl,v 1.31 2003/07/30 03:22:00 jamie Exp $
 
 use strict;
 use Slash;
@@ -73,7 +73,7 @@ sub topTopics {
 	my $user      = getCurrentUser();
 
 	my $section   = $user->{currentSection};
-        $section ||= $constants->{section};
+	$section ||= $constants->{section};
 	my $limit = $form->{limit}
 		? $form->{limit}
 		: $form->{all}

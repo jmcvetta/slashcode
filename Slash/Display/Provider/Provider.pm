@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.6 2001/12/18 21:41:33 pudge Exp $
+# $Id: Provider.pm,v 1.7 2001/12/19 19:53:55 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar
@@ -247,13 +247,19 @@ sub template {
 
 	return "sub { return '' }" unless $block =~ /\S/;
 
-	my $extra;
-	$extra .= "my \$anon = Slash::getCurrentAnonymousCoward();\n" if $block =~ /\$anon->/;
-	$extra .= "my \$user = Slash::getCurrentUser();\n" if $block =~ /\$user->/;
-	$extra .= "my \$form = Slash::getCurrentForm();\n" if $block =~ /\$form->/;
-	$extra .= "my \$constants = Slash::getCurrentStatic();\n" if $block =~ /\$constants->/;
-# experimental
-	$extra .= "# USE\n\$stash->set('Slash', \$context->plugin('Slash'));\n";
+	my $extra = <<'EOF';
+my $anon = Slash::getCurrentAnonymousCoward();
+my $user = Slash::getCurrentUser();
+my $form = Slash::getCurrentForm();
+my $constants = Slash::getCurrentStatic();
+
+$stash->set('Slash', $context->plugin('Slash'));
+$stash->set('anon', $anon);
+$stash->set('user', $user);
+$stash->set('form', $form);
+$stash->set('constants', $constants);
+$stash->set('env', { map { (lc, $ENV{$_}) } keys %ENV });
+EOF
 
 	my $template = <<EOF;
 sub {
@@ -261,7 +267,7 @@ sub {
     my \$stash   = \$context->stash;
     my \$output  = '';
     my \$error;
-    
+
     eval { BLOCK: {
 $extra
 $block

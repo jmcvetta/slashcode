@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.5 2001/12/02 04:52:12 pudge Exp $
+# $Id: MySQL.pm,v 1.6 2001/12/19 19:53:55 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -381,7 +381,7 @@ sub _getMessageUsers {
 		$where .= " AND users.uid = users_messages.uid AND seclev >= $seclev";
 	}
 
-	my $users  = $self->sqlSelectArrayRef($cols, $table, $where);
+	my $users  = $self->sqlSelectColArrayref($cols, $table, $where);
 	return $users;
 }
 

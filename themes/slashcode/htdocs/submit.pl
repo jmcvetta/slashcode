@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.44 2001/12/17 18:31:10 brian Exp $
+# $Id: submit.pl,v 1.45 2001/12/19 19:53:55 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -434,7 +434,6 @@ sub saveSub {
 	$submission->{subid} = $slashdb->createSubmission($submission);
 	# $slashdb->formSuccess($form->{formkey}, 0, length($form->{subj}));
 
-	# fix getMessageUsers before enabling again -- pudge
 	my $messages = getObject('Slash::Messages');
 	if ($messages) {
 		my $users = $messages->getMessageUsers(MSG_CODE_NEW_SUBMISSION);

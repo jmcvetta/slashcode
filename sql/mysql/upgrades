@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.685 2004/10/07 01:14:14 pudge Exp $
+# $Id: upgrades,v 1.686 2004/10/07 01:17:04 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2577,3 +2577,6 @@ INSERT INTO vars (name, value, description) VALUES ('issue_lookback_days','90','
 # SLASHCLUSTER LAST UPDATED HERE
 
 # End of T_2_5_0_29, Start of T_2_5_0_30 - 2004/10/06
+
+INSERT INTO vars (name, value, description) VALUES ('slashd_errnote_lastrun','','Last time slashd_errnote ran');
+

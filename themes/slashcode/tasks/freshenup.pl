@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.42 2004/07/19 19:45:42 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.43 2004/07/19 20:17:09 pudge Exp $
 
 use File::Path;
 use File::Temp;
@@ -184,6 +184,10 @@ $task{$me}{code} = sub {
 			$stderr_text =~ s/\s+/ /g;
 			$logmsg .= " stderr: '$stderr_text'";
 			$do_log ||= (verbosity() >= 1);
+			if ($stderr_text =~ /\b(ID \d+, \w+;\w+;\w+) :/) {
+				# template error, skip
+				next;
+			}
 		}
 
 		# if we wrote a section page previously replace

@@ -2,10 +2,9 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.110 2002/10/14 17:58:37 jamie Exp $
+# $Id: users.pl,v 1.111 2002/10/14 19:38:49 jamie Exp $
 
 use strict;
-use Date::Parse;
 use Digest::MD5 'md5_hex';
 use Slash;
 use Slash::Display;
@@ -980,7 +979,7 @@ sub showInfo {
 						|| $constants->{stir}*24;
 					$requested_user->{points_expire} = timeCalc(
 						$lastgranted,
-						"%Y-%M-%d",
+						"%Y-%m-%d",
 						$user->{off_set} + $hours*3600
 					);
 # Older and much slower way of doing this; required Date::Manip, ick!

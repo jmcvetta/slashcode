@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.12 2002/03/01 16:58:14 jamie Exp $
+# $Id: subscribe.pl,v 1.13 2002/03/01 17:20:35 jamie Exp $
 
 use strict;
 
@@ -39,7 +39,7 @@ sub main {
 		},
 	};
 
-	if ($user->{is_anon}) {
+	if ($user->{is_anon} && $op ne 'paypal') {
 		my $rootdir = getCurrentStatic('rootdir');
 		redirect("$rootdir/users.pl");
 		return;

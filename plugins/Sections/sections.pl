@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.12 2002/02/14 22:38:27 brian Exp $
+# $Id: sections.pl,v 1.13 2002/02/19 21:20:44 brian Exp $
 
 use strict;
 use Slash;
@@ -107,7 +107,7 @@ sub editSection {
 	if ($form->{addsection}) {
 		$this_section = {};
 	} else {
-		$this_section = $slashdb->getSection($section);
+		$this_section = $slashdb->getSection($section,'', 1);
 		my $blocks = $slashdb->getSectionBlock($section);
 
 		for (@$blocks) {
@@ -147,7 +147,7 @@ sub saveSection {
 	# dashes should be allowed.
 	$section =~ s/[^A-Za-z0-9\-]//g;
 
-	my $found = $slashdb->getSection($form->{section}, 'section');
+	my $found = $slashdb->getSection($form->{section}, 'section', 1);
 	if ($found) {
 		my $return = $slashdb->setSection($form->{section}, {
 			qid		=> $form->{qid},

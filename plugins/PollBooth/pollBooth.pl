@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.29 2002/04/08 18:45:07 brian Exp $
+# $Id: pollBooth.pl,v 1.30 2002/04/15 20:31:20 jamie Exp $
 
 use strict;
 use Slash;
@@ -89,8 +89,11 @@ sub editpoll {
 		if $qid;
 	my($question, $answers, $pollbooth);
 	if ($qid) {
-		$question = $slashdb->getPollQuestion($qid, ['question', 'voters', 'sid']);
-		$answers = $slashdb->getPollAnswers($qid, ['answer', 'votes', 'aid']);
+		$question = $slashdb->getPollQuestion($qid, [qw( question voters )]);
+		$question->{sid} = $slashdb->sqlSelect("sid", "stories",
+			"qid=".$slashdb->sqlQuote($qid),
+			"ORDER BY time DESC");
+		$answers = $slashdb->getPollAnswers($qid, [qw( answer votes aid )]);
 		my $polls;
 		for (@$answers) {
 			push @$polls, [$question, $_->[0], $_->[2], $_->[1]];
@@ -143,6 +146,10 @@ sub savepoll {
 	# to a new SID.  Deal with it, or send in a patch.  The logic
 	# to deal with it otherwise is too complex to be warranted
 	# given the infrequency of the circumstance. -- pudge
+	# Right - I still need to put a qid editing field into
+	# editStory and it'd be nice to see an overall list of which
+	# stories are associated with which polls for the last, say,
+	# year.  But one thing at a time. -- jamie 2002/04/15
 
 	if ($constants->{poll_discussions}) {
 		my $poll = $slashdb->getPollQuestion($qid);

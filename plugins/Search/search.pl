@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.69 2003/07/08 05:10:39 pater Exp $
+# $Id: search.pl,v 1.70 2003/07/22 19:52:35 vroom Exp $
 
 use strict;
 use Slash;
@@ -50,6 +50,11 @@ sub main {
 	# is specified. If someone needs to search on all sections, they
 	# shouldn't be in one.				--Pater
 	$form->{section}	||= $user->{currentSection} || '';
+        if($user->{currentSection} eq "poll"){
+		$form->{op} = "poll";
+		$form->{section} = '';
+        }
+         
 	# This next line could be removed -Brian
 	$form->{section}	= '' if $form->{section} eq 'index';
 	$form->{threshold}	= getCurrentUser('threshold') if !defined($form->{threshold});
@@ -141,7 +146,7 @@ sub _sections {
 	my $sections = $reader->getDescriptions('sections');
 	my %newsections = %$sections;
 	$newsections{''} = getData('all_sections');
-
+        delete $newsections{'poll'};
 	return \%newsections;
 }
 

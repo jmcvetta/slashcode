@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.75 2002/11/27 21:31:13 jamie Exp $
+# $Id: MySQL.pm,v 1.76 2002/12/04 23:47:48 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1563,6 +1563,29 @@ sub updateTaskSummary {
 	$self->setSlashdStatus($taskname, {
 		summary => $summary,
 	});
+}
+
+########################################################
+# Returns the number of new users created since n days in the past
+# (chunks to a GMT day boundary).  E.g., if n=0, number created
+# since the last GMT midnight;  subtract n=1 from n=0 to figure
+# out how many users were created yesterday (GMT).
+sub getNumNewUsersSinceDaysback {
+	my($self, $daysback) = @_;
+	$daysback ||= 0;
+
+	my $max_uid = $self->countUsers({ max => 1 });
+	my $min = $self->sqlSelect(
+		"MIN(uid)",
+		"users_info",
+		"SUBSTRING(created_at, 1, 10) >= SUBSTRING(DATE_SUB(
+			NOW(), INTERVAL $daysback DAY
+		 ), 1, 10)");
+	if (!defined($min)) {
+		return 0;
+	} else {
+		return $max_uid - $min + 1;
+	}
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.154 2004/12/07 16:59:57 pudge Exp $
+# $Id: Environment.pm,v 1.155 2004/12/08 17:20:39 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.155 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1652,7 +1652,7 @@ Hashref of cleaned-up data.
 		approved artcount art_offset bseclev
 		buymore cid clbig clsmall cm_offset
 		commentlimit commentsort commentspill
-		del displaystatus
+		del displaystatus limit
 		filter_id hbtm height highlightthresh
 		issue last maillist max
 		maxcommentsize maximum_length maxstories
@@ -1674,7 +1674,7 @@ Hashref of cleaned-up data.
 
 	# fields that have ONLY a-zA-Z0-9_
 	my %alphas = map {($_ => 1)} qw(
-		fieldname formkey commentstatus
+		fieldname formkey commentstatus filter
 		hcanswer mode op section thisname type
 	);
 
@@ -2656,4 +2656,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.154 2004/12/07 16:59:57 pudge Exp $
+$Id: Environment.pm,v 1.155 2004/12/08 17:20:39 pudge Exp $

@@ -20,7 +20,7 @@ __template__
 [% FOREACH event=events %]
 	<TR>
 		<TD>
-			[<A HREF="[% gSkin.rootdir %]/search.pl?topic=[% event.tid %]">[% event.alttext %]</A>] &nbsp;
+			[<A HREF="[% gSkin.rootdir %]/search.pl?tid=[% event.tid %]">[% event.alttext %]</A>] &nbsp;
 		</TD>
 		<TD>
 			<A HREF="[% gSkin.rootdir %]/article.pl?sid=[% event.sid %]">[% event.title %]</A> &nbsp;
@@ -34,4 +34,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: events;misc;default,v 1.5 2004/06/17 16:11:56 jamiemccarthy Exp $
+$Id: events;misc;default,v 1.6 2004/12/08 17:20:39 pudge Exp $

@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.21 2003/11/10 16:44:56 pudge Exp $
+# $Id: Slash.pm,v 1.22 2004/01/22 18:59:22 jamie Exp $
 #
 
 $Bundle::Slash::VERSION = '2.33';
@@ -110,5 +110,6 @@ mod_perl must be installed by hand, because of the special configuration
 required for it.
 
 Optional but recommended modules include:  Cache::Memcached Silly::Werder
+GD GD::Text
 
 =cut

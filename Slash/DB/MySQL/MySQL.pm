@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.628 2004/07/16 20:20:56 pudge Exp $
+# $Id: MySQL.pm,v 1.629 2004/07/17 04:44:51 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.628 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.629 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5583,17 +5583,18 @@ sub getStoryByTime {
 
 	$key .= "|$time" if $key;
 
+	my $now = $self->sqlQuote( time2str('%Y-%m-%d %H:%M:00', time, 'GMT') );
+	
 	return $cache->{$key} if $key && defined $cache->{$key};
 
 	my $returnable = $self->sqlSelectHashref(
 		'stories.stoid, sid, title, stories.tid',
 		'stories, story_text, story_topics_rendered',
-
 		"stories.stoid = story_text.stoid
 		 AND stories.stoid = story_topics_rendered.stoid
-		 AND '$time' > DATE_SUB(NOW(), INTERVAL $bytime_delay DAY)
+		 AND '$time' > DATE_SUB($now, INTERVAL $bytime_delay DAY)
 		 AND time $sign '$time'
-		 AND time < NOW()
+		 AND time <= $now
 		 AND in_trash = 'no'
 		 $where",
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.20 2002/06/02 14:33:20 jamie Exp $
+# $Id: slashd,v 1.21 2002/06/10 14:37:29 jamie Exp $
 
 ############################################################
 #
@@ -538,8 +538,7 @@ sub main {
 		my $subref = $task{$task_filename}{code};
 		my $forktype = SLASHD_WAIT; # the default
 		$forktype = SLASHD_NOWAIT
-			if !$constants->{fork_all_tasks}
-				&& $task{$task_filename}{fork} == SLASHD_NOWAIT;
+			if $task{$task_filename}{fork} == SLASHD_NOWAIT;
 
 		# wait_until calls REAPER() periodically.
 		wait_until($until_time);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.144 2004/06/23 11:17:47 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.145 2004/08/06 15:59:59 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.144 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.145 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -71,9 +71,10 @@ sub new {
 		$self->sqlDo($create_sql);
 
 		# Add in the indexes we need.
-		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid(uid)");
-		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX skid(skid)");
-		$self->sqlDo("ALTER TABLE accesslog_temp_errors ADD INDEX status(status)");
+		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX uid (uid)");
+		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX skid (skid)");
+		$self->sqlDo("ALTER TABLE accesslog_temp ADD INDEX op_uid_skid (op, uid, skid)");
+		$self->sqlDo("ALTER TABLE accesslog_temp_errors ADD INDEX status_op_skid (status, op, skid)");
 
 		return undef unless $self->_do_insert_select(
 			"accesslog_temp",
@@ -1220,11 +1221,15 @@ sub _calc_percentiles {
 }
 
 ########################################################
-sub getDailyScoreTotal {
-	my($self, $score) = @_;
+sub getDailyScoreTotals {
+	my($self, $scores) = @_;
 
-	return $self->sqlCount('comments',
-		"points=$score AND date $self->{_day_between_clause}");
+	return $self->sqlSelectAllHashref(
+		"points",
+		"points, COUNT(*) AS c",
+		"comments",
+		"date $self->{_day_between_clause}",
+		"GROUP BY points");
 }
 
 
@@ -1458,14 +1463,17 @@ sub getTopModdersNearArchive {
 
 	my($token_cutoff, $limit_clause);
 	$token_cutoff = $constants->{m2_mintokens} || 0;
-	$limit_clause = " limit $options->{limit}" if $options->{limit};
+	$limit_clause = " LIMIT $options->{limit}" if $options->{limit};
 
-	my $top_users = $self->sqlSelectAllHashrefArray("count(moderatorlog.uid) as count, moderatorlog.uid as uid, nickname",
-							"discussions,moderatorlog,users_info,users",
-							"moderatorlog.sid=discussions.id and type='archived' and users_info.uid = moderatorlog.uid 
-							and moderatorlog.ts > date_add(discussions.ts, interval $archive_delay - 3 day) and tokens >= $token_cutoff
-							and users_info.uid = users.uid",
-                                			"group by moderatorlog.uid order by count desc $limit_clause");
+	my $top_users = $self->sqlSelectAllHashrefArray(
+		"COUNT(moderatorlog.uid) AS count, moderatorlog.uid AS uid, nickname",
+		"discussions, moderatorlog, users_info, users",
+		"moderatorlog.sid=discussions.id AND type='archived'
+		 AND users_info.uid = moderatorlog.uid 
+		 AND moderatorlog.ts > DATE_ADD(discussions.ts, INTERVAL $archive_delay - 3 DAY)
+		 AND tokens >= $token_cutoff
+		 AND users_info.uid = users.uid",
+		"GROUP BY moderatorlog.uid ORDER BY count DESC $limit_clause");
 	return $top_users;
 
 }
@@ -1697,4 +1705,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.144 2004/06/23 11:17:47 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.145 2004/08/06 15:59:59 jamiemccarthy Exp $

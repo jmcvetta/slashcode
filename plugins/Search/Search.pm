@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.12 2001/11/28 00:23:40 brian Exp $
+# $Id: Search.pm,v 1.13 2001/11/28 04:42:18 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -282,7 +282,7 @@ sub findJournalEntry {
 	$start ||= 0;
 
 	my $query = $self->sqlQuote($form->{query});
-	my $columns = "users.nickname, journals.description, journals.id as id, date";
+	my $columns = "users.nickname, journals.description, journals.id as id, users.uid,  date";
 	$columns .= ", TRUNCATE((((MATCH (description) AGAINST($query) + (MATCH (article) AGAINST($query)))) / 2), 1) as score "
 		if ($form->{query} && $sort == 2);
 	my $tables = "journals, journals_text, users";

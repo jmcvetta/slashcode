@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.65 2002/07/26 19:08:32 pudge Exp $
+# $Id: slashschema_create.sql,v 1.66 2002/08/02 18:26:23 patg Exp $
 #
 
 #
@@ -538,6 +538,7 @@ CREATE TABLE subsections (
 	title varchar(30) NOT NULL,
 	section varchar(30) NOT NULL,
 	artcount mediumint DEFAULT '30' NOT NULL,
+	alttext varchar(40) NOT NULL,
 	UNIQUE code_key (title,section),
 	FOREIGN KEY (section) REFERENCES sections(section),
 	PRIMARY KEY (id)

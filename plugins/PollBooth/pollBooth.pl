@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.49 2003/07/15 19:07:46 vroom Exp $
+# $Id: pollBooth.pl,v 1.50 2003/07/15 22:30:06 pudge Exp $
 
 use strict;
 use Slash;
@@ -112,20 +112,24 @@ sub editpoll {
 	}
 
 	my($question, $answers, $pollbooth, $checked);
-        if ($form->{op} eq "preview"){
-		foreach(qw/question voters date section topic polltype/){
+	if ($form->{op} eq "preview") {
+		foreach (qw/question voters date section topic polltype/) {
 			$question->{$_} = $form->{$_};
 		}
-        $question->{polltype} ||= "section";
+		$question->{polltype} ||= "section";
  
-	my $disp_answers;
-	for my $n(1..8){
-		$answers->[$n-1]=[$form->{"aid$n"},$form->{"votes$n"}];
-		$disp_answers->[$n-1]={aid=>$n, answer=>$form->{"aid$n"}, votes=>$form->{"votes$n"}} if $form->{"aid$n"};
-	}
+		my $disp_answers;
+		for my $n (1..8){
+			$answers->[$n-1] = [ $form->{"aid$n"}, $form->{"votes$n"} ];
+			$disp_answers->[$n-1] = {
+				aid	=> $n,
+				answer	=> $form->{"aid$n"},
+				votes	=> $form->{"votes$n"}
+			} if $form->{"aid$n"};
+		}
 	
-	$question->{sid}=$form->{sid};
-	$checked=$form->{currentqid};
+		$question->{sid} = $form->{sid};
+		$checked=$form->{currentqid};
 
 
 		my $raw_pollbooth = slashDisplay('pollbooth', {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.68 2002/09/23 19:11:36 jamie Exp $
+# $Id: MySQL.pm,v 1.69 2002/09/29 20:16:32 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -782,13 +782,16 @@ sub stirPool {
 	for my $user_hr (@$stir_ar) {
 		my $uid = $user_hr->{uid};
 		my $pts = $user_hr->{points};
+		my $tokens_pt_chg = $tokens_per_pt * $pts;
 
 		my $change = { };
 		$change->{points} = 0;
 		$change->{-lastgranted} = "NOW()";
 		$change->{-stirred} = "stirred + $pts";
-		$change->{-tokens} = "tokens - " . ($tokens_per_pt * $pts)
-			if $tokens_per_pt;
+		# In taking tokens away, this subtraction itself will not
+		# cause the value to go negative.
+		$change->{-tokens} = "LEAST(tokens, GREATEST(tokens - $tokens_pt_chg, 0))"
+			if $tokens_pt_chg;
 		$self->setUser($uid, $change);
 
 		$n_stirred += $pts;

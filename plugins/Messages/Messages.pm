@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.8 2002/06/04 18:13:40 pudge Exp $
+# $Id: Messages.pm,v 1.9 2002/07/01 18:30:23 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -105,12 +105,9 @@ sub create {
 	my($self, $uid, $type, $data, $fid, $altto) = @_;
 	my $message;
 
-	# check well-formedness of $altto!
-
 	# must not contain non-numeric
 	if (!defined($fid) || $fid =~ /\D/) {
-		$fid = 0;	# default for now, should be a variable and a
-				# real actual UID for "database integrity"
+		$fid = 0;
 	}
 
 	my $origtype = $type;
@@ -120,11 +117,17 @@ sub create {
 		return 0;
 	}
 
-	# check for $uid existence
-	my $slashdb = getCurrentDB();
-	unless ($slashdb->getUser($uid)) {
-		messagedLog(getData("user not found", { uid => $uid }, "messages"));
-		return 0;
+	if (!$altto) {
+		# check for $uid existence
+		my $slashdb = getCurrentDB();
+		unless ($slashdb->getUser($uid)) {
+			messagedLog(getData("user not found", { uid => $uid }, "messages"));
+			return 0;
+		}
+	} else {
+		if (!defined($uid) || $uid =~ /\D/) {
+			$uid = 0;
+		}
 	}
 
 	if (!ref $data) {
@@ -453,9 +456,10 @@ sub getWebCount {
 # allowed to get email sent to them, and whether or not they are
 # allowed to get this particular email type
 sub quicksend {
-	my($self, $uid, $subj, $message, $code, $pr) = @_;
+	my($self, $user, $subj, $message, $code, $pr) = @_;
 	my $slashdb = getCurrentDB();
 
+	return unless $user;
 	($code, my($type)) = $self->getDescription('messagecodes', $code);
 	$code = -1 unless defined $code;
 
@@ -463,7 +467,7 @@ sub quicksend {
 		id		=> 0,
 		fuser		=> 0,
 		altto		=> '',
-		user		=> $slashdb->getUser($uid),
+		user		=> $slashdb->getUser($user),
 		subject		=> $subj,
 		message		=> $message,
 		code		=> $code,
@@ -472,6 +476,12 @@ sub quicksend {
 		mode		=> MSG_MODE_EMAIL,
 		priority	=> $pr,
 	);
+
+	# allow for altto
+	if ($user =~ /\D/) {
+		$msg->{user}{uid} = 0;
+		$msg->{altto} = $user;
+	}
 
 	$self->send(\%msg);
 }
@@ -692,10 +702,11 @@ The hashref containing the rendered message data.
 
 sub render {
 	my($self, $msg, $notemplate) = @_;
+	my $constants = getCurrentStatic;
 	my $slashdb = getCurrentDB();
 
-	$msg->{user}		= $slashdb->getUser($msg->{user});
-	$msg->{user}{prefs}	= $self->getPrefs($msg->{user}{uid});
+	$msg->{user}		= $msg->{user}  ? $slashdb->getUser($msg->{user})  : { uid => 0 };
+	$msg->{user}{prefs}	= $self->getPrefs($msg->{user}{uid} || $constants->{anonymous_coward_uid});
 	$msg->{fuser}		= $msg->{fuser} ? $slashdb->getUser($msg->{fuser}) : 0;
 	$msg->{type}		= $self->getDescription('messagecodes', $msg->{code});
 
@@ -898,4 +909,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.8 2002/06/04 18:13:40 pudge Exp $
+$Id: Messages.pm,v 1.9 2002/07/01 18:30:23 pudge Exp $

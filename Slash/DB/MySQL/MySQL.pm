@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.168 2002/06/28 18:24:32 brian Exp $
+# $Id: MySQL.pm,v 1.169 2002/07/01 18:30:23 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4502,7 +4502,7 @@ sub getSlashConf {
 		my $hr = { };
 		return $hr if !$ar;
 		for my $str (@$ar) {
-			my($k, $v) = split("=", $str);
+			my($k, $v) = split(/=/, $str);
 			$v = 1 if !defined($v);
 			$hr->{$k} = $v;
 		}

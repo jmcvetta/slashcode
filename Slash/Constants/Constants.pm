@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.15 2002/05/29 21:37:54 pudge Exp $
+# $Id: Constants.pm,v 1.16 2002/07/01 18:30:23 pudge Exp $
 
 package Slash::Constants;
 
@@ -29,7 +29,7 @@ use strict;
 use base 'Exporter';
 use vars qw(@ISA $VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS %CONSTANTS);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 constants();
 @EXPORT		= qw();
@@ -107,10 +107,11 @@ These constants are for message delivery modes and message type codes.
 	MSG_CODE_NEW_COMMENT
 	MSG_CODE_INTERUSER
 	MSG_CODE_ADMINMAIL
+	MSG_CODE_EMAILSTORY
 
 =cut
 
-# -2 -1 0 1 2 3 4 5 6 7 8 9 10
+# -2 -1 0 1 2 3 4 5 6 7 8 9 10 11
 
 =pod
 
@@ -195,4 +196,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.15 2002/05/29 21:37:54 pudge Exp $
+$Id: Constants.pm,v 1.16 2002/07/01 18:30:23 pudge Exp $

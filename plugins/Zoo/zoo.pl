@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.42 2003/03/17 19:32:22 brian Exp $
+# $Id: zoo.pl,v 1.43 2003/07/15 04:56:47 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -654,7 +654,13 @@ sub check {
 
 	my $uid = $form->{uid} || "";
 	if (!$uid) {
-		print getData("no_uid");
+        	# See comment in plugins/Journal/journal.pl for its call of
+        	# getSectionColors() as well.
+                Slash::Utility::Anchor::getSectionColors();
+
+		my $title = getData("no_uid");
+		header($title);
+		print $title;
 		return;
 	}
 

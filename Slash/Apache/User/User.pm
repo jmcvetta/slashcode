@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.30 2002/05/06 20:36:06 pudge Exp $
+# $Id: User.pm,v 1.31 2002/07/05 21:29:23 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -94,13 +94,7 @@ sub handler {
 	# do we need to do this too? i am leaning toward No. -- pudge
 # 	$r->method_number(M_GET);
 
-	my @params_array = $apr->param;
-	my %params;
-	for (@params_array) {
-		$params{$_} = $apr->param($_);
-	}
-	$params{query_apache} = $apr;
-	my $form = filter_params(%params);
+	my $form = filter_params($apr);
 	$form->{query_apache} = $apr;
 	@{$form}{keys  %{$constants->{form_override}}} =
 		values %{$constants->{form_override}};

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.43 2002/06/07 02:18:58 jamie Exp $
+# $Id: search.pl,v 1.44 2002/07/05 21:29:23 brian Exp $
 
 use strict;
 use Slash;
@@ -76,14 +76,6 @@ sub main {
 	# truncate query length
 	if (length($form->{query}) > 40) {
 		$form->{query} = substr($form->{query}, 0, 40);
-	}
-
-	# Handle multiple topic selection if enabled.
-	if ($constants->{multitopics_enabled}) {
-		for (grep { /^topic_./ } keys %{$form}) {
-			$form->{selected_topics}{$1} = 1 if /^topic_(\d+)$/;
-		}
-		$form->{selected_topics}{$form->{topic}} = 1 if $form->{tid};
 	}
 
 	# The default search operation is to search stories.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.6 2001/12/11 23:15:22 brian Exp $
+# $Id: Zoo.pm,v 1.7 2001/12/18 18:19:56 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -65,7 +65,7 @@ sub countFoes {
 
 sub count {
 	my($self, $uid) = @_;
-	$self->sqlCount('uid', 'people', "uid = $uid");
+	$self->sqlCount('people', "uid = $uid");
 }
 
 sub _get {
@@ -78,6 +78,22 @@ sub _get {
 	);
 	return $people;
 }
+
+# Still in my brain, this is left as a note -Brian
+# This has a special reason for existing. Right now we
+# can easily fetch info on friends and foes. Future
+# features though will not have as easy of a time.
+#sub getFriendInfo {
+#	my($self, $people) = @_;
+#
+#	my $info = $self->sqlSelectAll(
+#		'uid, nickname, journal_last_entry_date',
+#		'users',
+#		"uid IN (" . join(",", map { $_->[0] } @$people) . ")"
+#		 ) if @$people;
+#
+#	return $info;
+#}
 
 sub _getOpposite {
 	my($self, $uid, $type) = @_;

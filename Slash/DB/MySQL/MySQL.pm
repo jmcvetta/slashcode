@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.709 2004/10/12 20:20:39 pudge Exp $
+# $Id: MySQL.pm,v 1.710 2004/10/14 19:20:00 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.709 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.710 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10101,7 +10101,7 @@ sub getTopiclistForStory {
 
 	# Grandfather in an old-style sid.
 	my $stoid = $self->getStoidFromSidOrStoid($id);
-	return undef unless $stoid;
+	return [] unless $stoid;
 
 	my $chosen_hr = $options->{topics_chosen} || $self->getStoryTopicsChosen($stoid);
 	return $self->getTopiclistFromChosen($chosen_hr, $options);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.43 2004/10/08 19:28:44 jamiemccarthy Exp $
+# $Id: Install.pm,v 1.44 2004/11/05 13:11:39 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -366,7 +366,7 @@ sub _install {
 		$statement =~ s/;\s*$//;
 		my $rows = $self->sqlDo($statement);
 		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
-			print "Failed on :$statement:\n";
+			print "=== ($hash->{name}) Failed on :$statement:\n";
 		}
 	}
 	@sql = ();
@@ -439,7 +439,7 @@ sub _install {
 		next unless $_;
 		s/;$//;
 		unless ($self->sqlDo($_)) {
-			print "Failed on :$_:\n";
+			print "=== ($hash->{name}) Failed on :$_:\n";
 		}
 	}
 	@sql = ();

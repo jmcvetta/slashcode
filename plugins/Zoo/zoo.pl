@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.15 2002/06/27 01:06:19 brian Exp $
+# $Id: zoo.pl,v 1.16 2002/08/23 23:53:24 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -69,6 +69,14 @@ sub main {
 		freaks		=> { 
 			check => 1,			
 			function => \&freaks		
+		},
+		fof		=> { 
+			check => 1,			
+			function => \&fof		
+		},
+		'eof'		=> { 
+			check => 1,			
+			function => \&eof		
 		},
 		all		=> { 
 			check => 1,			
@@ -159,6 +167,78 @@ sub friends {
 				print getData('yournofriends');
 			} else {
 				print getData('nofriends', { nickname => $nick });
+			}
+		}
+	}
+}
+
+sub fof {
+	my($zoo, $constants, $user, $form, $slashdb) = @_;
+
+	my ($uid, $nick);
+	if ($form->{uid} || $form->{nick}) {
+		$uid = $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
+		$nick = $form->{nick} ? $form->{nick} : $slashdb->getUser($uid, 'nickname');
+	} else {
+		$uid = $user->{uid};
+		$nick = $user->{nick};
+	}
+
+	my $editable = ($uid == $user->{uid} ? 1 : 0);
+	my $friends = $zoo->getFof($uid); 
+		
+	if ($form->{content_type} eq 'rss') {
+		_rss($friends, $nick, 'fof');
+	} else {
+		if ($editable) {
+			_printHead("yourfriendsoffriendshead");
+		} else {
+			_printHead("friendsoffriendshead", { nickname => $nick });
+		}
+		
+		if (@$friends) {
+			slashDisplay('plainlist', { people => $friends, editable => $editable });
+		} else {
+			if ($editable) {
+				print getData('yournofriendsoffriends');
+			} else {
+				print getData('nofriendsoffriends', { nickname => $nick });
+			}
+		}
+	}
+}
+
+sub eof {
+	my($zoo, $constants, $user, $form, $slashdb) = @_;
+
+	my ($uid, $nick);
+	if ($form->{uid} || $form->{nick}) {
+		$uid = $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
+		$nick = $form->{nick} ? $form->{nick} : $slashdb->getUser($uid, 'nickname');
+	} else {
+		$uid = $user->{uid};
+		$nick = $user->{nick};
+	}
+
+	my $editable = ($uid == $user->{uid} ? 1 : 0);
+	my $friends = $zoo->getEof($uid); 
+		
+	if ($form->{content_type} eq 'rss') {
+		_rss($friends, $nick, 'friends');
+	} else {
+		if ($editable) {
+			_printHead("yourfriendsenemieshead");
+		} else {
+			_printHead("friendsenemieshead", { nickname => $nick });
+		}
+		
+		if (@$friends) {
+			slashDisplay('plainlist', { people => $friends, editable => $editable });
+		} else {
+			if ($editable) {
+				print getData('yournofriendsenemies');
+			} else {
+				print getData('nofriendsenemies', { nickname => $nick });
 			}
 		}
 	}

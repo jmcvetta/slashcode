@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.15 2002/08/23 18:31:52 brian Exp $
+# $Id: Zoo.pm,v 1.16 2002/08/23 23:53:24 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -38,6 +38,14 @@ sub new {
 
 sub getFriends {
 	_get(@_, "friend");
+}
+
+sub getFof {
+	_getAssociation(@_, "fof");
+}
+
+sub getEof {
+	_getAssociation(@_, "eof");
 }
 
 sub getFriendsUIDs {
@@ -95,6 +103,18 @@ sub _get {
 		'users.uid, nickname, journal_last_entry_date',
 		'people, users',
 		"people.uid = $uid AND type =\"$type\" AND person = users.uid",
+		" ORDER BY nickname "
+	);
+	return $people;
+}
+
+sub _getAssociation {
+	my($self, $uid, $type) = @_;
+
+	my $people = $self->sqlSelectAll(
+		'users.uid, nickname, journal_last_entry_date',
+		'people, users',
+		"people.uid = $uid AND $type > 0 AND person = users.uid",
 		" ORDER BY nickname "
 	);
 	return $people;
@@ -204,13 +224,13 @@ sub addEof {
 
 	# First we do the main person
 	if ($self->sqlSelect('uid', 'people', "uid = $uid AND person = $person")) {
-		$self->sqlUpdate('people', { -fof => "fof+1" }, "uid = $uid AND person = $person");
+		$self->sqlUpdate('people', { '-eof' => "eof+1" }, "uid = $uid AND person = $person");
 	} else {
-		$self->sqlInsert('people', { uid => $uid,  person => $person, fof => 1 });
+		$self->sqlInsert('people', { uid => $uid,  person => $person, 'eof' => 1 });
 	}
 	my $people = $slashdb->getUser($uid, 'people');
 	# First we clean up, then we reapply
-	$people->{FOF()}{$person} += 1;
+	$people->{EOF()}{$person} += 1;
 	$slashdb->setUser($uid, { people => $people });
 }
 
@@ -242,9 +262,9 @@ sub deleteEof {
 	# First we do the main person
 	my $number = $self->sqlSelect('eof', 'people', "uid = $uid AND person = $person");
 	if ($number <= 1) {
-		$self->sqlUpdate('people', { eof => "0" }, "uid = $uid AND person = $person");
+		$self->sqlUpdate('people', { 'eof' => "0" }, "uid = $uid AND person = $person");
 	} else {
-		$self->sqlUpdate('people', { -eof => "eof - 1" }, "uid = $uid AND person = $person");
+		$self->sqlUpdate('people', { '-eof' => "eof - 1" }, "uid = $uid AND person = $person");
 	}
 	my $people = $slashdb->getUser($uid, 'people');
 	# First we clean up, then we reapply

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.32 2002/07/19 01:27:47 jamie Exp $
+# $Id: User.pm,v 1.33 2002/08/23 23:53:24 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -444,10 +444,19 @@ sub userdir_handler {
 			$r->filename($constants->{basedir} . '/users.pl');
 
 		} elsif ($op eq 'friends') {
-			$r->args("op=friends&nick=$nick&uid=$uid");
-			$r->uri('/zoo.pl');
-			$r->filename($constants->{basedir} . '/zoo.pl');
-
+			if ($extra eq 'friends') {
+				$r->args("op=fof&nick=$nick&uid=$uid");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} elsif ($extra eq 'foes') {
+				$r->args("op=eof&nick=$nick&uid=$uid");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			} else {
+				$r->args("op=friends&nick=$nick&uid=$uid");
+				$r->uri('/zoo.pl');
+				$r->filename($constants->{basedir} . '/zoo.pl');
+			}
 		} elsif ($op eq 'fans') {
 			$r->args("op=fans&nick=$nick&uid=$uid");
 			$r->uri('/zoo.pl');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.156 2003/05/26 16:17:00 pudge Exp $
+# $Id: admin.pl,v 1.157 2003/06/03 19:33:29 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1680,6 +1680,8 @@ sub updateStory {
 	my $rendered;
 	{
 		local $user->{currentSection} = "index";
+		local $user->{no_icons} = "";
+		local $user->{light} = "";
 		$rendered =  displayStory($form->{sid}, '', { get_cacheable => 1 });
 	}
 	my $data = {

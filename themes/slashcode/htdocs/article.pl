@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.39 2003/03/11 20:04:15 brian Exp $
+# $Id: article.pl,v 1.40 2003/03/20 14:46:51 pudge Exp $
 
 use strict;
 use Slash;
@@ -63,8 +63,10 @@ sub main {
 
 		# set things up to use the <LINK> tag in the header
 		my($next, $prev) = ('', '');
-		$next = $reader->getStoryByTime('>', $story, $SECT) unless $story->{is_future};
-		$prev = $reader->getStoryByTime('<', $story, $SECT);
+		if ($constants->{use_prev_next_link}) {
+			$next = $reader->getStoryByTime('>', $story, $SECT) unless $story->{is_future};
+			$prev = $reader->getStoryByTime('<', $story, $SECT);
+		}
 
 		my $links = {
 			title	=> $title,

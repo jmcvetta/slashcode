@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma_backend.pl,v 1.7 2004/09/08 14:55:31 jamiemccarthy Exp $
+# $Id: dilemma_backend.pl,v 1.8 2004/09/09 02:20:09 jamiemccarthy Exp $
 
 use Slash::Constants ':slashd';
 
@@ -111,7 +111,7 @@ $task{$me}{code} = sub {
 	) {
 		$return_str .= do_logdatadump(
 			$virtual_user, $constants, $slashdb, $user, $info, $gSkin,
-			$dilemma_reader);
+			$dilemma_reader, $wait_factor);
 	}
 
 	return $return_str;
@@ -134,7 +134,8 @@ sub cpu_sleep {
 }
 
 sub do_logdatadump {
-	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin, $dilemma_reader) = @_;
+	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin,
+		$dilemma_reader, $wait_factor) = @_;
 
 	my $return_str = "";
 	my($compbytes, $uncompbytes) = (0, 0);
@@ -175,7 +176,9 @@ sub do_logdatadump {
 	}
 
 	# Insert the meeting log into the XML, one entry at a time.
+	my $start_dump = Time::HiRes::time;
 	my $playlog_hr = { };
+	my $i = 0;
 	while (my($meetlog_meetid, $tick, $foodsize) = $meetlog_sth->fetchrow()) {
 		# Pull rows from the play log into its hashref until
 		# we find one with a meetid higher than the meetid
@@ -218,6 +221,11 @@ sub do_logdatadump {
 			do_ldd_gz_dump($gz, $xml);
 			$uncompbytes += length($xml);
 			$xml = "";
+		}
+		if (++$i >= 1000) {
+			cpu_sleep($start_dump, $wait_factor);
+			$start_dump = Time::HiRes::time;
+			$i = 0;
 		}
 	}
 	$meetlog_sth->finish();

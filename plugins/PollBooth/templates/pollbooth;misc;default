@@ -25,7 +25,7 @@ en_US
 __name__
 pollbooth
 __template__
-[% IF has_activated or user.is_admin %]
+[% IF has_activated || user.is_admin %]
 [% IF !can_vote %]
 
 	<B>[% question %]</B>
@@ -68,4 +68,4 @@ __template__
 __seclev__
 10000
 __version__
- $Id: pollbooth;misc;default,v 1.5 2003/07/15 19:08:41 vroom Exp $
+$Id: pollbooth;misc;default,v 1.6 2003/07/15 22:35:30 pudge Exp $

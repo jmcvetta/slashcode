@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.42 2004/04/06 18:18:42 tvroom Exp $
+# $Id: run_moderatord.pl,v 1.43 2004/04/12 17:25:18 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -310,6 +310,9 @@ sub reconcile_m2 {
 		   if ($nfair > $nunfair) {	$winner_val =  1 }
 		elsif ($nunfair > $nfair) {	$winner_val = -1 }
 		my $fair_frac = $nfair/($nunfair+$nfair);
+		my $lonedissent_val =
+			scalar(grep { $_->{active} && $_->{val} == -$winner_val } @$m2_ar) <= 1
+			? -$winner_val : 0;
 
 		# Get the token and karma consequences of this vote.
 		# This uses a complex algorithm to return a fairly
@@ -388,6 +391,13 @@ sub reconcile_m2 {
 					{ -tokens => $sql },
 					{ and_where => $csq->{$key}{sql_and_where} }
 				);
+			}
+			if ($m2->{val} == $winner_val) {
+				$slashdb->setUser($m2->{uid},
+					{ -m2voted_majority	=> "m2voted_majority + 1" });
+			} elsif ($m2->{val} == $lonedissent_val) {
+				$slashdb->setUser($m2->{uid},
+					{ -m2voted_lonedissent	=> "m2voted_lonedissent + 1" });
 			}
 			if ($statsSave) {
 				my $token_change = $use_possible

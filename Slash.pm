@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.34 2000/07/07 16:54:31 pudge Exp $
+#  $Id: Slash.pm,v 1.35 2000/07/10 14:40:31 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1358,18 +1358,18 @@ sub approveTag {
 ########################################################
 sub fixurl {
 	my($url, $parameter) = @_;
-	$url =~ s/[" ]//g;
-	$url =~ s/^'(.+?)'$/$1/g;
 
 	# encode all non-safe, non-reserved characters
 	# different char set if destined to be a query string parameter
 	if ($parameter) {
 		$url =~ s/([^\w.+!*'(),;:@\$\/%-])/sprintf "%%%02X", ord $1/ge;
 	} else {
+		$url =~ s/[" ]//g;
+		$url =~ s/^'(.+?)'$/$1/g;
 		$url =~ s/([^\w.+!*'(),;:@\$\/%-?=&#])/sprintf "%%%02X", ord $1/ge;
+		$url = fixHref($url) || $url;
 	}
 
-	$url = fixHref($url) || $url;
 	my $decoded_url = decode_entities($url);
 	return $decoded_url =~ s|^\s*\w+script\b.*$||i ? undef : $url;
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.12 2002/01/10 23:08:51 jamie Exp $
+# $Id: Install.pm,v 1.13 2002/03/27 21:06:40 slashteam Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -220,9 +220,31 @@ sub _install {
 		mkpath $instdir, 0, 0755;
 
 		for (@{$hash->{$section}}) {
-			(my $filename = $_) =~ s/^.*\/(.*)$/$1/;
-			my $old = "$hash->{dir}/$_";
-			my $new = "$instdir/$filename";
+			# I hope no one tries to embed spaces in their
+			# theme/plugin... heh!
+			my($oldfilename, $dir) = split;
+			my $filename = $oldfilename;
+			$filename =~ s/^.*\/(.*)$/$1/;
+			$dir =~ s/\s*$// if $dir;
+			# Allow third parameter as relative directory
+			# for 'htdoc=' or 'image=' lines.
+			if ($dir &&
+			    ($section eq 'htdoc' || $section eq 'image'))
+			{
+				if ($dir !~ m{^topics/}) {
+					$dir =~ s{^([^/])}{/$1};
+					$dir =~ s{/$}{};
+					mkpath "$instdir$dir", 0, 0755 
+						if ! -d "$instdir/$dir";
+				} else {
+					# Uh-uh! Use 'topic=...'
+					$dir = '';
+				}
+			} else {
+				$dir = '';
+			}
+			my $old = "$hash->{dir}/$oldfilename";
+			my $new = "$instdir$dir/$filename";
 
 			# I don't think we should delete the file first,
 			# but it is a thought. -- pudge
@@ -268,6 +290,7 @@ sub _install {
 				# the main defaults.sql, so we should allow
 				# REPLACE and UPDATE here. - Jamie
 				next unless /^(INSERT|DELETE|REPLACE|UPDATE)\b/i;
+				$_ .= <$fh> while $_ !~ /;\s*$/;
 				chomp;
 				s/www\.example\.com/$hostname/g;
 				s/admin\@example\.com/$email/g;
@@ -318,6 +341,7 @@ sub _install {
 		if (open($fh, "< $prep_file\0")) {
 			while (<$fh>) {
 				next unless (/^INSERT/i or /^UPDATE/i or /^DELETE/i or /^REPLACE/i or /^ALTER/i or /^CREATE/i);
+				$_ .= <$fh> while $_ !~ /;\s*$/;
 				chomp;
 				s/www\.example\.com/$hostname/g;
 				s/admin\@example\.com/$email/g;

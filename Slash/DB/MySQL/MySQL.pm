@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.17 2001/05/09 14:32:09 pudge Exp $
+# $Id: MySQL.pm,v 1.18 2001/05/27 13:06:08 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -2795,7 +2795,7 @@ sub _genericSet {
 		# need for a fully sql92 database.
 		# transactions baby, transactions... -Brian
 		for (@param)  {
-			$self->sqlReplace($param_table, { $table_prime => $self->sqlQuote($id), name => $_->[0], value => $_->[1]});
+			$self->sqlReplace($param_table, { $table_prime => $id, name => $_->[0], value => $_->[1]});
 		}
 	} else {
 		$self->sqlUpdate($table, $value, $table_prime . '=' . $self->{_dbh}->quote($id));

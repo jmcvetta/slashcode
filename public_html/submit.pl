@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.11 2000/06/14 19:31:19 pudge Exp $
+#  $Id: submit.pl,v 1.12 2000/06/16 13:05:10 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -395,7 +395,7 @@ EOT
 $str
 		</SELECT>
 ADMIN
-	<TR><TD>$comment</TD> <TD>$note</TD>
+	<TR><TD>$note</TD>
 USER
 
 		my $ptime = $I{submiss_ts} ? $time : '';
@@ -418,7 +418,7 @@ ADMIN
 	<TD>
 		<A HREF="$ENV{SCRIPT_NAME}?op=viewsub&subid=$subid&note=$I{F}{note}">%s&nbsp;</A>
 	</TD><TD><FONT SIZE="-1">%s<BR>%s</FONT></TD></TR>
-	<TR><TD COLSPAN="7"><IMG SRC="$I{imagedir}/pix.gif" ALT="" HEIGHT="3"></TD></TR>
+	<TR><TD COLSPAN="6"><IMG SRC="$I{imagedir}/pix.gif" ALT="" HEIGHT="3"></TD></TR>
 USER
 	}
 

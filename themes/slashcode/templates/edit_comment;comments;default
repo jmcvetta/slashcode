@@ -90,7 +90,7 @@ END %]
 <!-- end anon login code -->
 [% END %]
 [% IF user.homepage %]
-	<TR><TD ALIGN="RIGHT">URL</TD>
+	<TR><TD ALIGN="RIGHT">[% PROCESS formLabel value => 'URL' %]</TD>
 		<TD><A HREF="[% user.homepage %]">[% user.homepage | strip_literal %]</A></TD></TR>
 [% END %]
 
@@ -208,4 +208,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.25 2003/04/22 20:03:09 jamie Exp $
+$Id: edit_comment;comments;default,v 1.26 2003/04/23 01:37:47 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.210 2002/08/13 12:21:51 pudge Exp $
+# $Id: MySQL.pm,v 1.211 2002/08/21 19:49:32 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.211 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2006,6 +2006,10 @@ sub savePollQuestion {
 				WHERE qid=$qid_quoted AND aid=$x");
 		}
 	}
+	# Go on and unset any reference to the qid in sections, if it 
+	# needs to exist the next statement will correct this. -Brian
+	$self->sqlUpdate('sections', { qid => ''}, " qid = $poll->{qid} ")	
+		if ($poll->{qid});
 	if ($poll->{qid} && $poll->{currentqid}) {
 		$self->setSection($poll->{section}, { qid => $poll->{qid} });
 	}
@@ -4774,6 +4778,15 @@ sub getStoryList {
 	my $list = $cursor->fetchall_arrayref;
 
 	return($count, $list);
+}
+
+##################################################################
+# This will screw with an autopoll -Brian
+sub getSidForQID {
+	my($self, $qid) = @_;
+	return $self->sqlSelect("sid", "stories",
+				"qid=" . $self->sqlQuote($qid),
+				"ORDER BY time DESC");
 }
 
 ##################################################################

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.66 2002/08/02 18:26:23 patg Exp $
+# $Id: slashschema_create.sql,v 1.67 2002/08/21 19:49:32 brian Exp $
 #
 
 #
@@ -477,7 +477,7 @@ CREATE TABLE sections (
 	type ENUM("contained", "collected") DEFAULT 'contained' NOT NULL,
 	rewrite mediumint UNSIGNED DEFAULT '3600' NOT NULL,
 	last_update timestamp,
-	KEY (section),
+	UNIQUE (section),
 	FOREIGN KEY (qid) REFERENCES pollquestions(qid),
 	PRIMARY KEY (id)
 ) TYPE = myisam;

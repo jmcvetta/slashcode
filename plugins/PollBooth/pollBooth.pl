@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.37 2002/08/09 01:08:47 brian Exp $
+# $Id: pollBooth.pl,v 1.38 2002/08/21 19:49:32 brian Exp $
 
 use strict;
 use Slash;
@@ -99,22 +99,25 @@ sub editpoll {
 	}
 	my $slashdb = getCurrentDB();
 
-	my($question, $answers, $pollbooth);
+	my($question, $answers, $pollbooth, $checked);
 	if ($qid) {
-		$question = $slashdb->getPollQuestion($qid, [qw( question voters )]);
-		$question->{sid} = $slashdb->sqlSelect("sid", "stories",
-			"qid=".$slashdb->sqlQuote($qid),
-			"ORDER BY time DESC");
+		$question = $slashdb->getPollQuestion($qid);
+		$question->{sid} = $slashdb->getSidForQID($qid)
+			unless $question->{autopoll};
 		$answers = $slashdb->getPollAnswers($qid, [qw( answer votes aid )]);
-		my $polls;
-		for (@$answers) {
-			push @$polls, [$question, $_->[0], $_->[2], $_->[1]];
-		}
+		$checked = ($slashdb->getSection($question->{section}, 'qid', 1 ) == $qid ) ? 1 : 0;
+		my $poll_open = $slashdb->isPollOpen($qid);
+
+		# Just use the DB method, its too messed up to rebuild the logic here -Brian
+		my $poll = $slashdb->getPoll($qid);
 		my $raw_pollbooth = slashDisplay('pollbooth', {
-			polls		=> $polls,
-			question	=> $question->{question},
 			qid		=> $qid,
 			voters		=> $question->{voters},
+			poll_open 	=> $poll_open,
+			question	=> $poll->{pollq}{question},
+			answers		=> $poll->{answers},
+			voters		=> $poll->{pollq}{voters},
+			sect		=> $question->{section},
 		}, 1);
 		my $constants = getCurrentStatic();
 		$pollbooth = fancybox($constants->{fancyboxwidth}, 'Poll', $raw_pollbooth, 0, 1);
@@ -128,18 +131,13 @@ sub editpoll {
 		$question->{sid} = $form->{sid}; 
 	}
 
-	# Copy the HASH, don't use the original
-	my $sections = $slashdb->getDescriptions('sections-all');
-	my %newsections = %$sections;
-	$newsections{''} = " ";
-
 	slashDisplay('editpoll', {
 		title		=> getData('edit_poll_title', { qid=>$qid }),
 		qid		=> $qid,
 		question	=> $question,
 		answers		=> $answers,
 		pollbooth	=> $pollbooth,
-		sections	=> \%newsections,
+		checked		=> $checked,
 	});
 }
 

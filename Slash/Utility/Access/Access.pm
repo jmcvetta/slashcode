@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.8 2002/04/17 15:39:25 jamie Exp $
+# $Id: Access.pm,v 1.9 2002/05/16 05:01:55 jamie Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -289,12 +289,12 @@ sub formkeyHandler {
 		$slashdb->updateFormkeyId($formname, $formkey, $user->{uid}, $form->{rlogin}, $form->{upasswd});
 	} elsif ($formkey_op eq 'valid_check') {
 		my $valid = $slashdb->validFormkey($formname, $options);
-print STDERR "formkeyHandler valid_check valid '$valid'\n";
+#print STDERR "formkeyHandler valid_check valid '$valid'\n";
 		if ($valid eq 'ok') {
 			# All is well.
 		} else {
 			$msg = formkeyError($valid, $formname);
-print STDERR "formkeyHandler valid_check valid '$valid' formname '$formname' msg '$msg'\n";
+#print STDERR "formkeyHandler valid_check valid '$valid' formname '$formname' msg '$msg'\n";
 			if ($valid eq 'invalidhcretry'
 				|| $valid eq 'invalidhc') {
 				# It's OK, the user can retry.
@@ -330,14 +330,14 @@ print STDERR "formkeyHandler valid_check valid '$valid' formname '$formname' msg
 		}
 		if (!$error_flag && !$options->{no_hc}) {
 			my $hc = getObject("Slash::HumanConf");
-print STDERR "formkeyHandler op '$formkey_op' hc '$hc'\n";
+#print STDERR "formkeyHandler op '$formkey_op' hc '$hc'\n";
 			if ($hc && !$hc->createFormkeyHC($formname)) {
 				$error_flag = 1;
 				$msg = formkeyError('cantinserthc', $formname);
 			}
 		}
 	}
-print STDERR "formkeyHandler op '$formkey_op' formkey '$form->{formkey}' statehc '$user->{state}{hc}' error_flag '$error_flag' msg '$msg'\n";
+#print STDERR "formkeyHandler op '$formkey_op' formkey '$form->{formkey}' statehc '$user->{state}{hc}' error_flag '$error_flag' msg '$msg'\n";
 
 	if ($msg) {
 		if ($message_ref) {
@@ -767,4 +767,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.8 2002/04/17 15:39:25 jamie Exp $
+$Id: Access.pm,v 1.9 2002/05/16 05:01:55 jamie Exp $

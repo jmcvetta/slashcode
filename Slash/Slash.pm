@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.34 2002/01/25 16:39:58 patg Exp $
+# $Id: Slash.pm,v 1.35 2002/01/25 18:27:34 jamie Exp $
 
 package Slash;
 
@@ -86,6 +86,7 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
+	return ( {}, 0 ) unless $thisComment;
 
 	# We first loop through the comments and assign bonuses and
 	# and such.
@@ -339,7 +340,7 @@ sub printComments {
 		lvl		=> $lvl,
 	});
 
-	return if $user->{state}{nocomment} || $user->{mode} eq 'nocomment';
+	return if $user->{state}{nocomment} || $user->{mode} eq 'nocomment' || $count == 0;
 
 	my($comment, $next, $previous);
 	if ($cid) {
@@ -416,9 +417,12 @@ sub moderatorCommentLog {
 
 	my $seclev = getCurrentUser('seclev');
 	my $mod_admin = $seclev >= $constants->{modviewseclev} ? 1 : 0;
-	my $comments = $slashdb->getModeratorCommentLog($cid);
-#	my $comments = $slashdb->getModeratorCommentLog($sid, $cid);
 
+	my $comments = $slashdb->getModeratorCommentLog($cid);
+	if (!$mod_admin) {
+		# Eliminate inactive moderations from the list.
+		$comments = [ grep { $_->{active} } @$comments ];
+	}
 	return unless @$comments; # skip it, if no mods to show
 
 	my(@return, @reasonHist, $reasonTotal);

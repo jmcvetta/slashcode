@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.13 2002/07/17 21:27:37 jamie Exp $
+# $Id: Access.pm,v 1.14 2002/07/30 18:43:58 jamie Exp $
 
 package Slash::Utility::Access;
 
@@ -34,7 +34,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -320,19 +320,28 @@ sub formkeyHandler {
 			$msg = formkeyError('usedform', $formname);
 			$error_flag = 1;
 		}
-	} elsif ($formkey_op eq 'generate_formkey' || $formkey_op eq 'regen_formkey') {
+	} elsif ($formkey_op =~ m{^(?:generate|regen)_formkey}) {
+		# These ops can have "/foo" appended to them, in which case
+		# the $formname parameter will be superceded by "foo".
+		# This is for when e.g. the current op is creating a discussion
+		# but we need to generate a new formkey for posting a comment
+		# all in the same action.
+		my $real_formname = $formname;
+		if ($formkey_op =~ m{^(?:generate|regen)_formkey/(\w+)$}) {
+			$real_formname = $1;
+		}
 		if (!$error_flag) {
-			if (!$slashdb->createFormkey($formname)) {
+			if (!$slashdb->createFormkey($real_formname)) {
 				$error_flag = 1;
-				$msg = formkeyError('cantinsert', $formname);
+				$msg = formkeyError('cantinsert', $real_formname);
 			}
 		}
 		if (!$error_flag && !$options->{no_hc}) {
 			my $hc = getObject("Slash::HumanConf");
 #print STDERR "formkeyHandler op '$formkey_op' hc '$hc'\n";
-			if ($hc && !$hc->createFormkeyHC($formname)) {
+			if ($hc && !$hc->createFormkeyHC($real_formname)) {
 				$error_flag = 1;
-				$msg = formkeyError('cantinserthc', $formname);
+				$msg = formkeyError('cantinserthc', $real_formname);
 			}
 		}
 	}
@@ -766,4 +775,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.13 2002/07/17 21:27:37 jamie Exp $
+$Id: Access.pm,v 1.14 2002/07/30 18:43:58 jamie Exp $

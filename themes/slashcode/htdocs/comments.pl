@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.87 2002/07/30 17:42:43 jamie Exp $
+# $Id: comments.pl,v 1.88 2002/07/30 18:43:58 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -79,7 +79,7 @@ sub main {
 			formname 		=> 'discussions',
 			checks			=> 
 			[ qw ( max_post_check valid_check interval_check 
-				formkey_check regen_formkey ) ],
+				formkey_check regen_formkey/comments ) ],
 		},
 		reply			=> {
 			function		=> \&editComment,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.547 2004/04/02 00:42:59 pudge Exp $
+# $Id: MySQL.pm,v 1.548 2004/04/02 17:26:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.547 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.548 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8256,10 +8256,13 @@ sub getUser {
 	}
 
 	# If no such user, we can return now.
+	# 2004/04/02 - we're seeing this message a lot, not sure why so much.
+	# Adding more debug info to check - Jamie
 	if (!$answer || !%$answer) {
 		if ($mcddebug) {
 			my $elapsed = sprintf("%6.4f", Time::HiRes::time - $start_time);
-			print STDERR scalar(gmtime) . " $$ mcd getUser '$mcdkey$uid' elapsed=$elapsed no such user can '$gtd->{can_use_mcd}' rawmcdanswer: " . Dumper($rawmcdanswer);
+			my $rawdump = Dumper($rawmcdanswer); chomp $rawdump;
+			print STDERR scalar(gmtime) . " $$ mcd getUser '$mcdkey$uid' elapsed=$elapsed no such user can '$gtd->{can_use_mcd}' rawmcdanswer: $rawdump val: " . Dumper($val);
 		}
 		return undef;
 	}

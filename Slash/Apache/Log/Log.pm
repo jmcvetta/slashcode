@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.7 2001/12/12 05:58:45 jamie Exp $
+# $Id: Log.pm,v 1.8 2001/12/29 20:37:29 brian Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -27,6 +27,13 @@ sub handler {
 	# -Brian
 	my $uri = $r->uri;
 	my $dat = $r->err_header_out('SLASH_LOG_DATA');
+
+	# Added this so that small sites would not have admin logins 
+	# recorded in their stats. -Brian
+	if (!$constants->{log_admin} &&  $uri !~ /admin/ ) {
+		return OK 
+			if getCurrentUser('is_admin');
+	}
 
 	createLog($uri, $dat);
 	return OK;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.95 2003/07/15 06:04:37 pater Exp $
+# $Id: Data.pm,v 1.96 2003/07/15 23:35:16 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1859,18 +1859,17 @@ sub parseDomainTags {
 
 	my $user = getCurrentUser();
 
-	# default is 2
-	my $udt = exists($user->{domaintags}) ? $user->{domaintags} : 2;
-
-	$udt =~ /^(\d+)$/;			# make sure it's numeric, sigh
-	$udt = 2 if !length($1);
+	# The default is 2 ("always show");  note this default is enforced in
+	# prepareUser().  Note also that if I were being smart I'd use
+	# constants for 0, 1 and 2...
+	my $udt = $user->{domaintags};
 
 	my $want_tags = 1;			# assume we'll be displaying the [domain.tags]
 	$want_tags = 0 if			# but, don't display them if...
 		$udt == 0			# the user has said they never want the tags
 		|| (				# or
 			$udt == 1		# the user leaves it up to us
-			and $recommended	# and we think the poster has earned tagless posting
+			&& $recommended		# and we think the poster has earned tagless posting
 		);
 
 	if ($want_tags && !$notags) {
@@ -2923,4 +2922,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.95 2003/07/15 06:04:37 pater Exp $
+$Id: Data.pm,v 1.96 2003/07/15 23:35:16 jamie Exp $

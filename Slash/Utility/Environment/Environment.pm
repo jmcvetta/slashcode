@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.97 2003/07/15 22:15:07 pudge Exp $
+# $Id: Environment.pm,v 1.98 2003/07/15 23:35:17 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1269,6 +1269,7 @@ sub prepareUser {
 	$user->{exboxes}	= _testExStr($user->{exboxes}) if $user->{exboxes};
 	$user->{extid}		= _testExStr($user->{extid}) if $user->{extid};
 	$user->{points}		= 0 unless $user->{willing}; # No points if you dont want 'em
+	$user->{domaintags}	= 2 if !defined($user->{domaintags}) || $user->{domaintags} !~ /^\d+$/;
 
 	# This is here so when user selects "6 ish" it
 	# "posted by xxx around 6 ish" instead of "on 6 ish"
@@ -1286,11 +1287,12 @@ sub prepareUser {
 		$user->{currentPage} = 'misc';
 	}
 
-	if (($user->{currentPage} eq 'article'
-		|| $user->{currentPage} eq 'comments')
-		&& ($user->{commentlimit} > $constants->{breaking}
-		&& $user->{mode} ne 'archive'
-		&& $user->{mode} ne 'metamod')) {
+	if (	   ( $user->{currentPage} eq 'article'
+			|| $user->{currentPage} eq 'comments' )
+		&& ( $user->{commentlimit} > $constants->{breaking}
+			&& $user->{mode} ne 'archive'
+			&& $user->{mode} ne 'metamod' )
+	) {
 		$user->{commentlimit} = int($constants->{breaking} / 2);
 		$user->{breaking} = 1;
 	} else {
@@ -2230,4 +2232,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.97 2003/07/15 22:15:07 pudge Exp $
+$Id: Environment.pm,v 1.98 2003/07/15 23:35:17 jamie Exp $

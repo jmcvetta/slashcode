@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.222 2002/09/11 20:56:17 brian Exp $
+# $Id: MySQL.pm,v 1.223 2002/09/12 00:56:57 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.222 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.223 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -654,8 +654,7 @@ sub getMetamodsForUserRaw {
 	return [ ] if !$m2able_reasons;
 
 	my $consensus = $constants->{m2_consensus};
-	my $consensus_frac = sprintf("%.4f",
-		$constants->{m2_consensus_waitmult}/$consensus);
+	my $waitpow = $constants->{m2_consensus_waitpow} || 1;
 
 	my $days_back = $constants->{archive_delay};
 	my $days_back_cushion = int($days_back/10);
@@ -714,14 +713,12 @@ sub getMetamodsForUserRaw {
 		$mod_hr = { };
 		$mod_hr = $self->sqlSelectAllHashref(
 			"id",
-			"id, cid, IF(
+			"id, cid,
+			 m2count + $consensus * IF(
 				id BETWEEN $min_old AND $max_old,
-				(id-$min_old)/$old_range + RAND()
-					+ m2count*$consensus_frac,
-				(id-$min_new)/$new_range + RAND()
-					+ m2count*$consensus_frac
-					+ $consensus_frac+2
-			) AS rank",
+				POW((id-$min_old)/$old_range, $waitpow),
+				POW((id-$min_new)/$new_range, $waitpow) + 2
+			 ) + RAND() AS rank",
 			"moderatorlog",
 			"uid != $uid_q AND cuid != $uid_q
 			 AND m2status=0

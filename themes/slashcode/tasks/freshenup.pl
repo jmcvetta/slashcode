@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.31 2003/08/05 22:36:15 jamie Exp $
+# $Id: freshenup.pl,v 1.32 2003/08/26 18:11:10 jamie Exp $
 
 use File::Path;
 use File::Temp;
@@ -199,6 +199,17 @@ $task{$me}{code} = sub {
 		my $basefile = "$basedir/$base.shtml";
 		# (Re)write index.shtml if it's missing, empty, or old.
 		$w = 'notok' if !-s $basefile || -M _ > $min_days;
+	}
+
+	# Finally, if the top story changed, write it into the var we use
+	# to keep track of it.  This may also affect whether we think we
+	# have to write the homepage out.
+	my $top_sid = $slashdb->getVar('top_sid', 'value', 1);
+	my $stories_ess = $slashdb->getStoriesEssentials(1);
+	my $new_top_sid = $stories_ess->[0]{sid};
+	if ($new_top_sid ne $top_sid) {
+		$w = 'notok';
+		$slashdb->setVar('top_sid', $new_top_sid);
 	}
 
 	my $dirty_sections;

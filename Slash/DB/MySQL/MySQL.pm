@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.441 2003/08/25 20:36:44 pudge Exp $
+# $Id: MySQL.pm,v 1.442 2003/08/26 18:11:10 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.441 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.442 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2611,10 +2611,9 @@ sub savePollQuestion {
 
 	# Go on and unset any reference to the qid in sections, if it 
 	# needs to exist the next statement will correct this. -Brian
-	$self->sqlUpdate('sections', { qid => ''}, " qid = $poll->{qid} ")	
-		if ($poll->{qid});
+	$self->sqlUpdate('sections', { qid => '0' }, " qid = $poll->{qid} ")	
+		if $poll->{qid};
 
-	
 	if ($poll->{qid} && $poll->{polltype} eq "section" && $poll->{date} le $self->getTime()) {
 		$self->setSection($poll->{section}, { qid => $poll->{qid} });
 	}

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.125 2003/08/21 23:28:04 pudge Exp $
+# $Id: slashschema_create.sql,v 1.126 2003/08/26 18:11:10 jamie Exp $
 #
 
 #
@@ -595,8 +595,8 @@ CREATE TABLE sections (
 	id smallint UNSIGNED NOT NULL auto_increment,
 	section varchar(30) NOT NULL,
 	artcount mediumint UNSIGNED DEFAULT '30' NOT NULL,
-	title varchar(64),
-	qid mediumint,
+	title varchar(64) DEFAULT '' NOT NULL,
+	qid mediumint DEFAULT '0' NOT NULL,
 	issue tinyint DEFAULT '0' NOT NULL,
 	url char(128) DEFAULT '' NOT NULL,
 	hostname char(128) DEFAULT '' NOT NULL,

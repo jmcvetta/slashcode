@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.54 2002/06/19 23:23:19 cliff Exp $
+# $Id: slashschema_create.sql,v 1.55 2002/06/20 04:52:05 cliff Exp $
 #
 
 #
@@ -952,7 +952,7 @@ CREATE TABLE users_prefs (
 
 DROP TABLE IF EXISTS vars;
 CREATE TABLE vars (
-	name varchar(32) DEFAULT '' NOT NULL,
+	name varchar(48) DEFAULT '' NOT NULL,
 	value text,
 	description varchar(255),
 	PRIMARY KEY (name)

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.682 2004/09/20 15:39:15 tvroom Exp $
+# $Id: MySQL.pm,v 1.683 2004/09/20 22:55:03 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.682 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.683 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9800,12 +9800,10 @@ sub getTopics {
 
 ########################################################
 sub getTopicParamsForTid {
-	my ($self, $tid) = @_;
+	my($self, $tid) = @_;
 	my $tid_q = $self->sqlQuote($tid);
 	return $self->sqlSelectAllHashrefArray("*", "topic_param", "tid = $tid_q");
 }
-
-
 
 ########################################################
 # As of 2004/04:

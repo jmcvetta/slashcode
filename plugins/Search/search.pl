@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.42 2002/06/04 17:04:59 pater Exp $
+# $Id: search.pl,v 1.43 2002/06/07 02:18:58 jamie Exp $
 
 use strict;
 use Slash;
@@ -685,7 +685,7 @@ sub submissionSearch {
 	# we pop it off
 	if (@$entries) {
 		for(@$entries) {
-			$_->{story} = substr(strip_plaintext($_->{story}),0,80);
+			$_->{story} = substr(strip_nohtml($_->{story}),0,80);
 		}
 		my $forward;
 		if (@$entries == $constants->{search_default_display} + 1) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.65 2003/08/05 22:27:16 pudge Exp $
+# $Id: Display.pm,v 1.66 2003/08/12 15:16:21 vroom Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -407,10 +407,10 @@ The 'linkStory' template block.
 =cut
 
 sub linkStory {
-	my($story_link, $render) = @_;
-	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
-	my $constants = getCurrentStatic();
-	my $user      = getCurrentUser();
+	my($story_link, $render, $other) = @_;
+	my $reader    = $other->{reader} || getObject('Slash::DB', { db_type => 'reader' });
+	my $constants = $other->{constants} || getCurrentStatic();
+	my $user      = $other->{user} || getCurrentUser();
 
 	my($url, $script, $title, $section, %params);
 	$script = 'article.pl';
@@ -1543,4 +1543,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.65 2003/08/05 22:27:16 pudge Exp $
+$Id: Display.pm,v 1.66 2003/08/12 15:16:21 vroom Exp $

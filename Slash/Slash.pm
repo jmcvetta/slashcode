@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.164 2003/08/06 03:42:18 jamie Exp $
+# $Id: Slash.pm,v 1.165 2003/08/12 15:16:21 vroom Exp $
 
 package Slash;
 
@@ -1231,7 +1231,7 @@ sub dispStory {
 		if !exists $other->{magic};
 
 	my $section = $reader->getSection($story->{section});
-
+	$other->{preview} ||= 0;
 	my %data = (
 		story	=> $story,
 		section => $section,
@@ -1241,6 +1241,7 @@ sub dispStory {
 		stid	=> $other->{stid},
 		magic	=> $other->{magic},
 		width	=> $constants->{titlebar_width},
+		preview => $other->{preview}
 	);
 
 	return slashDisplay($template_name, \%data, 1);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.16 2002/03/10 17:02:39 jamie Exp $
+# $Id: Anchor.pm,v 1.17 2002/04/18 16:55:31 brian Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -203,11 +203,6 @@ The 'footer' template block.
 sub footer {
 	my $form = getCurrentForm();
 
-	if ($form->{ssi}) {
-		ssiFoot();
-		return;
-	}
-
 	slashDisplay('footer', {}, { Nocomm => 1 });
 }
 
@@ -280,37 +275,6 @@ sub ssiHead {
 	(my $dir = $constants->{rootdir}) =~ s|^(?:https?:)?//[^/]+||;
 
 	slashDisplay('ssihead', {
-		dir	=> $dir,
-		section => $user->{currentSection} ? "$user->{currentSection}/" : "",
-	});
-}
-
-#========================================================================
-
-=head2 ssiFoot()
-
-Prints the foot for server-parsed HTML pages.
-
-=over 4
-
-=item Return value
-
-The SSI foot.
-
-=item Dependencies
-
-The 'ssifoot' template block.
-
-=back
-
-=cut
-
-sub ssiFoot {
-	my $constants = getCurrentStatic();
-	my $user = getCurrentUser();
-	(my $dir = $constants->{rootdir}) =~ s|^(?:https?:)?//[^/]+||;
-
-	slashDisplay('ssifoot', {
 		dir	=> $dir,
 		section => $user->{currentSection} ? "$user->{currentSection}/" : "",
 	});
@@ -551,4 +515,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.16 2002/03/10 17:02:39 jamie Exp $
+$Id: Anchor.pm,v 1.17 2002/04/18 16:55:31 brian Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.40 2003/04/25 18:35:51 brian Exp $
+# $Id: Utility.pm,v 1.41 2003/04/28 20:30:55 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -260,7 +260,7 @@ sub sqlSelectMany {
 	$sql .= "        $other" if $other;
 
 	$self->sqlConnect;
-	my $sth = $self->{_dbh}->prepare_cached($sql);
+	my $sth = $self->{_dbh}->prepare($sql);
 	if ($sth->execute) {
 		return $sth;
 	} else {
@@ -282,7 +282,7 @@ sub sqlSelect {
 	$sql .= "$other" if $other;
 
 	$self->sqlConnect();
-	my $sth = $self->{_dbh}->prepare_cached($sql);
+	my $sth = $self->{_dbh}->prepare($sql);
 	if (!$sth->execute) {
 		errorLog($sql);
 		$self->sqlConnect;
@@ -307,7 +307,7 @@ sub sqlSelectArrayRef {
 	$sql .= "$other" if $other;
 
 	$self->sqlConnect();
-	my $sth = $self->{_dbh}->prepare_cached($sql);
+	my $sth = $self->{_dbh}->prepare($sql);
 	if (!$sth->execute) {
 		errorLog($sql);
 		$self->sqlConnect;
@@ -355,7 +355,7 @@ sub sqlSelectHashref {
 	$sql .= "$other" if $other;
 
 	$self->sqlConnect();
-	my $sth = $self->{_dbh}->prepare_cached($sql);
+	my $sth = $self->{_dbh}->prepare($sql);
 
 	unless ($sth->execute) {
 		errorLog($sql);
@@ -378,7 +378,7 @@ sub sqlSelectColArrayref {
 	$sql .= "$other" if $other;
 
 	$self->sqlConnect();
-	my $sth = $self->{_dbh}->prepare_cached($sql);
+	my $sth = $self->{_dbh}->prepare($sql);
 
 	my $array = $self->{_dbh}->selectcol_arrayref($sth);
 	unless (defined($array)) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.72 2003/09/23 22:00:26 pudge Exp $
+# $Id: Display.pm,v 1.73 2003/09/25 19:44:13 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -424,7 +424,9 @@ sub linkStory {
 	# prerendered .shtml URLs whenever possible/appropriate.
 	# But, we must link to the .pl when necessary.
 
-	my $dynamic = 0;
+	# if we REALLY want dynamic
+	my $dynamic = $story_link->{dynamic} || 0;
+
 	if ($ENV{SCRIPT_NAME} || !$user->{is_anon}) {
 		# Whenever we're invoked from Apache, use dynamic links.
 		# This test will be true 99% of the time we come through
@@ -1434,7 +1436,6 @@ sub _slashFile {
 sub _slashImage {
 	my($tokens, $token, $newtext) = @_;
 
-		warn "$token->[1]{width} $token->[1]{height}";
 	if (!$token->[1]{width} || !$token->[1]{height}) {
 		my $blob = getObject("Slash::Blob", { db_type => 'reader' });
 		my $data = $blob->get($token->[1]{id});
@@ -1444,7 +1445,6 @@ sub _slashImage {
 			$token->[1]{height} = $h if $h && !defined $token->[1]{height};
 		}
 	}
-		warn "$token->[1]{width} $token->[1]{height}";
 
 	my $content = slashDisplay('imageLink', {
 		id	=> $token->[1]{id},
@@ -1601,4 +1601,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.72 2003/09/23 22:00:26 pudge Exp $
+$Id: Display.pm,v 1.73 2003/09/25 19:44:13 pudge Exp $

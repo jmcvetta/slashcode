@@ -15,7 +15,7 @@ __name__
 pagemenu
 __template__
 [%- IF full && user.state.pagebreaks && form.pagenum;
-   storylinks = Slash.linkStory({ sid => story.sid, link => 1 });
+   storylinks = Slash.linkStory({ sid => story.sid, link => 1, dynamic => 1 });
 -%]
 Pages:
 [%- IF form.pagenum == 1; '&lt;'; ELSE -%]
@@ -37,4 +37,4 @@ Pages:
 __seclev__
 10000
 __version__
-$Id: pagemenu;misc;default,v 1.1 2003/08/26 15:02:09 pudge Exp $
+$Id: pagemenu;misc;default,v 1.2 2003/09/25 19:44:13 pudge Exp $

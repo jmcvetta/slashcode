@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.162 2004/08/13 18:10:25 cowboyneal Exp $
+# $Id: slashschema_create.sql,v 1.163 2004/09/10 17:59:43 jamiemccarthy Exp $
 #
 
 #
@@ -1281,7 +1281,7 @@ ALTER TABLE pollquestions ADD FOREIGN KEY (uid) REFERENCES users(uid);
 ALTER TABLE story_text ADD FOREIGN KEY (stoid) REFERENCES stories(stoid);
 ALTER TABLE story_topics_chosen ADD FOREIGN KEY (tid) REFERENCES topics(tid);
 ALTER TABLE story_topics_rendered ADD FOREIGN KEY (tid) REFERENCES topics(tid);
-ALTER TABLE submissions ADD FOREIGN KEY (uid) REFERENCES users(uid);
+#ALTER TABLE submissions ADD FOREIGN KEY (uid) REFERENCES users(uid);
 
 # Commented-out foreign keys are ones which currently cannot be used
 # because they refer to a primary key which is NOT NULL AUTO_INCREMENT

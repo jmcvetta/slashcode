@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.30 2000/11/27 16:12:47 pudge Exp $
+#  $Id: submit.pl,v 1.31 2000/11/27 18:55:10 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -527,7 +527,8 @@ EOT
 
 EOT
 
-		print qq!<P>$user writes <I>"$I{F}{story}"</I></P>!;
+		my $story = stripByMode($I{F}{story}, 'html');
+		print qq!<P>$user writes <I>"$story"</I></P>!;
 	}
 
 	print formLabel("The Scoop",
@@ -578,7 +579,7 @@ sub saveSub {
 			email	=> $I{F}{email},
 			uid	=> $I{U}{uid},
 			name	=> $I{F}{from},
-			story	=> $I{F}{story},
+			story	=> stripByMode($I{F}{story}, 'html'),
 			-'time'	=> 'now()',
 			subid	=> $subid,
 			subj	=> $I{F}{subj},

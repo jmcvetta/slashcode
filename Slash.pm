@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.54 2000/11/27 16:52:16 pudge Exp $
+#  $Id: Slash.pm,v 1.55 2000/11/27 18:55:10 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1231,6 +1231,7 @@ sub stripByMode {
 #		$str =~ s/'/&#39;/g;	# ' should be OK if we use
 					# " consistently
 
+	# probably 'html'
 	} else {
 		$str = stripBadHtml($str);
 		$str = breakHtml($str) unless $no_white_fix;
@@ -1258,7 +1259,7 @@ sub stripBadHtml  {
 		my($comment, $mwl) = @_;
 		my($new, $l, $c, $in_tag, $this_tag, $cwl);
 
-		$mwl = $mwl || 65;
+		$mwl = $mwl || 50;
 		$l = length($comment);
 
 		%is_break_tag = map { uc, 1 } qw(HR BR LI P OL UL BLOCKQUOTE DIV)

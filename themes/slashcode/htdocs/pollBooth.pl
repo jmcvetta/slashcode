@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.22 2002/01/08 17:22:09 pudge Exp $
+# $Id: pollBooth.pl,v 1.23 2002/01/22 17:40:51 pudge Exp $
 
 use strict;
 use Slash;
@@ -150,7 +150,7 @@ sub savepoll {
 			$discussion = $slashdb->createDiscussion({
 				title	=> $form->{question},
 				topic	=> $form->{topic},
-				url	=> "$constants->{rootdir}/pollBooth.pl?op=vote&qid=$qid",
+				url	=> "$constants->{rootdir}/pollBooth.pl?qid=$qid&aid=-1",
 			});
 		}
 		# if it already has a discussion (so $discussion is not set),

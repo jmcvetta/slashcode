@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.246 2004/11/03 21:18:35 pudge Exp $
+# $Id: admin.pl,v 1.247 2004/11/04 15:44:27 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1307,8 +1307,6 @@ sub editStory {
 	my $newarticle = 1 if !$stoid && !$form->{stoid} && !$form->{sid};
 
 	my $display_check;
-
-#use Data::Dumper; $Data::Dumper::Sortkeys = 1; print STDERR "editStory form: " . Dumper($form);
 
 	# Editing a story that has yet to go into the DB...
 	# basically previewing. -Brian 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fileadmin.pl,v 1.10 2005/02/01 15:51:37 jamiemccarthy Exp $
+# $Id: fileadmin.pl,v 1.11 2005/02/07 23:44:57 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -106,7 +106,7 @@ sub addFileForStory {
 				local $/;
 				$data = <$fh>;
 			}
-			$form->{file_content} =~ s|^.+?([^/:\\]+)$|$1|;
+			$form->{file_content} =~ s|^.*?([^/:\\]+)$|$1|;
 		}
 
 		my $content = {
@@ -118,10 +118,13 @@ sub addFileForStory {
 			description	=> $form->{description},
 		};
 
-		$blobdb->createFileForStory($content);
-		# XXX The above method should have its return code checked;
-		# if false, we should emit an error string (to STDOUT,
-		# since header() is already called)
+		unless ($blobdb->createFileForStory($content)) {
+			print "<p><b>File not saved, check logs for errors</b><br>";
+			printf "Filename: %s, description: %s, data size: %dK</p>",
+				strip_literal($form->{file_content}),
+				strip_literal($form->{description}),
+				length($data) / 1024;
+		}
 	}
 
 	if ($form->{delete}) {

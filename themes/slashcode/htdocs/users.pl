@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.238 2004/05/04 16:16:39 tvroom Exp $
+# $Id: users.pl,v 1.239 2004/05/04 19:37:12 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -638,8 +638,7 @@ sub mailPasswd {
 	if (!$err_name) {
 		$user_edit = $slashdb->getUser($uid);
 		$err_name = 'mailpasswd_readonly_err'
-			if $slashdb->checkReadOnly('ipid')
-				|| $slashdb->checkReadOnly('subnetid');
+			if $slashdb->checkReadOnly;
 	}
 	if (!$err_name) {
 		$err_name = 'mailpasswd_toooften_err'
@@ -2839,7 +2838,7 @@ sub getUserAdmin {
 		@accesshits = $logdb->countAccessLogHitsInLastX('host_addr', $user_edit->{ipid}) if defined($logdb);
 
 		if ($form->{userfield} =~/^\d+\.\d+\.\d+\.(\d+)$/) {
-			if($1 ne "0"){
+			if ($1 ne "0"){
 				$proxy_check->{available} = 1;
 				$proxy_check->{results} = $slashdb->checkForOpenProxy($form->{userfield}) if $form->{check_proxy};
 			}

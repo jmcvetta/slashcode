@@ -80,6 +80,7 @@ gstatic total:        -          -    [% ints(stats_data.grand_total_static) %]
        errors: [% ints(stats_data.error_count) %] pages generated errors
     not found: [% ints(stats_data.not_found) %] pages were not found
    status 202: [% ints(stats_data.status_202) %] pages sent with status 202 (rejected RSS)
+
    total hits: [% ints(stats_data.total_hits) %]</PRE>
 
 [%
@@ -242,4 +243,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.20 2003/04/16 18:44:52 pudge Exp $
+$Id: report;stats;default,v 1.21 2003/04/16 18:46:01 pudge Exp $

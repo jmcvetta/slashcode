@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.95 2002/08/13 12:31:39 pudge Exp $
+# $Id: admin.pl,v 1.96 2002/09/09 21:52:42 patg Exp $
 
 use strict;
 use Image::Size;
@@ -482,7 +482,7 @@ sub blockEdit {
 		my($static_blocks, $portal_blocks);
 		if ($user->{section}) {
 			$static_blocks = $slashdb->getDescriptions('static_block_section', { seclev => $user->{seclev}, section => $user->{section} }, 1);
-			$static_blocks = $slashdb->getDescriptions('portald_block_section', { seclev => $user->{seclev}, section => $user->{section} }, 1);
+			$portal_blocks = $slashdb->getDescriptions('portald_block_section', { seclev => $user->{seclev}, section => $user->{section} }, 1);
 		} else {
 			$static_blocks = $slashdb->getDescriptions('static_block', $user->{seclev}, 1);
 			$portal_blocks = $slashdb->getDescriptions('portald_block', $user->{seclev}, 1);

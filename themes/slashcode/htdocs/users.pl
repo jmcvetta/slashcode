@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.195 2003/08/26 16:57:44 pater Exp $
+# $Id: users.pl,v 1.196 2003/09/22 17:42:46 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -586,6 +586,7 @@ sub newUser {
 			for (qw(tzcode)) {
 				$data->{$_} = $form->{$_} if defined $form->{$_};
 			}
+			$data->{creation_ipid} = $user->{ipid};
 
 			$slashdb->setUser($uid, $data) if keys %$data;
 			$title = getTitle('newUser_title');

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.72 2002/10/21 15:28:13 pudge Exp $
+# $Id: slashschema_create.sql,v 1.73 2002/10/21 18:31:23 jamie Exp $
 #
 
 #
@@ -323,8 +323,10 @@ CREATE TABLE menus (
 	id mediumint(5) UNSIGNED NOT NULL auto_increment,
 	menu varchar(20) DEFAULT '' NOT NULL,
 	label varchar(255) DEFAULT '' NOT NULL,
+	sel_label varchar(32) NOT NULL DEFAULT '',
 	value text,
 	seclev mediumint UNSIGNED NOT NULL,
+	showanon tinyint DEFAULT '0' NOT NULL,
 	menuorder mediumint(5),
 	PRIMARY KEY (id),
 	KEY page_labels (menu,label),

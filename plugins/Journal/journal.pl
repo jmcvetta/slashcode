@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.51 2002/10/18 15:10:27 pudge Exp $
+# $Id: journal.pl,v 1.52 2002/10/21 18:31:23 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -58,7 +58,7 @@ sub main {
 		save		=> [ $user_ok,		\&saveArticle		], # formkey
 		remove		=> [ $user_ok,		\&removeArticle		],
 
-		editprefs	=> [ $user_ok,		\&editPrefs		],
+		editprefs	=> [ !$user->{is_anon},	\&editPrefs		],
 		setprefs	=> [ $user_ok,		\&setPrefs		],
 
 		list		=> [ 1,			\&listArticle		],
@@ -427,7 +427,11 @@ sub displayArticle {
 
 sub editPrefs {
 	my($journal, $constants, $user, $form, $slashdb) = @_;
-	
+
+	my $nickname	= $user->{nickname};
+	my $uid		= $user->{uid};
+	_printHead("userhead", { nickname => $nickname, uid => $uid, menutype => 'prefs' });
+
 	my $theme	= _checkTheme($user->{'journal_theme'});
 	my $themes	= $journal->themes;
 	slashDisplay('journaloptions', {
@@ -449,7 +453,7 @@ sub setPrefs {
 		if defined $form->{journal_theme};
 
 	$slashdb->setUser($user->{uid}, \%prefs);
-	
+
 	editPrefs(@_);
 }
 
@@ -695,16 +699,15 @@ sub _validFormkey {
 }
 
 sub _printHead {
-	my($head, $data, $new_header) = @_;
+	my($head, $data, $edit_the_uid) = @_;
 	my $title = getData($head, $data);
 	header($title);
 
+	$data->{menutype} ||= 'users';
 	$data->{width} = '100%';
 	$data->{title} = $title;
-	$data->{tab_selected} = 'journal';
-	$data->{style} = 'tabbed';
 
-	if ($new_header) {
+	if ($edit_the_uid) {
 		my $slashdb = getCurrentDB();
 		my $useredit = $data->{uid}
 			? $slashdb->getUser($data->{uid})

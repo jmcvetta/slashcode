@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.237 2002/10/21 15:28:12 pudge Exp $
+# $Id: MySQL.pm,v 1.238 2002/10/21 18:31:22 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.237 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.238 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4096,6 +4096,12 @@ sub _getCommentTextOld {
 				$self->{_comment_text}{$comment_hr->[0]} = $comment_hr->[1];
 			}
 		}
+#{ use Devel::Size;
+#my $nc = scalar(keys %{$self->{_comment_text}});
+#my $ts = 0; for my $cid (keys %{$self->{_comment_text}}) { $ts += length($self->{_comment_text}{$cid}) }
+#my $DSs = Devel::Size::size($self->{_comment_text});
+#my $DSts = Devel::Size::total_size($self->{_comment_text});
+#print STDERR "slashdb->{_comment_text} cache: $nc comments, text chars $ts, size $DSs, total_size $DSts\n"; }
 		# Now, all the comment texts we need are in cache, return them.
 		return $self->{_comment_text};
 

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.88 2003/01/14 20:27:06 jamie Exp $
+# $Id: slashschema_create.sql,v 1.89 2003/01/16 00:57:32 brian Exp $
 #
 
 #
@@ -198,6 +198,7 @@ CREATE TABLE comments (
 	lastmod mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	reason tinyint UNSIGNED DEFAULT '0' NOT NULL,
 	signature char(32) DEFAULT '' NOT NULL,
+	karma_bonus enum('yes', 'no') DEFAULT 'no' NOT NULL;
 	PRIMARY KEY (cid),
 	KEY display (sid,points,uid),
 	KEY byname (uid,points),

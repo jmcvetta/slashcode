@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.6 2002/12/13 21:17:33 pudge Exp $
+# $Id: stats.pl,v 1.7 2002/12/16 18:07:40 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -25,7 +25,7 @@ sub main {
 		: $slashdb;
 	my $stats     = getObject('Slash::Stats', $logdb->{virtual_user});
 
-	my $admin      = $user->{seclev} >= $constants->{stats_admin_seclev} || 100;
+	my $admin      = $user->{seclev} >= ($constants->{stats_admin_seclev} || 100);
 	my $admin_post = $admin && $user->{state}{post};
 
 	# possible value of "op" parameter in form

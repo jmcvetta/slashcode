@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.757 2005/02/02 23:21:19 pudge Exp $
+# $Id: MySQL.pm,v 1.758 2005/02/08 18:34:22 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.757 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.758 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8749,25 +8749,29 @@ sub updateStory {
 
 ########################################################
 sub createRemark {
-	my($self, $uid, $stoid, $remark) = @_;
+	my($self, $uid, $stoid, $remark, $type) = @_;
+	$type ||= "user";
 	$self->sqlInsert('remarks', {
 		uid	=> $uid,
 		stoid	=> $stoid,
 		remark	=> $remark,
 		-time	=> 'NOW()',
+		type 	=> $type
 	});
 }
 
 ########################################################
 sub getRemarksStarting {
-	my($self, $starting) = @_;
+	my($self, $starting, $options) = @_;
 	return [ ] unless $starting;
 	$starting ||= 0;
+	my $type_clause;
+	$type_clause = " AND type=" . $self->sqlQuote($options->{type}) if $options->{type};
 	my $starting_q = $self->sqlQuote($starting);
 	return $self->sqlSelectAllHashrefArray(
-		"rid, stoid, remarks.uid, remark, karma",
+		"rid, stoid, remarks.uid, remark, karma, remarks.type",
 		"remarks, users_info",
-		"remarks.uid=users_info.uid AND rid >= $starting_q");
+		"remarks.uid=users_info.uid AND rid >= $starting_q $type_clause");
 }
 
 ########################################################

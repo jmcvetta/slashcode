@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.16 2000/06/29 20:29:58 pudge Exp $
+#  $Id: submit.pl,v 1.17 2000/07/07 16:59:38 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -146,7 +146,7 @@ sub previewForm {
 	$introtext =~ s/\n\n/\n<P>/gi;
 	$introtext .= " ";
 	$introtext =~  s{(?<!"|=|>)(http|ftp|gopher|telnet)://(.*?)(\W\s)?[\s]}
-			{<A HREF="$1://$2">link</A> }gi;
+			{<A HREF="$1://$2">$1://$2</A> }gi;
 	$introtext =~ s/\s+$//;
 	$introtext = qq!<I>"$introtext"</I>! if $name;
 

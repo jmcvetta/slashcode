@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.13 2003/01/17 01:32:06 jamie Exp $
+# $Id: messages.pl,v 1.14 2003/01/23 22:01:02 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -114,7 +114,7 @@ sub edit_message {
 		threshold on the User Preferences Page)
 
 <P><FONT SIZE="2">Problems regarding accounts or comment posting should be sent to
-	<A HREF="mailto:[% constants.adminmail %]">[% constants.siteadmin_name %]</A>.</FONT>
+	<A HREF="mailto:[% constants.adminmail | strip_attribute %]">[% constants.siteadmin_name %]</A>.</FONT>
 
 
 EOT

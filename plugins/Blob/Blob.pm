@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Blob.pm,v 1.6 2003/05/06 22:28:10 brian Exp $
+# $Id: Blob.pm,v 1.7 2003/07/01 21:04:00 pudge Exp $
 
 package Slash::Blob;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Mime/Type hash (couldn't find a module that I liked that would do this -Brian
 my %mimetypes = (
@@ -117,10 +117,10 @@ sub createFileForStory {
 	return unless $values->{sid} && $values->{data};
 
 	my $content = {
-		seclev       => $values->{seclev},
-		filename     => $values->{filename},
-		content_type => $values->{content_type},
-		data         => $values->{data},
+		seclev		=> $values->{seclev},
+		filename	=> $values->{filename},
+		content_type	=> $values->{content_type},
+		data		=> $values->{data},
 	};
 
 	my $id = $self->create($content);
@@ -134,7 +134,7 @@ sub createFileForStory {
 	};
 	$self->sqlInsert('story_files', $file_content);
 
-	return $self->getLastInsertId();
+	return $self->getLastInsertId;
 }
 
 sub deleteStoryFile {

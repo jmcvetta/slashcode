@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.738 2004/11/25 04:22:50 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.739 2004/11/25 04:46:46 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.738 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.739 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2774,7 +2774,7 @@ sub getDB {
 	# it does something reasonable.
 	for my $i (0 .. $n_usable-2) {
 		my $dbid = $dbids_usable[$i];
-		$x -= $dbs->{$dbid}{weight_total};
+		$x -= $dbs->{$dbid}{weight_final};
 		if ($x <= 0) {
 #print STDERR "returning $i of $n_usable, dbid=$dbid\n";
 			return $dbs->{$dbid}{virtual_user};

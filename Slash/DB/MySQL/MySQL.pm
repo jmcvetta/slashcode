@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.397 2003/05/19 16:39:31 jamie Exp $
+# $Id: MySQL.pm,v 1.398 2003/05/20 18:45:37 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.397 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.398 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3179,7 +3179,7 @@ sub checkReadOnly {
 	# We munge access_type directly into the SQL so make SURE it is
 	# one of the supported columns.
 	$access_type = 'nopost' if !$access_type
-		|| $access_type !~ /^(ban|nopost|nosubmit|norss|proxy|trusted)$/;
+		|| $access_type !~ /^(ban|nopost|nosubmit|norss|nopalm|proxy|trusted)$/;
 
 	$user_check ||= getCurrentUser();
 	my $constants = getCurrentStatic();
@@ -3498,14 +3498,12 @@ sub getNorssList {
 			print STDERR scalar(gmtime) . " gNL pid $$ (re)fetching Norss data\n";
 		}
 		my $list = $self->sqlSelectAll(
-			"ipid, subnetid, uid",
+			"ipid, subnetid",
 			"accesslist",
 			"now_norss = 'yes'");
 		for (@$list) {
 			$norsslist_ref->{$_->[0]} = 1 if $_->[0];
 			$norsslist_ref->{$_->[1]} = 1 if $_->[1];
-			$norsslist_ref->{$_->[2]} = 1 if $_->[2]
-				&& $_->[2] != $constants->{anon_coward_uid};
 		}
 		# why this? in case there are no RSS-banned users.
 		# (this should be unnecessary;  we could use another var to
@@ -3524,6 +3522,46 @@ sub getNorssList {
 	return $norsslist_ref;
 }
 
+########################################################
+sub getNopalmList {
+	my($self, $refresh) = @_;
+	my $constants = getCurrentStatic();
+	my $debug = $constants->{debug_db_cache};
+	
+	_genericCacheRefresh($self, 'nopalmlist', $constants->{banlist_expire});
+	my $nopalmlist_ref = $self->{_nopalmlist_cache} ||= {};
+
+	%$nopalmlist_ref = () if $refresh;
+
+	if (!keys %$nopalmlist_ref) {
+		if ($debug) {
+			print STDERR scalar(gmtime) . " gNL pid $$ (re)fetching Nopalm data\n";
+		}
+		my $list = $self->sqlSelectAll(
+			"ipid, subnetid",
+			"accesslist",
+			"now_nopalm = 'yes'");
+		for (@$list) {
+			$nopalmlist_ref->{$_->[0]} = 1 if $_->[0];
+			$nopalmlist_ref->{$_->[1]} = 1 if $_->[1];
+		}
+		# why this? in case there are no Palm-banned users.
+		# (this should be unnecessary;  we could use another var to
+		# indicate whether the cache is fresh, besides checking its
+		# number of keys at the top of this "if")
+		$nopalmlist_ref->{_junk_placeholder} = 1;
+		$self->{_nopalmlist_cache_time} = time() if !$self->{_nopalmlist_cache_time};
+	}
+	
+	if ($debug) {
+		my $time = time;
+		my $diff = $time - $self->{_nopalmlist_cache_time};
+		print STDERR scalar(gmtime) . " pid $$ gNL time='$time' diff='$diff' self->_nopalmlist_cache_time='$self->{_nopalmlist_cache_time}' self->{_nopalmlist_cache} keys: " . scalar(keys %{$self->{_nopalmlist_cache}}) . "\n";
+	}
+
+	return $nopalmlist_ref;
+}
+
 ##################################################################
 sub getAccessList {
 	my($self, $min, $access_type) = @_;
@@ -3531,7 +3569,7 @@ sub getAccessList {
 	my $max = $min + 100;
 
 	$access_type = 'nopost' if !$access_type
-		|| $access_type !~ /^(ban|nopost|nosubmit|norss|proxy|trusted)$/;
+		|| $access_type !~ /^(ban|nopost|nosubmit|norss|nopalm|proxy|trusted)$/;
 	$self->sqlSelectAllHashrefArray(
 		'*',
 		'accesslist',
@@ -3603,7 +3641,7 @@ sub _get_insert_and_where_accesslist {
 sub getAccessListInfo {
 	my($self, $access_type, $user_check) = @_;
 	$access_type = 'nopost' if !$access_type
-		|| $access_type !~ /^(ban|nopost|nosubmit|norss|proxy|trusted)$/;
+		|| $access_type !~ /^(ban|nopost|nosubmit|norss|nopalm|proxy|trusted)$/;
 
 	my $constants = getCurrentStatic();
 	my $ref = {};
@@ -3696,7 +3734,7 @@ sub setAccessList {
 	my $update_hr = { -ts => "NOW()" };
 	my %new_now_hash = map { ($_, 1) } @$new_now;
 	my @assn_order = ( );
-	for my $col (qw( ban nopost nosubmit norss proxy trusted )) {
+	for my $col (qw( ban nopost nosubmit norss nopalm proxy trusted )) {
 		$update_hr->{"-was_$col"} = "now_$col";
 		push @assn_order, "-was_$col";
 		$update_hr->{"now_$col"} = $new_now_hash{$col} ? "yes" : "no";
@@ -6044,20 +6082,6 @@ sub getDiscussionBySid {
 		arguments	=> \@_,
 	});
 	return $answer;
-}
-
-########################################################
-sub getRSS {
-	my $answer = _genericGet({
-		table		=> 'rss_raw',
-		arguments	=> \@_,
-	});
-	return $answer;
-}
-
-########################################################
-sub setRSS {
-	_genericSet('rss_raw', 'id', '', @_);
 }
 
 ########################################################

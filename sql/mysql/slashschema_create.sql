@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.111 2003/05/16 01:25:35 brian Exp $
+# $Id: slashschema_create.sql,v 1.112 2003/05/20 18:45:38 jamie Exp $
 #
 
 #
@@ -42,12 +42,14 @@ CREATE TABLE accesslist (
 	now_nopost enum('no','yes') NOT NULL default 'no',
 	now_nosubmit enum('no','yes') NOT NULL default 'no',
 	now_norss enum('no','yes') NOT NULL default 'no',
+	now_nopalm enum('no','yes') NOT NULL default 'no',
 	now_proxy enum('no','yes') NOT NULL default 'no',
 	now_trusted enum('no','yes') NOT NULL default 'no',
 	was_ban enum('no','yes') NOT NULL default 'no',
 	was_nopost enum('no','yes') NOT NULL default 'no',
 	was_nosubmit enum('no','yes') NOT NULL default 'no',
 	was_norss enum('no','yes') NOT NULL default 'no',
+	was_nopalm enum('no','yes') NOT NULL default 'no',
 	was_proxy enum('no','yes') NOT NULL default 'no',
 	was_trusted enum('no','yes') NOT NULL default 'no',
 	PRIMARY KEY  (id),

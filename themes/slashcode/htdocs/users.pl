@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.183 2003/05/19 21:38:57 pudge Exp $
+# $Id: users.pl,v 1.184 2003/05/20 18:45:38 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1877,7 +1877,7 @@ sub saveUserAdmin {
 
 	my @access_add = ( );
 	my @access_remove = ( );
-	for my $now (qw( ban nopost nosubmit norss proxy trusted )) {
+	for my $now (qw( ban nopost nosubmit nopalm norss nopalm proxy trusted )) {
 		# To affect the "now_trusted" bit, you need a seclev of 10000
 		# or higher.
 		next if $now eq 'trusted' && $user->{seclev} < 10000;
@@ -2691,7 +2691,7 @@ sub getUserAdmin {
 		$ipstruct = $reader->getNetIDStruct($user_edit->{uid});
 	}
 
-	for my $access_type (qw( ban nopost nosubmit norss proxy trusted )) {
+	for my $access_type (qw( ban nopost nosubmit norss nopalm proxy trusted )) {
 		$accesslist->{$access_type} = "";
 		my $info_hr = $reader->getAccessListInfo($access_type, $user_edit);
 		next if !$info_hr; # no match

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.35 2003/04/25 18:37:09 pater Exp $
+# $Id: portald,v 1.36 2003/05/13 03:30:51 pater Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -242,6 +242,10 @@ if ($randbid) {
     setblock("rand", $slashdb->randomBlock()); # NOT backupdb!
 }
 
+# from 'portald-site'
+getWhatsPlayingBox($slashdb) if $constants->{slashbox_whatsplaying}
+	&& defined &getWhatsPlayingBox;
+
 foreach (keys %savedBlocks) {
 	# NOT backupdb!
 	$slashdb->setBlock($_, { block => $savedBlocks{$_} });
@@ -249,8 +253,6 @@ foreach (keys %savedBlocks) {
 
 # from 'portald-site'
 newSemiRandomBlock($slashdb) if defined &newSemiRandomBlock;
-getWhatsPlayingBox($slashdb) if $constants->{slashbox_whatsplaying}
-	&& defined &getWhatsPlayingBox;
 
 portaldLog("Sucessfully Saved Portals");
 

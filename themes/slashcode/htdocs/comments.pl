@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.81 2002/07/22 21:12:16 patg Exp $
+# $Id: comments.pl,v 1.82 2002/07/23 01:45:05 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -844,7 +844,7 @@ sub validateComment {
 		# Don't count & or other chars used in entity tags;  don't count
 		# chars commonly used in ascii art.  Not that it matters much.
 		# Do count chars commonly used in source code.
-		my $num_chars = $check_notags =~ tr/A-Za-z0-9?!(){}[]-+='"@$//;
+		my $num_chars = $check_notags =~ tr/A-Za-z0-9?!(){}[]+='"@$-//;
 
 		# Note that approveTags() has already been called by this point,
 		# so all tags present are legal and uppercased.

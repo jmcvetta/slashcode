@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.194 2003/08/21 23:24:39 pudge Exp $
+# $Id: users.pl,v 1.195 2003/08/26 16:57:44 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -472,7 +472,7 @@ sub main {
 		note		=> $errornote,
 	}) if !$error_flag;
 
-	return if !$header && !$retval;
+	return if !$retval;
 
 	if ($op eq 'mailpasswd' && $retval) {
 		$ops->{$op}{update_formkey} = 0;
@@ -1180,6 +1180,8 @@ sub showInfo {
 		my $slashdb = getCurrentDB();
 		$slashdb->setUser($user->{uid}, $user_change);
 	}
+
+	return 1;
 }
 
 sub _get_lastjournal {

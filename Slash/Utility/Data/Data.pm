@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.102 2003/11/24 20:33:56 pater Exp $
+# $Id: Data.pm,v 1.103 2003/12/19 18:07:43 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -28,7 +28,7 @@ use strict;
 use Date::Format qw(time2str);
 use Date::Language;
 use Date::Parse qw(str2time);
-use Digest::MD5 'md5_hex';
+use Digest::MD5 qw(md5_hex md5_base64);
 use HTML::Entities;
 use HTML::FormatText;
 use HTML::TreeBuilder;
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -66,6 +66,7 @@ use vars qw($VERSION @EXPORT);
 	fudgeurl
 	formatDate
 	getArmoredEmail
+	createLogToken
 	grepn
 	html2text
 	nickFix
@@ -393,6 +394,29 @@ sub timeCalc {
 
 	# return the new pretty date
 	return $date;
+}
+
+#========================================================================
+
+=head2 createLogToken()
+
+Return new random 20-character logtoken, composed of hex chars.
+
+=over 4
+
+=item Return value
+
+Random password.
+
+=back
+
+=cut
+
+{
+	my $int = 2**32-1;
+	sub createLogToken {
+		return md5_base64(int rand $int);
+	}
 }
 
 #========================================================================
@@ -3073,4 +3097,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.102 2003/11/24 20:33:56 pater Exp $
+$Id: Data.pm,v 1.103 2003/12/19 18:07:43 pudge Exp $

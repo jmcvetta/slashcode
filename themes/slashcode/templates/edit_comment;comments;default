@@ -73,7 +73,7 @@ __template__
 	<INPUT TYPE="HIDDEN" NAME="rlogin" VALUE="1">
 
 	<TR><TD ALIGN="RIGHT">[% PROCESS formLabel value => 'Nick' %]</TD><TD>
-		<INPUT TYPE="TEXT" NAME="unickname" VALUE="[% form.nickname %]">
+		<INPUT TYPE="TEXT" NAME="unickname" VALUE="[% form.nickname | strip_attribute %]">
 
 	</TD></TR><TR><TD ALIGN="RIGHT">[% PROCESS formLabel value => 'Password' %]</TD><TD>
 		<INPUT TYPE="PASSWORD" NAME="upasswd">
@@ -218,4 +218,4 @@ IF do_br %]<BR>[% END %]
 __seclev__
 1000
 __version__
-$Id: edit_comment;comments;default,v 1.32 2003/11/17 23:21:58 pater Exp $
+$Id: edit_comment;comments;default,v 1.33 2003/12/19 18:07:44 pudge Exp $

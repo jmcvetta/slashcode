@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.3 2002/05/08 17:13:04 jamie Exp $
+# $Id: Static.pm,v 1.4 2002/05/16 00:04:33 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -113,7 +113,8 @@ sub deleteOldFromPool {
 		# is a stopgap to prevent us from a cycle of frantic
 		# creating/deleting (which otherwise could happen with
 		# bizarre values of $want_delete_fraction).
-		my $hcpid_clause = $min_hcpid + $max_delete_check*$loop_num;
+		my $hcpid_clause = $min_hcpid
+			+ $max_delete_check * ($loop_num*3+1);
 		if ($hcpid_clause >= $max_hcpid) {
 			$hcpid_clause = "";
 		} else {
@@ -122,7 +123,7 @@ sub deleteOldFromPool {
 		my $rows = $self->sqlUpdate(
 			"humanconf_pool",
 			{ inuse => 2, -lastused => "lastused" },
-			"lastused < DATE_SUB(NOW(), INTERVAL 12 HOUR) 
+			"lastused < DATE_SUB(NOW(), INTERVAL 6 HOUR) 
 			AND inuse = 0
 			$hcpid_clause"
 		);

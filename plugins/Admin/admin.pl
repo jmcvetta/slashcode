@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.140 2003/03/19 19:19:30 brian Exp $
+# $Id: admin.pl,v 1.141 2003/03/24 19:38:24 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1256,17 +1256,18 @@ sub editStory {
 		$storyref->{$key} = $form->{$key} || $storyref->{$key};
 	}
 
+	$storyref->{section} ||= $section;
 	$sections = $slashdb->getDescriptions('sections');
-
 
 	$multi_topics = $slashdb->getDescriptions(
 		'topics_section', 
 		$storyref->{section}
 	);
+
 	$story_topics = $slashdb->getStoryTopics($storyref->{sid});
 	$story_topics->{$storyref->{tid}} ||= 1 ; 
 
-	my $topic_values = $slashdb->getDescriptions('topics_section', $section);
+	my $topic_values = $slashdb->getDescriptions('topics_section', $storyref->{section});
 	$topic_select = createSelect('tid',
 		$topic_values,
 		$storyref->{tid}, 1, 0, 1

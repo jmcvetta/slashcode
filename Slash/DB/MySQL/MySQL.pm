@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.272 2002/12/05 22:35:51 jamie Exp $
+# $Id: MySQL.pm,v 1.273 2002/12/10 00:31:01 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.272 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.273 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5414,6 +5414,17 @@ sub getSlashdStatus {
 	my $answer = _genericGet({
 		table		=> 'slashd_status',
 		table_prime	=> 'task',
+		arguments	=> \@_,
+	});
+	return $answer;
+}
+
+##################################################################
+sub getAccesslog {
+	my($self) = @_;
+	my $answer = _genericGet({
+		table		=> 'accesslog',
+		table_prime	=> 'id',
 		arguments	=> \@_,
 	});
 	return $answer;

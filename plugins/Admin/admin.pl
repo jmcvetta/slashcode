@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.110 2002/12/03 20:31:24 brian Exp $
+# $Id: admin.pl,v 1.111 2002/12/10 00:31:01 brian Exp $
 
 use strict;
 use Image::Size;
@@ -134,6 +134,12 @@ sub main {
 			seclev		=> 500,
 			adminmenu	=> 'info',
 			tab_selected	=> 'recent',
+		},
+		recent_requests		=> {
+			function	=> \&displayRecentRequests,
+			seclev		=> 500,
+			adminmenu	=> 'info',
+			tab_selected	=> 'requests',
 		},
 	};
 
@@ -1676,6 +1682,28 @@ sub displayRecent {
 		recent_comments	=> $recent_comments,
 		min		=> $min,
 		max		=> $max,
+	});
+}
+
+##################################################################
+sub displayRecentRequests {
+	my($form, $slashdb, $user, $constants) = @_;
+
+	my $admindb = getObject("Slash::Admin", $constants->{backup_db_user} || $constants->{log_db_user} );
+	my $id = $form->{id};
+	my $ts = $form->{ts};
+	$id ||= $admindb->getAccesslogMaxID()
+		unless $id;
+	$ts ||= $slashdb->getAccesslog($id, 'ts')
+		unless $ts;
+
+	my $data = $admindb->getAccesslogAbusersByID($id, $form->{threshold});
+
+	slashDisplay('recent_requests', {
+		id		=> $id,
+		ts		=> $ts,
+		threshold		=> $form->{threshold} || 20, # Yes this needs to be a var -Brian
+		data	=> $data,
 	});
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.21 2001/11/19 22:29:07 brian Exp $
+# $Id: admin.pl,v 1.22 2001/11/25 17:30:32 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -62,7 +62,7 @@ sub main {
 
 			function 	=> \&blockEdit,
 
-			seclev		=> 10000,
+			seclev		=> 500,
 		},
 		colors 		=> {	# colored,colorpreview,colorsave,colorrevert,
 					# colororig,colorsavedef,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.14 2004/11/17 00:56:35 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.15 2004/11/22 19:17:19 jamiemccarthy Exp $
 
 use strict;
 
@@ -33,7 +33,13 @@ $task{$me}{code} = sub {
 	my $start_time = time;
 	$parent_pid = $info->{parent_pid};
 
-	ircinit();
+	my $success = ircinit();
+	if (!$success) {
+		# Probably the network is down and we can't establish
+		# a connection.  Exit the task;  the next invocation
+		# from slashd will try again.
+		return "cannot connect, exiting to let slashd retry later";
+	}
 
 	$clean_exit_flag = 0;
 
@@ -105,6 +111,13 @@ sub ircinit {
 				Ircname =>	$ircname,
 				Username =>	$username,
 				SSL =>		$ssl		);
+	
+	if (!$conn) {
+		# Probably the network is down and we can't establish
+		# a connection.  Exit the task;  the next invocation
+		# from slashd will try again.
+		return 0;
+	}
 
 	$conn->add_global_handler(376,	\&on_connect);
 	$conn->add_global_handler(433,	\&on_nick_taken);
@@ -112,6 +125,8 @@ sub ircinit {
 	$conn->add_handler('public',	\&on_public);
 
 	$has_proc_processtable = eval { require Proc::ProcessTable };
+
+	return 1;
 }
 
 sub ircshutdown {

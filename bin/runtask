@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.4 2002/03/16 01:50:43 brian Exp $
+# $Id: runtask,v 1.5 2002/04/08 18:45:07 cliff Exp $
 
 use sigtrap;
 use strict;
@@ -26,7 +26,7 @@ use Slash::Utility;
 
 use vars qw( %opts %task $me $task_name $virtual_user $constants $slashdb $user $dir );
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 (my $SLASH_PREFIX) = '/usr/local/slash';
 my $PROGNAME = basename($0);
 
@@ -202,6 +202,14 @@ sub list_tasks {
 		$file =~ s/\.pl$//;
 		print "\t$file \n";
 	}
+}
+
+# To maintain subroutine level compatibility with slashd and hence, with our
+# tasks.
+sub init_cron {
+	sub null_dispatcher { die "null_dispatcher called, there's a bug" }
+	my $cron = Schedule::Cron->new(\&null_dispatcher);
+	return $cron;
 }
 
 sub main {

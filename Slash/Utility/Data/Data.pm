@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.131 2004/09/29 16:57:40 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.132 2004/10/12 06:07:52 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -98,6 +98,7 @@ use vars qw($VERSION @EXPORT);
 	submitDomainAllowed
 	timeCalc
 	url2abs
+	urlFromSite
 	xmldecode
 	xmlencode
 	xmlencode_plain
@@ -367,6 +368,19 @@ Fixed URL.
 
 sub cleanRedirectUrl {
 	my($redirect) = @_;
+	my $gSkin = getCurrentSkin();
+
+	if (urlFromSite($redirect)) {
+		my $base = root2abs();
+		return URI->new_abs($redirect || $gSkin->{rootdir}, $base);
+	} else {
+		return url2abs($gSkin->{rootdir});
+	}
+}
+
+
+sub urlFromSite {
+	my($url) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $gSkin = getCurrentSkin();
@@ -376,7 +390,7 @@ sub cleanRedirectUrl {
 	# We decide whether to use the secure homepage or not
 	# based on whether the current page is secure.
 	my $base = root2abs();
-	my $clean = URI->new_abs($redirect || $gSkin->{rootdir}, $base);
+	my $clean = URI->new_abs($url || $gSkin->{rootdir}, $base);
 
 	my @site_domain = split m/\./, $gSkin->{basedomain};
 	my $site_domain = join '.', @site_domain[-2, -1];
@@ -385,16 +399,7 @@ sub cleanRedirectUrl {
 	my @host = split m/\./, ($clean->can('host') ? $clean->host : '');
 	my $host = join '.', @host[-2, -1];
 
-	if ($site_domain eq $host) {
-		# Cool, it goes to our site.  Send the user there.
-		$clean = $clean->as_string;
-	} else {
-		# Bogus, it goes to another site.  op=userlogin is not a
-		# URL redirection service, sorry.
-		$clean = url2abs($gSkin->{rootdir});
-	}
-
-	return $clean;
+	return $site_domain eq $host;
 }
 
 #========================================================================
@@ -1977,7 +1982,10 @@ sub fudgeurl {
 		# XXX Rethink this -- it could probably be put lower down, in
 		# the "if" that handles stripping the userinfo.  We don't
 		# really need to add the scheme for most URLs. - Jamie
-		$uri->scheme("http");
+
+		# and we should only add scheme if not a local site URL
+		my($from_site) = urlFromSite($uri->as_string);
+		$uri->scheme('http') unless $from_site;
 	}
 	if (!$uri) {
 
@@ -3476,4 +3484,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.131 2004/09/29 16:57:40 jamiemccarthy Exp $
+$Id: Data.pm,v 1.132 2004/10/12 06:07:52 pudge Exp $

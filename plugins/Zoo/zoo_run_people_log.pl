@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: zoo_run_people_log.pl,v 1.10 2003/08/29 16:18:45 jamie Exp $
+# $Id: zoo_run_people_log.pl,v 1.11 2004/10/27 15:36:02 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd :people );
@@ -32,6 +32,7 @@ $task{$me}{code} = sub {
 	for my $person (@$people) {
 		my $new_people = $zoo->rebuildUser($person);
 		$slashdb->setUser($person, { people => $new_people, people_status => 'ok'});
+		sleep 2; # don't tax the DB too much, this isn't high-priority
 	}
 	$stats->updateStatDaily("zoo_counts", "value+" . @$people);	
 	slashdLog('Zoo fof/eof End');
@@ -40,3 +41,4 @@ $task{$me}{code} = sub {
 };
 
 1;
+

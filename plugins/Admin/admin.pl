@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.26 2002/01/08 17:22:09 pudge Exp $
+# $Id: admin.pl,v 1.27 2002/01/10 23:14:08 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -136,9 +136,7 @@ sub main {
 		: " $local_ts $user->{tzcode} = $gmt_ts GMT";
 	# "backSlash" needs to be in a template or something -- pudge
 	header("backSlash$time_remark$tbtitle", 'admin');
-
-	# Admin Menu
-	print "<P>&nbsp;</P>" unless $user->{seclev};
+	# admin menu is printed by header(), like always
 
 	# it'd be nice to have a legit retval
 	my $retval = $ops->{$op}{function}->($form, $slashdb, $user, $constants);
@@ -1335,6 +1333,7 @@ sub getTitle {
 ##################################################################
 sub getLinks {
 # huh? who did this?
+# "getLinks" appears nowhere else in the codebase - Jamie 2002/01/09
 }
 
 createEnvironment();

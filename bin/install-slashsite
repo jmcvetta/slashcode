@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.38 2004/04/02 00:43:02 pudge Exp $
+# $Id: install-slashsite,v 1.39 2004/04/03 15:45:17 jamiemccarthy Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -385,8 +385,10 @@ close $dump;
 # constraints -- since we will be adding data in an order
 # not guaranteed to match those constraints.  When all
 # the data is inserted, we can turn them back on.
-unshift @sql,	'SET FOREIGN_KEY_CHECKS = 0';
-push @sql,	'SET FOREIGN_KEY_CHECKS = 1';
+
+$dbh->do("SET FOREIGN_KEY_CHECKS = 0");
+
+# Now process all the SQL.
 
 for my $cmd (@sql) {
 	next unless $cmd;
@@ -458,6 +460,8 @@ if ($opts{'i'}) {
 } else {
 	$include = '';
 }
+
+$dbh->do("SET FOREIGN_KEY_CHECKS = 1");
 
 # Now, lets update slash.sites
 my $sites = gensym();

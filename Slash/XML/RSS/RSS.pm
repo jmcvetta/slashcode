@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.12 2003/12/09 18:59:11 pudge Exp $
+# $Id: RSS.pm,v 1.13 2003/12/16 21:11:30 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -147,22 +147,36 @@ sub create {
 
 	my $constants = getCurrentStatic();
 
-	my $version  = $param->{version}     || '1.0';
+	my $version  = $param->{version} && $param->{version} =~ /^\d+\.?\d*$/
+		? $param->{version}
+		: '1.0';
 	my $encoding = $param->{rdfencoding} || $constants->{rdfencoding};
 	$self->{rdfitemdesc} = defined $param->{rdfitemdesc}
 		? $param->{rdfitemdesc}
 		: $constants->{rdfitemdesc};
+	$self->{rdfitemdesc_html} = defined $param->{rdfitemdesc_html}
+		? $param->{rdfitemdesc_html}
+		: $constants->{rdfitemdesc_html};
+
+	# since we do substr if rdfitemdesc != 1, and that would break HTML,
+	# do it for that too (can be fixed later) -- pudge
+	$self->{rdfitemdesc_html} = 0 unless $self->{rdfitemdesc} == 1;
 
 	my $rss = XML::RSS->new(
 		version		=> $version,
 		encoding	=> $encoding,
 	);
 
+	my $absolutedir = defined &Slash::Apache::ConnectionIsSSL
+	                  && Slash::Apache::ConnectionIsSSL()
+		? $constants->{absolutedir_secure}
+		: $constants->{absolutedir};
+
 	# set defaults
 	my %channel = (
 		title		=> $constants->{sitename},
 		description	=> $constants->{slogan},
-		'link'		=> $constants->{absolutedir_secure} . '/',
+		'link'		=> $absolutedir . '/',
 
 		# dc
 		date		=> $self->date2iso8601(),
@@ -414,10 +428,12 @@ sub rss_item_description {
 	my $constants = getCurrentStatic();
 
 	if ($self->{rdfitemdesc}) {
-		# no HTML
-		$desc = strip_notags($desc);
-		$desc =~ s/\s+/ /g;
-		$desc =~ s/ $//;
+		# no HTML, unless we specify HTML allowed
+		unless ($self->{rdfitemdesc_html}) {
+			$desc = strip_notags($desc);
+			$desc =~ s/\s+/ /g;
+			$desc =~ s/ $//;
+		}
 
 		# keep $desc as-is if == 1
 		if ($self->{rdfitemdesc} != 1) {
@@ -447,4 +463,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.12 2003/12/09 18:59:11 pudge Exp $
+$Id: RSS.pm,v 1.13 2003/12/16 21:11:30 pudge Exp $

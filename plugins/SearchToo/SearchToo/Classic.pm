@@ -7,7 +7,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::SearchToo';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -66,8 +66,9 @@ sub findRecords {
 	}
 
 	if ($query->{section}) {
+		my $reader = getObject('Slash::DB', { db_type => 'reader' });
 		# get section name, for most compatibility with this API
-		my $skin = $self->getSkin($query->{section});
+		my $skin = $reader->getSkin($query->{section});
 		$processed{section} = $skin->{name} if $skin && $skin->{name};
 	}
 

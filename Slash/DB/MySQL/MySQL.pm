@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.550 2004/04/06 04:10:24 tvroom Exp $
+# $Id: MySQL.pm,v 1.551 2004/04/06 20:47:59 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.550 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.551 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -453,7 +453,7 @@ sub createModeratorLog {
 }
 
 sub getBaseM2Needed {
-	my ($self, $cid, $reason, $options) = @_;
+	my($self, $cid, $reason, $options) = @_;
 	my $constants = getCurrentStatic();
 	my $consensus;
 	if ($constants->{m2_use_sliding_consensus}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.278 2002/12/17 21:51:02 brian Exp $
+# $Id: MySQL.pm,v 1.279 2002/12/17 23:21:59 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.278 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.279 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2445,14 +2445,15 @@ sub getPollQuestionList {
 	}
 
 	$where .= "autopoll = 'no'";
+	$where .= " AND pollquestions.discussion  = discussions.id ";
 	$where .= sprintf ' AND section IN (%s)', join(',', @{$other->{section}})
 		if $other->{section};
 	$where .= sprintf ' AND section NOT IN (%s)', join(',', @{$other->{exclude_section}})
 		if $other->{exclude_section} && @{$other->{section}};
 
 	my $questions = $self->sqlSelectAll(
-		'qid, question, date, voters',
-		'pollquestions',
+		'qid, question, date, voters, commentcount',
+		'pollquestions,discussions',
 		$where,
 		"ORDER BY date DESC LIMIT $offset,20"
 	);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.45 2004/04/02 00:43:05 pudge Exp $
+# $Id: Zoo.pm,v 1.46 2004/12/09 17:35:53 jamiemccarthy Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -53,14 +53,14 @@ sub getRelationships {
 		}
 	}
 	return [qw()] unless @people;
-	
-	my $rel = $self->sqlSelectAll(
+	@people = sort { $a <=> $b } @people;
+	my $people_str = join(",", @people);
+
+	return $self->sqlSelectAll(
 		'uid, nickname, journal_last_entry_date',
 		'users',
-		" uid IN (" . join(",", @people) .") ",
-		" ORDER BY nickname "
-	);
-	return $rel;
+		"uid IN ($people_str)",
+		'ORDER BY nickname');
 }
 
 # Get the details for relationships

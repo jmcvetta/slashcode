@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.6 2004/10/28 19:41:04 pudge Exp $
+# $Id: ircslash.pl,v 1.7 2004/10/28 20:47:49 pudge Exp $
 
 use strict;
 
@@ -257,7 +257,9 @@ sub cmd_daddypants {
 		$args{time} = $info->{text};
 	}
 
-	return Slash::DaddyPants::daddypants(\%args);
+	my $result = Slash::DaddyPants::daddypants(\%args);
+	$self->privmsg($channel, $result);
+	slashdLog("daddypants: $result");
 }
 }
 

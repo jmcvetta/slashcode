@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.60 2002/06/20 11:53:44 jamie Exp $
+# $Id: Slash.pm,v 1.61 2002/06/23 14:27:03 jamie Exp $
 
 package Slash;
 
@@ -415,8 +415,7 @@ sub printComments {
 	# Should I index or just display normally?
 	my $cc = 0;
 	$cc = $comments->{$cidorpid}{visiblekids}
-		if $cidorpid
-			&& $comments->{$cidorpid}
+		if $comments->{$cidorpid}
 			&& $comments->{$cidorpid}{visiblekids};
 
 	$lvl++ if $user->{mode} ne 'flat' && $user->{mode} ne 'archive'
@@ -459,6 +458,7 @@ sub printComments {
 		$previous = $comments->{$previous} if $previous;
 	}
 
+	my $lcp = linkCommentPages($discussion->{id}, $pid, $cid, $cc);
 	slashDisplay('printCommComments', {
 		can_moderate	=> _can_mod($comment),
 		comment		=> $comment,
@@ -469,7 +469,7 @@ sub printComments {
 		cid		=> $cid,
 		pid		=> $pid,
 		cc		=> $cc,
-		lcp		=> linkCommentPages($discussion->{id}, $pid, $cid, $cc),
+		lcp		=> $lcp,
 		lvl		=> $lvl,
 	});
 }

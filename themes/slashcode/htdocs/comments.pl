@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.210 2004/11/11 21:11:48 pudge Exp $
+# $Id: comments.pl,v 1.211 2004/11/24 21:05:50 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -941,12 +941,11 @@ sub submitComment {
 
 #print STDERR scalar(localtime) . " $$ E header_emitted=$header_emitted do_emit_html=$do_emit_html redirect_to=" . (defined($redirect_to) ? $redirect_to : "undef") . "\n";
 
-	my $pts = 0;
+	my $pts = $user->{defaultpoints};
 	my $karma_bonus = 0;
 	my $subscriber_bonus = 0;
 	my $tweak = 0;
 	if (!$user->{is_anon} && !$form->{postanon}) {
-		$pts = $user->{defaultpoints};
 
 		if ($constants->{karma_posting_penalty_style} == 0) {
 			$pts-- if $user->{karma} < 0;

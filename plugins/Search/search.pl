@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.83 2004/10/03 16:03:44 jamiemccarthy Exp $
+# $Id: search.pl,v 1.84 2004/10/19 18:35:01 tvroom Exp $
 
 use strict;
 use Slash;
@@ -112,7 +112,7 @@ sub _authors {
 sub _topics {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $topics = $reader->getDescriptions('topics');
+	my $topics = $reader->getDescriptions('topics-searchable');
 	my %newtopics = %$topics;
 	$newtopics{''} = getData('all_topics');
 
@@ -131,10 +131,9 @@ sub _sort {
 sub _skins {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $skins = $reader->getDescriptions('skins');
+	my $skins = $reader->getDescriptions('skins-searchable');
 	my %newskins = %$skins;
 	$newskins{''} = getData('all_sections');  # keep Sections name for public
-	delete $newskins{'polls'};
 
 	return \%newskins;
 }

@@ -77,14 +77,7 @@ __template__
 
    FOREACH t = topic_children;
       # XXXSKIN obviously there are smarter ways to do this
-      NEXT IF !form.tid && (
-          topics.$t.textname == "Geeks in Space" ||
-          topics.$t.textname == "Features" ||
-          topics.$t.textname == "Polls" ||
-          topics.$t.textname == "Search" ||
-          topics.$t.textname == "Taco Hell" ||
-          topics.$t.textname == "The 2000 Beanies"
-      );
+      NEXT IF !topics.$t.searchable;
       listnames.${topics.$t.textname} = t;
    END;
    
@@ -138,4 +131,4 @@ END %]</li>
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.27 2004/10/11 18:18:06 jamiemccarthy Exp $
+$Id: searchform;search;default,v 1.28 2004/10/19 18:35:01 tvroom Exp $

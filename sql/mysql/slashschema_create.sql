@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.122 2003/07/26 01:03:58 jamie Exp $
+# $Id: slashschema_create.sql,v 1.123 2003/07/28 06:55:04 jamie Exp $
 #
 
 #
@@ -512,6 +512,7 @@ CREATE TABLE pollquestions (
 	section varchar(30) NOT NULL,
 	autopoll ENUM("no","yes") DEFAULT 'no' NOT NULL,
 	flags ENUM("ok","delete","dirty") DEFAULT 'ok' NOT NULL,
+	polltype enum('nodisplay','section','story') default 'section',
 	PRIMARY KEY (qid)
 ) TYPE=MyISAM;
 

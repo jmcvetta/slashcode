@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.148 2003/08/19 01:37:28 pudge Exp $
+# $Id: comments.pl,v 1.149 2003/09/09 17:13:55 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1011,6 +1011,7 @@ sub previewForm {
 
 	my $sig = $user->{sig};
 	if ($user->{sigdash} && $user->{sig}) {
+		$sig =~ s/^\s*-{1,5}\s*<(?:P|BR)>//i;
 		$sig = "--<BR>$sig";
 	}
 

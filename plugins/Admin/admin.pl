@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.185 2003/12/14 15:26:55 jamie Exp $
+# $Id: admin.pl,v 1.186 2004/01/27 19:02:11 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1212,6 +1212,8 @@ sub editStory {
 		}
 	}
 
+	$slashdb->setCommonStoryWords();
+
 	my @stid;
 	my($extracolumn_flag) = (0, 0);
 	my($storyref, $story, $author, $topic, $storycontent, $locktest,
@@ -1762,6 +1764,7 @@ sub updateStory {
 		$topic,
 		$form->{uid}
 	);
+	$slashdb->setCommonStoryWords();
 
 	my $data = {
 		uid		=> $form->{uid},
@@ -2049,6 +2052,7 @@ sub saveStory {
 	$form->{bodytext} =  balanceTags($form->{bodytext});
 
 	my $time = findTheTime();
+	$slashdb->setCommonStoryWords();
 
 	# used to just pass $form to createStory, which is not
 	# a good idea because you end up getting form values 

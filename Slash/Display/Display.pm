@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.6 2001/11/03 03:08:48 brian Exp $
+# $Id: Display.pm,v 1.7 2001/11/16 13:48:46 pudge Exp $
 
 package Slash::Display;
 
@@ -45,12 +45,12 @@ use Slash::Display::Provider ();
 use Slash::Utility::Data;
 use Slash::Utility::Environment;
 use Slash::Utility::System;
-use Template 2.04;
+use Template 2.06;
 
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);

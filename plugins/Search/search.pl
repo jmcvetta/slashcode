@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.50 2002/08/13 12:31:39 pudge Exp $
+# $Id: search.pl,v 1.51 2002/08/14 18:52:02 pudge Exp $
 
 use strict;
 use Slash;
@@ -66,7 +66,9 @@ sub main {
 	# Set some defaults
 	$form->{query}		||= '';
 	$form->{'sort'}		||= 1;
-	$form->{section}	= $constants->{section} unless $form->{section}; # Set to our current section if section is not passed in
+	# this makes it so *no* results get returned, so i changed it back
+	#$form->{section}	||= $constants->{section}; # Set to our current section if section is not passed in
+	$form->{section}	||= '';
 	$form->{threshold}	= getCurrentUser('threshold') if !defined($form->{threshold});
 
 	# get rid of bad characters

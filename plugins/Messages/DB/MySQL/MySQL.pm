@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.23 2004/02/17 00:25:28 pudge Exp $
+# $Id: MySQL.pm,v 1.24 2004/02/17 19:27:47 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -454,17 +454,17 @@ sub _getMessageUsers {
 
 	my @users;
 	if ($seclev && $seclev =~ /^-?\d+$/) {
-		$table .= ",users";
+		my $seclevt = "$table,users";
 		my $seclevw = "$where AND users.uid = users_messages.uid AND seclev >= $seclev";
-		my $seclevu = $self->sqlSelectColArrayref($cols, $table, $seclevw) || [];
+		my $seclevu = $self->sqlSelectColArrayref($cols, $seclevt, $seclevw) || [];
 		push @users, @$seclevu;
 	}
 
 	if ($acl) {
 		my $acl_q = $self->sqlQuote($acl);
-		$table .= ",users_acl";
+		my $aclt = "$table,users_acl";
 		my $aclw = " users_acl.uid = users_messages.uid AND users_acl.acl=$acl_q";
-		my $aclu = $self->sqlSelectColArrayref($cols, $table, $aclw) || [];
+		my $aclu = $self->sqlSelectColArrayref($cols, $aclt, $aclw) || [];
 		push @users, @$aclu;
 	}
 

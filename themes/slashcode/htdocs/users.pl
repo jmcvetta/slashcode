@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.71 2002/04/18 22:00:39 pudge Exp $
+# $Id: users.pl,v 1.72 2002/04/19 16:19:47 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1668,8 +1668,8 @@ sub saveUser {
 	# it doesn't already exist in the userbase.
 	if ($user_edit->{realemail} ne $form->{realemail}) {
 		if ($slashdb->existsEmail($form->{realemail})) {
-			$note = getError('emailexists_err', 0, 1);
-			return $note;
+			$note .= getError('emailexists_err', 0, 1);
+			$form->{realemail} = $user_edit->{realemail}; # can't change!
 		}
 	}
 
@@ -1768,7 +1768,7 @@ sub saveUser {
 
 	$slashdb->setUser($uid, $user_edits_table);
 
-	print getMessage('note', { note => $note}) if $note;
+	print getMessage('note', { note => $note }) if $note;
 
 	editUser({ uid => $uid });
 }

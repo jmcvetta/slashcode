@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.3 2001/03/26 09:44:32 pudge Exp $
+# $Id: Utility.pm,v 1.4 2001/03/29 17:41:54 pudge Exp $
 
 package Slash::Utility;
 
@@ -38,7 +38,7 @@ use XML::Parser;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(
@@ -2340,7 +2340,7 @@ sub prepareUser {
 		$user->{currentPage} = 'misc';
 	}
 
-	if ($user->{seclev} >= 99) {
+	if ($user->{seclev} >= 100) {
 		$user->{is_admin} = 1;
 		my $sid;
 		#This cookie could go, and we could have session instance

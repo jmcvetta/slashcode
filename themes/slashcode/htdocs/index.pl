@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.12 2001/03/22 10:19:09 pudge Exp $
+# $Id: index.pl,v 1.13 2001/03/29 17:41:54 pudge Exp $
 
 use strict;
 use Slash;
@@ -242,8 +242,8 @@ sub displayStories {
 			});
 
 			push @cclink, $thresh, ($cc || 0);
-			push @links, getData('comments', { cc => \@cclink });
-
+			push @links, getData('comments', { cc => \@cclink })
+				if $cc || $thresh;
 		}
 
 		if ($thissection ne $constants->{defaultsection} && !getCurrentForm('section')) {

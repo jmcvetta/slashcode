@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.7 2001/03/26 12:15:22 pudge Exp $
+# $Id: journal.pl,v 1.8 2001/03/29 17:41:54 pudge Exp $
 
 use strict;
 use Slash;
@@ -109,7 +109,7 @@ sub displayRSS {
 	my($form, $journal, $constants) = @_;
 	my $rss = XML::RSS->new(
 		version		=> '0.91',
-		encoding	=>'UTF-8'
+		encoding	=> $constants->{rdfencoding},
 	);
 	my $slashdb = getCurrentDB();
 

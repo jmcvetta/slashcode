@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.28 2001/03/22 10:19:09 pudge Exp $
+# $Id: users.pl,v 1.29 2001/03/29 17:41:54 pudge Exp $
 
 use strict;
 use Date::Manip;
@@ -461,7 +461,7 @@ sub editHome {
 	my $tzformat_select = createSelect('tzformat', $formats, $user_edit->{dfid}, 1);
 
 	$formats = $slashdb->getDescriptions('tzcodes');
-	my $tzcode_select = createSelect('tzcode', $formats, $user_edit->{tzcode}, 1);
+	my $tzcode_select = createSelect('tzcode', [ keys %$formats ], $user_edit->{tzcode}, 1);
 
 	my $l_check = $user_edit->{light}	? ' CHECKED' : '';
 	my $b_check = $user_edit->{noboxes}	? ' CHECKED' : '';

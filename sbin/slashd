@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.29 2003/03/04 19:56:32 pudge Exp $
+# $Id: slashd,v 1.30 2003/03/11 18:03:54 jamie Exp $
 
 ############################################################
 #
@@ -759,7 +759,7 @@ sub do_child {
 		-last_completed	=> "NOW()",
 		summary		=> $summary_trim,
 		duration	=> $duration,
-		-in_progress	=> 'in_progress-1',
+		-in_progress	=> 'GREATEST(in_progress-1, 0)',
 	});
 
 	if (verbosity() >= 4) {

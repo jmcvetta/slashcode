@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: sections.pl,v 1.2 2000/05/16 20:43:34 pudge Exp $
+#  $Id: sections.pl,v 1.3 2000/07/07 20:57:31 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -207,6 +207,11 @@ EOT
 #################################################################
 sub saveSection {
 	my $section = shift;
+
+	# Non alphanumerics are not allowed in section names.
+	# And I don't see a reason for underscore either but
+	# I guess dashes are fine.
+	$section =~ s/[^A-Za-z0-9\-]//g;
 
 	my ($rows) = sqlSelect("count(*)","sections","section = '$I{F}{section}'");
 

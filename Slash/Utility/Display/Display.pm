@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.23 2002/10/21 18:34:03 pater Exp $
+# $Id: Display.pm,v 1.24 2002/10/21 19:24:39 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -452,7 +452,7 @@ sub linkStory {
 
 	# We need to make sure we always get the right link -Brian
 	my $section = $slashdb->getSection($story_link->{section});
-	my $url = $section->{rootdir} || $constants->{real_rootdir} || getCurrentStatic('rootdir');
+	my $url = $section->{rootdir} || $constants->{real_rootdir} || $constants->{rootdir};
 
 	return _hard_linkStory($story_link, $mode, $threshold, $dynamic, $url)
 		if $constants->{comments_hardcoded} && !$user->{light};
@@ -1206,4 +1206,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.23 2002/10/21 18:34:03 pater Exp $
+$Id: Display.pm,v 1.24 2002/10/21 19:24:39 pudge Exp $

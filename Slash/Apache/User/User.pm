@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.48 2002/12/31 15:00:38 pudge Exp $
+# $Id: User.pm,v 1.49 2003/01/14 20:29:28 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -78,7 +78,7 @@ sub handler {
 		createCurrentUser();
 		createCurrentForm();
 		createCurrentCookie();
-		if (!$constants->{allow_nonadmin_ssl}
+		if ($constants->{allow_nonadmin_ssl} != 1
 			&& Slash::Apache::ConnectionIsSSL() ) {
 			# Accessing non-dynamic URL on SSL webserver; redirect
 			# to the non-SSL URL.
@@ -230,25 +230,60 @@ EOT
 	$user->{state}{_dynamic_page} = 1;
 	createCurrentUser($user);
 	createCurrentForm($form);
-	if ( ($user->{seclev} <= 1 && !$user->{state}{lostprivs})
-		&& !$constants->{allow_nonadmin_ssl}
-		&& Slash::Apache::ConnectionIsSSL()
+
+	# If the user is connecting over SSL, make sure this is allowed.
+	# If allow_nonadmin_ssl is 0, then only admins are allowed in.
+	# If allow_nonadmin_ssl is 1, then anyone is allowed in.
+	# If allow_nonadmin_ssl is 2, then admins and subscribers are allowed in.
+	my $redirect_to_nonssl = 0;
+	if (Slash::Apache::ConnectionIsSSL()
 		&& !(
-			# If the user is trying to log in, they are allowed
-			# to do so on the SSL server.  Logging in means the
-			# users.pl script and either an empty op or the
-			# 'userlogin' op.
-			$uri =~ m{^/users\.pl}
-			&& (!$form->{op} || $form->{op} eq 'userlogin')
-		) ) {                             
-		# User is not an admin but is trying to connect to an admin-only
-		# webserver.  Redirect them to the non-SSL URL.
+                        # If the user is trying to log in, they are always
+			# allowed to make the attempt on the SSL server.
+			# Logging in means the users.pl script and either
+			# an empty op or the 'userlogin' op.
+                        $uri =~ m{^/users\.pl}
+                        && (!$form->{op} || $form->{op} eq 'userlogin')
+                )
+	) {
+		my $ans = $constants->{allow_nonadmin_ssl};
+		     if ($ans == 1) {
+			# It's OK, anyone is allowed to use the SSL server.
+		} elsif ($ans == 0) {
+			# Only admins are allowed in -- but note the special
+			# case where this is an admin who has lost privs due
+			# to a cleartext password having been sent.  Those
+			# admin accounts are allowed in over SSL even though
+			# the rest of the system might not consider them
+			# "admins" right now.
+			if ($user->{seclev} > 1 || $user->{state}{lostprivs}) {
+				# It's an admin, this is fine.
+			} else {
+				# Not an admin, SSL access forbidden.
+				$redirect_to_nonssl = 1;
+			}
+		} elsif ($ans == 2) {
+			# Admins are allowed in, per the above case, but
+			# also subscribers are allowed in.
+			if ($user->{seclev} > 1 || $user->{state}{lostprivs}
+				|| $user->{is_subscriber}) {
+                                # It's an admin or a subscriber, this is fine.
+                        } else {
+                                # Not an admin or subscriber, SSL access forbidden.
+                                $redirect_to_nonssl = 1;
+                        }
+		}
+	}
+	if ($redirect_to_nonssl) {                             
+		# User is not authorized to connect to the SSL webserver.
+		# Redirect them to the non-SSL URL.
 		my $newloc = $uri;
 		$newloc .= "?" . $r->args if $r->args;
 		$r->err_header_out(Location =>
 			URI->new_abs($newloc, $constants->{absolutedir}));
 		return REDIRECT;
 	}
+
 	createCurrentCookie($cookies);
 	createEnv($r) if $cfg->{env};
 	authors($r) if $form->{'slashcode_authors'};

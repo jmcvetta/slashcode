@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Email.pm,v 1.2 2003/03/04 19:56:32 pudge Exp $
+# $Id: Email.pm,v 1.3 2003/04/19 15:32:17 jamie Exp $
 
 package Slash::Email;
 
@@ -15,7 +15,7 @@ use base "Slash::DB::MySQL";
 
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 
@@ -76,4 +76,6 @@ sub removeFromOptoutList {
 		'email=' . $self->sqlQuote($email)
 	);
 }
+
+1;
 

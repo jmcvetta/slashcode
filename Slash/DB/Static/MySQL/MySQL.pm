@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.194 2004/10/28 16:48:16 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.195 2004/10/28 20:23:16 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.194 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -492,7 +492,7 @@ sub forgetErrnotes {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 	my $interval = $constants->{slashd_errnote_expire} || 90;
-	return $slashdb->sqlDelete('slashd_errnotes',
+	return $self->sqlDelete('slashd_errnotes',
 		"ts < DATE_SUB(NOW(), INTERVAL $interval DAY)");
 }
 

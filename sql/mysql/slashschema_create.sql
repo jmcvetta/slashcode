@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.121 2003/07/21 16:10:12 jamie Exp $
+# $Id: slashschema_create.sql,v 1.122 2003/07/26 01:03:58 jamie Exp $
 #
 
 #
@@ -415,7 +415,7 @@ CREATE TABLE metamodlog (
 	active tinyint DEFAULT '1' NOT NULL,
 	INDEX byuser (uid),
 	INDEX mmid (mmid),
-	PRIMARY KEY (id),
+	PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 #
@@ -794,7 +794,7 @@ CREATE TABLE story_text (
 	bodytext text,
 	relatedtext text,
 	rendered text,
-	PRIMARY KEY (sid),
+	PRIMARY KEY (sid)
 ) TYPE=MyISAM;
 
 #

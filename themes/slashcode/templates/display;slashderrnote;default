@@ -1,4 +1,4 @@
-_section__
+__section__
 default
 __description__
                                                                                 
@@ -22,4 +22,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: display;slashderrnote;default,v 1.1 2004/04/27 05:02:53 cowboyneal Exp $
+$Id: display;slashderrnote;default,v 1.2 2004/04/28 21:32:36 jamiemccarthy Exp $

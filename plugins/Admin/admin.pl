@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.37 2002/02/20 01:00:31 brian Exp $
+# $Id: admin.pl,v 1.38 2002/02/22 03:10:29 cliff Exp $
 
 use strict;
 use Image::Size;
@@ -961,6 +961,9 @@ sub editStory {
 			. otherLinks($slashdb->getAuthor($storyref->{uid}, 'nickname'), $storyref->{tid}, $storyref->{uid});
 
 		$storybox = fancybox($constants->{fancyboxwidth}, 'Related Links', $storyref->{relatedtext}, 0, 1);
+		# Get wordcounts
+		$storyref->{introtext_wordcount} = countWords($storyref->{introtext});
+		$storyref->{bodytext_wordcount} = countWords($storyref->{bodytext});
 
 	} elsif (defined $sid) { # Loading an existing SID
 		my $tmp = $user->{currentSection};
@@ -969,6 +972,9 @@ sub editStory {
 		$extracolumns = $slashdb->getSectionExtras($user->{currentSection}) || [ ];
 		$user->{currentSection} = $tmp;
 		$storybox = fancybox($constants->{fancyboxwidth}, 'Related Links', $storyref->{relatedtext}, 0, 1);
+		# Get wordcounts
+		$storyref->{introtext_wordcount} = countWords($storyref->{introtext});
+		$storyref->{bodytext_wordcount} = countWords($storyref->{bodytext_wordcount});
 
 	} else { # New Story
 		$extracolumns = $slashdb->getSectionExtras($storyref->{section}) || [ ];

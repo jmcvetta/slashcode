@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.12 2002/02/21 21:44:57 jamie Exp $
+# $Id: Data.pm,v 1.13 2002/02/22 03:10:29 cliff Exp $
 
 package Slash::Utility::Data;
 
@@ -41,13 +41,14 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
 	balanceTags
 	changePassword
 	chopEntity
+	countWords
 	encryptPassword
 	fixHref
 	fixint
@@ -519,6 +520,7 @@ sub stripByMode {
 
 	# probably 'html'
 	} else {
+		# $fmode == HTML, hopefully
 		$str = stripBadHtml($str);
 		$str = breakHtml($str) unless $no_white_fix;
 	}
@@ -1748,6 +1750,34 @@ sub fixint {
 	return $int;
 }
 
+########################################################
+# Count words in a given scalar will strip HTML tags
+# before counts are made.
+sub countWords {
+	my ($body) = @_;
+
+	# Sanity check.
+	return 0 if ref $body;
+
+	# Get rid of nasty print artifacts that may screw up counts.
+	$body = strip_nohtml($body);
+	$body =~ s/['`"~@#$%^()|\\\/!?.]//g;
+	$body =~ s/&(?:\w+|#(\d+));//g;
+	$body =~ s/[;\-,+=*&]/ /g;
+	$body =~ s/\s\s+/ /g;
+
+	# count words in $body.
+	my(@words) = ($body =~ /\b/g);
+
+	# Since we count boundaries, each word has two boundaries, so 
+	# we divide by two to get our count. This results in values 
+	# *close* to the return from a 'wc -w' on $body (within 1) 
+	# so I think this is close enough. ;) 
+	# - Cliff
+	return scalar @words / 2;
+}
+
+
 1;
 
 __END__
@@ -1759,4 +1789,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.12 2002/02/21 21:44:57 jamie Exp $
+$Id: Data.pm,v 1.13 2002/02/22 03:10:29 cliff Exp $

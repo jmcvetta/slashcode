@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.25 2002/02/11 18:23:00 pudge Exp $
+# $Id: index.pl,v 1.26 2002/02/22 03:10:29 cliff Exp $
 
 use strict;
 use Slash;
@@ -270,14 +270,12 @@ sub displayStories {
 		my $link;
 
 		if ($constants->{body_bytes}) {
-			$link = length($story->{bodytext}) . ' ' .  getData('bytes');
+			$link = length($story->{bodytext}) . ' ' .
+				getData('bytes');
 		} else {
-			# Kooky aye? Gets rid of the warning. -Brian
-			my @temp;
-			my $count = @temp =  split / /, $story->{introtext};
-			$count += @temp = split / /, $story->{bodytext} 
-				if $story->{bodytext};
-			$link = $count . ' ' .  getData('words');
+			my $count = countWords($story->{introtext}) +
+				    countWords($story->{bodytext});
+			$link = sprintf '%d %s', $count, getData('words');
 		}
 		if ($story->{bodytext} || $cc) {
 			push @links, linkStory({

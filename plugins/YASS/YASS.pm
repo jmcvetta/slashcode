@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.10 2002/02/26 03:03:35 brian Exp $
+# $Id: YASS.pm,v 1.11 2002/03/28 23:15:26 brian Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -86,7 +86,6 @@ sub getActive {
 
 	my ($sid, $order, $where);
 
-	my $order;
 	if ($limit) {
 		$order = "ORDER BY time DESC LIMIT $limit";
 	} else {

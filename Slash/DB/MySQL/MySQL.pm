@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.330 2003/02/14 04:29:41 pudge Exp $
+# $Id: MySQL.pm,v 1.331 2003/02/16 15:24:01 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.330 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.331 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7042,7 +7042,7 @@ sub sqlShowProcessList {
         my($self) = @_;
 
         $self->sqlConnect();
-        my $proclist = $self->{_dbh}->prepare("SHOW PROCESSLIST");
+        my $proclist = $self->{_dbh}->prepare("SHOW FULL PROCESSLIST");
 
         return $proclist;
 }
@@ -7057,6 +7057,15 @@ sub sqlShowStatus {
         return $status;
 }
 
+########################################################
+sub sqlShowInnodbStatus {
+        my($self) = @_;
+
+        $self->sqlConnect();
+        my $status = $self->{_dbh}->prepare("SHOW INNODB STATUS");
+
+        return $status;
+}
 
 ########################################################
 # Get a unique string for an admin session

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.18 2002/01/08 17:22:09 pudge Exp $
+# $Id: index.pl,v 1.19 2002/01/14 23:00:50 brian Exp $
 
 use strict;
 use Slash;
@@ -233,7 +233,7 @@ sub displayStories {
 	# Stuff block later (simulate the old cursor-based
 	# method)
 	while ($_ = shift @{$stories}) {
-		my($sid, $thissection, $title, $time, $cc, $d, $hp) = @{$_};
+		my($sid, $thissection, $title, $time, $cc, $d, $hp, $secs, $tid) = @{$_};
 		my @links;
 		my @threshComments = split m/,/, $hp;  # posts in each threshold
 		my($storytext, $story) = displayStory($sid);
@@ -243,6 +243,7 @@ sub displayStories {
 		push @links, linkStory({
 			'link'	=> getData('readmore'),
 			sid	=> $sid,
+			tid	=> $tid,
 			section	=> $thissection
 		});
 
@@ -262,6 +263,7 @@ sub displayStories {
 			push @links, linkStory({
 				'link'	=> $link,
 				sid	=> $sid,
+				tid	=> $tid,
 				mode	=> 'nocomment',
 				section	=> $thissection
 			}) if $story->{bodytext};
@@ -273,6 +275,7 @@ sub displayStories {
 				if ($user->{threshold} > -1 && $cc ne $thresh) {
 					$cclink[0] = linkStory({
 						sid		=> $sid,
+						tid	=> $tid,
 						threshold	=> $user->{threshold},
 						'link'		=> $thresh,
 						section		=> $thissection
@@ -282,6 +285,7 @@ sub displayStories {
 
 			$cclink[1] = linkStory({
 				sid		=> $sid,
+				tid	=> $tid,
 				threshold	=> -1,
 				'link'		=> $cc || 0,
 				section		=> $thissection

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.57 2004/10/19 18:18:53 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.58 2005/02/07 23:38:59 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -285,6 +285,45 @@ sub getLastInsertId {
 	$sth->finish;
 	return $id;
 }
+
+
+#######################################################
+# set a system variable if necessary.  this will only be
+# good for the current session.  don't forget to set it
+# back anyway.
+sub sqlSetVar {
+	my($self, $var, $value) = @_;
+	return if $ENV{GATEWAY_INTERFACE} && !getCurrentUser('is_admin');
+
+	# can't use sqlQuote for this, can't be quoted
+	$var =~ s/\W+//;   # just in case
+	$value =~ s/\D+//; # ditto (any non-numeric vars we might adjust?)
+
+	$self->sqlDo("SET $var = $value");
+}
+
+#######################################################
+# get the value of a named system variable
+sub sqlGetVar {
+	my($self, $var) = @_;
+
+	# to mirror what we do in sqlSetVar
+	$var =~ s/\W+//;
+
+	my $sql = "SHOW VARIABLES LIKE '$var'";
+	my $sth = $self->{_dbh}->prepare($sql);
+
+	if (!$sth->execute) {
+		$self->sqlErrorLog($sql);
+		$self->sqlConnect;
+		return undef;
+	}
+
+	my($name, $value) = $sth->fetchrow;
+	$sth->finish;
+	return $value;
+}
+
 
 ########################################################
 # The SQL query logging methods

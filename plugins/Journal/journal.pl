@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.38 2002/03/05 01:49:50 pudge Exp $
+# $Id: journal.pl,v 1.39 2002/03/19 16:18:54 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -518,6 +518,7 @@ sub saveArticle {
 		$journal->set($form->{id}, \%update);
 
 		return $form->{id} if $ws;
+		$form = { id => $form->{id} };
 
 	} else {
 		my $id = $journal->create($description,
@@ -563,10 +564,12 @@ sub saveArticle {
 				$messages->create($_, MSG_CODE_JOURNAL_FRIEND, $data);
 			}
 		}
+
 		return $id if $ws;
+		$form = { id => $id };
 	}
 
-	listArticle(@_);
+	displayArticle($journal, $constants, $user, $form, $slashdb);
 }
 
 sub articleMeta {
@@ -721,8 +724,9 @@ sub add_entry {
 
 	my $form = _save_params(0, @_) || {};
 
-	$form->{posttype} ||= $user->{posttype};
-	$form->{tid} ||= $constants->{journal_default_topic};
+	$form->{posttype}		||= $user->{posttype};
+	$form->{journal_discuss}	||= $user->{journal_discuss};
+	$form->{tid}			||= $constants->{journal_default_topic};
 
 	no strict 'refs';
 	my $saveArticle = *{ $user->{state}{packagename} . '::saveArticle' };

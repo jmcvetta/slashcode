@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.34 2003/10/16 01:38:10 jamie Exp $
+# $Id: freshenup.pl,v 1.35 2003/11/10 21:25:07 pudge Exp $
 
 use File::Path;
 use File::Temp;
@@ -266,6 +266,7 @@ $task{$me}{code} = sub {
 			next unless $key;
 			my $index_handler = $section->{index_handler}
 				|| $constants->{index_handler};
+			next if $index_handler eq 'IGNORE';
 			my($base) = split(/\./, $index_handler);
 			prog2file(
 				"$basedir/$index_handler", 

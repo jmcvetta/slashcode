@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.71 2003/01/17 20:14:28 pudge Exp $
+# $Id: Data.pm,v 1.72 2003/01/20 17:57:23 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -923,6 +923,12 @@ sub breakHtml {
 	my $constants = getCurrentStatic();
 	$mwl = $mwl || $constants->{breakhtml_wordlength} || 50;
 
+	# Only do the <NOBR> and <WBR> bug workaround if wanted.
+	my $workaround_start = $constants->{comment_startword_workaround}
+		? "<nobr>" : "";
+	my $workaround_end = $constants->{comment_startword_workaround}
+		? "<wbr></nobr> " : " ";
+
 	# These are tags that "break" a word;
 	# a<P>b</P> breaks words, y<B>z</B> does not
 	my $approvedtags_break = $constants->{'approvedtags_break'}
@@ -965,7 +971,8 @@ sub breakHtml {
 
 	# Put the <wbr> in front of attempts to exploit MSIE's
 	# half-braindead adherance to Unicode char breaking.
-	$text =~ s{$nswcr}{<nobr> <wbr></nobr>$2$3}gs;
+	$text =~ s{$nswcr}{<nobr> <wbr></nobr>$2$3}gs
+		if $constants->{comment_startword_workaround};
 
 	# Break up overlong words, treating entities/character references
 	# as single characters and ignoring HTML tags.
@@ -979,12 +986,16 @@ sub breakHtml {
 			)
 		){$mwl}			# $mwl non-HTML-tag chars in a row
 	)}{
-		substr($1, 0, -1) . "<nobr>" . substr($1, -1) . "<wbr></nobr> "
+		substr($1, 0, -1)
+		. $workaround_start
+		. substr($1, -1)
+		. $workaround_end
 	}gsex;
 
 	# Just to be tidy, if we appended that word break at the very end
 	# of the text, eliminate it.
-	$text =~ s{<nobr> <wbr></nobr>\s*$}{};
+	$text =~ s{<nobr> <wbr></nobr>\s*$}{}
+		if $constants->{comment_startword_workaround};
 
 	# Fix breaking tags
 	$text =~ s{
@@ -2757,4 +2768,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.71 2003/01/17 20:14:28 pudge Exp $
+$Id: Data.pm,v 1.72 2003/01/20 17:57:23 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.177 2002/07/08 23:27:01 patg Exp $
+# $Id: MySQL.pm,v 1.178 2002/07/09 00:29:47 patg Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4042,7 +4042,6 @@ EOT
 		# annoying time format breaks timeCalc in the 
 		# storyTitleOnly template for the index page plugin
 		# I just need the raw time that's in the db
-		$data->[8] = $data->[3];
 		$data = [
 			@$data[0..4], 
 			$data->[3], 

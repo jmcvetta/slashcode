@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.54 2004/10/26 20:24:38 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.55 2004/11/03 20:04:58 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -269,7 +269,7 @@ sub give_out_tokens {
 	}));
 
 	# Give each user her or his tokens.
-	$slashdb->updateTokens(\%update_uids);
+	$slashdb->updateTokens(\%update_uids, { sleep_time => 0.5 });
 
 	# And keep a running tally of how many tokens we've given out due
 	# to users who clicked the right number of times and got lucky.

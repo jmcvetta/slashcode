@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.98 2002/03/10 14:41:27 jamie Exp $
+# $Id: MySQL.pm,v 1.99 2002/03/12 22:20:12 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4209,7 +4209,7 @@ sub getSlashConf {
 		# --------			# -------------------
 						# See <http://www.iana.org/assignments/uri-schemes>
 		approved_url_schemes =>		[qw( ftp http gopher mailto news nntp telnet wais https )],
-		approvedtags =>			[qw( B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV )],
+		approvedtags =>			[qw( B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV ECODE )],
 		approvedtags_break =>		[qw( P LI OL UL BR BLOCKQUOTE DIV HR )],
 		fixhrefs =>			[ ],
 		lonetags =>			[ ],

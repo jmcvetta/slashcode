@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.16 2002/11/04 18:35:29 pudge Exp $
+# $Id: MySQL.pm,v 1.17 2003/01/21 21:49:39 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -180,7 +180,7 @@ sub _create_web {
 }
 
 sub _create {
-	my($self, $user, $code, $message, $fuser, $altto) = @_;
+	my($self, $user, $code, $message, $fuser, $altto, $send) = @_;
 	my $table = $self->{_drop_table};
 	my $prime = $self->{_drop_prime};
 
@@ -192,6 +192,7 @@ sub _create {
 		altto	=> $altto || '',
 		code	=> $code,
 		message	=> $frozen,
+		'send'	=> $send || 'now',
 	});
 
 	my($msg_id) = $self->getLastInsertId($table, $prime);
@@ -262,7 +263,7 @@ sub _get {
 }
 
 sub _gets {
-	my($self, $count) = @_;
+	my($self, $count, $extra) = @_;
 	my $table = $self->{_drop_table};
 	my $cols  = $self->{_drop_cols};
 
@@ -270,8 +271,15 @@ sub _gets {
 	my $other = "ORDER BY date ASC";
 	$other .= " LIMIT $count" if $count;
 
+	my $where = '';
+	if ($extra) {
+		$where = join(' AND ', map {
+			$_ . "=" . $self->sqlQuote($extra->{$_})
+		} keys %$extra);
+	}
+
 	my $all = $self->sqlSelectAllHashrefArray(
-		$cols, $table, '', $other
+		$cols, $table, $where, $other
 	);
 
 	for my $data (@$all) {
@@ -354,6 +362,19 @@ sub _delete_web {
 	$self->sqlDo("DELETE FROM $table1 WHERE $where1");
 	$self->sqlDo("DELETE FROM $table2 WHERE $where2");
 	return 1;
+}
+
+sub _defer {
+	my($self, $id) = @_;
+	my $table = $self->{_drop_table};
+	my $prime = $self->{_drop_prime};
+
+	my $id_db = $self->sqlQuote($id);
+	my $where = "$prime=$id_db";
+
+	$self->sqlUpdate($table, {
+		'send'	=> 'defer'
+	}, $where);
 }
 
 sub _delete {

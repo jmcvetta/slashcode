@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.4 2002/06/16 13:48:19 jamie Exp $
+# $Id: message_delivery.pl,v 1.5 2003/01/21 21:49:39 pudge Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -27,9 +27,23 @@ $task{$me}{code} = sub {
 
 	messagedLog("$me begin");
 
+	my @time = localtime();
+	$time[5] += 1900;
+	$time[4] += 1;
+	my $now = sprintf "%04d-%02d-%02d", @time[5, 4, 3];
+	my $last_deferred = $slashdb->getVar('messages_last_deferred', 'value') || 0;
+
 	my($successes, $failures) = (0, 0);
 	my $count = $constants->{message_process_count} || 10;
-	my $msgs  = $messages->gets($count);
+
+	my $msgs;
+	if ($last_deferred != $now) {
+		$msgs = $messages->gets($count);
+		$slashdb->setVar('messages_last_deferred', $now);
+	} else {
+		$msgs = $messages->gets($count, { 'send' => 'now' });
+	}
+
 	my @good  = $messages->process(@$msgs);
 
 	my %msgs  = map { ($_->{id}, $_) } @$msgs;
@@ -49,7 +63,7 @@ $task{$me}{code} = sub {
 	if ($successes or $failures) {
 		return "sent $successes ok, $failures failed";
 	} else {
-		return ;
+		return;
 	}
 };
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.159 2005/01/27 23:11:10 pudge Exp $
+# $Id: Environment.pm,v 1.160 2005/02/03 05:33:44 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.159 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1510,7 +1510,19 @@ sub prepareUser {
 			$user->{state}{page_buying} = $subscribe->buyingThisPage($r, $user);
 			$user->{state}{page_adless} = $subscribe->adlessPage($r, $user);
 		}
+	} elsif ($constants->{daypass}) {
+		# If the user is not a subscriber, they may still be
+		# _effectively_ a subscriber if they have a daypass.
+		my $daypass_db = getObject('Slash::Daypass', { db_type => 'reader' });
+		if ($daypass_db->userHasDaypass($user)) {
+			$user->{is_subscriber} = 1;
+			$user->{has_daypass} = 1;
+			$user->{state}{page_plummy} = 1;
+			$user->{state}{page_buying} = 0;
+			$user->{state}{page_adless} = 0;
+		}
 	}
+
 	if ($user->{seclev} >= 100) {
 		$user->{is_admin} = 1;
 		# can edit users and do all sorts of cool stuff
@@ -2689,4 +2701,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.159 2005/01/27 23:11:10 pudge Exp $
+$Id: Environment.pm,v 1.160 2005/02/03 05:33:44 jamiemccarthy Exp $

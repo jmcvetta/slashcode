@@ -51,6 +51,8 @@ There's another story coming up soon, stay tuned.
 and we'll let you read it! :)<BR>
 [% END %]
 
+[% daypass_plug_text %]
+
 	[% group    = ['Flock', 'Swarm', 'Barrel', 'Team', 'Squadron',
 	               'Group', 'Cadre'];
 	   modifier = ['Rabid', 'Uber', 'Psycho', 'Attack', 'Circus',
@@ -68,4 +70,4 @@ and we'll let you read it! :)<BR>
 __seclev__
 10000
 __version__
-$Id: indexhead;index;default,v 1.1 2004/12/07 21:52:27 pudge Exp $
+$Id: indexhead;index;default,v 1.2 2005/02/03 05:33:45 jamiemccarthy Exp $

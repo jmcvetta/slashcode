@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.106 2002/11/10 18:48:33 brian Exp $
+# $Id: admin.pl,v 1.107 2002/11/10 20:55:17 brian Exp $
 
 use strict;
 use Image::Size;
@@ -831,15 +831,11 @@ sub topicSave {
 
 	# The next few lines need to be wrapped in a transaction -Brian
 	$slashdb->deleteSectionTopicsByTopic($form->{tid}, $form->{type});
-	for my $element1(keys %$form) {
-		if ($element1 =~ /^exsect_(.*)/) {
-			my $sect = $1;
-			for my $element2(keys %$form) {
-			    if ($element2 =~ /^extype_${sect}_(.*)/) {
-				my $type = $1;
-				$slashdb->createSectionTopic($sect, $form->{tid}, $type);
-			    }
-			}
+	for my $element1 (keys %$form) {
+		if ($element1 =~ /^exsect/) {
+			# I picked | because sections, types can have _ in them -Brian
+			my ($junk, $sect, $type) = split(/\|/, $element1);
+			$slashdb->createSectionTopic($sect, $form->{tid}, $type);
 		}
 
 	}

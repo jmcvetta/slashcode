@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.48 2003/05/06 11:16:32 pudge Exp $
+# $Id: Anchor.pm,v 1.49 2003/05/13 19:25:11 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -521,13 +521,15 @@ EOT
 	# If this is the first time that getAd() is being called, we have
 	# to set up all the ad data at once before we can return anything.
 	if (!defined $user->{state}{ad}) {
-		# old way
-		prepAds();
-
-		# new way
-#		if (my $minithin = getObject('Slash::MiniThin', { db_type => 'reader' })) {
-#			$minithin->minithin;
-#		}
+		my $constants = getCurrentStatic();
+		if ($constants->{use_minithin} && $constants->{plugin}{MiniThin}) {
+			# new way
+			my $minithin = getObject('Slash::MiniThin', { db_type => 'reader' });
+			$minithin->minithin;
+		} else {
+			# old way
+			prepAds();
+		}
 	}
 
 	return $user->{state}{ad}{$num} || "";
@@ -587,4 +589,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.48 2003/05/06 11:16:32 pudge Exp $
+$Id: Anchor.pm,v 1.49 2003/05/13 19:25:11 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.62 2005/03/01 17:50:46 tvroom Exp $
+# $Id: pollBooth.pl,v 1.63 2005/03/08 22:17:36 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -516,7 +516,7 @@ sub listpolls {
 		$opts->{section} = '';
 	}
 
-	my $questions = $reader->getPollQuestionList($min, $opts);
+	$questions = $reader->getPollQuestionList($min, $opts);
 
 	my $sitename = getCurrentStatic('sitename');
 

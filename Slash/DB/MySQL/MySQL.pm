@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.634 2004/07/18 19:59:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.635 2004/07/18 23:24:11 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.634 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.635 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1587,6 +1587,8 @@ sub createAccessLog {
 
 	$user ||= {};
 	$user->{state} ||= {};
+	
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
 	if ($op eq 'image' && $constants->{accesslog_imageregex}) {
 		return if $constants->{accesslog_imageregex} eq 'NONE';
@@ -1618,7 +1620,7 @@ sub createAccessLog {
 
 	if ( $op eq 'index' && $dat =~ m|^([^/]*)| ) {
 		my $firstword = $1;
-		if ($self->getSkidFromName($firstword)) {
+		if ($reader->getSkidFromName($firstword)) {
 			$skin_name = $firstword;
 		}
 	}
@@ -1627,7 +1629,7 @@ sub createAccessLog {
 		$dat = $2;
 		$op = 'article';
 		my $firstword = $1;
-		if ($self->getSkidFromName($firstword)) {
+		if ($reader->getSkidFromName($firstword)) {
 			$skin_name = $firstword;
 		}
 	}
@@ -1644,7 +1646,7 @@ sub createAccessLog {
 		( unpack_sockaddr_in($r->connection()->local_addr()) )[1]
 	);
 	$status ||= $r->status;
-	my $skid = $self->getSkidFromName($skin_name);
+	my $skid = $reader->getSkidFromName($skin_name);
 	my $insert = {
 		host_addr	=> $ipid,
 		subnetid	=> $subnetid,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.405 2003/05/23 17:56:01 pudge Exp $
+# $Id: MySQL.pm,v 1.406 2003/05/23 18:09:37 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.405 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.406 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2200,25 +2200,28 @@ sub saveTopic {
 		height		=> $topic->{height},
 	};
 
+	my $data2 = {
+		name		=> $topic->{name},
+		default_image	=> $imgid,
+		alttext		=> $topic->{alttext},
+		parent_topic	=> $topic->{parent_topic},
+	};
+
+
 	# Using the topic as the name here probably isn't what is intended, but
 	# it should work just fine for now.     -Cliff
 	if (!$imgid) {
 		$self->sqlInsert('topic_images', $data);
-		$imgid = $self->getLastInsertId;
+		$data2->{default_image} = $self->getLastInsertId;
 	} else {
 		$self->sqlUpdate('topic_images', $data, "id=$imgid");
 	}
 
-	$data->{alttext}	= $topic->{alttext};
-	$data->{parent_topic}	= $topic->{parent_topic};
-	$data->{default_image}	= $imgid;
-	delete $data->{image};
-
 	if ($rows == 0) {
-		$self->sqlInsert('topics', $data);
+		$self->sqlInsert('topics', $data2);
 		$tid = $self->getLastInsertId;
 	} else {
-		$self->sqlUpdate('topics', $data, "tid=$tid");
+		$self->sqlUpdate('topics', $data2, "tid=$tid");
 	}
 
 	return $tid;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.764 2005/03/14 19:31:16 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.765 2005/03/23 18:32:36 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.764 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.765 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9208,10 +9208,10 @@ sub autoUrl {
 	my($now) = timeCalc(scalar localtime, '%m/%d %H:%M %Z', 0);
 
 	# Assorted Automatic Autoreplacements for Convenience
-	s|<disclaimer:(.*)>|<B><A HREF="/about.shtml#disclaimer">disclaimer</A>:<A HREF="$user->{homepage}">$user->{nickname}</A> owns shares in $1</B>|ig;
-	s|<update>|<B>Update: <date></B> by <author>|ig;
+	s|<disclaimer:(.*)>|<b><a href="/about.shtml#disclaimer">disclaimer</a>:<a href="$user->{homepage}">$user->{nickname}</a> owns shares in $1</b>|ig;
+	s|<update>|<b>Update: <date></b> by <author>|ig;
 	s|<date>|$now|g;
-	s|<author>|<B><A HREF="$user->{homepage}">$initials</A></B>:|ig;
+	s|<author>|<b><a href="$user->{homepage}">$initials</a></b>:|ig;
 
 	# Assorted ways to add files:
 	s|<import>|importText()|ex;

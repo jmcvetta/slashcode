@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.33 2002/04/29 15:37:05 pudge Exp $
+# $Id: MySQL.pm,v 1.34 2002/05/02 17:59:20 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -981,7 +981,7 @@ sub deleteStoryAll {
 
 ########################################################
 # For tasks/author_cache.pl
-# GREATEST() is because of inconsistent schema were some values can
+# GREATEST() is because of inconsistent schema where some values can
 # be NULL, which breaks MySQL -- pudge
 sub createAuthorCache {
 	my($self) = @_;

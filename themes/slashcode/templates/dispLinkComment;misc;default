@@ -29,6 +29,7 @@ __template__
 			|
 			[% Slash.linkComment({
 			sid	=> sid,
+			cid	=> cid,
 			pid	=> cid,
 			subject => 'View this thread',
 			subject_only => 1,
@@ -65,4 +66,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.17 2003/11/17 16:08:17 pater Exp $
+$Id: dispLinkComment;misc;default,v 1.18 2003/11/17 16:46:25 pater Exp $

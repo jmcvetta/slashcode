@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.8 2002/08/30 02:30:21 jamie Exp $
+# $Id: run_moderatord.pl,v 1.9 2002/08/30 04:06:56 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -114,7 +114,7 @@ sub get_backup_db {
 			moderatordLog('Replication requested but not active');
 			return undef;
 		}
-		if ($master_stat->{Position} - $slave_stat->{'pos'} > $lag) {
+		if ($master_stat->{Position} - $slave_stat->{Pos} > $lag) {
 			# The slave is lagging too much to use;  let's wait
 			# a bit for it to hopefully catch up.
 			$read_db = undef;

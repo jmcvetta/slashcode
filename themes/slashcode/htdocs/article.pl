@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.46 2003/07/25 17:40:27 pudge Exp $
+# $Id: article.pl,v 1.47 2003/07/29 18:45:25 vroom Exp $
 
 use strict;
 use Slash;
@@ -73,7 +73,21 @@ sub main {
 				author	=> $story->{uid},
 			},
 		};
-		header($links, $story->{section}) or return;
+		
+		my $topics=$reader->getStoryTopics($form->{sid},1);
+		my @topic_desc=values %$topics;
+		my $a;
+		if(@topic_desc==1){
+			$a="@topic_desc";
+		} elsif(@topic_desc==2){
+			$a=join(' and ',@topic_desc);
+		} elsif(@topic_desc > 2){
+			my $last=pop @topic_desc;
+			$a=join(', ',@topic_desc).", and $last";
+		}
+		my $meta_desc = "$story->{title}--article related to $a.";
+
+		header($links, $story->{section}, {meta_desc=>$meta_desc}) or return;
 
 		# Can't do this before getStoryByTime because
 		# $story->{time} is passed to an SQL request.

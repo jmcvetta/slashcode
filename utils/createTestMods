@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMods,v 1.11 2003/06/19 15:05:28 jamie Exp $
+# $Id: createTestMods,v 1.12 2003/08/18 18:46:52 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Slash::Utility;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -183,10 +183,13 @@ EOT
 # Yes. I am getting a little silly with these. But it's nice not having.
 # them clutter scope elsewhere, when they are only needed here.
 {
+my $depth = 0;
 my($min_uid, $max_uid);
 my(%exception_list);
 sub getRandomUserID {
 	my ($key,$val) = each %{$_[0]};
+	++$depth;
+	die "sorry, not enough activity on site to do a random mod" if $depth > 10;
 	if (!exists $exception_list{$val->{sid}}) {
 		LOOP:
 		for my $cid (keys %{$_[0]}) {
@@ -211,8 +214,9 @@ sub getRandomUserID {
 	$min_uid ||= $slashdb->sqlSelect('MIN(uid)', 'users');
 	my $ret = $min_uid + int(rand($max_uid - $min_uid + 1));  
 	for (@{$exception_list{$val->{sid}}}) {
-		return getRandomUserID(@_) if $_ == $ret;
+		$ret = getRandomUserID(@_), last if $_ == $ret;
 	}
+	--$depth;
         return $ret;
 } }
 

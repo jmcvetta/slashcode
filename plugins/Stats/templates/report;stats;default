@@ -111,7 +111,7 @@ gstatic total:        -          -    [% ints(stats_data.grand_total_static) %]
 [%
       PROCESS graphs gtitle => 'Pages';
       PROCESS graphs gtitle => 'Hits';
-      PROCESS graphs gtitle => 'Comments';
+      PROCESS graphs gtitle => 'Comment Scores';
       PROCESS graphs gtitle => 'Page Bytes';
       PROCESS graphs gtitle => 'Total Bytes';
       PROCESS graphs gtitle => 'Section Pages';
@@ -196,7 +196,7 @@ END %]
 <FORM METHOD="POST" ACTION="[% env.script_name %]">
    [% PROCESS formLabel value => "Reports" %]
    [% Slash.createSelect('report', reports, form.report, 1) %]
-   &nbsp;&nbsp;Days: [% PROCESS stats_days %]
+   &nbsp;&nbsp;Range: [% PROCESS stats_days %]
    &nbsp;&nbsp;Sections: [% Slash.createSelect('stats_section', sections, form.stats_section, 1) %]
 
    <INPUT TYPE="hidden" NAME="op" VALUE="report">
@@ -207,4 +207,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.23 2003/05/12 13:15:02 pudge Exp $
+$Id: report;stats;default,v 1.24 2003/05/12 18:14:14 pudge Exp $

@@ -141,8 +141,7 @@ SWITCH gtitle;
       END;
 
       PROCESS make_graph
-         type    => 'line'; 
-
+         type    => 'areastacked'; 
 
   # Moderation Report
   CASE 'Comment Scores';
@@ -178,4 +177,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: graphs;stats;default,v 1.1 2003/05/12 13:56:29 pudge Exp $
+$Id: graphs;stats;default,v 1.2 2003/05/12 18:14:14 pudge Exp $

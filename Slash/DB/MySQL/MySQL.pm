@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.751 2005/01/18 20:56:09 pudge Exp $
+# $Id: MySQL.pm,v 1.752 2005/01/26 04:58:59 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.751 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.752 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -641,7 +641,7 @@ sub _convertModsToComments {
 	my $constants = getCurrentStatic();
 	my $mainpage_skid = $constants->{mainpage_skid};
 
-	return { } unless scalar(@mods);
+	return [ ] unless scalar(@mods);
 
 	if (!scalar(keys %anonymize)) {
 		%anonymize = (
@@ -10892,7 +10892,7 @@ sub getSkins {
 		# Massage the skin_colors data into this hashref in an
 		# appropriate place.
 		for my $name (keys %{$colors->{$color_skid}}) {
-			$skins_ref->{$skid}{hexcolors}{$name} = $colors->{$color_skid}{$name}{hexcolor};
+			$skins_ref->{$skid}{skincolors}{$name} = $colors->{$color_skid}{$name}{skincolor};
 		}
 
 		$skins_ref->{$skid}{basedomain} = $skins_ref->{$host_skid}{hostname};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.74 2004/09/27 18:13:19 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.75 2005/01/26 04:59:46 jamiemccarthy Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -718,7 +718,7 @@ sub getSkinColors {
 
 	# The normal situation (no colorblock param in the URL).
 	if (my $gSkin = getCurrentSkin()) {
-		$user->{colors} = $gSkin->{hexcolors};
+		$user->{colors} = $gSkin->{skincolors};
 		return 1;
 	}
 
@@ -738,4 +738,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.74 2004/09/27 18:13:19 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.75 2005/01/26 04:59:46 jamiemccarthy Exp $

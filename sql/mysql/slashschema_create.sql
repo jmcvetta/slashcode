@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.185 2005/01/04 21:07:56 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.186 2005/01/26 04:59:49 jamiemccarthy Exp $
 #
 
 #
@@ -760,7 +760,7 @@ DROP TABLE IF EXISTS skin_colors;
 CREATE TABLE skin_colors (
 	skid SMALLINT UNSIGNED NOT NULL,
 	name VARCHAR(24) NOT NULL,
-	hexcolor CHAR(6) NOT NULL,
+	skincolor CHAR(12) NOT NULL,
 	UNIQUE skid_name (skid, name)
 ) TYPE=InnoDB;
 

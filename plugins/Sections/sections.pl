@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.14 2002/02/25 10:25:27 cliff Exp $
+# $Id: sections.pl,v 1.15 2002/02/25 15:51:26 pudge Exp $
 
 use strict;
 use Slash;
@@ -198,7 +198,6 @@ sub saveSection {
 		}
 	} 
 	$slashdb->setSectionExtras($section, \@extras) if @extras;
-
 }
 
 #################################################################

@@ -21,7 +21,7 @@ __template__
 [% IF storyref.title %]
 	<TABLE>
 		<TR VALIGN=TOP>
-			<TD>
+			<TD WIDTH="100%">
 			[% storycontent %]
 			</TD>
 
@@ -268,4 +268,4 @@ storyref.bodytext_wordcount %] word[% IF storyref.bodytext_wordcount != 1; "s"; 
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.50 2004/07/15 04:24:06 jamiemccarthy Exp $
+$Id: editStory;admin;default,v 1.51 2004/08/17 14:24:56 cowboyneal Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.1 2002/06/14 20:57:05 patg Exp $
+# $Id: Page.pm,v 1.2 2002/06/28 14:24:54 jamie Exp $
 
 package Slash::Page;
 
@@ -14,6 +14,8 @@ use Data::Dumper;
 use vars qw($VERSION @EXPORT);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
+
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 

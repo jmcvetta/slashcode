@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.483 2003/11/25 23:57:01 pater Exp $
+# $Id: MySQL.pm,v 1.484 2003/12/04 22:30:00 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.483 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.484 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5675,14 +5675,22 @@ sub calcTrollPoint {
 sub calcModval {
 	my($self, $where_clause, $halflife, $minicache) = @_;
 
+	return undef unless $where_clause;
+
 	# There's just no good way to do this with a join; it takes
 	# over 1 second and if either comment posting or moderation
 	# is reasonably heavy, the DB can get bogged very fast.  So
 	# let's split it up into two queries.  Dagnabbit.
+	# And in case we're being asked about a user who has posted
+	# many many comments (or heaven forfend, some bug lets this
+	# method be called for the anonymous coward), put a couple
+	# of sanity check limits on this query.
+	my $min_cid = $self->sqlSelect("MIN(cid)", "moderatorlog") || 0;
 	my $cid_ar = $self->sqlSelectColArrayref(
 		"cid",
 		"comments",
-		$where_clause,
+		"cid >= $min_cid AND $where_clause",
+		"ORDER BY cid DESC LIMIT 250"
 	);
 	return 0 if !$cid_ar or !@$cid_ar;
 

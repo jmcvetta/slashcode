@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.149 2002/05/03 02:54:29 cliff Exp $
+# $Id: MySQL.pm,v 1.150 2002/05/03 13:38:37 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1526,19 +1526,17 @@ sub createSection {
 }
 
 ########################################################
-
 sub createSubSection {
 	my($self, $section, $subsection, $artcount) = @_;
 
 	$self->sqlInsert('subsections', {
-		title	=> $subsection,
-		section	=> $section,
-		artcount=> $artcount || 0,
+		title		=> $subsection,
+		section		=> $section,
+		artcount	=> $artcount || 0,
 	});
 }
 
 ########################################################
-
 sub removeSubSection {
 	my($self, $section, $subsection) = @_;
 
@@ -4421,8 +4419,8 @@ sub getSlashConf {
 	$conf{textarea_rows}	||= 10;
 	$conf{textarea_cols}	||= 50;
 	$conf{allow_deletions}  ||= 1;
-	$conf{authors_unlimited} = 100 if !$conf{authors_unlimited}
-		|| $conf{authors_unlimited} == 1;
+	$conf{authors_unlimited} = 100 if ( (! defined $conf{authors_unlimited})
+		|| ($conf{authors_unlimited} == 1) );
 	# For all fields that it is safe to default to -1 if their
 	# values are not present...
 	for (qw[min_expiry_days max_expiry_days min_expiry_comm max_expiry_comm]) {
@@ -5102,7 +5100,6 @@ sub getSubSections {
 }
 
 ########################################################
-
 sub getSubSectionsBySection {
 	my($self, $section) = @_;
 

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.2 2002/06/14 04:34:15 cliff Exp $
+# $Id: print.pl,v 1.3 2002/06/17 14:42:58 pudge Exp $
 
 use strict;
 use Slash;
@@ -38,7 +38,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.2 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -85,6 +85,10 @@ sub main {
 	header($sect_title, 'print');
 	$user->{is_admin} = $adm;
 
+	# this will fail on several types of links, and assumes certain
+	# link formatting; html2text() in Slash::Utility is more robust,
+	# though it will reformat as text, which isn't desirable, but
+	# perhaps it could be modified somewhat for use here. -- pudge
 	my @story_links;
 	push @story_links, [$1, $2] while
 		$story->{relatedtext} =~

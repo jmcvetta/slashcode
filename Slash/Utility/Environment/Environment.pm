@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.37 2002/07/26 20:52:04 pudge Exp $
+# $Id: Environment.pm,v 1.38 2002/07/29 19:11:54 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1254,7 +1254,8 @@ Hashref of cleaned-up data.
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
-		artcount bseclev buymore cid clbig clsmall
+		approved artcount bseclev
+		buymore cid clbig clsmall
 		commentlimit commentsort commentspill
 		commentstatus del displaystatus
 		filter_id hbtm height highlightthresh
@@ -1651,8 +1652,8 @@ sub createEnvironment {
 	my $form = getCurrentForm();
 
 	# If this is a sectional site, we need to set our hostname if one exists.
-	my $hostname = $slashdb->getSection($form->{section}, 'hostname');
-	createCurrentHostname($hostname) if $hostname;
+	my $hostname = $slashdb->getSection($form->{section}, 'hostname') || "";
+	createCurrentHostname($hostname);
 
 	# We assume that the user for scripts is the anonymous user
 	createCurrentDB($slashdb);
@@ -1698,4 +1699,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.37 2002/07/26 20:52:04 pudge Exp $
+$Id: Environment.pm,v 1.38 2002/07/29 19:11:54 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.8 2002/08/26 17:38:17 pudge Exp $
+# $Id: Test.pm,v 1.9 2002/10/14 17:58:10 pudge Exp $
 
 package Slash::Test;
 
@@ -63,7 +63,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -81,7 +81,7 @@ Slash::Test->export_to_level(1, '', @EXPORT);
 # allow catching of virtual user in import list
 sub import {
     slashTest($_[1] || 'slash');
-    createCurrentUser($::user = $::slashdb->getUser($_[2])) if $_[2];
+    createCurrentUser($::user = prepareUser($_[2], $::form, $0)) if $_[2];
 }
 
 #========================================================================
@@ -184,4 +184,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.8 2002/08/26 17:38:17 pudge Exp $
+$Id: Test.pm,v 1.9 2002/10/14 17:58:10 pudge Exp $

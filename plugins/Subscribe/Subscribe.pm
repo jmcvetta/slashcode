@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.9 2002/03/01 13:44:36 jamie Exp $
+# $Id: Subscribe.pm,v 1.10 2002/03/01 15:04:38 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -70,24 +70,29 @@ sub _subscribeDecisionPage {
         } else {
                 $uri =~ s{^.*/([^/]+)\.pl$}{$1};
         }
-	my $first_defpage = (sort keys %{$self->{defpage}})[0] || "index";
-	if ($uri =~ /^(index|article|comments)$/) {
 		# We check to see if the user has saved preferences for
 		# which page types they want to buy.  This assumes the
 		# data like $user->{buypage_index} is stored in
-		# users_param;  if the first (alphabetic) page listed
-		# in the var does not exist, then we simply use the
-		# default values.
-		if (exists $user->{"buypage_$first_defpage"}) {
+		# users_param;  we spot-check a page listed in the var,
+		# and if there's no param for it, the user has never
+		# clicked Save so we use the default values.
+	my $test_defpage = "index"; # could do something fancy here, but eh, forget it
+	if ($uri =~ /^(index|article|comments)$/) {
+		# Check this specific page (either in the user's prefs
+		# or in the default values).
+		if (exists $user->{"buypage_$test_defpage"}) {
 			$decision = 1 if $user->{"buypage_$uri"};
 		} else {
 			$decision = 1 if $self->{defpage}{$uri};
 		}
 	} elsif ($trueOnOther) {
-		if (exists $user->{"buypage_$first_defpage"}) {
+		# There won't be an entry for this specific pages,
+		# so check to see if any of the user's prefs or any
+		# of the default values apply.
+		if (exists $user->{"buypage_$test_defpage"}) {
 			$decision = 1 if $user->{buypage_index}
-				or $user->{buypage_article}
-				or $user->{buypage_comments};
+				|| $user->{buypage_article}
+				|| $user->{buypage_comments};
 		} else {
 			$decision = 1 if $self->{defpage}{_any};
 		}

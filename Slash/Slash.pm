@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.140 2003/06/06 12:38:22 jamie Exp $
+# $Id: Slash.pm,v 1.141 2003/06/12 18:35:49 jamie Exp $
 
 package Slash;
 
@@ -1191,10 +1191,20 @@ sub displayStory {
 	} else {
 		$story = $reader->getStory($sid);
 	}
-	# Sites without an "index" section will never use this, which is probably ok.
-	if (!$form->{light} && !$user->{noicons} && !$user->{light} && !$form->{issue} && $constants->{section} eq 'index' && $story->{rendered} && !$full && !$options->{get_cacheable} && !$options->{is_future}) {
+
+	# There are many cases when we'd not want to return the pre-rendered text
+	# from the DB.
+	if (	   $story->{rendered} && !$options->{get_cacheable}
+		&& !$form->{light} && !$user->{light}
+		&& !$user->{noicons}
+		&& !$form->{issue}
+		&& $constants->{section} eq 'index'
+		&& !$full
+		&& !$options->{is_future}	 # can $story->{is_future} ever matter?
+	) {
 		$return = $story->{rendered};
 	} else {
+
 		my $author = $reader->getAuthor($story->{uid},
 				['nickname', 'fakeemail', 'homepage']);
 		my $topic = $reader->getTopic($story->{tid});
@@ -1209,6 +1219,7 @@ sub displayStory {
 		}
 
 		$return = dispStory($story, $author, $topic, $full, $options);
+
 	}
 
 	my $storytime = timeCalc($story->{'time'});

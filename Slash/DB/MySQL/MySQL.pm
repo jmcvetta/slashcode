@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.413 2003/06/08 15:12:33 jamie Exp $
+# $Id: MySQL.pm,v 1.414 2003/06/12 18:35:49 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.413 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.414 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4881,17 +4881,12 @@ sub getStoriesEssentials {
 	# (indeed any data at all) in the Older Stuff box, we need to grab a
 	# great deal of data here and trust that the Older Stuff box will trim
 	# it down to what's necessary.
-	if ($form->{issue}) {
-		# It would be slightly faster to calculate the
-		# yesterday/tomorrow for $form->{issue} in perl so that the
-		# DB only has to manipulate each row's "time" once instead
-		# of twice.  But this works now;  we'll optimize later. - Jamie
-		my $back_one_day_str =
-			'DATE_FORMAT(DATE_SUB(time, INTERVAL 1 DAY),"%Y%m%d")';
-		my $ahead_one_week_str =
-			'DATE_FORMAT(DATE_ADD(time, INTERVAL 7 DAY),"%Y%m%d")';
-		$where .=" AND '$form->{issue}' BETWEEN $back_one_day_str AND
-			$ahead_one_week_str ";
+	if ($form->{issue} && $form->{issue} =~ /^\d{8}$/) {
+		my $issue_start = timeCalc("$form->{issue}000000", "%Y-%m-%d %T",
+			-$user->{off_set} - 86400*7);
+		my $issue_end   = timeCalc("$form->{issue}235959", "%Y-%m-%d %T",
+			-$user->{off_set}          );
+		$where .= " AND time BETWEEN '$issue_start' AND '$issue_end'";
 	} else {
 		$other .= "LIMIT $limit ";
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.21 2004/11/15 20:46:30 pudge Exp $
+# $Id: RSS.pm,v 1.22 2004/11/30 18:38:08 cowboyneal Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -370,10 +370,20 @@ sub rss_story {
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
-	$encoded_item->{'link'} = $self->encode(
-		_tag_link("$channel->{'link'}article.pl?sid=$story->{sid}"),
-		'link'
-	) if $story->{sid};
+	if ($story->{sid}) {
+		if ($story->{primaryskid}) {
+			my $rootdir = $reader->getSkin($story->{primaryskid})->{absolutedir};
+			$encoded_item->{'link'} = $self->encode(
+                                _tag_link("$rootdir/article.pl?sid=$story->{sid}"),
+                                'link'
+                        );
+		} else {
+			$encoded_item->{'link'} = $self->encode(
+				_tag_link("$channel->{'link'}article.pl?sid=$story->{sid}"),
+				'link'
+			);
+		}
+	}
 
 	if ($version >= 0.91) {
 		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
@@ -497,4 +507,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.21 2004/11/15 20:46:30 pudge Exp $
+$Id: RSS.pm,v 1.22 2004/11/30 18:38:08 cowboyneal Exp $

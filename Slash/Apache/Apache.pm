@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.33 2002/08/09 01:01:13 brian Exp $
+# $Id: Apache.pm,v 1.34 2002/10/21 15:28:12 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -61,11 +61,8 @@ sub SlashVirtualUser ($$$) {
 		$cfg->{constants}{anonymous_coward_uid}
 	);
 
-	# Lets just do this once
-	my $timezones = $cfg->{slashdb}->getDescriptions('tzcodes');
-	$anonymous_coward->{off_set} = $timezones->{ $anonymous_coward->{tzcode} };
-	my $dateformats = $cfg->{slashdb}->getDescriptions('datecodes');
-	$anonymous_coward->{'format'} = $dateformats->{ $anonymous_coward->{dfid} };
+	# Let's just do this once
+	setUserDate($anonymous_coward);
 
 	createCurrentAnonymousCoward($cfg->{anonymous_coward} = $anonymous_coward);
 	createCurrentUser($anonymous_coward);

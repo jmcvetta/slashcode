@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.116 2002/10/20 13:18:32 jamie Exp $
+# $Id: users.pl,v 1.117 2002/10/21 15:28:13 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1369,7 +1369,7 @@ sub editHome {
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
 
-	my($formats, $title, $tzformat_select, $tzcode_select);
+	my($formats, $title, $tzformat_select);
 	my $user_edit = {};
 	my $fieldkey;
 
@@ -1400,10 +1400,6 @@ sub editHome {
 	$formats = $slashdb->getDescriptions('dateformats');
 	$tzformat_select = createSelect('tzformat', $formats, $user_edit->{dfid}, 1);
 
-	$formats = $slashdb->getDescriptions('tzcodes');
-	$tzcode_select =
-		createSelect('tzcode', [ keys %$formats ], $user_edit->{tzcode}, 1);
-
 	my $l_check = $user_edit->{light}		? ' CHECKED' : '';
 	my $b_check = $user_edit->{noboxes}		? ' CHECKED' : '';
 	my $i_check = $user_edit->{noicons}		? ' CHECKED' : '';
@@ -1420,7 +1416,6 @@ sub editHome {
 		admin_block		=> $admin_block,
 		user_edit		=> $user_edit,
 		tzformat_select		=> $tzformat_select,
-		tzcode_select		=> $tzcode_select,
 		l_check			=> $l_check,
 		b_check			=> $b_check,
 		i_check			=> $i_check,
@@ -2094,6 +2089,7 @@ sub saveHome {
 	if (defined $form->{tzcode} && defined $form->{tzformat}) {
 		$users_index_table->{tzcode} = $form->{tzcode};
 		$users_index_table->{dfid}   = $form->{tzformat};
+		$users_index_table->{dst}    = $form->{dst};
 	}
 
 	# Force the User Space area to contain only known-good HTML tags.

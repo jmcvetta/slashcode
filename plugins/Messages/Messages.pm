@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.14 2002/07/15 12:55:59 pudge Exp $
+# $Id: Messages.pm,v 1.15 2002/10/21 15:28:13 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -720,13 +720,7 @@ sub render {
 	$msg->{user}{prefs}	= $self->getPrefs($msg->{user}{uid} || $constants->{anonymous_coward_uid});
 	$msg->{fuser}		= $msg->{fuser} ? $slashdb->getUser($msg->{fuser}) : 0;
 	$msg->{type}		= $self->getDescription('messagecodes', $msg->{code});
-
-	# optimize these calls for getDescriptions ... ?
-	# they are cached already, but ...
-	my $timezones   = $slashdb->getDescriptions('tzcodes');
-	my $dateformats = $slashdb->getDescriptions('datecodes');
-	$msg->{user}{off_set}  = $timezones -> { $msg->{user}{tzcode} };
-	$msg->{user}{'format'} = $dateformats->{ $msg->{user}{dfid}   };
+	setUserDate($msg->{user}) if $msg->{user}{uid};
 
 	# sets $msg->{mode} too
 	my $mode = $self->getMode($msg);
@@ -925,4 +919,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.14 2002/07/15 12:55:59 pudge Exp $
+$Id: Messages.pm,v 1.15 2002/10/21 15:28:13 pudge Exp $

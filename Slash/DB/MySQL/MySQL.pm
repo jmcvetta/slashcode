@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.236 2002/10/11 17:27:02 brian Exp $
+# $Id: MySQL.pm,v 1.237 2002/10/21 15:28:12 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.236 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.237 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5206,6 +5206,29 @@ sub getPollVotesMax {
 	my $qid_quoted = $self->sqlQuote($qid);
 	my($answer) = $self->sqlSelect("MAX(votes)", "pollanswers",
 		"qid=$qid_quoted");
+	return $answer;
+}
+
+########################################################
+sub getTZCodes {
+	my($self) = @_;
+	my $answer = _genericGetsCache('tzcodes', 'tz', '', @_);
+	return $answer;
+}
+
+########################################################
+sub getDSTRegions {
+	my($self) = @_;
+	my $answer = _genericGetsCache('dst', 'region', '', @_);
+
+	for my $region (keys %$answer) {
+		my $dst = $answer->{$region};
+		$answer->{$region} = {
+			start	=> [ @$dst{map { "start_$_" } qw(hour wnum wday month)} ],
+			end	=> [ @$dst{map { "end_$_" } qw(hour wnum wday month)} ],
+		};
+	}
+
 	return $answer;
 }
 

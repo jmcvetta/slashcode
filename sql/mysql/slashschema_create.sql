@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.71 2002/09/25 20:34:05 brian Exp $
+# $Id: slashschema_create.sql,v 1.72 2002/10/21 15:28:13 pudge Exp $
 #
 
 #
@@ -249,6 +249,25 @@ CREATE TABLE discussions (
 	FOREIGN KEY (topic) REFERENCES topics(tid),
 	INDEX (type,uid,ts),
 	PRIMARY KEY (id)
+) TYPE = myisam;
+
+#
+# Table structure for table 'dst'
+#
+
+DROP TABLE IF EXISTS dst;
+CREATE TABLE dst (
+	region        VARCHAR(32)   NOT NULL,
+	selectable    TINYINT       DEFAULT 0 NOT NULL,
+	start_hour    TINYINT       NOT NULL,
+	start_wnum    TINYINT       NOT NULL,
+	start_wday    TINYINT       NOT NULL,
+	start_month   TINYINT       NOT NULL,
+	end_hour      TINYINT       NOT NULL,
+	end_wnum      TINYINT       NOT NULL,
+	end_wday      TINYINT       NOT NULL,
+	end_month     TINYINT       NOT NULL,
+	PRIMARY KEY (region)
 ) TYPE = myisam;
 
 #
@@ -799,9 +818,12 @@ CREATE TABLE topics (
 
 DROP TABLE IF EXISTS tzcodes;
 CREATE TABLE tzcodes (
-	tz char(4) DEFAULT '' NOT NULL,
-	off_set mediumint,
-	description varchar(64),
+	tz            CHAR(4)	    NOT NULL,
+	off_set       MEDIUMINT     NOT NULL, /* "offset" is a keyword in Postgres */
+	description   VARCHAR(64),
+	dst_region    VARCHAR(32),
+	dst_tz        CHAR(4),
+	dst_off_set   MEDIUMINT,
 	PRIMARY KEY (tz)
 ) TYPE = myisam;
 
@@ -977,7 +999,7 @@ CREATE TABLE users_prefs (
 	uid mediumint UNSIGNED NOT NULL,
 	willing tinyint DEFAULT '1' NOT NULL,
 	dfid tinyint UNSIGNED DEFAULT '0' NOT NULL,
-	tzcode char(4) DEFAULT 'EDT' NOT NULL,
+	tzcode char(4) DEFAULT 'EST' NOT NULL,
 	noicons tinyint DEFAULT '0' NOT NULL,
 	light tinyint DEFAULT '0' NOT NULL,
 	mylinks varchar(255) DEFAULT '' NOT NULL,

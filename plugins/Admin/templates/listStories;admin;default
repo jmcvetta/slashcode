@@ -51,7 +51,7 @@ END;
 	yesterday = story.td;
 	storiestoday = storiestoday + 1;
 
-	bgcolor = '';
+	bgcolor = '#FFFFFF';
 	IF story.displaystatus > 0;
 		bgcolor = '#CCCCCC';
 	ELSIF story.writestatus == 'delete' || story.displaystatus < 0;
@@ -132,4 +132,4 @@ END %]
 __seclev__
 500
 __version__
-$Id: listStories;admin;default,v 1.19 2003/06/28 00:16:45 pudge Exp $
+$Id: listStories;admin;default,v 1.20 2003/07/14 15:08:07 pudge Exp $

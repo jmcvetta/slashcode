@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.78 2002/10/24 01:06:26 jamie Exp $
+# $Id: Slash.pm,v 1.79 2002/11/14 03:38:36 jamie Exp $
 
 package Slash;
 
@@ -1277,6 +1277,7 @@ EOT
 			pid	=> $comment->{cid},
 			op	=> 'Reply',
 			subject	=> 'Reply to This',
+			subject_only => 1,
 		}) . " | ") unless $user->{state}{discussion_archived};
 
 		my $parent = linkComment({
@@ -1284,6 +1285,7 @@ EOT
 			cid	=> $comment->{pid},
 			pid	=> $comment->{pid},
 			subject	=> 'Parent',
+			subject_only => 1,
 		}, 1);
 		my $mod_select = '';
 		if ($can_mod) {

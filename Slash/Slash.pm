@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.4 2001/03/23 20:01:02 pudge Exp $
+# $Id: Slash.pm,v 1.5 2001/04/12 16:08:37 pudge Exp $
 
 package Slash;
 
@@ -1857,9 +1857,9 @@ sub dispStory {
 		topic	=> $topic,
 		author	=> $author,
 		full	=> $full,
-		magic	=> (!$full && index($story->{title}, ':') == (-1
+		magic	=> (!$full && (index($story->{title}, ':') == -1)
 			&& ($story->{section} ne $constants->{defaultsection})
-			&& ($story->{section} ne $form_section))),
+			&& ($story->{section} ne $form_section)),
 		width	=> $constants->{titlebar_width}
 	);
 

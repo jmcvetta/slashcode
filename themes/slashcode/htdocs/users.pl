@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.29 2001/03/29 17:41:54 pudge Exp $
+# $Id: users.pl,v 1.30 2001/04/12 16:08:37 pudge Exp $
 
 use strict;
 use Date::Manip;
@@ -672,7 +672,7 @@ sub saveHome {
 	}
 
 	my($extid, $exaid, $exsect) = '';
-	my $exboxes = $slashdb->getUser($uid, ['exboxes']);
+	my $exboxes = $slashdb->getUser($uid, 'exboxes');
 
 	$exboxes =~ s/'//g;
 	my @b = split m/,/, $exboxes;

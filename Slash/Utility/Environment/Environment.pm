@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.118 2004/03/02 02:56:17 tvroom Exp $
+# $Id: Environment.pm,v 1.119 2004/03/16 17:54:25 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1491,6 +1491,7 @@ Hashref of cleaned-up data.
 		nosubscriberbonus_present
 		ordernum pid
 		postanon_present posttype ratio retrieve
+		show_m1s show_m2s
 		seclev start startat threshold
 		thresh_count thresh_secs thresh_hps
 		uid uthreshold voters width
@@ -2355,4 +2356,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.118 2004/03/02 02:56:17 tvroom Exp $
+$Id: Environment.pm,v 1.119 2004/03/16 17:54:25 jamiemccarthy Exp $

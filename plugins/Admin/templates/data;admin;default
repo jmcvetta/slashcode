@@ -103,7 +103,7 @@ Saved [% form.thisname %]<BR>
 	in the clear. Please return to
 	<A HREF="[% constants.absolutedir_secure %]">the secure site</A>
 	and then
-	<A HREF="[% constants.absolutedir_secure %]/users.pl?op=changepasswd">change
+	<A HREF="[% constants.absolutedir_secure %]/my/password">change
 	your password</A>
 	immediately! If you have additional problems, please contact the
 	<A HREF="mailto:[% constants.adminmail | strip_attribute %]">site admin</a>.[%
@@ -144,4 +144,4 @@ as comment posting and moderation are currently unavailable.
 __seclev__
 10000
 __version__
-$Id: data;admin;default,v 1.15 2004/03/30 20:50:14 pudge Exp $
+$Id: data;admin;default,v 1.16 2004/05/04 21:43:33 pudge Exp $

@@ -44,7 +44,7 @@ __template__
 			<FONT COLOR="[% user.fg.3 %]">Log in/Create an Account</FONT>
 		</A>
 [% ELSE %]
-		<A HREF="[% constants.rootdir %]/my/comments/">
+		<A HREF="[% constants.rootdir %]/my/comments">
 			<FONT COLOR="[% user.fg.3 %]">Preferences</FONT>
 		</A>
 [% END %]
@@ -120,4 +120,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.18 2004/02/17 21:00:59 jamiemccarthy Exp $
+$Id: printCommentsMain;misc;default,v 1.19 2004/05/04 21:43:33 pudge Exp $

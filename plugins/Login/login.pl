@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.5 2004/05/01 07:00:32 pudge Exp $
+# $Id: login.pl,v 1.6 2004/05/04 21:43:33 pudge Exp $
 
 use strict;
 use Email::Valid;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -233,7 +233,7 @@ sub mailPasswd {
 		return mailPasswdForm(@_, $note);
 	}
 
-	_sendMailPasswd($user_send);
+	_sendMailPasswd(@_, $user_send);
 	mailPasswdForm(@_, getData('mail_mailed_note', { name => $user_send->{nickname} }));
 }
 

@@ -61,11 +61,11 @@ or <A HREF="[% constants.rootdir %]/faq/com-mod.shtml#cm2200">where you change t
 	<TR>
 		<TD>
 			<P><FONT COLOR="[% user.bg.3 %]"><B>Consider <A HREF="[% constants.rootdir %]/~[% nickname | fixparam %]/">[% nickname %]</A> a Friend</B></FONT> <IMG BORDER=0 SRC="[% constants.imagedir %]/fof.gif" ALT="Friends of Friends">  
-			&nbsp;<A HREF="[% constants.rootdir %]/my/comments/">[% IF user.people_bonus_fof %]([% user.people_bonus_fof %])[% ELSE %](+0)[% END %]</A>
+			&nbsp;<A HREF="[% constants.rootdir %]/my/comments">[% IF user.people_bonus_fof %]([% user.people_bonus_fof %])[% ELSE %](+0)[% END %]</A>
 		</TD>
 		<TD>
 			<P><FONT COLOR="[% user.bg.3 %]"><B>Consider <A HREF="[% constants.rootdir %]/~[% nickname | fixparam %]/">[% nickname %]</A> a Foe</B></FONT> <IMG BORDER=0 SRC="[% constants.imagedir %]/eof.gif" ALT="Foes of Friends"> 
-			&nbsp;<A HREF="[% constants.rootdir %]/my/comments/">[% IF user.people_bonus_eof %]([% user.people_bonus_eof %])[% ELSE %](+0)[% END %]</A>
+			&nbsp;<A HREF="[% constants.rootdir %]/my/comments">[% IF user.people_bonus_eof %]([% user.people_bonus_eof %])[% ELSE %](+0)[% END %]</A>
 		</TD>
 	</TR>
 	<TR>
@@ -93,4 +93,4 @@ or <A HREF="[% constants.rootdir %]/faq/com-mod.shtml#cm2200">where you change t
 __seclev__
 500
 __version__
-$Id: confirm;zoo;default,v 1.20 2003/09/08 06:02:29 pudge Exp $
+$Id: confirm;zoo;default,v 1.21 2004/05/04 21:43:33 pudge Exp $

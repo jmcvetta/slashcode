@@ -34,7 +34,7 @@ IF constants.plugin.Subscribe; tabs.push(
 	{ link = "/subscribe.pl",		label = "Subscription",	sel_label = "subscription" },
 ); END;
 tabs.push(
-	{ link = "/users.pl?op=changepasswd",	label = "Password",	sel_label = "password" },
+	{ link = "/my/password",		label = "Password",	sel_label = "password" },
 );
 
 PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selected %]
@@ -42,4 +42,4 @@ PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selec
 __seclev__
 10000
 __version__
-$Id: prefs_titlebar;misc;default,v 1.7 2003/05/15 15:55:32 jamie Exp $
+$Id: prefs_titlebar;misc;default,v 1.8 2004/05/04 21:43:33 pudge Exp $

@@ -36,7 +36,7 @@ You are currently eligible... why not hop over and help?
 		&& (messagecodes.4 && !prefs.4.defined) %]
 		If you'd like to be notified when your comments are
 		moderated and/or replied-to, please visit the
-		<A HREF="[% constants.rootdir %]/my/messages/">Message
+		<A HREF="[% constants.rootdir %]/my/messages">Message
 		Preferences page</a>.
 	[% END %]
 [% END %]
@@ -44,4 +44,4 @@ You are currently eligible... why not hop over and help?
 __seclev__
 1000
 __version__
-$Id: comment_submit;comments;default,v 1.10 2004/05/01 01:30:54 jamiemccarthy Exp $
+$Id: comment_submit;comments;default,v 1.11 2004/05/04 21:43:33 pudge Exp $

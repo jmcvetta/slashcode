@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.66 2004/04/02 00:43:01 pudge Exp $
+# $Id: Anchor.pm,v 1.67 2004/05/04 21:43:33 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -188,8 +188,11 @@ sub header {
 	if ($constants->{admin_check_clearpass}
 		&& ($user->{state}{admin_clearpass_thisclick} || $user->{admin_clearpass})
 	) {
-		if ($user->{currentPage} eq 'users'
-			&& $form->{op} eq 'savepasswd') {
+		if (
+			($user->{currentPage} eq 'login' && $form->{op} eq 'saveprefs')
+				||
+			($user->{currentPage} eq 'users' && $form->{op} eq 'savepasswd')
+		) {
 			# The user is trying to save a new password with this
 			# very click. They may or may not succeed. Their admin
 			# privs for this click were already taken away in
@@ -701,4 +704,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.66 2004/04/02 00:43:01 pudge Exp $
+$Id: Anchor.pm,v 1.67 2004/05/04 21:43:33 pudge Exp $

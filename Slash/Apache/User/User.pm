@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.105 2004/04/02 00:42:59 pudge Exp $
+# $Id: User.pm,v 1.106 2004/05/04 21:43:32 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -179,7 +179,7 @@ sub handler {
 				? $constants->{absolutedir_secure}
 				: $constants->{absolutedir};
 			$form->{returnto} = url2abs(($newpass
-				? "$constants->{rootdir}/users.pl?op=changepasswd" .
+				? "$constants->{rootdir}/login.pl?op=changeprefs" .
 					# XXX This "note" field is ignored now...
 					# right?  - Jamie 2002/09/17
 					# YYY I made it so it is just a silly code,
@@ -566,13 +566,13 @@ sub userdir_handler {
 				$r->uri('/users.pl');
 				$r->filename($constants->{basedir} . '/users.pl');
 			} elsif ($op eq 'password') {
-				$r->args("op=changepasswd");
-				$r->uri('/users.pl');
-				$r->filename($constants->{basedir} . '/users.pl');
+				$r->args("op=changeprefs");
+				$r->uri('/login.pl');
+				$r->filename($constants->{basedir} . '/login.pl');
 			} elsif ($op eq 'logout') {
 				$r->args("op=userclose");
-				$r->uri('/users.pl');
-				$r->filename($constants->{basedir} . '/users.pl');
+				$r->uri('/login.pl');
+				$r->filename($constants->{basedir} . '/login.pl');
 			} elsif ($op eq 'misc') {
 				$r->args("op=editmiscopts");
 				$r->uri('/users.pl');
@@ -615,11 +615,8 @@ sub userdir_handler {
 		# $r->args($ops{$op}[1] . "&nick=$nick");
 		# $r->uri($ops{$op}[0]);
 		# $r->filename($constants->{basedir} . $ops{$op}[0]);
-		# Not against it, or something like it. This is getting a bit long. 
-		# I would rather prefer it did not turn out like ops have though. -Brian
-		# what do you mean? -- pudge
 
-		unless ($uid) {
+		if (!$uid) {
 			$r->args("op=no_user");
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');

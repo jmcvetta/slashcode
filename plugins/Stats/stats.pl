@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.4 2002/12/02 20:51:46 pudge Exp $
+# $Id: stats.pl,v 1.5 2002/12/09 21:32:55 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -11,7 +11,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -29,6 +29,7 @@ sub main {
 
 	# possible value of "op" parameter in form
 	my %ops = (
+		report	=> [ $user->{is_admin},	\&report	],
 		graph	=> [ $user->{is_admin},	\&graph		],
 		list	=> [ $admin_post,	\&list		],
 
@@ -58,7 +59,7 @@ sub graph {
 	my $sections = _get_sections();
 	my @data;
 	for my $namesec (@{$form->{stats_graph_multiple}}) {
-		my($name, $section) = split /\|/, $namesec;
+		my($name, $section) = split /,/, $namesec;
 		my $stats_data = $stats->getAllStats({
 			section	=> $section,
 			name	=> $name,
@@ -91,6 +92,13 @@ sub graph {
 
 	$r->status(200);
 	return 1;
+}
+
+sub report {
+	my($slashdb, $constants, $user, $form, $stats) = @_;
+
+	slashDisplay('report', {
+	});
 }
 
 sub list {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.53 2002/07/22 14:04:03 brian Exp $
+# $Id: MySQL.pm,v 1.54 2002/08/01 16:28:10 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -117,15 +117,15 @@ sub getNewStoryTopic {
 	# work for all sites except those that post tons of duplicate
 	# topic stories.
 	$needed = $needed*3 + 5;
-	my $sth = $self->sqlSelectMany(
-		'alttext, image, width, height, stories.tid as tid',
-		'stories, topics',
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"alttext, image, width, height, stories.tid AS tid",
+		"stories, topics",
 		"stories.tid=topics.tid AND displaystatus = 0
-		AND writestatus != 'delete' AND time < NOW()",
+		 AND writestatus != 'delete' AND time < NOW()",
 		"ORDER BY time DESC LIMIT $needed"
 	);
 
-	return $sth;
+	return $ar;
 }
 
 ########################################################

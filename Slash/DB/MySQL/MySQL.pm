@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.667 2004/08/13 23:44:59 pudge Exp $
+# $Id: MySQL.pm,v 1.668 2004/08/14 18:25:34 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -10,7 +10,6 @@ use Digest::MD5 'md5_hex';
 use Time::HiRes;
 use Date::Format qw(time2str);
 use Data::Dumper;
-use POSIX ();
 use Slash::Utility;
 use Storable qw(thaw freeze);
 use URI ();
@@ -20,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.667 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.668 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2291,7 +2290,7 @@ sub getDBs {
 			$db->{_weight_factor} += (10 / $constants->{dbs_revive_seconds})
 				if $db->{_weight_factor} < 1;
 			$db->{_weight_factor} = 1 if $db->{_weight_factor} > 1;
-			$weight = POSIX::ceil($weight * $db->{_weight_factor});
+			$weight = int($weight * $db->{_weight_factor} + 1);
 		}
 
 		push @{$databases{$db->{type}}}, ($db) x $weight;

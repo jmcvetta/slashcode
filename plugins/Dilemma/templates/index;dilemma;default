@@ -52,6 +52,9 @@ message_count.read %] old message[% message_count.read == 1 ? "" : "s";
 
 [% END %]
 
+<p>[% PROCESS titlebar title => 'Dilemma-Related Stories' width='100%' %]
+<br>
+
 [% stories %]
 
 [% UNLESS user.noboxes %]
@@ -71,4 +74,4 @@ message_count.read %] old message[% message_count.read == 1 ? "" : "s";
 __seclev__
 10000
 __version__
-$Id: index;dilemma;default,v 1.1 2004/10/15 02:16:38 jamiemccarthy Exp $
+$Id: index;dilemma;default,v 1.2 2004/10/15 14:12:30 jamiemccarthy Exp $

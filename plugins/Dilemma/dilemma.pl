@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.4 2004/10/15 02:16:38 jamiemccarthy Exp $
+# $Id: dilemma.pl,v 1.5 2004/10/15 14:12:30 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -315,12 +315,11 @@ sub displayStories {
 		my $link;
 
 		if ($constants->{body_bytes}) {
-			$link = $story->{body_length} . ' ' .
-				$msg->{bytes}; 
+			$link = "$story->{body_length} $msg->{bytes}";
 		} else {
-			$link = sprintf '%d %s', $story->{word_count}, $msg->{words};
+			$link = "$story->{word_count} $msg->{words}";
 		}
-	
+
 		if ($story->{body_length} || $story->{commentcount}) {
 			push @links, linkStory({
 				'link'  => $link,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.23 2001/12/19 23:05:41 brian Exp $
+# $Id: admin.pl,v 1.24 2001/12/19 23:32:53 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1013,11 +1013,12 @@ sub editStory {
 	};
 
 	my $future = $slashdb->getStoryByTimeAdmin('>', $storyref, "3");
+	$future = [ reverse(@$future) ];
 	my $past = $slashdb->getStoryByTimeAdmin('<', $storyref, "3");
 
 	my $authortext = slashDisplay('futurestorybox', {
 					past => $past,
-					future => $future
+					future => $future,
 				}, { Return => 1 });
 
 	my $authorbox = fancybox($constants->{fancyboxwidth}, 'Story admin', $authortext, 0, 1);

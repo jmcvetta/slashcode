@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.151 2003/05/06 18:17:15 brian Exp $
+# $Id: admin.pl,v 1.152 2003/05/12 18:21:40 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -152,8 +152,7 @@ sub main {
 
 	# admin.pl is not for regular users
 	if ($user->{seclev} < 100) {
-		my $rootdir = getCurrentStatic('rootdir');
-		redirect("$rootdir/users.pl");
+		redirect("$constants->{rootdir}/users.pl");
 		return;
 	}
 	# non suadmin users can't perform suadmin ops

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.23 2003/05/12 16:28:33 jamie Exp $
+# $Id: subscribe.pl,v 1.24 2003/05/12 18:21:40 pudge Exp $
 
 use strict;
 
@@ -219,7 +219,7 @@ sub makepayment {
 sub pause {
 	my($form, $slashdb, $user, $constants) = @_;
 	sleep 5;
-	redirect("/subscribe.pl");
+	redirect("$constants->{rootdir}/subscribe.pl");
 }
 
 createEnvironment();

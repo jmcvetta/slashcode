@@ -24,10 +24,11 @@ __template__
 [%- END %]
 
 	<TR VALIGN="TOP"><TD>
-		[% PROCESS formLabel value => "Comments", comment => "Select default for new entries" %]
-		[% jds = Slash.db.getDescriptions("commentcodes") %]
-		[% def_jd = user.journal_discuss || constants.defaultcommentmode %]
-		[% Slash.createSelect("journal_discuss", jds, def_jd, 1) %]
+		[% PROCESS formLabel value => "Comments", comment => "Select default for new entries";
+ 		   jdcodename = (user.is_subscriber || user.is_admin) ? 'commentcodes_extended' : 'commentcodes';
+		   jds = Slash.db.getDescriptions(jdcodename);
+		   def_jd = user.journal_discuss || constants.defaultcommentmode;
+		   Slash.createSelect("journal_discuss", jds, def_jd, 1) %]
 	</TD></TR>
 </TABLE>
 <INPUT TYPE="submit" NAME="submit" VALUE="change">
@@ -37,4 +38,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaloptions;journal;default,v 1.5 2004/06/17 16:11:57 jamiemccarthy Exp $
+$Id: journaloptions;journal;default,v 1.6 2005/02/02 23:21:39 pudge Exp $

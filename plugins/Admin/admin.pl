@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.248 2004/11/15 18:16:29 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.249 2005/02/02 23:21:38 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1507,7 +1507,7 @@ sub editStory {
 
 	my $display_codes = $user->{section} ? 'displaycodes_sectional' : 'displaycodes';
 
-	$description = $slashdb->getDescriptions('commentcodes');
+	$description = $slashdb->getDescriptions('commentcodes_extended');
 	$commentstatus_select = createSelect('commentstatus', $description, $storyref->{commentstatus}, 1);
 
 	$fixquotes_check	= $constants->{markup_checked_attribute} if $form->{fixquotes};

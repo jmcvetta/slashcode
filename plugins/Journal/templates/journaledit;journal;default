@@ -30,7 +30,8 @@ __template__
 
 	[% IF !article.discussion %]
 		[% PROCESS formLabel value => "Comments", comment => "Comments cannot be disabled once enabled" %]
- 		[% jds = Slash.db.getDescriptions("commentcodes");
+ 		[% jdcodename = (user.is_subscriber || user.is_admin) ? 'commentcodes_extended' : 'commentcodes';
+ 		   jds = Slash.db.getDescriptions(jdcodename);
  		   def_jd = form.journal_discuss.defined
  		   	? form.journal_discuss
  		   	: article.id
@@ -69,4 +70,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.14 2004/07/02 15:41:20 jamiemccarthy Exp $
+$Id: journaledit;journal;default,v 1.15 2005/02/02 23:21:39 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.30 2002/04/16 04:14:42 brian Exp $
+# $Id: MySQL.pm,v 1.31 2002/04/16 18:36:03 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1020,21 +1020,22 @@ sub countAccesslogDaily {
 	return $self->sqlSelect("count(*)", "accesslog",
 		"to_days(now()) - to_days(ts)=1");
 }
+
 ########################################################
 # For portald
 
 sub createRSS {
 	my($self, $bid, $item) = @_;
 	$self->sqlInsert('rss_raw', {
-			'link_signature' => md5_hex($item->{'link'}),
-			title_signature => md5_hex($item->{'title'}),
-			description_signature => md5_hex($item->{'description'}),
-			'link' => $item->{'link'},
-			title => $item->{'title'},
-			description => $item->{'description'},
-			-created => 'now()',
-			bid => $bid,
-		}, { ignore => 1});
+		link_signature		=> md5_hex($item->{'link'}),
+		title_signature		=> md5_hex($item->{'title'}),
+		description_signature	=> md5_hex($item->{'description'}),
+		'link'			=> $item->{'link'},
+		title			=> $item->{'title'},
+		description		=> $item->{'description'},
+		-created		=> 'now()',
+		bid => $bid,
+	}, { ignore => 1});
 }
 
 sub getRSSNotProcessed {
@@ -1046,12 +1047,13 @@ sub expireRSS {
 	my($self, $day) = @_;
 	return unless $day;
 	$self->sqlUpdate('rss_raw', {
-			'processed' => 'yes',
-			'link' => '',
-			title => '',
-			description => '',
-		}, "created < '$day 00:00'");
+		processed	=> 'yes',
+		'link'		=> '',
+		title		=> '',
+		description	=> '',
+	}, "created < '$day 00:00'");
 }
+
 ########################################################
 # For slashd
 

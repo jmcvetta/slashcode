@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.55 2002/04/16 04:14:42 brian Exp $
+# $Id: admin.pl,v 1.56 2002/04/16 18:36:03 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -512,7 +512,7 @@ sub blockEdit {
 		retrieve_checked	=> $retrieve_checked,
 		blocktype_select	=> $blocktype_select,
 		sectionbid		=> $sectionbid,
-		autosubmit_select		=> $autosubmit_select,
+		autosubmit_select	=> $autosubmit_select,
 		rss_select		=> $rss_select,
 		rss_template_code	=> $rss_template_code,
 	});

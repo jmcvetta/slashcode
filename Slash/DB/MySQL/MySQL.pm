@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.551 2004/04/06 20:47:59 pudge Exp $
+# $Id: MySQL.pm,v 1.552 2004/04/10 21:17:51 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.551 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.552 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7782,7 +7782,13 @@ sub getTopicImageBySection {
 }
 
 ########################################################
-# Brian, make this cache -Brian
+# This really could be folded into getStoryTopics().
+# It effectively returns the same thing as getStoryTopics
+# with no $add_names argument -- the only differences are
+# that this method takes more options, uses a cache, and
+# returns an arrayref instead of hashref.  If those
+# features were added to getStoryTopics, we could get rid
+# of this method.  It only appears in our code four times.
 sub getStoryTopicsJustTids {
 	my($self, $sid, $options) = @_;
 	return $self->{_story_topics}{$sid} if $self->{_story_topics}{$sid} && !$options->{no_parents};
@@ -7796,8 +7802,16 @@ sub getStoryTopicsJustTids {
 }
 
 ########################################################
-# add_names = 1, or any other non-zero/non-two value  -> Topic Alt text.
-# add_names = 2 -> Topic Name.
+# As of 2004/04:
+# $add_names of 1 means to return the alt text, which is the
+# human-readable name of a topic.  This is currently used
+# only in article.pl to add these words and phrases to META
+# information on the webpage.
+# $add_names of 2 means to return the name, which is a
+# (not-guaranteed-unique) short single keyword.  This is
+# currently used only in adminmail.pl to append something
+# descriptive to the numeric tid for the topichits_123_foo
+# stats.
 sub getStoryTopics {
 	my($self, $sid, $add_names) = @_;
 	my($topicdesc);

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.26 2003/01/14 20:29:28 jamie Exp $
+# $Id: run_moderatord.pl,v 1.27 2003/01/27 21:47:32 jamie Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -303,7 +303,10 @@ sub give_out_tokens {
 	$statsSave->addStatDaily("mod_tokens_gain_clicks", $n_update_uids);
 
 	# We need to return the number of users we should give points to.
-	return int($n_update_uids / ($tokperpt*$maxpoints));
+	# If fractional, round up or down randomly (so if a site gives out
+	# 1 token each time, each time there will be a 1 in 40 chance that
+	# someone will get them cashed in for points).
+	return int($n_update_uids / ($tokperpt*$maxpoints) + rand(1));
 }
 
 ############################################################

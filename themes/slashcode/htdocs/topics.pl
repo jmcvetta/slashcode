@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.16 2003/02/14 21:58:12 brian Exp $
+# $Id: topics.pl,v 1.17 2003/02/17 19:52:04 brian Exp $
 
 use strict;
 use Slash;
@@ -49,7 +49,9 @@ sub hierarchy {
 		if ($topic->{parent_topic}) {
 			push(@{$parents{$topic->{parent_topic}}{child}}, $topic);
 		}
-		$parents{$topic->{tid}} = $topic;
+		for my $key (keys %$topic) {
+		$parents{$topic->{tid}}{$key} = $topic->{$key};
+		}
 	}
 	
 	for my $parent (values %parents) {

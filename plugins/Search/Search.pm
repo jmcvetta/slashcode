@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.52 2002/12/17 19:13:16 brian Exp $
+# $Id: Search.pm,v 1.53 2003/02/13 16:17:23 pudge Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -537,7 +537,7 @@ sub _cleanQuery {
 #################################################################
 sub DESTROY {
 	my($self) = @_;
-	$self->{_dbh}->disconnect unless $ENV{GATEWAY_INTERFACE};
+	$self->{_dbh}->disconnect if $self->{_dbh} && !$ENV{GATEWAY_INTERFACE};
 }
 
 1;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.226 2004/07/22 21:07:38 pudge Exp $
+# $Id: admin.pl,v 1.227 2004/08/05 20:13:58 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1512,8 +1512,8 @@ sub extractChosenFromForm {
 	if (defined $form->{topic_source} && $form->{topic_source} eq "submission"
 		&& $form->{subid}) {
 		my @topics = ($form->{tid});
-		if ($form->{skid}) {
-			my $nexus = $slashdb->getNexusFromSkid($form->{skid});
+		if ($form->{primaryskid}) {
+			my $nexus = $slashdb->getNexusFromSkid($form->{primaryskid});
 			push @topics, $nexus if $nexus;
 		}
 		for my $tid (@topics) {

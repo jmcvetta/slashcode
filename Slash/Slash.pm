@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.21 2001/11/24 21:01:36 jamie Exp $
+# $Id: Slash.pm,v 1.22 2001/11/26 17:35:24 pudge Exp $
 
 package Slash;
 
@@ -1019,7 +1019,7 @@ sub _hard_dispComment {
 			if $homepage;
 
 		$userinfo_to_display .= sprintf(' | Last Journal: <A HREF="%s/~%s/journal/">%s</A>',
-			$constants->{rootdir}, fixparam($nick), timeCalc($comment->{journal_last_entry_date})
+			$constants->{rootdir}, $nick, timeCalc($comment->{journal_last_entry_date})
 		) if $comment->{journal_last_entry_date} =~ /[1-9]/;
 
 		$userinfo_to_display .= ')</FONT>';
@@ -1029,9 +1029,10 @@ sub _hard_dispComment {
 		if ($comment->{fakeemail}) {
 			my $mail_literal = strip_literal($comment->{fakeemail});
 			my $mail_param = fixparam($comment->{fakeemail});
-			$user_to_display = qq| <A HREF="mailto:$mail_param">$comment->{nickname}</A> (<B><FONT SIZE="2">$mail_literal)</FONT></B>|;
+			my $nick_literal = strip_literal($comment->{nickname});
+			$user_to_display = qq| <A HREF="mailto:$mail_param">$nick_literal</A> (<B><FONT SIZE="2">$mail_literal)</FONT></B>|;
 		} else {
-			$user_to_display = $comment->{nickname};
+			$user_to_display = strip_literal($comment->{nickname});
 		}
 	}
 

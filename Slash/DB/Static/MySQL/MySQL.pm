@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.10 2001/11/03 03:07:22 brian Exp $
+# $Id: MySQL.pm,v 1.11 2001/11/26 17:35:24 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -406,7 +406,7 @@ sub updateStamps {
 ########################################################
 # For dailystuff
 sub getDailyMail {
-	my($self) = @_;
+	my($self, $user) = @_;
 
 	my $columns = "stories.sid, stories.title, stories.section,
 		users.nickname,
@@ -415,7 +415,20 @@ sub getDailyMail {
 	my $tables = "stories, story_text, users";
 	my $where = "time < NOW() AND TO_DAYS(NOW())-TO_DAYS(time)=1 ";
 	$where .= "AND users.uid=stories.uid AND stories.sid=story_text.sid ";
-	$where .= "AND stories.displaystatus=0 ";
+
+	if ($user->{sectioncollapse}) {
+		$where .= "AND stories.displaystatus>=0 ";
+	} else {
+		$where .= "AND stories.displaystatus=0 ";
+	}
+
+	$where .= "AND tid not in ($user->{extid}) "
+		if $user->{extid};
+	$where .= "AND stories.uid not in ($user->{exaid}) "
+		if $user->{exaid};
+	$where .= "AND section not in ($user->{exsect}) "
+		if $user->{exsect};
+
 	my $other = " ORDER BY stories.time DESC";
 
 	my $email = $self->sqlSelectAll($columns, $tables, $where, $other);

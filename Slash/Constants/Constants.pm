@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.1 2001/11/15 15:46:09 pudge Exp $
+# $Id: Constants.pm,v 1.2 2001/11/26 17:35:24 pudge Exp $
 
 package Slash::Constants;
 
@@ -30,7 +30,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw();
 
 =head2 messages
@@ -42,6 +42,10 @@ These constants are for message delivery modes and message type codes.
 	MSG_MODE_EMAIL
 	MSG_MODE_WEB
 
+	MSG_CODE_REGISTRATION
+	MSG_CODE_UNKNOWN
+	MSG_CODE_NEWSLETTER
+	MSG_CODE_HEADLINES
 	MSG_CODE_M2
 	MSG_CODE_COMMENT_MODERATE
 	MSG_CODE_COMMENT_REPLY
@@ -56,6 +60,10 @@ my @messages = qw(
 	MSG_MODE_EMAIL
 	MSG_MODE_WEB
 
+	MSG_CODE_REGISTRATION
+	MSG_CODE_UNKNOWN
+	MSG_CODE_NEWSLETTER
+	MSG_CODE_HEADLINES
 	MSG_CODE_M2
 	MSG_CODE_COMMENT_MODERATE
 	MSG_CODE_COMMENT_REPLY
@@ -160,4 +168,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.1 2001/11/15 15:46:09 pudge Exp $
+$Id: Constants.pm,v 1.2 2001/11/26 17:35:24 pudge Exp $

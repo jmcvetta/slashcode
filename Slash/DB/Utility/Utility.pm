@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.26 2002/08/30 05:15:41 jamie Exp $
+# $Id: Utility.pm,v 1.27 2002/09/02 05:05:21 jamie Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -499,7 +499,6 @@ sub sqlUpdate {
 	my @data_fields = ( );
 	my $order_hr = { };
 	if ($options && (!ref($options) || ref($options) ne 'ARRAY')) {
-#use Data::Dumper; print STDERR "sqlUpdate A: " . Dumper([ $table, $data, $where, $options ]);
 	}
 	if ($options && $options->{assn_order}) {
 		# Reorder the data fields into the order given.  Any
@@ -513,7 +512,6 @@ sub sqlUpdate {
 		for my $i (0..$#$order_ar) {
 			$order_hr->{$order_ar->[$i]} = $i + 1;
 		}
-#print STDERR "sqlUpdate B: order_ar " . Dumper($order_ar) . "order_hr " . Dumper($order_hr);
 	}
 	# In any case, the field names are sorted.  This is new
 	# behavior as of August 2002.  It should not break anything,
@@ -524,7 +522,6 @@ sub sqlUpdate {
 		||
 		$a cmp $b
 	} keys %$data;
-#if ($options) { print STDERR "sqlUpdate C: data_fields '@data_fields'\n" }
 
 	for my $field (@data_fields) {
 		if ($field =~ /^-/) {

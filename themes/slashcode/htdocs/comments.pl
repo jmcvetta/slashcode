@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.40 2002/01/10 22:05:36 brian Exp $
+# $Id: comments.pl,v 1.41 2002/01/11 03:59:41 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -809,7 +809,6 @@ sub submitComment {
 		return(0);
 	}
 
-
 	$tempComment = strip_mode($tempComment, $form->{posttype});
 	$form->{postercomment} = addDomainTags($tempComment);
 
@@ -843,14 +842,14 @@ sub submitComment {
 	}
 
 	my $clean_comment = {
-		comment	=>  $form->{postercomment},
-		sid => $form->{sid} , 
-		pid => $form->{pid} ,
-		ipid => $user->{ipid},
-		subnetid => $user->{subnetid},
-		subject => $form->{postersubj},
-		uid => $form->{postanon} ? $constants->{anonymous_coward_uid} : $user->{uid},
-		points => $pts,
+		comment		=> $form->{postercomment},
+		sid		=> $form->{sid} , 
+		pid		=> $form->{pid} ,
+		ipid		=> $user->{ipid},
+		subnetid	=> $user->{subnetid},
+		subject		=> $form->{postersubj},
+		uid		=> $form->{postanon} ? $constants->{anonymous_coward_uid} : $user->{uid},
+		points		=> $pts,
 	};
 
 	my $maxCid = $slashdb->createComment($clean_comment);

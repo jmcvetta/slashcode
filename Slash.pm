@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.6 2000/05/31 19:21:52 pudge Exp $
+#  $Id: Slash.pm,v 1.7 2000/06/01 12:20:57 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use CGI ();
@@ -39,7 +39,7 @@ BEGIN {
 
 	require Exporter;
 	use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS %I $CRLF);
-	$VERSION = '1.0.3';
+	$VERSION = '1.0.4';
 	@ISA	 = 'Exporter';
 	@EXPORT  = qw(
 		sqlSelectMany sqlSelect sqlSelectHash sqlSelectAll approveTag

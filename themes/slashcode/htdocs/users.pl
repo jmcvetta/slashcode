@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.80 2002/06/04 18:13:40 pudge Exp $
+# $Id: users.pl,v 1.81 2002/06/13 17:37:56 pater Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1097,7 +1097,7 @@ sub tildeEd {
 
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
-	my($aidref, $tidref, $sectionref, $section_descref, $tilde_ed, $tilded_msg_box);
+	my($aidref, $tidref, $sectionref, $section_descref, $order, $tilde_ed, $tilded_msg_box);
 
 	# users_tilded_title
 	my $title = getTitle('tildeEd_title');
@@ -1138,6 +1138,7 @@ sub tildeEd {
 	for (sort { lc $b->[1] cmp lc $a->[1]} @$sections_description) {
 		my($bid, $title, $boldflag) = @$_;
 
+		push(@$order, $bid);
 		$section_descref->{$bid}{checked} = ($exboxes =~ /'$bid'/) ?
 			' CHECKED' : '';
 		$section_descref->{$bid}{boldflag} = $boldflag > 0;
@@ -1153,6 +1154,7 @@ sub tildeEd {
 		tidref			=> $tidref,
 		sectionref		=> $sectionref,
 		section_descref		=> $section_descref,
+		order			=> $order,
 		userspace		=> $userspace,
 		customize_title		=> $customize_title,
 	}, 1);

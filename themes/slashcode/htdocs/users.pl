@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.47 2001/12/18 21:41:33 pudge Exp $
+# $Id: users.pl,v 1.48 2001/12/18 21:46:40 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1275,7 +1275,12 @@ sub editComm {
 		if $constants->{reasons} and ref($constants->{reasons}) eq 'ARRAY';
 
 	my %reason_select;
-	my @range = (-6 .. 6);
+
+# 	my @range = (-6 .. 6);
+	my $hi = $constants->{comment_maxscore} - $constants->{comment_minscore};
+	my $lo = -$hi;
+	my @range = ($lo .. $hi);
+
 	for (@reasons) {
 		my $key = "reason_alter_$_";
 		$reason_select{$_} = createSelect($key, \@range, 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.91 2002/07/30 14:19:13 jamie Exp $
+# $Id: admin.pl,v 1.92 2002/07/30 22:52:37 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1020,6 +1020,18 @@ sub editStory {
 	if ($form->{op} eq 'edit') {
 		$sid = $slashdb->getStory($form->{sid}, 'sid')
 			if ($form->{sid});
+	}
+	# Basically, we upload the bodytext if we realize a name has been passed in -Brian
+	if ($form->{bodytext_file}) {
+		my $upload = $form->{query_apache}->upload;
+		if ($upload) {
+			my $temp_body;
+			$form->{bodytext} = '';
+			my $fh = $upload->fh;
+			while(<$fh>) {
+				$form->{bodytext} .= $_;
+			}
+		}
 	}
 
 	my($extracolumn_flag) = (0, 0);

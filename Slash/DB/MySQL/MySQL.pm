@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.608 2004/07/02 21:15:30 pudge Exp $
+# $Id: MySQL.pm,v 1.609 2004/07/05 02:34:30 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.608 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.609 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8660,7 +8660,6 @@ sub getSkin {
 		$skid = getCurrentStatic('mainpage_skid');
 	}
 	my $skins = $self->getSkins($options);
-#use Data::Dumper; print "getSkin skins: " . Dumper($skins);
 	if ($skid !~ /^\d+$/) {
 		for my $id (sort keys %$skins) {
 			if ($skins->{$id}{name} eq $skid) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.44 2002/07/17 21:27:37 jamie Exp $
+# $Id: Stats.pm,v 1.45 2002/07/19 01:17:18 jamie Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -91,6 +91,16 @@ sub getSlaveDBLagCount {
 	# not available.
 	return 2**32 if !$backupdb;
 
+	# Use these methods instead, duh!
+	# perl -MSlash::Test=foobar -le 'print Dumper($slashdb->sqlShowMasterStatus())'
+	# $VAR1 = [
+	# 	  {
+	# 	    'Position' => '468524929',
+	# 	    'Binlog_do_db' => '',
+	# 	    'Binlog_ignore_db' => '',
+	# 	    'File' => 'cpu92-bin.246'
+	# 	  }
+	# 	];
 	my $master = ($slashdb ->{_dbh}->selectall_arrayref("SHOW MASTER STATUS"))->[0];
 	my $slave  = ($backupdb->{_dbh}->selectall_arrayref("SHOW SLAVE  STATUS"))->[0];
 	my($master_file) = $master->[0] =~ /\.(\d+)$/;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.134 2004/08/03 21:10:51 pudge Exp $
+# $Id: Environment.pm,v 1.135 2004/08/06 22:18:03 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.134 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.135 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2369,7 +2369,8 @@ sub determineCurrentSkin {
 		($skin) = grep { lc $skins->{$_}{hostname} eq lc $hostname }
 			sort { $a <=> $b } keys %$skins;
 
-		if (!$skin) {
+		# don't bother warning if $hostname is numeric IP
+		if (!$skin && $hostname !~ /^\d+\.\d+\.\d+\.\d+$/) {
 			$skin = getCurrentStatic('mainpage_skid');
 			if (!$skin) {
 				errorLog("determineCurrentSkin called but no skin found (even default) for $hostname\n");
@@ -2571,4 +2572,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.134 2004/08/03 21:10:51 pudge Exp $
+$Id: Environment.pm,v 1.135 2004/08/06 22:18:03 pudge Exp $

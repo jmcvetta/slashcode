@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.53 2000/11/27 16:12:46 pudge Exp $
+#  $Id: Slash.pm,v 1.54 2000/11/27 16:52:16 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1245,7 +1245,7 @@ sub stripBadHtml  {
 
 	$str =~ s/<(?!.*?>)//gs;
 	$str =~ s/<(.*?)>/approveTag($1)/sge;
-	$str =~ s/> </> $1/g;
+	$str =~ s/></> </g;
 
 	return $str;
 }
@@ -1258,7 +1258,7 @@ sub stripBadHtml  {
 		my($comment, $mwl) = @_;
 		my($new, $l, $c, $in_tag, $this_tag, $cwl);
 
-		$mwl = $mwl || 80;
+		$mwl = $mwl || 65;
 		$l = length($comment);
 
 		%is_break_tag = map { uc, 1 } qw(HR BR LI P OL UL BLOCKQUOTE DIV)

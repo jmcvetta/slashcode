@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.141 2004/04/20 19:27:53 tvroom Exp $
+# $Id: MySQL.pm,v 1.142 2004/04/22 16:06:56 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1246,13 +1246,16 @@ sub _set_factor {
 ########################################################
 # For run_moderatord.pl
 sub updateTokens {
-	my($self, $uidlist) = @_;
+	my($self, $uid_hr) = @_;
 	my $constants = getCurrentStatic();
 	my $maxtokens = $constants->{maxtokens} || 60;
-	for my $uid (@$uidlist) {
-		next unless $uid;
+	for my $uid (sort keys %$uid_hr) {
+		next unless $uid
+			&& $uid		   =~ /^\d+$/
+			&& $uid_hr->{$uid} =~ /^\d+$/;
+		my $add = $uid_hr->{$uid};
 		$self->setUser($uid, {
-			-tokens	=> "LEAST(tokens+1, $maxtokens)",
+			-tokens	=> "LEAST(tokens+$add, $maxtokens)",
 		});
 	}
 }

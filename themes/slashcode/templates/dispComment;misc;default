@@ -3,6 +3,7 @@ default
 __description__
 Display a comment
 
+* comment_shrunk = comment was too long; this is the stripped down version
 * reasons = hashref of moderation "reasons"
 * can_mod = boolean for whether or not current user can moderate
 * is_anon = boolean for whether or not comment user is anonymous
@@ -95,4 +96,4 @@ on [% Slash.timeCalc(time) %]
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.20 2003/05/12 23:07:43 brian Exp $
+$Id: dispComment;misc;default,v 1.21 2003/05/13 14:47:34 pudge Exp $

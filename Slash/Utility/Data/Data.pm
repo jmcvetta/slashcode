@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.53 2002/07/22 20:06:40 jamie Exp $
+# $Id: Data.pm,v 1.54 2002/08/02 20:45:14 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -913,12 +913,11 @@ sub breakHtml {
 		;
 	) }xi;
 
-	# Mark off breaking tags
+	# Mark off breaking tags, as we don't want them counted as
+	# part of long words
 	$text =~ s{
-		\s*
 		(</?$break_tag>)
-		\s*
-	}{ $1 }gsx;
+	}{\x00$1\x00}gsx;
 
 	# Temporarily hide whitespace inside tags so that the regex below
 	# won't accidentally catch attributes, e.g. the HREF= of an A tag.
@@ -953,7 +952,14 @@ sub breakHtml {
 	# of the text, eliminate it.
 	$text =~ s{<nobr> <wbr></nobr>\s*$}{};
 
-	# Change the NULs back to whitespace.
+	# Fix breaking tags
+	$text =~ s{
+		\x00
+		(</?$break_tag>)
+		\x00
+	}{$1}gsx;
+	
+	# Change other NULs back to whitespace.
 	$text =~ s{\x00}{ }g;
 
 	return $text;
@@ -2598,4 +2604,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.53 2002/07/22 20:06:40 jamie Exp $
+$Id: Data.pm,v 1.54 2002/08/02 20:45:14 pudge Exp $

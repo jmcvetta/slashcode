@@ -27,10 +27,10 @@ __template__
 [% n = 0 %]
 [% FOREACH story = stories %]
 	[% n = n + 1 %]
-		<A HREF="[% constants.rootdir %]/article.pl?sid=[% story.sid %]">[% story.title %]</A> on [% Slash.timeCalc(story.time) %]<BR>
+		<A HREF="[% gSkin.rootdir %]/article.pl?sid=[% story.sid %]">[% story.title %]</A> on [% Slash.timeCalc(story.time) %]<BR>
 [% END %]
 
 __seclev__
 500
 __version__
-$Id: userSub;users;default,v 1.8 2003/03/04 19:07:59 pudge Exp $
+$Id: userSub;users;default,v 1.9 2004/06/17 16:12:26 jamiemccarthy Exp $

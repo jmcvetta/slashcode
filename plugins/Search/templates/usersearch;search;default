@@ -21,7 +21,7 @@ __template__
 			</TD>
 		[% END %]
 		<TD VALIGN="TOP">
-			<A HREF="[% constants.rootdir %]/~[% thisuser.nickname | fixparam %]/">[% thisuser.nickname %]</A> &nbsp;
+			<A HREF="[% gSkin.rootdir %]/~[% thisuser.nickname | fixparam %]/">[% thisuser.nickname %]</A> &nbsp;
 			[% IF thisuser.fakeemail %]
 				([% thisuser.uid %]) email: <A HREF="mailto:[% thisuser.fakeemail | fixparam %]">[% thisuser.fakeemail | strip_literal %]</A> <BR>
 			[% ELSE %]
@@ -30,7 +30,7 @@ __template__
 		</TD>
 		[% IF thisuser.journal_last_entry_date %]
 			<TD VALIGN="TOP">
-				<A HREF="[% constants.rootdir %]/~[% thisuser.nickname | fixparam %]/journal/"><B><EM> Last Journal entry [% Slash.timeCalc(thisuser.journal_last_entry_date) %]</EM></A>
+				<A HREF="[% gSkin.rootdir %]/~[% thisuser.nickname | fixparam %]/journal/"><B><EM> Last Journal entry [% Slash.timeCalc(thisuser.journal_last_entry_date) %]</EM></A>
 			</TD>
 		[% ELSE %]
 			<TD VALIGN="TOP">
@@ -51,4 +51,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: usersearch;search;default,v 1.14 2003/03/04 19:07:59 pudge Exp $
+$Id: usersearch;search;default,v 1.15 2004/06/17 16:12:01 jamiemccarthy Exp $

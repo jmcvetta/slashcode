@@ -20,9 +20,9 @@ __template__
 <MULTICOLS COLS=2>
 [% FOR discussion = discussions %]
 	[% nickname = Slash.db.getUser(discussion.uid, 'nickname') %]
-	<LI><A HREF="[% constants.rootdir %]/comments.pl?sid=[% discussion.id %]">[%
+	<LI><A HREF="[% gSkin.rootdir %]/comments.pl?sid=[% discussion.id %]">[%
 IF discussion.title.defined %][% discussion.title %][% ELSE %]untitled[% END %]</A>
-	created by <A HREF="[% constants.rootdir %]/~[% nickname | fixparam %]/">[% nickname %]</A> on [% Slash.timeCalc(discussion.ts) %]
+	created by <A HREF="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname %]</A> on [% Slash.timeCalc(discussion.ts) %]
 [% END %]
 </MULTICOL>
 <P>
@@ -39,4 +39,4 @@ END %]
 __seclev__
 100
 __version__
-$Id: udiscuss_list;comments;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: udiscuss_list;comments;default,v 1.10 2004/06/17 16:12:26 jamiemccarthy Exp $

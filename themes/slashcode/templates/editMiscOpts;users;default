@@ -28,7 +28,7 @@ __template__
 <INPUT TYPE="HIDDEN" NAME="formname" VALUE="editmiscopts">
 <INPUT TYPE="HIDDEN" NAME="op" VALUE="savemiscopts">
 
-<TABLE ALIGN="CENTER" WIDTH="100%" BGCOLOR="[% user.bg.5 %]">
+<TABLE ALIGN="CENTER" WIDTH="100%" BGCOLOR="[% user.colors.bg_5 %]">
 	<TR>
 		<TD>
 
@@ -50,4 +50,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editMiscOpts;users;default,v 1.7 2003/03/04 19:07:59 pudge Exp $
+$Id: editMiscOpts;users;default,v 1.8 2004/06/17 16:12:25 jamiemccarthy Exp $

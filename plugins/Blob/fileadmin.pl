@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fileadmin.pl,v 1.8 2004/04/02 00:43:03 pudge Exp $
+# $Id: fileadmin.pl,v 1.9 2004/06/17 16:11:54 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,13 +12,14 @@ use Slash::Utility;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
+	my $gSkin     = getCurrentSkin();
 	my $blobdb    = getObject('Slash::Blob');
 
 	my $ops = {
@@ -52,7 +53,7 @@ sub main {
 
 	# admin.pl is not for regular users
 	unless ($user->{is_admin}) {
-		redirect("$constants->{rootdir}/");
+		redirect("$gSkin->{rootdir}/");
 		return;
 	}
 

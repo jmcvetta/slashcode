@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.15 2004/04/02 00:43:02 pudge Exp $
+# $Id: RSS.pm,v 1.16 2004/06/17 16:11:49 jamiemccarthy Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -146,6 +146,7 @@ sub create {
 	return unless exists $param->{items};
 
 	my $constants = getCurrentStatic();
+	my $gSkin = getCurrentSkin();
 
 	my $version  = $param->{version} && $param->{version} =~ /^\d+\.?\d*$/
 		? $param->{version}
@@ -169,8 +170,8 @@ sub create {
 
 	my $absolutedir = defined &Slash::Apache::ConnectionIsSSL
 	                  && Slash::Apache::ConnectionIsSSL()
-		? $constants->{absolutedir_secure}
-		: $constants->{absolutedir};
+		? $gSkin->{absolutedir_secure}
+		: $gSkin->{absolutedir};
 
 	# set defaults
 	my %channel = (
@@ -471,4 +472,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.15 2004/04/02 00:43:02 pudge Exp $
+$Id: RSS.pm,v 1.16 2004/06/17 16:11:49 jamiemccarthy Exp $

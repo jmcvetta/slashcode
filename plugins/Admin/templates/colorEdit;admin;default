@@ -13,7 +13,7 @@ colorEdit
 __template__
 [% IF form.colorpreview %]
 <br>
-<a href="[% constants.rootdir %]/index.pl?colorblock=[% colorblock_clean %]">
+<a href="[% gSkin.rootdir %]/index.pl?colorblock=[% colorblock_clean %]">
 <p><b>Click here to see the site in these colors!</a></b>
 (Hit the <b>"back"</b> button to get back to this page.)</p>
 [% END %]
@@ -128,4 +128,4 @@ Select the color block to edit:
 __seclev__
 500
 __version__
-$Id: colorEdit;admin;default,v 1.8 2003/03/04 19:07:58 pudge Exp $
+$Id: colorEdit;admin;default,v 1.9 2004/06/17 16:11:53 jamiemccarthy Exp $

@@ -1,9 +1,8 @@
 #
-# $Id: mysql_prep,v 1.7 2003/08/29 16:18:45 jamie Exp $
+# $Id: mysql_prep,v 1.8 2004/06/17 16:12:01 jamiemccarthy Exp $
 #
 
-ALTER TABLE stories add fulltext (title);
-ALTER TABLE story_text add fulltext (introtext,bodytext);
+ALTER TABLE story_text ADD FULLTEXT title (title), ADD FULLTEXT intro_body (introtext,bodytext);
 ALTER TABLE comments add fulltext (subject);
 ALTER TABLE comment_text add fulltext (comment);
 # ALTER TABLE blocks add fulltext (description,title,block);
@@ -11,4 +10,4 @@ ALTER TABLE users add fulltext (nickname);
 ALTER TABLE pollquestions add fulltext (question);
 ALTER TABLE journals add fulltext (description);
 ALTER TABLE journals_text add fulltext (article);
-ALTER TABLE submissions add fulltext (subj,story);
+#ALTER TABLE submissions add fulltext (subj,story);

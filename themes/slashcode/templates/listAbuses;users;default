@@ -16,18 +16,18 @@ __template__
 [% IF abuses.0 %]
 <TABLE CELLSPACING="0">
 	<TR>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>Timestamp</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>UID</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>IPID</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>SubnetID</B></TD>
-		<TD BGCOLOR="[% user.fg.4 %]"><B>Now</B></TD>
+		<TD BGCOLOR="[% user.colors.fg_4 %]"><B>Timestamp</B></TD>
+		<TD BGCOLOR="[% user.colors.fg_4 %]"><B>UID</B></TD>
+		<TD BGCOLOR="[% user.colors.fg_4 %]"><B>IPID</B></TD>
+		<TD BGCOLOR="[% user.colors.fg_4 %]"><B>SubnetID</B></TD>
+		<TD BGCOLOR="[% user.colors.fg_4 %]"><B>Now</B></TD>
 	</TR>
 [% FOR abuse = abuses %]
 	<TR>
 		<TD>[% abuse.0 %]</TD>
-		<TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.1 %]">[% abuse.1 %]</TD>
-		<TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.2 %]">[% abuse.2 %]</TD>
-		<TD><A HREF="[% constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.3 %]">[% abuse.3 %]</TD>
+		<TD><A HREF="[% gSkin.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.1 %]">[% abuse.1 %]</TD>
+		<TD><A HREF="[% gSkin.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.2 %]">[% abuse.2 %]</TD>
+		<TD><A HREF="[% gSkin.rootdir %]/users.pl?op=userinfo&amp;userfield=[% abuse.3 %]">[% abuse.3 %]</TD>
 		<TD>[% abuse.4 %]</TD>
 	</TR>
 [% END %]
@@ -40,4 +40,4 @@ No abuses for this user
 __seclev__
 100
 __version__
-$Id: listAbuses;users;default,v 1.2 2003/05/15 15:55:32 jamie Exp $
+$Id: listAbuses;users;default,v 1.3 2004/06/17 16:12:25 jamiemccarthy Exp $

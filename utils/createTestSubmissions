@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestSubmissions,v 1.5 2004/04/02 00:43:06 pudge Exp $
+# $Id: createTestSubmissions,v 1.6 2004/06/17 16:12:26 jamiemccarthy Exp $
 # Based on jamie's createTestStories. Any bugs are probably HIS fault.
 
 BEGIN {
@@ -23,9 +23,9 @@ use Slash;
 use Slash::Utility;
 use Benchmark;
 
-use vars qw( $slashdb $werder $constants );
+use vars qw( $slashdb $werder $constants $gSkin );
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -43,6 +43,7 @@ $slashdb = getCurrentDB();
 $werder = new Silly::Werder;
 $werder->set_syllables_num(2, 6);
 $constants = getCurrentStatic();
+$gSkin = getCurrentSkin();
 
 my $user;
 if (exists $opts{'U'}) {
@@ -64,7 +65,7 @@ if (exists $opts{'U'}) {
 	$min_weight ||= 0;
 	$max_weight ||= 99;
 
-	my $rootdir = $constants->{rootdir};
+	my $rootdir = $gSkin->{rootdir};
  
 	my $t0 = new Benchmark;
 	my $count = $opts{num_subs};

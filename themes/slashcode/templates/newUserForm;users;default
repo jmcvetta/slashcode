@@ -15,7 +15,7 @@ newUserForm
 __template__
 [% PROCESS titlebar title=title width="100%" %]
 <FORM ACTION="[% env.script_name %]" METHOD="POST">
-<TABLE ALIGN="CENTER" WIDTH="95%" BGCOLOR="[% user.bg.2 %]">
+<TABLE ALIGN="CENTER" WIDTH="95%" BGCOLOR="[% user.colors.bg_2 %]">
 [% PROCESS formkey_tag %]
 	<TR>
 		<TD><P>(Note: only the characters <TT>0-9a-zA-Z_.+!*'(),-$</TT>, plus space,
@@ -96,4 +96,4 @@ password mailed to you</A> by entering your nickname, uid, or email address.
 __seclev__
 10000
 __version__
-$Id: newUserForm;users;default,v 1.13 2003/08/19 02:55:25 vroom Exp $
+$Id: newUserForm;users;default,v 1.14 2004/06/17 16:12:25 jamiemccarthy Exp $

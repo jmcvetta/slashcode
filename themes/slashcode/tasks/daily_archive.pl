@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_archive.pl,v 1.27 2004/04/02 00:43:06 pudge Exp $
+# $Id: daily_archive.pl,v 1.28 2004/06/17 16:12:23 jamiemccarthy Exp $
 
 use strict;
 
@@ -89,8 +89,9 @@ sub archiveStories {
 	
 	my $totalTriedStories = 0;
 	my $totalChangedStories = 0;
-	for (@{$to_archive}) {
-		my($sid, $title, $section) = @{$_};
+	for my $story (@$to_archive) {
+		# XXXSECTIONTOPICS - now $section is NOT set here - Jamie
+		my($stoid, $sid, $title, $section) = @$story;
 
 		slashdLog("Archiving $sid") if verbosity() >= 2;
 		$totalTriedStories++;
@@ -125,7 +126,7 @@ sub archiveStories {
 		my($cc, $hp) = _read_and_unlink_cchp_file($cchp_file);
 		if (defined($cc)) {
 			# all is well, data was found
-			$slashdb->setStory($sid, {
+			$slashdb->setStory($stoid, {
 				writestatus  => 'archived',
 				commentcount => $cc,
 				hitparade    => $hp,

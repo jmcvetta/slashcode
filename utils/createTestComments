@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.20 2004/04/02 00:43:06 pudge Exp $
+# $Id: createTestComments,v 1.21 2004/06/17 16:12:26 jamiemccarthy Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -181,7 +181,7 @@ $werder = new Silly::Werder;
 		my $cid = $slashdb->createComment($clean_comment);
 		my $tc = $slashdb->getVar('totalComments', 'value', 1);
 		$slashdb->setVar('totalComments', ++$tc);
-		$slashdb->setStory($sid, { writestatus => 'dirty' }) if $sid;
+		$slashdb->setStory($sid, { is_dirty => 1 }) if $sid;
 	        $family_tree{$cid} = $pid if ! $opts{T};
 		$deep_tree{$cid} = $deep_tree{$pid}+1 if $opts{t};
 	        print <<EOT;
@@ -207,7 +207,7 @@ sub getRandomSid {
 		$story_table,
 		"discussion > 0
 		 AND $ds_clause
-		 AND writestatus != 'archived'
+		 AND is_archived = 'no'
 		 AND time < NOW()",
 		"ORDER BY time DESC");
 	my @sids = map { $_->[0] } @$sids;

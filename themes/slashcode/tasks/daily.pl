@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily.pl,v 1.7 2004/04/02 00:43:06 pudge Exp $
+# $Id: daily.pl,v 1.8 2004/06/17 16:12:23 jamiemccarthy Exp $
 
 use strict;
 
@@ -87,6 +87,7 @@ sub daily_generateDailyMailees {
 
 sub daily_generateDailyMail {
 	my($mailing, $user, $constants, $slashdb) = @_;
+	my $gSkin = getCurrentSkin();
 
 	my $stories;
 	# get data if not gotten yet
@@ -114,8 +115,8 @@ sub daily_generateDailyMail {
 	}
 
 	my $absolutedir = $user->{is_admin}
-		? $constants->{absolutedir_secure}
-		: $constants->{absolutedir};
+		? $gSkin->{absolutedir_secure}
+		: $gSkin->{absolutedir};
 
 	return slashDisplay($mailing,
 		{ stories => $stories, urlize => \&daily_urlize, absolutedir => $absolutedir },

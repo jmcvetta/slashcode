@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TemplatePages.pm,v 1.8 2004/04/02 00:42:59 pudge Exp $
+# $Id: TemplatePages.pm,v 1.9 2004/06/17 16:11:41 jamiemccarthy Exp $
 
 package Slash::Apache::TemplatePages;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -23,11 +23,17 @@ sub handler {
 	my $slashdb = getCurrentDB();
 	my $page = $r->uri;
 	$page =~ s|^/(.*)\.tmpl$|$1|;
-	my $section = getCurrentForm('section');
-	my $title = $slashdb->getTemplateByName('body', 'title', 1, $page, $section);
+	my $skin = getCurrentSkin('name');
+	my $title = $slashdb->getTemplateByName('body', {
+		values          => 'title',
+		cache_flag      => 1,
+		page            => $page,
+		skin            => $skin
+	});
+	# XXXSKIN - header() not yet ported
 	if ($title) {
-		header($title, $section) or return;
-		my $display = slashDisplay('body', '', { Page => $page, Section => $section, Return => 1 });
+		header($title, $skin) or return;
+		my $display = slashDisplay('body', '', { Page => $page, Skin => $skin, Return => 1 });
 		print $display;
 		footer();
 	} else {

@@ -132,7 +132,7 @@ __template__
 Your new password is [% newpasswd %].  Your old password will still work until
 this password is used.  Go to the URL below to log in:
 
-<[% constants.absolutedir %]/index.pl?op=userlogin&upasswd=[% newpasswd %]&unickname=[% tempnick | fixparam %]&returnto=%2Flogin.pl%3Fop=changeprefs>
+<[% gSkin.absolutedir %]/index.pl?op=userlogin&upasswd=[% newpasswd %]&unickname=[% tempnick | fixparam %]&returnto=%2Flogin.pl%3Fop=changeprefs>
 
 Make sure you then CHANGE YOUR PASSWORD!
 
@@ -156,4 +156,4 @@ but don't trust that value unless you know a reason to (we don't).[% END %]
 __seclev__
 10000
 __version__
-$Id: data;login;default,v 1.4 2004/05/04 21:43:33 pudge Exp $
+$Id: data;login;default,v 1.5 2004/06/17 16:11:57 jamiemccarthy Exp $

@@ -15,16 +15,16 @@ __template__
 	[% back = back || 0;
 	   IF (back > -1) || forward %]
 				[% IF (back > -1) %]
-					<A HREF="[% constants.rootdir %]/comments.pl?[% IF args %][% args %]&amp;[% END %]start=[% back %]">&lt;Last [% constants.discussion_display_limit %] [% label %]s</A>
+					<A HREF="[% gSkin.rootdir %]/comments.pl?[% IF args %][% args %]&amp;[% END %]start=[% back %]">&lt;Last [% constants.discussion_display_limit %] [% label %]s</A>
 				[% END %]
 				[% IF (back > -1) && forward %]
 					|
 				[% END %]
 				[% IF forward %]
-					<A HREF="[% constants.rootdir %]/comments.pl?[% IF args %][% args %]&amp;[% END %]start=[% forward %]">Next [% constants.discussion_display_limit %] [% label %]s&gt;</A>
+					<A HREF="[% gSkin.rootdir %]/comments.pl?[% IF args %][% args %]&amp;[% END %]start=[% forward %]">Next [% constants.discussion_display_limit %] [% label %]s&gt;</A>
 				[% END %]
 	[% END %]
 __seclev__
 100
 __version__
-$Id: pagination;comments;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: pagination;comments;default,v 1.5 2004/06/17 16:12:25 jamiemccarthy Exp $

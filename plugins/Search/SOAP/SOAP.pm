@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: SOAP.pm,v 1.4 2004/04/02 00:43:04 pudge Exp $
+# $Id: SOAP.pm,v 1.5 2004/06/17 16:12:01 jamiemccarthy Exp $
 
 package Slash::Search::SOAP;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # As a note I will be adding support for sort later.
 # I want to make it easy for people just to pass in a string
@@ -143,24 +143,6 @@ sub findRSS {
 		return;
 	} else {
 		$answers = $searchDB->findRSS($options, 0, MAX_NUM);
-	}
-
-	return $answers;
-}
-
-####################################################################################
-sub findDiscussion {
-	my($self, $query, $options) = @_;
-	$options->{query} = $query;
-
-	my($slashdb, $searchDB) = Slash::Search::SelectDataBases();
-	my $constants = getCurrentStatic();
-
-	my $answers;
-	if ($constants->{panic} >= 1 or $constants->{search_google}) {
-		return;
-	} else {
-		$answers = $searchDB->findDiscussion($options, 0, MAX_NUM);
 	}
 
 	return $answers;

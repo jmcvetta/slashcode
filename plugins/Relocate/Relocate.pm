@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.9 2004/04/02 00:43:04 pudge Exp $
+# $Id: Relocate.pm,v 1.10 2004/06/17 16:12:00 jamiemccarthy Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -46,18 +46,18 @@ sub create {
 		$values->{$prime} = $id;
 		$self->sqlInsert($table, {
 			id		=> $id,
-			-last_seen	=> 'now()',
+			-last_seen	=> 'NOW()',
 			url		=> $values->{url},
 			stats_type	=> $values->{stats_type}
 		});
 	}
 
-	if ($values->{sid}) {
-		my $where = "$prime='$id' AND sid='$values->{sid}'";
+	if ($values->{stoid}) {
+		my $where = "$prime='$id' AND stoid='$values->{stoid}'";
 		my $found  = $self->sqlSelect($prime, 'links_for_stories', $where);
 		$self->sqlInsert('links_for_stories', {
 			id	=> $id,
-			sid	=> $values->{sid},
+			stoid	=> $values->{stoid},
 		}) unless $found;
 	}
 
@@ -66,7 +66,7 @@ sub create {
 
 sub getStoriesForLinks {
 	my($self) = @_;
-	$self->sqlSelectAllHashrefArray('*', 'links_for_stories', '', "ORDER BY sid");
+	$self->sqlSelectAllHashrefArray('*', 'links_for_stories', '', "ORDER BY stoid");
 }
 
 sub increment_count {
@@ -79,9 +79,9 @@ sub increment_count {
 
 #========================================================================
 sub href2SlashTag {
-	my($self, $text, $sid, $options) = @_;
+	my($self, $text, $stoid, $options) = @_;
 	my $user = getCurrentUser();
-	return $text unless $text && $sid && getCurrentStatic('relocate_href2slash');
+	return $text unless $text && $stoid && getCurrentStatic('relocate_href2slash');
 	my $tokens = HTML::TokeParser->new(\$text);
 	if ($tokens) {
 		while (my $token = $tokens->get_tag(qw| a slash |)) {
@@ -90,14 +90,14 @@ sub href2SlashTag {
 				#Skip non HREF links
 				next unless $token->[1]{href} && $token->[1]{type} eq 'link';
 				if (!$token->[1]{id}) {
-					my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
+					my $link = $self->create({ stoid => $stoid, url => $token->[1]{href}});
 					my $href = strip_attribute($token->[1]{href});
 					my $title = strip_attribute($token->[1]{title});
 					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
 				} else {
 					my $url = $self->get($token->[1]{id}, 'url');
 					next if $url eq $token->[1]{href};
-					my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
+					my $link = $self->create({ stoid => $stoid, url => $token->[1]{href}});
 					my $href = strip_attribute($token->[1]{href});
 					my $title = strip_attribute($token->[1]{title});
 					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
@@ -110,7 +110,7 @@ sub href2SlashTag {
 				next if ($token->[1]{href} =~ /^mailto/i);
 				#This allows you to have a link bypass this system
 				next if ($token->[1]{FORCE} && $user->{is_admin});
-				my $link = $self->create({ sid => $sid, url => $token->[1]{href}});
+				my $link = $self->create({ stoid => $stoid, url => $token->[1]{href}});
 				my $data = $tokens->get_text("/a");
 				my $href = strip_attribute($token->[1]{href});
 				my $title = strip_attribute($token->[1]{title});

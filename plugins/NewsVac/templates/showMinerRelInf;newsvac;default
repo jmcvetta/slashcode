@@ -41,7 +41,7 @@ __template__
 
 	<tr valign="top">
 		<td align=right>
-		<A HREF="[% constants.rootdir
+		<A HREF="[% gSkin.rootdir
 		-%]/newsvac.pl?op=editurl&url_id=[% hashref.url_id %]">[% 
 		hashref.url_id -%]</a>
 		</td>
@@ -64,4 +64,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: showMinerRelInf;newsvac;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: showMinerRelInf;newsvac;default,v 1.4 2004/06/17 16:11:59 jamiemccarthy Exp $

@@ -30,7 +30,7 @@ __template__
 	futuretext = story.title;
    ELSE;
 	futuretext = BLOCK -%]
-<A HREF="[% constants.rootdir %]/article.pl?sid=[% story.sid %]">[% story.title %]</A>
+<A HREF="[% gSkin.rootdir %]/article.pl?sid=[% story.sid %]">[% story.title %]</A>
 	[%- END;
    END;
 
@@ -64,4 +64,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: futurestorybox;misc;default,v 1.7 2003/09/23 22:01:40 pudge Exp $
+$Id: futurestorybox;misc;default,v 1.8 2004/06/17 16:11:53 jamiemccarthy Exp $

@@ -20,9 +20,9 @@ __template__
 ))
 %][% Slash.root2abs() %]/index.pl?content_type=rss&amp;logtoken=[% user.logtoken | fixparam %][%
 ELSE
-%][% constants.rootdir %]/[% Slash.sitename2filename(user.currentSection) %].rss[%
+%][% gSkin.rootdir %]/[% Slash.sitename2filename(user.currentSkin) %].rss[%
 END -%]
 __seclev__
 10000
 __version__
-$Id: rsslink;misc;default,v 1.1 2004/01/29 23:51:35 pudge Exp $
+$Id: rsslink;misc;default,v 1.2 2004/06/17 16:12:25 jamiemccarthy Exp $

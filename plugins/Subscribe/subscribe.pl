@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.31 2004/04/02 00:43:05 pudge Exp $
+# $Id: subscribe.pl,v 1.32 2004/06/17 16:12:02 jamiemccarthy Exp $
 
 use strict;
 
@@ -52,7 +52,7 @@ sub main {
 	};
 
 	if ($user->{is_anon} && $op !~ /^(paypal|makepayment)$/) {
-		my $rootdir = getCurrentStatic('rootdir');
+		my $rootdir = getCurrentSkin('rootdir');
 		redirect("$rootdir/users.pl");
 		return;
 	}
@@ -234,8 +234,9 @@ sub makepayment {
 # page where they will see their new subscription options.
 sub pause {
 	my($form, $slashdb, $user, $constants) = @_;
+	my $gSkin = getCurrentSkin();
 	sleep 5;
-	redirect("$constants->{rootdir}/subscribe.pl");
+	redirect("$gSkin->{rootdir}/subscribe.pl");
 }
 
 sub grant {

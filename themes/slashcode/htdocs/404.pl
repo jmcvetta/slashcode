@@ -2,9 +2,10 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.15 2004/04/02 00:43:05 pudge Exp $
+# $Id: 404.pl,v 1.16 2004/06/17 16:12:20 jamiemccarthy Exp $
 
 use strict;
+use File::Spec::Functions;
 use Slash;
 use Slash::Display;
 use Slash::Utility;
@@ -12,19 +13,25 @@ use Slash::Utility;
 sub main {
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
+	my $gSkin = getCurrentSkin();
 	$ENV{REQUEST_URI} ||= '';
 
 	# catch missing .shtml links and redirect
 	# should only get here if static file not found
 	if ($ENV{REQUEST_URI} =~ m{^/?\w+/(\d\d/\d\d/\d\d/\d+)\.shtml(?:\?(\S*))?$}) {
 		my($sid, $extra) = ($1, $2);
-		my $slashdb = getCurrentDB();
-		my $story = $slashdb->getStory($sid); # get section, check if story exists
+		my $reader = getObject('Slash::DB', { db_type => 'reader' } );
+		my $story = $reader->getStory($sid); # get section, check if story exists
 		if ($story->{sid}) {
-			my $url = "$constants->{rootdir}/$story->{section}/$sid.shtml";
-			$url .= "?$extra" if $extra;
-			redirect($url);
-			return;
+			my $skin = $reader->getSkin($story->{primaryskid});
+			# XXXSKIN - hardcode as with Slash::Utility::Display
+			my $skinname = $skin->{name} eq 'mainpage' ? 'articles' : $skin->{name};
+			if (-e catfile($constants->{basedir}, $skinname, "$sid.shtml")) {
+				my $url = "$gSkin->{rootdir}/$skinname/$sid.shtml";
+				$url .= "?$extra" if $extra;
+				redirect($url);
+				return;
+			}
 		}
 	}
 

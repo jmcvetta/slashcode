@@ -33,14 +33,14 @@ __template__
 [% END -%]
 
 <!-- begin editUrl -->
-<FORM action="[% constants.rootdir %]/newsvac.pl" method="POST">
+<FORM action="[% gSkin.rootdir %]/newsvac.pl" method="POST">
 
 [% IF !url_id -%] 
 <p>no URL found with ID '[% url_id %]'
 
 [% ELSE -%] 
 [%	IF miner_id;
-		miner_id = BLOCK %]<a href="[% constants.rootdir -
+		miner_id = BLOCK %]<a href="[% gSkin.rootdir -
 		%]/newsvac.pl?op=editminer&miner_id=[% miner_id %]">[%
 		miner_id -%]</a>[% END;
    	END -%]
@@ -122,4 +122,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: editUrl;newsvac;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: editUrl;newsvac;default,v 1.5 2004/06/17 16:11:59 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.17 2004/04/02 00:43:01 pudge Exp $
+# $Id: Test.pm,v 1.18 2004/06/17 16:11:47 jamiemccarthy Exp $
 
 package Slash::Test;
 
@@ -55,8 +55,8 @@ Slash::Test - Command-line Slash testing
 
 Will export everything from Slash, Slash::Utility, Slash::Display,
 Slash::Constants, Slash::XML, and Data::Dumper into the current namespace.
-Will export $user, $anon, $form, $constants, and $slashdb as global variables
-into the current namespace.
+Will export $user, $anon, $form, $constants, $slashdb, and $gSkin as global
+variables into the current namespace.
 
 So use it one of three ways (use the default Virtual User,
 or pass it in via the import list, or pass in with slashTest()), and then
@@ -94,7 +94,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -146,7 +146,7 @@ None.
 =item Side effects
 
 Set up the environment with createEnvironment(), export $user, $anon,
-$form, $constants, and $slashdb into current namespace.
+$form, $constants, $slashdb, and $gSkin into current namespace.
 
 =back
 
@@ -161,14 +161,14 @@ sub slashTest {
 	eval { createEnvironment() };
 	die $@ if $@ && !$noerr;
 
-	# this should later be done automatically by the user init code
-	Slash::Utility::Anchor::getSectionColors();
+	setCurrentSkin(determineCurrentSkin());
 
 	$::slashdb   = getCurrentDB();
 	$::constants = getCurrentStatic();
 	$::user      = getCurrentUser();
 	$::anon      = getCurrentAnonymousCoward();
 	$::form      = getCurrentForm();
+	$::gSkin     = getCurrentSkin();
 
 	$::reader_db	= getObject('Slash::DB', { db_type => 'reader' });
 	$::writer_db	= getObject('Slash::DB', { db_type => 'writer' });
@@ -198,7 +198,7 @@ sub slashTest {
 A wrapper for slashDisplay().
 
 Pass in the full name of a template (e.g., "motd;misc;default", or just
-"motd" to accept default for page and section), and an optional HASHREF
+"motd" to accept default for page and skin), and an optional HASHREF
 of data.
 
 Nocomm is true.  Default is to print (else make RETURN true).
@@ -225,7 +225,7 @@ sub Display {
 Tests a template.
 
 Pass in the full name of a template (e.g., "motd;misc;default", or just
-"motd" to accept default for page and section), and an optional HASHREF
+"motd" to accept default for page and skin), and an optional HASHREF
 of data.
 
 No output is produced, only errors.
@@ -250,7 +250,7 @@ sub Test {
 sub _getTemplate {
 	my($template) = @_;
 
-	my($page, $section, $data) = ('', '', {});
+	my($page, $skin, $data) = ('', '', {});
 	if (!$template) {
 		$template = '';
 		while (<>) {
@@ -258,11 +258,11 @@ sub _getTemplate {
 		}
 		$template = \ "$template";  # anon template should be a reference
 	} elsif ($template =~ /^(\w+);(\w+);(\w+)$/) {
-		($template, $page, $section) = ($1, $2, $3)
+		($template, $page, $skin) = ($1, $2, $3)
 	}
 
-	$data->{Page}    = $page if $page;
-	$data->{Section} = $section if $section;
+	$data->{Page} = $page if $page;
+	$data->{Skin} = $skin if $skin;
 
 	return($template, $data);
 }
@@ -279,4 +279,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.17 2004/04/02 00:43:01 pudge Exp $
+$Id: Test.pm,v 1.18 2004/06/17 16:11:47 jamiemccarthy Exp $

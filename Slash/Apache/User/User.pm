@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.107 2004/05/11 19:13:29 tvroom Exp $
+# $Id: User.pm,v 1.108 2004/06/17 16:11:41 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -62,14 +62,17 @@ sub handler {
 	my $constants = getCurrentStatic();
 	my $slashdb = $dbcfg->{slashdb};
 	my $apr = Apache::Request->new($r);
+	# XXXSKIN - jamie, any problem with setting this here?
+	setCurrentSkin(determineCurrentSkin());
+	my $gSkin = getCurrentSkin();
 
 	$r->header_out('X-Powered-By' => "Slash $Slash::VERSION");
 	random($r);
 
 	# let pass unless / or .pl
 	my $uri = $r->uri;
-	if ($constants->{rootdir}) {
-		my $path = URI->new($constants->{rootdir})->path;
+	if ($gSkin->{rootdir}) {
+		my $path = URI->new($gSkin->{rootdir})->path;
 		$uri =~ s/^\Q$path//;
 	}
 
@@ -177,10 +180,10 @@ sub handler {
 			$form->{returnto} =~ s/%3D/=/;
 			$form->{returnto} =~ s/%3F/?/;
 			my $absolutedir = $is_ssl
-				? $constants->{absolutedir_secure}
-				: $constants->{absolutedir};
+				? $gSkin->{absolutedir_secure}
+				: $gSkin->{absolutedir};
 			$form->{returnto} = url2abs(($newpass
-				? "$constants->{rootdir}/login.pl?op=changeprefs" .
+				? "$gSkin->{rootdir}/login.pl?op=changeprefs" .
 					# XXX This "note" field is ignored now...
 					# right?  - Jamie 2002/09/17
 					# YYY I made it so it is just a silly code,
@@ -387,7 +390,7 @@ sub handler {
 		my $newloc = $uri;
 		$newloc .= "?" . $r->args if $r->args;
 		$r->err_header_out(Location =>
-			URI->new_abs($newloc, $constants->{absolutedir}));
+			URI->new_abs($newloc, $gSkin->{absolutedir}));
 		return REDIRECT;
 	}
 
@@ -480,6 +483,7 @@ sub userdir_handler {
 	return DECLINED unless $r->is_initial_req;
 
 	my $constants = getCurrentStatic();
+	my $gSkin = getCurrentSkin();
 
 	# note that, contrary to the RFC, a + in this handler
 	# will be treated as a space; the only way to get a +
@@ -491,8 +495,8 @@ sub userdir_handler {
 	my $saveuri = $uri;
 	$uri =~ s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;
 
-	if ($constants->{rootdir}) {
-		my $path = URI->new($constants->{rootdir})->path;
+	if ($gSkin->{rootdir}) {
+		my $path = URI->new($gSkin->{rootdir})->path;
 		$uri =~ s/^\Q$path//;
 	}
 

@@ -45,7 +45,7 @@ Saved [% form.thisname %]<BR>
 	<P><B>This block, [% bid %], already exists! <BR>Hit the "back" button, and try another bid (look at the blocks pulldown to see if you are using an existing one.)</P>
 
 [% CASE 'templateSave-exists-message' %]
-	<P><B>This template, [% name %], tpid [% tpid %], already exists! <BR>Hit the "back" button, and try another bid (loo
+	<P><B>This template, [% name %], tpid [% tpid %], already exists!
 
 [% CASE 'blockSave-inserted-message' %]
 	Inserted [% bid %]<BR>
@@ -84,4 +84,4 @@ Saved [% form.thisname %]<BR>
 __seclev__
 500
 __version__
-$Id: messages;admin;default,v 1.5 2003/03/04 19:07:58 pudge Exp $
+$Id: messages;admin;default,v 1.6 2004/06/17 16:11:53 jamiemccarthy Exp $

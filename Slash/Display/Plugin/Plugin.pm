@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Plugin.pm,v 1.11 2004/04/02 00:43:01 pudge Exp $
+# $Id: Plugin.pm,v 1.12 2004/06/17 16:11:46 jamiemccarthy Exp $
 
 package Slash::Display::Plugin;
 
@@ -30,7 +30,7 @@ of this Slash Template plugin.
 
 C<[% Slash.Display %]> provides access to C<slashDisplay()>.  Use
 this B<sparingly>, only when you need to pass in certain options
-(such as setting Section or Page).  In the general case, use
+(such as setting Skin or Page).  In the general case, use
 C<PROCESS> in the template, or C<INCLUDE> if necessary.
 This method will always set C<Return>, so you may assign its
 result to a variable, or call it by itself to have its result
@@ -64,7 +64,7 @@ use Slash::Constants ();
 use Slash::Utility ();
 use base qw(Template::Plugin);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Forget your stupid theme park!  I'm gonna make my own!
 # With hookers!  And blackjack!  In fact, forget the theme park!

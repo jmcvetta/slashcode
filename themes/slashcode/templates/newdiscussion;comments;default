@@ -19,8 +19,8 @@ newdiscussion
 __template__
 [% IF id %]
 [% PROCESS titlebar width => "100%", title => "New $label.ucfirst Created" %]
-<P>Your [% label %], <A HREF="[% constants.rootdir %]/comments.pl?sid=[% id %]"><B>[% form.title %]</B></A>,
-has been created.  Go to <A HREF="[% constants.rootdir %]/comments.pl?sid=[% id %]">[% constants.absolutedir %]/comments.pl?sid=[% id %]</A> to begin posting.  Remember this URL!</P>
+<P>Your [% label %], <A HREF="[% gSkin.rootdir %]/comments.pl?sid=[% id %]"><B>[% form.title %]</B></A>,
+has been created.  Go to <A HREF="[% gSkin.rootdir %]/comments.pl?sid=[% id %]">[% gSkin.absolutedir %]/comments.pl?sid=[% id %]</A> to begin posting.  Remember this URL!</P>
 <P><B>Please note, without a comment your [% label %] will not be listed in any indexes.</B></P>
 <P>
 [% ELSE %]
@@ -31,4 +31,4 @@ has been created.  Go to <A HREF="[% constants.rootdir %]/comments.pl?sid=[% id 
 __seclev__
 500
 __version__
-$Id: newdiscussion;comments;default,v 1.11 2003/03/04 19:07:59 pudge Exp $
+$Id: newdiscussion;comments;default,v 1.12 2004/06/17 16:12:25 jamiemccarthy Exp $

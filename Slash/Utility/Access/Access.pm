@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.24 2004/05/07 21:49:26 pudge Exp $
+# $Id: Access.pm,v 1.25 2004/06/17 16:11:47 jamiemccarthy Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -762,7 +762,8 @@ sub isDiscussionOpen {
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
 	my $people = $slashdb->getUser($discussion->{uid}, 'people');
-	if ($discussion->{commentstatus} eq 'friends_only' || $discussion->{commentstatus} eq 'friends_fof_only') {
+	if ($discussion->{commentstatus} eq 'friends_only'
+		|| $discussion->{commentstatus} eq 'friends_fof_only') {
 		my $orig = $discussion->{type};
 		$discussion->{type} = 'archived';
 		if ($people) {
@@ -808,4 +809,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.24 2004/05/07 21:49:26 pudge Exp $
+$Id: Access.pm,v 1.25 2004/06/17 16:11:47 jamiemccarthy Exp $

@@ -26,11 +26,11 @@ in this block -->
 [% END -%]
 
 [% UNLESS form.nohtml;
-	absdir = constants.absolutedir;
+	absdir = gSkin.absolutedir;
 	url = "<a href=\"$absdir/article.pl?sid=$story.sid\">$story.title</a>";
 	sitename = "<a href=\"$absdir/\">$constants.sitename</a>";
 ELSE;
-	absdir = constants.absolutedir;
+	absdir = gSkin.absolutedir;
 	url = "$story.title ($absdir/article.pl?sid=$story.sid)";
 	sitename = "$constants.sitename ($absdir)";
 END -%]
@@ -53,4 +53,4 @@ END -%]
 </BODY>
 </HTML>
 __version__
-$Id: footer;print;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: footer;print;default,v 1.7 2004/06/17 16:12:00 jamiemccarthy Exp $

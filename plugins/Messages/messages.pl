@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.24 2004/04/12 01:17:52 jamiemccarthy Exp $
+# $Id: messages.pl,v 1.25 2004/06/17 16:11:58 jamiemccarthy Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -15,7 +15,7 @@ use Slash::Utility;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 my $start_time = Time::HiRes::time;
@@ -74,7 +74,7 @@ sub edit_message {
 [% IF error_message %][% error_message %][% END %]
 <!-- end error message -->
 
-<FORM ACTION="[% constants.rootdir %]/messages.pl" METHOD="POST">
+<FORM ACTION="[% gSkin.rootdir %]/messages.pl" METHOD="POST">
 	<INPUT TYPE="HIDDEN" NAME="op" VALUE="send_message">
 [% IF form.formkey %]
 	<INPUT TYPE="HIDDEN" NAME="formkey" VALUE="[% form.formkey %]">

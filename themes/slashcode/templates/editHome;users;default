@@ -35,7 +35,7 @@ __template__
 <INPUT TYPE="HIDDEN" NAME="op" VALUE="savehome">
 <INPUT TYPE="HIDDEN" NAME="uid" VALUE="[% user_edit.uid %]">
 
-<TABLE ALIGN="CENTER" WIDTH="100%" BGCOLOR="[% user.bg.5 %]">
+<TABLE ALIGN="CENTER" WIDTH="100%" BGCOLOR="[% user.colors.bg_5 %]">
 	<TR>
 		<TD>
 		<B>Date/Time Format</B>
@@ -100,4 +100,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editHome;users;default,v 1.14 2003/12/16 18:58:56 vroom Exp $
+$Id: editHome;users;default,v 1.15 2004/06/17 16:12:25 jamiemccarthy Exp $

@@ -19,7 +19,7 @@ en_US
 __name__
 display
 __template__
-[% Slash.displayStory(story.sid, 'Full', { is_future => story.is_future }) %]
+[% Slash.displayStory(story.sid, 'Full', { is_future => story.is_future, topiclist => Slash.db.getTopiclistForStory(story.sid) }) %]
 
 <P>
 
@@ -95,4 +95,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: display;article;default,v 1.26 2004/05/09 14:18:44 jamiemccarthy Exp $
+$Id: display;article;default,v 1.27 2004/06/17 16:12:25 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.15 2004/04/02 00:42:59 pudge Exp $
+# $Id: DB.pm,v 1.16 2004/06/17 16:11:41 jamiemccarthy Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -308,28 +308,6 @@ No defined value.
 
 =back
 
-=head2 getDiscussions(KEY)
-
-I am the default documentation, short and stout.
-
-=over 4
-
-=item Parameters
-
-=over 4
-
-=item KEY
-
-Key, as in the KEY
-
-=back
-
-=item Return value
-
-Fixed KEY.
-
-=back
-
 =head2 getSessionInstance(KEY)
 
 I am the default documentation, short and stout.
@@ -416,11 +394,11 @@ datecodes
 commentmodes
 threshcodes
 postmodes
-isolatemodes
 issuemodes
 vars
 topics
 maillist
+(this list is WAY out of date)
 
 =over 4
 

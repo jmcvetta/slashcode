@@ -40,7 +40,7 @@ __template__
                 [%- IF !topics.$t || (topics.$t == 'All Topics'); NEXT; END -%]
                 [%- IF (col % maxcol) == 0 -%]
                 [% IF col %]</TD>[% END %]
-                <TD BGCOLOR="[% user.bg.2 %]" VALIGN="TOP">
+                <TD BGCOLOR="[% user.colors.bg_2 %]" VALIGN="TOP">
                 [% END -%]
                 <INPUT TYPE="checkbox" NAME="[% tid %]" VALUE="[% t %]"[% IF form.selected_topics.$t %] CHECKED[% END %]>
 								[% topics.$t %]<BR>
@@ -50,4 +50,4 @@ __template__
         </TR>
 </TABLE>
 __version__
-$Id: topicsearch;search;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: topicsearch;search;default,v 1.4 2004/06/17 16:12:01 jamiemccarthy Exp $

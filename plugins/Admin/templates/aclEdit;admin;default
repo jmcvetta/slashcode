@@ -22,7 +22,7 @@ __template__
 		<TD ALIGN="RIGHT">([% acls.$acl.size %])</TD>
 		<TD>
 		[% FOREACH uid = acls.$acl.nsort %]
-			<A HREF="[% constants.rootdir %]/users.pl?uid=[% uid | strip_attribute %]">[% uid %]</A>
+			<A HREF="[% gSkin.rootdir %]/users.pl?uid=[% uid | strip_attribute %]">[% uid %]</A>
 		[% END %]
 		</TD>
 	</TR>
@@ -43,4 +43,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: aclEdit;admin;default,v 1.3 2003/12/06 12:54:18 jamie Exp $
+$Id: aclEdit;admin;default,v 1.4 2004/06/17 16:11:53 jamiemccarthy Exp $

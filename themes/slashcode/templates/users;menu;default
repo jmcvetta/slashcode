@@ -14,7 +14,7 @@ en_US
 __name__
 users
 __template__
-<TABLE BGCOLOR="[% user.bg.5 %]" BORDER="0"  WIDTH="100%" CELLPADDING="2" CELLSPACING="0">
+<TABLE BGCOLOR="[% user.colors.bg_5 %]" BORDER="0"  WIDTH="100%" CELLPADDING="2" CELLSPACING="0">
 	<TR>
 		<TD>
 [ [% needbar = 0; FOR i = items %]
@@ -32,4 +32,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: users;menu;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: users;menu;default,v 1.7 2004/06/17 16:12:26 jamiemccarthy Exp $

@@ -15,7 +15,7 @@ setrectop_img
 __template__
 [% USE Slash %]
 
-<TD><A HREF="[% constants.rootdir %]/search.pl?topic=[% id %]"><IMG
+<TD><A HREF="[% gSkin.rootdir %]/search.pl?topic=[% id %]"><IMG
                 SRC="[% image %]"
                 WIDTH="[% width %]" HEIGHT="[% height %]"
                 BORDER="0" ALT="[% alttext %]" TITLE="[% alttext %]"></A>
@@ -24,4 +24,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: setrectop_img;misc;default,v 1.3 2003/04/28 03:10:22 brian Exp $
+$Id: setrectop_img;misc;default,v 1.4 2004/06/17 16:12:26 jamiemccarthy Exp $

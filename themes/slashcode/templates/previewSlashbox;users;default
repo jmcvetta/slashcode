@@ -20,13 +20,13 @@ __template__
 
 What you see on the right hand side is a preview of the block thingee
 labeled "[% block.title | strip_literal %]".  If you select it from the
-<A HREF="[% constants.rootdir %]/users.pl?op=edithome">Preferences Page</A>,
+<A HREF="[% gSkin.rootdir %]/users.pl?op=edithome">Preferences Page</A>,
 you will have that little block added to the right hand side of your
-<A HREF="[% constants.rootdir %]/index.pl">Custom [% constants.sitename %]</A> page.
+<A HREF="[% gSkin.rootdir %]/index.pl">Custom [% constants.sitename %]</A> page.
 Exciting?  Not really, but it's a great way to waste time.
 
 [% IF is_editable %]
-	<P>Edit <A HREF="[% constants.rootdir %]/admin.pl?op=blocks&amp;bid=[% form.bid %]">[% form.bid %]</A>
+	<P>Edit <A HREF="[% gSkin.rootdir %]/admin.pl?op=blocks&amp;bid=[% form.bid %]">[% form.bid %]</A>
 [% END %]
 
 	</TD><TD WIDTH="180" VALIGN="TOP">
@@ -34,4 +34,4 @@ Exciting?  Not really, but it's a great way to waste time.
 __seclev__
 10000
 __version__
-$Id: previewSlashbox;users;default,v 1.8 2003/04/09 19:38:13 pudge Exp $
+$Id: previewSlashbox;users;default,v 1.9 2004/06/17 16:12:25 jamiemccarthy Exp $

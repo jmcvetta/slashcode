@@ -29,7 +29,7 @@ __template__
 				<TD BGCOLOR="CCCCCC" ALIGN="CENTER"><FONT SIZE="2">[% Slash.horizmenu() %]</FONT></TD>
 				<TD BGCOLOR="505050" VALIGN="CENTER">
 				<FONT SIZE="2" COLOR="#FFFFFF">
-				<FORM METHOD="GET" ACTION="[% constants.rootdir %]/search.pl">
+				<FORM METHOD="GET" ACTION="[% gSkin.rootdir %]/search.pl">
 				&nbsp;<INPUT TYPE="TEXT" NAME="query" VALUE="" SIZE="15">
 				<INPUT TYPE="SUBMIT" VALUE="Search">&nbsp;
 				</FORM></FONT>
@@ -47,4 +47,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: footer;newsvac;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: footer;newsvac;default,v 1.5 2004/06/17 16:11:59 jamiemccarthy Exp $

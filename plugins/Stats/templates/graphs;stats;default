@@ -144,7 +144,7 @@ SWITCH gtitle;
   END;
 
   CASE 'Section Pages';
-      avail_sections = Slash.db.getDescriptions('sections');
+      avail_sections = Slash.db.getDescriptions('skins');
       sect_page = [];
       FOREACH section = avail_sections.keys.sort;
          sect_page.push(['page', section]);
@@ -154,7 +154,7 @@ SWITCH gtitle;
          statdata  => sect_page;
 
   CASE 'Section Bytes';
-      avail_sections = Slash.db.getDescriptions('sections');
+      avail_sections = Slash.db.getDescriptions('skins');
       sect_byte = [];
       FOREACH section = avail_sections.keys.sort;
          sect_byte.push(['bytes', section]);
@@ -266,4 +266,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: graphs;stats;default,v 1.10 2004/02/03 20:58:24 tvroom Exp $
+$Id: graphs;stats;default,v 1.11 2004/06/17 16:12:02 jamiemccarthy Exp $

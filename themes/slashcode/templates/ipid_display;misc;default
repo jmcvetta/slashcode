@@ -14,13 +14,13 @@ ipid_display
 __template__
 <BR><FONT FACE="[% constants.mainfontface %]" SIZE=1>IPID:
 <A HREF="[%
-constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[%
+gSkin.rootdir %]/users.pl?op=userinfo&amp;userfield=[%
 data.ipid %]&amp;fieldname=ipid">[% data.ipid_vis %]</A>&nbsp;&nbsp;SubnetID:
 <A HREF="[%
-constants.rootdir %]/users.pl?op=userinfo&amp;userfield=[%
+gSkin.rootdir %]/users.pl?op=userinfo&amp;userfield=[%
 data.subnetid %]&amp;fieldname=subnetid">[% data.subnetid_vis %]</A></FONT>
 
 __seclev__
 10000
 __version__
-$Id: ipid_display;misc;default,v 1.2 2003/03/04 19:07:59 pudge Exp $
+$Id: ipid_display;misc;default,v 1.3 2004/06/17 16:12:25 jamiemccarthy Exp $

@@ -17,13 +17,13 @@ __template__
 		<TR VALIGN="TOP" BGCOLOR="#FFFFFF">
 			<TD ALIGN="RIGHT" BGCOLOR="#FFFFFF">
 				[% IF forward %]
-					<A HREF="[% constants.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% forward %]">&lt;Next [% constants.journal_default_display %] entries</A>
+					<A HREF="[% gSkin.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% forward %]">&lt;Next [% constants.journal_default_display %] entries</A>
 				[% END %]
 				[% IF (back > -1) && forward %]
 					|
 				[% END %]
 				[% IF (back > -1) %]
-					<A HREF="[% constants.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% back %]">Last [% constants.journal_default_display %] entries&gt;</A>
+					<A HREF="[% gSkin.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% back %]">Last [% constants.journal_default_display %] entries&gt;</A>
 				[% END %]
 			</TD>
 		</TR>
@@ -31,4 +31,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: pagination;journal;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: pagination;journal;default,v 1.7 2004/06/17 16:11:57 jamiemccarthy Exp $

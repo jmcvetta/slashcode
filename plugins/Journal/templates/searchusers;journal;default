@@ -12,7 +12,7 @@ __name__
 searchusers
 __template__
 [% begin = BLOCK %]
-<FORM METHOD="POST" ACTION="[% constants.rootdir %]/journal.pl" ENCTYPE="application/x-www-form-urlencoded">
+<FORM METHOD="POST" ACTION="[% gSkin.rootdir %]/journal.pl" ENCTYPE="application/x-www-form-urlencoded">
 <INPUT TYPE="hidden" NAME="op" VALUE="searchusers">
 [% END %]
 
@@ -34,4 +34,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: searchusers;journal;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: searchusers;journal;default,v 1.5 2004/06/17 16:11:57 jamiemccarthy Exp $

@@ -24,9 +24,9 @@ __template__
 [% END %]
 <p>
 [% IF user.is_admin %]
-<A HREF="[% constants.rootdir %]/eventsadmin.pl?op=edit&amp;sid=[% sid %]">Edit Dates</A>
+<A HREF="[% gSkin.rootdir %]/eventsadmin.pl?op=edit&amp;sid=[% sid %]">Edit Dates</A>
 [% END %]
 __seclev__
 100
 __version__
-$Id: eventsadmin;misc;default,v 1.4 2003/03/04 19:07:58 pudge Exp $
+$Id: eventsadmin;misc;default,v 1.5 2004/06/17 16:11:56 jamiemccarthy Exp $

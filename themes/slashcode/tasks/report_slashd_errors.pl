@@ -2,7 +2,7 @@
 ## This code is a part of Slash, and is released under the GPL.
 ## Copyright 1997-2004 by Open Source Development Network. See README
 ## and COPYING for more information, or see http://slashcode.com/.
-## $Id: report_slashd_errors.pl,v 1.2 2004/06/06 23:31:12 jamiemccarthy Exp $
+## $Id: report_slashd_errors.pl,v 1.3 2004/06/17 16:12:23 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -21,8 +21,8 @@ $task{$me}{code} = sub {
 	$data{errors} = $slashdb->sqlSelectAllHashref('taskname',
 		'COUNT(ts) AS num, taskname, line, errnote, moreinfo',
 		'slashd_errnotes',
-		"ts BETWEEN '$lastrun' AND '$now',
-		'GROUP BY taskname");
+		"ts BETWEEN '$lastrun' AND '$now'",
+		'GROUP BY taskname');
 
 	my $messages = getObject('Slash::Messages');
 	

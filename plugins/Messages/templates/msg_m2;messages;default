@@ -34,7 +34,7 @@ Some of your past moderations have been meta-moderated by other
 [% IF msg.mode == 1%]
 <UL>
 [% FOREACH m2item = m2 -%]
-	<LI> "<A HREF="[% constants.rootdir; m2item.url | strip_attribute %]">[% m2item.subj %]</A>" from the discussion
+	<LI> "<A HREF="[% gSkin.rootdir; m2item.url | strip_attribute %]">[% m2item.subj %]</A>" from the discussion
 	"[% m2item.title %]" which you moderated as <B>[% m2item.reason.name %]</B> was voted 
 	<B>[% vote_result.${m2item.vote} %]</B>.
 
@@ -79,4 +79,4 @@ For your [% msg1 %] moderation, you have been [% msg2 %].
 __seclev__
 500
 __version__
-$Id: msg_m2;messages;default,v 1.12 2004/05/04 16:22:40 tvroom Exp $
+$Id: msg_m2;messages;default,v 1.13 2004/06/17 16:11:59 jamiemccarthy Exp $

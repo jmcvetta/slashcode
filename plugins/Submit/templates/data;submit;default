@@ -84,6 +84,10 @@ __template__
 	[% returnme.data_constant = 1 %]
 	All Sections
 
+[% CASE 'defaultskin' %]
+	[% returnme.data_constant = 1 %]
+	All Sections
+
 [% CASE 'defaultnote' %]
 	[% returnme.data_constant = 1 %]
 	Unclassified
@@ -93,4 +97,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;submit;default,v 1.9 2003/08/06 04:50:12 jamie Exp $
+$Id: data;submit;default,v 1.10 2004/06/17 16:12:02 jamiemccarthy Exp $

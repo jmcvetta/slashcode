@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Writer.pm,v 1.8 2004/04/02 00:43:05 pudge Exp $
+# $Id: Writer.pm,v 1.9 2004/06/17 16:12:02 jamiemccarthy Exp $
 
 package Slash::Stats::Writer;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -44,19 +44,19 @@ sub createStatDaily {
 	$options ||= {};
 	my $day = $options->{day} || $self->{_day};
 
-	my $section = $options->{section} || 'all';
+	my $skid = $options->{skid} || 0;
 	my $insert = {
 		'day'	=> $day,
 		'name'	=> $name,
 		'value'	=> $value,
 	};
-	$insert->{section} = $section;
+	$insert->{skid} = $skid;
 
 	my $overwrite = $self->{_overwrite} || $options->{overwrite};
 	if ($overwrite) {
 		my $where = "day=" . $self->sqlQuote($day)
 			. " AND name=" . $self->sqlQuote($name);
-		$where .= " AND section=" . $self->sqlQuote($section);
+		$where .= " AND skid=" . $self->sqlQuote($skid);
 #		$self->{_dbh}{AutoCommit} = 0;
 		$self->sqlDo("SET AUTOCOMMIT=0");
 		$self->sqlDelete('stats_daily', $where);
@@ -78,8 +78,8 @@ sub updateStatDaily {
 
 	my $where = "day = " . $self->sqlQuote($self->{_day});
 	$where .= " AND name = " . $self->sqlQuote($name);
-	my $section = $options->{section} || 'all';
-	$where .= " AND section = " . $self->sqlQuote($section);
+	my $skid = $options->{skid} || 0;
+	$where .= " AND skid = " . $self->sqlQuote($skid);
 
 	return $self->sqlUpdate('stats_daily', {
 		-value =>	$update_clause,

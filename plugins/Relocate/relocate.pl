@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: relocate.pl,v 1.6 2004/04/02 00:43:04 pudge Exp $
+# $Id: relocate.pl,v 1.7 2004/06/17 16:12:00 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -16,8 +16,8 @@ sub main {
 
 	my $link = $relocateDB->get($form->{id});
 	if (!$link) {
-		my $constants = getCurrentStatic();
-		redirect("$constants->{rootdir}/404.pl");
+		my $gSkin = getCurrentSkin();
+		redirect("$gSkin->{rootdir}/404.pl");
 	} elsif ($link->{is_alive} eq 'no') {
 		header("D'Oh") or return; # Needs to be templated -Brian
 		printDeadPage($link);

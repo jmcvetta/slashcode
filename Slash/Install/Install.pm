@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.41 2004/04/02 00:43:01 pudge Exp $
+# $Id: Install.pm,v 1.42 2004/06/17 16:11:47 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -51,6 +51,9 @@ sub get {
 	my($self, $key) = @_;
 	my $count = $self->sqlCount('site_info', "name=" . $self->sqlQuote($key));
 	my $hash;
+	# This "if count > 1" thing is pretty dumb, even lamer than
+	# checking wantarray.  Be nice if we could make this smarter.
+	# Jamie 2004/05
 	if ($count > 1) {
 		$hash = $self->sqlSelectAllHashref('param_id', '*', 'site_info', "name=" . $self->sqlQuote($key));
 	} else {
@@ -102,6 +105,7 @@ sub readTemplateFile {
 	for (@file) {
 		if (/^__(.*)__$/) {
 			$latch = $1;
+			$latch = 'skin' if $latch eq 'section';
 			next;
 		}
 		$val{$latch} .= $_ if $latch;
@@ -112,7 +116,7 @@ sub readTemplateFile {
 		# fields are used in ways that may be sensitive to
 		# extraneous whitespace.
 		local $/ = "";
-		for (qw| name page section lang seclev version |) {
+		for (qw| name page skin lang seclev version |) {
 			chomp($val{$_}) if $val{$_};
 		}
 	}
@@ -454,10 +458,13 @@ sub _install {
 	unless ($is_plugin) {
 		# This is where we cleanup any templates that don't belong
 		for (@{$hash->{'no-template'}}) {
-			my ($name, $page, $section) = split /;/, $_;
-			my $tpid = $self->{slashdb}->getTemplateByName($name, 'tpid', '', $page, $section);
-			$self->{slashdb}->deleteTemplate($tpid)
-				if $tpid;
+			my($name, $page, $skin) = split /;/, $_;
+			my $tpid = $self->{slashdb}->getTemplateByName($name, {
+				values  => 'tpid',
+				page    => $page,
+				skin    => $skin
+			});
+			$self->{slashdb}->deleteTemplate($tpid) if $tpid;
 		}
 	}
 }
@@ -493,8 +500,12 @@ sub getSiteTemplates {
 	# it might be nice if this looks in the THEME file ... -- pudge
 	my $include_theme = $self->get('include_theme');
 	if ($include_theme) {
-		my @no_templates; # Not current used -Brian
-		_parseFilesForTemplates("$slash_prefix/themes/$include_theme->{value}/THEME", \%templates, \@no_templates);
+#		my @no_templates; # Not current used -Brian
+		# Do we mean to not pass in the first @my_templates
+		# that was used? I don't know what was intended here.
+		# - Jamie 2004/05
+		my @no_templates_2;
+		_parseFilesForTemplates("$slash_prefix/themes/$include_theme->{value}/THEME", \%templates, \@no_templates_2);
 	}
 	$theme = $theme->{value};
 	_parseFilesForTemplates("$slash_prefix/themes/$theme/THEME", \%templates, \@no_templates);

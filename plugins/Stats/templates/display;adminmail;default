@@ -16,7 +16,7 @@ __template__
 
 [% constants.sitename %] Stats for [% day %]
 
-[% constants.absolutedir_secure %]/stats.pl?op=report&report=main&stats_days=7
+[% gSkin.absolutedir_secure %]/stats.pl?op=report&report=main&stats_days=7
 
                    UIDs      IPIDs      Pages 
         total: [% users %]   [% unique %]   [% total %] ([% total_bytes %])
@@ -193,4 +193,4 @@ Count  Nickname
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.74 2004/05/18 16:26:37 cowboyneal Exp $
+$Id: display;adminmail;default,v 1.75 2004/06/17 16:12:02 jamiemccarthy Exp $

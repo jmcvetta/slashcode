@@ -20,7 +20,7 @@ This is a friendly email from [% constants.sitename %] with a reminder that your
 expired. If you would like to remain registered to this site, please visit the following
 URL:
 
-http:[% constants.rootdir %]/users.pl?validateuser=1&id=[% registryid %]
+http:[% gSkin.rootdir %]/users.pl?validateuser=1&id=[% registryid %]
 
 and follow the displayed instructions. Re-registration should be quick and easy.
 
@@ -31,4 +31,4 @@ send your suggestions to the <A HREF="[% useradmin %]">administrator</A>.
 __seclev__
 1000
 __version__
-$Id: reRegisterMail;messages;default,v 1.3 2003/03/04 19:07:59 pudge Exp $
+$Id: reRegisterMail;messages;default,v 1.4 2004/06/17 16:12:25 jamiemccarthy Exp $

@@ -22,7 +22,7 @@ __template__
 	HEIGHT="[% tref.height %]">
 [% END %]
 
-<FORM ACTION="/search.pl" METHOD="GET">
+<FORM ACTION="[% gSkin.rootdir %]/search.pl" METHOD="GET">
 	<br>
 	<INPUT TYPE="TEXT" SIZE="40" NAME="query" VALUE="[% form.query %]">
 	<INPUT TYPE="SUBMIT" VALUE="Search"><BR>
@@ -85,4 +85,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.18 2004/06/03 01:16:52 pudge Exp $
+$Id: searchform;search;default,v 1.19 2004/06/17 16:12:01 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.55 2004/04/02 00:43:05 pudge Exp $
+# $Id: article.pl,v 1.56 2004/06/17 16:12:20 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -19,7 +19,7 @@ sub main {
 	my $story;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	$story = $reader->getStory($form->{sid});
+	$story = $reader->getStory($form->{s} || $form->{sid});
 
 	my $future_err = 0;
 	if ($story && $story->{is_future} && !($user->{is_admin} || $user->{author})) {
@@ -35,11 +35,13 @@ sub main {
 	# Always check the main DB for story status since it will always be accurate -Brian
 	if ($story
 		&& !($user->{author} || $user->{is_admin})
+		#XXXSECTIONTOPICS verify this is still correct 
 		&& !$slashdb->checkStoryViewable($form->{sid})) {
 		$story = '';
 	}
 
 	if ($story) {
+		# XXXSECTIONTOPICS this needs to be updated
 		my $SECT = $reader->getSection($story->{section});
 		# This should be a getData call for title
 		my $title = "$constants->{sitename} | $story->{title}";
@@ -146,7 +148,7 @@ sub main {
 			if ($constants->{tids_in_urls}) {
 				# This is to get tid in comments. It would be a mess to
 				# pass it directly to every comment -Brian
-				my $tids = $reader->getStoryTopicsJustTids($story->{sid}); 
+				my $tids = $reader->getTopiclistForStory($story->{sid}); 
 				my $tid_string = join('&amp;tid=', @$tids);
 				$user->{state}{tid} = $tid_string;
 			}

@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.30 2004/05/11 19:05:19 tvroom Exp $
+# $Id: Slash.pm,v 1.31 2004/06/17 16:11:39 jamiemccarthy Exp $
 #
 
 $Bundle::Slash::VERSION = '2.34';
@@ -50,6 +50,8 @@ HTML::TokeParser
 HTML::ElementTable	- required by HTML::CalendarMonth
 
 HTML::CalendarMonth	- used for Events plugin
+
+HTML::PopupTreeSelect   - topic selection on admin.pl
 
 Mail::Sendmail
 

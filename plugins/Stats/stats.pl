@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.26 2004/04/02 00:43:05 pudge Exp $
+# $Id: stats.pl,v 1.27 2004/06/17 16:12:02 jamiemccarthy Exp $
 
 use strict;
 use File::Path;
@@ -13,13 +13,14 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
+	my $gSkin     = getCurrentSkin();
 
 	# we can make a separate reader and writer, but we need to write, so
 	# for now ... writer
@@ -47,7 +48,7 @@ sub main {
 	}
 
 	if (!$ops{$op}[ALLOWED]) {
-		redirect("$constants->{rootdir}/users.pl");
+		redirect("$gSkin->{rootdir}/users.pl");
 		return;
 	}
 
@@ -255,7 +256,7 @@ sub _set_legend {
 sub _get_sections {
 	my $slashdb = getCurrentDB();
 	# don't modify the data, copy it
-	my %sections = %{$slashdb->getDescriptions('sections-all')};
+	my %sections = %{$slashdb->getDescriptions('skins')};
 	$sections{all} = 'All';
 	return \%sections;
 }

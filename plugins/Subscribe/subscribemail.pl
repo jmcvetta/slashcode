@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: subscribemail.pl,v 1.32 2003/12/20 06:34:14 jamie Exp $
+# $Id: subscribemail.pl,v 1.33 2004/06/17 16:12:02 jamiemccarthy Exp $
 
 use strict;
 
@@ -9,7 +9,7 @@ use vars qw( %task $me );
 $task{$me}{timespec} = '8 6 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, this can wait
 $task{$me}{code} = sub {
-	my($virtual_user, $constants, $slashdb, $user) = @_;
+	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;
 
 	my $backupdb = getObject('Slash::DB', { db_type => 'reader' });
 	my $sub_static = getObject("Slash::Subscribe::Static", { db_type => 'reader' });
@@ -223,7 +223,7 @@ $task{$me}{code} = sub {
 
 	my($report_link, $monthly_stats) = ("", "");
 	if ($constants->{plugin}{Stats}) {
-		$report_link = "\n$constants->{absolutedir_secure}/stats.pl?op=report&report=subscribe&stats_days=7\n";
+		$report_link = "\n$gSkin->{absolutedir_secure}/stats.pl?op=report&report=subscribe&stats_days=7\n";
 		if ($statsSave and my $stats = getObject('Slash::Stats')) {
 
 			# For a series of stats, calculate the last 30 days'

@@ -14,16 +14,16 @@ __template__
 	[% back = back || 0;
 	   IF (back > -1) || forward %]
 				[% IF (back > -1) %]
-					<A HREF="[% constants.rootdir %]/search.pl?[% args %]&amp;start=[% back %]">&lt;Last [% constants.search_default_display %] matches</A>
+					<A HREF="[% gSkin.rootdir %]/search.pl?[% args %]&amp;start=[% back %]">&lt;Last [% constants.search_default_display %] matches</A>
 				[% END %]
 				[% IF (back > -1) && forward %]
 					|
 				[% END %]
 				[% IF forward %]
-					<A HREF="[% constants.rootdir %]/search.pl?[% args %]&amp;start=[% forward %]">Next [% constants.search_default_display %] matches&gt;</A>
+					<A HREF="[% gSkin.rootdir %]/search.pl?[% args %]&amp;start=[% forward %]">Next [% constants.search_default_display %] matches&gt;</A>
 				[% END %]
 	[% END %]
 __seclev__
 100
 __version__
-$Id: pagination;search;default,v 1.9 2003/03/04 19:07:59 pudge Exp $
+$Id: pagination;search;default,v 1.10 2004/06/17 16:12:01 jamiemccarthy Exp $

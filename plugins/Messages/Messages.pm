@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.28 2004/05/07 23:06:04 pudge Exp $
+# $Id: Messages.pm,v 1.29 2004/06/17 16:11:58 jamiemccarthy Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -107,6 +107,7 @@ Whatever templates are passed in.
 
 sub create {
 	my($self, $uid, $type, $data, $fid, $altto, $send) = @_;
+	my $gSkin = getCurrentSkin();
 	my $message;
 
 	# must not contain non-numeric
@@ -150,7 +151,7 @@ sub create {
 		$data->{_PAGE}    = delete($data->{template_page})
 			|| $user->{currentPage};
 		$data->{_SECTION} = delete($data->{template_section})
-			|| $user->{currentSection};
+			|| $gSkin->{name};
 
 		# set subject
 		if (exists $data->{subject} && ref($data->{subject}) eq 'HASH') {
@@ -166,7 +167,7 @@ sub create {
 			$data->{subject}{_PAGE}    = delete($data->{subject}{template_page})
 				|| $data->{_PAGE}    || $user->{currentPage};
 			$data->{subject}{_SECTION} = delete($data->{subject}{template_section})
-				|| $data->{_SECTION} || $user->{currentSection};
+				|| $data->{_SECTION} || $gSkin->{name};
 		}
 
 		$data->{_templates}{email}{content}	||= 'msg_email';
@@ -887,6 +888,7 @@ sub callTemplate {
 	my($self, $data, $msg) = @_;
 	my $slashdb   = getCurrentDB();
 	my $constants = getCurrentStatic();
+	my $gSkin     = getCurrentSkin();
 	my $name;
 
 	if (ref($data) eq 'HASH' && exists $data->{_NAME}) {
@@ -921,8 +923,8 @@ sub callTemplate {
 			: 0;
 
 	$data->{absolutedir} = $seclev && $seclev >= 100
-		? $constants->{absolutedir_secure}
-		: $constants->{absolutedir};
+		? $gSkin->{absolutedir_secure}
+		: $gSkin->{absolutedir};
 
 	my $new = slashDisplay($name, { %$data, msg => $msg }, $opt);
 	return $new;
@@ -1092,4 +1094,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.28 2004/05/07 23:06:04 pudge Exp $
+$Id: Messages.pm,v 1.29 2004/06/17 16:11:58 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.39 2004/04/03 15:45:17 jamiemccarthy Exp $
+# $Id: install-slashsite,v 1.40 2004/06/17 16:11:50 jamiemccarthy Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -365,8 +365,8 @@ while (<$dump>) {
 	next unless /^INSERT/;
 	chomp;
 	s/;$//;
-	s/www\.example\.com/$hostname/g;
-	s/admin\@example\.com/$email/g;
+	s/\badmin\@example\.com\b/$email/g;
+	s/\bwww\.example\.com\b/$hostname/g;
 	s|/usr/local/slash|$SLASH_PREFIX|g;
 	if ($driver eq 'oracle') {
 		# With this we can almost use the MySQL dump verbatim

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.16 2002/01/08 17:22:09 pudge Exp $
+# $Id: Search.pm,v 1.17 2002/02/19 21:42:03 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -68,7 +68,7 @@ sub findComments {
 	# select comment ID, comment Title, Author, Email, link to comment
 	# and SID, article title, type and a link to the article
 	my $query = $self->sqlQuote($form->{query});
-	my $columns = "section, discussions.url, discussions.uid, discussions.title, pid, subject, ts, date, comments.uid as uid, comments.cid as cid, discussions.id ";
+	my $columns = "discussions.section, discussions.url, discussions.uid, discussions.title, pid, subject, ts, date, comments.uid as uid, comments.cid as cid, discussions.id ";
 	$columns .= ", TRUNCATE((MATCH (comments.subject) AGAINST($query)), 1) as score "
 		if ($form->{query} && $sort == 2);
 
@@ -91,8 +91,13 @@ sub findComments {
 	}
 	$where .= "     AND points >= " .  $self->sqlQuote($form->{threshold})
 			if defined($form->{threshold});
-	$where .= "     AND section=" . $self->sqlQuote($form->{section})
-			if $form->{section};
+
+	if ($form->{section}) {
+		$where .= " AND discussions.section = '$form->{section}'"
+	} else {
+		$tables .= ", sections";
+		$where .= " AND sections.section = discussions.section AND sections.isolate != 1 ";
+	}
 
 	my $other;
 	if ($form->{query} && $sort == 2) {
@@ -212,7 +217,7 @@ sub findStory {
 	$start ||= 0;
 
 	my $query = $self->sqlQuote($form->{query});
-	my $columns = "users.nickname, stories.title, stories.sid as sid, time, commentcount, section";
+	my $columns = "users.nickname, stories.title, stories.sid as sid, time, commentcount, stories.section";
 	$columns .= ", TRUNCATE((((MATCH (stories.title) AGAINST($query) + (MATCH (introtext,bodytext) AGAINST($query)))) / 2), 1) as score "
 		if ($form->{query} && $sort == 2);
 
@@ -243,8 +248,12 @@ sub findStory {
 	$where .= " AND time < now() AND stories.writestatus != 'delete' ";
 	$where .= " AND stories.uid=" . $self->sqlQuote($form->{author})
 		if $form->{author};
-	$where .= " AND section=" . $self->sqlQuote($form->{section})
-		if $form->{section};
+	if ($form->{section}) {
+		$where .= " AND stories.section = '$form->{section}'"
+	} else {
+		$tables .= ", sections";
+		$where .= " AND sections.section = stories.section AND sections.isolate != 1 ";
+	}
 	$where .= " AND tid=" . $self->sqlQuote($form->{topic})
 		if $form->{topic};
 	

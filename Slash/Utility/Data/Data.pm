@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.91 2003/07/01 21:55:41 pudge Exp $
+# $Id: Data.pm,v 1.92 2003/07/03 20:14:25 pater Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2849,6 +2849,23 @@ sub sitename2filename {
 }
 
 ##################################################################
+# counts total visible kids for each parent comment
+sub countTotalVisibleKids {
+	my($pid, $comments) = @_;
+	my $total = 0;
+
+	$total += $comments->{$pid}{visiblekids};
+
+	for my $cid (@{$comments->{$pid}{kids}}) {
+		$total += countTotalKids($cid, $comments);
+	}
+
+	$comments->{$pid}{totalvisiblekids} = $total;
+
+	return $total;
+}
+
+##################################################################
 # Why is this here and not a method in Slash::DB::MySQL? - Jamie 2003/05/13
 sub createStoryTopicData {
 	my($slashdb, $form) = @_;	
@@ -2905,4 +2922,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.91 2003/07/01 21:55:41 pudge Exp $
+$Id: Data.pm,v 1.92 2003/07/03 20:14:25 pater Exp $

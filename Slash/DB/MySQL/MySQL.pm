@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.385 2003/05/02 15:30:01 jamie Exp $
+# $Id: MySQL.pm,v 1.386 2003/05/06 05:11:56 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.385 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.386 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4522,14 +4522,20 @@ sub getCommentReply {
 
 ########################################################
 sub getCommentsForUser {
-	my($self, $sid, $cid, $cache_read_only) = @_;
+	my($self, $sid, $cid, $options) = @_;
+
+	# Note that the "cache_read_only" option is not used at the moment.
+	# Slash has done comment caching in the past but does not do it now.
+	# If in the future we see fit to re-enable it, it's valuable to have
+	# some of this logic left over -- the places where this method is
+	# called that have that bit set should be kept that way.
+	my $cache_read_only = $options->{cache_read_only} || 0;
+	my $one_cid_only = $options->{one_cid_only} || 0;
 
 	my $sid_quoted = $self->sqlQuote($sid);
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
 
-	# this was a here-doc.  why was it changed back to slower,
-	# harder to read/edit variable assignments?  -- pudge
 	my $select = " cid, date, date as time, subject, nickname, "
 		. "homepage, fakeemail, users.uid AS uid, sig, "
 		. "comments.points AS points, pointsorig, "
@@ -4542,7 +4548,9 @@ sub getCommentsForUser {
 	my $tables = "comments, users";
 	my $where = "sid=$sid_quoted AND comments.uid=users.uid ";
 
-	if ($user->{hardthresh}) {
+	if ($cid && $one_cid_only) {
+		$where .= "AND cid=$cid";
+	} elsif ($user->{hardthresh}) {
 		my $threshold_q = $self->sqlQuote($user->{threshold});
 		$where .= "AND (comments.points >= $threshold_q";
 		$where .= "  OR comments.uid=$user->{uid}"	unless $user->{is_anon};

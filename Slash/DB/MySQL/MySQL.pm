@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.354 2003/03/21 04:27:36 jamie Exp $
+# $Id: MySQL.pm,v 1.355 2003/03/21 04:31:20 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.354 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.355 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -312,7 +312,8 @@ sub createComment {
 	my $comment_text = $comment->{comment};
 	delete $comment->{comment};
 	$comment->{signature} = md5_hex($comment_text);
-	$comment->{-date} = 'now()';
+	$comment->{-date} = 'NOW()';
+	$comment->{len} = length($comment_text);
 	$comment->{pointsorig} = $comment->{points} || 0;
 
 	$self->{_dbh}->{AutoCommit} = 0;

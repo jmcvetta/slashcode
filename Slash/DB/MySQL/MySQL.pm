@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.296 2003/01/17 01:35:17 jamie Exp $
+# $Id: MySQL.pm,v 1.297 2003/01/17 15:43:59 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.296 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.297 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3129,9 +3129,8 @@ sub checkReadOnly {
 		$where = "ipid = '$tmpid'";
 	}
 
-	# Setting readonly blocks posting;  setting isbanned also blocks
-	# posting even if readonly isn't set.
-	$where .= " AND (readonly = 1 OR isbanned = 1)";
+	# Setting readonly blocks posting.
+	$where .= " AND readonly = 1";
 	# A blank formname means this entry applies to everything.
 	$where .= " AND (formname = '$formname' OR formname = '')";
 	# For when we get user expiration working.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.185 2002/07/15 03:27:06 jamie Exp $
+# $Id: MySQL.pm,v 1.186 2002/07/15 05:14:46 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4771,6 +4771,7 @@ sub getRecentComments {
 		$constants->{comment_maxscore});
 	$min = $options->{min} if defined $options->{min};
 	$max = $options->{max} if defined $options->{max};
+	$max = $min if $max < $min;
 	my $startat = $options->{startat} || 0;
 	my $num = $options->{num} || 30; # should be a var
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.79 2002/07/15 03:27:07 jamie Exp $
+# $Id: admin.pl,v 1.80 2002/07/15 05:14:46 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -1564,12 +1564,15 @@ sub displayRecent {
 	for my $comm (@$recent_comments) {
 		$comm->{ipid_vis} = substr($comm->{ipid}, 0, $id_vislen);
 		$comm->{subject_vis} = substr($comm->{subject}, 0, $subj_vislen);
+		$comm->{date} = substr($comm->{date}, 5); # strip off year
 	}
 
 	slashDisplay('recent', {
 		startat		=> $startat,
 		max_cid		=> $max_cid,
 		recent_comments	=> $recent_comments,
+		min		=> $min,
+		max		=> $max,
 	});
 }
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.81 2002/02/19 16:50:19 jamie Exp $
+# $Id: MySQL.pm,v 1.82 2002/02/19 19:59:04 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4021,10 +4021,11 @@ sub getSlashConf {
 	my $confdata = $self->sqlSelectAll('name, value', 'vars');
 	return if !defined $confdata;
 	my %conf = map { $_->[0], $_->[1] } @{$confdata};
-		
+
 	# the rest of this function is where is where we fix up
 	# any bad or missing data in the vars table
 	$conf{rootdir}		||= "//$conf{basedomain}";
+	$conf{real_rootdir}	||= $conf{rootdir};  # for when rootdir changes
 	$conf{absolutedir}	||= "http://$conf{basedomain}";
 	$conf{absolutedir_secure} ||= "https://$conf{basedomain}";
 	$conf{basedir}		||= "$conf{datadir}/public_html";

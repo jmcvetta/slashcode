@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.18 2002/02/25 22:50:31 cliff Exp $
+# $Id: Makefile,v 1.19 2002/02/25 23:52:37 cliff Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -12,6 +12,8 @@ VERSION = 2.2.0
 DISTNAME = slash
 DISTVNAME = $(DISTNAME)-$(VERSION)
 
+CHMOD = chmod
+MODE = 0755
 SHELL = /bin/sh
 PERL = perl
 NOOP = $(SHELL) -c true
@@ -69,14 +71,6 @@ slash:
 		echo " - Performing an RPM build"; \
 		(cd Slash; $(PERL) Makefile.PL INSTALLSITEARCH=$(INSTALLSITEARCH) INSTALLSITELIB=$(INSTALLSITELIB) INSTALLMAN3DIR=$(INSTALLMAN3DIR); make install UNINST=1); \
 	fi
-
-doit:
-	(replacewith=$(REPLACEWITH); \
-	 replace=1; \
-	 if [ $$replace ]; then \
-		$(PERL) -i -pe "s/\#\!\/usr\/bin\/perl/$$replacewith/ if $$. == 1" /usr/local/slash/bin/runtask; \
-	 fi; \
-	head /usr/local/slash/bin/runtask)
 
 plugins: 
 	@echo "=== INSTALLING SLASH PLUGINS ==="
@@ -139,7 +133,7 @@ install: slash plugins
 	 sbinfiles=$(SBINFILES); \
 	 themefiles=$(THEMEFILES); \
 	 pluginfiles=$(PLUGINFILES); \
-	 if [ "$$replacewith" != "#!/usr/bin/perl" ]; then \
+	 if [ "$$replacewith" != "\#\!\/usr\/bin\/perl" ]; then \
 	 	replace=1; \
 		replacestr='(using $(PERL))'; \
 	 else \
@@ -147,11 +141,14 @@ install: slash plugins
 	 fi; \
 	 for f in $$binfiles $$sbinfiles $$themefiles $$pluginfiles; do \
 		echo "Installing '$$f' in $(SLASH_PREFIX)/$$d $$replacestr"; \
+		n=$(SLASH_PREFIX)/$$f; \
 		$(INSTALL) -d $(SLASH_PREFIX)/$$d; \
 	 	if [ $$replace ]; then \
-			b=`echo $$f | $(PERL) -MFile::Basename -e 'print basename(<STDIN>)'`; \
-			d=`echo $$f | $(PERL) -MFile::Basename -e 'print dirname(<STDIN>)'`; \
-			cat $$f | $(SED) -e "1s/\#\!\/usr\/bin\/perl/$$replacewith/" > $(SLASH_PREFIX)/$$d/$$b; \
+			cat $$f | \
+			sed -e "1s/\#\!\/usr\/bin\/perl/$$replacewith/" > $$n; \
+			$(CHMOD) $(MODE) $$n; \
+		else \
+			$(INSTALL) $$f $$n; \
 		fi; \
 	done)
 

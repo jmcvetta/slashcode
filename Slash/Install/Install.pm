@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.30 2002/10/04 05:40:49 jamie Exp $
+# $Id: Install.pm,v 1.31 2003/01/28 08:26:34 jamie Exp $
 
 package Slash::Install;
 use strict;
@@ -16,7 +16,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -289,16 +289,14 @@ sub _install {
 			# I hope no one tries to embed spaces in their
 			# theme/plugin... heh!
 			# Yes, this should actually be specific, and not
-			# take shorcuts.  What is it trying to do? -- pudge
+			# take shortcuts.  What is it trying to do? -- pudge
 			my($oldfilename, $dir) = split;
 			my $filename = $oldfilename;
 			$filename =~ s/^.*\/(.*)$/$1/;
 			$dir =~ s/\s*$// if $dir;
 			# Allow third parameter as relative directory
 			# for 'htdoc=' or 'image=' lines.
-			if ($dir &&
-			    ($section eq 'htdoc' || $section eq 'image'))
-			{
+			if ($dir && $section =~ /^(htdoc|image)$/) {
 				if ($dir !~ m{^topics/}) {
 					$dir =~ s{^([^/])}{/$1};
 					$dir =~ s{/$}{};

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.48 2002/09/17 19:54:43 jamie Exp $
+# $Id: index.pl,v 1.49 2002/10/08 14:38:31 jamie Exp $
 
 use strict;
 use Slash;
@@ -71,7 +71,7 @@ sub main {
 	my $StandardBlocks = displayStandardBlocks($section, $stories);
 
 	slashDisplay('index', {
-		is_moderator	=> scalar $slashdb->metamodEligible($user),
+		metamod_elig	=> scalar $slashdb->metamodEligible($user),
 		stories		=> $Stories,
 		boxes		=> $StandardBlocks,
 	});

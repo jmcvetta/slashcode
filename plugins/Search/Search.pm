@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.14 2001/11/28 04:50:57 brian Exp $
+# $Id: Search.pm,v 1.15 2002/01/03 15:51:59 jamie Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -90,7 +90,7 @@ sub findComments {
 		}
 	}
 	$where .= "     AND points >= " .  $self->sqlQuote($form->{threshold})
-			if $form->{threshold};
+			if defined($form->{threshold});
 	$where .= "     AND section=" . $self->sqlQuote($form->{section})
 			if $form->{section};
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.282 2002/12/20 18:53:04 jamie Exp $
+# $Id: MySQL.pm,v 1.283 2002/12/26 19:45:17 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.282 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.283 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1380,9 +1380,15 @@ sub createAccessLogAdmin {
 	my($self, $op, $dat) = @_;
 	my $constants = getCurrentStatic();
 	my $form = getCurrentForm();
+	my $user = getCurrentUser();
 	my $r = Apache->request;
 
-	my $uid = $ENV{SLASH_USER};
+	# $ENV{SLASH_USER} wasn't working, was giving us some failed inserts
+	# with uid NULL. For details, do a
+	# grep -A1 'cannot be null' /var/log/banjo.slashdot.org_error_log
+	# on the SSL server. - Jamie 2002/12/24
+	# my $uid = $ENV{SLASH_USER};
+	my $uid = $user->{uid};
 	my $section = $constants->{section};
 	# The following two are special cases
 	if ($op eq 'index' || $op eq 'article') {

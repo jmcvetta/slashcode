@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.36 2003/02/08 00:12:12 brian Exp $
+# $Id: Zoo.pm,v 1.37 2003/02/08 05:26:01 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -117,8 +117,8 @@ sub _set {
 	}
 
 	my $data = $self->sqlSelectColArrayref('uid', 'people', "person=$uid AND type='friend'");
-	my $list = join (',', @$data);
 	push @$data, $person;
+	my $list = join (',', @$data);
 	$self->sqlDo("UPDATE users_info SET people_status='dirty' WHERE uid IN ($list)");
 }
 

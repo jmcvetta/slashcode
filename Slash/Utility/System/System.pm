@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.20 2004/05/07 23:14:28 pudge Exp $
+# $Id: System.pm,v 1.21 2004/05/07 23:21:37 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -32,6 +32,7 @@ use File::Spec::Functions;
 use File::Temp 'tempfile';
 use Mail::Sendmail;
 use Slash::Custom::Bulkmail;	# Mail::Bulkmail
+use Slash::Utility::Data;
 use Slash::Utility::Environment;
 use Symbol 'gensym';
 use Time::HiRes ();
@@ -39,7 +40,7 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -454,4 +455,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.20 2004/05/07 23:14:28 pudge Exp $
+$Id: System.pm,v 1.21 2004/05/07 23:21:37 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.18 2003/05/13 13:54:00 pudge Exp $
+# $Id: stats.pl,v 1.19 2003/05/13 19:03:14 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -67,7 +67,7 @@ sub _get_graph_data {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
 	my $sections = _get_sections();
-	my @data;
+	my(%days, @data);
 	for my $namesec (@{$form->{stats_graph_multiple}}) {
 		my($name, $section, $label) = split /,/, $namesec;
 
@@ -76,10 +76,12 @@ sub _get_graph_data {
 			name	=> $name,
 			days	=> $form->{stats_days}  # 0 || 14 || 31*3
 		});
+
 		my $data;
 		for my $day (keys %{$stats_data->{$section}}) {
 			next if $day eq 'names';
 			$data->{$day} = $stats_data->{$section}{$day}{$name};
+			$days{$day} ||= $data->{$day};
 		}
 
 		$label ||= '';
@@ -88,6 +90,12 @@ sub _get_graph_data {
 			type  => "$name / $sections->{$section}",
 			label => $label,
 		};
+	}
+
+	for my $data (@data) {
+		for my $day (keys %days) {
+			$data->{data}{$day} ||= 0;
+		}
 	}
 
 	return \@data;

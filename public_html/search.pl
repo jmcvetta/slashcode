@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: search.pl,v 1.2 2000/05/16 20:43:34 pudge Exp $
+#  $Id: search.pl,v 1.3 2000/05/18 21:20:32 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -41,8 +41,11 @@ sub main {
 	$I{F}{max}	||= "30";
 	$I{F}{'last'}	||= $I{F}{min} + $I{F}{max};
 
-	header("$I{sitename}: Search $I{F}{query}", $I{F}{section});
-	titlebar("99%", "Searching $I{F}{query}");
+	# don't echo bad characters back to browser
+	$I{F}{html_query} = stripByMode($I{F}{query}, 'exttrans');
+
+	header("$I{sitename}: Search $I{F}{html_query}", $I{F}{section});
+	titlebar("99%", "Searching $I{F}{html_query}");
 
 	searchForm();
 
@@ -58,7 +61,7 @@ sub linkSearch {
 	my $C = shift;
 	my $r;
 
-	foreach (qw[threshold query min author op sid topic section total]) {
+	foreach (qw[threshold html_query min author op sid topic section total]) {
 		my $x = "";
 		$x =  $C->{$_} if defined $C->{$_};
 		$x =  $I{F}{$_} if defined $I{F}{$_} && !$x;
@@ -112,7 +115,7 @@ EOT
 
 	print <<EOT;
 <FORM ACTION="$ENV{SCRIPT_NAME}" METHOD="POST">
-	<INPUT TYPE="TEXT" NAME="query" VALUE="$I{F}{query}">
+	<INPUT TYPE="TEXT" NAME="query" VALUE="$I{F}{html_query}">
 	<INPUT TYPE="SUBMIT" VALUE="Search">
 EOT
 

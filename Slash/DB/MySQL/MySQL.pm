@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.745 2004/12/14 17:51:55 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.746 2004/12/14 19:47:43 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.745 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.746 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2795,6 +2795,19 @@ sub getDB {
 }
 
 } # end closure surrounding getDBs and getDB
+
+#################################################################
+
+# Utility function to return an array of all the virtual users for
+# all the DBs of one specific type.
+
+sub getDBVUsForType {
+	my($self, $type) = @_;
+	my $dbs = $self->getDBs();
+	return map { $dbs->{$_}{virtual_user} }
+		grep { $dbs->{$_}{type} eq $type }
+		keys %$dbs;
+}
 
 #################################################################
 

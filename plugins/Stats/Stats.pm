@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.25 2002/04/19 21:15:43 jamie Exp $
+# $Id: Stats.pm,v 1.26 2002/05/10 23:51:01 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -302,16 +302,22 @@ sub countCommentsDaily {
 
 	return $comments; 
 }
+########################################################
+sub countBytesByPage {
+	my($self, $op, $yesterday) = @_;
+	$self->sqlSelect("sum(bytes)", "accesslog",
+		"op='$op' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'");
+}
 
 ########################################################
-sub countDailyByOP {
+sub countDailyByPage {
 	my($self, $op, $yesterday) = @_;
 	$self->sqlSelect("count(*)", "accesslog",
 		"op='$op' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'");
 }
 
 ########################################################
-sub countDailyByOPDistinctIPID {
+sub countDailyByPageDistinctIPID {
 	# This is so lame, and so not ANSI SQL -Brian
 	my($self, $op, $yesterday) = @_;
 	$self->sqlSelect("count(DISTINCT host_addr)", "accesslog",

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily.pl,v 1.10 2004/10/05 23:48:26 jamiemccarthy Exp $
+# $Id: daily.pl,v 1.11 2004/10/06 23:53:26 pudge Exp $
 
 use strict;
 
@@ -59,12 +59,7 @@ sub daily_generateDailyMailees {
 				story_never_topic	story_never_author	story_never_nexus
 				story_always_topic	story_always_author	story_always_nexus
 			)}) {
-				# Pudge: I took out the "next unless $_;" that
-				# was here.  I think we need "|||123|||" to
-				# be distinct from "|123|||||" if you see what
-				# I mean.  - Jamie 2004/10/05
-				$value ||= "";
-				$key .= "|$value";
+				$key .= '|' . join(',', sort m/'(.+?)'/g);
 			}
 			# allow us to make certain emails sent individually,
 			# by including a unique value in users_param for

@@ -47,6 +47,16 @@ on [% Slash.timeCalc(time) %]
 		[% UNLESS user.nosigs %]
 			<BR>[% sig %]
 		[% END %]
+		[% IF comment_shrunk;
+			linkComment = Slash.linkComment({
+				sid     => sid,
+				cid     => cid,
+				pid     => cid,
+				subject => 'Read the rest of this comment...',
+				subject_only => 1
+			}, 1) %]
+		<P><B>[% linkComment %]</B>
+		[% END %]
 		</TD>
 	</TR>
 
@@ -55,4 +65,4 @@ on [% Slash.timeCalc(time) %]
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;light,v 1.19 2003/04/24 04:47:47 jamie Exp $
+$Id: dispComment;misc;light,v 1.20 2003/10/13 16:04:26 vroom Exp $

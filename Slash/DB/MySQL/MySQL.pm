@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.539 2004/03/25 00:49:31 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.540 2004/03/25 01:00:44 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.539 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.540 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3826,7 +3826,8 @@ sub checkForOpenProxy {
 	local $_proxy_port = undef;
 	sub _cfop_callback {
 		my($data, $response, $protocol) = @_;
-		if ($response->is_success()) {
+		if ($response->is_success()
+			&& $response->content() =~ /\bok\b/) {
 			# We got one success;  the IP is a proxy;
 			# we can quit listening on any of the
 			# other ports that may have connected,

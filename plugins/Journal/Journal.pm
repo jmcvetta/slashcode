@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.17 2001/12/11 23:21:07 brian Exp $
+# $Id: Journal.pm,v 1.18 2001/12/30 17:20:17 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -107,7 +107,7 @@ sub create {
 sub remove {
 	my($self, $id) = @_;
 	my $uid = $ENV{SLASH_USER};
-	return unless $self->sqlDo("DELETE FROM journals WHERE uid=$uid AND id=$id");
+	return if $self->sqlDo("DELETE FROM journals WHERE uid=$uid AND id=$id") == 0;
 	$self->sqlDo("DELETE FROM journals_text WHERE id=$id");
 
 	my $date = $self->sqlSelect('MAX(date)', 'journals', "uid=$uid");

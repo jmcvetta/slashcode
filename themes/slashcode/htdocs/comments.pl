@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.138 2003/05/30 14:48:31 jamie Exp $
+# $Id: comments.pl,v 1.139 2003/06/03 13:27:18 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1529,24 +1529,30 @@ sub moderateCid {
 
 		# Next, adjust the appropriate values for the user who
 		# posted the comment.
+		my $karma_change = $reasons->{$reason}{karma};
 		if (!isAnon($comment->{uid})) {
 			my $lost_tokens_per_downmod = 1; # XXX should be a var
 			my $cu_changes = { };
 			if ($val < 0) {
+				$cu_changes->{-downmods} = "downmods + 1";
+			} elsif ($val > 0) {
+				$cu_changes->{-upmods} = "upmods + 1";
+			}
+			if ($karma_change < 0) {
 				$cu_changes->{-karma} = "GREATEST("
 					. "$constants->{minkarma}, karma - 1)";
 				$cu_changes->{-tokens} = "tokens - $lost_tokens_per_downmod";
-				$cu_changes->{-downmods} = "downmods + 1";
-			} elsif ($val > 0) {
+			} elsif ($karma_change > 0) {
 				$cu_changes->{-karma} = "LEAST("
 					. "$constants->{maxkarma}, karma + 1)";
-				$cu_changes->{-upmods} = "upmods + 1";
 			}
-			$slashdb->setUser($comment->{uid}, $cu_changes);
-			# Update stats.
-			if ($val < 0 and my $statsSave = getObject('Slash::Stats::Writer')) {
-				$statsSave->addStatDaily("mod_tokens_lost_downmod",
-					$lost_tokens_per_downmod);
+			if (scalar keys %$cu_changes) {
+				$slashdb->setUser($comment->{uid}, $cu_changes);
+				# Update stats.
+				if ($karma_change < 0 and my $statsSave = getObject('Slash::Stats::Writer')) {
+					$statsSave->addStatDaily("mod_tokens_lost_downmod",
+						$lost_tokens_per_downmod);
+				}
 			}
 		}
 

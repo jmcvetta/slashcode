@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.113 2003/05/22 19:11:51 brian Exp $
+# $Id: slashschema_create.sql,v 1.114 2003/06/03 13:27:18 jamie Exp $
 #
 
 #
@@ -486,6 +486,7 @@ CREATE TABLE modreasons (
 	m2able tinyint DEFAULT '1' NOT NULL,
 	listable tinyint DEFAULT '1' NOT NULL,
 	val tinyint DEFAULT '0' NOT NULL,
+	karma tinyint DEFAULT '0' NOT NULL,
 	fairfrac float DEFAULT '0.5' NOT NULL,
 	unfairname varchar(32) DEFAULT '' NOT NULL,
 	PRIMARY KEY (id)

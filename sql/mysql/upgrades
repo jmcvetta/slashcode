@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.641 2004/08/04 05:19:02 pudge Exp $
+# $Id: upgrades,v 1.642 2004/08/06 03:16:43 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2457,3 +2457,7 @@ INSERT INTO vars (name, value, description) VALUES ('debughash_getTopicTree','',
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # End of T_2_5_0_18, Start of T_2_5_0_19 - 2004/08/03
+
+ALTER TABLE story_topics_chosen ADD INDEX tid_stoid (tid, stoid), DROP INDEX tid;
+ALTER TABLE story_topics_rendered ADD INDEX tid_stoid (tid, stoid), DROP INDEX tid;
+

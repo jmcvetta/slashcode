@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.156 2004/08/03 16:52:16 pudge Exp $
+# $Id: slashschema_create.sql,v 1.157 2004/08/06 03:16:43 jamiemccarthy Exp $
 #
 
 #
@@ -851,7 +851,7 @@ CREATE TABLE story_topics_chosen (
 	tid SMALLINT(5) UNSIGNED NOT NULL,
 	weight FLOAT UNSIGNED DEFAULT 1 NOT NULL,
 	UNIQUE story_topic (stoid, tid),
-	INDEX tid (tid)
+	INDEX tid_stoid (tid, stoid)
 ) TYPE=InnoDB;
 
 #
@@ -864,7 +864,7 @@ CREATE TABLE story_topics_rendered (
 	tid SMALLINT(5) UNSIGNED NOT NULL,
 	weight FLOAT UNSIGNED DEFAULT 1 NOT NULL,
 	UNIQUE story_topic (stoid, tid),
-	INDEX tid (tid)
+	INDEX tid_stoid (tid, stoid)
 ) TYPE=InnoDB;
 
 #

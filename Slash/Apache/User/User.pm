@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.81 2003/08/04 17:24:35 pudge Exp $
+# $Id: User.pm,v 1.82 2003/08/06 00:52:27 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -609,7 +609,7 @@ Bender:Curse my natural showmanship!
 Bender:I'm not allowed to sing. Court order.
 Bender:Boy, who knew a cooler could also make a handy wang coffin?
 Bender:I'm so embarrassed. I wish everybody else was dead.
-Bender:Professor! Make a women out of me!
+Bender:Professor! Make a woman out of me!
 Bender:An upgrade? I thought we all agreed I was perfect.
 Bender:Curse you, merciful Poseidon!
 Bender:I am a hideous triumph of form and function.

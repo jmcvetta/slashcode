@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.162 2002/06/18 21:27:34 brian Exp $
+# $Id: MySQL.pm,v 1.163 2002/06/19 15:24:36 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4296,13 +4296,13 @@ sub createStory {
 
 	$story ||= getCurrentForm();
 
-	# Create a sid
-	my($sec, $min, $hour, $mday, $mon, $year) = localtime;
-	$year = $year % 100;
 	# yes, this format is correct, don't change it :-)
-	my $sid = sprintf('%02d/%02d/%02d/%02d%0d2%02d',
-		$year, $mon+1, $mday, $hour, $min, $sec);
-	$story->{sid} = $sid;
+	my $sidformat = '%02d/%02d/%02d/%02d%0d2%02d';
+	# Create a sid based on the current time.
+	my $start_time = time;
+	my @lt = localtime($start_time);
+	$lt[5] %= 100; $lt[4]++; # year and month
+	$story->{sid} = sprintf($sidformat, @lt[reverse 0..5]);
 
 	# If this came from a submission, update submission and grant
 	# Karma to the user
@@ -4340,11 +4340,24 @@ sub createStory {
 		$story->{submitter} : $story->{uid};
 	$story->{writestatus}	= 'dirty',
 
-	$self->sqlInsert('stories', { sid => $story->{sid}});
+	my $sid_ok = 0;
+	while ($sid_ok == 0) {
+		$sid_ok = $self->sqlInsert('stories',
+			{ sid => $story->{sid} },
+			{ ignore => 1 } ); # don't print error messages
+		if ($sid_ok == 0) { # returns 0E0 on collision, which == 0
+			# Look back in time until we find a free second.
+			# This is faster than waiting forward in time :)
+			--$start_time;
+			@lt = localtime($start_time);
+			$lt[5] %= 100; $lt[4]++; # year and month
+			$story->{sid} = sprintf($sidformat, @lt[reverse 0..5]);
+		}
+	}
 	$self->sqlInsert('story_text', { sid => $story->{sid}});
 	$self->setStory($story->{sid}, $story);
 
-	return $sid;
+	return $story->{sid};
 }
 
 ##################################################################

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: subscribemail.pl,v 1.31 2003/11/10 19:20:40 vroom Exp $
+# $Id: subscribemail.pl,v 1.32 2003/12/20 06:34:14 jamie Exp $
 
 use strict;
 
@@ -265,7 +265,7 @@ EOT
 
 		}
 	}
-	my $email = sprintf(<<"EOT", @numbers,@gift_numbers);
+	my $email = sprintf(<<"EOT", @numbers, @gift_numbers);
 $constants->{sitename} Subscriber Info for $yesterday
 $report_link
 $monthly_stats

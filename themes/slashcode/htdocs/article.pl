@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.21 2002/05/26 22:10:35 jamie Exp $
+# $Id: article.pl,v 1.22 2002/05/29 21:07:04 brian Exp $
 
 use strict;
 use Slash;
@@ -61,7 +61,9 @@ sub main {
 		};
 		header($links, $story->{section});
 
-		my $pollbooth = pollbooth($story->{qid}, 1);
+		my $pollbooth = pollbooth($story->{qid}, 1)
+			if $story->{qid};
+
 		slashDisplay('display', {
 			poll			=> $pollbooth,
 			section			=> $SECT,
@@ -73,7 +75,7 @@ sub main {
 			prev			=> $prev,
 		});
 
-		my $discussion = $slashdb->getDiscussionBySid($story->{sid});
+		my $discussion = $slashdb->getDiscussion($story->{discussion});
 		# This is to get tid in comments. It would be a mess to pass it directly to every comment -Brian
 		$user->{state}{tid} = $discussion->{topic};
 		# this should really be done per-story, perhaps with article_nocomment

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.108 2004/01/23 00:41:49 pudge Exp $
+# $Id: Data.pm,v 1.109 2004/01/27 17:43:35 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -53,6 +53,7 @@ use vars qw($VERSION @EXPORT);
 	balanceTags
 	changePassword
 	chopEntity
+	cleanRedirectUrl
 	commify
 	countTotalVisibleKids
 	countWords
@@ -223,7 +224,7 @@ sub cleanRedirectUrl {
 	# be sure nobody can use the site as a redirection service.
 	# We decide whether to use the secure homepage or not
 	# based on whether the current page is secure.
-	my $base = rootabs();
+	my $base = root2abs();
 	my $clean = URI->new_abs($redirect || $constants->{rootdir}, $base);
 
 	my $site_domain = $constants->{basedomain};
@@ -3177,4 +3178,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.108 2004/01/23 00:41:49 pudge Exp $
+$Id: Data.pm,v 1.109 2004/01/27 17:43:35 jamiemccarthy Exp $

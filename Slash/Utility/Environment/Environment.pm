@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.95 2003/05/30 19:11:11 pudge Exp $
+# $Id: Environment.pm,v 1.96 2003/07/07 18:10:39 pater Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1259,15 +1259,6 @@ sub prepareUser {
 	}
 	$user->{karma_bonus} = '+1' unless defined($user->{karma_bonus});
 
-	if ($user->{commentlimit} > $constants->{breaking}
-		&& $user->{mode} ne 'archive'
-		&& $user->{mode} ne 'metamod') {
-		$user->{commentlimit} = int($constants->{breaking} / 2);
-		$user->{breaking} = 1;
-	} else {
-		$user->{breaking} = 0;
-	}
-
 	# All sorts of checks on user data
 	$user->{exaid}		= _testExStr($user->{exaid}) if $user->{exaid};
 	$user->{exboxes}	= _testExStr($user->{exboxes}) if $user->{exboxes};
@@ -1288,6 +1279,17 @@ sub prepareUser {
 		$user->{currentPage} = $1;
 	} else {
 		$user->{currentPage} = 'misc';
+	}
+
+	if (($user->{currentPage} eq 'article'
+		|| $user->{currentPage} eq 'comments')
+		&& ($user->{commentlimit} > $constants->{breaking}
+		&& $user->{mode} ne 'archive'
+		&& $user->{mode} ne 'metamod')) {
+		$user->{commentlimit} = int($constants->{breaking} / 2);
+		$user->{breaking} = 1;
+	} else {
+		$user->{breaking} = 0;
 	}
 
 	if ($constants->{subscribe}) {
@@ -2121,4 +2123,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.95 2003/05/30 19:11:11 pudge Exp $
+$Id: Environment.pm,v 1.96 2003/07/07 18:10:39 pater Exp $

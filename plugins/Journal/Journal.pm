@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.29 2003/01/10 16:54:50 pudge Exp $
+# $Id: Journal.pm,v 1.30 2003/01/10 17:35:43 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -184,14 +184,28 @@ sub remove {
 sub top {
 	my($self, $limit) = @_;
 	$limit ||= getCurrentStatic('journal_top') || 10;
-	my $sql;
-	$sql .= "SELECT count(j.uid) as c, u.nickname, j.uid, max(date), j.description";
-	$sql .= " FROM journals as j,users as u WHERE ";
-	$sql .= " j.uid = u.uid";
-	$sql .= " GROUP BY u.nickname ORDER BY c DESC";
-	$sql .= " LIMIT $limit";
 	$self->sqlConnect;
+
+	my $sql = <<EOT;
+SELECT count(j.uid) AS c, u.nickname, j.uid, MAX(date), MAX(id)
+FROM journals AS j, users AS u
+WHERE j.uid = u.uid
+GROUP BY u.nickname ORDER BY c DESC
+LIMIT $limit
+EOT
+
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+
+	my $sql2 = sprintf <<EOT, join (',', map { $_->[4] } @$losers);
+SELECT id, description
+FROM journals
+WHERE id IN (%s)
+EOT
+	my $losers2 = $self->{_dbh}->selectall_hashref($sql2, 'id');
+
+	for (@$losers) {
+		$_->[5] = $losers2->{$_->[4]}{description};
+	}
 
 	return $losers;
 }
@@ -199,15 +213,29 @@ sub top {
 sub topRecent {
 	my($self, $limit) = @_;
 	$limit ||= getCurrentStatic('journal_top') || 10;
-	my $sql;
-	$sql .= " SELECT count(jo.id), u.nickname, u.uid, MAX(jo.date) as date ";
-	$sql .= " FROM journals as jo ,users as u ";
-	$sql .= " WHERE jo.uid=u.uid ";
-	$sql .= " GROUP BY u.nickname ";
-	$sql .= " ORDER BY date DESC ";
-	$sql .= " LIMIT $limit";
 	$self->sqlConnect;
+
+	my $sql = <<EOT;
+SELECT count(j.id), u.nickname, u.uid, MAX(j.date) AS date, MAX(id)
+FROM journals AS j, users AS u
+WHERE j.uid = u.uid
+GROUP BY u.nickname
+ORDER BY date DESC
+LIMIT $limit
+EOT
+
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+
+	my $sql2 = sprintf <<EOT, join (',', map { $_->[4] } @$losers);
+SELECT id, description
+FROM journals
+WHERE id IN (%s)
+EOT
+	my $losers2 = $self->{_dbh}->selectall_hashref($sql2, 'id');
+
+	for (@$losers) {
+		$_->[5] = $losers2->{$_->[4]}{description};
+	}
 
 	return $losers;
 }

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.682 2004/10/06 03:27:45 jamiemccarthy Exp $
+# $Id: upgrades,v 1.683 2004/10/06 22:59:13 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2573,4 +2573,6 @@ ALTER TABLE users_index CHANGE COLUMN extid story_never_topic TEXT NOT NULL DEFA
 INSERT INTO string_param (type, code, name) VALUES ('story023','0','Never');
 INSERT INTO string_param (type, code, name) VALUES ('story023','2','Often');
 INSERT INTO string_param (type, code, name) VALUES ('story023','3','Always');
+
+INSERT INTO vars (name, value, description) VALUES ('issue_lookback_days','7','Number of days to look back in issue mode');
 

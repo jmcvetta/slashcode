@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.42 2002/07/17 16:49:52 brian Exp $
+# $Id: index.pl,v 1.43 2002/07/17 20:15:40 patg Exp $
 
 use strict;
 use Slash;
@@ -16,7 +16,7 @@ sub main {
 	my $form      = getCurrentForm();
 
 
-	my($stories, $Feature, $Stories, $storystruct, $section);
+	my($stories, $Stories, $section);
 	if ($form->{op} eq 'userlogin' && !$user->{is_anon}) {
 		my $refer = $form->{returnto} || $ENV{SCRIPT_NAME};
 		redirect($refer);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.77 2002/07/17 16:04:57 patg Exp $
+# $Id: comments.pl,v 1.78 2002/07/17 20:15:40 patg Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -114,15 +114,13 @@ sub main {
 			seclev			=> 0,
 			post			=> 1,
 			formname 		=> $form->{new_discussion} ? 'discussions' : 'comments',
-			checks			=> 
+			checks			=> $form->{new_discussion} ? [] : 
 			[ qw ( response_check update_formkeyid max_post_check valid_check interval_check 
 				formkey_check ) ],
 		},
 	};
 	$ops->{default} = $ops->{display} ;
 	
-	# This is here to save a function call, even though the
-	# function can handle the situation itself
 	my ($discussion, $section);
 
 	if ($form->{sid}) {

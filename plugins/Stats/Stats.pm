@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.104 2003/03/17 21:26:14 brian Exp $
+# $Id: Stats.pm,v 1.105 2003/03/19 19:43:57 brian Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -689,20 +689,6 @@ sub countDailyByPageDistinctIPID {
 }
 
 ########################################################
-sub countDaily {
-	my($self, $options) = @_;
-	my %returnable;
-
-	my $constants = getCurrentStatic();
-
-	$returnable{unique} = $self->sqlSelect("DISTINCT host_addr", "accesslog_temp");
-
-	$returnable{unique_users} = $self->sqlSelectMany("DISTINCT uid", "accesslog_temp");
-
-	return \%returnable;
-}
-
-########################################################
 sub countDailyStoriesAccess {
 	my($self) = @_;
 	my $c = $self->sqlSelectMany("dat, COUNT(*), op", "accesslog_temp",
@@ -1173,4 +1159,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.104 2003/03/17 21:26:14 brian Exp $
+$Id: Stats.pm,v 1.105 2003/03/19 19:43:57 brian Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.109 2004/01/27 17:43:35 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.110 2004/01/27 18:26:00 tvroom Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1180,7 +1180,7 @@ sub breakHtml {
 	# These are tags that "break" a word;
 	# a<P>b</P> breaks words, y<B>z</B> does not
 	my $approvedtags_break = $constants->{'approvedtags_break'}
-		|| [qw(HR BR LI P OL UL BLOCKQUOTE DIV)];
+		|| [qw(HR BR LI P OL UL BLOCKQUOTE DIV DL)];
 	my $break_tag = join '|', @$approvedtags_break;
 	$break_tag = qr{(?:$break_tag)}i;
 
@@ -2021,7 +2021,7 @@ sub balanceTags {
 
 			if ($max_nest_depth) {
 				my $cur_depth = 0;
-				for (qw( UL OL DIV BLOCKQUOTE )) { $cur_depth += $tags{$_} }
+				for (qw( UL OL DIV BLOCKQUOTE DL )) { $cur_depth += $tags{$_} }
 				return undef if $cur_depth > $max_nest_depth;
 			}
 		}
@@ -3178,4 +3178,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.109 2004/01/27 17:43:35 jamiemccarthy Exp $
+$Id: Data.pm,v 1.110 2004/01/27 18:26:00 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.15 2002/01/08 17:22:08 pudge Exp $
+# $Id: Makefile,v 1.16 2002/02/17 17:44:43 cliff Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -249,8 +249,11 @@ install: slash plugins
 reload: install
 	apachectl stop
 	apachectl start
+
 #   cleanup
 clean:
+	(cd Slash; if [ ! -f Makefile ]; then perl Makefile.PL; fi; make clean)
+	(cd plugins; make clean)
 
 dist: $(DISTVNAME).tar$(SUFFIX)
 

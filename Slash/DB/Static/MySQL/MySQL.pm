@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.128 2004/02/12 14:15:41 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.129 2004/02/12 16:12:11 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1685,13 +1685,16 @@ sub deleteStoryAll {
 	my($self, $sid) = @_;
 	my $sid_q = $self->sqlQuote($sid);
 
-	$self->{_dbh}{AutoCommit} = 0;
+#	$self->{_dbh}{AutoCommit} = 0;
+	$self->sqlDo("SET AUTOCOMMIT=0");
 	my $discussion_id = $self->sqlSelect('id', 'discussions', "sid = $sid_q");
 	$self->sqlDelete("stories", "sid=$sid_q");
 	$self->sqlDelete("story_text", "sid=$sid_q");
 	$self->deleteDiscussion($discussion_id) if $discussion_id;
-	$self->{_dbh}->commit;
-	$self->{_dbh}{AutoCommit} = 1;
+#	$self->{_dbh}->commit;
+#	$self->{_dbh}{AutoCommit} = 1;
+	$self->sqlDo("COMMIT");
+	$self->sqlDo("SET AUTOCOMMIT=1");
 }
 
 ########################################################

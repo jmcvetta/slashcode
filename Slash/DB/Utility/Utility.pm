@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.48 2004/02/03 18:46:58 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.49 2004/02/12 16:12:11 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -398,14 +398,17 @@ sub _querylog_writecache {
 	my($self) = @_;
 	return unless ref($self->{_querylog}{cache})
 		&& @{$self->{_querylog}{cache}};
-	my $dbh = $self->{_querylog}{db}{_dbh};
-	return unless $dbh;
-	$dbh->{AutoCommit} = 0;
+	my $qdb = $self->{_querylog}{db};
+	return unless $qdb;
+#	$qdbh->{AutoCommit} = 0;
+	$qdb->sqlDo("SET AUTOCOMMIT=0");
 	while (my $sql = shift @{$self->{_querylog}{cache}}) {
-		$dbh->do($sql);
+		$qdb->sqlDo($sql);
 	}
-	$dbh->commit;
-	$dbh->{AutoCommit} = 1;
+	$qdb->sqlDo("COMMIT");
+	$qdb->sqlDo("SET AUTOCOMMIT=1");
+#	$qdbh->commit;
+#	$qdbh->{AutoCommit} = 1;
 }
 
 ########################################################

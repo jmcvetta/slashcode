@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.508 2004/02/12 05:11:07 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.509 2004/02/12 16:12:05 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.508 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.509 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1408,8 +1408,6 @@ sub _writeAccessLogCache {
 	while (my $hr = shift @{$self->{_accesslog_insert_cache}}) {
 		$self->sqlInsert('accesslog', $hr, { delayed => 1 });
 	}
-	$self->{_dbh}->commit;
-	$self->{_dbh}{AutoCommit} = 1;
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
@@ -2058,8 +2056,6 @@ sub createUser {
 		created_ipid		=> getCurrentUser('ipid'),
 	});
 
-	$self->{_dbh}->commit;
-	$self->{_dbh}->{AutoCommit} = 1;
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
@@ -5294,8 +5290,6 @@ sub setCommentForMod {
 		assn_order => [ "-points", "-pointsmax" ]
 	});
 
-	$self->{_dbh}->commit;
-	$self->{_dbh}->{AutoCommit} = 1;
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
@@ -6163,8 +6157,6 @@ sub createStory {
 		goto error;
 	}
 
-	$self->{_dbh}->commit;
-	$self->{_dbh}{AutoCommit} = 1;
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");
@@ -6240,8 +6232,6 @@ sub updateStory {
 		$self->setSection($data->{section}, { writestatus => 'dirty' });
 	}
 
-	$self->{_dbh}->commit;
-	$self->{_dbh}{AutoCommit} = 1;
 #	$self->{_dbh}->commit;
 #	$self->{_dbh}{AutoCommit} = 1;
 	$self->sqlDo("COMMIT");

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.145 2004/05/08 17:24:05 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.146 2004/05/18 16:22:42 cowboyneal Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.145 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2190,13 +2190,29 @@ sub getTopRecentRealemailDomains {
 
 	my $min_uid = $self->getFirstUIDCreatedDaysBack($daysback, $yesterday);
 	my $newaccounts = $self->sqlSelect('max(uid)','users') - $min_uid;
+	my $newnicks = {};
 	return [ ] unless $min_uid;
-	return $self->sqlSelectAllHashrefArray(
+	my $domains = $self->sqlSelectAllHashrefArray(
 		"initdomain, COUNT(*) AS c",
 		"users_info",
 		"uid >= $min_uid",
-		"GROUP BY initdomain ORDER BY c DESC, initdomain LIMIT $num"),
-	       $daysback, $newaccounts;
+		"GROUP BY initdomain ORDER BY c DESC, initdomain LIMIT $num");
+
+	foreach my $domain (@$domains) {
+		my $nicks = $self->sqlSelectAll('nickname','users, users_info',"users.uid=users_info.uid AND users_info.uid >= $min_uid AND initdomain=".$self->sqlQuote($domain->{initdomain}),'ORDER BY users.uid DESC');
+		my $length = 5 + length($domain->{initdomain});
+		my $i = 0;
+		$newnicks->{$domain->{initdomain}} = "";
+
+		while ($length + length($nicks->[$i]) + 2 < 78) {
+			$newnicks->{$domain->{initdomain}} .= ', ' unless !$i;
+			$newnicks->{$domain->{initdomain}} .= $nicks->[$i];
+			$length += length($nicks->[$i]) + 2;
+			$i++;
+		}
+	}
+
+	return $domains, $daysback, $newaccounts, $newnicks;
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.30 2003/11/25 06:18:09 vroom Exp $
+# $Id: Display.pm,v 1.31 2004/03/05 20:22:58 jamiemccarthy Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -248,6 +248,10 @@ sub slashDisplayName {
 		$user->{currentSection} = 'default';
 	# admin and light are special cases
 	} elsif ($user->{currentSection} eq 'admin') {
+		# This should never happen, far as I know.  "admin" is
+		# not used as a fake section for some months now, it's
+		# just a page. - Jamie 2004/03/05
+print STDERR scalar(localtime) . " slashDisplayName setting currentSection to 'admin', won't set to '" . (defined($opt->{Section}) ? $opt->{Section} : "undef") . "'\n";
 		$user->{currentSection} = 'admin';
 	} elsif ($user->{light}) {
 		$user->{currentSection} = 'light';

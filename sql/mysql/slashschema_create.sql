@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.166 2004/09/20 15:41:30 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.167 2004/10/01 20:02:31 jamiemccarthy Exp $
 #
 
 #
@@ -1154,7 +1154,7 @@ CREATE TABLE users_hits (
 DROP TABLE IF EXISTS users_index;
 CREATE TABLE users_index (
 	uid mediumint UNSIGNED NOT NULL,
-	extid varchar(255),
+	extid text,
 	exaid varchar(100),
 	exsect varchar(255),
 	exboxes varchar(255),

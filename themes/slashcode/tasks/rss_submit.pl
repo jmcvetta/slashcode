@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rss_submit.pl,v 1.7 2004/07/13 19:07:49 jamiemccarthy Exp $
+# $Id: rss_submit.pl,v 1.8 2004/07/13 21:56:23 jamiemccarthy Exp $
 
 use strict;
 
@@ -42,7 +42,7 @@ $task{$me}{code} = sub {
 				name	=> $block->{title},
 				story	=> $description,
 				subj	=> $rss->{title},
-				skid	=> $blockskin->{skid},
+				primaryskid => $blockskin->{skid},
 			};
 			$subid = $slashdb->createSubmission($submission);
 			if (!$subid) {

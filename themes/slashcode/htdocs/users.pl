@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.7 2000/06/06 13:53:31 pudge Exp $
+#  $Id: users.pl,v 1.8 2000/06/12 14:32:41 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -775,7 +775,8 @@ sub saveUser {
 eliminates them, you are using a browser that doesn't support them, or you rejected it.
 EOT
 
-	$I{F}{sig}	 = stripByMode($I{F}{sig}, 'html');
+	# stripByMode _after_ fitting sig into schema, 160 chars
+	$I{F}{sig}	 = stripByMode(substr($I{F}{sig}, 0, 160), 'html');
 	$I{F}{fakeemail} = stripByMode($I{F}{fakeemail});
 	$I{F}{homepage}	 = "" if $I{F}{homepage} eq "http://";
 	$I{F}{homepage}	 = stripByMode($I{F}{homepage});

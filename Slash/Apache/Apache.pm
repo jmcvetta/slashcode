@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.39 2003/04/09 19:33:27 pudge Exp $
+# $Id: Apache.pm,v 1.40 2003/06/27 15:52:41 pudge Exp $
 
 package Slash::Apache;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -315,6 +315,9 @@ sub IndexHandler {
 			# consider using File::Basename::basename() here
 			# for more robustness, if it ever matters -- pudge
 			my($base) = split(/\./, $constants->{index_handler});
+			$base = $constants->{index_handler_noanon}
+				if $constants->{index_noanon};
+
 			if ($constants->{static_section}) {
 				$r->filename("$basedir/$constants->{static_section}/$base.shtml");
 				$r->uri("/$constants->{static_section}/$base.shtml");

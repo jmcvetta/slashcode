@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.56 2002/04/16 18:36:03 pudge Exp $
+# $Id: admin.pl,v 1.57 2002/04/17 05:09:53 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1456,7 +1456,11 @@ sub updateStory {
 
 
 	$slashdb->setDiscussionBySid($data->{sid}, $dis_data);
-	$slashdb->setVar('writestatus', 'dirty') if $data->{displaystatus} < 1;
+	if ($data->{displaystatus} < 1) {
+		$slashdb->setVar('writestatus', 'dirty');
+		$slashdb->setSection($data->{section}, { writestatus => 'dirty' });
+	}
+
 	titlebar('100%', getTitle('updateStory-title'));
 	# make sure you pass it the goods
 	listStories(@_);

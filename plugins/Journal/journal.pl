@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.68 2003/03/29 18:35:22 brian Exp $
+# $Id: journal.pl,v 1.69 2003/04/08 19:22:33 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,12 +12,12 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
 
@@ -375,7 +375,7 @@ sub displayArticle {
 	unless ($articles && @$articles) {
 		print getData('noentries_found');
 		if ($user_change && %$user_change) {
-			my $slashdb   = getCurrentDB();
+			my $slashdb = getCurrentDB();
 			$slashdb->setUser($user->{uid}, $user_change);
 		}
 		return;
@@ -454,7 +454,7 @@ sub displayArticle {
 	}
 
 	if ($user_change && %$user_change) {
-		my $slashdb   = getCurrentDB();
+		my $slashdb = getCurrentDB();
 		$slashdb->setUser($user->{uid}, $user_change);
 	}
 }
@@ -486,7 +486,7 @@ sub setPrefs {
 		_checkTheme($form->{journal_theme})
 		if defined $form->{journal_theme};
 
-	my $slashdb   = getCurrentDB();
+	my $slashdb = getCurrentDB();
 	$slashdb->setUser($user->{uid}, \%prefs);
 
 	editPrefs(@_);
@@ -542,7 +542,7 @@ sub saveArticle {
 
 	return 0 unless _validFormkey($ws ? qw(max_post_check interval_check) : ());
 
-	my $slashdb   = getCurrentDB();
+	my $slashdb = getCurrentDB();
 	if ($form->{id}) {
 
 		my %update;
@@ -674,7 +674,7 @@ sub editArticle {
 	} else {
 		$article  = $journal->get($form->{id}) if $form->{id};
 		$posttype = $article->{posttype};
-		my $slashdb   = getCurrentDB();
+		my $slashdb = getCurrentDB();
 		$slashdb->createFormkey('journal');
 	}
 

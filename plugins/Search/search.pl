@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.67 2003/03/28 22:17:16 brian Exp $
+# $Id: search.pl,v 1.68 2003/04/08 19:22:33 pudge Exp $
 
 use strict;
 use Slash;
@@ -338,7 +338,7 @@ sub pollSearch {
 	slashDisplay('searchform', {
 		op		=> $form->{op},
 		topics		=> _topics(),
-		sections	 => _sections(),
+		sections	=> _sections(),
 		tref		=> $slashdb->getTopic($form->{tid}),
 		'sort'		=> _sort(),
 	});
@@ -491,10 +491,10 @@ sub pollSearchRSS {
 	for my $entry (@$stories) {
 		my $time = timeCalc($entry->{date});
 		my $url = $slashdb->getSection($entry->{section}, 'url');
-		my $link = $url ? $url . '/' : $constants->{absolutedir};
+		my $link = $url || $constants->{absolutedir};
 		push @items, {
 			title	=> "$entry->{question} ($time)",
-			'link'	=> ($url . 'pollBooth.pl?qid=' . $entry->{qid}),
+			'link'	=> ($link . '/pollBooth.pl?qid=' . $entry->{qid}),
 		};
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.117 2004/11/15 20:46:25 pudge Exp $
+# $Id: User.pm,v 1.118 2004/11/18 06:37:14 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -225,7 +225,8 @@ sub handler {
 			if (
 				($constants->{rss_allow_index} && $form->{content_type} eq 'rss' && $uri =~ m{^/index\.pl$})
 					||
-				($constants->{journal_rdfitemdesc_html} && $form->{content_type} eq 'rss' && $uri =~ m{^/journal\.pl$})
+				# hmmm ... journal.pl no work, because can be called as /journal/
+				($constants->{journal_rdfitemdesc_html} && $form->{content_type} eq 'rss' && $uri =~ m{\bjournal\b})
 			) {
 				$logtoken = $form->{logtoken};
 			} else {
@@ -666,7 +667,7 @@ sub userdir_handler {
 				if ($extra =~ /^rss(\/(\d+::\w+)?)?$/) {
 					if ($2) {
 						(my $logtoken = $2) =~ s/::/%3A%3A/;
-						$args .= "&logtoken=$2";
+						$args .= "&logtoken=$logtoken";
 					}
 					$args .= "&content_type=rss";
 				}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.89 2004/11/16 22:32:25 pudge Exp $
+# $Id: journal.pl,v 1.90 2004/11/18 06:37:14 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -241,7 +241,7 @@ sub displayRSS {
 			},
 			title		=> $article->[2],
 			description	=> strip_mode($article->[1], $article->[4]),
-			'link'		=> "$gSkin->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]",
+			'link'		=> root2abs() . '/~' . fixparam($nickname) . "/journal/$article->[3]",
 		};
 	}
 
@@ -270,7 +270,7 @@ sub displayRSS {
 		channel => {
 			title		=> "$title $journals",
 			description	=> "$title $constants->{sitename} $journals",
-			'link'		=> "$gSkin->{absolutedir}/~" . fixparam($juser->{nickname}) . $link,
+			'link'		=> root2abs() . '/~' . fixparam($juser->{nickname}) . $link,
 			creator		=> $juser->{nickname},
 		},
 		image	=> 1,

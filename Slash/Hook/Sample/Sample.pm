@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Sample.pm,v 1.1 2002/04/03 03:12:55 brian Exp $
+# $Id: Sample.pm,v 1.2 2002/04/03 03:19:34 brian Exp $
 
 package Slash::Hook::Sample;
 use strict;
@@ -13,19 +13,19 @@ use vars qw($VERSION);
 
 # Shake well, serve warm.
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub sample {
 	my($luggage, $options) = @_;
-	#my ($constants, $slashdb, $user, $form) = @$luggage;
+	my ($constants, $slashdb, $user, $form) = @$luggage;
 	errorLog("Sample Hook called");
 	return 1;
 }
 
 sub ingar {
 	my($luggage, $options) = @_;
-	#my ($constants, $slashdb, $user, $form) = @$luggage;
+	my ($constants, $slashdb, $user, $form) = @$luggage;
 	errorLog("My name is Ingar, I am from Ikea, you killed my brother, prepare to die");
 	return 1;
 }

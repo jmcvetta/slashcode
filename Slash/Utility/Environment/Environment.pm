@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.79 2003/03/29 18:35:22 brian Exp $
+# $Id: Environment.pm,v 1.80 2003/04/01 02:10:07 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1906,13 +1906,7 @@ sub writeLog {
 sub createLog {
 	my($uri, $dat, $status) = @_;
 	my $constants = getCurrentStatic();
-	my $log_user = $constants->{log_db_user} || $constants->{backup_db_user} || "";
-	my $logdb;
-	if ($log_user) {
-		$logdb = getObject('Slash::DB', $log_user);
-	} else {
-		$logdb = getCurrentDB();
-	}
+	my $logdb = getObject('Slash::DB', { db_type => 'log_db_user' });
 
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
@@ -2103,4 +2097,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.79 2003/03/29 18:35:22 brian Exp $
+$Id: Environment.pm,v 1.80 2003/04/01 02:10:07 brian Exp $

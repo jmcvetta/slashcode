@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.15 2003/03/29 18:35:22 brian Exp $
+# $Id: hof.pl,v 1.16 2003/04/01 02:10:07 brian Exp $
 
 use strict;
 use Slash;
@@ -16,13 +16,7 @@ sub main {
 
 	header(getData('head'));
 
-	my($hofDB);
-
-	if ($constants->{backup_db_user}) {
-		$hofDB = getObject('Slash::Hof', { db_type => 'reader' });
-	} else {
-		$hofDB = getObject('Slash::Hof');
-	}
+	my $hofDB = getObject('Slash::Hof', { db_type => 'reader' });
 
 	my @topcomments = ( );
 # getCommentsTop() comes in two versions as of 2001/07/12.  The old

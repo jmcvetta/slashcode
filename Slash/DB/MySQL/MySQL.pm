@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.360 2003/03/29 18:35:22 brian Exp $
+# $Id: MySQL.pm,v 1.361 2003/04/01 02:10:07 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.360 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.361 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -738,13 +738,7 @@ sub getMetamodsForUserRaw {
 		$already_cid_list = join(",", sort keys %$already_cids_hr);
 	}
 
-	my $backupdb;
-	if ($constants->{backup_db_user}) {
-		$backupdb = getObject('Slash::DB', $constants->{backup_db_user});
-		$backupdb ||= $self;
-	} else {
-		$backupdb = $self;
-	}
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
 	# We need to consult two tables to get a list of moderatorlog IDs
 	# that it's OK to M2:  moderatorlog of course, and metamodlog to
@@ -797,7 +791,7 @@ EOT
 		$already_cid_clause = " AND cid NOT IN ($already_cid_list)"
 			if $already_cid_list;
 		$mod_hr = { };
-		$mod_hr = $backupdb->sqlSelectAllHashref(
+		$mod_hr = $reader->sqlSelectAllHashref(
 			"id",
 			"id, cid,
 			 m2count + $consensus * $if_expr + RAND() AS rank",
@@ -1611,22 +1605,15 @@ sub getUserEmail {
 }
 
 #################################################################
-# Turns out it is faster to hit the disk, so forget about
-# comment_heap
-# Yet another method that really should return an arrayref of
-# hashrefs, instead of an arrayref of arrayrefs.  This is
-# currently only used in users.pl  -Jamie
-# If anyone ever rewrites this move the formatDate() out to the template.
-# Display logic belongs in display. -Brian
-#
 # Corrected all of the above (those messages will go away soon.
 # -Brian, Tue Jan 21 14:49:30 PST 2003
 # 
 sub getCommentsByGeneric {
 	my($self, $where_clause, $num, $min) = @_;
 	$min ||= 0;
+	my $limit = " LIMIT $min, $num " if $num;
 
-	my $comments = $self->sqlSelectAllHashrefArray('pid,sid,cid,subject,date,points,uid,reason,karma_bonus','comments', $where_clause, " ORDER BY date DESC LIMIT $min, $num");
+	my $comments = $self->sqlSelectAllHashrefArray('*','comments', $where_clause, " ORDER BY date DESC $limit");
 
 	return $comments;
 }
@@ -5837,12 +5824,6 @@ sub getSimilarStories {
 	$not_original_sid = " AND stories.sid != "
 		. $self->sqlQuote($not_original_sid)
 		if $not_original_sid;
-	my $backupdb;
-	if ($constants->{backup_db_user}) {
-		$backupdb = getObject('Slash::DB', $constants->{backup_db_user});
-	} else {
-		$backupdb = getCurrentDB();
-	}
 
 	my $text = "$title $introtext $bodytext";
 	# Find a list of all the words in the current story.
@@ -5888,7 +5869,7 @@ sub getSimilarStories {
 	}
 	$where = join(" OR ", @where_clauses);
 	my $n_days = $constants->{similarstorydays} || 30;
-	my $stories = $backupdb->sqlSelectAllHashref(
+	my $stories = $self->sqlSelectAllHashref(
 		"sid",
 		"stories.sid AS sid, title, introtext, bodytext,
 			time, displaystatus",

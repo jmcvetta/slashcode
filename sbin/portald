@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.31 2003/03/24 19:39:25 pudge Exp $
+# $Id: portald,v 1.32 2003/04/01 02:10:07 brian Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -37,12 +37,7 @@ my $constants = getCurrentStatic();
 my $slashdb = getCurrentDB();
 my $totalChangedStories = 1;
 
-my $backupdb;
-if ($constants->{backup_db_user}) {
-	$backupdb = getObject('Slash::DB', $constants->{backup_db_user});
-} else {
-	$backupdb = $slashdb;
-}
+my $backupdb = getObject('Slash::DB', { db_type => 'reader' });
 
 ################################################################################
 # really tired of deleting the thing if portald pukes ;)

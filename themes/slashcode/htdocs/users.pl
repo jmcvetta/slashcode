@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.170 2003/03/27 22:25:45 brian Exp $
+# $Id: users.pl,v 1.171 2003/04/01 02:10:07 brian Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -776,49 +776,34 @@ sub showComments {
 		$uid, $comments_wanted, $min_comment
 	) if $commentcount;
 
-	for (@$comments) {
-		my($pid, $sid, $cid, $subj, $cdate, $pts, $uid, $reason) = @$_;
-		$uid ||= 0;
+	if (ref($comments) eq 'ARRAY') {
+		for my $comment (@$comments) {
+			# This works since $sid is numeric.
+			$comment->{replies} = $reader->countCommentsBySidPid($comment->{sid}, $comment->{cid});
 
-		my $type;
-		# This works since $sid is numeric.
-		my $replies = $reader->countCommentsBySidPid($sid, $cid);
+			# This is ok, since with all luck we will not be hitting the DB
+			# ...however, the "sid" parameter here must be the string
+			# based SID from either the "stories" table or from
+			# pollquestions.
+			my $discussion  = $reader->getDiscussion($comment->{sid});
 
-		# This is ok, since with all luck we will not be hitting the DB
-		# ...however, the "sid" parameter here must be the string
-		# based SID from either the "stories" table or from
-		# pollquestions.
-		my($discussion) = $reader->getDiscussion($sid);
-
-		if ($discussion->{url} =~ /journal/i) {
-			$type = 'journal';
-		} elsif ($discussion->{url} =~ /poll/i) {
-			$type = 'poll';
-		} else {
-			$type = 'story';
+			if ($discussion->{url} =~ /journal/i) {
+				$comment->{type} = 'journal';
+			} elsif ($discussion->{url} =~ /poll/i) {
+				$comment->{type} = 'poll';
+			} else {
+				$comment->{type} = 'story';
+			}
+			$comment->{disc_title}	= $discussion->{title};
+			$comment->{url}	= $discussion->{url};
 		}
-
-		push @$commentstruct, {
-			pid 		=> $pid,
-			url		=> $discussion->{url},
-			type 		=> $type,
-			disc_title	=> $discussion->{title},
-			sid 		=> $sid,
-			cid 		=> $cid,
-			subj		=> $subj,
-			cdate		=> $cdate,
-			pts		=> $pts,
-			uid		=> $uid,
-			reason		=> $reason,
-			replies		=> $replies,
-		};
 	}
 
 	slashDisplay('userCom', {
 		nick			=> $nickname,
 		useredit		=> $user_edit,
 		nickmatch_flag		=> ($user->{uid} == $uid ? 1 : 0),
-		commentstruct		=> $commentstruct || [],
+		commentstruct		=> $comments,
 		commentcount		=> $commentcount,
 		min_comment		=> $min_comment,
 		reasons			=> $reader->getReasons(),

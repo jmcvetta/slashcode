@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.86 2002/02/20 18:28:05 pudge Exp $
+# $Id: MySQL.pm,v 1.87 2002/02/21 02:59:13 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3159,11 +3159,12 @@ sub getCommentsForUser {
 		$sql .= "	)";
 	}
 
-	$sql .= "         ORDER BY ";
-	$sql .= "comments.points DESC, " if $user->{commentsort} == 3;
-	$sql .= " cid ";
-	$sql .= ($user->{commentsort} == 1 || $user->{commentsort} == 5) ?
-			'DESC' : 'ASC';
+# We are now doing this in the webserver not in the DB
+#	$sql .= "         ORDER BY ";
+#	$sql .= "comments.points DESC, " if $user->{commentsort} == 3;
+#	$sql .= " cid ";
+#	$sql .= ($user->{commentsort} == 1 || $user->{commentsort} == 5) ?
+#			'DESC' : 'ASC';
 
 
 	my $thisComment = $self->{_dbh}->prepare_cached($sql) or errorLog($sql);

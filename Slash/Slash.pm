@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.47 2002/02/20 23:24:16 brian Exp $
+# $Id: Slash.pm,v 1.48 2002/02/21 02:59:13 brian Exp $
 
 package Slash;
 
@@ -135,8 +135,13 @@ sub selectComments {
 	}
 
 	# If we are sorting by highest score we resort to figure in bonuses
-	@$thisComment = sort { $b->{points} <=> $a->{points} || $a->{cid} <=> $b->{cid} } @$thisComment
-		if $user->{commentsort} == 3;
+	if ($user->{commentsort} == 3) {
+		@$thisComment = sort { $b->{points} <=> $a->{points} || $a->{cid} <=> $b->{cid} } @$thisComment;
+	} elsif ($user->{commentsort} == 1 || $user->{commentsort} == 5) {
+		@$thisComment = sort { $b->{cid} <=> $a->{cid} } @$thisComment;
+	} else {
+		@$thisComment = sort { $a->{cid} <=> $b->{cid} } @$thisComment;
+	}
 
 	# This loop mainly takes apart the array and builds 
 	# a hash with the comments in it.  Each comment is

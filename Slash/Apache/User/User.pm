@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.10 2001/11/29 18:31:00 brian Exp $
+# $Id: User.pm,v 1.11 2001/11/30 05:46:43 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -359,7 +359,8 @@ sub userdir_handler {
 		# $r->uri($ops{$op}[0]);
 		# $r->filename($constants->{basedir} . $ops{$op}[0]);
 		# Not against it, or something like it. This is getting a bit long. 
-    # I would rather prefer it did not turn out like ops have though. -Brian
+		# I would rather prefer it did not turn out like ops have though. -Brian
+		# what do you mean? -- pudge
 
 		if ($op eq 'journal') {
 			$r->args("op=display&nick=$nick");

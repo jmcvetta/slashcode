@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.41 2001/11/29 18:31:00 brian Exp $
+# $Id: users.pl,v 1.42 2001/11/30 05:47:01 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -490,13 +490,15 @@ sub mailPasswd {
 	doEmail($uid, $emailtitle, $msg) if $user_edit->{nickname};
 	print getMessage('mailpasswd_mailed_msg', { name => $user_edit->{nickname} });
 }
+
+#################################################################
 sub showSubmissions {
 	my($id) = @_;
 	my $slashdb = getCurrentDB();
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
-	my ($uid, $nickname);
+	my($uid, $nickname);
 
 	if ($form->{uid} or $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
@@ -514,13 +516,14 @@ sub showSubmissions {
 
 	slashDisplay('userSub', {
 		nick			=> $nickname,
-		uid		=> $uid,
+		uid			=> $uid,
 		nickmatch_flag		=> ($user->{uid} == $uid ? 1 : 0),
 		stories 		=> $stories,
 		storycount 		=> $storycount,
 	});
 }
 
+#################################################################
 sub showComments {
 	my($id) = @_;
 	my $slashdb = getCurrentDB();
@@ -528,7 +531,7 @@ sub showComments {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $commentstruct = [];
-	my ($uid, $nickname);
+	my($uid, $nickname);
 
 	if ($form->{uid} or $form->{nick}) {
 		$uid		= $form->{uid} ? $form->{uid} : $slashdb->getUserUID($form->{nick});
@@ -586,7 +589,7 @@ sub showComments {
 
 	slashDisplay('userCom', {
 		nick			=> $nickname,
-		uid		=> $uid,
+		uid			=> $uid,
 		nickmatch_flag		=> ($user->{uid} == $uid ? 1 : 0),
 		points			=> $slashdb->getUser($uid, 'points'),
 		lastgranted		=> $slashdb->getUser($uid, 'lastgranted'),

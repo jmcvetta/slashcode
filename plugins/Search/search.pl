@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.17 2001/11/28 00:23:40 brian Exp $
+# $Id: search.pl,v 1.18 2001/11/30 05:46:33 pudge Exp $
 
 use strict;
 use Slash;
@@ -201,7 +201,7 @@ sub userSearch {
 	slashDisplay('searchform', {
 		op		=> $form->{op},
 		'sort'		=> _sort(),
-		journal_option => 1,
+		journal_option	=> 1,
 	});
 
 	if (@$users) {

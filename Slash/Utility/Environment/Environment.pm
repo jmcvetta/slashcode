@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.35 2002/07/19 01:27:47 jamie Exp $
+# $Id: Environment.pm,v 1.36 2002/07/19 14:22:58 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1001,10 +1001,6 @@ No value is returned.
 
 =cut
 
-# In the future a secure flag should be set on
-# the cookie for admin users. -- brian
-# well, it should be an option, of course ... -- pudge
-# The option is the var "cookiesecure." - Jamie
 sub setCookie {
 	return unless $ENV{GATEWAY_INTERFACE};
 
@@ -1038,24 +1034,12 @@ sub setCookie {
 		-path    =>  $cookiepath
 	);
 
-	# I cannot get HTTPS here ... I think it is not set until later.
-	# This poses a problem.  -- pudge
-	# Need to scan the connection class to find this information.
-	# (I'll do it later). This may also be in $r->protocol -Brian
-	# Brian advises port() is the best way, yes it's icky -Jamie
-	# This doesn't work yet! I think I want $r->connection->local_addr
-	# (and then unpack it and look at the port) - Jamie
-	# OK, this works:
 	if ($constants->{cookiesecure}) {
 		my $subr = $r->lookup_uri($r->uri);
 		if ($subr && $subr->subprocess_env('HTTPS') eq 'on') {
 			$cookiehash{-secure} = 1;
 		}
 	}
-# And this doesn't work:
-#	if ($constants->{cookiesecure} && $r->port == 443) {
-#		$cookiehash{-secure} = 1;
-#	}
 
 	my $cookie = Apache::Cookie->new($r, %cookiehash);
 
@@ -1714,4 +1698,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.35 2002/07/19 01:27:47 jamie Exp $
+$Id: Environment.pm,v 1.36 2002/07/19 14:22:58 pudge Exp $

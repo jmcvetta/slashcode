@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.47 2004/07/19 21:39:37 jamiemccarthy Exp $
+# $Id: slashd,v 1.48 2004/08/03 21:10:51 pudge Exp $
 
 ############################################################
 #
@@ -873,6 +873,8 @@ sub do_child {
 	# -- whatever it may be, it's inappropriate for the child.  The default
 	# action for SIGCHLD is to ignore it.
 	$SIG{CHLD} = 'DEFAULT';
+
+	setUserDBs($user);
 
 	if (verbosity() >= 4) {
 		slashdLog("Child $$ [$me]: sleep for 1 second after fork()");

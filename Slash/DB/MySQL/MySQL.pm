@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.656 2004/08/03 16:52:15 pudge Exp $
+# $Id: MySQL.pm,v 1.657 2004/08/03 21:10:50 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.656 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.657 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1163,6 +1163,10 @@ sub getTopicTree {
 
 	# Cache needs to be built, so build it.
 	my $tree_ref = $self->{$table_cache} ||= {};
+	if (my $regex = $constants->{debughash_getTopicTree}) {
+		$tree_ref = debugHash($regex, $tree_ref) unless tied($tree_ref);
+	}
+
 	my $topics = $self->sqlSelectAllHashref("tid", "*", "topics");
 	my $topic_nexus = $self->sqlSelectAllHashref("tid", "*", "topic_nexus");
 	my $topic_nexus_dirty = $self->sqlSelectAllHashref("tid", "*", "topic_nexus_dirty");
@@ -9091,8 +9095,12 @@ sub getSkins {
 	_genericCacheRefresh($self, 'skins', $expiration);
 	return $self->{$table_cache} if $self->{$table_cache_time};
 
-	my $skins_ref = $self->sqlSelectAllHashref(    "skid",        "*", "skins");
 	my $colors    = $self->sqlSelectAllHashref([qw( skid name )], "*", "skin_colors", "", "GROUP BY skid, name");
+	my $skins_ref = $self->sqlSelectAllHashref(    "skid",        "*", "skins");
+	if (my $regex = $constants->{debughash_getSkins}) {
+		$skins_ref = debugHash($regex, $skins_ref);
+	}
+
 	for my $skid (keys %$skins_ref) {
 		# Set rootdir etc., based on hostname/url, or mainpage's if none
 		my $host_skid  = $skins_ref->{$skid}{hostname} ? $skid : $constants->{mainpage_skid};

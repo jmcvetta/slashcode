@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.145 2003/07/02 18:36:45 jamie Exp $
+# $Id: Slash.pm,v 1.146 2003/07/02 18:56:20 jamie Exp $
 
 package Slash;
 
@@ -1215,6 +1215,7 @@ sub displayStory {
 		&& !$user->{noicons}
 		&& !$form->{issue}
 		&& $constants->{section} eq 'index'
+		&& $user->{currentSection} eq 'index'
 		&& !$full
 		&& !$options->{is_future}	 # can $story->{is_future} ever matter?
 	) {

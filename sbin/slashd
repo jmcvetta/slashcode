@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.37 2003/12/31 15:28:28 jamie Exp $
+# $Id: slashd,v 1.38 2004/02/08 04:11:41 jamiemccarthy Exp $
 
 ############################################################
 #
@@ -72,6 +72,19 @@ sub slashdLog {
 		$args[0] = "[$pids{$$}{taskname}] $args[0]";
 	}
 	doLog('slashd', \@args);
+}
+
+# A command to log an error to a DB table.  This is only for messages
+# that are important enough that the admins should see them (maybe in
+# the admin.pl backend, but definitely in email at the end of the day).
+
+sub slashdErrnote {
+	my($errnote, $moreinfo) = @_;
+	my $taskname = "SLASHD"; # the default if not called from a task
+	if ($pids{$$} && $pids{$$}{forktype} == SLASHD_NOWAIT) {
+		$taskname = $pids{$$}{taskname};
+	}
+	$slashdb->insertErrnoteLog($taskname, $errnote, $moreinfo);
 }
 
 # log children ending

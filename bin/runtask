@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.15 2003/08/15 21:02:52 pudge Exp $
+# $Id: runtask,v 1.16 2004/02/08 04:11:40 jamiemccarthy Exp $
 
 use sigtrap;
 use strict;
@@ -29,7 +29,7 @@ use vars qw(
 	$virtual_user $constants $slashdb $user $dir
 );
 
-(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -68,6 +68,15 @@ exit 0;
 
 sub slashdLog {
 	doLog('slashd', \@_, 1, 'runtask');
+}
+
+# A command to log an error to a DB table.  This is only for messages
+# that are important enough that the admins should see them (maybe in
+# the admin.pl backend, but definitely in email at the end of the day).
+
+sub slashdErrnote {
+	my($errnote, $moreinfo) = @_;
+	$slashdb->insertErrnoteLog($task_name || 'RUNTASK', $errnote, $moreinfo);
 }
 
 sub slashdLogDie {

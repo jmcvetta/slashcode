@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.10 2003/10/09 19:48:29 jamie Exp $
+# $Id: counthits.pl,v 1.11 2004/02/08 04:11:41 jamiemccarthy Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 6;
@@ -43,6 +43,10 @@ $task{$me}{code} = sub {
 	$lastmaxid = $newmaxid - $maxrows if $lastmaxid < $newmaxid - $maxrows;
         if ($lastmaxid > $newmaxid) {
                 slashdLog("Nothing to do, lastmaxid '$lastmaxid', newmaxid '$newmaxid'");
+		if ($lastmaxid > $newmaxid + 2) {
+			# Something odd is going on... this ID is off.
+			slashdErrnote("counthits_lastmaxid '$lastmaxid' is higher than it should be '$newmaxid', did accesslog maybe get rebuilt?");
+		}
                 return "";
         }
 

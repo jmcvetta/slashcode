@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.20 2002/03/11 21:29:54 jamie Exp $
+# $Id: Environment.pm,v 1.21 2002/03/21 00:03:26 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1482,6 +1482,12 @@ sub createLog {
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
 		$slashdb->createAccessLog($uri, $dat);
+	# This is for me, I am getting tired of patching my local copy -Brian
+	} elsif ($uri =~ /\.tar\.gz$/) {
+		$uri =~ s|^/(.*)\.tar\.gz$|$1|;
+		$slashdb->createAccessLog($uri, $dat);
+	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
+		$slashdb->createAccessLog('rss', $dat);
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
 		$dat = $uri if $uri =~ $page;	
@@ -1587,4 +1593,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.20 2002/03/11 21:29:54 jamie Exp $
+$Id: Environment.pm,v 1.21 2002/03/21 00:03:26 brian Exp $

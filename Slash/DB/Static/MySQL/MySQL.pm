@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.202 2004/11/11 21:07:40 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.203 2004/11/14 23:18:08 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -220,6 +220,14 @@ sub getArchiveList {
 	return $returnable;
 }
 
+
+########################################################
+# For balance_readers.pl
+sub deleteOldDBReaderStatus {
+	my($self, $secs_back) = @_;
+	$self->sqlDelete("dbs_readerstatus",
+		"ts < DATE_SUB(NOW(), INTERVAL $secs_back SECOND)");
+}
 
 ########################################################
 # For dailystuff

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.727 2004/11/09 21:39:34 pudge Exp $
+# $Id: MySQL.pm,v 1.728 2004/11/14 23:18:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.727 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.728 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2695,6 +2695,7 @@ sub getDBs {
 			$weight = int($weight * $db->{_weight_factor} + 1);
 		}
 
+		# XXX Don't do weight this way.
 		push @{$databases{$db->{type}}}, ($db) x $weight;
 	}
 
@@ -2723,6 +2724,41 @@ sub getDB {
 }
 
 } # end closure surrounding getDBs and getDB
+
+#################################################################
+
+# Writing to the dbs_readerstatus table.
+
+sub createDBReaderStatus {
+	my($self, $hr) = @_;
+	return $self->sqlInsert("dbs_readerstatus", $hr);
+}
+
+#################################################################
+
+# Methods for reading and writing the dbs_readerstatus_queries table.
+
+sub getDBReaderStatusQueryId {
+	my($self, $text) = @_;
+	my $id = $self->getDBReaderStatusQueryId_raw($text)
+		|| $self->createDBReaderStatusQuery($text);
+	return $id;
+}
+
+sub getDBReaderStatusQueryId_raw {
+	my($self, $text) = @_;
+	my $text_q = $self->sqlQuote($text);
+	return $self->sqlSelect("rsqid", "dbs_readerstatus_queries",
+		"text = $text_q");
+}
+
+sub createDBReaderStatusQuery {
+	my($self, $text) = @_;
+	$self->sqlInsert("dbs_readerstatus_queries",
+		{ rsqid => undef, text => $text },
+		{ ignore => 1 });
+	return $self->getLastInsertId();
+}
 
 #################################################################
 sub getDBVirtualUsers {

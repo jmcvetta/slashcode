@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.69 2002/09/29 20:16:32 jamie Exp $
+# $Id: MySQL.pm,v 1.70 2002/10/01 17:14:39 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -647,11 +647,12 @@ sub getSitesRDF {
 sub getSectionInfo {
 	my($self) = @_;
 	$self->sqlConnect();
+	my $defaultsection = getCurrentStatic('defaultsection');
 	# Make more sense to make this a getDescriptions call -Brian
 	my $sections = $self->sqlSelectAllHashrefArray(
 		"section, url",
 		"sections",
-		"type='contained' ",
+		"type='contained' AND section != '$defaultsection' ",
 		"ORDER BY section"
 	);
 

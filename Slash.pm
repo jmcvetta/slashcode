@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.33 2000/07/07 12:35:28 pudge Exp $
+#  $Id: Slash.pm,v 1.34 2000/07/07 16:54:31 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -422,7 +422,7 @@ sub newvar {
 sub userLogin {
 	my($name, $passwd) = @_;
 
-	$passwd = substr $passwd, 0, 12;
+	$passwd = substr $passwd, 0, 20;
 	my($uid) = sqlSelect('uid', 'users',
 		'passwd=' . $I{dbh}->quote($passwd) .
 		' AND nickname=' . $I{dbh}->quote($name)

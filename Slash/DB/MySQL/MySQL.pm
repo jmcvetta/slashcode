@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.624 2004/07/16 13:56:45 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.625 2004/07/16 15:11:25 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.624 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.625 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7496,6 +7496,28 @@ sub getTime {
 	}
 
 	return $t;
+}
+
+sub getTimeAgo {
+	my ($self, $time) = @_;
+	my $q_time = $self->sqlQuote($time);
+	my $units_given = 0;
+	my $remainder = $self->sqlSelect("UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP($q_time)");
+
+	my $diff = {};
+	$diff->{is_future} = 1 if $remainder < 0;
+	$diff->{is_past}   = 1 if $remainder > 0;
+	$diff->{is_now}    = 1 if $remainder == 0;
+	$remainder = abs($remainder);
+	$diff->{days} = int($remainder / 86400);
+	$remainder -= $diff->{days}* 86400;
+	$diff->{hours} = int($remainder / 3600);
+	$remainder -= $diff->{hours} * 3600;
+	$diff->{minutes} = int($remainder / 60);
+	$remainder -= $diff->{minutes} * 60;
+	$diff->{seconds} = $remainder;
+	
+	return $diff;
 }
 
 ##################################################################

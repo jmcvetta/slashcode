@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.22 2002/05/29 21:07:04 brian Exp $
+# $Id: article.pl,v 1.23 2002/06/01 22:59:41 jamie Exp $
 
 use strict;
 use Slash;
@@ -82,8 +82,10 @@ sub main {
 		# being a default for the story editor instead of being system-wide; that feature
 		# has been begun, but doesn't work -- pudge
 		if ($constants->{article_nocomment}) {
-			# to do the error channel
-			Slash::selectComments($discussion, 0) if $form->{ssi};
+			# to report the commentcount and hitparade
+			if ($form->{cchp}) {
+				Slash::selectComments($discussion, 0);
+			}
 		} else {
 			printComments($discussion);
 		}

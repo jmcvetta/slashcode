@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.183 2004/11/07 23:36:49 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.184 2004/11/11 16:52:27 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -527,7 +527,8 @@ EOT
 	my $admin_mods = $stats->getAdminModsInfo();
 	my $admin_mods_text = getAdminModsText($admin_mods);
 	$mod_data{repeat_mods} = $stats->getRepeatMods({
-		min_count => $constants->{mod_stats_min_repeat}
+		min_count => $constants->{mod_stats_min_repeat},
+		lookback_days => $constants->{mod_stats_repeat_lookback},
 	});
 	$mod_data{reverse_mods} = $stats->getReverseMods();
 	slashdLog("Mod Info End");

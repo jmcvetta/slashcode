@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.147 2004/11/05 18:27:03 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.148 2004/11/11 16:52:28 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -285,6 +285,7 @@ sub getRepeatMods {
 	my $constants = getCurrentStatic();
 	my $ac_uid = $constants->{anonymous_coward_uid};
 
+	my $lookback = $options->{lookback_days} || 30;
 	my $within = $options->{within_hours} || 96;
 	my $limit = $options->{limit} || 50;
 	my $min_count = $options->{min_count}
@@ -312,6 +313,7 @@ sub getRepeatMods {
 		 AND usersorgi.tokens >= -50
 		 AND usersorg.seclev < 100
 		 AND moderatorlog.cuid=usersdest.uid
+		 AND moderatorlog.ts >= DATE_SUB(NOW(), INTERVAL $lookback DAY)
 		 AND usersdest.uid=usersdesti.uid
 		 AND usersdest.uid != $ac_uid",
 		"GROUP BY usersorg.uid, usersdest.uid, val
@@ -1758,4 +1760,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.147 2004/11/05 18:27:03 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.148 2004/11/11 16:52:28 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.73 2002/11/12 17:05:16 pater Exp $
+# $Id: submit.pl,v 1.74 2002/11/14 15:32:23 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -180,6 +180,9 @@ sub previewForm {
 	my $sub = $slashdb->getSubmission($form->{subid});
 
 	my $topic = $slashdb->getTopic($sub->{tid});
+	$topic->{image} = "$constants->{imagedir}/topics/$topic->{image}"
+                if $topic->{image} =~ /^\w+\.\w+$/;
+
 	my $extracolumns = $slashdb->getSectionExtras($sub->{section}) || [ ];
 	my $ipid_vis = $constants->{id_md5_vislength} ? substr($sub->{ipid}, 0, $constants->{id_md5_vislength}) : $sub->{ipid};
 

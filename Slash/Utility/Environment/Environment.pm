@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.109 2004/01/27 18:22:36 tvroom Exp $
+# $Id: Environment.pm,v 1.110 2004/01/27 22:53:38 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -2019,11 +2019,12 @@ sub getOpAndDatFromStatusAndURI {
 		$uri = 'css';
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
+		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?(.*)|$1|;
 		my $suspected_handler = $2;
 		my $handler;
 		my $reader = getObject('Slash::DB', { db_type => 'reader' });
-		if ($handler = $reader->getSection($uri, 'index_handler') ) {
+		if ($handler = $reader->getSection($uri, 'index_handler')) {
 			$handler =~ s|^(.*)\.pl$|$1|;
 			$uri = $handler if $handler eq $suspected_handler;
 		}
@@ -2035,7 +2036,7 @@ sub getOpAndDatFromStatusAndURI {
 	# for linux.com -- maps things like /howtos/HOWTO-INDEX/ to howtos which is what we want
 	# if this isn't desirable for other sites we can add a var to control this on a per-site
 	# basis.  --vroom 2004/01/27
-	} elsif($uri =~ m|^/([^/]*)/([^/]*/)+$|){
+	} elsif ($uri =~ m|^/([^/]*)/([^/]*/)+$|){
 		$uri = $1;
 	}
 	($uri, $dat);
@@ -2289,4 +2290,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.109 2004/01/27 18:22:36 tvroom Exp $
+$Id: Environment.pm,v 1.110 2004/01/27 22:53:38 pudge Exp $

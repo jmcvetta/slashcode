@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.58 2002/10/22 12:11:32 pudge Exp $
+# $Id: search.pl,v 1.59 2002/11/19 20:02:13 brian Exp $
 
 use strict;
 use Slash;
@@ -477,8 +477,9 @@ sub storySearchRSS {
 	my @items;
 	for my $entry (@$stories) {
 		my $time = timeCalc($entry->{time});
+		# Link should be made to be sectional -Brian
 		push @items, {
-			title	=> "$entry->{title} ($time)",
+			title	=> $entry->{title},
 			'link'	=> ($constants->{absolutedir} . '/article.pl?sid=' . $entry->{sid}),
 			description	=> $entry->{introtext}
 		};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.26 2002/04/09 18:45:48 brian Exp $
+# $Id: MySQL.pm,v 1.27 2002/04/11 04:56:59 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1024,26 +1024,32 @@ sub countAccesslogDaily {
 sub getSlashdStatus {
 	my($self) = @_;
 	my $answer = _genericGet('slashd_status', 'task', '', @_);
+	$answer->{last_completed_hhmm} =
+		substr($answer->{last_completed}, 11, 5)
+		if defined($answer->{last_completed});
+	$answer->{next_begin_hhmm} =
+		substr($answer->{next_begin}, 11, 5)
+		if defined($answer->{next_begin});
 	return $answer;
-}
-########################################################
-sub deleteSlashdStatus {
-	my($self) = @_;
-
-	$self->sqlDo("DELETE FROM slashd_status");
 }
 
 ########################################################
 sub setSlashdStatus {
-	my($self, $key, $options) = @_;
-	$self->sqlUpdate('slashd_status', $options, "task = '$key'");
+	my($self, $taskname, $options) = @_;
+	return $self->sqlUpdate(
+		"slashd_status",
+		$options,
+		"task=" . $self->sqlQuote($taskname)
+	);
 }
 
 ########################################################
 sub createSlashdStatus {
-	my($self, $value) = @_;
-
-	$self->sqlDo("INSERT INTO slashd_status (task) VALUES ('$value')");
+	my($self, $taskname) = @_;
+	return $self->sqlInsert(
+		"slashd_status",
+		{ task => $taskname },
+		{ ignore => 1 } );
 }
 
 ########################################################

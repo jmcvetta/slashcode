@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.122 2002/04/09 18:45:48 brian Exp $
+# $Id: MySQL.pm,v 1.123 2002/04/11 04:56:59 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.123 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4473,9 +4473,40 @@ sub getPollVotesMax {
 }
 
 ##################################################################
+sub getSlashdStatus {
+        my($self) = @_;
+	my $answer = _genericGet('slashd_status', 'task', '', @_);
+	$answer->{last_completed_hhmm} =
+		substr($answer->{last_completed}, 11, 5)
+		if defined($answer->{last_completed});
+	$answer->{next_begin_hhmm} =
+		substr($answer->{next_begin}, 11, 5)
+		if defined($answer->{next_begin});
+	$answer->{summary_trim} =
+		substr($answer->{summary}, 0, 30)
+		if $answer->{summary};
+	return $answer;
+}
+
+##################################################################
 sub getSlashdStatuses {
 	my($self) = @_;
-	my $answer = $self->sqlSelectAll('task,time_took,last_update', 'slashd_status');
+	my $answer = $self->sqlSelectAllHashref(
+		"task",
+		"*",
+		"slashd_status",
+	);
+	for my $task (keys %$answer) {
+		$answer->{$task}{last_completed_hhmm} =
+			substr($answer->{$task}{last_completed}, 11, 5)
+			if defined($answer->{$task}{last_completed});
+		$answer->{$task}{next_begin_hhmm} =
+			substr($answer->{$task}{next_begin}, 11, 5)
+			if defined($answer->{$task}{next_begin});
+		$answer->{$task}{summary_trim} =
+			substr($answer->{$task}{summary}, 0, 30)
+			if $answer->{$task}{summary};
+	}
 	return $answer;
 }
 

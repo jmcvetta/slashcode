@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.128 2003/09/28 21:22:11 jamie Exp $
+# $Id: slashschema_create.sql,v 1.129 2003/10/21 01:44:30 pudge Exp $
 #
 
 #
@@ -863,7 +863,7 @@ CREATE TABLE string_param (
 DROP TABLE IF EXISTS submissions;
 CREATE TABLE submissions (
 	subid mediumint UNSIGNED NOT NULL auto_increment,
-	email varchar(50) NOT NULL,
+	email varchar(255) DEFAULT '' NOT NULL,
 	name varchar(50) NOT NULL,
 	time datetime NOT NULL,
 	subj varchar(50) NOT NULL,

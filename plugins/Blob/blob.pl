@@ -2,15 +2,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: blob.pl,v 1.2 2003/02/21 20:23:20 brian Exp $
+# $Id: blob.pl,v 1.3 2003/02/21 20:38:52 brian Exp $
 
 use strict;
 use Slash;
-use Slash::Search;
 use Slash::Blob;
-use Slash::Display;
 use Slash::Utility;
-use Slash::XML;
 
 #################################################################
 sub main {
@@ -40,6 +37,7 @@ sub main {
 	$r->rflush;
 	$r->status(200);
 }
+main();
 
 #################################################################
 1;

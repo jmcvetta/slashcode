@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.15 2003/09/05 16:19:43 jamie Exp $
+# $Id: open_backend.pl,v 1.16 2003/10/20 17:21:51 pater Exp $
 
 use strict;
 use Slash;
@@ -23,7 +23,7 @@ $task{$me}{code} = sub {
 	if ($stories && @$stories) {
 		newxml(@_, undef, $stories);
 		newrdf(@_, undef, $stories);
-		newwml(@_, undef, $stories);
+		#newwml(@_, undef, $stories);
 		newrss(@_, undef, $stories);
 	}
 

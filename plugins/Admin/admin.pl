@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.35 2002/02/11 18:22:13 pudge Exp $
+# $Id: admin.pl,v 1.36 2002/02/12 20:54:41 cliff Exp $
 
 use strict;
 use Image::Size;
@@ -1167,7 +1167,10 @@ sub listStories {
 			$canedit = 1;
 		}
 
-		my $feature_story_flag = ($slashdb->getSection($section,'sid') eq $sid) ? 1 : 0;
+		my $feature_story_flag = 
+			($slashdb->getSection($section, 'feature_story') eq
+			 $sid);
+
 		$storylistref->[$i] = {
 			'x'		=> $i + $first_story + 1,
 			hits		=> $hits,

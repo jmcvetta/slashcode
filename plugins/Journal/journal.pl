@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.45 2002/08/20 22:24:26 pudge Exp $
+# $Id: journal.pl,v 1.46 2002/09/24 17:16:31 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -334,7 +334,7 @@ sub displayArticle {
 		return displayFriends(@_);
 	}
 
-	_printHead("userhead", { nickname => $nickname, uid => $uid });
+	_printHead("userhead", { nickname => $nickname, uid => $uid }, 1);
 
 	# clean it up
 	my $start = fixint($form->{start}) || 0;
@@ -452,7 +452,7 @@ sub listArticle {
 		? $slashdb->getUser($form->{uid}, 'nickname')
 		: $user->{nickname};
 
-	_printHead("userhead", { nickname => $nickname, uid => $form->{uid} || $user->{uid} });
+	_printHead("userhead", { nickname => $nickname, uid => $form->{uid} || $user->{uid} }, 1);
 
 	if (@$list) {
 		slashDisplay('journallist', {
@@ -681,10 +681,17 @@ sub _validFormkey {
 }
 
 sub _printHead {
-	my($head, $data) = @_;
+	my($head, $data, $new_header) = @_;
 	my $title = getData($head, $data);
 	header($title);
-	slashDisplay("journalhead", { title => $title });
+	if ($new_header) {
+		$data->{page} = 'journal';
+		print createMenu("users");
+		slashDisplay("user_titlebar", $data);
+		print createMenu("journal");
+	} else {
+		slashDisplay("journalhead", { title => $title });
+	} 
 }
 
 sub _checkTheme {

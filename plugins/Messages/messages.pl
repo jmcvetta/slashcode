@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.7 2002/03/19 16:20:14 pudge Exp $
+# $Id: messages.pl,v 1.8 2002/09/24 17:16:31 brian Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $messages  = getObject('Slash::Messages');
@@ -244,6 +244,10 @@ sub list_messages {
 	my $message_list = $messages->getWebByUID();
 
 	header(getData('header'));
+# Spank me, this won't be here for long (aka Pater's cleanup will remove it) -Brian
+	print createMenu('users');
+	slashDisplay('user_titlebar', { nickname => $user->{nickname}, uid => $user->{uid}, page => 'messages' });
+	print createMenu('messages');
 	slashDisplay('list_messages', {
 		note		=> $note,
 		messagecodes	=> $messagecodes,

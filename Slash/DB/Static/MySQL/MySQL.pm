@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.172 2004/08/10 01:56:05 tvroom Exp $
+# $Id: MySQL.pm,v 1.173 2004/08/10 02:00:57 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2475,7 +2475,7 @@ sub getAccesslogPPS {
 		my $lookback_id = $max_id - $rowsback;
 		$lookback_id = 1 if $lookback_id < 1;
 		my($count, $time) = $self->sqlSelect(
-			"COUNT(*), UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(MIN(ts))",
+			"COUNT(*), UNIX_TIMESTAMP(MAX(ts)) - UNIX_TIMESTAMP(MIN(ts))",
 			"accesslog",
 			"id >= $lookback_id AND op != 'image'");
 		if (!$count || $count < 10) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.189 2004/04/12 22:15:59 tvroom Exp $
+# $Id: comments.pl,v 1.190 2004/04/13 17:06:41 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1240,7 +1240,7 @@ sub submitComment {
 	if (!$user->{is_anon} && !$form->{postanon}) {
 		$pts = $user->{defaultpoints};
 
-		if($constants->{karma_posting_penalty_style} == 0){
+		if ($constants->{karma_posting_penalty_style} == 0) {
 			$pts-- if $user->{karma} < 0;
 			$pts-- if $user->{karma} < $constants->{badkarma};
                 } else {

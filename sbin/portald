@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.10 2002/02/05 22:32:16 patg Exp $
+# $Id: portald,v 1.11 2002/02/05 23:19:29 pudge Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -177,7 +177,7 @@ sub getRDF {
 				Page	=> 'portald'
 			});
 
-			last if (++$i >= $items && $items > 0);
+			last if ++$i >= $iterations && $iterations > 0;
 		}
 
 		setblock($bid, "$str$other");

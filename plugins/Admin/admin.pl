@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.179 2003/10/20 04:14:53 jamie Exp $
+# $Id: admin.pl,v 1.180 2003/10/28 00:40:03 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1722,11 +1722,15 @@ sub updateStory {
 		-rendered	=> 'NULL', # freshenup.pl will write this
 	};
 
+	for (qw(dept bodytext relatedtext)) {
+		$data->{$_} = '' unless defined $data->{$_};  # allow to blank out
+	}
+
 	my $extras = $slashdb->getSectionExtras($data->{section});
 	if ($extras && @$extras) {
 		for (@$extras) {
 			my $key = $_->[1];
-			$data->{$key} = $form->{$key} if $form->{$key};
+			$data->{$key} = $form->{$key};
 		}
 	}
 
@@ -1993,11 +1997,15 @@ sub saveStory {
 		-rendered	=> 'NULL', # freshenup.pl will write this
 	};
 
+	for (qw(dept bodytext relatedtext)) {
+		$data->{$_} = '' unless defined $data->{$_};  # allow to blank out
+	}
+
 	my $extras = $slashdb->getSectionExtras($data->{section});
 	if ($extras && @$extras) {
 		for (@$extras) {
 			my $key = $_->[1];
-			$data->{$key} = $form->{$key} if $form->{$key};
+			$data->{$key} = $form->{$key};
 		}
 	}
 	my $sid = $slashdb->createStory($data);

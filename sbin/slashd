@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.18 2002/06/01 00:30:32 jamie Exp $
+# $Id: slashd,v 1.19 2002/06/01 22:57:33 jamie Exp $
 
 ############################################################
 #
@@ -222,7 +222,7 @@ sub end_log {
 		push @log, " (${duration}s";
 	}
 
-	if ($forktype != SLASHD_NOWAIT) {
+#	if ($forktype != SLASHD_NOWAIT) {
 		push @log, ($secs_until < $secs)
 			? "; $next_task "
 				. -$secs_until
@@ -230,7 +230,7 @@ sub end_log {
 			: verbosity() >= 2
 				? "; $next_task in ${secs_until}s"
 				: ();
-	}
+#	}
 
 	if ($forktype != SLASHD_LOG_NEXT_TASK) {
 		push @log, ")$summary";

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.36 2003/05/13 03:30:51 pater Exp $
+# $Id: portald,v 1.37 2003/07/15 19:09:38 vroom Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -232,6 +232,8 @@ for (@{$RDFlist}) {
 	my($bid, $url, $rdf) = ($_->[0], $_->[1], $_->[2]);
 	getRDF($bid, $rdf);
 }
+
+$slashdb->setCurrentSectionPolls();
 
 getTop10Comments();
 getSlashdotPoll();

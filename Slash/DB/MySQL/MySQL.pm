@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.164 2002/06/20 19:28:34 jamie Exp $
+# $Id: MySQL.pm,v 1.165 2002/06/23 23:51:53 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4478,14 +4478,26 @@ sub getSlashConf {
 	}
 
 	my $fixup = sub {
-		return [
+		return [ ] if !$_[0];
+		[
 			map {(
 				s/^\s+//,
 				s/\s+$//,
 				$_
 			)[-1]}
 			split /\|/, $_[0]
-		] if $_[0];
+		];
+	};
+	my $fixup_hash = sub {
+		my $ar = $fixup->(@_);
+		my $hr = { };
+		return $hr if !$ar;
+		for my $str (@$ar) {
+			my($k, $v) = split("=", $str);
+			$v = 1 if !defined($v);
+			$hr->{$k} = $v;
+		}
+		$hr;
 	};
 
 	my %conf_fixup_arrays = (
@@ -4505,17 +4517,17 @@ sub getSlashConf {
 		submit_categories =>		[ ],
 	);
 	my %conf_fixup_hashes = (
-		# var name			# default list of keys
+		# var name			# default hash of keys/values
 		# --------			# --------------------
 		ad_messaging_sections =>	[ ],
+		karma_adj =>			[ -10 => 'Terrible',	-1 => 'Bad',	    0 => 'Neutral',
+						   12 => 'Positive',	25 => 'Good',	99999 => 'Excellent' ],
 	);
 	for my $key (keys %conf_fixup_arrays) {
-		$conf{$key} = $fixup->($conf{$key}) || $conf_fixup_arrays{$key};
+		$conf{$key} = $fixup     ->($conf{$key}) || $conf_fixup_arrays{$key};
 	}
 	for my $key (keys %conf_fixup_hashes) {
-		$conf{$key} = { map { $_, 1 }
-			@{$fixup->($conf{$key}) || $conf_fixup_hashes{$key}}
-		};
+		$conf{$key} = $fixup_hash->($conf{$key}) || $conf_fixup_hashes{$key};
 	}
 
 	if ($conf{comment_nonstartwordchars}) {

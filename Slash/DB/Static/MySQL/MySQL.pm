@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.137 2004/04/02 00:43:00 pudge Exp $
+# $Id: MySQL.pm,v 1.138 2004/04/04 15:03:09 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1144,7 +1144,7 @@ sub factorEligibleModerators {
 	if ($wtf->{stirratio}) {
 		# Assign a token likeliness factor based on the ratio of
 		# stirred to spent mod points.  In order not to be
-		# "prejudiced" against users with little or not mod history,
+		# "prejudiced" against users with little or no mod history,
 		# those users get no change in their factor (i.e. 1) by
 		# simply being left out of the list.  Sort by ratio first
 		# (that's the point of this code); if there's a tie in

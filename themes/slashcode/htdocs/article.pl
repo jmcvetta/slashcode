@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.18 2002/04/05 20:10:51 jamie Exp $
+# $Id: article.pl,v 1.19 2002/05/13 18:41:30 pudge Exp $
 
 use strict;
 use Slash;
@@ -72,7 +72,10 @@ sub main {
 		my $discussion = $slashdb->getDiscussionBySid($story->{sid});
 		# This is to get tid in comments. It would be a mess to pass it directly to every comment -Brian
 		$user->{state}{tid} = $discussion->{topic};
-		printComments($discussion);
+		# this should really be done per-story, perhaps with article_nocomment
+		# being a default for the story editor instead of being system-wide; that feature
+		# has been begun, but doesn't work -- pudge
+		printComments($discussion) unless $constants->{article_nocomment};
 	} else {
 		my $message = getData('no_such_sid');
 		header($message, $form->{section});

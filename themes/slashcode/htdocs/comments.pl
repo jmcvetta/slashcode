@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.172 2004/03/02 18:34:21 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.173 2004/03/02 19:36:39 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1421,11 +1421,11 @@ sub moderate {
 	my $was_touched = 0;
 
 	my $meta_mods_performed = 0;
-	if ($user->{is_admin}){
+	if ($user->{is_admin}) {
 		$meta_mods_performed = metaModerate();		
 	}
 
-	if ($form->{meta_mod_only}){
+	if ($form->{meta_mod_only}) {
 		titlebar("100%", "MetaModerating...");
 		print getData("metamoderate_message");
 		print getData("metamods_performed", { num => $meta_mods_performed }) if $meta_mods_performed;

@@ -65,14 +65,17 @@ __template__
 	[% returnme.data_constant = 1 %] 
 	You either aren't <a href="[% constants.rootdir %]/users.pl">logged in</a>
 	or don't have sufficient privileges to submit a [% label %].
+
 [% CASE 'metamoderate_message' %]
 	[% returnme.data_constant = 1 %]
 	MetaModeration completed.
+
 [% CASE 'metamods_performed' %]
 	<P>[% num %] MetaModeration(s) Completed.
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;comments;default,v 1.18 2004/03/02 02:42:24 tvroom Exp $
+$Id: data;comments;default,v 1.19 2004/03/02 19:36:40 pudge Exp $

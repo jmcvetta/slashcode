@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.186 2003/06/30 19:28:51 jamie Exp $
+# $Id: users.pl,v 1.187 2003/07/02 13:14:20 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2566,7 +2566,7 @@ sub displayForm {
 	}
 
 	slashDisplay($ops->{$op}, {
-		newnick		=> fixNickname($form->{newusernick}),
+		newnick		=> nickFix($form->{newusernick}),
 		suadmin_flag 	=> $suadmin_flag,
 		title 		=> $title,
 		title2 		=> $title2,

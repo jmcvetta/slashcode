@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.12 2001/11/03 03:08:48 brian Exp $
+# $Id: Slash.pm,v 1.13 2001/11/06 20:38:35 brian Exp $
 
 package Slash;
 
@@ -977,7 +977,7 @@ sub _hard_dispComment {
 	} elsif ($user->{nosigs}) {
 		$comment_to_display = $comment->{comment};
 	} else {
-		$comment_to_display  = "$comment->{comment}<BR>$comment->{sig}";
+		$comment_to_display  = "$comment->{comment}<BR>--<BR>$comment->{sig}";
 	}
 
 	$time_to_display = timeCalc($comment->{date});

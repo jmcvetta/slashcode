@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.497 2004/01/27 22:56:27 pudge Exp $
+# $Id: MySQL.pm,v 1.498 2004/01/28 17:25:54 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.497 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.498 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -389,78 +389,6 @@ sub getModPointsNeeded {
 	my $constants = getCurrentStatic();
 	my $pn = $constants->{mod_up_points_needed} || {};
 	return $pn->{$to} || 1;
-}
-
-########################################################
-# Given a fractional value representing the fraction of fair M2
-# votes, returns the token/karma consequences of that fraction
-# in a hashref.  Makes the very complex var m2_consequences a
-# little easier to use.  Note that the value returned has three
-# fields:  a float, its sign, and an SQL expression which may be
-# either an integer or an IF().
-sub getM2Consequences {
-	my($self, $frac) = @_;
-	my $constants = getCurrentStatic();
-	my $c = $constants->{m2_consequences};
-	my $retval = { };
-	for my $ckey (sort { $a <=> $b } keys %$c) {
-		if ($frac <= $ckey) {
-			my @vals = @{$c->{$ckey}};
-			for my $key (qw(	m2_fair_tokens
-						m2_unfair_tokens
-						m1_tokens
-						m1_karma )) {
-				$retval->{$key}{num} = shift @vals;
-			}
-			for my $key (keys %$retval) {
-				$self->_set_csq($key, $retval->{$key});
-			}
-			last;
-		}
-	}
-	return $retval;
-}
-
-sub _set_csq {
-	my($self, $key, $hr) = @_;
-	my $n = $hr->{num};
-	if (!$n) {
-		$hr->{chance} = $hr->{sign} = 0;
-		$hr->{sql_base} = $hr->{sql_possible} = "";
-		$hr->{sql_and_where} = undef;
-		return ;
-	}
-
-	my $constants = getCurrentStatic();
-	my $column = 'tokens';
-	$column = 'karma' if $key =~ /karma$/;
-	my $max = ($column eq 'tokens')
-		? $constants->{m2_consequences_token_max}
-		: $constants->{m2_maxbonus_karma};
-	my $min = ($column eq 'tokens')
-		? $constants->{m2_consequences_token_min}
-		: $constants->{minkarma};
-
-	my $sign = 1; $sign = -1 if $n < 0;
-	$hr->{sign} = $sign;
-	
-	my $a = abs($n);
-	my $i = int($a);
-
-	$hr->{chance} = $a - $i;
-	$hr->{num_base} = $i * $sign;
-	$hr->{num_possible} = ($i+1) * $sign;
-	if ($sign > 0) {
-		$hr->{sql_and_where}{$column} = "$column < $max";
-		$hr->{sql_base} = $i ? "LEAST($column+$i, $max)" : "";
-		$hr->{sql_possible} = "LEAST($column+" . ($i+1) . ", $max)"
-			if $hr->{chance};
-	} else {
-		$hr->{sql_and_where}{$column} = "$column > $min";
-		$hr->{sql_base} = $i ? "GREATEST($column-$i, $min)" : "";
-		$hr->{sql_possible} = "GREATEST($column-" . ($i+1) . ", $min)"
-			if $hr->{chance};
-	}
 }
 
 ########################################################

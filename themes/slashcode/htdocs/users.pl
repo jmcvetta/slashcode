@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.225 2004/03/09 23:00:52 pudge Exp $
+# $Id: users.pl,v 1.226 2004/03/12 13:26:45 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -813,7 +813,7 @@ sub showInfo {
 	my($points, $nickmatch_flag, $uid, $nick);
 	my($mod_flag, $karma_flag, $n) = (0, 0, 0);
 
-	if (! $id && ! $form->{userfield}) {
+	if (!$id && !$form->{userfield}) {
 		if ($form->{uid} && ! $id) {
 			$fieldkey = 'uid';
 			($uid, $id) = ($form->{uid}, $form->{uid});
@@ -1608,7 +1608,7 @@ sub editUser {
 	my $admin_flag = ($user->{is_admin}) ? 1 : 0;
 	my $fieldkey;
 
-	if ($form->{userfield}) {
+	if ($admin_flag && $form->{userfield}) {
 		$id ||= $form->{userfield};
 		if ($form->{userfield} =~ /^\d+$/) {
 			$user_edit = $slashdb->getUser($id);
@@ -1671,7 +1671,7 @@ sub editHome {
 	my $admin_flag = ($user->{is_admin}) ? 1 : 0;
 	my $admin_block = '';
 
-	if ($form->{userfield}) {
+	if ($admin_flag && $form->{userfield}) {
 		$id ||= $form->{userfield};
 		if ($form->{userfield} =~ /^\d+$/) {
 			$user_edit = $slashdb->getUser($id);
@@ -1748,7 +1748,7 @@ sub editComm {
 
 	my $admin_flag = $user->{is_admin} ? 1 : 0;
 
-	if ($form->{userfield}) {
+	if ($admin_flag && $form->{userfield}) {
 		$id ||= $form->{userfield};
 		if ($form->{userfield} =~ /^\d+$/) {
 			$user_edit = $slashdb->getUser($id);

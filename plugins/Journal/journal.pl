@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.85 2004/11/09 20:28:11 pudge Exp $
+# $Id: journal.pl,v 1.86 2004/11/09 23:32:11 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -227,6 +227,15 @@ sub displayRSS {
 	}
 
 	$usertext .= " <$user->{fakeemail}>" if $user->{fakeemail};
+
+	my $rss_html = $constants->{journal_rdfitemdesc_html} && (
+		$user->{is_admin}
+			||
+		($constants->{journal_rdfitemdesc_html} == 1)
+			||
+		($constants->{journal_rdfitemdesc_html} > 1 && $user->{is_subscriber})
+	);
+
 	xmlDisplay(rss => {
 		channel => {
 			title		=> "$constants->{sitename} Journals",
@@ -237,7 +246,7 @@ sub displayRSS {
 		image	=> 1,
 		items	=> \@items,
 		rdfitemdesc		=> $constants->{journal_rdfitemdesc},
-		rdfitemdesc_html	=> $constants->{journal_rdfitemdesc_html},
+		rdfitemdesc_html	=> $rss_html,
 	});
 }
 

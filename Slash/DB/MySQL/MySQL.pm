@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.602 2004/06/23 20:28:36 tvroom Exp $
+# $Id: MySQL.pm,v 1.603 2004/06/28 13:37:21 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.602 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.603 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6931,7 +6931,7 @@ sub createStory {
 	}
 	if (!$error) {
 		($primaryskid, $tids) = $self->setStoryRenderedFromChosen($stoid, $story->{topics_chosen});
-		$error = "Failed to set chosen topics for story '$stoid'\n" if !$primaryskid;
+		$error = "Failed to set rendered topics for story '$stoid'\n" if !defined($primaryskid);
 	}
 	delete $story->{topics_chosen};
 	my $commentstatus = delete $story->{commentstatus};

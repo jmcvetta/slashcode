@@ -22,8 +22,6 @@ en_US
 __name__
 dispComment
 __template__
-[% USE Slash %]
-
 	<TR><TD>
 	<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 		<TR VALIGN="TOP">
@@ -101,5 +99,4 @@ on [% Slash.timeCalc(time) %]
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.24 2003/10/13 16:08:27 vroom Exp $
-
+$Id: dispComment;misc;default,v 1.25 2003/10/28 00:39:02 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.140 2004/04/20 16:20:29 tvroom Exp $
+# $Id: MySQL.pm,v 1.141 2004/04/20 19:27:53 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2210,6 +2210,7 @@ sub getModderModdeeSummary {
 	push @where, "cuid != $ac_uid" if $options->{no_anon_comments};
 	push @where, "id >= $options->{start_at_id}" if $options->{start_at_id};
 	push @where, "id <= $options->{end_at_id}" if $options->{end_at_id};
+	push @where, "ipid is not null and ipid!=''" if $options->{need_defined_ipid};
 
 	my $where = join(" AND ", @where);
 
@@ -2233,6 +2234,7 @@ sub getModderCommenterIPIDSummary {
 	push @where, "cuid = $ac_uid" if $options->{only_anon_comments};
 	push @where, "id >= $options->{start_at_id}" if $options->{start_at_id};
 	push @where, "id <= $options->{end_at_id}" if $options->{end_at_id};
+	push @where, "ipid is not null and ipid!=''" if $options->{need_defined_ipid};
 	my $where = join(" AND ", @where);
 	my $mods = $self->sqlSelectAllHashref(
 			[qw(uid ipid)],

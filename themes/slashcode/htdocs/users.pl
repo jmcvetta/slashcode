@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.106 2002/09/24 18:45:43 pater Exp $
+# $Id: users.pl,v 1.107 2002/09/24 20:25:40 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -994,7 +994,7 @@ sub showInfo {
 			title			=> $title,
 			nick_plain		=> $nick_plain,
 			nick			=> $nick,
-			nickname			=> $nick,
+			nickname		=> $nick,
 			uid			=> $uid,
 			useredit		=> $requested_user,
 			points			=> $points,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.27 2004/07/07 01:22:48 tvroom Exp $
+# $Id: Page.pm,v 1.28 2004/07/08 18:41:44 tvroom Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -127,7 +127,13 @@ sub displayStories {
 	my $gSkin = getCurrentSkin();
 
 	my $misc = {};
-	my $tid = $other->{tid} || $gSkin->{nexus} || '';
+	my $tid = $other->{tid};
+	if ($section) {
+		my $skin = $self->getSkin($section);
+		$tid ||= $self->getNexusFromSkid($skin->{skid});
+	}
+
+	$tid ||= $gSkin->{nexus} || '';
 
 	my $limit = $other->{count};
 	$limit ||= $self->getSection($section, 'artcount');

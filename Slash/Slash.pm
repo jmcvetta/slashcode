@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.121 2003/03/25 18:27:06 brian Exp $
+# $Id: Slash.pm,v 1.122 2003/03/28 01:58:54 jamie Exp $
 
 package Slash;
 
@@ -657,7 +657,8 @@ sub moderatorCommentLog {
 		$mods = [ grep { $_->{active} } @$mods ];
 	}
 
-	my($reasons, @return, @reasonHist, $reasonTotal);
+	my($reasons, @return, @reasonHist);
+	my $reasonTotal = 0;
 	$reasons = $slashdb->getReasons();
 
 	# Note: Before 2001/01/27 or so, the only things being displayed

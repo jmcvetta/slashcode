@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: index.pl,v 1.3 2000/06/21 00:12:21 cbwood Exp $
+#  $Id: index.pl,v 1.4 2000/06/22 19:15:23 cbwood Exp $
 ###############################################################################
 # pre stories cache update
 use strict;
@@ -257,7 +257,8 @@ sub displayStories {
 
 		}
 
-		if ($thissection ne $I{defaultsection}) {
+		if ($thissection ne $I{defaultsection}
+			&& (! $I{F}{section} || $I{F}{section} eq $I{defaultsection})) {
 			my($SEC) = getSection($thissection);
 			print qq' | <A HREF="$I{rootdir}/$thissection/">$SEC->{title}</A>';
 		}

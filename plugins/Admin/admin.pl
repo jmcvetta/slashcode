@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.9 2001/04/19 16:14:07 pudge Exp $
+# $Id: admin.pl,v 1.10 2001/04/23 09:57:57 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -493,7 +493,7 @@ sub templateSave {
 			return;
 		} else {
 			print "trying to insert $name<br>\n";
-			$tpid = ($form->{thistpid}) = $slashdb->createTemplate({
+			($tpid) = ($form->{thistpid}) = $slashdb->createTemplate({
                			name		=> $name,
 				template        => $form->{template},
 				title		=> $form->{title},

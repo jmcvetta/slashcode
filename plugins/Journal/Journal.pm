@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.2 2001/03/20 20:26:31 brian Exp $
+# $Id: Journal.pm,v 1.3 2001/03/23 19:06:30 brian Exp $
 
 package Slash::Journal;
 
@@ -111,6 +111,36 @@ sub top {
 	$sql .= " FROM journals as j,users as u WHERE ";
 	$sql .= " j.uid = u.uid";
 	$sql .= " GROUP BY u.nickname ORDER BY c DESC";
+	$sql .= " LIMIT $limit";
+	$self->sqlConnect;
+	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+
+	return $losers;
+}
+
+sub topFriends {
+	my ($self, $limit) = @_;
+	$limit ||= 10;
+	my $sql;
+	$sql .= "SELECT count(j.uid) as c, u.nickname, j.uid, max(date)";
+	$sql .= " FROM journals as j,users as u WHERE ";
+	$sql .= " j.uid = u.uid";
+	$sql .= " GROUP BY u.nickname ORDER BY c DESC";
+	$sql .= " LIMIT $limit";
+	$self->sqlConnect;
+	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+
+	return $losers;
+}
+
+sub topRecent {
+	my ($self, $limit) = @_;
+	$limit ||= 10;
+	my $sql;
+	$sql .= " SELECT count(friend) as c, nickname, friend";
+	$sql .= " FROM journal_friends, users ";
+	$sql .= " WHERE friend=users.uid ";
+	$sql .= " GROUP BY friend ORDER BY c DESC";
 	$sql .= " LIMIT $limit";
 	$self->sqlConnect;
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);

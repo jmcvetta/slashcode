@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.2 2001/03/20 20:26:31 brian Exp $
+# $Id: journal.pl,v 1.3 2001/03/23 19:06:30 brian Exp $
 
 use strict;
 use Slash;
@@ -88,7 +88,18 @@ sub displayDefault {
 
 sub displayTop {
 	my ($form, $journal, $constants) = @_;
-	my $journals = $journal->top($constants->{journal_top});
+	my $journals;
+	$journals = $journal->top($constants->{journal_top});
+	slashDisplay('journaltop', {
+		journals => $journals,
+		url => '/journal.pl',
+	});
+	$journals = $journal->topFriends($constants->{journal_top});
+	slashDisplay('journaltop', {
+		journals => $journals,
+		url => '/journal.pl',
+	});
+	$journals = $journal->topRecent($constants->{journal_top});
 	slashDisplay('journaltop', {
 		journals => $journals,
 		url => '/journal.pl',

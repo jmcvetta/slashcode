@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.44 2003/06/25 21:44:52 pudge Exp $
+# $Id: article.pl,v 1.45 2003/07/15 19:44:58 vroom Exp $
 
 use strict;
 use Slash;
@@ -81,7 +81,7 @@ sub main {
 			if $story->{is_future} && !($user->{is_admin} || $user->{author});
 
 		my $pollbooth = pollbooth($story->{qid}, 1)
-			if $story->{qid};
+			if $story->{qid} and ($slashdb->hasPollActivated($story->{qid}) or $user->{is_admin}) ;
 		slashDisplay('display', {
 			poll			=> $pollbooth,
 			section			=> $SECT,

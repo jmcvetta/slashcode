@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.68 2002/07/31 22:14:30 brian Exp $
+# $Id: Slash.pm,v 1.69 2002/08/01 00:49:48 brian Exp $
 
 package Slash;
 
@@ -122,7 +122,6 @@ sub selectComments {
 		$C->{points} = -1 if ($user->{anon_comments} && isAnon($C->{uid}));
 
 		# If you don't trust new users
-		print STDERR "HERE $user->{new_user_bonus} && $user->{new_user_percent} \n";
 		if ($user->{new_user_bonus} && $user->{new_user_percent}) {
 			$C->{points} += $user->{new_user_bonus} 
 					if ((($C->{uid}/$max_uid)*100) > $user->{new_user_percent});

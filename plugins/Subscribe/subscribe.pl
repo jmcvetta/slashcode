@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.10 2002/03/01 15:47:09 jamie Exp $
+# $Id: subscribe.pl,v 1.11 2002/03/01 16:15:47 jamie Exp $
 
 use strict;
 
@@ -64,7 +64,7 @@ sub edit {
 
 	my $subscribe = getObject('Slash::Subscribe');
 	my @defpages = sort keys %{$subscribe->{defpage}};
-	my $edited_defaults_yet = exists $user->{"buypage_$defpages[0]"};
+	my $edited_defaults_yet = exists $user->{buypage_index};
 	my $user_newvalues = { };
 	if (!$edited_defaults_yet) {
 		for my $page (@defpages) {
@@ -100,7 +100,7 @@ sub save {
 
 	my $subscribe = getObject('Slash::Subscribe');
 	my @defpages = sort keys %{$subscribe->{defpage}};
-	my $edited_defaults_yet = exists $user->{"buypage_$defpages[0]"};
+	my $edited_defaults_yet = exists $user->{buypage_index};
 
 	my $user_update = { };
 	my $user_newvalues = { };

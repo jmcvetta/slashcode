@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.171 2003/08/19 01:38:47 pudge Exp $
+# $Id: admin.pl,v 1.172 2003/08/21 23:28:04 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1358,9 +1358,9 @@ sub editStory {
 		bodytext =>     get_ispell_comments($storyref->{bodytext}),
 	} unless $user->{no_spell};
 
-	my $future = $slashdb->getStoryByTimeAdmin('>', $storyref, "3");
-	$future = [ reverse(@$future) ];
-	my $past = $slashdb->getStoryByTimeAdmin('<', $storyref, "3");
+	my $future = $slashdb->getStoryByTimeAdmin('>', $storyref, 3);
+	$future = [ reverse @$future ];
+	my $past = $slashdb->getStoryByTimeAdmin('<', $storyref, 3);
 
 	my $num_sim = $constants->{similarstorynumshow} || 5;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });

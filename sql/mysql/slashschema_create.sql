@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.124 2003/08/07 15:12:22 jamie Exp $
+# $Id: slashschema_create.sql,v 1.125 2003/08/21 23:28:04 pudge Exp $
 #
 
 #
@@ -916,6 +916,7 @@ CREATE TABLE topics (
 	name char(20) NOT NULL,
 	alttext char(40),
 	default_image mediumint UNSIGNED DEFAULT 0 NOT NULL,
+	series tinyint DEFAULT 0 NOT NULL,
 	PRIMARY KEY (tid)
 ) TYPE=InnoDB;
 

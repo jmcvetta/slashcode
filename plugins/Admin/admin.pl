@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.162 2003/06/19 03:26:20 jamie Exp $
+# $Id: admin.pl,v 1.163 2003/06/25 19:27:05 pater Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1901,6 +1901,14 @@ sub saveStory {
 	if ($sid) {
 		slashHook('admin_save_story_success', { story => $data });
 		titlebar('100%', getTitle('saveStory-title'));
+
+		# if the story isn't section-only, and the editor isn't
+		# restricted to one section (or edituser), clear out
+		# $form->{section} and display the storylist normally
+		# --Pater
+		$form->{section} = '' if $form->{displaystatus} != 1
+			&& !($user->{section} || $edituser->{section});
+
 		listStories(@_);
 	} else {
 		slashHook('admin_save_story_failed', { story => $data });

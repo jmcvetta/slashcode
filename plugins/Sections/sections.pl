@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.31 2003/03/04 19:56:32 pudge Exp $
+# $Id: sections.pl,v 1.32 2003/03/15 02:13:12 brian Exp $
 
 use strict;
 use Slash;
@@ -181,19 +181,17 @@ sub editSection {
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 
-	my(@blocks, $this_section);
+	my($blocks, $this_section);
 	if ($form->{addsection}) {
 		$this_section = {};
+		#Some default values
+		$this_section->{type} = 'contained';
+		$this_section->{issue} = 1;
+		$this_section->{artcount} = 30;
+
 	} else {
 		$this_section = $slashdb->getSection($section,'', 1);
-		my $blocks = $slashdb->getSectionBlock($section);
-
-		for (@$blocks) {
-			my $block = $blocks[@blocks] = {};
-			@{$block}{qw(section bid ordernum title portal url)} =
-				@$_;
-			$block->{title} =~ s/<(.*?)>//g;
-		}
+		$blocks = $slashdb->getSectionBlock($section);
 	}
 
 	# Create a new subsection if we've been told to.
@@ -228,13 +226,14 @@ sub editSection {
 	# Get list of subsections.
 	my $subsections = $slashdb->getSubSectionsBySection($section);
 	
-	my $topics = $slashdb->getDescriptions('topics_section', $section);
+	my $topics = $slashdb->getDescriptions('topics_section', $section)
+		if $section;
 	slashDisplay('editSection', {
 		section		=> $section,
 		this_section	=> $this_section,
 		qid		=> $qid,
 		issue		=> $issue,
-		blocks		=> \@blocks,
+		blocks		=> $blocks,
 		topics		=> $topics,
 		extras		=> $extras,
 		extra_types	=> $extra_types,

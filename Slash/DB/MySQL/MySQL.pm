@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.351 2003/03/14 20:49:42 jamie Exp $
+# $Id: MySQL.pm,v 1.352 2003/03/15 02:13:12 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.351 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.352 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2328,7 +2328,7 @@ sub saveColorBlock {
 ########################################################
 sub getSectionBlock {
 	my($self, $section) = @_;
-	my $block = $self->sqlSelectAll("section,bid,ordernum,title,portal,url,rdf,retrieve",
+	my $block = $self->sqlSelectAllHashrefArray("section,bid,ordernum,title,portal,url,rdf,retrieve",
 		"blocks", "section=" . $self->sqlQuote($section),
 		"ORDER by ordernum"
 	);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.418 2003/06/30 23:35:24 pudge Exp $
+# $Id: MySQL.pm,v 1.419 2003/07/01 20:36:08 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.418 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.419 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5633,16 +5633,19 @@ sub getUrlFromTitle {
 }
 
 ##################################################################
-# Should this really be in here?
-# this should probably return time() or something ... -- pudge
-# Well, the only problem with that is that we would then
-# be trusting all machines to be timed to the database box.
-# How safe is that? And I like our sysadmins :) -Brian
 sub getTime {
-	my($self) = @_;
-	my($now) = $self->sqlSelect('now()');
+	my($self, $options) = @_;
 
-	return $now;
+	my $add_secs = $options->{add_secs} || 0;
+
+	my $t;
+	if (!$add_secs) {
+		$t = $self->sqlSelect('NOW()');
+	} else {
+		$t = $self->sqlSelect("DATE_ADD(NOW(), INTERVAL $add_secs SECOND)");
+	}
+
+	return $t;
 }
 
 ##################################################################

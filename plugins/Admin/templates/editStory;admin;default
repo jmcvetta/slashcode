@@ -216,7 +216,7 @@ __template__
 		[% # END %]
 
 		[% commentstatus_select %]
-		<INPUT TYPE="TEXT" NAME="time" VALUE="[% storyref.time %]" size="16"><BR>
+		<INPUT TYPE="TEXT" NAME="time" VALUE="[% storyref.time %]" size="19"><BR>
 
 		[ <INPUT TYPE="checkbox" NAME="fixquotes" [% fixquotes_check %]>fixquotes
 		| <INPUT TYPE="checkbox" NAME="autonode" [% autonode_check %]>autonode
@@ -272,4 +272,4 @@ storyref.bodytext_wordcount %] word[% IF storyref.bodytext_wordcount != 1; "s"; 
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.41 2003/04/21 22:04:19 brian Exp $
+$Id: editStory;admin;default,v 1.42 2003/07/01 20:36:08 jamie Exp $

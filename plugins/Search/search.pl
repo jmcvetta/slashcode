@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.20 2002/01/03 00:39:46 brian Exp $
+# $Id: search.pl,v 1.21 2002/01/03 15:47:41 jamie Exp $
 
 use strict;
 use Slash;
@@ -46,7 +46,7 @@ sub main {
 	$form->{section}	||= '';
 	$form->{'sort'}		||= 1;
 	$form->{section}	= '' if $form->{section} eq 'index'; # XXX fix this right, do a {realsection}
-	$form->{threshold}	||= getCurrentUser('threshold');
+	$form->{threshold}	= getCurrentUser('threshold') if !defined($form->{threshold});
 
 	# get rid of bad characters
 	$form->{query} =~ s/[^A-Z0-9'. :\/]/ /gi;

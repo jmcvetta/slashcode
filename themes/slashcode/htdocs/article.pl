@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.35 2003/03/06 03:56:30 jamie Exp $
+# $Id: article.pl,v 1.36 2003/03/06 06:13:15 jamie Exp $
 
 use strict;
 use Slash;
@@ -19,17 +19,10 @@ sub main {
 	my $story;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	# Yeah, I am being lazy and paranoid  -Brian
-	# Always check the main DB for story status since it will always be accurate -Brian
-	if (!($user->{author} || $user->{is_admin})
-		&& !$slashdb->checkStoryViewable($form->{sid})) {
-		$story = '';
-	} else {
-		$story = $reader->getStory($form->{sid});
-	}
+	$story = $reader->getStory($form->{sid});
 
 	my $future_err = 0;
-	if ($story->{is_future} && !$user->{is_admin}) {
+	if ($story && $story->{is_future} && !($user->{is_admin} || $user->{author})) {
 		if (!$constants->{subscribe} || !$user->{is_subscriber}) {
 			$future_err = 1;
 		} else {
@@ -41,9 +34,18 @@ sub main {
 		if ($future_err) {
 			$story = '';
 		} else {
-			$story->{time} = $constants->{subscriber_future_name};
+			$story->{time} = $constants->{subscribe_future_name};
 		}
 	}
+
+	# Yeah, I am being lazy and paranoid  -Brian
+	# Always check the main DB for story status since it will always be accurate -Brian
+	if ($story
+		&& !($user->{author} || $user->{is_admin})
+		&& !$slashdb->checkStoryViewable($form->{sid})) {
+		$story = '';
+	}
+
 	if ($story) {
 		my $SECT = $slashdb->getSection($story->{section});
 		# This should be a getData call for title

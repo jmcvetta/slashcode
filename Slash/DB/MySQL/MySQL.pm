@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.344 2003/03/06 03:54:59 jamie Exp $
+# $Id: MySQL.pm,v 1.345 2003/03/06 06:13:15 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.344 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.345 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4786,7 +4786,11 @@ sub _stories_time_clauses {
 
 	if ($future) {
 		$is_future_column = "IF($column_name < NOW(), 0, 1) AS is_future";
-		$where = "$column_name < DATE_ADD(NOW(), INTERVAL $secs SECOND)";
+		if ($secs) {
+			$where = "$column_name < DATE_ADD(NOW(), INTERVAL $secs SECOND)";
+		} else {
+			$where = "$column_name < NOW()";
+		}
 	} else {
 		$is_future_column = '0 AS is_future';
 		$where = "$column_name < NOW()";

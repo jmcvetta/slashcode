@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.123 2003/03/06 03:54:59 jamie Exp $
+# $Id: comments.pl,v 1.124 2003/03/06 06:13:15 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -151,6 +151,12 @@ sub main {
 				# whether the user is allowed to see it or not.
 				# If not, we'll present the error a bit later.
 				if (!$constants->{subscribe} || !$user->{is_subscriber}) {
+					$future_err = 1;
+					$null_it_out = 1;
+				} elsif (!$slashdb->checkStoryViewable($discussion->{sid})) {
+					# If a discussion is in the future, it can only be
+					# viewed if it's attached to a story (not a journal
+					# etc.) and if that story is viewable.
 					$future_err = 1;
 					$null_it_out = 1;
 				} else {

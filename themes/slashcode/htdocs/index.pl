@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.60 2003/03/06 03:54:59 jamie Exp $
+# $Id: index.pl,v 1.61 2003/03/06 06:13:15 jamie Exp $
 
 use strict;
 use Slash;
@@ -62,7 +62,7 @@ sub main {
 		if ($story->[10]) {
 			$story->[3] =
 				$story->[5] =
-				$story->[7] = $constants->{subscriber_future_name};
+				$story->[7] = $constants->{subscribe_future_name};
 		}
 	}
 

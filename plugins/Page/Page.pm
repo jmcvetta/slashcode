@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.29 2004/07/09 01:43:14 tvroom Exp $
+# $Id: Page.pm,v 1.30 2004/07/15 14:40:31 tvroom Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -128,6 +128,7 @@ sub displayStories {
 
 	my $misc = {};
 	my $tid = $other->{tid};
+	my $offset = $other->{offset};
 	if ($section) {
 		my $skin = $self->getSkin($section);
 		$tid ||= $self->getNexusFromSkid($skin->{skid});
@@ -140,7 +141,7 @@ sub displayStories {
 
 	my $storystruct = [];
 
-	my $stories = $self->getStoriesEssentials({ limit => $limit, tid => $tid });
+	my $stories = $self->getStoriesEssentials({ limit => $limit, tid => $tid, offset => $offset });
 
 	my $i = 0;
 

@@ -29,3 +29,5 @@ __template__
 
 	[% END %]
 [% END %]
+__version__
+$Id: detachpoll;pollBooth;default,v 1.2 2003/09/02 02:11:14 vroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.135 2004/03/24 05:31:03 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.136 2004/03/30 20:47:36 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.135 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -683,6 +683,7 @@ sub getTop10Comments {
 	$num_top10_comments = 0;
 
 	while (@$cids
+		&& $cids->[$num_top10_comments]
 		&& @{$cids->[$num_top10_comments]}
 		&& $num_top10_comments < $num_wanted
 	) {

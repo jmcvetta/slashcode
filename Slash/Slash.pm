@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.17 2001/11/07 07:10:15 brian Exp $
+# $Id: Slash.pm,v 1.18 2001/11/07 16:54:41 pudge Exp $
 
 package Slash;
 
@@ -34,7 +34,7 @@ use Time::Local;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-$VERSION   	= '2.001001';  # v2.1.1
+$VERSION   	= '2.003000';  # v2.3.0
 # note: those last two lines of functions will be moved elsewhere
 @EXPORT		= qw(
 	getData

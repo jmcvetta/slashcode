@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.6 2001/11/03 03:08:48 brian Exp $
+# $Id: Apache.pm,v 1.7 2001/11/07 16:54:41 pudge Exp $
 
 package Slash::Apache;
 
@@ -18,8 +18,8 @@ require AutoLoader;
 use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
-$VERSION   	= '2.001001';  # v2.1.1
-($REVISION)	= ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION   	= '2.003000';  # v2.3.0
+($REVISION)	= ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...

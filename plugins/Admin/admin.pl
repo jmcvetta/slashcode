@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.225 2004/07/21 21:44:18 pudge Exp $
+# $Id: admin.pl,v 1.226 2004/07/22 21:07:38 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -890,7 +890,7 @@ sub topicDelete {
 
 	$tid ||= $form->{tid};
 
-	$slashdb->deleteTopic($tid, $form->{replacementtid});
+#	$slashdb->deleteTopic($tid, $form->{replacementtid});
 	$form->{tid} = '';
 }
 

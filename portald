@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: portald,v 1.2 2000/05/16 20:38:54 pudge Exp $
+#  $Id: portald,v 1.3 2000/05/16 21:30:52 pudge Exp $
 ###############################################################################
 
 =head1 Welcome to Portald
@@ -255,7 +255,8 @@ sub getRDF {
 				Start => \&start_handler
 		);
 
-		unless (my $d = geturl($url)) {
+		my $d = geturl($url);
+		if (!$d) {
 			portaldLog("failed to get $bid");
 			return;
 		}

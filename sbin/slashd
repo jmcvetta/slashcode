@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.27 2002/06/20 21:49:53 jamie Exp $
+# $Id: slashd,v 1.28 2002/07/22 17:42:53 pudge Exp $
 
 ############################################################
 #
@@ -552,6 +552,9 @@ sub main {
 		# slashdLog("SIGCHLD called in $$")
 		# NOTE: perl 5.8 has safe signals.
 	};
+
+	# daemonize
+	close STDOUT;
 
 	MAINLOOP: while (1) {
 		if (verbosity() >= 4) {

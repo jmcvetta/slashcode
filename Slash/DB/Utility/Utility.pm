@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.35 2003/03/25 18:27:06 brian Exp $
+# $Id: Utility.pm,v 1.36 2003/03/27 18:22:42 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -225,7 +225,7 @@ sub sqlConnect {
 			if ($@ || !defined $self->{_dbh}) {
 				#In the future we should have a backupdatabase
 				#connection in here. For now, we die
-				print STDERR "Major Mojo Bad things\n";
+				print STDERR "Major Mojo Bad things (virtual user: $self->{virtual_user})\n";
 				print STDERR "unable to connect to MySQL: $@ : $DBI::errstr\n";
 				#die "Database would not let us connect $DBI::errstr";	 # The Suicide Die
 				return 0;
@@ -586,7 +586,11 @@ sub sqlInsert {
 }
 
 #################################################################
-sub sqlQuote { $_[0]->{_dbh}->quote($_[1]) }
+sub sqlQuote {
+	my($self, $value) = @_;
+	$self->sqlConnect;
+	return $self->{_dbh}->quote($value);
+}
 
 #################################################################
 sub sqlDo {

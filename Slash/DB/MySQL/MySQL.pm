@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.29 2001/11/19 18:20:17 brian Exp $
+# $Id: MySQL.pm,v 1.30 2001/11/19 22:29:07 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4616,9 +4616,12 @@ sub setUser {
 		$self->sqlUpdate($table, \%minihash, 'uid=' . $uid, 1);
 	}
 	# What is worse, a select+update or a replace?
-	# I should look into that.
+	# I should look into that. (REPLACE is faster) -Brian
 	for (@param)  {
-		if ($_->[0] eq "acl") {
+		if ($_->[1] eq "") {
+			$self->sqlDelete('users_param', 
+				"uid = $uid AND name = " . $self->sqlQuote($_->[0]));
+		} elsif ($_->[0] eq "acl") {
 			$self->sqlReplace('users_acl', {
 				uid	=> $uid,
 				name	=> $_->[1]{name},

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.18 2001/11/07 16:54:41 pudge Exp $
+# $Id: Slash.pm,v 1.19 2001/11/19 22:29:07 brian Exp $
 
 package Slash;
 
@@ -85,6 +85,7 @@ sub selectComments {
 		$cid, 
 		$cache_read_only
 	);
+
 	# This loop mainly takes apart the array and builds 
 	# a hash with the comments in it.  Each comment is
 	# is in the index of the hash (based on its cid).
@@ -103,6 +104,12 @@ sub selectComments {
 
 		# If the user is AC and we think AC's suck
 		$C->{points} = -1 if ($user->{anon_comments} && isAnon($C->{uid}));
+
+		# Adjust reasons. Do we need a reason?
+		# Are you threatening me?
+		my $reason =  $constants->{reasons}[$C->{reason}];
+		$C->{points} = $user->{"reason_alter_$reason"} 
+				if ($user->{"reason_alter_$reason"});
 
 		# fix points in case they are out of bounds
 		$C->{points} = $min if $C->{points} < $min;

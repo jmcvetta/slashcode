@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.20 2001/11/09 20:36:40 pudge Exp $
+# $Id: admin.pl,v 1.21 2001/11/19 22:29:07 brian Exp $
 
 use strict;
 use Image::Size;
@@ -667,6 +667,7 @@ sub topicEdit {
 
 	# this should be a preference at some point, image
 	# extensions ... -- pudge
+	# and case insensitive :)  -Brian
 	$available_images = { map { ($_, $_) } grep /\.(?:gif|jpe?g|png)$/, readdir DIR };
 
 	closedir(DIR);

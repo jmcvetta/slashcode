@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.6 2001/11/03 03:07:22 brian Exp $
+# $Id: Utility.pm,v 1.7 2001/11/19 22:29:07 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -497,10 +497,24 @@ sub sqlUpdate {
 }
 
 ########################################################
+sub sqlDelete {
+	my($self, $table, $where) = @_;
+	return unless $table;
+	my $sql = "DELETE FROM $table";
+	$sql .= " WHERE $where\n"
+		if $where;
+	$self->sqlConnect();
+	my $rows = $self->sqlDo($sql);
+	# print STDERR "SQL: $sql\n";
+	return $rows;
+}
+
+########################################################
 sub sqlInsert {
 	my($self, $table, $data, $delayed) = @_;
 	my($names, $values);
 	# oddly enough, this hack seems to work for all DBs -- pudge
+	# Its an ANSI sql comment I believe -Brian
 	$delayed = $delayed ? " /*! DELAYED */" : "";
 
 	foreach (keys %$data) {

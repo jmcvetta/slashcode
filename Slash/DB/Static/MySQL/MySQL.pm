@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.191 2004/10/22 18:12:43 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.192 2004/10/26 13:08:31 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.191 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.192 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -534,7 +534,7 @@ sub updateLastaccess {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 
-	my $splice_count = 2000;
+	my $splice_count = 200;
 	if ($constants->{subscribe} && !$constants->{subscribe_hits_only}) {
 		my @gmt = gmtime();
 		my $today = sprintf "%4d%02d%02d", $gmt[5] + 1900, $gmt[4] + 1, $gmt[3];

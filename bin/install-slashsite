@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.17 2002/01/10 23:28:35 jamie Exp $
+# $Id: install-slashsite,v 1.18 2002/01/15 00:35:39 patg Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -23,7 +23,7 @@ use vars qw(
 	$dirname
 );
 
-(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -187,6 +187,12 @@ print "Theme selected: $theme\n";
 
 #---------------------------------------------------
 my $plugins = $install->getPluginList($PREFIX);
+for(keys %$plugins) {
+    print "plugin key $_ value $plugins->{$_}\n";
+    for my $plugin(keys %{$plugins->{$_}}) {
+	print "plugin sub key $plugin $plugins->{$_}{$plugin} plugin\n";
+    }
+}
 my @plugins = ( );
 my @default_plugins = ( );
 my @all_plugins = sort {

@@ -19,7 +19,8 @@ recent
 __template__
 [% PROCESS titlebar title="Recent Comments and Moderation" width='100%' %]
 
-[% IF startat > 0;
+[% startat = 0 IF !startat;
+   IF startat > 0;
 	next_startat = startat - 30;
 	IF next_startat < 0; next_startat = 0; END; %]
 	<form action="[% constants.rootdir %]/admin.pl" method="GET">
@@ -96,4 +97,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: recent;admin;default,v 1.4 2003/03/04 19:07:58 pudge Exp $
+$Id: recent;admin;default,v 1.5 2003/04/17 02:51:51 jamie Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.27 2002/01/08 17:22:09 pudge Exp $
+# $Id: journal.pl,v 1.28 2002/01/08 20:32:33 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -76,6 +76,13 @@ sub displayTop {
 
 	_printHead("mainhead");
 
+	# this should probably be in a separate template, so the site admins
+	# can select the order themselves -- pudge
+	if ($constants->{journal_top_recent}) {
+		$journals = $journal->topRecent();
+		slashDisplay('journaltop', { journals => $journals, type => 'recent' });
+	}
+
 	if ($constants->{journal_top_posters}) {
 		$journals = $journal->top();
 		slashDisplay('journaltop', { journals => $journals, type => 'top' });
@@ -86,10 +93,6 @@ sub displayTop {
 		slashDisplay('journaltop', { journals => $journals, type => 'friend' });
 	}
 
-	if ($constants->{journal_top_recent}) {
-		$journals = $journal->topRecent();
-		slashDisplay('journaltop', { journals => $journals, type => 'recent' });
-	}
 }
 
 sub displayFriends {

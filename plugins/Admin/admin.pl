@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.85 2002/07/18 08:20:58 slashteam Exp $
+# $Id: admin.pl,v 1.86 2002/07/18 08:28:38 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1073,6 +1073,7 @@ sub editStory {
 		$form->{uid} ||= $user->{uid};
 		$author = $slashdb->getAuthor($form->{uid});
 		$subid = $form->{subid};
+		$sid = $form->{sid};
 
 		if (!$form->{'time'} || $form->{fastforward}) {
 			$storyref->{'time'} = $slashdb->getTime();

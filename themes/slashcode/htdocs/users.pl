@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.35 2001/11/19 22:29:07 brian Exp $
+# $Id: users.pl,v 1.36 2001/11/21 07:02:25 brian Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1565,7 +1565,7 @@ sub saveComm {
 	for (@reasons) {
 		my $answer = $form->{"reason_alter_$_"};
 		$answer  = 0
-			if $answer !~ /^\d+$/;
+			if $answer !~ /^[-|+]?\d+$/;
 		$answer  = $constants->{comment_minscore}
 			if $answer < $min;
 		$answer  = $constants->{comment_maxscore}

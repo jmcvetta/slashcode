@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: com-mod.shtml,v 1.12 2003/06/05 14:35:36 malda Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: com-mod.shtml,v 1.13 2003/06/06 03:33:13 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -621,7 +621,9 @@ says... "Don't be a dick."</li>
 <b>If You Can't Be Deep, Be Funny:</b> If you don't have something truly
 developing to the topic, some humor is welcome. Humor is lacking in our
 lives and will continue to be promoted. Remember though, what rips your
-sides out may be completely inane to somebody else.</li>
+sides out may be completely inane to somebody else.
+<i>[This won't help you anymore; <a href="#cm700">see above</a>.]</i>
+</li>
 
 <br>&nbsp;
 <li>

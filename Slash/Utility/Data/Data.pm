@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.28 2002/06/13 19:47:17 jamie Exp $
+# $Id: Data.pm,v 1.29 2002/06/13 22:50:51 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -1275,19 +1275,19 @@ sub fudgeurl {
 			my $host = $uri->host;
 			$host =~ tr/A-Za-z0-9.-//cd; # per RFC 1035
 			$uri->host($host);
-		}
-		if ($uri->can('authority') && $uri->authority) {
-			# We don't allow anything in the authority except
-			# the host and optionally a port.  This shouldn't
-			# matter since the userinfo portion was zapped
-			# above.  But this is a bit of double security to
-			# ensure nothing nasty in the authority.
-			my $authority = $uri->host;
-			if ($uri->can('host_port')
-				&& $uri->port != $uri->default_port) {
-				$authority = $uri->host_port;
+			if ($uri->can('authority') && $uri->authority) {
+				# We don't allow anything in the authority except
+				# the host and optionally a port.  This shouldn't
+				# matter since the userinfo portion was zapped
+				# above.  But this is a bit of double security to
+				# ensure nothing nasty in the authority.
+				my $authority = $uri->host;
+				if ($uri->can('host_port')
+					&& $uri->port != $uri->default_port) {
+					$authority = $uri->host_port;
+				}
+				$uri->authority($authority);
 			}
-			$uri->authority($authority);
 		}
 		$url = $uri->canonical->as_string;
 	}
@@ -2376,4 +2376,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.28 2002/06/13 19:47:17 jamie Exp $
+$Id: Data.pm,v 1.29 2002/06/13 22:50:51 jamie Exp $

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.695 2004/10/11 18:30:47 tvroom Exp $
+# $Id: upgrades,v 1.696 2004/10/11 18:35:20 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2618,3 +2618,4 @@ INSERT INTO string_param (type, code, name) VALUES ('extra_types','textarea','Te
 INSERT INTO string_param (type, code, name) VALUES ('extra_types','list','List');
 INSERT INTO string_param (type, code, name) VALUES ('extra_content_types','story','Story');
 INSERT INTO string_param (type, code, name) VALUES ('extra_content_types','comment','Comment');
+ALTER TABLE topic_nexus_extras MODIFY COLUMN type ENUM('text', 'list', 'textarea') NOT NULL DEFAULT 'text';

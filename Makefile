@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.13 2001/11/07 16:54:41 pudge Exp $
+# $Id: Makefile,v 1.14 2002/01/04 02:08:39 jamie Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -31,6 +31,7 @@ USER = nobody
 GROUP = nobody
 CP = cp
 INSTALL = install
+UNAME = `uname`
 
 # Plugins (any directory in plugins/)
 PLUGINS = `find . -name CVS -prune -o -type d -name [a-zA-Z]\* -maxdepth 1 -print`
@@ -202,8 +203,26 @@ install: slash plugins
 		fi;								\
 	done)
 	# Remove any kruft thay may have been copied that shouldn't have been.
-	-find $(SLASH_PREFIX) \( -name CVS -type d -o -name \.\#\* -type f \) \
-		-printf '(cleaning out %p)\n' -exec rm -rf {} \; 2> /dev/null
+	# Normally we save some time by not diving into an installed site's
+	# htdocs' archived directories, but apparently Sun's "find" doesn't
+	# support "-path" so skip it.
+	if [ $(UNAME) != "SunOS" ]; then					\
+	find $(SLASH_PREFIX)							\
+		\( -type d -a -path */site/*/htdocs*/[0-9][0-9]* -a -prune \)	\
+		-o								\
+		\( -name CVS -type d   -o   -name .#* -type f \)		\
+			-a \( -prune						\
+				-exec echo "(cleaning out {})" \;		\
+				-exec rm -rf {} \; \)				\
+		2> /dev/null ;							\
+	else									\
+	find $(SLASH_PREFIX)							\
+		\( -name CVS -type d   -o   -name .#* -type f \)		\
+			-a \( -prune						\
+				-exec echo "(cleaning out {})" \;		\
+				-exec rm -rf {} \; \)				\
+		2> /dev/null ;							\
+	fi
 
 	touch $(SLASH_PREFIX)/slash.sites
 	chown $(USER):$(GROUP) $(SLASH_PREFIX)

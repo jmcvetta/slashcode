@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rebuildPeople,v 1.6 2002/08/29 17:10:35 brian Exp $
+# $Id: rebuildPeople,v 1.7 2002/08/30 09:06:09 brian Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Slash::Constants ':people';
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -30,7 +30,7 @@ my $zoo = getObject("Slash::Zoo");
 $slashdb->sqlDo("UPDATE users_info SET people=NULL");
 $slashdb->sqlDo("DELETE FROM people WHERE type='' OR type IS NULL");
 $slashdb->sqlDo("DELETE FROM people_log");
-$slashdb->sqlDo("UPDATE people SET eof=0 AND fof=0");
+$slashdb->sqlDo("UPDATE people SET eof=0,fof=0");
 my $entries = $slashdb->sqlSelectAll('uid, person, type', 'people');
 
 my $num = @$entries;

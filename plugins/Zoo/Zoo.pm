@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.17 2002/08/29 17:10:35 brian Exp $
+# $Id: Zoo.pm,v 1.18 2002/08/30 09:06:09 brian Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -50,6 +50,10 @@ sub getEof {
 
 sub getFriendsUIDs {
 	_getUIDs(@_, "friend");
+}
+
+sub getFriendsConsideredUIDs {
+	_getConsiderUIDs(@_, "friend");
 }
 
 sub getFoes {
@@ -127,6 +131,17 @@ sub _getUIDs {
 		'person',
 		'people',
 		"people.uid = $uid AND type ='$type' "
+	);
+	return $people;
+}
+
+sub _getConsiderUIDs {
+	my($self, $uid, $type) = @_;
+
+	my $people = $self->sqlSelectColArrayref(
+		'uid',
+		'people',
+		"people.person = $uid AND type ='$type' "
 	);
 	return $people;
 }

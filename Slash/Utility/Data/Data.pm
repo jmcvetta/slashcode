@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.86 2003/05/15 16:55:33 jamie Exp $
+# $Id: Data.pm,v 1.87 2003/05/16 21:58:39 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2023,6 +2023,7 @@ sub _url_to_domain_tag {
 	my($href, $link, $body) = @_;
 	my $absolutedir = getCurrentStatic('absolutedir');
 	my $uri = URI->new_abs($link, $absolutedir);
+	my $uri_str = $uri->as_string;
 	my($info, $host, $scheme) = ("", "", "");
 	if ($uri->can("host") and $host = $uri->host) {
 		$info = lc $host;
@@ -2052,8 +2053,16 @@ sub _url_to_domain_tag {
 		# Most schemes, like ftp or http, have a host.  Some,
 		# most notably mailto and news, do not.  For those,
 		# at least give the user an idea of why not, by
-		# listing the scheme.
-		$info = lc $scheme;
+		# listing the scheme.  Or, if this URL is malformed
+		# in a particular way ("scheme:host/path", missing
+		# the "//"), treat it the way that many browsers will
+		# (rightly or wrongly) treat it.
+		if ($uri_str =~ m{^$scheme:([\w-]+)}) {
+			$uri_str =~ s{^$scheme:}{$scheme://};
+			return _url_to_domain_tag($href, $uri_str, $body);
+		} else {
+			$info = lc $scheme;
+		}
 	} else {
 		$info = "?";
 	}
@@ -2863,4 +2872,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.86 2003/05/15 16:55:33 jamie Exp $
+$Id: Data.pm,v 1.87 2003/05/16 21:58:39 jamie Exp $

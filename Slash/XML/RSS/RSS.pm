@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.16 2004/06/17 16:11:49 jamiemccarthy Exp $
+# $Id: RSS.pm,v 1.17 2004/06/23 18:05:16 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -364,9 +364,9 @@ sub rss_story {
 	# delete it so it won't be processed later
 	my $story = delete $item->{story};
 	my $constants = getCurrentStatic();
-	my $slashdb   = getCurrentDB();
+	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $topics = $slashdb->getTopics();
+	my $topics = $reader->getTopics();
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
@@ -379,23 +379,25 @@ sub rss_story {
 	}
 
 	if ($version >= 1.0) {
-		my $slashdb   = getCurrentDB();
-
 		$encoded_item->{dc}{date}    = $self->encode($self->date2iso8601($story->{'time'}))
 			if $story->{'time'};
-		$encoded_item->{dc}{subject} = $self->encode($topics->{$story->{tid}}{name})
+		$encoded_item->{dc}{subject} = $self->encode($topics->{$story->{tid}}{keyword})
 			if $story->{tid};
-		$encoded_item->{dc}{creator} = $self->encode($slashdb->getUser($story->{uid}, 'nickname'))
+		$encoded_item->{dc}{creator} = $self->encode($reader->getUser($story->{uid}, 'nickname'))
 			if $story->{uid};
 
-		$encoded_item->{slash}{section}    = $self->encode($story->{section})
-			if $story->{section};
 		$encoded_item->{slash}{comments}   = $self->encode($story->{commentcount})
 			if $story->{commentcount};
 		$encoded_item->{slash}{hitparade}  = $self->encode($story->{hitparade})
 			if $story->{hitparade};
 		$encoded_item->{slash}{department} = $self->encode($story->{dept})
 			if $story->{dept} && $constants->{use_dept};
+
+		if ($story->{primaryskid}) {
+			$encoded_item->{slash}{section} = $self->encode(
+				$reader->getSkin($story->{primaryskid})->{name}
+			);
+		}
 	}
 
 	return $encoded_item;
@@ -472,4 +474,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.16 2004/06/17 16:11:49 jamiemccarthy Exp $
+$Id: RSS.pm,v 1.17 2004/06/23 18:05:16 pudge Exp $

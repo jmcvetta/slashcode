@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.600 2004/06/23 02:03:21 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.601 2004/06/23 18:05:11 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.600 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.601 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2910,9 +2910,9 @@ sub saveBlock {
 			rdf		=> $form->{rdf},
 			rss_template	=> $form->{rss_template},
 			items		=> $form->{items},
-			section		=> $form->{section},
+			skin		=> $form->{skin},
 			retrieve	=> $form->{retrieve},
-			all_sections	=> $form->{all_sections},
+			all_skins	=> $form->{all_skins},
 			autosubmit	=> $form->{autosubmit},
 			portal		=> $form->{portal},
 		}, 'bid=' . $self->sqlQuote($bid));
@@ -2931,11 +2931,11 @@ sub saveBlock {
 			rdf		=> $form->{rdf},
 			rss_template	=> $form->{rss_template},
 			items		=> $form->{items},
-			section		=> $form->{section},
+			skin		=> $form->{skin},
 			retrieve	=> $form->{retrieve},
 			portal		=> $form->{portal},
 			autosubmit	=> $form->{autosubmit},
-			all_sections	=> $form->{all_sections},
+			all_skins	=> $form->{all_skins},
 		}, 'bid=' . $self->sqlQuote($bid));
 	}
 

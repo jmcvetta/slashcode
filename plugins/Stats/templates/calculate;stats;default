@@ -29,7 +29,7 @@ __template__
       newdays = [];
       FOREACH day = days;
          daycount = daycount + 1;
-         IF (!(daycount mod 7) || (loop.index == loop.max));
+         IF (!(daycount mod 7)); # || (loop.index == loop.max));
             newdays.push(day);
          END;
       END;
@@ -130,4 +130,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: calculate;stats;default,v 1.1 2003/03/07 20:06:12 pudge Exp $
+$Id: calculate;stats;default,v 1.2 2003/05/12 13:15:02 pudge Exp $

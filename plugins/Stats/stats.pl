@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.15 2003/04/11 17:32:39 pudge Exp $
+# $Id: stats.pl,v 1.16 2003/05/12 13:15:02 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -121,7 +121,9 @@ sub graph {
 
 	my($id, $day) = _get_graph_id($slashdb, $constants, $user, $form, $stats);
 
-	my $image   = $stats->getGraph({ day => $day, id => $id });
+	my $image   = $constants->{cache_enabled} 
+		? $stats->getGraph({ day => $day, id => $id })
+		: {};
 	my $content = $image->{data};
 	my $type    = $image->{content_type} || 'image/png';
 
@@ -158,16 +160,18 @@ sub report {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
 	slashDisplay('report', {
+		sections	=> _get_sections(),
 	});
 }
 
 sub list {
 	my($slashdb, $constants, $user, $form, $stats) = @_;
 
-	my $stats_data = $stats->getAllStats({
+	my $stats_data = {};
+	$stats_data = $stats->getAllStats({
 		section	=> $form->{stats_section},
 		days	=> $form->{stats_days} || 1,
-	});
+	}) unless $form->{type} eq 'graphs';
 
 	slashDisplay('list', {
 		stats_data	=> $stats_data,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hook.pm,v 1.1 2002/04/03 03:12:55 brian Exp $
+# $Id: Hook.pm,v 1.2 2002/04/03 20:33:09 brian Exp $
 
 package Slash::Hook;
 use strict;
@@ -16,25 +16,25 @@ use vars qw($VERSION);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashHook);
 
 
 sub slashHook {
-	my($param, $luggage, $options) = @_;
-	# Why call these instead of taking them out of luggage?
-	# This allows the calling code to modify those values.
-	# -Brian
-	my $section = getCurrentForm('section');
+	my($param, $options) = @_;
 	my $slashdb = getCurrentDB();
 
 	my $hooks = $slashdb->getHooksByParam($param);
 	for my $hook (@$hooks) {
 		eval "require $hook->{class}";
-		if(eval "$hook->{class}->can('$hook->{subroutine}')") {
-			unless (eval "$hook->{class}::$hook->{subroutine}(\$luggage, \$options)") {
-				errorLog("Failed executing hook ($param) - $hook->{class}::$hook->{subroutine}");
-				print STDERR  ("$hook->{class}::$hook->{subroutine}(\$luggage, \$options)\n");
+		my $code;
+		{
+			no strict 'refs';
+			$code = \&{ $hook->{class} . '::' . $hook->{subroutine} };
+		}
+		if (defined (&$code)) {
+			unless ($code->($options)) {
+					errorLog("Failed executing hook ($param) - $hook->{class}::$hook->{subroutine}");
 			}
 		} else {
 			errorLog("Failed trying to do hook ($param) - $hook->{class}::$hook->{subroutine}");

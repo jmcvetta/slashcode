@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily.pl,v 1.8 2004/06/17 16:12:23 jamiemccarthy Exp $
+# $Id: daily.pl,v 1.9 2004/06/22 23:34:53 pudge Exp $
 
 use strict;
 
@@ -120,7 +120,7 @@ sub daily_generateDailyMail {
 
 	return slashDisplay($mailing,
 		{ stories => $stories, urlize => \&daily_urlize, absolutedir => $absolutedir },
-		{ Return => 1, Nocomm => 1, Page => 'messages', Section => 'NONE' }
+		{ Return => 1, Nocomm => 1, Page => 'messages', Skin => 'NONE' }
 	);
 }
 

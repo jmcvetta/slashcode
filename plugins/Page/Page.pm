@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.25 2004/06/17 16:11:59 jamiemccarthy Exp $
+# $Id: Page.pm,v 1.26 2004/06/22 23:34:53 pudge Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -321,7 +321,7 @@ sub getLinksContent {
 		slashDisplay('storylink', {
 			links	=> \@links,
 			sid	=> $storyref->{sid},
-		}, { Section => 'default', Return => 1});
+		}, { Skin => 'default', Return => 1});
 
 	return($storycontent);
 }

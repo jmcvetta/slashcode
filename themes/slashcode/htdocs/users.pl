@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.92 2002/08/01 02:12:26 jamie Exp $
+# $Id: users.pl,v 1.93 2002/08/01 14:52:56 jamie Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1492,8 +1492,8 @@ sub editComm {
 		reason_select		=> \%reason_select,
 		people			=> \@people,
 		people_select		=> \%people_select,
-		new_user_percent_select => $new_user_percent_select,
-		new_user_bonus_select => $new_user_bonus_select,
+		new_user_percent_select	=> $new_user_percent_select,
+		new_user_bonus_select	=> $new_user_bonus_select,
 	});
 }
 
@@ -1924,10 +1924,14 @@ sub saveComm {
 		sigdash		=> ($form->{sigdash} ? 1 : undef),
 		nobonus		=> ($form->{nobonus} ? 1 : undef),
 		postanon	=> ($form->{postanon} ? 1 : undef),
-		new_user_percent => (($new_user_percent && $new_user_percent != 100) ? $new_user_percent : undef),
-		new_user_bonus => ($new_user_bonus ? $new_user_bonus : undef),
-		textarea_rows	=> ($form->{textarea_rows} != $constants->{textarea_rows} ? $form->{textarea_rows} : undef),
-		textarea_cols	=> ($form->{textarea_cols} != $constants->{textarea_cols} ? $form->{textarea_cols} : undef),
+		new_user_percent => ($new_user_percent && $new_user_percent != 100
+					? $new_user_percent : undef),
+		new_user_bonus	=> ($new_user_bonus
+					? $new_user_bonus : undef),
+		textarea_rows	=> ($form->{textarea_rows} != $constants->{textarea_rows}
+					? $form->{textarea_rows} : undef),
+		textarea_cols	=> ($form->{textarea_cols} != $constants->{textarea_cols}
+					? $form->{textarea_cols} : undef),
 	};
 
 	my @reasons = ();

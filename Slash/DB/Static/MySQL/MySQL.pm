@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.48 2002/07/15 18:25:26 pudge Exp $
+# $Id: MySQL.pm,v 1.49 2002/07/16 11:35:12 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -327,13 +327,13 @@ sub forgetSubmissionIPs {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 
-	# Forget the source IP information for comments older than a given
-	# time.
+	# Forget the source IP information for submissions older than a
+	# given time.
 	my $hours = $constants->{submit_forgetip_hours} ||
 		$constants->{comments_forgetip_hours} || 720;
 	my $hours1 = $hours-1; $hours1 = 0 if $hours1 < 0;
 
-	# At what cid do we start scanning?
+	# At what subid do we start scanning?
 	my $minsubid = $constants->{submit_forgetip_minsubid};
 	if (!defined($minsubid)) {
 		$self->sqlInsert('vars', {
@@ -343,11 +343,7 @@ sub forgetSubmissionIPs {
 		$minsubid = 0;
 	}
 	# How many rows to do at once?  We don't want to tie up the DB
-	# for too long at one sitting.  Find the first discussion posted
-	# just after the time limit, and then the first comment in that
-	# discussion.  A discussion predates its comments, so this comment
-	# is guaranteed to postdate the time limit, and finding it doesn't
-	# require a table scan of comments, only of discussions.
+	# for too long at one sitting.
 	my $maxrows = $constants->{submit_forgetip_maxrows} ||
 		$constants->{comments_forgetip_maxrows} || 10000;
 	my $maxsubid = $minsubid + $maxrows;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.627 2004/07/16 19:01:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.628 2004/07/16 20:20:56 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.627 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.628 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1345,6 +1345,7 @@ sub getNexusExtras {
 	return $answer;
 }
 
+########################################################
 sub getNexuslistFromChosen {
 	my($self, $chosen_hr) = @_;
 	return [ ] unless $chosen_hr;
@@ -7505,6 +7506,7 @@ sub getTime {
 	return $t;
 }
 
+##################################################################
 sub getTimeAgo {
 	my ($self, $time) = @_;
 	my $q_time = $self->sqlQuote($time);
@@ -7607,7 +7609,7 @@ sub getStoryList {
 	my $tree = $self->getTopicTree();
 	for my $story (@$list) {
 		$story->{skinname} ||= 'mainpage';
-		$story->{topic} = $tree->{$story->{tid}}{keyword};
+		$story->{topic} = $tree->{$story->{tid}}{keyword} if $story->{tid};
 		push @$stoids, $story->{stoid};
 	}
 	# Now set displaystatus.

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.6 2001/04/05 11:46:19 pudge Exp $
+# $Id: admin.pl,v 1.7 2001/04/11 17:58:04 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -760,10 +760,10 @@ sub topicSave {
 	my $basedir = getCurrentStatic('basedir');
 
 	if ($form->{tid}) {
-		$slashdb->saveTopic();
 		if (!$form->{width} && !$form->{height}) {
 		    @{ $form }{'width', 'height'} = imgsize("$basedir/images/topics/$form->{image}");
 		}
+		$slashdb->saveTopic();
 	}
 	
 	$form->{nexttid} = $form->{tid};

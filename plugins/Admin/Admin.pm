@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.1 2002/12/10 00:31:01 brian Exp $
+# $Id: Admin.pm,v 1.2 2002/12/11 17:44:17 jamie Exp $
 
 package Slash::Admin;
 
@@ -15,7 +15,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -40,9 +40,17 @@ sub getAccesslogMaxID {
 }
 
 sub getAccesslogAbusersByID {
-	my ($self, $id, $limit) = @_;
-	$limit ||=20;
-	return $self->sqlSelectAllHashrefArray("count(id) as c, host_addr, op", "accesslog"," id > $id", " GROUP BY host_addr,op HAVING c > $limit ORDER BY c DESC" );
+	my($self, $id, $threshold) = @_;
+	$threshold ||= 20;
+	my $limit = 500;
+	my $ar = $self->sqlSelectAllHashrefArray(
+		"COUNT(id) AS c, host_addr AS ipid, op,
+		 MIN(ts) AS mints, MAX(ts) AS maxts",
+		"accesslog",
+		"id > $id",
+		"GROUP BY host_addr,op HAVING c >= $threshold ORDER BY c DESC LIMIT $limit"
+	);
+	return $ar;
 }
 
 

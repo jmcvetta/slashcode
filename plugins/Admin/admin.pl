@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.154 2003/05/22 19:11:51 brian Exp $
+# $Id: admin.pl,v 1.155 2003/05/23 14:15:37 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1671,7 +1671,7 @@ sub updateStory {
 	my $rendered;
 	{
 		local $user->{currentSection} = "index";
-		$rendered =  displayStory($form->{sid},'', { get_cacheable => 1});
+		$rendered =  displayStory($form->{sid}, '', { get_cacheable => 1 });
 	}
 	my $data = {
 		uid		=> $form->{uid},
@@ -1894,7 +1894,7 @@ sub saveStory {
 	my $sid = $slashdb->createStory($data);
 	{
 		local $user->{currentSection} = "index";
-		$slashdb->setStory($sid, { rendered => displayStory($sid,'', { get_cacheable => 1})});
+		$slashdb->setStory($sid, { rendered => displayStory($sid, '', { get_cacheable => 1 }) });
 	}
 
 	if ($sid) {

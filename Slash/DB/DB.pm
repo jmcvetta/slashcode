@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.13 2003/05/16 19:26:42 pudge Exp $
+# $Id: DB.pm,v 1.14 2004/02/02 21:18:14 jamiemccarthy Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -2061,9 +2061,11 @@ Fixed KEY.
 
 =back
 
-=head2 setCommentCleanup(KEY)
+=head2 setCommentForMod(KEY)
 
-I am the default documentation, short and stout.
+Adjust a comment in the database for being moderated.  This only
+affects the comment data, not the data for the user moderating
+or being moderated, doesn't log to moderatorlog, etc.
 
 =over 4
 
@@ -2079,7 +2081,9 @@ Key, as in the KEY
 
 =item Return value
 
-Fixed KEY.
+If the moderation failed for some reason, undef.  Otherwise, a
+numeric value indicating the comment's new point score.  If the
+new point score is 0, "0 but true" is returned.
 
 =back
 

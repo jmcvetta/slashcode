@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.16 2003/03/04 19:56:32 pudge Exp $
+# $Id: System.pm,v 1.17 2003/12/18 17:38:15 jamie Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -281,7 +281,13 @@ sub doLogExit {
 
 sub doLog {
 	my($fname, $msg, $stdout, $sname) = @_;
-	chomp(my @msg = @$msg);
+	my @msg;
+	if (ref($msg) && ref($msg) eq 'ARRAY') {
+		@msg = @$msg;
+	} else {
+		@msg = ( $msg );
+	}
+	chomp(@msg);
 
 	$sname    ||= '';
 	$sname     .= ' ' if $sname;
@@ -425,4 +431,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.16 2003/03/04 19:56:32 pudge Exp $
+$Id: System.pm,v 1.17 2003/12/18 17:38:15 jamie Exp $

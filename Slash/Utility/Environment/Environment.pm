@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.48 2002/09/02 05:06:13 jamie Exp $
+# $Id: Environment.pm,v 1.49 2002/10/01 18:03:07 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1555,34 +1555,35 @@ sub writeLog {
 
 sub createLog {
 	my($uri, $dat) = @_;
-	my $slashdb = getCurrentDB();
+	my $log_user = getCurrentStatic('log_db_user');
+	my $logdb = $log_user ? getObject('Slash::DB', $log_user ) : getCurrentDB();
 
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
 	if ($uri eq 'palm') {
 		($dat = $ENV{REQUEST_URI}) =~ s|\.shtml$||;
-		$slashdb->createAccessLog('palm', $dat);
+		$logdb->createAccessLog('palm', $dat);
 	} elsif ($uri eq '/') {
-		$slashdb->createAccessLog('index', $dat);
+		$logdb->createAccessLog('index', $dat);
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
-		$slashdb->createAccessLog($uri, $dat);
+		$logdb->createAccessLog($uri, $dat);
 	# This is for me, I am getting tired of patching my local copy -Brian
 	} elsif ($uri =~ /\.tar\.gz$/) {
 		$uri =~ s|^/(.*)\.tar\.gz$|$1|;
-		$slashdb->createAccessLog($uri, $dat);
+		$logdb->createAccessLog($uri, $dat);
 	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
-		$slashdb->createAccessLog('rss', $dat);
+		$logdb->createAccessLog('rss', $dat);
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
-		$slashdb->createAccessLog($uri, $dat);
+		$logdb->createAccessLog($uri, $dat);
 	} elsif ($uri =~ /\.html$/) {
 		$uri =~ s|^/(.*)\.html$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
-		$slashdb->createAccessLog($uri, $dat);
+		$logdb->createAccessLog($uri, $dat);
 	}
 
 }
@@ -1706,4 +1707,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.48 2002/09/02 05:06:13 jamie Exp $
+$Id: Environment.pm,v 1.49 2002/10/01 18:03:07 brian Exp $

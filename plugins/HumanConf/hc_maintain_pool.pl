@@ -2,14 +2,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hc_maintain_pool.pl,v 1.2 2002/05/06 06:18:00 jamie Exp $
+# $Id: hc_maintain_pool.pl,v 1.3 2003/02/16 15:50:35 jamie Exp $
 
 use strict;
 use Slash::Utility;
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '5-55/10 * * * *';
+$task{$me}{timespec} = '10,40 * * * *';
 $task{$me}{timespec_panic_1} = '';
 $task{$me}{on_startup} = 1;
 $task{$me}{code} = sub {

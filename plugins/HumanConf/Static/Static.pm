@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.5 2002/05/16 04:56:56 jamie Exp $
+# $Id: Static.pm,v 1.6 2003/02/16 15:50:35 jamie Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -71,11 +71,18 @@ sub deleteOldFromPool {
 	my $max_fill = $constants->{hc_poolmaxfill} || 100;
 
 	my $cursize = $self->getPoolSize();
-	$want_delete_fraction = 1/(6*24*2) if !defined($want_delete_fraction);
+	if (!defined($want_delete_fraction)) {
 		# Delete at least enough to recycle the pool regularly.
-		# Since by default hc_maintain_pool runs 6 times an hour,
+		# Since by default hc_maintain_pool runs 2 times an hour,
 		# the default fraction is enough to guarantee complete
 		# pool turnover every two days.
+		# Note that $runs_per_hour should be coordinated with
+		# the timespec in the task .pl file;  there isn't a good
+		# way to do this at the moment.  Eventually we'll have
+		# DB-based timespecs and we can read that...
+		my $runs_per_hour = 2;
+		$want_delete_fraction = 1/($runs_per_hour*24*2)
+	}
 	my $want_delete = int($cursize*$want_delete_fraction);
 		# Don't delete so many that the pool will get too empty,
 		# or take too long to fill.

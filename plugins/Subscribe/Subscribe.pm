@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.5 2002/02/05 16:05:29 jamie Exp $
+# $Id: Subscribe.pm,v 1.6 2002/02/21 03:59:31 jamie Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;
@@ -109,7 +109,27 @@ sub convertPagesToDollars {
 sub insertPayment {
 	my($self, $payment) = @_;
 	my $slashdb = getCurrentDB();
-	return $slashdb->sqlInsert("subscribe_payments", $payment);
+	my $success = 1; # set to 0 on insert failure
+
+	# If no transaction id was given, we'll be making up one of our own.
+	# We'll have to make up our own and retry it if it fails.
+	my $create_trans = !defined($payment->{transaction_id});
+	my $num_retries = 50;
+
+	while (1) {
+		if ($create_trans) {    
+			$payment->{transaction_id} = substr(
+				Digest::MD5::md5_hex(join(":",
+					$payment->{uid}, $payment->{data},
+					time, $$, rand(2**30)
+				)), 0, 17
+			);
+		}
+		$success = $slashdb->sqlInsert("subscribe_payments", $payment);
+		last if $success || !$create_trans || --$num_retries <= 0;
+	}
+
+	return $success;
 }
 
 1;

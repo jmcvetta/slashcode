@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.5 2002/02/05 16:05:29 jamie Exp $
+# $Id: subscribe.pl,v 1.6 2002/02/21 03:59:31 jamie Exp $
 
 use strict;
 
@@ -157,24 +157,28 @@ sub paypal {
 	for my $key (@keys) {
 		$payment->{$key} = $form->{$key};
 	}
+	if (!defined($payment->{payment_net})) {
+		$payment->{payment_net} = $payment->{payment_gross};
+	}
 
 	my $subs = getObject('Slash::Subscribe');
 	my $num_pages = $subs->convertDollarsToPages($payment->{payment_gross});
 	$payment->{pages} = $num_pages;
 	my $rows = $subs->insertPayment($payment);
-	if ($rows != 1) {
-		# What to do here?
+	if ($rows == 1) {
+		$slashdb->setUser($payment->{uid}, {
+			"-hits_paidfor" => "hits_paidfor + $num_pages"
+		});
+		print "<p>Paypal confirmed\n";
+	} else {
 		use Data::Dumper;
 		my $warning = "WARNING: Paypal payment accepted but record "
-			. "not added to database!\n"
+			. "not added to database! rows='$rows'\n"
 			. Dumper($payment);
 		print STDERR $warning;
+		print "<p>Paypal transaction ID already recorded or other error, "
+			. "not added to database! rows='$rows'\n";
 	}
-	$slashdb->setUser($payment->{uid}, {
-		"-hits_paidfor" =>	"hits_paidfor + $num_pages"
-	});
-
-	print "<p>Paypal confirmed\n";
 }
 
 # Wait a moment for Paypal's instant payment notification to take place

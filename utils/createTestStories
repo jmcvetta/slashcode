@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.23 2003/08/26 19:21:34 jamie Exp $
+# $Id: createTestStories,v 1.24 2003/08/26 19:59:05 jamie Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -119,7 +119,7 @@ $constants = getCurrentStatic();
 		};
 
 		my $sid = $slashdb->createStory($story);
-		$slashdb->setStoryTopics($story->{sid}, createStoryTopicData($self, $story));
+		$slashdb->setStoryTopics($story->{sid}, createStoryTopicData($slashdb, $story));
 		my $reloDB = getObject("Slash::Relocate");
 		if ($reloDB && $sid) {
 			$slashdb->setStory($sid, { 

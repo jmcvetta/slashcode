@@ -39,7 +39,7 @@ __template__
 	&nbsp;&nbsp;&nbsp;<INPUT TYPE="RADIO" NAME="opt_[% opt.name %]" value="0"
 		[% IF !opt.checked; constants.markup_checked_attribute; END %]>&nbsp;Off
 	&nbsp;&nbsp;&nbsp;<INPUT TYPE="RADIO" NAME="opt_[% opt.name %]" value="1"
-		[% IF opt.checked; "constants.markup_checked_attribute; ND %]>&nbsp;On<BR>
+		[% IF opt.checked; constants.markup_checked_attribute; END %]>&nbsp;On<BR>
 [% END %]
 
 		<INPUT TYPE="SUBMIT" VALUE="Save">
@@ -50,4 +50,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editMiscOpts;users;default,v 1.9 2004/10/11 17:56:43 jamiemccarthy Exp $
+$Id: editMiscOpts;users;default,v 1.10 2004/10/14 06:20:12 pudge Exp $

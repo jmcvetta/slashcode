@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMods,v 1.10 2003/03/04 19:56:33 pudge Exp $
+# $Id: createTestMods,v 1.11 2003/06/19 15:05:28 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Slash::Utility;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -86,6 +86,10 @@ my(%comments, %comment_data);
 		my $did = (exists $opts{r}) ?
 			$discussions->[rand $#{$discussions} + 1] : 
 			$discussion_id;
+                if (!$did) {
+			print "Cannot create comments, no discussions found.\n";
+			exit 0;
+		}
 
 		if (!exists $comments{$did}) {
 			$comments{$did} = [

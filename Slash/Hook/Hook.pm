@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hook.pm,v 1.3 2002/04/12 15:28:54 pudge Exp $
+# $Id: Hook.pm,v 1.4 2002/04/12 23:16:54 jamie Exp $
 
 package Slash::Hook;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashHook);
 
 my %classes;
@@ -39,7 +39,7 @@ sub slashHook {
 							# even if it has already succeeded or
 							# failed, just by doing the eval -- pudge
 			if ($@) {			# failed
-				$classes{$class} eq 'NA';
+				$classes{$class} = 'NA';
 				next;
 			} else {			# success!
 				$classes{$class} = 1;

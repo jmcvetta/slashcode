@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.33 2003/03/04 19:56:32 pudge Exp $
+# $Id: Journal.pm,v 1.34 2003/03/25 20:20:28 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -65,6 +65,7 @@ sub getsByUid {
 
 sub getsByUids {
 	my($self, $uids, $start, $limit, $options) = @_;
+	return unless @$uids;
 	my $list = join(",", @$uids);
 	my $answer;
 	my $order = "ORDER BY journals.date DESC";

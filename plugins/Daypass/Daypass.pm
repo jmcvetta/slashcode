@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.4 2005/04/01 01:26:13 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.5 2005/04/01 04:47:15 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -13,7 +13,7 @@ use base 'Slash::DB::Utility';
 # For sqlReplace, for now
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -157,7 +157,8 @@ sub getDaypassTZOffset {
 	return 0 if $dptz eq 'GMT';
 
 	my $timezones = $slashdb->getTZCodes();
-	return $timezones->{$dptz} || 0;
+	return 0 unless $timezones && $timezones->{$dptz};
+	return $timezones->{$dptz}{off_set} || 0;
 }
 
 sub getGoodonDay {
@@ -165,7 +166,7 @@ sub getGoodonDay {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 
-	my $off_set = $self->getDaypassTZOffset();
+	my $off_set = $self->getDaypassTZOffset() || 0;
 	my $db_time = $slashdb->getTime({ add_secs => $off_set });
 
 	# Cheesy (and easy) way of doing this.  Yank the seconds and

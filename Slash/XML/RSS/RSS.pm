@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.23 2004/12/04 00:06:14 pudge Exp $
+# $Id: RSS.pm,v 1.24 2004/12/14 00:19:29 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -371,20 +371,22 @@ sub rss_story {
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
 	if ($story->{sid}) {
+		my $edit = "admin.pl?op=edit&sid=$story->{sid}";
 		if ($story->{primaryskid}) {
 			my $dir = url2abs(
 				$reader->getSkin($story->{primaryskid})->{rootdir},
 				$channel->{'link'}
 			);
-			$encoded_item->{'link'} = $self->encode(
-                                _tag_link("$dir/article.pl?sid=$story->{sid}"),
-                                'link'
-                        );
+			$encoded_item->{'link'} = _tag_link("$dir/article.pl?sid=$story->{sid}");
+			$edit = "$dir/$edit";
 		} else {
-			$encoded_item->{'link'} = $self->encode(
-				_tag_link("$channel->{'link'}article.pl?sid=$story->{sid}"),
-				'link'
-			);
+			$encoded_item->{'link'} = _tag_link("$channel->{'link'}article.pl?sid=$story->{sid}");
+			$edit = "$channel->{'link'}$edit";
+		}
+		$_ = $self->encode($_, 'link') for ($encoded_item->{'link'}, $edit);
+
+		if (getCurrentUser('is_admin')) {
+			$story->{introtext} .= qq[\n\n<p><a href="$edit">[ Edit ]</a></p>];
 		}
 	}
 
@@ -510,4 +512,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.23 2004/12/04 00:06:14 pudge Exp $
+$Id: RSS.pm,v 1.24 2004/12/14 00:19:29 pudge Exp $

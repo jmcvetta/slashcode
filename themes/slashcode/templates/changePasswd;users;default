@@ -43,7 +43,9 @@ __template__
 [% ELSE %]
 		<INPUT TYPE="HIDDEN" NAME="uid" VALUE="[% useredit.uid %]">
 [% END %]
-		My login session [% session %] and [% clocation %]
+		My <A HREF="[% constants.rootdir %]/faq/accounts.shtml#ac1200">login session</A> [% session %] and [% clocation %]
+
+		<P>
 
 		<P>Note: currently, to change your login cookie preferences, you must change your
 		password.  This will be fixed in the near future.  You can change your password to
@@ -75,4 +77,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: changePasswd;users;default,v 1.19 2004/01/28 20:29:35 pudge Exp $
+$Id: changePasswd;users;default,v 1.20 2004/01/29 02:02:16 pudge Exp $

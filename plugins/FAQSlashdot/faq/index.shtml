@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: index.shtml,v 1.16 2003/12/29 15:40:51 malda Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: index.shtml,v 1.17 2004/01/29 02:02:04 pudge Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -291,6 +291,7 @@ mean?</a></b></li>
   <li> <b><a href="accounts.shtml#ac1000">How do I get an IP Unbanned?</a></b></li>
   <li> <B><a href="accounts.shtml#ac1050">My RSS Headline Reader Tells me I Was Banned!</A></B></LI>
   <li> <b><a href="accounts.shtml#ac1100">Why is someone else's User Name appearing on my User Page's Menu?</a></b></li>
+  <li> <b><a href="accounts.shtml#ac1200">What are Login Sessions?</a></b></li>
   
 </ul>
 <!-- Friends and Journals -->

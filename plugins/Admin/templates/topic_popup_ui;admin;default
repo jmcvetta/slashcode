@@ -44,8 +44,6 @@ __template__
 <option value="0">0 - Ignore Topic</option>
 </select>
 <br>
-<input type="button" value="Never Display"  onmouseup="[% name %]_never_display()">
-<input type="button" value="Revert Weights" onmouseup="[% name %]_revert_weights()">
 <input type="button" value="Choose Topics"  onmouseup="[% name %]_show()" name="[% name %]_topic_toggle">
 <input type="button" value="Remove Topic"   onmouseup="[% name %]_remove()">
 
@@ -54,4 +52,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_ui;admin;default,v 1.2 2004/07/13 23:54:41 jamiemccarthy Exp $
+$Id: topic_popup_ui;admin;default,v 1.3 2004/07/15 04:24:06 jamiemccarthy Exp $

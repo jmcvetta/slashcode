@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.137 2003/03/14 18:31:13 pudge Exp $
+# $Id: admin.pl,v 1.138 2003/03/17 18:15:55 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -516,7 +516,7 @@ sub blockEdit {
 	my $rss_templates = $slashdb->getTemplateList('','portald');
 	my $rss_ref = { map { ($_, $_) } values %{$rss_templates} };
 
-	$blockref->{rss_template} ||= $constants->{default_rss_template};
+	$blockref->{rss_template} ||= $constants->{default_rss_template} || 'defaullt';
 	my $rss_select = createSelect('rss_template', $rss_ref, $blockref->{rss_template}, 1);	
 	my $template_ref = $slashdb->getTemplateByName($blockref->{rss_template}, [ 'template' ], 1 , 'portald', $blockref->{section});
 	my $rss_template_code = $template_ref->{template}; 

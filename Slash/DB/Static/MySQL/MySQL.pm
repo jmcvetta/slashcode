@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.147 2004/05/18 23:16:13 pudge Exp $
+# $Id: MySQL.pm,v 1.148 2004/05/20 13:54:04 cowboyneal Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -18,7 +18,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2188,10 +2188,10 @@ sub getTopRecentRealemailDomains {
 		my $i = 0;
 		$newnicks->{$domain->{initdomain}} = "";
 
-		while ($length + length($nicks->[$i]) + 2 < 78) {
+		while ($length + length($nicks->[$i][0]) + 2 < 78) {
 			$newnicks->{$domain->{initdomain}} .= ', ' unless !$i;
-			$newnicks->{$domain->{initdomain}} .= $nicks->[$i];
-			$length += length($nicks->[$i]) + 2;
+			$newnicks->{$domain->{initdomain}} .= $nicks->[$i][0];
+			$length += length($nicks->[$i][0]) + 2;
 			$i++;
 		}
 	}

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.36 2002/04/08 21:01:39 brian Exp $
+# $Id: slashschema_create.sql,v 1.37 2002/04/08 23:39:54 brian Exp $
 #
 
 #
@@ -389,6 +389,8 @@ CREATE TABLE pollquestions (
 	date datetime,
 	uid mediumint UNSIGNED NOT NULL,
 	section varchar(30) NOT NULL,
+	autopoll enum("no","yes") DEFAULT 'no' NOT NULL,
+	flags enum("ok","delete","dirty") DEFAULT 'ok' NOT NULL,
 	FOREIGN KEY (section) REFERENCES sections(section),
 	FOREIGN KEY (discussion) REFERENCES discussions(id),
 	FOREIGN KEY (uid) REFERENCES users(uid),
@@ -459,7 +461,6 @@ CREATE TABLE section_extras (
 	name varchar(100) NOT NULL,
 	value varchar(100) NOT NULL,
 	type enum("text","list") DEFAULT 'text' NOT NULL,
-	list varchar(255) DEFAULT '' NOT NULL,
 	FOREIGN KEY (section) REFERENCES sections(section),
 	UNIQUE extra (section,name),
 	PRIMARY KEY (param_id)

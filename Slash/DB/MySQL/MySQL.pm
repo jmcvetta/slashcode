@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.47 2002/01/03 04:04:36 jamie Exp $
+# $Id: MySQL.pm,v 1.48 2002/01/03 04:06:50 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -724,7 +724,7 @@ sub getDiscussionsUserCreated {
 	$limit ||= 50; # Sanity check in case var is gone
 	$start ||= 0; # Sanity check in case var is gone
 
-	my $where = "type = 'recycled' AND ts <= now() AND users.uid = discussions.uid";
+	my $where = "type = 'recycle' AND ts <= now() AND users.uid = discussions.uid";
 	$where .= " AND section = '$section'"
 		if $section;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.5 2002/01/26 05:22:41 jamie Exp $
+# $Id: Stats.pm,v 1.6 2002/02/18 21:08:40 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -78,6 +78,38 @@ sub countModeratorLog {
 }
 
 ########################################################
+sub getCommentsByDistinctIPID {
+	my($self, $yesterday) = @_;
+
+	my $used = $self->sqlSelectColArrayref(
+		'ipid', 'comments', 
+		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",'',{distinct => 1}
+	);
+}
+
+########################################################
+sub countSubmissionsByDay {
+	my($self, $yesterday) = @_;
+
+	my $used = $self->sqlCount(
+		'comments', 
+		"date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'"
+	);
+}
+
+########################################################
+sub countSubmissionsByCommentIPID {
+	my($self, $yesterday, $ipids) = @_;
+	return unless @$ipids;
+	my $in_list = join(",", @$ipids);
+
+	my $used = $self->sqlCount(
+		'comments', 
+		"(date BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59') AND ipid IN ($in_list)"
+	);
+}
+
+########################################################
 sub countModeratorLogHour {
 	my($self, $yesterday) = @_;
 
@@ -114,22 +146,6 @@ sub countCommentsDaily {
 	);
 
 	return $comments; 
-}
-
-########################################################
-sub updateStamps {
-	my($self) = @_;
-	my $columns = "uid";
-	my $tables = "accesslog";
-	my $where = "to_days(now())-to_days(ts)=1 AND uid > 0";
-	my $other = "GROUP BY uid";
-
-	my $E = $self->sqlSelectAll($columns, $tables, $where, $other);
-
-	for (@{$E}) {
-		my $uid = $_->[0];
-		$self->setUser($uid, {-lastaccess=>'now()'});
-	}
 }
 
 ########################################################

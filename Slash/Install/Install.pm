@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.31 2003/01/28 08:26:34 jamie Exp $
+# $Id: Install.pm,v 1.32 2003/02/27 22:25:21 pudge Exp $
 
 package Slash::Install;
 use strict;
@@ -11,12 +11,13 @@ use Slash::DB;
 use File::Copy;
 use File::Find;
 use File::Path;
+use File::Spec;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -516,7 +517,7 @@ sub _parseFilesForTemplates {
 		$key = lc $key;
 		if ($key eq 'template') {
 			my @parts = split /\//, $val;
-			$templates->{pop(@parts)} = "$file/$val";
+			$templates->{pop(@parts)} = File::Spec->catfile($file, $val);
 		}
 		push @$no_templates, $val
 			if ($key eq 'no-template');

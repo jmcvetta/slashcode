@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.46 2004/08/10 21:54:05 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.47 2004/09/02 19:01:16 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -137,7 +137,12 @@ $task{$me}{code} = sub {
 		my($stoid, $sid, $title, $skid) =
 			@{$story}{qw( stoid sid title primaryskid )};
 		my $skinname = '';
-		$skinname = $slashdb->getSkin($skid)->{name} if $skid;
+		my $story_skin = $slashdb->getSkin($skid) if $skid;
+		if (!$story_skin || !%$story_skin) {
+			slashdLog("skipping, nonexistent primaryskid '$skid' for $sid: $title");
+			next STORIES_FRESHEN;
+		}
+		$skinname = $story_skin->{name};
 
 		my $mp_tid = $constants->{mainpage_nexus_tid};
 		my $displaystatus = $slashdb->_displaystatus($story->{stoid});

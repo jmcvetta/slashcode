@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: shifts.pl,v 1.2 2005/03/09 21:28:14 pudge Exp $
+# $Id: shifts.pl,v 1.3 2005/03/11 00:07:30 pudge Exp $
 
 # shifts.pl -- Part of the ScheduleShifts plugin.
 
@@ -17,7 +17,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -94,11 +94,13 @@ sub getDaddyList {
 	}
 
 	xmlDisplay(rss => {
-		channel => {
+		channel			=> {
 			title	=> "$constants->{sitename} shifts for $when",
 			'link'	=> $link,
 		},
-		items	=> \@items
+		items			=> \@items,
+		rdfitemdesc		=> 1,
+		rdfitemdesc_html	=> 1,
 	});
 }
 

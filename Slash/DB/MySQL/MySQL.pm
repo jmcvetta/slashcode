@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.38 2001/12/13 17:39:06 jamie Exp $
+# $Id: MySQL.pm,v 1.39 2001/12/14 17:25:41 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1018,12 +1018,23 @@ sub getNewPasswd {
 sub getUserUID {
 	my($self, $name) = @_;
 
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# We need to add BINARY to this
-# as is, it may be a security flaw
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	my($uid) = $self->sqlSelect('uid', 'users',
-		'nickname=' . $self->sqlQuote($name)
+# We may want to add BINARY to this.
+#
+# The concern is that MySQL's "=" matches text chars that are not
+# bit-for-bit equal, e.g. a-umlaut may "=" a, but that BINARY
+# matching is apparently significantly slower than non-BINARY.
+# Adding the ORDER at least makes the results predictable so this
+# is not exploitable -- no one can add a later account that will
+# make an earlier one inaccessible.  A better method would be to
+# grab all uid/nicknames that MySQL thinks match, and then to
+# compare them (in order) in perl until a real bit-for-bit match
+# is found.
+
+	my($uid) = $self->sqlSelect(
+		'uid',
+		'users',
+		'nickname=' . $self->sqlQuote($name),
+		'ORDER BY uid ASC'
 	);
 
 	return $uid;

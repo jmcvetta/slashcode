@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.90 2003/01/21 04:51:13 jamie Exp $
+# $Id: Stats.pm,v 1.91 2003/01/29 23:26:44 brian Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -752,7 +752,7 @@ sub countDaily {
 }
 
 ########################################################
-sub countDailySubscriber {
+sub getRecentSubscribers {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 	return 0 unless $constants->{subscribe};
@@ -762,6 +762,13 @@ sub countDailySubscriber {
 		"hits_paidfor > hits_bought
 		 AND lastclick >= DATE_SUB(NOW(), INTERVAL 48 HOUR)",
 	);
+
+	return $subscribers;
+}
+
+########################################################
+sub countDailySubscribers {
+	my($self, $subscribers) = @_;
 	return 0 unless $subscribers && @$subscribers;
 	my $uid_list = join(", ", @$subscribers);
 	my $count = $self->sqlCount("accesslog_temp", "uid IN ($uid_list)");
@@ -926,4 +933,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.90 2003/01/21 04:51:13 jamie Exp $
+$Id: Stats.pm,v 1.91 2003/01/29 23:26:44 brian Exp $

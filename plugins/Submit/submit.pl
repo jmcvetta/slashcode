@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.108 2005/02/01 21:01:04 tvroom Exp $
+# $Id: submit.pl,v 1.109 2005/02/08 19:23:17 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -43,7 +43,7 @@ sub main {
 
 	# Show submission title on browser's titlebar.
 	my($tbtitle);
-	if ($form->{subid}) {
+	if ($form->{subid} and $form->{op} ne "changesubmission") {
 		$tbtitle = $slashdb->getSubmission($form->{subid}, [ 'subj' ]);
 		$tbtitle = $tbtitle->{subj} if $tbtitle;
 		$tbtitle =~ s/^"?(.+?)"?$/$1/ if $tbtitle;
@@ -172,7 +172,7 @@ sub changeSubmission {
 			# Behavior here was unspecified. I chose this route, 
 			# although returning to submissionEd() would simplify
 			# things.		- Cliff
-			previewForm(@_);
+			submissionEd(@_, "");
 		}
 	}
 }
@@ -415,10 +415,10 @@ sub submissionEd {
 		$sub->{strs} = \@strs;
 
 		my $skin = $slashdb->getSkin($sub->{primaryskid});
-
 		$sub->{sskin}  =
 			$sub->{primaryskid} ne $constants->{mainpage_skid} ?
 				"&skin=$skin->{name}" : '';
+		$sub->{stitle} = '&title=' . fixparam($sub->{subj});
 		
 		$sub->{skin}   = $skin->{name};
 	}

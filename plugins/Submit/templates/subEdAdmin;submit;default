@@ -81,7 +81,7 @@ BLOCK sub_display -%]
 		[% sub.time %]&nbsp;
 	[% END %]
 	</TD><TD>
-		<A HREF="[% env.script_name %]?op=viewsub&amp;table_skin=[% form.skin | strip_attribute %]&amp;table_note=[% form.note | strip_attribute %]&amp;subid=[% sub.subid | strip_attribute %]&amp;note=[% form.note | strip_attribute %][% sub.sskin | strip_attribute %]"
+		<A HREF="[% env.script_name %]?op=viewsub&amp;table_skin=[% form.skin | strip_attribute %]&amp;table_note=[% form.note | strip_attribute %]&amp;subid=[% sub.subid | strip_attribute %]&amp;note=[% form.note | strip_attribute %][% sub.stitle | strip_attribute %][% sub.sskin | strip_attribute %]"
 		>[% sub.strs.0 %]&nbsp;</A>
 		[% IF constants.submit_show_weight %]
 			[% IF sub.keywords %]<BR><FONT SIZE="2">[% sub.keywords %] [% END %]
@@ -98,4 +98,4 @@ BLOCK sub_display -%]
 __seclev__
 10000
 __version__
-$Id: subEdAdmin;submit;default,v 1.22 2005/02/01 20:57:54 tvroom Exp $
+$Id: subEdAdmin;submit;default,v 1.23 2005/02/08 19:23:35 tvroom Exp $

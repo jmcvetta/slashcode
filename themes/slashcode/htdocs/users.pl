@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.155 2003/02/20 20:33:16 pudge Exp $
+# $Id: users.pl,v 1.156 2003/02/25 17:34:30 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1781,6 +1781,9 @@ sub saveUserAdmin {
 		#($id, $user_edit->{ipid}, $user_edit->{subnetid})
 		($id, $user_edit->{$form->{fieldname}})
 			= ($form->{md5id}, $form->{md5id});
+
+		$form->{isproxy} = $form->{isproxy} eq 'on' ? 'yes' : 'no';
+                $slashdb->setIsProxy($user_edit->{ipid}, $form->{is_proxy});
 
 	} else { # a bit redundant, I know
 		$user_edit = $user;

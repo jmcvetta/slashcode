@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.43 2001/12/19 23:08:39 brian Exp $
+# $Id: MySQL.pm,v 1.44 2001/12/31 18:54:58 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4152,9 +4152,9 @@ sub autoUrl {
 	s|<date>|$now|g;
 	s|<author>|<B><A HREF="$user->{homepage}">$initials</A></B>:|ig;
 
-	# The delimeters below were once "[%...%]" but that's legacy code from before
-	# Template and we've since changed it to what you see, below.
-	s/\{%(.*?)%\}/$self->getUrlFromTitle($1)/exg if $form->{shortcuts};
+	# The delimiters below were once "[%...%]" but that's legacy code from
+	# before Template, and we've since changed it to what you see below.
+	s/\{%(.*?)%\}/$self->getUrlFromTitle($1)/eg if $form->{shortcuts};
 
 	# Assorted ways to add files:
 	s|<import>|importText()|ex;

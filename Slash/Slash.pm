@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.83 2002/11/22 06:18:51 jamie Exp $
+# $Id: Slash.pm,v 1.84 2002/11/25 23:06:05 brian Exp $
 
 package Slash;
 
@@ -316,7 +316,6 @@ sub reparentComments {
 			}
 
 			# add child to new parent
-			$comments->{$x}{realpid} = $comments->{$x}{pid};
 			$comments->{$x}{pid} = $pid;
 			push @{$comments->{$pid}{kids}}, $x;
 		}
@@ -1282,11 +1281,11 @@ EOT
 
 		push @link, linkComment({
 			sid	=> $comment->{sid},
-			cid	=> $comment->{pid},
-			pid	=> $comment->{pid},
+			cid	=> $comment->{original_pid},
+			pid	=> $comment->{original_pid},
 			subject	=> 'Parent',
 			subject_only => 1,
-		}, 1) if $comment->{pid};
+		}, 1) if $comment->{original_pid};
 
 		push @link, createSelect("reason_$comment->{cid}",
 			$reasons, '', 1, 1) if $can_mod;

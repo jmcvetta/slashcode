@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.31 2002/11/14 03:38:37 jamie Exp $
+# $Id: Display.pm,v 1.32 2002/11/25 23:06:06 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -948,7 +948,7 @@ sub linkComment {
 		%$comment, # defaults
 		adminflag	=> $adminflag,
 		date		=> $date,
-		pid		=> $comment->{realpid} || $comment->{pid},
+		pid		=> $comment->{original_pid},
 			# $comment->{threshold}? Hmm. I'm not sure what it
 			# means for a comment to have a threshold. If it's 0,
 			# does the following line do the right thing? - Jamie
@@ -1198,7 +1198,7 @@ sub _hard_linkComment {
 	if ($printcomment) {
 		$display .= "&amp;cid=$comment->{cid}";
 	} else {
-		$display .= "&amp;pid=" . ($comment->{realpid} || $comment->{pid});
+		$display .= "&amp;pid=" . $comment->{original_pid};
 		$display .= "#$comment->{cid}" if $comment->{cid};
 	}
 
@@ -1226,4 +1226,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.31 2002/11/14 03:38:37 jamie Exp $
+$Id: Display.pm,v 1.32 2002/11/25 23:06:06 brian Exp $

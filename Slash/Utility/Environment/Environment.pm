@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.53 2002/11/20 00:36:00 brian Exp $
+# $Id: Environment.pm,v 1.54 2002/11/25 23:06:06 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1752,28 +1752,29 @@ sub createLog {
 
 	if ($uri eq 'palm') {
 		($dat = $ENV{REQUEST_URI}) =~ s|\.shtml$||;
-		$logdb->createAccessLog('palm', $dat);
+		$uri = 'palm';
 	} elsif ($uri eq '/') {
-		$logdb->createAccessLog('index', $dat);
+		$uri = 'index';
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
-		$logdb->createAccessLog($uri, $dat);
 	# This is for me, I am getting tired of patching my local copy -Brian
 	} elsif ($uri =~ /\.tar\.gz$/) {
 		$uri =~ s|^/(.*)\.tar\.gz$|$1|;
-		$logdb->createAccessLog($uri, $dat);
 	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
+		$uri = 'rss';
 		$logdb->createAccessLog('rss', $dat);
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
-		$logdb->createAccessLog($uri, $dat);
 	} elsif ($uri =~ /\.html$/) {
 		$uri =~ s|^/(.*)\.html$|$1|;
 		$dat = $uri if $uri =~ $page;	
 		$uri =~ s|^/?(\w+)/?.*|$1|;
-		$logdb->createAccessLog($uri, $dat);
+	}
+	$logdb->createAccessLog($uri, $dat);
+	if (getCurrentUser('is_admin')) {
+		$logdb->createAccessLogAdmin($uri, $dat);
 	}
 
 }
@@ -1901,4 +1902,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.53 2002/11/20 00:36:00 brian Exp $
+$Id: Environment.pm,v 1.54 2002/11/25 23:06:06 brian Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.265 2002/11/22 06:56:32 jamie Exp $
+# $Id: MySQL.pm,v 1.266 2002/11/25 23:06:05 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.265 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.266 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1330,6 +1330,38 @@ sub createAccessLog {
 		uid		=> $uid,
 		section		=> $section,
 		bytes		=> $bytes,
+		op		=> $op,
+		-ts		=> 'NOW()',
+		query_string	=> $ENV{QUERY_STRING} || '0',
+		user_agent	=> $ENV{HTTP_USER_AGENT} || '0',
+	}, { delayed => 1 });
+}
+
+##########################################################
+# This creates an entry in the accesslog for admins -Brian
+sub createAccessLogAdmin {
+	my($self, $op, $dat) = @_;
+	my $constants = getCurrentStatic();
+	my $form = getCurrentForm();
+	my $r = Apache->request;
+
+	my $uid = $ENV{SLASH_USER};
+	my $section = $constants->{section};
+	# The following two are special cases
+	if ($op eq 'index' || $op eq 'article') {
+		$section = ($form && $form->{section})
+			? $form->{section}
+			: $constants->{section};
+	}
+	# And just what was the admin doing? -Brian
+	$op = $form->{op} if $form->{op};
+
+	$self->sqlInsert('accesslog_admin', {
+		host_addr	=> $r->connection->remote_ip,
+		dat		=> $dat,
+		uid		=> $uid,
+		section		=> $section,
+		bytes		=> $r->bytes_sent,
 		op		=> $op,
 		-ts		=> 'NOW()',
 		query_string	=> $ENV{QUERY_STRING} || '0',
@@ -4035,7 +4067,7 @@ sub getCommentsForUser {
 	# harder to read/edit variable assignments?  -- pudge
 	my $sql;
 	$sql .= " SELECT	cid, date, date as time, subject, nickname, homepage, fakeemail, ";
-	$sql .= "	users.uid as uid, sig, comments.points as points, pid, sid, ";
+	$sql .= "	users.uid as uid, sig, comments.points as points, pid, pid as original_pid, sid, ";
 	$sql .= " lastmod, reason, journal_last_entry_date, ipid, subnetid ";
 	$sql .= "	FROM comments, users  ";
 	$sql .= "	WHERE sid=$sid_quoted AND comments.uid=users.uid ";

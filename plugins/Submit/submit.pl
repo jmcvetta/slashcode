@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.54 2002/04/25 18:44:14 cliff Exp $
+# $Id: submit.pl,v 1.55 2002/04/25 18:45:40 cliff Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -314,7 +314,7 @@ sub displayRSS {
 		# title should be cleaned up
 		push(@items, {
 			title	=> $_->{subj},
-			'link'	=> "$constants->{absolutedir}/submit.pl?op=viewsub&subid=$subid",
+			'link'	=> "$constants->{absolutedir}/submit.pl?op=viewsub&subid=$_->{subid}",
 		});
 	}
 

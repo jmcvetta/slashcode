@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.56 2003/02/10 05:18:57 jamie Exp $
+# $Id: User.pm,v 1.57 2003/02/13 16:16:06 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -63,7 +63,7 @@ sub handler {
 	
 	my $hostname = $r->header_in('host');
 
-	$r->err_header_out('X-Powered-By' => "Slash $Slash::VERSION");
+	$r->header_out('X-Powered-By' => "Slash $Slash::VERSION");
 	random($r);
 
 	# let pass unless / or .pl

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.69 2003/04/08 19:22:33 pudge Exp $
+# $Id: journal.pl,v 1.70 2003/04/17 17:00:50 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -356,6 +356,7 @@ sub displayArticle {
 		$nickname	= $user->{nickname};
 		$uid		= $user->{uid};
 	}
+
 	$head_data->{nickname} = $nickname;
 	$head_data->{uid} = $uid;
 
@@ -664,20 +665,18 @@ sub editArticle {
 
 	_printHead("mainhead") unless $nohead;
 
+	$article = $journal->get($form->{id}) if $form->{id};
 	if ($form->{state}) {
-		$article->{date}	= scalar(localtime(time()));
+		$article->{date}	||= localtime;
 		$article->{article}	= $form->{article};
 		$article->{description}	= $form->{description};
-		$article->{id}		= $form->{id};
 		$article->{tid}		= $form->{tid};
 		$posttype		= $form->{posttype};
 	} else {
-		$article  = $journal->get($form->{id}) if $form->{id};
-		$posttype = $article->{posttype};
 		my $slashdb = getCurrentDB();
 		$slashdb->createFormkey('journal');
+		$posttype = $article->{posttype};
 	}
-
 	$posttype ||= $user->{'posttype'};
 
 	if ($article->{article}) {
@@ -740,7 +739,15 @@ sub _validFormkey {
 sub _printHead {
 	my($head, $data, $edit_the_uid) = @_;
 	my $title = getData($head, $data);
-	header($title);
+
+	my $links = {
+		title		=> $title,
+		'link'		=> {
+			uid		=> $data->{uid},
+			nickname	=> $data->{nickname}
+		}
+	};
+	header($links);
 
 	$data->{menutype} ||= 'users';
 	$data->{width} = '100%';

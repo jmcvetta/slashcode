@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.621 2004/07/15 04:24:05 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.622 2004/07/15 14:44:30 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.621 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.622 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6466,6 +6466,10 @@ sub getStoriesEssentials {
 	# Older Stuff column."  Those are just rough concepts.
 	# Of course the caller can use the returned data however
 	# it wants, this is just a convenient way to think of it.
+	
+	my $offset = $options->{offset} || 0;
+	$offset = 0 unless $offset =~ /^\d+$/;
+	
 	my $limit = $options->{limit} || $gSkin->{artcount_max};
 	$limit += $options->{limit_extra}
 		|| int(($gSkin->{artcount_min} + $gSkin->{artcount_max})/2);
@@ -6499,7 +6503,7 @@ sub getStoriesEssentials {
 	my $columns = "stories.stoid, sid, time, commentcount, hitparade,"
 		. " primaryskid, body_length, word_count, discussion, $column_time";
 	my $tables = "stories, story_topics_rendered";
-	my $other = "GROUP BY stories.stoid ORDER BY time DESC LIMIT $limit";
+	my $other = "GROUP BY stories.stoid ORDER BY time DESC LIMIT $offset, $limit";
 #errorLog("gSE other '$other' columns '$columns'");
 
 	my $where = "stories.stoid = story_topics_rendered.stoid AND in_trash = 'no' AND $where_time";

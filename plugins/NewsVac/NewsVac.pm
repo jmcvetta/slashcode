@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.3 2002/04/01 22:03:45 cliff Exp $
+# $Id: NewsVac.pm,v 1.4 2002/04/02 07:06:13 cliff Exp $
 
 package Slash::NewsVac;
 
@@ -70,7 +70,7 @@ use HTTP::Cookies;
 use Slash::Utility;
 #use Slash::DB::Utility;
  
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;      
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;      
 
 use vars qw($VERSION $callback_ref);
 
@@ -1531,7 +1531,7 @@ sub process_urls_and_ids {
 		success	=> $update_info{is_success},
 		url	=> $url,
 		url_id	=> $url_id,
-	})) if $self->debug > 0;
+	})) if $self->{debug} > 0;
 
 	if ($update_info{is_success}) {
 		$self->errLog(getData('update_content_length', {
@@ -4056,7 +4056,7 @@ Foooooooo.
 sub getMinerURLIds {
 	my($self, $miner_id) = @_;
 
-	my $returnable = $self->sqlSelectCollArrayref(
+	my $returnable = $self->sqlSelectColArrayref(
 		'url_id',
 		'url_info',
 		'miner_id=' . $self->sqlQuote($miner_id)
@@ -4988,4 +4988,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.3 2002/04/01 22:03:45 cliff Exp $
+$Id: NewsVac.pm,v 1.4 2002/04/02 07:06:13 cliff Exp $

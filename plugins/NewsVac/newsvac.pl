@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: newsvac.pl,v 1.2 2002/04/01 20:30:36 cliff Exp $
+#  $Id: newsvac.pl,v 1.3 2002/04/02 07:06:13 cliff Exp $
 ###############################################################################
 use strict;
 
@@ -78,7 +78,7 @@ sub listMiners {
 		nugget_day_count	=> $nuggets_day_count,
 	});
 
-	errorLog("doing timing_dump after listMiners");
+	warn "doing timing_dump after listMiners";
 	$udbt->timing_dump();
 }
 
@@ -161,7 +161,7 @@ sub editMiner {
         my $url_ar = $udbt->getMinerURLs($miner_id);
 
 	if ($udbt->{debug} > 0) {
-		errorLog("doing timing_dump after editMiner");
+		warn "doing timing_dump after editMiner";
 		$udbt->timing_dump();
 	}
 
@@ -222,9 +222,9 @@ sub updateMiner {
 			comment
 		);
 
-		errorLog(getData('miner_update_warning', {
+		warn getData('miner_update_warning', {
 			id => $miner_id, name => $name
-		})) if $udbt->{debug} > 0;
+		}) if $udbt->{debug} > 0;
 
        		# Prepend the "(?i)" unless this field is marked case_sensitive.
         	for my $field (grep /_(text|regex)$/, keys %{$form}) {
@@ -240,7 +240,7 @@ sub updateMiner {
 		slashDisplay('updateMiner', { name => $name });
 
 		# Template.
-		errorLog(<<EOT);
+		warn <<EOT;
 editMiner '$miner_id' forceupdate '$form->{forceupdate}'
 EOT
 
@@ -377,14 +377,14 @@ sub show_miner_url_info {
 		
 		# Vague attempt to line up the numerics here. Straighten out
 		# in templates.
-		$orig_length = substr("	    $orig_length", -6, 6);
-		$orig_length =~ s/ /\&nbsp;/g;
+		#$orig_length = substr("	    $orig_length", -6, 6);
+		#$orig_length =~ s/ /\&nbsp;/g;
 		
-		$pre_trimmed_chars = substr("	  $pre_trimmed_chars", -6, 6);
-		$pre_trimmed_chars =~ s/ /\&nbsp;/g;
+		#$pre_trimmed_chars = substr("	  $pre_trimmed_chars", -6, 6);
+		#$pre_trimmed_chars =~ s/ /\&nbsp;/g;
 		
-		$post_trimmed_chars = substr("	   $post_trimmed_chars", -6, 6); 
-		$post_trimmed_chars =~ s/ /\&nbsp;/g;
+		#$post_trimmed_chars = substr("	   $post_trimmed_chars", -6, 6); 
+		#$post_trimmed_chars =~ s/ /\&nbsp;/g;
 		
 		my $count = 0;
 		my $regexp = 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.12 2002/03/18 22:55:01 brian Exp $
+# $Id: Stats.pm,v 1.13 2002/03/18 23:02:43 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -162,7 +162,7 @@ sub countDailyComments {
 sub countDailyArticles {
 	my($self, $yesterday) = @_;
 	$self->sqlSelect("count(*)", "accesslog",
-		"op='articles' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
+		"op='article' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
 	 '');
 }
 
@@ -179,7 +179,7 @@ sub countDailyCommentsByDistinctIPID {
 sub countDailyArticlesByDistinctIPID {
 	my($self, $yesterday) = @_;
 	$self->sqlSelect("count(*)", "accesslog",
-		"op='articles' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
+		"op='article' AND ts BETWEEN '$yesterday 00:00' AND '$yesterday 23:59:59'",
 		'',
 		{distinct => 1});
 }

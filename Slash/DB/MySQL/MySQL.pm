@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.25 2001/11/15 15:46:09 pudge Exp $
+# $Id: MySQL.pm,v 1.26 2001/11/19 17:59:07 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3495,14 +3495,15 @@ sub getComments {
 }
 
 ########################################################
-# Needs to be more generic in the long run. -Brian
+# Needs to be more generic in the long run. 
+# Be nice if we could just pull certain elements -Brian
 sub getStoriesBySubmitter {
 	my($self, $id, $limit) = @_;
 
 	$limit = 'LIMIT ' . $limit if $limit;
 	my $answer = $self->sqlSelectAllHashrefArray(
 		'sid,title,time',
-		'stories', "submitter='$id'",
+		'stories', "submitter='$id' AND time < NOW() AND (writestatus == 'ok' OR writestatus == 'dirty') and displaystatus >= 0' ",
 		"ORDER by time DESC $limit");
 	return $answer;
 }
@@ -3517,6 +3518,8 @@ sub countStoriesBySubmitter {
 }
 
 ########################################################
+# Be nice if we could control more of what this 
+# returns -Brian
 sub getStoriesEssentials {
 	my($self, $limit, $section, $tid) = @_;
 	my $user = getCurrentUser();

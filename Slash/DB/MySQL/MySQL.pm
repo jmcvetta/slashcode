@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.577 2004/05/18 23:16:10 pudge Exp $
+# $Id: MySQL.pm,v 1.578 2004/05/24 14:53:51 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.577 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.578 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -878,6 +878,16 @@ sub getMetamodsForUserRaw {
 		}
 		push @ids, @new_ids;
 		$num_needed -= scalar(@new_ids);
+
+		# If we tried to get all the oldzone mods we wanted, and
+		# failed, give up trying now.  The rest of the looping we
+		# do should be for non-oldzone mods (i.e. we only look
+		# for the oldzone on the first pass through here).
+		if ($num_oldzone_needed) {
+			print STDERR scalar(localtime) . " could not get all oldzone mods needed: ids '@ids' num_needed '$num_needed' num_oldzone_needed '$num_oldzone_needed' num_normal_needed '$num_normal_needed'\n";
+			$num_normal_needed += $num_oldzone_needed;
+			$num_oldzone_needed = 0;
+		}
 	}
 	if ($getmods_loops > 4) {
 		print STDERR "GETMODS looped the max number of times,"

@@ -1,19 +1,16 @@
-<<<<<<< slashschema_create.sql
-=======
 #	MySQL dump 8.10
 #
 # Host: localhost	  Database: dump
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.23 2002/02/14 20:58:06 patg Exp $
+# $Id: slashschema_create.sql,v 1.24 2002/02/14 21:40:03 pudge Exp $
 #
 
 #
 # Table structure for table 'abusers'
 #
 
->>>>>>> 1.22
 DROP TABLE IF EXISTS abusers;
 CREATE TABLE abusers (
 	abuser_id mediumint UNSIGNED NOT NULL auto_increment,

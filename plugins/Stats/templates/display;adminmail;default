@@ -107,8 +107,9 @@ Top Relocated URLS
 [% END %]
 
 Pages From RSS By Section
+------------------------------------------------
+Section		         Pages     UIDS    IPIDS
 [% FOREACH section = skins -%]
-Section		      Pages   UIDS     IPIDS
 [%- rss_skin_name = section.skin_name FILTER format('%20s') -%]
 [%  rss_skin_name %]  [% section.page_from_rss %] [% section.uid_from_rss %] [% section.ipid_from_rss %]
 [% END %]
@@ -200,4 +201,4 @@ Count  Nickname
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.80 2004/11/29 16:43:55 tvroom Exp $
+$Id: display;adminmail;default,v 1.81 2004/11/29 17:56:53 tvroom Exp $

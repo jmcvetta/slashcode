@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.206 2003/12/09 15:17:48 jamie Exp $
+# $Id: users.pl,v 1.207 2003/12/09 18:56:01 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1174,7 +1174,7 @@ sub showInfo {
 
 		my $lastjournal = _get_lastjournal($uid);
 
-		if($admin_flag) {
+		if ($admin_flag) {
 			$modval = $reader->calcModval("comments.uid = $requested_user->{uid}", $uid_hoursback);
 			$trollpoint = $reader->calcTrollPoint("uid");
 		}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.20 2002/10/04 20:56:02 jamie Exp $
+# $Id: Display.pm,v 1.21 2003/01/17 20:13:25 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -304,6 +304,8 @@ my $strip_mode = sub {
 	fixparam	=> \&fixparam,
 	fixurl		=> \&fixurl,
 	fudgeurl	=> \&fudgeurl,
+	strip_paramattr	=> \&strip_paramattr,
+	strip_urlattr	=> \&strip_urlattr,
 	strip_anchor	=> \&strip_anchor,
 	strip_attribute	=> \&strip_attribute,
 	strip_code	=> \&strip_code,

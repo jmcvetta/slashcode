@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.69 2003/01/16 01:25:08 jamie Exp $
+# $Id: Data.pm,v 1.70 2003/01/17 20:13:25 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -708,6 +708,21 @@ sub strip_literal	{ stripByMode($_[0], LITERAL,	@_[1 .. $#_]) }
 sub strip_nohtml	{ stripByMode($_[0], NOHTML,	@_[1 .. $#_]) }
 sub strip_notags	{ stripByMode($_[0], NOTAGS,	@_[1 .. $#_]) }
 sub strip_plaintext	{ stripByMode($_[0], PLAINTEXT,	@_[1 .. $#_]) }
+
+
+#========================================================================
+
+=head2 strip_paramattr(STRING [, NO_WHITESPACE_FIX])
+
+=head2 strip_urlattr(STRING [, NO_WHITESPACE_FIX])
+
+Wrappers for strip_attribute(fixparam($param), $no_whitespace_fix) and
+strip_attribute(fudgeurl($url), $no_whitespace_fix).
+
+=cut
+
+sub strip_paramattr	{ strip_attribute(fixparam($_[0]), $_[1]) }
+sub strip_urlattr	{ strip_attribute(fudgeurl($_[0]), $_[1]) }
 
 
 #========================================================================
@@ -2740,4 +2755,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.69 2003/01/16 01:25:08 jamie Exp $
+$Id: Data.pm,v 1.70 2003/01/17 20:13:25 pudge Exp $

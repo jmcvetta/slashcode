@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.8 2002/02/04 22:15:34 brian Exp $
+# $Id: topics.pl,v 1.9 2002/08/09 01:03:29 brian Exp $
 
 use strict;
 use Slash;
@@ -13,9 +13,9 @@ use Slash::Utility;
 sub main {
 	my $slashdb = getCurrentDB();
 	my $form    = getCurrentForm();
-	my $section = $slashdb->getSection($form->{section});
+	my $section = $slashdb->getSection();
 
-	header(getData('head'), $section->{section});
+	header(getData('head'));
 	print createMenu('topics');
 
 	if ($form->{op} eq 'toptopics') {

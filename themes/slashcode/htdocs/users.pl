@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.94 2002/08/01 18:24:12 jamie Exp $
+# $Id: users.pl,v 1.95 2002/08/09 01:03:29 brian Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -348,7 +348,7 @@ sub main {
 		$form->{userfield} = $user->{uid};
 	}
 
-	header(getMessage('user_header'), $form->{section});
+	header(getMessage('user_header'));
 	print getMessage('note', { note => $note }) if defined $note;
 	print createMenu($formname) if ! $user->{is_anon};
 

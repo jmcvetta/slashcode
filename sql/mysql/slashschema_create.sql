@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.87 2002/12/19 22:05:06 jamie Exp $
+# $Id: slashschema_create.sql,v 1.88 2003/01/14 20:27:06 jamie Exp $
 #
 
 #
@@ -40,12 +40,15 @@ CREATE TABLE accesslist (
 	isbanned tinyint UNSIGNED DEFAULT 0 NOT NULL,
 	ts datetime default '0000-00-00 00:00:00' NOT NULL, 
 	reason varchar(120), 
+	wasbanned tinyint unsigned DEFAULT 0 NOT NULL,
+	wasreadonly tinyint unsigned DEFAULT 0 NOT NULL,
 	PRIMARY KEY id (id), 
 	key uid (uid), 
 	key ipid (ipid), 
 	key subnetid (subnetid), 
 	key formname (formname), 
-	key ts (ts)
+	key ts (ts),
+	key isbanned (isbanned)
 ) TYPE = myisam;
 
 DROP TABLE IF EXISTS accesslog; 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.14 2003/08/15 13:46:44 jamie Exp $
+# $Id: runtask,v 1.15 2003/08/15 21:02:52 pudge Exp $
 
 use sigtrap;
 use strict;
@@ -29,7 +29,7 @@ use vars qw(
 	$virtual_user $constants $slashdb $user $dir
 );
 
-(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -216,7 +216,14 @@ sub parse_slash_sites {
 	}
 	($orig_euid, $orig_egid) = ( $>, $) );
 	$orig_egid =~ /^(\d+)/; $orig_egid = $1;
-	if ( $uid != $orig_euid or $gid != $orig_egid ) {
+
+	# Mac OS X likes to have signed UIDs, so e.g. user
+	# nobody will get UID 4294967294 from the system,
+	# but $> will be -2.  fun fun fun!  but getpwuid(-2)
+	# will give us 4294967294, so let's get it that way. -- pudge
+	my($c_name, $c_pass, $c_uid, $c_gid) = getpwuid($uid);
+	if ( $uid != $c_uid || $gid != $c_gid ) {
+#	if ( $uid != $orig_euid or $gid != $orig_egid ) {
 		die "can't set uid/gid to $uid/$gid ($>/$))";
 	}
 	# If we made it this far, everything's cool

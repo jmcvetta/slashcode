@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.12 2003/10/16 04:58:47 jamie Exp $
+# $Id: mysql_schema,v 1.13 2003/11/09 22:56:52 jamie Exp $
 #
 
 ALTER TABLE users_hits ADD COLUMN hits_bought INT DEFAULT 0 NOT NULL AFTER hits, ADD COLUMN hits_bought_today SMALLINT UNSIGNED DEFAULT 0 NOT NULL AFTER hits_bought, ADD COLUMN hits_paidfor INT DEFAULT 0 NOT NULL AFTER hits_bought_today;
@@ -18,7 +18,7 @@ CREATE TABLE subscribe_payments (
 	memo		VARCHAR(255) NOT NULL,
 	data		BLOB,
 	payment_type	VARCHAR(10),
-	puid		MEDIUMINT UNSIGNED
+	puid		MEDIUMINT UNSIGNED,
 	PRIMARY KEY(spid),
 	KEY(uid),
 	KEY(ts),

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.44 2002/04/03 20:33:08 brian Exp $
+# $Id: admin.pl,v 1.45 2002/04/06 15:57:53 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -1045,6 +1045,7 @@ sub editStory {
 
 	my $authortext = slashDisplay('futurestorybox', {
 					past => $past,
+					present => $storyref,
 					future => $future,
 				}, { Return => 1 });
 
@@ -1472,7 +1473,7 @@ sub saveStory {
 							{ story => $data });
 	} else {
 		slashHook('admin_save_story_failed', 
-							{ story -> $data });
+							{ story => $data });
 		titlebar('100%', getData('story_creation_failed'));
 		listStories(@_);
 		return;

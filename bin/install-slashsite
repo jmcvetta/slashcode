@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.13 2001/12/19 20:11:05 jamie Exp $
+# $Id: install-slashsite,v 1.14 2001/12/20 15:08:48 jamie Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -23,7 +23,7 @@ use vars qw(
 	$dirname
 );
 
-(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -232,11 +232,14 @@ if ($opts{'P'}) {
 }
 {
 	# Add in any plugins that are required by the selection set.
-	# This may/will add a lot of duplicates.
+	# This may/will add a lot of duplicates, which get uniquified
+	# in the next step.
 	for (1..scalar(@all_plugins)) {
 		for my $plugin (@plugins) {
-			my $req = $plugins->{$plugin}{requiresplugin};
-			push @plugins, $req if $req;
+			my $req_hr = $plugins->{$plugin}{requiresplugin};
+			if ($req_hr and %$req_hr) {
+				push @plugins, keys %$req_hr;
+			}
 		}
 	}
 	# Eliminate duplicates.

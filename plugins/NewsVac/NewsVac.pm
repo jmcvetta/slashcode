@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: NewsVac.pm,v 1.25 2002/10/29 15:24:09 pudge Exp $
+# $Id: NewsVac.pm,v 1.26 2002/11/07 21:21:53 pudge Exp $
 
 package Slash::NewsVac;
 
@@ -79,7 +79,7 @@ use XML::RSS;
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use vars qw($VERSION $callback_ref);
 
@@ -2647,7 +2647,10 @@ sub parse_miner {
 
 		for my $item (@{$rss->{items}}) {
 			for (keys %{$item}) {
-			    $item->{$_} = xmldecode($item->{$_});
+				$item->{$_} =~ s/^\s+//;
+				$item->{$_} =~ s/\s+$//;
+				$item->{$_} =~ s/[\n\r]/ /g;
+				$item->{$_} = xmldecode($item->{$_});
 			}
 			next unless $item->{'link'};
 			++$count;
@@ -3217,7 +3220,7 @@ sub spider_by_name {
 
 ############################################################
 
-=head2 spider($condition_ref, $group0_selects_ref, @spider_commants)
+=head2 spider($condition_ref, $group_0_selects_ref, @spider_commands)
 
 Executes a spider. Callers will most likely use spider_by_name() as an
 entry point, as it does most everything for you. This routine depends
@@ -5181,7 +5184,8 @@ sub markTimespecAsRun {
 
 	my $update = {
 		-last_run	=> 'UNIX_TIMESTAMP()',
-		-duration	=> $duration,
+# duration not in schema?
+#		-duration	=> $duration,
 	};
 	$update->{'results'} = $results if $results;
 
@@ -5775,7 +5779,10 @@ None.
 sub errLog {
 	my($self) = shift;
 
-	if ($self->{use_locking}) {
+	# Make sure we print to correct log; if STDERR is
+	# tied from elsewhere, we couldn't reopen it,
+	# so print to log via _doLog
+	if ($self->{use_locking} || tied(*STDERR)) {
 		_doLog([@_]);
 		return;
 	}
@@ -6262,4 +6269,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: NewsVac.pm,v 1.25 2002/10/29 15:24:09 pudge Exp $
+$Id: NewsVac.pm,v 1.26 2002/11/07 21:21:53 pudge Exp $

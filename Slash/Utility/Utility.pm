@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.4 2001/03/29 17:41:54 pudge Exp $
+# $Id: Utility.pm,v 1.5 2001/04/03 14:21:33 pudge Exp $
 
 package Slash::Utility;
 
@@ -38,7 +38,7 @@ use XML::Parser;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(
@@ -52,6 +52,7 @@ use vars qw($VERSION @ISA @EXPORT);
 	createCurrentForm
 	createCurrentStatic
 	createCurrentUser
+	createCurrentVirtualUser
 	createEnvironment
 	eatUserCookie
 	encryptPassword
@@ -67,9 +68,9 @@ use vars qw($VERSION @ISA @EXPORT);
 	getCurrentDB
 	getCurrentForm
 	getCurrentMenu
-	getCurrentVirtualUser
 	getCurrentStatic
 	getCurrentUser
+	getCurrentVirtualUser
 	getFormkey
 	isAnon
 	prepareUser
@@ -87,10 +88,10 @@ use vars qw($VERSION @ISA @EXPORT);
 	strip_nohtml
 	strip_plaintext
 	timeCalc
-	writeLog
 	url2abs
-	xmlencode
+	writeLog
 	xmldecode
+	xmlencode
 );
 
 # LEELA: We're going to deliver this crate like professionals.
@@ -383,14 +384,15 @@ The 'atonish' and 'aton' template blocks.
 
 sub timeCalc {
 	# raw mysql date of story
-	my($date, $format) = @_;
+	my($date, $format, $off_set) = @_;
 	my $user = getCurrentUser();
 	my(@dateformats, $err);
 
+	$off_set = $user->{off_set} unless defined $off_set;
+
 	# find out the user's time based on personal offset
 	# in seconds
-	$date = DateCalc($date, "$user->{off_set} SECONDS", \$err)
-		if $user->{off_set};
+	$date = DateCalc($date, "$off_set SECONDS", \$err) if $off_set;
 
 	# convert the raw date to pretty formatted date
 	$date = UnixDate($date, $format || $user->{'format'});

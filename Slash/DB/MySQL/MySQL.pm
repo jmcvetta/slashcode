@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.5 2001/03/25 16:29:35 brian Exp $
+# $Id: MySQL.pm,v 1.6 2001/04/03 14:21:33 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -3065,7 +3065,8 @@ sub createTemplate {
 		}
 	}
 	$self->sqlInsert('templates', $hash);
-	return $self->sqlSelect('LAST_INSERT_ID()');
+	my($tpid) = $self->sqlSelect('LAST_INSERT_ID()');
+	return $tpid;
 }
 
 ########################################################

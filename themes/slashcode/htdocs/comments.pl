@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.136 2003/05/15 15:53:11 jamie Exp $
+# $Id: comments.pl,v 1.137 2003/05/22 16:45:06 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1146,7 +1146,7 @@ sub submitComment {
 		}
 	}
 	my $posters_uid = $user->{uid};
-	if ($form->{postanon} && $constants->{allow_anonymous} && $user->{karma} > -1 && $discussion->{commentstatus} == 'enabled') {
+	if ($form->{postanon} && $constants->{allow_anonymous} && $user->{karma} > -1 && $discussion->{commentstatus} eq 'enabled') {
 		$posters_uid = $constants->{anonymous_coward_uid} ;
 	}
 

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.82 2002/12/03 20:31:24 brian Exp $
+# $Id: slashschema_create.sql,v 1.83 2002/12/05 22:35:51 jamie Exp $
 #
 
 #
@@ -80,6 +80,7 @@ CREATE TABLE accesslog_admin (
 	section varchar(30) DEFAULT 'index' NOT NULL,
 	bytes mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	form MEDIUMBLOB NOT NULL,
+	secure tinyint DEFAULT 0 NOT NULL,
 	INDEX host_addr (host_addr),
 	INDEX ts (ts),
 	PRIMARY KEY (id)

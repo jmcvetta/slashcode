@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.79 2003/08/05 21:29:20 pudge Exp $
+# $Id: index.pl,v 1.80 2003/08/12 15:17:51 vroom Exp $
 
 use strict;
 use Slash;
@@ -283,6 +283,7 @@ sub displayStories {
 	my $constants = getCurrentStatic();
 	my $form      = getCurrentForm();
 	my $user      = getCurrentUser();
+	my $ls_other  = { user => $user, reader => $reader, constants => $constants};
 
 	my($today, $x) = ('', 0);
 	my $cnt = int($user->{maxstories} / 3);
@@ -338,7 +339,7 @@ sub displayStories {
 			sid	=> $story->{sid},
 			tid	=> $story->{tid},
 			section	=> $story->{section}
-		});
+		}, "", $ls_other);
 
 		my $link;
 
@@ -356,7 +357,7 @@ sub displayStories {
 				tid	=> $story->{tid},
 				mode	=> 'nocomment',
 				section	=> $story->{section}
-			}) if $story->{body_length};
+			}, "", $ls_other) if $story->{body_length};
 
 			my @commentcount_link;
 			my $thresh = $threshComments[$user->{threshold} + 1];
@@ -369,7 +370,7 @@ sub displayStories {
 						threshold	=> $user->{threshold},
 						'link'		=> $thresh,
 						section		=> $story->{section}
-					});
+					}, "", $ls_other);
 				}
 			}
 
@@ -379,7 +380,7 @@ sub displayStories {
 				threshold	=> -1,
 				'link'		=> $story->{commentcount} || 0,
 				section		=> $story->{section}
-			});
+			},"", $ls_other);
 
 			push @commentcount_link, $thresh, ($story->{commentcount} || 0);
 			push @links, getData('comments', { cc => \@commentcount_link })

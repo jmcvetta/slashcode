@@ -38,7 +38,7 @@ END %]
 
 [% story.introtext %]
 
-[% IF full && user.is_admin %]<P><A HREF="[% constants.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</A>[% END %]
+[% IF full && user.is_admin && !preview %]<P><A HREF="[% constants.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</A>[% END %]
 
 [% IF full && (story.bodytext || story.books_publisher) %]
 
@@ -50,4 +50,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;light,v 1.15 2003/03/04 19:07:59 pudge Exp $
+$Id: dispStory;misc;light,v 1.16 2003/08/12 15:17:51 vroom Exp $

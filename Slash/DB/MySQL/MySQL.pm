@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.383 2003/04/30 11:52:11 pudge Exp $
+# $Id: MySQL.pm,v 1.384 2003/05/01 00:46:52 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.383 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.384 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3798,7 +3798,7 @@ sub getTopNewsstoryTopics {
 	my($self, $all) = @_;
 	my $when = "AND to_days(now()) - to_days(time) < 14" unless $all;
 	my $order = $all ? "ORDER BY alttext" : "ORDER BY cnt DESC";
-	my $topics = $self->sqlSelectAllHashrefArray("topics.tid as tid, alttext, count(*) as cnt",
+	my $topics = $self->sqlSelectAllHashrefArray("topics.tid as tid, alttext, count(*) as cnt, default_image",
 		'topics,stories',
 		"topics.tid=stories.tid
 		$when

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.161 2005/02/15 00:41:12 pudge Exp $
+# $Id: Environment.pm,v 1.162 2005/02/22 17:10:32 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1136,9 +1136,11 @@ A random value based on alphanumeric characters
 {
 	my @chars = (0..9, 'A'..'Z', 'a'..'z');
 	sub getAnonId {
-		my $str;
-		$str = '-1-' unless $_[0];
-		$str .= join('', map { $chars[rand @chars] }  0 .. 9);
+		my($noprefix, $count) = @_;
+		$count ||= 10;
+		my $str = "";
+		$str = '-1-' unless $noprefix;
+		$str .= join('', map { $chars[rand @chars] } 1 .. $count);
 		return $str;
 	}
 }
@@ -2703,4 +2705,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.161 2005/02/15 00:41:12 pudge Exp $
+$Id: Environment.pm,v 1.162 2005/02/22 17:10:32 jamiemccarthy Exp $

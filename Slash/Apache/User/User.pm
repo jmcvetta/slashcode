@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.68 2003/04/16 17:09:04 brian Exp $
+# $Id: User.pm,v 1.69 2003/04/26 12:48:24 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -214,7 +214,7 @@ sub handler {
                 )
 	) {
 		my $ans = $constants->{allow_nonadmin_ssl};
-		     if ($ans == 1) {
+		if ($ans == 1) {
 			# It's OK, anyone is allowed to use the SSL server.
 		} elsif ($ans == 0) {
 			# Only admins are allowed in -- but note the special

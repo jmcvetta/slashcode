@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: newsvac_gc.pl,v 1.1 2002/04/01 17:34:08 cliff Exp $
+# $Id: newsvac_gc.pl,v 1.2 2002/04/17 20:14:02 cliff Exp $
 #
 # SlashD Task (c) OSDN 2001
 #
@@ -17,6 +17,9 @@ $task{$me}{timespec} = '5 4 * * Sat,Sun';	# @ 4:05am on the weekends.
 
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
+
+	my $oldPage = $user->{currentPage};
+	$user->{currentPage} = 'newsvac';
 
 	# Get our plugin.
 	my $newsvac = getObject('Slash::NewsVac');
@@ -39,6 +42,8 @@ $task{$me}{code} = sub {
 		$slashdb->sqlCount('rel'),
 		$slashdb->sqlCount('url_message_body')
 	);
+
+	$user->{currentPage} = $oldPage;
 
 	return sprintf <<EOT, map { $_ = $init[$_] - $fin[$_]; } (0 .. $#fin);
 Garbage collection completed. Cleaned %d urls, %d rels and %d mbs.

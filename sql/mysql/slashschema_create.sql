@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.42 2002/04/16 04:14:42 brian Exp $
+# $Id: slashschema_create.sql,v 1.43 2002/04/17 20:14:02 cliff Exp $
 #
 
 #
@@ -675,7 +675,9 @@ CREATE TABLE submissions (
 	subnetid char(32) DEFAULT '' NOT NULL,
 	del tinyint DEFAULT '0' NOT NULL,
 	weight float DEFAULT '0' NOT NULL, 
+	signature varchar(32) NOT NULL,
 	PRIMARY KEY (subid),
+	UNIQUE signature (signature),
 	FOREIGN KEY (tid) REFERENCES topics(tid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	INDEX (del,section,note),

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-slashsite,v 1.35 2004/02/17 03:53:45 pudge Exp $
+# $Id: install-slashsite,v 1.36 2004/02/17 19:27:17 pudge Exp $
 
 # This is the uber install script.
 # -Brian (brian@tangent.org)
@@ -20,7 +20,7 @@ use Slash;
 use Slash::DB;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -283,7 +283,7 @@ print "Plugins selected: " . join(" ", sort keys %{$themes->{$theme}{plugin}}) .
 if (!$Config{d_symlink}) {
 	$symlink = 0;
 } elsif ($opts{'L'}) {
-	$symlink = $opts{'L'} =~ /^n/i ? 0 : 1;
+	$symlink = $opts{'L'};
 } else {
 	print "
 Would you like to install all the files as symlinks

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.21 2002/01/21 15:43:43 pudge Exp $
+# $Id: Journal.pm,v 1.22 2002/01/28 17:22:06 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -111,7 +111,8 @@ sub remove {
 	my $journal = $self->get($id);
 	return unless $journal->{uid} == $uid;
 
-	if ($self->sqlDelete("journals", "uid=$uid AND id=$id") == 0) {
+	my $count = $self->sqlDelete("journals", "uid=$uid AND id=$id");
+	if ($count == 0) {
 		# Return value 0E0 means "no rows deleted" (i.e. this user owns
 		# no such journal) and undef means "error."  Either way, abort.
 		return;
@@ -131,6 +132,7 @@ sub remove {
 	}
 	my $slashdb = getCurrentDB();
 	$slashdb->setUser($uid, { -journal_last_entry_date => $date });
+	return $count;
 }
 
 sub friends {

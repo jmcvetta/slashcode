@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.24 2004/10/18 16:56:15 jamiemccarthy Exp $
+# $Id: open_backend.pl,v 1.25 2004/11/09 20:13:50 pudge Exp $
 
 use strict;
 use Slash;
@@ -101,7 +101,7 @@ EOT
 		<department>$str[1]</department>
 		<topic>$story->{tid}</topic>
 		<comments>$story->{commentcount}</comments>
-		<section>$name</section>
+		<section>$story->{section}</section>
 		<image>$story->{image}{image}</image>
 	</story>
 

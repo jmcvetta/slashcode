@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.199 2004/11/08 03:49:51 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.200 2004/11/09 20:13:49 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.200 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -78,22 +78,15 @@ sub getBackendStories {
 
 	my $topic = $options->{topic} || getCurrentStatic('mainpage_nexus_tid');
 
-	my $select = "stories.stoid, sid, title, stories.tid, primaryskid, time, dept, stories.uid,
-		commentcount, hitparade, introtext, bodytext";
+	my $select = "stories.stoid AS stoid, sid, title, stories.tid AS tid, primaryskid, time,
+		dept, stories.uid AS uid, commentcount, hitparade, introtext, bodytext";
 
-	my $from = "stories, story_text";
+	my $from = "stories, story_text, story_topics_rendered";
 
 	my $where = "stories.stoid = story_text.stoid
-		AND time < NOW() AND in_trash = 'no'";
-
-	my %image = ( );
-	my $topic_hr = $self->getTopicTree($topic);
-	$from .= ", story_topics_rendered";
-	$where .= " AND stories.stoid = story_topics_rendered.stoid
+		AND time < NOW() AND in_trash = 'no'
+		AND stories.stoid = story_topics_rendered.stoid
 		AND story_topics_rendered.tid=$topic";
-	for my $key (qw( image width height )) {
-		$image{$key} = $topic_hr->{$key};
-	}
 
 	my $other = "ORDER BY time DESC LIMIT 10";
 
@@ -107,7 +100,11 @@ sub getBackendStories {
 	for my $story (@$returnable) {
 		# XXXSECTIONTOPICS need to set $story->{alttext}
 		# to something, here - the main topic, I guess
-		$story->{image} = { %image };
+		$story->{section} = $self->getSkin($story->{primaryskid})->{name};
+		my $topic_hr = $self->getTopicTree($story->{tid});
+		for my $key (qw( image width height )) {
+			$story->{image}{$key} = $topic_hr->{$key};
+		}
 	}
 
 	return $returnable;

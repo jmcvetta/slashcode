@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.19 2001/11/19 22:29:07 brian Exp $
+# $Id: Slash.pm,v 1.20 2001/11/22 19:10:18 brian Exp $
 
 package Slash;
 
@@ -108,7 +108,7 @@ sub selectComments {
 		# Adjust reasons. Do we need a reason?
 		# Are you threatening me?
 		my $reason =  $constants->{reasons}[$C->{reason}];
-		$C->{points} = $user->{"reason_alter_$reason"} 
+		$C->{points} += $user->{"reason_alter_$reason"} 
 				if ($user->{"reason_alter_$reason"});
 
 		# fix points in case they are out of bounds

@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.157 2004/03/02 15:39:15 tvroom Exp $
+# $Id: defaults.sql,v 1.158 2004/03/08 18:21:01 jamiemccarthy Exp $
 #
 
 #
@@ -906,7 +906,7 @@ INSERT INTO vars (name, value, description) VALUES ('template_cache_request','0'
 INSERT INTO vars (name, value, description) VALUES ('template_cache_size','0','Number of templates to store in cache (0 = unlimited)');
 INSERT INTO vars (name, value, description) VALUES ('template_post_chomp','0','Chomp whitespace after directives (0 = no, 1 = yes, 2 = collapse; 0 or 2 recommended)');
 INSERT INTO vars (name, value, description) VALUES ('template_pre_chomp','0','Chomp whitespace before directives (0 = no, 1 = yes, 2 = collapse; 0 or 2 recommended)');
-INSERT INTO vars (name, value, description) VALUES ('template_show_comments', '1', 'Show HTML comments before and after template (see Slash::Display)');
+INSERT INTO vars (name, value, description) VALUES ('template_show_comments', '1', 'Show HTML comments before and after template? (see Slash::Display) 0=no 1=yes unless Nocomm 2=ALWAYS (debugging only!)');
 INSERT INTO vars (name, value, description) VALUES ('textarea_cols', '50', 'Default # of columns for content TEXTAREA boxes');
 INSERT INTO vars (name, value, description) VALUES ('textarea_rows', '10', 'Default # of rows for content TEXTAREA boxes');
 INSERT INTO vars (name, value, description) VALUES ('tids_in_urls', '0', 'Want tid=1&tid=2 in story and discussion-related URLs?');

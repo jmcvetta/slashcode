@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.116 2002/04/05 20:10:50 jamie Exp $
+# $Id: MySQL.pm,v 1.117 2002/04/06 22:11:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3858,6 +3858,8 @@ EOT
 ########################################################
 # This makes me nervous... we grab, and they get
 # deleted? I may move the delete to the setQuickies();
+# 
+# (That would make sense to me too. - Jamie)
 sub getQuickies {
 	my($self) = @_;
 # This is doing nothing (unless I am just missing the point). We grab

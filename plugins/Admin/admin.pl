@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.45 2002/04/06 15:57:53 jamie Exp $
+# $Id: admin.pl,v 1.46 2002/04/06 22:11:33 jamie Exp $
 
 use strict;
 use Image::Size;
@@ -1419,6 +1419,7 @@ sub saveStory {
 		bodytext	=> $form->{bodytext},
 		introtext	=> $form->{introtext},
 		relatedtext	=> $form->{relatedtext},
+		subid		=> $form->{subid},
 	};
 	my $extras = $slashdb->getSectionExtras($data->{section});
 	if ($extras && @$extras) {

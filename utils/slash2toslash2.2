@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash2toslash2.2,v 1.2 2001/11/03 04:21:04 brian Exp $
+# $Id: slash2toslash2.2,v 1.3 2001/11/24 22:36:51 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -11,7 +11,7 @@ use Getopt::Std;
 use DBIx::Password;
 use Digest::MD5 'md5_hex';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -666,22 +666,8 @@ EOT
 	my $cond = '';
 	if ($opts{I}) {
 		$cond = "WHERE ts >= $datecond";
-
-		# Preserve min discussion ID of deleted records so we can
-		# properly delete discussion_hitparade.
-		my $sth_d = $dbh_new->prepare(<<EOT);
-SELECT min(id) FROM discussions $cond
-EOT
-		$sth_d->execute;
-		my($min_did) = $sth_d->fetchrow_array;
-
 		$deleted_discussions = 
 			$dbh_new->do("DELETE FROM discussions $cond");
-
-		$dbh_new->do(<<EOT) if $min_did;
-DELETE FROM discussion_hitparade WHERE discussion >= $min_did
-EOT
-
 	}
 
 	$sql = <<EOT;
@@ -1543,4 +1529,4 @@ if they so desire.
 
 =head1 VERSION
 
-$Id: slash2toslash2.2,v 1.2 2001/11/03 04:21:04 brian Exp $
+$Id: slash2toslash2.2,v 1.3 2001/11/24 22:36:51 jamie Exp $

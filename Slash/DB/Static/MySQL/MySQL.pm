@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.24 2002/02/19 17:16:11 jamie Exp $
+# $Id: MySQL.pm,v 1.25 2002/03/12 20:23:44 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -54,7 +54,9 @@ sub sqlShowSlaveStatus {
 # for slashd
 # This method is used in a pretty wasteful way
 sub getBackendStories {
-	my($self, $section) = @_;
+	my($self, $section, $topic) = @_;
+	# right now it is only topic OR section, because i am lazy;
+	# section overrides topic -- pudge
 
 	my $select;
 	$select .= "stories.sid, stories.title, time, dept, stories.uid,";
@@ -69,7 +71,9 @@ sub getBackendStories {
 	$where .= " AND stories.writestatus != 'delete'";
 
 	if ($section) {
-		$where .= " AND stories.section=\"$section\" and displaystatus > -1";
+		$where .= " AND stories.section=\"$section\" AND displaystatus > -1";
+	} elsif ($topic) {
+		$where .= " AND stories.tid=$topic AND displaystatus = 0";
 	} else {
 		$where .= " AND displaystatus = 0";
 	}

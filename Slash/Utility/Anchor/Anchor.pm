@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.8 2002/03/04 16:31:02 jamie Exp $
+# $Id: Anchor.pm,v 1.9 2002/03/04 19:59:27 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -318,9 +318,6 @@ sub ssiFoot {
 ########################################################
 sub prepAds {
 
-	$ENV{AD_BANNER_1} = q{<font size="+2" color="#ffcccc">this is ad banner 1</font>};
-	$ENV{AD_BANNER_6} = q{<font size="+2" color="#ffcccc">this is ad banner 6</font>};
-
 print STDERR "prepAds $$ SCRIPT_NAME '$ENV{SCRIPT_NAME}'"
 	. " AD_BANNER_1 '$ENV{AD_BANNER_1}' AD_BANNER_6 '$ENV{AD_BANNER_6}'\n";
 
@@ -490,4 +487,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.8 2002/03/04 16:31:02 jamie Exp $
+$Id: Anchor.pm,v 1.9 2002/03/04 19:59:27 jamie Exp $

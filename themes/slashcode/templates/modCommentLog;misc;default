@@ -36,8 +36,8 @@ __template__
 
 
 
-<TABLE BGCOLOR="[% user.bg.2 %]" ALIGN="CENTER" BORDER="0" CELLPADDING="2" CELLSPACING="0" [% IF type!="cid" %]WIDTH="100%"[% END %]>
 [% IF mods.size > 0  %]
+<TABLE BGCOLOR="[% user.bg.2 %]" ALIGN="CENTER" BORDER="0" CELLPADDING="2" CELLSPACING="0" [% IF type!="cid" %]WIDTH="100%"[% END %]>
 	[% total_cols = 5 %]	
 	
 	<tr BGCOLOR="[% user.bg.3 %]">
@@ -231,4 +231,4 @@ pct = "n/a";
 __seclev__
 10000
 __version__
-$Id: modCommentLog;misc;default,v 1.28 2004/02/17 20:19:02 tvroom Exp $
+$Id: modCommentLog;misc;default,v 1.29 2004/02/19 05:08:43 tvroom Exp $

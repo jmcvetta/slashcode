@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.81 2003/01/31 04:21:10 jamie Exp $
+# $Id: MySQL.pm,v 1.82 2003/02/03 06:50:55 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -875,6 +875,7 @@ sub fetchEligibleModerators_users {
 		sort { $a <=> $b } # don't know if this helps MySQL but it can't hurt... much
 		grep { $_ <= $youngest_uid }
 		keys %$count_hr;
+	my @uids_start = @uids;
 
 	# What is a good splice_count?  Well I was seeing entries show
 	# up in the *.slow log for a size of 5000, so smaller is good.
@@ -901,7 +902,8 @@ sub fetchEligibleModerators_users {
 		map { [ $count_hr->{$_}{uid}, $count_hr->{$_}{c} ] }
 		sort { $count_hr->{$a}{c} <=> $count_hr->{$b}{c}
 			|| int(rand(3))-1 }
-		keys %$count_hr
+		grep { defined $count_hr->{$_} }
+		@uids_start
 	];
 	return $return_ar;
 }

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.57 2002/04/17 05:09:53 brian Exp $
+# $Id: admin.pl,v 1.58 2002/04/18 20:33:17 brian Exp $
 
 use strict;
 use Image::Size;
@@ -469,11 +469,17 @@ sub blockEdit {
 		$blockdelete_flag = 1;
 	} else {
 		# get the static blocks
-		my $blocks = $slashdb->getDescriptions('static_block', $user->{seclev}, 1);
-		$block_select1 = createSelect('bid1', $blocks, $bid, 1);
+		my ($static_blocks, $portal_blocks);
+		if ($user->{section}) {
+			$static_blocks = $slashdb->getDescriptions('static_block_section', { seclev => $user->{seclev}, section => $user->{section} }, 1);
+			$static_blocks = $slashdb->getDescriptions('portald_block_section', { seclev => $user->{seclev}, section => $user->{section} }, 1);
+		} else {
+			$static_blocks = $slashdb->getDescriptions('static_block', $user->{seclev}, 1);
+			$portal_blocks = $slashdb->getDescriptions('portald_block', $user->{seclev}, 1);
+		}
+		$block_select1 = createSelect('bid1', $static_blocks, $bid, 1);
 
-		$blocks = $slashdb->getDescriptions('portald_block', $user->{seclev}, 1);
-		$block_select2 = createSelect('bid2', $blocks, $bid, 1);
+		$block_select2 = createSelect('bid2', $portal_blocks, $bid, 1);
 
 	}
 	my $blocktype = $slashdb->getDescriptions('blocktype', '', 1);

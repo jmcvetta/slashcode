@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.33 2002/08/23 23:53:24 brian Exp $
+# $Id: User.pm,v 1.34 2002/09/04 17:15:04 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -307,11 +307,15 @@ sub userdir_handler {
 	if (($uri =~ m[^/~/(.+)]) or ($uri =~ m[^/my (?: /(.*) | /? ) $]x)) {
 		my $match = $1;
 		if ($r->header_in('Cookie') =~ $USER_MATCH) {
-			my($toss, $op) = split /\//, $match, 3;
-			# Its past five, and the below makes it go -Brian
-			$op ||= $toss;
+			my($op, $extra) = split /\//, $match, 2;
 			if ($op eq 'journal') {
-				$r->args("op=list");
+				my $args;
+				if ($extra && $extra =~ /^\d+$/) {
+					$args = "id=$extra&op=edit";
+				} else {
+					$args = "op=list";
+				}
+				$r->args($args);
 				$r->uri('/journal.pl');
 				$r->filename($constants->{basedir} . '/journal.pl');
 			} elsif ($op eq 'discussions') {
@@ -327,9 +331,19 @@ sub userdir_handler {
 				$r->uri('/messages.pl');
 				$r->filename($constants->{basedir} . '/messages.pl');
 			} elsif ($op eq 'friends') {
-				$r->args("op=friends");
-				$r->uri('/zoo.pl');
-				$r->filename($constants->{basedir} . '/zoo.pl');
+				if ($extra eq 'friends') {
+					$r->args("op=fof");
+					$r->uri('/zoo.pl');
+					$r->filename($constants->{basedir} . '/zoo.pl');
+				} elsif ($extra eq 'foes') {
+					$r->args("op=eof");
+					$r->uri('/zoo.pl');
+					$r->filename($constants->{basedir} . '/zoo.pl');
+				} else {
+					$r->args("op=friends");
+					$r->uri('/zoo.pl');
+					$r->filename($constants->{basedir} . '/zoo.pl');
+				}
 			} elsif ($op eq 'foes') {
 				$r->args("op=foes");
 				$r->uri('/zoo.pl');

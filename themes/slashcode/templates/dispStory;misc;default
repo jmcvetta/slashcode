@@ -80,9 +80,8 @@ END %]
 					[% IF story.tid == tid ; NEXT ; END %]
 					[% topic2 = Slash.db.getTopic(tid) %]
 					[% image = Slash.db.getTopicImageBySection(topic2, constants.section) %]
-					<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic2.tid %]">
 					[% IF user.noicons %]
-						[ <A HREF="[% constants.rootdir %]/search.pl?topic2=[% topic2.tid %]"><B>[% topic2.alttext %]</B></A> ]<BR>
+						[ <A HREF="[% constants.rootdir %]/search.pl?topic=[% topic2.tid %]"><B>[% topic2.alttext %]</B></A> ]<BR>
 					[% ELSE %]
 						<A HREF="[% constants.rootdir %]/search.pl?topic=[% topic2.tid %]">
 							<IMG
@@ -129,4 +128,4 @@ END -%]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.32 2004/01/02 17:00:38 jamie Exp $
+$Id: dispStory;misc;default,v 1.33 2004/01/02 17:03:58 jamie Exp $

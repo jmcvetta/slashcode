@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.59 2002/09/20 19:47:32 brian Exp $
+# $Id: Stats.pm,v 1.60 2002/09/20 20:00:11 brian Exp $
 
 package Slash::Stats;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -212,7 +212,8 @@ sub getCommentsByDistinctUIDPosters {
 
 	my $used = $self->sqlSelect(
 		'count(DISTINCT uid)', $tables, 
-		$section_where,
+		"date BETWEEN '$self->{_date} 00:00' AND '$self->{_date} 23:59:59'
+		$section_where",
 		'',
 		{ distinct => 1 }
 	);
@@ -383,7 +384,8 @@ sub getAdminModsInfo {
 sub countSubmissionsByDay {
 	my($self, $options) = @_;
 
-	my $where = " section = '$options->{section}'" if $options->{section};
+	my $where = "time BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'";
+	$where .= " AND section = '$options->{section}'" if $options->{section};
 
 	my $used = $self->sqlCount(
 		'submissions', 
@@ -398,18 +400,19 @@ sub countSubmissionsByCommentIPID {
 	my $slashdb = getCurrentDB();
 	my $in_list = join(",", map { $slashdb->sqlQuote($_) } @$ipids);
 
-	my $where = "ipid IN ($in_list)";
+	my $where = "(time BETWEEN '$self->{_date} 00:00' AND '$self->{_date} 23:59:59') AND ipid IN ($in_list)";
 	$where .= " AND section = '$options->{section}'" if $options->{section};
 
 	my $used = $self->sqlCount(
 		'submissions', 
-		$where
+		"date BETWEEN '$self->{_day} 00:00' AND '$self->{_day} 23:59:59'
+		$where "
 	);
 }
 
 ########################################################
-sub countModeratorLogHour {
-	my($self, $yesterday) = @_;
+sub countModeratorLogByVal {
+	my($self) = @_;
 
 	my $modlog_hr = $self->sqlSelectAllHashref(
 		"val",

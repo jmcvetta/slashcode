@@ -564,7 +564,7 @@ __template__
 <option value="1">1 - Sectionworthy</option>
 <option value="0">0 - Ignore Topic</option>
 </select>
-<input type="button" value="Add Topic"  onmouseup="slashtopics_show()">
+<input type="button" value="Choose Topics"  onmouseup="slashtopics_show()">
 <input type="button" value="Remove Topic"   onmouseup="slashtopics_remove()">
 <br>
 <input type="button" value="Never Display"  onmouseup="slashtopics_never_display()">
@@ -573,4 +573,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_tree;admin;default,v 1.2 2004/06/22 16:33:18 jamiemccarthy Exp $
+$Id: topic_popup_tree;admin;default,v 1.3 2004/06/22 21:42:44 pudge Exp $

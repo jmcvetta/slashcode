@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.714 2004/10/20 04:11:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.715 2004/10/20 04:44:24 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.714 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.715 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7697,6 +7697,17 @@ print STDERR "gSE $$ separate SELECTs, min_stoid=$min_stoid\n";
 			"DISTINCT stoid",
 			"story_topics_rendered",
 			$tid_in_where);
+
+		# If that returned no stories, we can short-circuit the rest
+		# of this method because we know the answer already.
+		if (!@$stoids_ar) {
+			if ($return_min_stoid_only) {
+				return 0;
+			} else {
+				return [ ];
+			}
+		}
+
 #print STDERR "gSE $$ stoids_ar returned: '@$stoids_ar' t_i_w '$tid_in_where' tid '@$tid'\n";
 		# Now, if necessary, do another select to eliminate any
 		# stoids with tids that are unwanted.

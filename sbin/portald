@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.26 2002/11/19 15:34:37 pater Exp $
+# $Id: portald,v 1.27 2002/11/19 18:22:43 pater Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -172,7 +172,7 @@ sub getRDF {
 	if ($@) {
 		my $err = $@;
 		$err =~ s/\n/ /;
-		portaldLog("$bid did not parse properly:$@");
+		portaldLog("$bid did not parse properly:$err");
 		return;
 	} else {
 		my $str;

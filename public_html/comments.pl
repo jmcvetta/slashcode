@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.4 2000/05/17 19:31:12 pudge Exp $
+#  $Id: comments.pl,v 1.5 2000/05/20 01:44:12 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -131,7 +131,12 @@ EOT
 				# find out if this form has been submitted already
 				my($submitted_already, $interval) = sqlSelect(
 					"value,(time_to_sec(now()) - time_to_sec(ts)) as time_interval",
-					"formkeys","formkey='$I{F}{formkey}' and formname = 'comments'");
+					"formkeys","formkey='$I{F}{formkey}' and formname = 'comments'")
+					or print <<EOT and return;
+<P><B>We can't find your formkey.</B></P>
+<P>Please hit "Reply" from the comment or article you are replying
+to, so you can get a proper form to submit from.</P>
+EOT
 
 				# interval of when it was submitted (this won't be used unless it's already been submitted)
 				my $interval_string = "";

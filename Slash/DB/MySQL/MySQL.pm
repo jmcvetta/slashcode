@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.276 2002/12/12 21:58:06 brian Exp $
+# $Id: MySQL.pm,v 1.277 2002/12/16 23:00:05 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.276 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.277 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5594,7 +5594,12 @@ sub getSimilarStories {
 
 	my $text = "$title $introtext $bodytext";
 	# Find a list of all the words in the current story.
-	my $text_words = findWords($text);
+	my $data = {
+		title		=> { text => $title,		weight => 5.0 },
+		introtext	=> { text => $introtext,	weight => 3.0 },
+		bodytext	=> { text => $bodytext,		weight => 1.0 },
+	};
+	my $text_words = findWords($data);
 	# Load up the list of words in recent stories (the only ones we
 	# need to concern ourselves with looking for).
 	my @recent_uncommon_words = split " ",
@@ -5652,6 +5657,8 @@ sub getSimilarStories {
 			my $word_weight = 0;
 			my $wr = qr{(?i:\b\Q$word\E)};
 			my $m = log(length $word);
+			$word_weight *= 1.5 if $text_words->{$word}{is_url};
+			$word_weight *= 2.5 if $text_words->{$word}{is_url_with_path};
 			$word_weight += 2.0*$m * (() = $s->{title} =~     m{$wr}g);
 			$word_weight += 1.0*$m * (() = $s->{introtext} =~ m{$wr}g);
 			$word_weight += 0.5*$m * (() = $s->{bodytext} =~  m{$wr}g);

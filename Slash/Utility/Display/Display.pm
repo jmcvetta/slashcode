@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.76 2004/02/17 21:00:43 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.77 2004/03/06 16:26:32 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1263,7 +1263,7 @@ sub cleanSlashTags {
 	return unless $text;
 
 	my $tag_re = join '|', sort keys %$slashTags;
-	$text =~ s#<slash-($tag_re)#<SLASH TYPE="\L$1\E"#gis;
+	$text =~ s#<SLASH-($tag_re)#<SLASH TYPE="\L$1\E"#gis;
 	my $newtext = $text;
 	my $tokens = Slash::Custom::TokeParser->new(\$text);
 	while (my $token = $tokens->get_tag('slash')) {
@@ -1449,9 +1449,12 @@ sub _slashImage {
 		my $data = $blob->get($token->[1]{id});
 		if ($data && $data->{data}) {
 			my($w, $h) = imgsize(\$data->{data});
-			$token->[1]{width}  = $w if $w && !defined $token->[1]{width};
-			$token->[1]{height} = $h if $h && !defined $token->[1]{height};
+			$token->[1]{width}  = $w if $w && !$token->[1]{width};
+			$token->[1]{height} = $h if $h && !$token->[1]{height};
 		}
+	}
+	if (!$token->[1]{width} || !$token->[1]{height}) {
+		print STDERR scalar(localtime) . " _slashImage width or height unknown for image blob id '$token->[1]{id}', resulting HTML page may be non-optimal\n";
 	}
 
 	my $content = slashDisplay('imageLink', {
@@ -1609,4 +1612,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.76 2004/02/17 21:00:43 jamiemccarthy Exp $
+$Id: Display.pm,v 1.77 2004/03/06 16:26:32 jamiemccarthy Exp $

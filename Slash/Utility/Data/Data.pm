@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.115 2004/03/02 15:34:19 tvroom Exp $
+# $Id: Data.pm,v 1.116 2004/03/11 22:44:22 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -42,7 +42,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2488,7 +2488,6 @@ sub _link_to_slashlink {
 		my $any_host = "(?:"
 			. join("|", sort keys %all_urls)
 			. ")";
-#print STDERR "link_to_slashlink abs '$abs' any_host '$any_host'\n";
 		# All possible URLs' arguments, soon to be attributes
 		# in the new tag (thus "urla").	Values are the name
 		# of the script ("sn") and expressions that can pull
@@ -2509,7 +2508,6 @@ sub _link_to_slashlink {
 				  sid => qr{\bsid=(\d+)},
 				  cid => qr{\bcid=(\d+)} },
 		);
-#use Data::Dumper; print STDERR Dumper(\%urla);
 	}
 	# Get a reference to the URL argument hash for this
 	# virtual user, thus "urlavu".
@@ -2563,7 +2561,6 @@ sub _link_to_slashlink {
 			. q{>};
 	}
 
-#print STDERR "_link_to_slashlink end '$url'\n";
 	# Return either the new $retval we just made, or just send the
 	# original text back.
 	return $retval;
@@ -3256,4 +3253,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.115 2004/03/02 15:34:19 tvroom Exp $
+$Id: Data.pm,v 1.116 2004/03/11 22:44:22 jamiemccarthy Exp $

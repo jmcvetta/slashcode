@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.145 2004/08/06 15:59:59 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.146 2004/08/10 05:41:08 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.145 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -917,6 +917,12 @@ sub countBytesByPage {
 }
 
 ########################################################
+sub countBytesByPages {
+	my($self, $options) = @_;
+	$self->sqlSelectAllHashref("op","op, SUM(bytes) as bytes", "accesslog_temp", '', "GROUP BY op");
+}
+
+########################################################
 sub countUsersByPage {
 	my($self, $op, $options) = @_;
 	my $where = "1=1 ";
@@ -927,6 +933,12 @@ sub countUsersByPage {
 	$where = "($where) AND $options->{extra_where_clause}"
 		if $options->{extra_where_clause};
 	$self->sqlSelect("COUNT(DISTINCT uid)", "accesslog_temp", $where);
+}
+
+########################################################
+sub countUsersByPages {
+	my($self, $options) = @_;
+	$self->sqlSelectAllHashref("op", "op, COUNT(DISTINCT uid) AS uids", "accesslog_temp", '', "GROUP BY op");
 }
 
 ########################################################
@@ -958,6 +970,16 @@ sub countDailyByPage {
 }
 
 ########################################################
+sub countDailyByPages {
+	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
+	$options ||= {};
+
+	$self->sqlSelectAllHashref("op", "op,count(*) AS cnt", "accesslog_temp", "", "GROUP BY op");
+}
+
+
+########################################################
 sub countDailyByPageDistinctIPID {
 	# This is so lame, and so not ANSI SQL -Brian
 	my($self, $op, $options) = @_;
@@ -972,6 +994,16 @@ sub countDailyByPageDistinctIPID {
 	$where .=" AND uid != $constants->{anonymous_coward_uid} " if $options->{user_type} eq "logged-in";
 	$self->sqlSelect("COUNT(DISTINCT host_addr)", "accesslog_temp", $where);
 }
+
+########################################################
+sub countDailyByPageDistinctIPIDs {
+	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
+	
+	$self->sqlSelectAllHashref("op", "op, COUNT(DISTINCT host_addr) AS cnt", "accesslog_temp", "", "GROUP BY op");
+}
+
+
 
 ########################################################
 sub countDailyStoriesAccess {
@@ -1705,4 +1737,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.145 2004/08/06 15:59:59 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.146 2004/08/10 05:41:08 tvroom Exp $

@@ -7,7 +7,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: index.shtml,v 1.3 2003/02/05 19:10:17 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: index.shtml,v 1.4 2003/02/17 16:42:54 pater Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -186,6 +186,7 @@ articles for different sites?</a></b></li>
   <li> <b><a href="com-mod.shtml#cm2300">What are post modes?</a> ?</b></li>
   <li> <b><a href="com-mod.shtml#cm2400">A comment I posted shows a different 
     score on my user page than in the comments page. </a></b></li>
+  <li> <b><a href="com-mod.shtml#cm2500">What do the choices in the moderation drop-down boxes mean?</a></b></li>
   </b> 
 </ul>
 <b>

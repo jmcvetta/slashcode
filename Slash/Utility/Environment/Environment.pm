@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.120 2004/03/24 18:02:19 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.121 2004/03/29 22:27:06 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -135,25 +135,31 @@ empty string.
 =cut
 
 { # closure
-my $dbAvailable_lastcheck = 0;
-my $dbAvailable_lastval;
+my $dbAvailable_lastcheck = {};
+my $dbAvailable_lastval = {};
 sub dbAvailable {
 	# I'm not going to explain exactly how I came up with this
 	# logic... the if's are ordered to reduce computation as
 	# much as possible.
 	my($token) = @_;
 
-	if (time < $dbAvailable_lastcheck+5) {
-		return $dbAvailable_lastval;
+	# if we're doing a general check for dbAvailability we set
+	# the token to empty-string and store the lastchecked status
+	# and lastval check in the hashrefs with that as the key
+	$token ||="";
+
+	if (defined $dbAvailable_lastcheck->{$token} && time < $dbAvailable_lastcheck->{$token} +5) {
+		return $dbAvailable_lastval->{$token};
 	}
 
+
 	my $newval;
-	   if (-e "/usr/local/slash/dboff")	{ $newval = 0 }
-	elsif (!$token || $token !~ /^(\w+)/)	{ $newval = 1 }
-	elsif (-e "/usr/local/slash/dboff_$1")	{ $newval = 0 }
-	else					{ $newval = 1 }
-	$dbAvailable_lastval = $newval;
-	$dbAvailable_lastcheck = time;
+	   if (-e "/usr/local/slash/dboff")		{ $newval = 0 }
+	elsif (!$token || $token !~ /^(\w+)/)		{ $newval = 1 }
+	elsif (-e "/usr/local/slash/dboff_$token")	{ $newval = 0 }
+	else						{ $newval = 1 }
+	$dbAvailable_lastval->{$token} = $newval;
+	$dbAvailable_lastcheck->{$token} = time;
 	return $newval;
 }
 } # end closure
@@ -2357,4 +2363,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.120 2004/03/24 18:02:19 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.121 2004/03/29 22:27:06 tvroom Exp $

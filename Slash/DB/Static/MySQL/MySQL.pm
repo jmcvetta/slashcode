@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.78 2003/01/16 00:53:30 brian Exp $
+# $Id: MySQL.pm,v 1.79 2003/01/16 01:25:08 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1424,9 +1424,16 @@ sub refreshUncommonStoryWords {
 	);
 	my $word_hr = { };
 	for my $ar (@$arr) {
-		findWords($ar->[0], $weights[0], $word_hr) if $ar->[0]; # title
-		findWords($ar->[1], $weights[1], $word_hr) if $ar->[1]; # introtext
-		findWords($ar->[2], $weights[2], $word_hr) if $ar->[2]; # bodytext
+		my $data = {
+			output_hr	=> $word_hr,
+			title		=> { text => $ar->[0],
+					     weight => $constants->{uncommon_weight_title}	|| 8.0 },
+			introtext	=> { text => $ar->[1],
+					     weight => $constants->{uncommon_weight_introtext}	|| 2.0 },
+			bodytext	=> { text => $ar->[2],
+					     weight => $constants->{uncommon_weight_bodytext}	|| 1.0 },
+		};
+		findWords($data);
 	}
 
 	# The only words that count as uncommon are the ones that appear in

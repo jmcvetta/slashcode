@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.68 2003/01/14 21:30:31 jamie Exp $
+# $Id: Data.pm,v 1.69 2003/01/16 01:25:08 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -2605,7 +2605,7 @@ sub findWords {
 
 	# Return a hashref;  keys are the words, values are hashrefs
 	# with the number of times they appear and so on.
-	my $wordcount = { };
+	my $wordcount = $args_hr->{output_hr} || { };
 
 	for my $key (keys %$args_hr) {
 
@@ -2740,4 +2740,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.68 2003/01/14 21:30:31 jamie Exp $
+$Id: Data.pm,v 1.69 2003/01/16 01:25:08 jamie Exp $

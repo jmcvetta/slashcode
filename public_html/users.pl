@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.3 2000/05/31 19:23:05 pudge Exp $
+#  $Id: users.pl,v 1.4 2000/05/31 20:21:19 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -282,11 +282,8 @@ EOT
 
 #################################################################
 sub changePassword {
-	my $r = crypt($_[0], substr(rand, 2, 2));
-	$r =~ s/[i1Il]/x/g;
-	$r =~ s/[^A-Z1-9]//gi;
-	$r = substr($r, 2, 8);
-	return $r;
+	my @chars = grep !/[0O1Iil]/, 0..9, 'A'..'Z', 'a'..'z';
+	return join '', map { $chars[rand @chars] } 0 .. 7;
 }
 
 #################################################################

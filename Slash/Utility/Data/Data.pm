@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.94 2003/07/08 21:56:44 pudge Exp $
+# $Id: Data.pm,v 1.95 2003/07/15 06:04:37 pater Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2874,8 +2874,8 @@ sub createStoryTopicData {
 
 	# Probably should not be changing stid, so set up @tids.
 	my @tids = ( );
-	if ($form->{_multi}{stid} && $form->{_multi}{stid} eq 'ARRAY') {
-		@tids = @{$form->{_multi}{stid}};
+	if ($form->{_multi}{stid} && ref($form->{_multi}{stid}) eq 'ARRAY') {
+		@tids = grep { $_ } @{$form->{_multi}{stid}};
 	} elsif ($form->{stid}) {
 		push @tids, $form->{stid};
 	}
@@ -2923,4 +2923,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.94 2003/07/08 21:56:44 pudge Exp $
+$Id: Data.pm,v 1.95 2003/07/15 06:04:37 pater Exp $

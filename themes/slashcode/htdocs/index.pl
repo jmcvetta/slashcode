@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.103 2004/06/21 19:00:16 pudge Exp $
+# $Id: index.pl,v 1.104 2004/06/21 22:28:49 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -83,7 +83,7 @@ my $start_time = Time::HiRes::time;
 	# Slashdot, normalized such that the median request takes 1 second.
 	# Times listed are elapsed time from the previous markpoint.
 
-	my $gse_hr = { tids => $gSkin->{nexus} };
+	my $gse_hr = { tid => $gSkin->{nexus} };
 	$gse_hr->{limit} = $user->{maxstories} if !$user->{is_anon} && $user->{maxstories};
 	$stories = $reader->getStoriesEssentials($gse_hr);
 

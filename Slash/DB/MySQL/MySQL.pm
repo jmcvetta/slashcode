@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.591 2004/06/21 18:41:52 pudge Exp $
+# $Id: MySQL.pm,v 1.592 2004/06/21 22:28:47 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.591 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.592 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6465,12 +6465,13 @@ sub getStoriesEssentials {
 	# table to use, and which option name in $options to use.
 	my @restrictions = ( );
 	for my $key (qw(
-		story_topics_rendered.tids	story_topics_rendered.tids_exclude
-		stories.stoids			stories.stoids_exclude
-		stories.uids			stories.uids_exclude
+		story_topics_rendered.tid	story_topics_rendered.tid_exclude
+		stories.stoid			stories.stoid_exclude
+		stories.uid			stories.uid_exclude
 	)) {
-		my($table, $col, $optname) = $key =~ /^(\w+)\.((\w+)s_exclude)$/;
+		my($table, $col, $optname) = $key =~ /^(\w+)\.((\w+)(?:_exclude)?)$/;
 		my $not = $key =~ /_exclude$/ ? "NOT" : "";
+#print STDERR "gSE key '$key' table '$table' col '$col' optname '$optname' not '$not'\n";
 		next unless $options->{$optname};
 		my $opt_ar = ref($options->{$optname})
 			?   $options->{$optname}
@@ -6478,6 +6479,7 @@ sub getStoriesEssentials {
 		push @restrictions, "$table.$col $not IN (" . join(", ", @$opt_ar) . ")";
 	}
 	my $restrict_clause = join(" AND ", @restrictions);
+#print STDERR "gSE restrict_clause '$restrict_clause'\n";
 
 	my($column_time, $where_time) = $self->_stories_time_clauses({
 		try_future => 1, must_be_subscriber => 0

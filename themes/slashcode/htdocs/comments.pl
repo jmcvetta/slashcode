@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.21 2000/08/16 17:09:11 pudge Exp $
+#  $Id: comments.pl,v 1.22 2000/09/14 23:26:18 cbwood Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -871,16 +871,18 @@ sub moderateCid {
 		});
 
 
-		# Adjust comment posters karma
+		# Adjust comment posters info
 		if ($cuid > 0) {
 			if ($val > 0) {
-				sqlUpdate("users_info", { -karma => "karma$val" },
-					"uid=$cuid AND karma<$I{maxkarma}"
-				);
+				sqlUpdate('users_info', {
+				  -karma => "karma$val",
+				  -upmods=> 'upmods+1',
+				}, "uid=$cuid AND karma<$I{maxkarma}");
 			} elsif ($val < 0) {
-				sqlUpdate("users_info", { -karma => "karma$val" },
-					"uid=$cuid"
-				);
+				sqlUpdate('users_info', {
+				  -karma   => "karma$val",
+				  -downmods=> 'downmods+1',
+				}, "uid=$cuid AND karma>$I{minkarma}");
 			}
 		}
 

@@ -72,7 +72,7 @@ ELSE;
 		{ link = "/~$url_nick",		label = "Info",		sel_label = "info" },
 	];
 	IF constants.plugin.Zoo; tabs.push(
-		{ link = "/zoo.pl?op=check&uid=$uid", label = "Relation", sel_label = "relation" },
+		{ link = "/zoo.pl?op=check&amp;uid=$uid", label = "Relation", sel_label = "relation" },
 	); END;
 	IF constants.plugin.Journal; tabs.push(
 		{ link = "/~$url_nick/journal",	label = "Journal",	sel_label = "journal" },
@@ -93,4 +93,4 @@ PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selec
 __seclev__
 10000
 __version__
-$Id: user_titlebar;misc;default,v 1.10 2003/05/15 15:55:32 jamie Exp $
+$Id: user_titlebar;misc;default,v 1.11 2004/10/02 14:02:25 jamiemccarthy Exp $

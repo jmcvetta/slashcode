@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.88 2002/02/21 21:44:57 jamie Exp $
+# $Id: MySQL.pm,v 1.89 2002/02/22 02:47:59 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3651,7 +3651,7 @@ sub getStoriesEssentials {
 	$where .= "AND stories.uid not in ($user->{exaid}) "
 		if $user->{exaid};
 	$where .= "AND section not in ($user->{exsect}) "
-		if $user->{exsect};
+		if $user->{exsect} && !$section;
 
 	# Order
 	my $other = "ORDER BY time DESC ";

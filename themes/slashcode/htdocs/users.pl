@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.118 2002/10/22 14:09:05 jamie Exp $
+# $Id: users.pl,v 1.119 2002/10/22 18:43:23 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1407,7 +1407,6 @@ sub editUser {
 		$fieldkey = 'uid';
 		$id = $user_edit->{uid};
 	}
-use Data::Dumper; print STDERR "users.pl editUser() id '$id' fieldkey '$fieldkey' hr: " . Dumper($hr);
 	return if isAnon($user_edit->{uid}) && ! $admin_flag;
 
 	$admin_block = getUserAdmin($id, $fieldkey, 1, 1) if $admin_flag;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.4 2004/11/15 23:14:32 jamiemccarthy Exp $
+# $Id: balance_readers.pl,v 1.5 2004/11/21 02:16:49 jamiemccarthy Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -343,10 +343,10 @@ sub delete_old_logs {
 	my $secs_back = $constants->{dbs_reader_expire_secs} || 86400*7;
 	$slashdb->deleteOldDBReaderStatus($secs_back);
 	# How long before we do this again?  Depends on how much log
-	# we're keeping around.  Anywhere from 5 minutes to 8 hours.
+	# we're keeping around.  Anywhere from 5 minutes to 4 hours.
 	my $pause = $secs_back / 60;
 	$pause = 300 if $pause < 300;
-	$pause = 14400 if $pause > 28800;
+	$pause = 14400 if $pause > 14400;
 	return time + $pause;
 }
 

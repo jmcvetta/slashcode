@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.28 2002/07/05 21:29:23 brian Exp $
+# $Id: Environment.pm,v 1.29 2002/07/09 18:14:12 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1254,31 +1254,8 @@ Hashref of cleaned-up data.
 
 =cut
 
-sub filter_params {
-	my ($apr) = @_;
-	my %form;
+{
 	my %multivalue = map {($_ => 1)} qw(section_multiple);
-	if (ref($apr) eq "HASH") {
-		%form = %$apr;
-	} else {
-		for ($apr->param) {
-			my @values = $apr->param($_);
-			if (scalar(@values) > 1) { 
-				$form{$_} = $values[0];
-				$form{_multi}{$_} = \@values;
-			} else {
-				$form{$_} = $values[0];
-			}
-			# We don't filter the multivalue params yet -Brian
-			# allow any param ending in _multiple to be multiple -- pudge
-			if ($apr && (exists $multivalue{$_} || /_multiple$/)) {
-				my @multi = $apr->param($_);
-				$form{$_} = \@multi;
-				$form{_multi}{$_} = \@multi;
-				next;
-			}
-		}
-	}
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
@@ -1293,6 +1270,7 @@ sub filter_params {
 		seclev start startat threshold uid
 		uthreshold voters width
 		textarea_rows textarea_cols
+		subid tpid tid qid aid
 	);
 
 	# fields that have ONLY a-zA-Z0-9_
@@ -1311,32 +1289,83 @@ sub filter_params {
 			         $_[0] =~ s|\s+| |g;		},
 	);
 	# add more specials
-	$special{qid} = $special{sid};
+#	$special{qid} = $special{sid};
 
-	for (keys %form) {
-		next if ref($form{$_}) eq 'ARRAY';
-		# Paranoia - Clean out any embedded NULs. -- cbwood
-		# hm.  NULs in a param() value means multiple values
-		# for that item.  do we use that anywhere? -- pudge
-		$form{$_} =~ s/\0//g;
 
-		# clean up numbers
-		if (exists $nums{$_}) {
-			$form{$_} = fixint($form{$_});
-		} elsif (exists $alphas{$_}) {
-			$form{$_} =~ s|\W+||g;
-		} elsif (exists $special{$_}) {
-			$special{$_}->($form{$_});
-		} else {
-			for my $ri (@regints) {
-				$form{$_} = fixint($form{$_}) if /$ri/;
+sub filter_params {
+	my($apr) = @_;
+	my %form;
+
+	if (ref($apr) eq "HASH") {
+		%form = %$apr;
+	} else {
+		for ($apr->param) {
+			my @values = $apr->param($_);
+			if (scalar(@values) > 1) { 
+				$form{$_} = $values[0];
+				$form{_multi}{$_} = \@values;
+			} else {
+				$form{$_} = $values[0];
 			}
+			# We don't filter the multivalue params yet -Brian
+			# allow any param ending in _multiple to be multiple -- pudge
+			if (exists $multivalue{$_} || /_multiple$/) {
+				my @multi = $apr->param($_);
+				$form{$_} = \@multi;
+				$form{_multi}{$_} = \@multi;
+				next;
+			}
+		}
+	}
+
+	for my $key (keys %form) {
+		if ($key eq '_multi') {
+			for my $key (keys %{$form{_multi}}) {
+				my @data;
+				for my $data (@{$form{_multi}{$key}}) {
+					push @data, filter_param($key, $data);
+				}
+				$form{_multi}{$key} = \@data;
+			}			
+		} elsif (ref($form{$key}) eq 'ARRAY') {
+			my @data;
+			for my $data (@{$form{$key}}) {
+				push @data, filter_param($key, $data);
+			}
+			$form{$key} = \@data;
+		} else {
+			$form{$key} = filter_param($key, $form{$key});
 		}
 	}
 
 	return \%form;
 }
 
+
+sub filter_param {
+	my($key, $data) = @_;
+
+	# Paranoia - Clean out any embedded NULs. -- cbwood
+	# hm.  NULs in a param() value means multiple values
+	# for that item.  do we use that anywhere? -- pudge
+	$data =~ s/\0//g;
+
+	# clean up numbers
+	if (exists $nums{$key}) {
+		$data = fixint($data);
+	} elsif (exists $alphas{$key}) {
+		$data =~ s|\W+||g;
+	} elsif (exists $special{$key}) {
+		$special{$key}->($data);
+	} else {
+		for my $ri (@regints) {
+			$data = fixint($data) if /$ri/;
+		}
+	}
+
+	return $data;
+}
+} # see lexical variables above
 
 ########################################################
 sub _testExStr {
@@ -1672,4 +1701,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.28 2002/07/05 21:29:23 brian Exp $
+$Id: Environment.pm,v 1.29 2002/07/09 18:14:12 pudge Exp $

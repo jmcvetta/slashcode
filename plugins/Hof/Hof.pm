@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.1 2002/02/14 03:07:45 brian Exp $
+# $Id: Hof.pm,v 1.2 2002/02/15 14:27:39 jamie Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -169,7 +169,7 @@ sub getCommentsTop {
 #################################################################
 sub DESTROY {
 	my($self) = @_;
-	$self->{_dbh}->disconnect unless $ENV{GATEWAY_INTERFACE};
+	$self->{_dbh}->disconnect if $self->{_dbh} && !$ENV{GATEWAY_INTERFACE};
 }
 
 1;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.140 2003/01/16 00:53:30 brian Exp $
+# $Id: users.pl,v 1.141 2003/01/16 03:19:53 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -895,7 +895,7 @@ sub showInfo {
 	}
 
 	# Can't get user data for the anonymous user.
-	if (isAnon($uid)) {
+	if ($fieldkey eq 'uid' && isAnon($uid)) {
 		header(getMessage('user_header'));
 		return displayForm();
 	}

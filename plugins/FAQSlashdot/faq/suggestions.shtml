@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: suggestions.shtml,v 1.7 2003/10/24 18:06:15 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: suggestions.shtml,v 1.8 2003/10/24 19:27:11 pudge Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <TABLE>
@@ -398,3 +398,4 @@ for everyone.<br>
 </TABLE>
 
 <!--#include virtual="/slashfoot.inc"-->
+

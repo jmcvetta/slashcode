@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: tech.shtml,v 1.4 2003/05/26 16:29:11 jamie Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: tech.shtml,v 1.5 2003/10/24 19:28:16 pudge Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 </head>
@@ -325,3 +325,4 @@ Yes. Both of these. Also, it's just cool when people submit patches.
 <!--#include virtual="/slashfoot.inc"-->
 </body>
 </html>
+

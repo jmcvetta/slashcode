@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.124 2003/04/21 22:04:19 brian Exp $
+# $Id: Slash.pm,v 1.125 2003/04/22 20:03:09 jamie Exp $
 
 package Slash;
 
@@ -293,6 +293,12 @@ sub _get_points {
 	if ($user->{karma_bonus} && $C->{karma_bonus} eq 'yes') {
 		$hr->{karma_bonus} =
 			$user->{karma_bonus};
+	}
+
+	# And, the poster-was-a-subscriber bonus
+	if ($user->{subscriber_bonus} && $C->{subscriber_bonus} eq 'yes') {
+		$hr->{subscriber_bonus} =
+			$user->{subscriber_bonus};
 	}
 
 	for my $key (grep !/^score_/, keys %$hr) { $points += $hr->{$key} }
@@ -695,8 +701,12 @@ sub moderatorCommentLog {
 				  $constants->{comment_maxscore});
 		my $max_uid = $slashdb->countUsers({ max => 1 });
 
+		my $select = "cid, uid, karma_bonus, reason, points, pointsorig";
+		if ($constants->{plugin}{Subscribe} && $constants->{subscribe}) {
+			$select .= ", subscriber_bonus";
+		}
 		my $comment = $slashdb->sqlSelectHashref(
-			"cid, uid, karma_bonus, reason, points, pointsorig",
+			$select,
 			"comments",
 			"cid=$cid_q");
 		$comment->{comment} = $slashdb->sqlSelect(
@@ -1441,6 +1451,14 @@ sub _hard_dispComment {
 		my $nick_literal = strip_literal($comment->{nickname});
 		my $nick_param = fixparam($comment->{nickname});
 		$user_nick_to_display = qq{<A HREF="$constants->{real_rootdir}/~$nick_param">$nick_literal ($comment->{uid})</A>};
+		if ($constants->{plugin}{Subscribe} && $constants->{subscribe}
+			&& $comment->{subscriber_bonus}) {
+			if ($constants->{plugin}{FAQSlashdot}) {
+				$user_nick_to_display .= qq{ <A HREF="/faq/com-mod.shtml#cm2600">*</A>};
+			} else {
+				$user_nick_to_display .= " *";
+			}
+		}
 		if ($comment->{fakeemail}) {
 			my $mail_literal = strip_literal($comment->{fakeemail_vis});
 			my $mail_param = fixparam($comment->{fakeemail});

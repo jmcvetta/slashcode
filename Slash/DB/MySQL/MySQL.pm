@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.527 2004/03/10 01:36:33 pudge Exp $
+# $Id: MySQL.pm,v 1.528 2004/03/11 22:43:53 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.527 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.528 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1376,6 +1376,14 @@ sub createAccessLog {
 
 	$user ||= {};
 	$user->{state} ||= {};
+
+	if ($op eq 'image' && $constants->{accesslog_imageregex}) {
+		return if $constants->{accesslog_imageregex} eq 'NONE';
+		my $uri = $r->uri;
+		print STDERR scalar(localtime) . " createAccessLog image url '" . ($r->uri) . "'\n";
+		return unless $uri =~ $constants->{accesslog_imageregex};
+		$dat ||= $uri;
+	}
 
 	my $uid;
 	if ($ENV{SLASH_USER}) {
@@ -6565,8 +6573,12 @@ sub getSlashConf {
 		$conf{comment_nonstartwordchars_regex} = qr{$regex}i;
 	}
 
-	if ($conf{x_forwarded_for_trust_regex}) {
-		$conf{x_forwarded_for_trust_regex} = qr{$conf{x_forwarded_for_trust_regex}};
+	for my $regex (qw(
+		accesslog_imageregex
+		x_forwarded_for_trust_regex
+	)) {
+		next if !$conf{$regex} || $conf{$regex} eq 'NONE';
+		$conf{$regex} = qr{$conf{$regex}};
 	}
 
 	if ($conf{approvedtags_attr}) {

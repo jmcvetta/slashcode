@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.294 2003/01/16 13:57:27 pudge Exp $
+# $Id: MySQL.pm,v 1.295 2003/01/16 16:07:18 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.294 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.295 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3306,7 +3306,7 @@ sub getAccessListInfo {
 	}
 
 	if ($column eq 'isbanned') {
-		$where .= " AND isbanned = 1 OR wasbanned = 1";
+		$where .= " AND (isbanned = 1 OR wasbanned = 1)";
 	} else {
 		$where .= " AND (readonly = 1 OR wasreadonly = 1) AND formname = '$formname' AND reason != 'expired'";
 	}

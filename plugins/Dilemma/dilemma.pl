@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.1 2004/07/28 00:20:50 jamiemccarthy Exp $
+# $Id: dilemma.pl,v 1.2 2004/07/30 17:51:53 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -20,9 +20,11 @@ sub main {
 	my $dilemma_db = getObject('Slash::Dilemma');
 
 	my $info = $dilemma_reader->getDilemmaInfo();
+	my $species_hr = $dilemma_reader->getDilemmaSpeciesInfo();
 
 	slashDisplay('maininfo', {
 		info		=> $info,
+		species		=> $species_hr,
 	});
 
 	footer();

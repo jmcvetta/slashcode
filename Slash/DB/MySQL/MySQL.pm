@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.443 2003/09/02 02:22:29 vroom Exp $
+# $Id: MySQL.pm,v 1.444 2003/09/02 14:48:08 pater Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.443 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.444 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2151,12 +2151,14 @@ sub setDiscussionDelCount {
 # of someone wanting to delete a submission that is
 # not part in the form
 sub deleteSubmission {
-	my($self, $subid) = @_;
+	my($self, $subid, $nodelete) = @_;
 	my $uid = getCurrentUser('uid');
 	my $form = getCurrentForm();
 	my @subid;
 
-	if ($form->{subid}) {
+	$nodelete ||= 0;
+
+	if ($form->{subid} && !$nodelete) {
 		$self->sqlUpdate("submissions", { del => 1 },
 			"subid=" . $self->sqlQuote($form->{subid})
 		);
@@ -2202,7 +2204,7 @@ sub deleteSubmission {
 				$self->sqlUpdate("submissions", \%sub,
 					"subid=" . $self->sqlQuote($n));
 			}
-		} elsif ($t eq 'del') {
+		} elsif ($t eq 'del' && !$nodelete) {
 			$self->sqlUpdate("submissions", { del => 1 },
 				'subid=' . $self->sqlQuote($n));
 			$self->setUser($uid,

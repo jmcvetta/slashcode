@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.47 2003/05/06 02:23:17 pater Exp $
+# $Id: Anchor.pm,v 1.48 2003/05/06 11:16:32 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -310,7 +310,7 @@ The 'ssihead' template block.
 =cut
 
 sub ssiHead {
-	my($section,  $options) = @_;
+	my($section, $options) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $slashdb = getCurrentDB();
@@ -520,7 +520,15 @@ EOT
 
 	# If this is the first time that getAd() is being called, we have
 	# to set up all the ad data at once before we can return anything.
-	prepAds() if !defined($user->{state}{ad});
+	if (!defined $user->{state}{ad}) {
+		# old way
+		prepAds();
+
+		# new way
+#		if (my $minithin = getObject('Slash::MiniThin', { db_type => 'reader' })) {
+#			$minithin->minithin;
+#		}
+	}
 
 	return $user->{state}{ad}{$num} || "";
 }
@@ -579,4 +587,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.47 2003/05/06 02:23:17 pater Exp $
+$Id: Anchor.pm,v 1.48 2003/05/06 11:16:32 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.59 2003/07/01 04:28:32 jamie Exp $
+# $Id: Search.pm,v 1.60 2003/07/08 18:48:55 vroom Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -403,7 +403,6 @@ sub findSubmission {
 	} else {
 		$other .= " ORDER BY subid DESC";
 	}
-
 	# The big old searching WHERE clause, fear it
 	my $key = " MATCH (subj,story) AGAINST ($query) ";
 	my $where = " 1 = 1 ";
@@ -414,6 +413,8 @@ sub findSubmission {
 		if $form->{tid};
 	$where .= " AND note=" . $self->sqlQuote($form->{note})
 		if $form->{note};
+	$where .= " AND section=" . $self->sqlQuote($form->{section})
+		if $form->{section};
 	
 	$other .= " LIMIT $start, $limit" if $limit;
 	my $stories = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other );

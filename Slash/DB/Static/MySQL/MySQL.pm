@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.113 2003/10/09 19:48:29 jamie Exp $
+# $Id: MySQL.pm,v 1.114 2003/10/14 14:20:16 vroom Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1520,6 +1520,30 @@ sub refreshUncommonStoryWords {
 	}
 
 	$self->setVar("uncommonstorywords", $uncommon_words);
+}
+
+########################################################
+# For tasks/freshenup.pl
+#
+# get previous sections stored so we can clear out old .shtml
+# files and redirect to new
+
+sub getPrevSectionsForSid {
+	my ($self,$sid) = @_;
+	my $old_sect = $self->sqlSelect("value","story_param","name='old_shtml_sections' and sid=".$self->sqlQuote($sid));
+	my @old_sect = grep{ $_ } split(/,/,$old_sect);
+	return @old_sect;
+}
+
+########################################################
+# For tasks/freshenup.pl
+#
+# clear old sections stored after their .shtml files 
+# have been cleaned up
+ 
+sub clearPrevSectionsForSid {
+	my ($self,$sid) = @_;
+	$self->sqlDelete("story_param","name='old_shtml_sections' and sid=".$self->sqlQuote($sid));
 }
 
 ########################################################

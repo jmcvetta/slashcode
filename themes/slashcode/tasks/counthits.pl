@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.12 2004/04/02 00:43:06 pudge Exp $
+# $Id: counthits.pl,v 1.13 2004/07/19 22:33:42 jamiemccarthy Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,10 +14,10 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
-$minutes_run = 6;
+$minutes_run = 20;
 
 # Adjust this to maximize how big of a SELECT we'll do on the log DB.
 # (5000 per minute (above) is probably safe, 10000 per minute just to
@@ -106,8 +106,6 @@ $task{$me}{code} = sub {
 		);
 		$total_hits += $sid_count{$sid};
 		_update_timehash("update");
-		Time::HiRes::sleep(0.02);
-		_update_timehash("sleep");
 	}
 
 	$slashdb->setVar("counthits_lastmaxid", $newmaxid);

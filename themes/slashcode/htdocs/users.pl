@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.262 2004/10/19 18:23:50 tvroom Exp $
+# $Id: users.pl,v 1.263 2004/11/02 15:59:31 cowboyneal Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2715,7 +2715,19 @@ sub saveHome {
 		});
 	}
 	if ($form->{restore_slashbox_defaults}) {
-		setToDefaults($user_edits_table, {}, { slashboxes => "" });
+		setToDefaults($user_edits_table, {
+			'story_never_topic' => 1,
+			'story_never_author' => 1,
+			'story_never_nexus' => 1,
+			'story_always_topic' => 1,
+			'story_always_author' => 1,
+			'story_always_nexus' => 1,
+			'maxstories' => 1,
+			'noboxes' => 1,
+			'light' => 1,
+			'noicons' => 1,
+			'willing' => 1
+		}, { slashboxes => "" });
 	}
 
 #print scalar(localtime) . " uet: " . Dumper($user_edits_table);

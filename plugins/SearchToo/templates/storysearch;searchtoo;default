@@ -27,10 +27,10 @@ __template__
 	<font size="-1">On [% Slash.timeCalc(story.time, '%B %o, %Y') %] with [% story.commentcount %] comments</font><br>
 	[% shorten( Slash.strip_notags(story.introtext) ) %]<br>
 	<font size="-1">
-		[% IF skin.name == 'mainpage' %]<a href="[% constants.real_rootdir %]/">Main</a>[% ELSE %]<a href="[% skin.url ? skin.url : "$gSkin.rootdir/$env.script_name?section=$skin.name" %]">[% skin.title %]</a>[% END %] &gt;
+		[% IF skin.name == 'mainpage' %]<a href="[% constants.real_rootdir %]/">Main</a>[% ELSE %]<a href="[% skin.url ? skin.url : "$gSkin.rootdir$env.script_name?section=$skin.name" %]">[% skin.title %]</a>[% END %] &gt;
 		[% FOREACH tid = story.tids %]
 			[% topic = Slash.db.getTopic(tid) %]
-			<a href="[% gSkin.rootdir %]/[% env.script_name %]?tid=[% tid %]">[% topic.textname %]</a>[% ",&nbsp;" UNLESS loop.last %]
+			<a href="[% gSkin.rootdir %][% env.script_name %]?tid=[% tid %]">[% topic.textname %]</a>[% ",&nbsp;" UNLESS loop.last %]
 		[% END %]
 		<br>
 		[% IF story.score %]
@@ -45,4 +45,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: storysearch;searchtoo;default,v 1.3 2005/01/05 07:15:54 pudge Exp $
+$Id: storysearch;searchtoo;default,v 1.4 2005/01/05 07:21:15 pudge Exp $

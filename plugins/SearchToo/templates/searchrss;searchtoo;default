@@ -17,7 +17,7 @@ rss.items = [];
 rss.channel = {
 	title       => "$constants.sitename Search",
 	description => "$constants.sitename Search",
-	link        => "$gSkin.absolutedir/[% env.script_name %]",
+	link        => "$gSkin.absolutedir$env.script_name",
 };
 
 IF op == 'stories';
@@ -115,4 +115,4 @@ END;
 __seclev__
 100
 __version__
-$Id: searchrss;searchtoo;default,v 1.3 2005/01/04 21:40:52 pudge Exp $
+$Id: searchrss;searchtoo;default,v 1.4 2005/01/05 07:21:15 pudge Exp $

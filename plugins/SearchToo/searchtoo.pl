@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: searchtoo.pl,v 1.4 2005/01/04 21:40:20 pudge Exp $
+# $Id: searchtoo.pl,v 1.5 2005/01/05 07:21:15 pudge Exp $
 
 use strict;
 use Slash;
@@ -113,7 +113,7 @@ sub main {
 			} else {
 				# we redirect here, because we might not know
 				# if the op can do RSS until we get the result
-				redirect("$constants->{rootdir}/$ENV{SCRIPT_NAME}?start=$opts{records_start}&$args");
+				redirect("$constants->{rootdir}$ENV{SCRIPT_NAME}?start=$opts{records_start}&$args");
 				return;
 			}
 				

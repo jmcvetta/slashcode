@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.37 2003/03/27 19:58:49 pudge Exp $
+# $Id: Utility.pm,v 1.38 2003/04/22 21:48:54 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -589,7 +589,15 @@ sub sqlInsert {
 sub sqlQuote {
 	my($self, $value) = @_;
 	$self->sqlConnect;
-	return $self->{_dbh}->quote($value);
+	if (ref($value) eq 'ARRAY') {
+		my (@array);
+		for (@$value) {
+			push @array, $self->{_dbh}->quote($_);
+		}
+		return \@array;
+	} else {
+		return $self->{_dbh}->quote($value);
+	}
 }
 
 #################################################################

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.109 2003/04/21 22:04:19 brian Exp $
+# $Id: slashschema_create.sql,v 1.110 2003/04/22 21:48:54 brian Exp $
 #
 
 #
@@ -986,9 +986,8 @@ DROP TABLE IF EXISTS users_acl;
 CREATE TABLE users_acl (
 	id mediumint UNSIGNED NOT NULL auto_increment,
 	uid mediumint UNSIGNED NOT NULL,
-	name varchar(32) NOT NULL,
-	value varchar(254),
-	UNIQUE uid_key (uid,name),
+	acl varchar(32) NOT NULL,
+	UNIQUE uid_key (uid,acl),
 	KEY uid (uid),
 	FOREIGN KEY (uid) REFERENCES users(uid),
 	PRIMARY KEY (id)

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.88 2003/04/29 19:06:29 pudge Exp $
+# $Id: Environment.pm,v 1.89 2003/05/01 00:51:08 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1315,8 +1315,6 @@ sub prepareUser {
 			$user->{state}{page_adless} = $subscribe->adlessPage($r, $user);
 		}
 	}
-	print STDERR scalar(localtime) . " user->currentPage '$user->{currentPage}' user->state->page_ plummy='$user->{state}{page_plummy}' buying='$user->{state}{page_buying}' adless='$user->{state}{page_adless}'\n";
-
 	if ($user->{seclev} >= 100) {
 		$user->{is_admin} = 1;
 		my $sid;
@@ -2120,4 +2118,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.88 2003/04/29 19:06:29 pudge Exp $
+$Id: Environment.pm,v 1.89 2003/05/01 00:51:08 jamie Exp $

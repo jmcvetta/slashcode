@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.17 2001/12/18 21:41:32 pudge Exp $
+# $Id: User.pm,v 1.18 2002/01/21 15:26:42 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -191,11 +191,12 @@ sub handler {
 	# Weird hack for getCurrentCache() till I can code up proper logic for it
 	{
 		my $cache = getCurrentCache();
-		if (!exists($cache->{_cache_time}) or ((time() - $cache->{_cache_time}) > $constants->{apache_cache})) {
-			$cache = {};
+		if (!$cache->{_cache_time} || ((time() - $cache->{_cache_time}) > $constants->{apache_cache})) {
+			# we can't do $cache = {}, because that won't
+			# overwrite the actual ref stored in $cfg->{cache}
+			%{$cache} = ();
 			$cache->{_cache_time} = time();
 		}
-
 	}
 
 	return OK;

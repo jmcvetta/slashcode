@@ -32,9 +32,7 @@ A user has sent you the following story from [% constants.sitename %]:
 	IF constants.use_dept;
 		box("  from the $story.dept dept.");
 	END;
-	thisurl = Slash.url2abs(
-		Slash.db.getSection(story.section, 'rootdir'), gSkin.absolutedir) ||
-		gSkin.absolutedir;
+	thisurl = Slash.url2abs(Slash.db.getSection(story.section, 'rootdir'), absolutedir) || absolutedir;
 
 	stime = Slash.timeCalc(story.time, "%A %B %d, @%H:%M");
 	box("  posted by $author on $stime ($topicname)");
@@ -61,4 +59,4 @@ To opt-out of further emailings:
 Copyright 1997-2005 [% constants.sitepublisher %].  All rights reserved.
 
 __version__
-$Id: dispStory;email;default,v 1.7 2005/01/31 19:39:28 jamiemccarthy Exp $
+$Id: dispStory;email;default,v 1.8 2005/02/25 20:44:13 pudge Exp $

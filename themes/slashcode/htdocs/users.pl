@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.216 2004/02/17 20:23:22 tvroom Exp $
+# $Id: users.pl,v 1.217 2004/02/17 21:08:37 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -991,7 +991,7 @@ sub showInfo {
 
 	# Grab the nicks of the uids we have, we're going to be adding them
 	# into the struct.
-	my @users_extra_cols_wanted     = qw( nickname );
+	my @users_extra_cols_wanted       = qw( nickname );
 	my @discussions_extra_cols_wanted = qw( type );
 	my $uid_hr = { };
 	my $sid_hr = { };

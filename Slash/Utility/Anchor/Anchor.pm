@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.39 2002/11/06 21:18:19 pudge Exp $
+# $Id: Anchor.pm,v 1.40 2002/11/28 21:24:02 jamie Exp $
 
 package Slash::Utility::Anchor;
 
@@ -34,7 +34,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	header
 	footer
@@ -149,7 +149,7 @@ sub header {
 
 	# ssi = 1 IS NOT THE SAME as ssi = 'yes'
 	# ...which is silly. - Jamie 2002/06/26
-	if ($form->{ssi} eq 'yes') {
+	if ($form->{ssi} && $form->{ssi} eq 'yes') {
 		ssiHead($section, $options);
 		return;
 	}
@@ -556,4 +556,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.39 2002/11/06 21:18:19 pudge Exp $
+$Id: Anchor.pm,v 1.40 2002/11/28 21:24:02 jamie Exp $

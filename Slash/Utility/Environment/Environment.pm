@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.55 2002/11/26 20:57:17 pudge Exp $
+# $Id: Environment.pm,v 1.56 2002/11/28 21:24:02 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1114,6 +1114,7 @@ sub prepareUser {
 	my($slashdb, $constants, $user, $hostip);
 
 	$cookies ||= {};
+	$method ||= "";
 	$slashdb = getCurrentDB();
 	$constants = getCurrentStatic();
 
@@ -1437,7 +1438,7 @@ sub setUserDate {
 	$user->{off_set}  = $tz->{off_set};  # we need for calculation
 
 	my $is_dst = 0;
-	if ($user->{dst} eq "on") {  # manual on ("on")
+	if ($user->{dst} && $user->{dst} eq "on") {  # manual on ("on")
 		$is_dst = 1;
 
 	} elsif (!$user->{dst}) { # automatic (calculate on/off) ("")
@@ -1901,4 +1902,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.55 2002/11/26 20:57:17 pudge Exp $
+$Id: Environment.pm,v 1.56 2002/11/28 21:24:02 jamie Exp $

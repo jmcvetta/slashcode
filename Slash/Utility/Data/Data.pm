@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.104 2003/12/29 22:31:48 jamie Exp $
+# $Id: Data.pm,v 1.105 2003/12/29 22:37:56 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -400,13 +400,13 @@ sub timeCalc {
 
 =head2 createLogToken()
 
-Return new random 20-character logtoken, composed of \w chars.
+Return new random 22-character logtoken, composed of \w chars.
 
 =over 4
 
 =item Return value
 
-Return a random password that matches /^\w{20}$/.
+Return a random password that matches /^\w{22}$/.
 
 We're only pulling out 3 chars each time thru this loop, so we only
 need (and trust) about 18 bits worth of randomness.  We re-seed srand
@@ -415,7 +415,7 @@ semirandom value supplied by the kernel (if it supports the /dev/urandom
 device)", says the Camel book).  I don't think I'm doing anything
 mathematically dumb to introduce any predictability into this, so it
 should be fine, wasteful of a few microseconds perhaps, ugly perhaps, but
-the 20-char value it returns should have very close to 119 bits of
+the 22-char value it returns should have very close to 131 bits of
 randomness.
 
 =back
@@ -427,7 +427,7 @@ randomness.
 	sub createLogToken {
 		my $str = "";
 		my $need_srand = 0;
-		while (length($str) < 20) {
+		while (length($str) < 22) {
 			if ($need_srand) {
 				srand();
 				$need_srand = 0;
@@ -438,7 +438,7 @@ randomness.
 			$str .= substr($md5, int(rand 8) + 5, 3);
 			$need_srand = 1 if rand() < 0.3;
 		}
-		return substr($str, 0, 20);
+		return substr($str, 0, 22);
 	}
 }
 
@@ -3120,4 +3120,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.104 2003/12/29 22:31:48 jamie Exp $
+$Id: Data.pm,v 1.105 2003/12/29 22:37:56 jamie Exp $

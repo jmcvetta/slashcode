@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.97 2003/12/19 18:07:43 pudge Exp $
+# $Id: User.pm,v 1.98 2003/12/29 22:37:56 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -266,7 +266,12 @@ sub handler {
 
 	# this needs to get called once per child ... might as well
 	# have it called here. -- pudge
-	srand(time ^ ($$ + ($$ << 15))) unless $srand_called;
+	# Note that (and this may be new starting in perl 5.6 or so)
+	# if you call srand() with no arguments, perl will try hard
+	# to find random data to seed with, using /dev/urandom if
+	# possible.  This is almost certainly better than any seed
+	# we could cobble together with time() and $$ and so on.
+	srand() unless $srand_called;
 	$srand_called ||= 1;
 
 	# If this uid is marked as banned, deny them access.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.2 2003/03/13 22:08:22 brian Exp $
+# $Id: Relocate.pm,v 1.3 2003/03/18 02:08:13 brian Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -84,14 +84,14 @@ sub href2SlashTag {
 					my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
 					my $href = strip_attribute($token->[1]->{href});
 					my $title = strip_attribute($token->[1]->{title});
-					$text =~ s#$token->[3]#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
+					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
 				} else {
 					my $url = $self->get($token->[1]->{id}, 'url');
 					next if $url eq $token->[1]->{href};
 					my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
 					my $href = strip_attribute($token->[1]->{href});
 					my $title = strip_attribute($token->[1]->{title});
-					$text =~ s#$token->[3]#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
+					$text =~ s#\Q$token->[3]\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">#is;
 				}
 			# New links to convert!!!!
 			} else {
@@ -105,16 +105,9 @@ sub href2SlashTag {
 				my $data = $tokens->get_text("/a");
 				my $href = strip_attribute($token->[1]->{href});
 				my $title = strip_attribute($token->[1]->{title});
-				$text =~ s#$token->[3]$data</a>#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">$data</SLASH>#gis;
+				$text =~ s#\Q$token->[3]$data</a>\E#<SLASH HREF="$href" ID="$link" TITLE="$title" TYPE="LINK">$data</SLASH>#is;
 			}
 		}
-		# Let's make sure someone hasn't updated
-#		while (my $token = $tokens->get_tag("slash")) {
-#			return unless $token->[1]->{href};
-#			my $link = $self->create({ sid => $sid, url => $token->[1]->{href}});
-#			my $data = $tokens->get_text("/a");
-#			$text =~ s#$token->[3]$data</a>#<SLASH href="$link" id="$link">$data</SLASH>#gis;
-#		}
 	}
 
 	return $text;

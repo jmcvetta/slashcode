@@ -187,6 +187,8 @@ through the version you're upgrading to.
 
 =back
 
+=back
+
 =head2 Slash 1.0 -E<gt> Slash 2.0
 
 Please read the complete documentation of F<utils/slash1toslash2>.
@@ -664,4 +666,4 @@ for Slashdot).
 
 =head1 VERSION
 
-$Id: INSTALL.pod,v 1.26 2001/05/09 14:32:10 pudge Exp $
+$Id: INSTALL.pod,v 1.27 2001/05/09 16:20:44 pudge Exp $

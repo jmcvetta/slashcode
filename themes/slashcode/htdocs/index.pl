@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.118 2004/10/09 21:24:08 jamiemccarthy Exp $
+# $Id: index.pl,v 1.119 2004/10/15 14:12:13 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -526,10 +526,9 @@ sub displayStories {
 		my $link;
 
 		if ($constants->{body_bytes}) {
-			$link = $story->{body_length} . ' ' .
-				$msg->{bytes};
+			$link = "$story->{body_length} $msg->{bytes}";
 		} else {
-			$link = sprintf '%d %s', $story->{word_count}, $msg->{words};
+			$link = "$story->{word_count} $msg->{words}";
 		}
 
 		if ($story->{body_length} || $story->{commentcount}) {

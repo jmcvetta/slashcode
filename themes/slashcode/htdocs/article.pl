@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.43 2003/04/29 19:24:31 pudge Exp $
+# $Id: article.pl,v 1.44 2003/06/25 21:44:52 pudge Exp $
 
 use strict;
 use Slash;
@@ -102,12 +102,12 @@ sub main {
 			my $tids = $reader->getStoryTopicsJustTids($story->{sid}); 
 			my $tid_string = join('&amp;tid=', @$tids);
 			$user->{state}{tid} = $tid_string;
-			# If no comments ever have existed just skip the display
-			# of the comment header bar -Brian
+			# If no comments ever have existed and commentstatus is disabled,
+			# just skip the display of the comment header bar -Brian
 			printComments($discussion)
-				if $discussion
-					&& !( $discussion->{commentcount} > 0
-						&& $discussion->{commentstatus} eq 'disabled' );
+				if $discussion && !(
+					!$discussion->{commentcount} && $discussion->{commentstatus} eq 'disabled'
+				);
 		}
 	} else {
 		header('Error', $form->{section});

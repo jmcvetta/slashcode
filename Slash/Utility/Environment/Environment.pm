@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.60 2003/01/16 21:48:20 brian Exp $
+# $Id: Environment.pm,v 1.61 2003/01/22 21:20:26 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1759,14 +1759,24 @@ sub createLog {
 	} elsif ($uri eq '/') {
 		$uri = 'index';
 	} elsif ($uri =~ /\.ico$/) {
-		return; # Getting sick of seeing these in the logs -Brian
+		$uri = 'image';
+	} elsif ($uri =~ /\.jpg$/) {
+		$uri = 'image';
+	} elsif ($uri =~ /\.jpeg$/) {
+		$uri = 'image';
+	} elsif ($uri =~ /\.gif$/) {
+		$uri = 'image';
+	} elsif ($uri =~ /\.tiff$/) {
+		$uri = 'image';
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
 	# This is for me, I am getting tired of patching my local copy -Brian
 	} elsif ($uri =~ /\.tar\.gz$/) {
 		$uri =~ s|^/(.*)\.tar\.gz$|$1|;
-	} elsif ($uri =~ /\.tar\.rpm$/) {
+	} elsif ($uri =~ /\.rpm$/) {
 		$uri =~ s|^/(.*)\.rpm$|$1|;
+	} elsif ($uri =~ /\.dmg$/) {
+		$uri =~ s|^/(.*)\.dmg$|$1|;
 	} elsif ($uri =~ /\.rss$/ || $uri =~ /\.xml$/ || $uri =~ /\.rdf$/) {
 		$uri = 'rss';
 	} elsif ($uri =~ /\.shtml$/) {
@@ -1908,4 +1918,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.60 2003/01/16 21:48:20 brian Exp $
+$Id: Environment.pm,v 1.61 2003/01/22 21:20:26 brian Exp $

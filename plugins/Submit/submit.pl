@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.76 2002/12/13 15:51:54 pudge Exp $
+# $Id: submit.pl,v 1.77 2003/01/22 21:20:26 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -395,7 +395,14 @@ sub displayForm {
 	}
 
 
-	$form->{tid} ||= $constants->{defaulttopic};
+	my $topic_values = $slashdb->getDescriptions('topics_section', $section);
+	$form->{tid} ||= 0;
+	unless ($form->{tid}) {
+		my $current_hash = { %$topic_values };
+		$current_hash->{0} = "Select Topic";
+		$topic_values = $current_hash;
+	}
+
 
 	my $topic = $slashdb->getTopic($form->{tid});
 	$topic->{imageclean} = $topic->{image};
@@ -414,7 +421,7 @@ sub displayForm {
 
 	slashDisplay('displayForm', {
 		fixedstory	=> strip_html(url2html($form->{story})),
-		savestory	=> $form->{story} && $form->{subj},
+		savestory	=> $form->{story} && $form->{subj} && $form->{tid},
 		username	=> $form->{name} || $username,
 		fakeemail	=> processSub($fakeemail, $known),
 		section		=> $form->{section} || $section || $constants->{defaultsection},
@@ -423,6 +430,7 @@ sub displayForm {
 		topic		=> $topic,
 		width		=> '100%',
 		title		=> $title,
+		topic_values	=> $topic_values,
 	});
 }
 

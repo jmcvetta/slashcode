@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.205 2004/03/09 23:00:40 pudge Exp $
+# $Id: Slash.pm,v 1.206 2004/03/20 17:33:47 jamiemccarthy Exp $
 
 package Slash;
 
@@ -787,8 +787,13 @@ sub moderatorCommentLog {
 	my $title = $options->{title};
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
+	my $user = getCurrentUser();
 
-	my $seclev = getCurrentUser('seclev');
+	# If the user doesn't want even to see the numeric score of
+	# a comment, they certainly don't want to see all this detail.
+	return "" if $user->{noscores};
+
+	my $seclev = $user->{seclev};
 	my $mod_admin = $seclev >= $constants->{modviewseclev} ? 1 : 0;
 
 	my $asc_desc = $type eq 'cid' ? 'ASC' : 'DESC';

@@ -6,9 +6,9 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
-# FRY: And where would a giant nerd be? THE LIBRARY!
+# FRY: Prepare to be thought at!
 
 #################################################################
 sub new {
@@ -48,7 +48,6 @@ sub prepResults {
 	my($self, $results, $records, $total, $matches, $start, $max) = @_;
 
 	### prepare results
-	# undef if we cannot find for sure, or if not applicable
 	$records ||= [];
 	$results->{records_next}     = 0;
 	$results->{records_end}      = scalar @$records

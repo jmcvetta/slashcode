@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.9 2004/06/17 16:11:56 jamiemccarthy Exp $
+# $Id: Hof.pm,v 1.10 2004/09/07 22:21:09 jamiemccarthy Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -123,16 +123,22 @@ sub countStoriesTopHits {
 	my($self) = @_;
 	my $stories = $self->sqlSelectAll(
 		'stories.sid, title, primaryskid, hits, users.nickname',
-		'stories, story_text, users',
-		'stories.stoid=story_text.stoid AND stories.uid=users.uid',
+		"stories, story_text, users
+		 LEFT JOIN story_param
+			ON stories.stoid=story_param.stoid AND story_param.name='neverdisplay'",
+		'stories.stoid=story_text.stoid
+		 AND story_param.name IS NULL
+		 AND primaryskid > 0
+		 AND stories.uid=users.uid',
 		'ORDER BY hits DESC LIMIT 10'
 	);
 
-	# XXXSKIN - not sure if this is the best way to do this, but
-	# i figure it is fine ... please change or advise if should be changed ...
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-	for (@$stories) {
-		$_->[2] = $reader->getSkin($_->[2])->{name};
+	for my $story (@$stories) {
+		my $primaryskid = $story->[2];
+		my $skin = $reader->getSkin($primaryskid);
+		next unless $skin;
+		$story->[2] = $skin->{name};
 	}
 
 	return $stories;

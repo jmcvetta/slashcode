@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.6 2000/07/10 15:33:57 cbwood Exp $
+#  $Id: metamod.pl,v 1.7 2000/07/10 18:50:19 cbwood Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -129,6 +129,7 @@ sub metaModerate {
 	}
 	$I{dbh}->do("UNLOCK TABLES");
 
+	print "<BR><BR>" if $y && $I{U}{aseclev} > 10;		# Break properly.
 	print <<EOT;
 $y comments have been meta moderated.  Thanks for participating.
 You may wanna go back <A HREF="$I{rootdir}/">home</A> or perhaps to

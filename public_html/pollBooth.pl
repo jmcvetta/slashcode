@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: pollBooth.pl,v 1.12 2000/08/16 13:56:08 capttofu Exp $
+#  $Id: pollBooth.pl,v 1.13 2000/08/16 16:50:52 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -199,7 +199,7 @@ sub vote {
 			sqlInsert("pollvoters", {
 				qid	=> $qid, 
 				id	=> $ENV{REMOTE_ADDR} . $ENV{HTTP_X_FORWARDED_FOR},
-				-time	=> 'now()',
+				-'time'	=> 'now()',
 				uid	=> $I{U}{uid}
 			});
 

@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: submit.pl,v 1.25 2000/08/16 13:56:08 capttofu Exp $
+#  $Id: submit.pl,v 1.26 2000/08/16 16:50:52 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -281,7 +281,7 @@ sub genQuickies {
 		subj	=> 'Generated Quickies',
 		email	=> '',
 		name	=> '',
-		-time	=> 'now()',
+		-'time'	=> 'now()',
 		section	=> 'articles',
 		tid	=> 'quickies',
 		story	=> $stuff,
@@ -573,7 +573,7 @@ sub saveSub {
 			uid	=> $I{U}{uid},
 			name	=> $I{F}{from},
 			story	=> $I{F}{story},
-			-time	=> 'now()',
+			-'time'	=> 'now()',
 			subid	=> $subid,
 			subj	=> $I{F}{subj},
 			tid	=> $I{F}{tid},

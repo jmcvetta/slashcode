@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.14 2002/02/18 21:08:40 brian Exp $
+# $Id: Utility.pm,v 1.15 2002/02/23 20:56:06 jamie Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -458,7 +458,6 @@ sub sqlSelectAllHashref {
 sub sqlSelectAllHashrefArray {
 	my($self, $select, $from, $where, $other) = @_;
 
-	# Yes, if ID is not in $select things will be bad
 	my $sql = "SELECT $select ";
 	$sql .= "FROM $from " if $from;
 	$sql .= "WHERE $where " if $where;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.89 2002/02/22 02:47:59 pudge Exp $
+# $Id: MySQL.pm,v 1.90 2002/02/23 20:56:06 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3194,6 +3194,7 @@ sub getCommentsForUser {
 	my $comments = [];
 	my $cids = [];
 	while (my $comment = $thisComment->fetchrow_hashref) {
+		$comment->{time_unixepoch} = timeCalc($comment->{date}, "%s", 0);
 		push @$comments, $comment;
 		push @$cids, $comment->{cid};# if $comment->{points} >= $user->{threshold};
 	}

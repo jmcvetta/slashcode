@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.6 2002/02/21 03:59:31 jamie Exp $
+# $Id: subscribe.pl,v 1.7 2002/02/23 20:56:06 jamie Exp $
 
 use strict;
 
@@ -161,10 +161,10 @@ sub paypal {
 		$payment->{payment_net} = $payment->{payment_gross};
 	}
 
-	my $subs = getObject('Slash::Subscribe');
-	my $num_pages = $subs->convertDollarsToPages($payment->{payment_gross});
+	my $subscribe = getObject('Slash::Subscribe');
+	my $num_pages = $subscribe->convertDollarsToPages($payment->{payment_gross});
 	$payment->{pages} = $num_pages;
-	my $rows = $subs->insertPayment($payment);
+	my $rows = $subscribe->insertPayment($payment);
 	if ($rows == 1) {
 		$slashdb->setUser($payment->{uid}, {
 			"-hits_paidfor" => "hits_paidfor + $num_pages"

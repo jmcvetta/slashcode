@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.244 2004/10/25 22:52:18 pudge Exp $
+# $Id: admin.pl,v 1.245 2004/11/02 15:06:24 cowboyneal Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1296,8 +1296,8 @@ sub editStory {
 		$subid, $description);
 	my $extracolref = {};
 	my($fixquotes_check, $autonode_check, 
-		$fastforward_check, $shortcuts_check) =
-		('','','','');
+		$fastforward_check) =
+		('','','');
 	my $page = 'index';
 	# If the user is a section only admin, we do that, if they have filled out a form we do that but 
 	# if none of these apply we just do defaultsection -Brian
@@ -1513,7 +1513,6 @@ sub editStory {
 	$fixquotes_check	= $constants->{markup_checked_attribute} if $form->{fixquotes};
 	$autonode_check		= $constants->{markup_checked_attribute} if $form->{autonode};
 	$fastforward_check	= $constants->{markup_checked_attribute} if $form->{fastforward};
-	$shortcuts_check	= $constants->{markup_checked_attribute} if $form->{shortcuts};
 
 	$slashdb->setSession($user->{uid}, {
 		lasttitle	=> $storyref->{title},
@@ -1591,7 +1590,6 @@ sub editStory {
 		fixquotes_check		=> $fixquotes_check,
 		autonode_check		=> $autonode_check,
 		fastforward_check	=> $fastforward_check,
-		shortcuts_check		=> $shortcuts_check,
 		display_check		=> $display_check,
 		ispell_comments		=> $ispell_comments,
 		extras			=> $extracolumns,

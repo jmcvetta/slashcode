@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.37 2001/11/21 07:23:57 brian Exp $
+# $Id: users.pl,v 1.38 2001/11/22 19:13:40 brian Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -1566,10 +1566,14 @@ sub saveComm {
 		my $answer = $form->{"reason_alter_$_"};
 		$answer  = 0
 			if $answer !~ /^[\-+]?\d+$/;
-		$answer  = $constants->{comment_minscore}
-			if $answer < $min;
-		$answer  = $constants->{comment_maxscore}
-			if $answer > $max;
+# I need to change this to be so that the score
+# would never be great then Max + their
+# score just to make it look pretty.
+# But its a holiday. -Brian
+#		$answer  = $constants->{comment_minscore}
+#			if $answer < $min;
+#		$answer  = $constants->{comment_maxscore}
+#			if $answer > $max;
 		$users_comments_table->{"reason_alter_$_"} = ($answer == 0) ? '' : $answer;
 	}
 

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.3 2000/05/18 15:35:54 pudge Exp $
+#  $Id: admin.pl,v 1.4 2000/05/18 15:52:29 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1117,8 +1117,8 @@ EOT
 		$S->{commentstatus} = $I{F}{commentstatus} if exists $I{F}{commentstatus};
 		$S->{dept} =~ s/ /-/gi;
 
-		$S->{introtext} = autoUrl($I{F}{section});
-		$S->{bodytext} = autoUrl($I{F}{section});
+		$S->{introtext} = autoUrl($I{F}{section}, $S->{introtext});
+		$S->{bodytext} = autoUrl($I{F}{section}, $S->{bodytext});
 
 		$T = getTopic($S->{tid});
 		$I{F}{aid} ||= $I{U}{aid};

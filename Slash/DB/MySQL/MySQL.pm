@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.644 2004/07/22 21:42:50 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.645 2004/07/22 22:32:11 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.644 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.645 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2822,7 +2822,7 @@ sub deleteTopic {
 
 	if ($newtid) {
 		### check to see if this would create a children/parent loop!
-		my @children = $slashdb->getAllChildrenTids($tid);
+		my @children = $self->getAllChildrenTids($tid);
 		if (grep { $_ == $newtid } @children) {
 			# Houston we have a problem.  Throw an informative
 			# error here. - Jamie

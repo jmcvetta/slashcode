@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.3 2004/06/25 06:45:43 pudge Exp $
+# $Id: PopupTree.pm,v 1.4 2004/07/13 21:19:10 pudge Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -74,6 +74,7 @@ sub getPopupTree {
 	for my $tid (map  { $_->[0] }
 	             sort { $a->[1] cmp $b->[1] }
 	             map  { [ $_, lc $tree->{$_}{textname} ] } keys %$tree) {
+		next unless $tid; # just in case someone added a bad tid
 		my $top = $tree->{$tid};
 		@{$topics{$tid}}{qw(value label height width image)} = (
 			$tid, @{$top}{qw(textname height width image)}
@@ -153,4 +154,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.3 2004/06/25 06:45:43 pudge Exp $
+$Id: PopupTree.pm,v 1.4 2004/07/13 21:19:10 pudge Exp $

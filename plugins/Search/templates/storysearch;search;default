@@ -27,7 +27,7 @@ __template__
 		[% FOREACH tid = tids %]
 			[% IF tid == story.tid; NEXT; END %]
 			[% topic = Slash.db.getTopic(tid) %]
-			,&nbsp<A HREF="/search.pl?tid=[% story.tid %]">[% topic.alttext %]</A>
+			,&nbsp<A HREF="/search.pl?tid=[% tid %]">[% topic.alttext %]</A>
 		[% END %] 
 		<BR>
 		[% IF story.score %]
@@ -42,4 +42,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: storysearch;search;default,v 1.17 2003/05/23 14:15:37 pudge Exp $
+$Id: storysearch;search;default,v 1.18 2003/06/20 15:30:38 jamie Exp $

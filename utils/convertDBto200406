@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.17 2004/08/06 02:45:20 tvroom Exp $
+# $Id: convertDBto200406,v 1.18 2004/08/06 02:53:32 tvroom Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -781,8 +781,8 @@ INSERT INTO pollquestions_new (qid,question,voters,topic,discussion,date,uid,sec
 EOT
 
 for my $skid (sort { $a <=> $b } keys %skins) {
-        my $section_q = $slashdb->sqlQuote($skins{$skid}{name});
-        print "UPDATE pollquestions_new SET primaryskid=$skid WHERE section=$section_q;\n";
+	my $section_q = $slashdb->sqlQuote($skins{$skid}{name});
+	print "UPDATE pollquestions_new SET primaryskid=$skid WHERE section=$section_q;\n";
 }
 my $mainpage_skid = $slashdb->getVar('mainpage_skid','value',1);
 print "UPDATE pollquestions_new SET primaryskid=$mainpage_skid WHERE primaryskid IS NULL;\n";

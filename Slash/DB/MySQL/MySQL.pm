@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.42 2001/12/18 21:41:32 pudge Exp $
+# $Id: MySQL.pm,v 1.43 2001/12/19 23:08:39 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2783,9 +2783,10 @@ sub getAuthorNames {
 # data from the cache? Or is it just as fast to grab it from
 # the database?
 sub getStoryByTime {
-	my($self, $sign, $story, $section) = @_;
+	my($self, $sign, $story, $section, $limit) = @_;
 	my($where);
 	my $user = getCurrentUser();
+	$limit ||= '1';
 
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
 	if ($section->{isolate}) {
@@ -2804,7 +2805,30 @@ sub getStoryByTime {
 			'title, sid, section',
 			'stories',
 			"time $sign '$time' AND writestatus != 'delete' AND time < now() $where",
-			"ORDER BY time $order LIMIT 1"
+			"ORDER BY time $order LIMIT $limit"
+	);
+
+	return $returnable;
+}
+
+##################################################################
+# admin.pl only
+sub getStoryByTimeAdmin {
+	my($self, $sign, $story, $limit) = @_;
+	my($where);
+	my $user = getCurrentUser();
+	$limit ||= '1';
+
+	my $order = $sign eq '<' ? 'DESC' : 'ASC';
+
+	$where .= "   AND sid != '$story->{'sid'}'";
+
+	my $time = $story->{'time'};
+	my $returnable = $self->sqlSelectAllHashrefArray(
+			'title, sid, time',
+			'stories',
+			"time $sign '$time' AND writestatus != 'delete' $where",
+			"ORDER BY time $order LIMIT $limit"
 	);
 
 	return $returnable;
@@ -5119,27 +5143,6 @@ sub _genericGets {
 sub getStories {
 	my $answer = _genericGets('stories', 'sid', 'story_param', @_);
 	return $answer;
-}
-
-########################################################
-# this is.. yes.
-sub getNewestThree {
-	my ($self) = @_;
-	my $sth = $self->{_dbh}->prepare("SELECT sid from stories ORDER BY time DESC LIMIT 3");
-	$sth->execute;
-	my $sids = $sth->fetchall_arrayref;
-	return $sids;
-
-}
-
-########################################################
-# ok, yeah, I know
-sub getNextThree {
-	my ($self,$sid_time) = @_;
-	my $sth = $self->{_dbh}->prepare("SELECT sid from stories WHERE time > '$sid_time' ORDER BY time ASC LIMIT 3");
-	$sth->execute;
-	my $sids = $sth->fetchall_arrayref;
-	return $sids;
 }
 
 ########################################################

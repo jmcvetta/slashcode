@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.12 2001/11/07 07:10:15 brian Exp $
+# $Id: article.pl,v 1.13 2001/12/19 23:08:39 brian Exp $
 
 use strict;
 use Slash;
@@ -17,7 +17,6 @@ sub main {
 	my $form      = getCurrentForm();
 
 	my $story;
-	my $authorbox;
 
 	#Yeah, I am being lazy and paranoid  -Brian
 	if (!($user->{author} or $user->{is_admin}) and !$slashdb->checkStoryViewable($form->{sid})) {
@@ -47,27 +46,9 @@ sub main {
 		};
 		header($links, $story->{section});
 
-		if ($user->{seclev} >= 100) {
-			my $newestthree = $slashdb->getBlock('newestthree','block'); 
-			my $nextthree = $slashdb->getNextThree($story->{time});
-			my $nextstories = {};
-
-			for (@$nextthree) {
-				my $tmpstory = $slashdb->getStory($_->[0], ['title', 'uid', 'time']);
-				my $author = $slashdb->getUser($tmpstory->{uid},'nickname');
-				$nextstories->{$_->[0]}{author} = $slashdb->getUser($tmpstory->{uid},'nickname');
-				$nextstories->{$_->[0]}{title} = $tmpstory->{title};
-				$nextstories->{$_->[0]}{time} = $tmpstory->{time};
-			}
-
-			my $nextblock = slashDisplay('three', { stories => $nextstories}, { Return => 1, Page => 'misc', Section => 'default'});
-			$authorbox = $newestthree . $nextblock;
-		}
-
 		my $pollbooth = pollbooth($story->{sid}, 1);
 		slashDisplay('display', {
 			poll			=> $pollbooth,
-			authorbox 		=> $user->{is_admin} ? $authorbox : '',
 			section			=> $SECT,
 			section_block		=> $slashdb->getBlock($SECT->{section}),
 			show_poll		=> $pollbooth ? 1 : 0,

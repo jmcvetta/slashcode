@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.526 2004/03/09 23:00:42 pudge Exp $
+# $Id: MySQL.pm,v 1.527 2004/03/10 01:36:33 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.526 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.527 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4156,7 +4156,7 @@ sub _get_insert_and_where_accesslist {
 				"ipid = '$user_check->{md5id}'",
 				"subnetid = '$user_check->{md5id}'",
 			];
-			$insert_hr->{ipid} = $user_check->{ipid};
+			$insert_hr->{ipid} = $insert_hr->{subnetid} = $user_check->{md5id};
 		} else {
 			return undef;
 		}

@@ -58,7 +58,7 @@ __template__
 [% END %]
 
 	<tr>
-		<td><b>Nickname</b></td>
+		<td><b>Nickname:</b></td>
 		<td><input type="TEXT" name="unickname" size="20" value="[% form.unickname | strip_attribute %]">
 		</td>
 	</tr>
@@ -85,4 +85,4 @@ if you don't have one already.<br>
 __seclev__
 500
 __version__
-$Id: loginForm;login;default,v 1.5 2004/05/11 20:24:48 pudge Exp $
+$Id: loginForm;login;default,v 1.6 2004/05/11 22:54:02 pudge Exp $

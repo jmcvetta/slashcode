@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.469 2003/09/30 13:34:40 jamie Exp $
+# $Id: upgrades,v 1.470 2003/10/09 19:48:29 jamie Exp $
 #
 
 # BEGIN tf23's additions 
@@ -1921,4 +1921,6 @@ ALTER TABLE blobs ADD COLUMN filename VARCHAR(80) DEFAULT "" NOT NULL AFTER cont
 ALTER TABLE metamodlog CHANGE id id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 # End of T_2_3_0_119, Start of T_2_3_0_120 - 2003/09/28
+
+DELETE FROM vars WHERE name='tailslash_stats';
 

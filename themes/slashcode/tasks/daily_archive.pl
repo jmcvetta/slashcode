@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_archive.pl,v 1.24 2003/08/12 19:18:37 jamie Exp $
+# $Id: daily_archive.pl,v 1.25 2003/10/09 19:48:29 jamie Exp $
 
 use strict;
 
@@ -23,6 +23,7 @@ use vars qw( %task $me );
 
 $task{$me}{timespec} = '7 8 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, dailyStuff can wait
+$task{$me}{resource_locks} = { log_slave => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.157 2003/09/25 17:10:10 jamie Exp $
+# $Id: adminmail.pl,v 1.158 2003/10/09 19:48:29 jamie Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -651,7 +651,7 @@ EOT
 	$data{data} = \%data;
 	$data{lazy} = \@lazy; 
 	$data{admin_clearpass_warning} = $admin_clearpass_warning;
-	$data{tailslash} = `$constants->{slashdir}/bin/tailslash -u $virtual_user -y today` if $constants->{tailslash_stats};
+	$data{tailslash} = $logdb->getTailslash();
 
 	$data{backup_lag} = "";
 	for my $slave_name (qw( backup search )) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.112 2003/10/09 02:51:26 jamie Exp $
+# $Id: MySQL.pm,v 1.113 2003/10/09 19:48:29 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -880,38 +880,6 @@ sub stirPool {
 	}
 
 	return $n_stirred;
-}
-
-########################################################
-# For tailslash
-sub pagesServed {
-	my($self) = @_;
-	my $returnable = $self->sqlSelectAll("count(*),ts",
-			"accesslog", "to_days(now()) - to_days(ts) <= 1",
-			"GROUP BY ts ORDER BY ts ASC");
-
-	return $returnable;
-
-}
-
-########################################################
-# For tailslash
-sub maxAccessLog {
-	my($self) = @_;
-	my($returnable) = $self->sqlSelect("max(id)", "accesslog");;
-
-	return $returnable;
-}
-
-########################################################
-# For tailslash
-sub getAccessLogInfo {
-	my($self, $id) = @_;
-	my $returnable = $self->sqlSelectAll("host_addr,uid,op,dat,ts,id",
-				"accesslog", "id > $id",
-				"ORDER BY ts DESC");
-	formatDate($returnable, 4, 4, '%H:%M');
-	return $returnable;
 }
 
 ########################################################

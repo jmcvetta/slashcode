@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: delete_accesslog.pl,v 1.5 2003/07/22 20:26:32 jamie Exp $
+# $Id: delete_accesslog.pl,v 1.6 2003/10/09 19:48:29 jamie Exp $
 
 use strict;
 
@@ -20,6 +20,7 @@ use vars qw( %task $me );
 $task{$me}{timespec} = '22 * * * *'; # Normally run once an hour
 $task{$me}{timespec_panic_1} = '20 1,2,3,4,5,6 * * *'; # Just run at night if an issue pops up
 $task{$me}{timespec_panic_2} = ''; # In a pinch don't do anything
+$task{$me}{resource_locks} = { logdb => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;

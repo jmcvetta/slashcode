@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.5 2001/11/03 03:08:48 brian Exp $
+# $Id: Log.pm,v 1.6 2001/11/30 01:47:54 jamie Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -42,11 +42,13 @@ sub UserLog {
 	return if !$user or !$user->{uid} or $user->{is_anon};
 	my $slashdb = getCurrentDB();
 
-	$slashdb->setUser($user->{uid}, {
-			-hits => 'hits +1'
-	});
+	my $user_update = { -hits => 'hits+1' };
+	my $subscribe = getObject('Slash::Subscribe');
+	if ($subscribe and $subscribe->buyingThisPage($r)) {
+		$user_update->{-hits_bought} = 'hits_bought+1';
+	}
+	$slashdb->setUser($user->{uid}, $user_update);
 
-	
 	return OK;
 }
 

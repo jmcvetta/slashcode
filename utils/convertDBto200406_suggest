@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406_suggest,v 1.3 2004/06/21 14:35:49 jamiemccarthy Exp $
+# $Id: convertDBto200406_suggest,v 1.4 2004/07/13 23:54:41 jamiemccarthy Exp $
 
 # This script checks over the topic tree that has been generated
 # by convertDBto200406, and emits SQL DELETE commands which may
@@ -23,7 +23,7 @@ use Slash::Utility;
 use vars qw( $slashdb
         $stoids );
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, $tree);
@@ -89,14 +89,14 @@ for my $skid (sort { $a <=> $b } keys %$skins) {
 # You may (or may not) want to add links to this (these) topic(s),
 # which appear in existing stories but are not currently linked,
 # directly or otherwise, to the skin's nexus tid $skin->{nexus}.
-# Sample links are given with min_weight 1 linking directly to the
+# Sample links are given with min_weight 10 linking directly to the
 # nexus;  that may or may not be what you want.
 EOT
 		for my $tid (sort { $popular_tid_hr->{$b}{c} <=> $popular_tid_hr->{$a}{c} } keys %$popular_tid_hr) {
 			my $c = $popular_tid_hr->{$tid}{c};
 			print "# === $c stories with tid $tid '$tree->{$tid}{textname}'\n";
 			print "INSERT INTO topic_parents (tid, parent_tid, min_weight) VALUES (";
-			print "$tid, $skin->{nexus}, 1";
+			print "$tid, $skin->{nexus}, 10";
 			print ");\n";
 
 		}

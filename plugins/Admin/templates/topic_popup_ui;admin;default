@@ -37,10 +37,10 @@ __template__
 [%- END %]</select>
 
 <select name="[% name %]_main_weights" size=1 onchange="[% name %]_change_weight()">
-<option value="4">4 - Mainpageworthy (priority)</option>
-<option value="3">3 - Mainpageworthy</option>
-<option value="2">2 - Sectionworthy (priority)</option>
-<option value="1">1 - Sectionworthy</option>
+<option value="40">40 - Mainpageworthy (priority)</option>
+<option value="30">30 - Mainpageworthy</option>
+<option value="20">20 - Sectionworthy (priority)</option>
+<option value="10">10 - Sectionworthy</option>
 <option value="0">0 - Ignore Topic</option>
 </select>
 <br>
@@ -54,4 +54,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: topic_popup_ui;admin;default,v 1.1 2004/07/13 22:44:05 pudge Exp $
+$Id: topic_popup_ui;admin;default,v 1.2 2004/07/13 23:54:41 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.41 2002/07/29 19:19:09 jamie Exp $
+# $Id: Search.pm,v 1.42 2002/08/09 01:41:20 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -279,11 +279,13 @@ sub findStory {
 					$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
 				} else {
 					# Section doesn't belong to this contained section
-					return;
+					# Tecnically we should return nothing but users are too dumb for that :)  -Brian
+					$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
 				}
 			} else  {
 				# Means we are dealing with a contained section and this is not the contained section
-				return;
+				# Tecnically we should return nothing but users are too dumb for that :)  -Brian
+				$where .= " AND stories.section = " . $self->sqlQuote($form->{section});
 			}
 		} else {
 			$where .= " AND stories.section = " . $self->sqlQuote($form->{section});

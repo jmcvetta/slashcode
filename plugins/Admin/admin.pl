@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.220 2004/07/15 05:03:49 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.221 2004/07/15 19:44:27 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1270,6 +1270,7 @@ sub editStory {
 	# I've never understood why we check *this* field to make
 	# that determination.  Now that we have $newarticle, should
 	# we be using that instead? - Jamie
+	# if that tells us, then sure - pudge
 	if ($form->{title}) {
 
 		my $storyskin = $gSkin;

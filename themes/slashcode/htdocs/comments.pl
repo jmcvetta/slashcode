@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.62 2002/04/15 18:32:32 patg Exp $
+# $Id: comments.pl,v 1.63 2002/04/17 04:47:24 patg Exp $
 
 use strict;
 use HTML::Entities;
@@ -313,7 +313,7 @@ sub commentIndex {
 			print getData('nodiscussions');
 			slashDisplay('discreate', {
 				topic => $constants->{discussion_default_topic},
-				disclabel => $label,
+				label => $label,
 			}) if $user->{seclev} >= $constants->{discussion_create_seclev};
 		}
 	} else {
@@ -351,7 +351,7 @@ sub commentIndex {
 			print getData('nodiscussions');
 			slashDisplay('discreate', {
 				topic => $constants->{discussion_default_topic},
-				disclabel	=> $label,
+				label	=> $label,
 			}) if $user->{seclev} >= $constants->{discussion_create_seclev};
 		}
 	}
@@ -398,7 +398,7 @@ sub commentIndexUserCreated {
 		print getData('nodiscussions');
 		slashDisplay('discreate', {
 			topic => $constants->{discussion_default_topic},
-			disclabel => $label,
+			label => $label,
 		}) if $user->{seclev} >= $constants->{discussion_create_seclev};
 	}
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.312 2003/01/31 02:33:15 jamie Exp $
+# $Id: MySQL.pm,v 1.313 2003/01/31 05:15:32 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.312 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.313 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1375,12 +1375,13 @@ sub createAccessLog {
 		push @{$self->{_accesslog_insert_cache}}, $insert;
 		my $size = scalar(@{$self->{_accesslog_insert_cache}});
 		if ($size >= $constants->{accesslog_insert_cachesize}) {
-			$self->{_dbh}->{AutoCommit} = 0;
+			$self->sqlDo("SET AUTOCOMMIT=0");
 			while (my $hr = shift @{$self->{_accesslog_insert_cache}}) {
 				$self->sqlInsert('accesslog', $hr, { delayed => 1 });
 			}
 			$self->{_dbh}->commit;
-			$self->{_dbh}->{AutoCommit} = 1;
+			$self->sqlDo("commit");
+			$self->sqlDo("SET AUTOCOMMIT=1");
 		}
 	} else {
 		$self->sqlInsert('accesslog', $insert, { delayed => 1 });

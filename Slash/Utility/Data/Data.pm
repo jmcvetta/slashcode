@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.6 2001/11/24 18:16:16 jamie Exp $
+# $Id: Data.pm,v 1.7 2001/12/13 17:28:59 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	parseDomainTags
@@ -461,13 +461,13 @@ sub stripByMode {
 
 	# insert whitespace into long words, convert <>& to HTML entities
 	if ($fmode == LITERAL || $fmode == EXTRANS || $fmode == ATTRIBUTE || $fmode == CODE) {
-		# attributes are inside tags, and don't need to be
-		# broken up
-		$str = breakHtml($str) unless $no_white_fix || $fmode == ATTRIBUTE;
 		# Encode all HTML tags
 		$str =~ s/&/&amp;/g;
 		$str =~ s/</&lt;/g;
 		$str =~ s/>/&gt;/g;
+		# attributes are inside tags, and don't need to be
+		# broken up
+		$str = breakHtml($str) unless $no_white_fix || $fmode == ATTRIBUTE;
 
 	} elsif ($fmode == PLAINTEXT) {
 		$str = stripBadHtml($str);
@@ -1746,4 +1746,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.6 2001/11/24 18:16:16 jamie Exp $
+$Id: Data.pm,v 1.7 2001/12/13 17:28:59 jamie Exp $

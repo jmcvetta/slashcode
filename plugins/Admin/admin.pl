@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.60 2002/04/24 22:17:18 brian Exp $
+# $Id: admin.pl,v 1.61 2002/04/26 00:50:28 brian Exp $
 
 use strict;
 use Image::Size;
@@ -1513,6 +1513,7 @@ sub saveStory {
 		sid		=> $form->{sid},
 		title		=> $form->{title},
 		section		=> $form->{section},
+		submitter		=> $form->{submitter},
 		tid		=> $form->{tid},
 		dept		=> $form->{dept},
 		'time'		=> $time,

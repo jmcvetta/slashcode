@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.112 2003/05/27 06:21:32 jamie Exp $
+# $Id: Stats.pm,v 1.113 2003/05/28 21:19:11 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -468,6 +468,59 @@ sub countCommentsByDistinctIPIDPerAnon {
 		}
 	}
 	return ($anon_only, $loggedin_only, $both);
+}
+
+########################################################
+sub countCommentsByDiscussionType {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+
+	my $return_hr = { };
+
+	# First count comments posted to polls.
+	if ($constants->{plugin}{PollBooth}) {
+		$return_hr->{polls} = $self->sqlSelect(
+			"COUNT(*), IF(pollquestions.discussion IS NULL, 'no', 'yes') AS ispoll",
+			"comments, discussions
+				LEFT JOIN pollquestions ON discussions.id=pollquestions.discussion",
+			"comments.date $self->{_day_between_clause}
+				AND comments.sid=discussions.id",
+			"GROUP BY ispoll HAVING ispoll='yes'"
+		) || 0;
+	} else {
+		$return_hr->{polls} = 0;
+	}
+
+	# Now comments posted to journals.
+	if ($constants->{plugin}{Journal}) {
+		$return_hr->{journals} = $self->sqlSelect(
+			"COUNT(*), IF(journals.discussion IS NULL, 'no', 'yes') AS isjournal",
+			"comments, discussions
+				LEFT JOIN journals ON discussions.id=journals.discussion",
+			"comments.date $self->{_day_between_clause}
+				AND comments.sid=discussions.id",
+			"GROUP BY isjournal HAVING isjournal='yes'"
+		) || 0;
+	} else {
+		$return_hr->{journals} = 0;
+	}
+
+	# Don't forget comments posted to stories.
+	$return_hr->{stories} = $self->sqlSelect(
+		"COUNT(*), IF(stories.discussion IS NULL, 'no', 'yes') AS isstory",
+		"comments, discussions
+			LEFT JOIN stories ON discussions.id=stories.discussion",
+		"comments.date $self->{_day_between_clause}
+			AND comments.sid=discussions.id",
+		"GROUP BY isstory HAVING isstory='yes'"
+	) || 0;
+
+	# Whatever's left must be user-created discussions.
+	my $total = $self->sqlCount("comments", "date $self->{_day_between_clause}");
+	$return_hr->{user} = $total -
+		( $return_hr->{polls} + $return_hr->{journals} + $return_hr->{stories} );
+
+	return $return_hr;
 }
 
 ########################################################
@@ -1276,4 +1329,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.112 2003/05/27 06:21:32 jamie Exp $
+$Id: Stats.pm,v 1.113 2003/05/28 21:19:11 jamie Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.26 2003/09/23 22:12:53 jamie Exp $
+# $Id: Log.pm,v 1.27 2003/09/23 22:43:38 jamie Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -88,7 +88,7 @@ sub UserLog {
 	# There are other less-important things that might get updated
 	# but none of them matters enough to continue processing.
 	if ($op eq 'image' and !$user_update->{admin_clearpass}) {
-		print STDERR scalar(gmtime) . " $$ UserLog short-circuit image\n";
+#		print STDERR scalar(gmtime) . " $$ UserLog short-circuit image\n";
 		return ;
 	}
 

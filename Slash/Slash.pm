@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.188 2003/12/09 04:21:55 vroom Exp $
+# $Id: Slash.pm,v 1.189 2003/12/09 15:17:48 jamie Exp $
 
 package Slash;
 
@@ -1378,7 +1378,8 @@ sub displayStory {
 		$return = dispStory($story, $author, $topic, $full, $options);
 
 	}
-	my $df = ($user->{mode} eq "archive" or $story->{writestatus} eq "archived") ? $constants->{archive_dateformat} : "";
+	my $df = ($user->{mode} eq "archive" || $story->{writestatus} eq "archived")
+		? $constants->{archive_dateformat} : "";
 	my $storytime = timeCalc($story->{'time'}, $df);
 	my $atstorytime;
 	if ($options->{is_future} && !($user->{author} || $user->{is_admin})) {

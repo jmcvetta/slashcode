@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.205 2003/12/09 04:47:08 vroom Exp $
+# $Id: users.pl,v 1.206 2003/12/09 15:17:48 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1121,7 +1121,7 @@ sub showInfo {
 	my $uid_hoursback = $constants->{istroll_uid_hours} || 72;
 
 	if ($requested_user->{nonuid}) {
-		if($admin_flag) {
+		if ($admin_flag) {
 			if ($form->{fieldname} eq "ipid") {
 				$modval = $reader->calcModval("ipid = '$id'", $ipid_hoursback, {});
 				$trollpoint = $reader->calcTrollPoint("ipid");

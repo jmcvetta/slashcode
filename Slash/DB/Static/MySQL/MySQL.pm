@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.181 2004/10/01 04:10:34 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.182 2004/10/03 14:26:26 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -319,6 +319,25 @@ sub forgetUsersLogtokens {
 
 	return $self->sqlDelete("users_logtokens",
 		"DATE_ADD(expires, INTERVAL 1 MONTH) < NOW()");
+}
+
+########################################################
+# For daily_forget.pl
+sub forgetUsersLastLookTime {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+	my $reader = getObject('Slash::DB', { db_type => "reader" });
+	my $min_lastlooktime = time - ($constants->{lastlookmemory} + 86400*7);
+	my $uids = $reader->sqlSelectColArrayref("uid", "users_param",
+		"name='lastlooktime' AND value < '$min_lastlooktime'");
+
+	my $splice_count = 2000;
+	while (@$uids) {
+		my @uid_chunk = splice @$uids, 0, $splice_count;
+		my $uids_in = join(",", @uid_chunk);
+		$self->sqlDelete("users_param",
+			"name IN ('lastlooktime', 'lastlookuid') AND uid IN ($uids_in)");
+	}
 }
 
 ########################################################

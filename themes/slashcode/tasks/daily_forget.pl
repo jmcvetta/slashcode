@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_forget.pl,v 1.9 2004/06/01 23:39:18 pudge Exp $
+# $Id: daily_forget.pl,v 1.10 2004/10/03 14:26:26 jamiemccarthy Exp $
 
 use strict;
 
@@ -19,6 +19,7 @@ $task{$me}{code} = sub {
 	my $forgotten2 = $slashdb->forgetSubmissionIPs;
 	my $forgotten3 = $slashdb->forgetOpenProxyIPs;
 	my $forgotten4 = $slashdb->forgetUsersLogtokens;
+	my $forgotten4 = $slashdb->forgetUsersLastLookTime;
 	return "forgot approx $forgotten1 comment IPs, $forgotten2 submission IPs, $forgotten3 open proxy IPs, $forgotten4 logtokens";
 };
 

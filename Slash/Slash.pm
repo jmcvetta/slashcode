@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.91 2003/01/16 00:53:30 brian Exp $
+# $Id: Slash.pm,v 1.92 2003/01/20 19:47:46 jamie Exp $
 
 package Slash;
 
@@ -807,11 +807,17 @@ sub dispComment {
 	# ipid/subnetid need munging into one text string
 	if ($user->{seclev} >= 100 && $comment->{ipid} && $comment->{subnetid}) {
 		vislenify($comment); # create $comment->{ipid_vis} and {subnetid_vis}
-		$comment->{ipid_display} = <<EOT;
+		if ($constants->{comments_hardcoded}) {
+			$comment->{ipid_display} = <<EOT;
 <BR><FONT FACE="$constants->{mainfontface}" SIZE=1>IPID:
 <A HREF="$constants->{rootdir}/users.pl?op=userinfo&amp;userfield=$comment->{ipid}&amp;fieldname=ipid">$comment->{ipid_vis}</A>&nbsp;&nbsp;SubnetID: 
 <A HREF="$constants->{rootdir}/users.pl?op=userinfo&amp;userfield=$comment->{subnetid}&amp;fieldname=subnetid">$comment->{subnetid_vis}</A></FONT>
 EOT
+		} else {
+			$comment->{ipid_display} = slashDisplay(
+				"ipid_display", { data => $comment },
+				1);
+		}
 	} else {
 		$comment->{ipid_display} = "";
 	}

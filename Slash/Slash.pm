@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.116 2003/03/06 03:54:59 jamie Exp $
+# $Id: Slash.pm,v 1.117 2003/03/10 00:59:27 brian Exp $
 
 package Slash;
 
@@ -1138,7 +1138,7 @@ sub displayStory {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
-	my $story = $slashdb->getStory($sid);
+	my $story = $slashdb->getStory($sid, '', $other->{force_cache});
 	my $author = $slashdb->getAuthor($story->{uid},
 		['nickname', 'fakeemail', 'homepage']);
 	my $topic = $slashdb->getTopic($story->{tid});
@@ -1166,7 +1166,11 @@ sub displayStory {
 	}
 
 	$story->{introtext} = parseSlashizedLinks($story->{introtext});
-	$story->{bodytext} =  parseSlashizedLinks($story->{bodytext});
+	$story->{introtext} = processSlashTags($story->{introtext}, {});
+	if ($full) {
+		$story->{bodytext} = parseSlashizedLinks($story->{bodytext});
+		$story->{bodytext} = processSlashTags($story->{bodytext}, {});
+	}
 
 	my $return = dispStory($story, $author, $topic, $full, $other);
 	return($return, $story, $author, $topic);

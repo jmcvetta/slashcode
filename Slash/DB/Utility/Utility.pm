@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.31 2003/03/04 19:56:31 pudge Exp $
+# $Id: Utility.pm,v 1.32 2003/03/10 00:59:27 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -11,7 +11,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -156,9 +156,7 @@ sub create {
 	$self->sqlInsert($table, $val);
 
 	# what should $prime really be?  add a new var to $self? -- pudge
-	my($rid) = $self->getLastInsertId($table, $prime);
-
-	return $rid;
+	return $self->getLastInsertId();
 }
 
 ##################################################################
@@ -240,6 +238,13 @@ sub sqlConnect {
 	}
 
 	return 1; # We return true that the sqlConnect was ok.
+}
+
+#######################################################
+# Wrapper to get the latest ID from the database
+sub getLastInsertId {
+	my($self) = @_;
+	return $self->sqlSelect('LAST_INSERT_ID()');
 }
 
 ########################################################

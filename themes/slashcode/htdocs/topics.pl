@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.10 2002/08/29 17:10:35 brian Exp $
+# $Id: topics.pl,v 1.11 2002/09/24 14:47:49 pater Exp $
 
 use strict;
 use Slash;
@@ -13,8 +13,14 @@ use Slash::Utility;
 sub main {
 	my $slashdb = getCurrentDB();
 	my $form    = getCurrentForm();
+	my $user    = getCurrentUser();
 
 	header(getData('head'));
+	
+	if ($user->{seclev} >= 100) {
+		print createMenu('adv-admin');
+	}
+
 	print createMenu('topics');
 
 	if ($form->{op} eq 'toptopics') {

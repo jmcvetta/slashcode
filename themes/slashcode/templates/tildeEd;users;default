@@ -109,6 +109,9 @@ __template__
 
 </TR></TABLE>
 
+[% IF constants.story_never_topic_allow == 2
+	|| (user.is_subscriber && constants.story_never_topic_allow == 1) %]
+
 <BR>
 
 [%-	######################
@@ -144,6 +147,8 @@ __template__
 
 	</TR>
 </TABLE>
+
+[% END %]
 
 <p>
 
@@ -185,4 +190,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: tildeEd;users;default,v 1.21 2004/10/06 21:48:08 jamiemccarthy Exp $
+$Id: tildeEd;users;default,v 1.22 2004/10/08 18:38:07 jamiemccarthy Exp $

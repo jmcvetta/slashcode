@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.55 2003/08/29 15:21:08 jamie Exp $
+# $Id: THEME,v 1.56 2003/09/05 17:25:49 jamie Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -45,6 +45,7 @@ image=htdocs/images/mainbar.gif
 image=htdocs/images/pix.gif
 image=htdocs/images/portalmap.gif
 image=htdocs/images/rightbar.gif
+image=htdocs/images/rssicon.gif
 image=htdocs/images/sbs.gif
 image=htdocs/images/sdlogo.gif
 image=htdocs/images/sl.gif

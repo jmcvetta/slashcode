@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.19 2002/01/22 17:52:01 pudge Exp $
+# $Id: User.pm,v 1.20 2002/01/25 22:22:30 brian Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -54,9 +54,11 @@ sub handler {
 
 	my $cfg = Apache::ModuleConfig->get($r);
 	my $dbcfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
-	my $constants = $dbcfg->{constants};
+	my $constants = getCurrentStatic();
 	my $slashdb = $dbcfg->{slashdb};
 	my $apr = Apache::Request->new($r);
+	
+	my $hostname = $r->header_in('host');
 
 	$r->err_header_out('X-Powered-By' => "Slash $Slash::VERSION");
 	random($r);
@@ -92,7 +94,6 @@ sub handler {
 	$params{query_apache} = $apr;
 	my $form = filter_params(%params);
 	$form->{query_apache} = $apr;
-
 	@{$form}{keys  %{$constants->{form_override}}} =
 		values %{$constants->{form_override}};
 	my $cookies = Apache::Cookie->fetch;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.9 2002/01/08 17:22:08 pudge Exp $
+# $Id: Apache.pm,v 1.10 2002/01/25 22:22:30 brian Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -42,11 +42,13 @@ sub SlashVirtualUser ($$$) {
 	createCurrentStatic	($cfg->{constants} = $cfg->{slashdb}->getSlashConf($user));
 
 	# placeholders ... store extra placeholders in DB?  :)
-	for (qw[user form themes template cookie objects cache]) {
+	for (qw[user form themes template cookie objects cache site_constants ]) {
 		$cfg->{$_} = '';
 	}
 
 	$cfg->{constants}{form_override} ||= {};
+	# This has to be a hash
+	$cfg->{site_constants} = {};
 
 	if ($overrides) {
 		@{$cfg->{constants}}{keys %$overrides} = values %$overrides;
@@ -72,12 +74,62 @@ sub SlashVirtualUser ($$$) {
 
 sub SlashSetVar ($$$$) {
 	my($cfg, $params, $key, $value) = @_;
+	unless ($cfg->{constants}) {
+		print STDERR "SlashSetVar must be called after call SlashVirtualUser \n";
+		exit(1);
+	}
 	$cfg->{constants}{$key} = $value;
 }
 
 sub SlashSetForm ($$$$) {
 	my($cfg, $params, $key, $value) = @_;
+	unless ($cfg->{constants}) {
+		print STDERR "SlashSetForm must be called after call SlashVirtualUser \n";
+		exit(1);
+	}
 	$cfg->{constants}{form_override}{$key} = $value;
+}
+
+sub SlashSetVarHost ($$$$$) {
+	my($cfg, $params, $key, $value, $hostname) = @_;
+	unless ($cfg->{constants}) {
+		print STDERR "SlashSetVarHost must be called after call SlashVirtualUser \n";
+		exit(1);
+	}
+	my %$new_cfg = %{$cfg->{constants}};
+	$new_cfg->{$key} = $value;
+	$cfg->{site_constants}{$hostname} = $new_cfg;
+}
+
+sub SlashSetFormHost ($$$$$) {
+	my($cfg, $params, $key, $value, $hostname) = @_;
+	unless ($cfg->{constants}) {
+		print STDERR "SlashSetFormHost must be called after call SlashVirtualUser \n";
+		exit(1);
+	}
+	my %$new_cfg = %{$cfg->{constants}};
+	$new_cfg->{form_override}{$key} = $value;
+	$cfg->{site_constants}{$hostname} = $new_cfg;
+}
+
+sub SlashSectionHost ($$$$) {
+	my($cfg, $params, $section, $url)  = @_;
+	my $hostname = $url;
+	$hostname =~ s/.*\/\///;
+	unless ($cfg->{constants}) {
+		print STDERR "SlashSectionHost must be called after call SlashVirtualUser \n";
+		exit(1);
+	}
+	my %$new_cfg = %{$cfg->{constants}};
+	# Must not just copy the form_override info
+	%$new_cfg->{form_override} = {}; 
+	%{$new_cfg->{form_override}}= %{$cfg->{constants}{form_override}};
+	$new_cfg->{absolutedir} = $url;
+	$new_cfg->{rootdir} = $url;
+	$new_cfg->{basedomain} = $hostname;
+	$new_cfg->{static_section} = $section;
+	$new_cfg->{form_override}{section} = $section;
+	$cfg->{site_constants}{$hostname} = $new_cfg;
 }
 
 sub SlashCompileTemplates ($$$) {
@@ -171,8 +223,14 @@ sub IndexHandler {
 			$r->filename("$basedir/index.pl");
 			return OK;
 		} else {
-			$r->uri('/index.shtml');
-			$r->filename("$basedir/index.shtml");
+			my $constants = getCurrentStatic();
+			if ($constants->{static_section}) {
+				$r->filename("$basedir/$constants->{static_section}/index.shtml");
+				$r->uri("/$constants->{static_section}/index.shtml");
+			} else {
+				$r->filename("$basedir/index.shtml");
+				$r->uri("/index.shtml");
+			}
 			writeLog('shtml');
 			return OK;
 		}

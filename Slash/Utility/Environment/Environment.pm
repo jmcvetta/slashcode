@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.11 2002/01/18 22:35:18 pudge Exp $
+# $Id: Environment.pm,v 1.12 2002/01/25 22:22:30 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -517,7 +517,12 @@ sub getCurrentStatic {
 
 	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
 		my $const_cfg = Apache::ModuleConfig->get($r, 'Slash::Apache');
-		$constants = $const_cfg->{'constants'};
+		my $hostname = $r->header_in('host');
+		if ($const_cfg->{'site_constants'}{$hostname}) { 
+			$constants = $const_cfg->{site_constants}{$hostname};
+		} else {
+			$constants = $const_cfg->{'constants'};
+		}
 	} else {
 		$constants = $static_constants;
 	}
@@ -1555,4 +1560,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.11 2002/01/18 22:35:18 pudge Exp $
+$Id: Environment.pm,v 1.12 2002/01/25 22:22:30 brian Exp $

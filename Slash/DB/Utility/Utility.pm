@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.10 2002/01/08 17:22:09 pudge Exp $
+# $Id: Utility.pm,v 1.11 2002/02/11 16:10:32 jamie Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -498,11 +498,11 @@ sub sqlUpdate {
 
 ########################################################
 sub sqlDelete {
-	my($self, $table, $where) = @_;
+	my($self, $table, $where, $limit) = @_;
 	return unless $table;
 	my $sql = "DELETE FROM $table";
-	$sql .= " WHERE $where\n"
-		if $where;
+	$sql .= " WHERE $where" if $where;
+	$sql .= " LIMIT $limit" if $limit;
 	$self->sqlConnect();
 	my $rows = $self->sqlDo($sql);
 	# print STDERR "SQL: $sql\n";

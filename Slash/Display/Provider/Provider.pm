@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.11 2003/03/29 00:19:03 brian Exp $
+# $Id: Provider.pm,v 1.12 2003/04/09 19:38:13 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar
@@ -155,7 +155,7 @@ sub _refresh {
 	print STDERR "_refresh([ @$slot ])\n" if $DEBUG;
 
 	# compare load time with current _modtime from API to see if
-	# its modified and we need to reload it
+	# it's modified and we need to reload it
 	if ($slot->[ DATA ]{modtime}) {
 		my $reader = getObject('Slash::DB', { db_type => 'reader' }); 
 		my $temp = $reader->getTemplate($slot->[ NAME ], ['tpid']);

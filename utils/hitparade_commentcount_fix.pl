@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hitparade_commentcount_fix.pl,v 1.5 2003/03/04 19:56:33 pudge Exp $
+# $Id: hitparade_commentcount_fix.pl,v 1.6 2003/04/09 19:38:13 pudge Exp $
 
 use strict;
 use vars qw( %task );
@@ -13,7 +13,7 @@ use Slash::Display;
 use Slash::Utility;
 use Getopt::Std;
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 #my $PROGNAME = basename($0);
 my $PROGNAME = 'hitparade_commentcount_fix.pl';
 
@@ -41,7 +41,7 @@ $task{$PROGNAME}{code} = sub {
 	for (keys %$hitparade) {
 		my $discussion = $hitparade->{$_};
 		my $sid = $sid2discussion->{$_};
-		# Ok, its a hack, move along, this is not the code you are looking for -Brian
+		# Ok, it's a hack, move along, this is not the code you are looking for -Brian
 		my $string = join (",",
 				map { $discussion->{$_} || 0 }
 				($constants->{comment_minscore} .. $constants->{comment_maxscore})

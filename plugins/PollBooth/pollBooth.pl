@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.46 2003/03/29 18:35:22 brian Exp $
+# $Id: pollBooth.pl,v 1.47 2003/04/09 19:38:13 pudge Exp $
 
 use strict;
 use Slash;
@@ -121,7 +121,7 @@ sub editpoll {
 		$checked = ($slashdb->getSection($question->{section}, 'qid', 1) == $qid) ? 1 : 0;
 		my $poll_open = $slashdb->isPollOpen($qid);
 
-		# Just use the DB method, its too messed up to rebuild the logic
+		# Just use the DB method, it's too messed up to rebuild the logic
 		# here -Brian
 		my $poll = $slashdb->getPoll($qid);
 		my $raw_pollbooth = slashDisplay('pollbooth', {

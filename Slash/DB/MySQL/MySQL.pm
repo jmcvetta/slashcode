@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.734 2004/11/21 23:00:24 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.735 2004/11/23 20:19:23 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.734 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.735 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10277,7 +10277,7 @@ sub getTemplateByName {
 # an admin clicks Save.
 sub renderTopics {
 	my($self, $chosen_hr) = @_;
-	return { } if !%$chosen_hr;
+	return { } if !$chosen_hr || ! keys %$chosen_hr;
 
 	my $tree = $self->getTopicTree();
 	my %rendered = %$chosen_hr;

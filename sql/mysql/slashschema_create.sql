@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.99 2003/03/10 17:09:44 pudge Exp $
+# $Id: slashschema_create.sql,v 1.100 2003/03/13 18:55:02 brian Exp $
 #
 
 #
@@ -803,20 +803,6 @@ CREATE TABLE story_topics (
   PRIMARY KEY (id),
   INDEX tid (tid),
   INDEX sid (sid)
-) TYPE = myisam;
-
-#
-# Table structure for table 'story_files'
-#
-
-DROP TABLE IF EXISTS story_files;
-CREATE TABLE story_files (
-  id int(5) NOT NULL auto_increment,
-  sid varchar(16) NOT NULL default '',
-  description varchar(80) NOT NULL default '',
-  file_id varchar(32) NOT NULL default '',
-  isimage enum("yes","no") DEFAULT "no" NOT NULL,
-  PRIMARY KEY (id)
 ) TYPE = myisam;
 
 #

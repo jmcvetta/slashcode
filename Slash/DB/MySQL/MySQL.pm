@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.302 2003/01/21 17:28:43 jamie Exp $
+# $Id: MySQL.pm,v 1.303 2003/01/21 20:01:20 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.302 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.303 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1640,19 +1640,16 @@ sub getUserEmail {
 # currently only used in users.pl  -Jamie
 # If anyone ever rewrites this move the formatDate() out to the template.
 # Display logic belongs in display. -Brian
+#
+# Corrected all of the above (those messages will go away soon.
+# -Brian, Tue Jan 21 14:49:30 PST 2003
+# 
 sub getCommentsByGeneric {
 	my($self, $where_clause, $num, $min) = @_;
 	$min ||= 0;
 
-#	my $sqlquery = "SELECT pid,sid,cid,subject,date,points,uid,reason"
-#			. " FROM comments WHERE $where_clause"
-#			. " ORDER BY date DESC LIMIT $min, $num";
-#
-#	my $sth = $self->{_dbh}->prepare($sqlquery);
-#	$sth->execute;
-#	my($comments) = $sth->fetchall_arrayref;
-	my $comments = $self->sqlSelectAll('pid,sid,cid,subject,date,points,uid,reason','comments', $where_clause, " ORDER BY date DESC LIMIT $min, $num");
-	formatDate($comments, 4);
+	my $comments = $self->sqlSelectAllHashrefArray('pid,sid,cid,subject,date,points,uid,reason,karma_bonus','comments', $where_clause, " ORDER BY date DESC LIMIT $min, $num");
+
 	return $comments;
 }
 

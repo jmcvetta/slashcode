@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.112 2003/01/21 04:16:15 jamie Exp $
+# $Id: comments.pl,v 1.113 2003/01/21 20:01:20 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -129,7 +129,9 @@ sub main {
 		if ($form->{sid} !~ /^\d+$/) {
 			$discussion = $slashdb->getDiscussionBySid($form->{sid});
 			$section = $discussion->{section};
-			$user->{state}{tid} = $discussion->{topic};
+			my $tids = $slashdb->getStoryTopicsJustTids($form->{sid}); 
+			my $tid_string = join('&amp;tid=', @$tids);
+			$user->{state}{tid} = $tid_string;
 		} else {
 			$discussion = $slashdb->getDiscussion($form->{sid});
 			$section = $discussion->{section};

@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.5 2002/06/19 14:07:12 pudge Exp $
+# $Id: print.pl,v 1.6 2002/06/21 19:45:38 pudge Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.5 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -104,12 +104,14 @@ sub main {
 		my $content = get_content($_->[1]);
 
 		# make all relative links absolute to the site's root
-		my $uri = URI->new_abs($_->[0], $constants->{absolutedir});
+		my $uri = URI->new_abs($_->[0], $constants->{absolutedir} . $ENV{REQUEST_URI});
 
 		# http://foo -> http://foo/
 		$uri->path('/') if ! length $uri->path;
 
-		if (length $content && length $uri) {
+		# need both to have data, and we don't want them if they
+		# are the same as each other
+		if (length $content && length $uri && $content ne $uri) {
 			# don't duplicate URLs
 			my $test = join($;, $uri, lc $content);
 			if (!scalar(grep { $test eq join($;, $_->[0], lc $_->[1]) } @story_links)) {

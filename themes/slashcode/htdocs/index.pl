@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.23 2002/01/29 00:49:17 brian Exp $
+# $Id: index.pl,v 1.24 2002/02/10 20:20:00 brian Exp $
 
 use strict;
 use Slash;
@@ -327,8 +327,10 @@ sub displayStories {
 		push @links, getData('editstory', { sid => $sid }) if $user->{seclev} > 100;
 
 		my $link_template = $feature ? 'feature_storylink' : 'storylink';
+		# I added sid so that you could set up replies from the front page -Brian
 		$return .= slashDisplay($link_template, {
 			links	=> \@links,
+			sid => $sid,
 		}, { Return => 1});
 
 		my($w) = join ' ', (split m/ /, $time)[0 .. 2];

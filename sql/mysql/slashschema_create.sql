@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.49 2002/05/10 21:29:50 brian Exp $
+# $Id: slashschema_create.sql,v 1.50 2002/05/31 01:04:38 brian Exp $
 #
 
 #
@@ -255,6 +255,7 @@ CREATE TABLE discussions (
 	flags enum("ok","delete","dirty") DEFAULT 'ok' NOT NULL,
 	section varchar(30) NOT NULL,
 	last_update timestamp,
+	approved tinyint UNSIGNED DEFAULT 0 NOT NULL,
 	KEY (sid),
 	FOREIGN KEY (sid) REFERENCES stories(sid),
 	FOREIGN KEY (uid) REFERENCES users(uid),

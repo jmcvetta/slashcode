@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.145 2004/03/28 20:01:03 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.146 2004/03/31 14:10:11 jamiemccarthy Exp $
 #
 
 #
@@ -523,6 +523,7 @@ CREATE TABLE open_proxies (
         ip	VARCHAR(15) NOT NULL,
 	port	SMALLINT UNSIGNED NOT NULL DEFAULT '0',
 	ts	DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	xff	VARCHAR(15) DEFAULT NULL,
 	PRIMARY KEY (ip),
 	KEY ts (ts)
 ) TYPE=InnoDB;

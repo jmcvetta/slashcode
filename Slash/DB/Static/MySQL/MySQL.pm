@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.34 2002/05/02 17:59:20 jamie Exp $
+# $Id: MySQL.pm,v 1.35 2002/05/07 22:12:59 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -986,22 +986,39 @@ sub deleteStoryAll {
 sub createAuthorCache {
 	my($self) = @_;
 	my $sql;
-	$sql .= "REPLACE INTO authors_cache ";
-	$sql .= "SELECT users.uid, nickname, GREATEST(fakeemail, ''), GREATEST(homepage, ''), 0, GREATEST(bio, ''), author ";
+	$sql  = "REPLACE INTO authors_cache ";
+	$sql .= "SELECT users.uid, nickname, GREATEST(fakeemail, ''),
+		GREATEST(homepage, ''), 0, GREATEST(bio, ''), author ";
 	$sql .= "FROM users, users_info ";
-	$sql .= "WHERE users.author =1 ";
+	$sql .= "WHERE users.author=1";
 	$sql .= "AND users.uid=users_info.uid";
 
 	$self->sqlDo($sql);
 
-	my $sql2;
-	$sql2 .= "REPLACE INTO authors_cache ";
-	$sql2 .= "SELECT users.uid, nickname, GREATEST(fakeemail, ''), GREATEST(homepage, ''), count(stories.uid), GREATEST(bio, ''), author ";
-	$sql2 .= "FROM users, stories, users_info ";
-	$sql2 .= "WHERE stories.uid=users.uid ";
-	$sql2 .= "AND users.uid=users_info.uid GROUP BY stories.uid";
+	$sql  = "REPLACE INTO authors_cache ";
+	$sql .= "SELECT users.uid, nickname, GREATEST(fakeemail, ''),
+		GREATEST(homepage, ''), count(stories.uid),
+		GREATEST(bio, ''), author ";
+	$sql .= "FROM users, stories, users_info ";
+	$sql .= "WHERE stories.uid=users.uid ";
+	$sql .= "AND users.uid=users_info.uid GROUP BY stories.uid";
 
-	$self->sqlDo($sql2);
+	$self->sqlDo($sql);
+
+	# The above can leave old entries in authors_cache where author
+	# used to be 1 but is now 0, but the user in question has never
+	# posted a story.  Delete them.  This can't be done in the
+	# REPLACE INTOs above because the SELECT clause can't join on
+	# the same table we REPLACE INTO.
+	my $uid_ar = $self->sqlSelectColArrayref(
+		"authors_cache.uid AS uid",
+		"authors_cache, users",
+		"authors_cache.uid = users.uid
+		 AND authors_cache.author != users.author"
+	);
+	return if !$uid_ar || !@$uid_ar;
+	my $uid_list = "(" . join(",", @$uid_ar) . ")";
+	$self->sqlDelete("authors_cache", "uid IN $uid_list");
 }
 
 ########################################################

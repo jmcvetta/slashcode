@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.5 2004/11/21 02:16:49 jamiemccarthy Exp $
+# $Id: balance_readers.pl,v 1.6 2004/11/22 16:07:52 jamiemccarthy Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -252,13 +252,18 @@ sub get_sql_type_from_state {
 	} elsif (
 		   $state =~ /freeing items/
 		|| $state =~ /Has read all relay log/
+		|| $state =~ /Opening table/
 		|| $state =~ /Processing master log event/
 		|| $state =~ /Reading event from the relay log/
 		|| $state =~ /Searching rows for update/
 		|| $state =~ /Sending data/
-		|| $state =~ /^updat(e|ing)$/i
+		|| $state =~ /System lock/
+		|| $state =~ /^updat(e|ing)/i
 		|| $state =~ /waiting for binlog update/
 		|| $state eq 'init'
+		|| $state eq 'creating table'
+		|| $state eq 'preparing'
+		|| $state eq 'query end'
 		|| $state eq 'end'
 	) {
 		return 'sql';

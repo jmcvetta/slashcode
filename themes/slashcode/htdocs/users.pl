@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.60 2002/02/22 02:44:01 pudge Exp $
+# $Id: users.pl,v 1.61 2002/03/04 17:33:48 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -39,7 +39,11 @@ sub main {
 	my $ops = {
 		admin		=>  {
 			function 	=> \&adminDispatch,
-			seclev		=> 100,
+			seclev		=> 10000,	# if this should be lower,
+							# then something else is
+							# broken, because it allows
+							# anyone with this seclev
+							# to change their own seclev
 			formname	=> $formname,
 			checks		=> [],
 		},

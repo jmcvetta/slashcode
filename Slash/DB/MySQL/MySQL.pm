@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.128 2002/04/15 18:44:46 brian Exp $
+# $Id: MySQL.pm,v 1.129 2002/04/16 03:45:37 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1809,6 +1809,7 @@ sub savePollQuestion {
 	my($self, $poll) = @_;
 	$poll->{section} ||= getCurrentStatic('defaultsection');
 	$poll->{voters} ||= "0";
+	$poll->{autopoll} ||= "no";
 	my $qid_quoted = "";
 	$qid_quoted = $self->sqlQuote($poll->{qid}) if $poll->{qid};
 	my $sid_quoted = "";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.137 2004/09/12 14:42:00 cowboyneal Exp $
+# $Id: Environment.pm,v 1.138 2004/09/16 06:54:49 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1023,6 +1023,15 @@ sub isAnon {
 		||	$uid =~ /[^0-9]/	# only integers
 		||	$uid < 1		# only positive
 	;
+
+	my $anon_uids = getCurrentStatic('anonymous_coward_uids');
+	if ($anon_uids) {
+		for (@$anon_uids) {
+			return 1 if $uid == $_;
+		}
+		return 0;
+	}
+
 	return $uid == getCurrentStatic('anonymous_coward_uid');
 }
 
@@ -1357,7 +1366,7 @@ sub prepareUser {
 
 	$uid = $constants->{anonymous_coward_uid} unless defined($uid) && $uid ne '';
 
-	if (isAnon($uid)) {
+	if ($uid == $constants->{anonymous_coward_uid}) {
 		if ($ENV{GATEWAY_INTERFACE}) {
 			$user = getCurrentAnonymousCoward();
 		} else {
@@ -1368,7 +1377,7 @@ sub prepareUser {
 	} else {
 		$user = $reader->getUser($uid);
 		$user->{logtoken} = bakeUserCookie($uid, $reader->getLogToken($uid));
-		$user->{is_anon} = 0;
+		$user->{is_anon} = isAnon($uid);
 	}
 
 	# Now store the DB information from above in the user
@@ -2572,4 +2581,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.137 2004/09/12 14:42:00 cowboyneal Exp $
+$Id: Environment.pm,v 1.138 2004/09/16 06:54:49 pudge Exp $

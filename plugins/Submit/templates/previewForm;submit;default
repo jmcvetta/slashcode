@@ -22,7 +22,7 @@ __template__
 [% IF submission.comment && admin_flag %]
 <P>Submission Notes:
 <TABLE WIDTH="95%"><TR><TD BGCOLOR="[% user.bg.2 %]">
-	<FONT SIZE="-1" COLOR="[% user.fg.2 %]">[% submission.comment %]</FONT>
+	<FONT SIZE="-1" COLOR="[% user.fg.2 %]">[% submission.comment | strip_literal %]</FONT>
 </TD></TR></TABLE>
 [% END %]
 [% IF submission.sid %]
@@ -108,4 +108,4 @@ TITLE="[% topic.alttext %]"></A>
 __seclev__
 10000
 __version__
-$Id: previewForm;submit;default,v 1.28 2004/01/27 19:41:33 tvroom Exp $
+$Id: previewForm;submit;default,v 1.29 2004/03/09 21:22:22 pudge Exp $

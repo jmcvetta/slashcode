@@ -29,13 +29,7 @@ __template__
 	[% END %]
 
 [% CASE 'mailpasswdhead' %]
-	[% IF form.unickname %]
-		Error Mailing Password
-
-	[% ELSE %]
-		Mail Password
-
-	[% END %]
+	Mail Password
 
 [% CASE 'prefshead' %]
 	Change Login Preferences
@@ -116,4 +110,4 @@ but don't trust that value unless you know a reason to (we don't).[% END %]
 __seclev__
 10000
 __version__
-$Id: data;login;default,v 1.1 2004/03/06 00:08:42 pudge Exp $
+$Id: data;login;default,v 1.2 2004/03/09 21:22:22 pudge Exp $

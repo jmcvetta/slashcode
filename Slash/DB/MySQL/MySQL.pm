@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.111 2002/03/28 01:26:20 brian Exp $
+# $Id: MySQL.pm,v 1.112 2002/03/29 01:02:42 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1868,10 +1868,17 @@ sub getPollQuestionList {
 		}
 	}
 
-	$where = sprintf 'section IN (%s)', join(',', @{$other->{section}})
-		if $other->{section};
+	if ($other->{section}) {
+		if (ref ${$other->{section}} ne "ARRAY") {
+			$where = 'section = ' . $self->sqlQuote($other->{section});
+		} else {
+			$where = sprintf 'section IN (%s)', join(',', @{$other->{section}});
+		}
+	}
+
 	$where = sprintf 'section NOT IN (%s)', join(',', @{$other->{exclude_section}})
 		if $other->{exclude_section};
+
 	my $questions = $self->sqlSelectAll(
 		'qid, question, date',
 		'pollquestions',
@@ -2186,8 +2193,6 @@ sub updateFormkeyVal {
 	# my $min = time() - $speed_limit;
 	# $where .= " AND idcount < $maxposts";
 	# $where .= " AND last_ts <= $min";
-
-	my $where .= "value = 0";
 
 	# print STDERR "MIN $min MAXPOSTS $maxposts WHERE $where\n" if $constants->{DEBUG};
 

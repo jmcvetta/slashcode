@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.7 2003/11/25 21:07:15 pudge Exp $
+# $Id: Relocate.pm,v 1.8 2003/12/08 23:44:34 jamie Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -65,8 +65,16 @@ sub create {
 }
 
 sub getStoriesForLinks {
-	my ($self) = @_;
+	my($self) = @_;
 	$self->sqlSelectAllHashrefArray('*', 'links_for_stories', '', "ORDER BY sid");
+}
+
+sub increment_count {
+	my($self, $id) = @_;
+	my $id_q = $self->sqlQuote($id);
+	$self->sqlUpdate("links_for_stories", {
+		-count	=> "count + 1",
+	}, "id = $id_q");
 }
 
 #========================================================================

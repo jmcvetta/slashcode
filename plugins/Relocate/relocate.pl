@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: relocate.pl,v 1.4 2003/07/25 17:40:27 pudge Exp $
+# $Id: relocate.pl,v 1.5 2003/12/08 23:44:34 jamie Exp $
 
 use strict;
 use Slash;
@@ -23,6 +23,13 @@ sub main {
 		printDeadPage($link);
 		footer();
 	} else {
+		if (getCurrentStatic("relocate_keep_count")) {
+			my $relocate_writer = getObject("Slash::Relocate");
+			my $success = $relocate_writer->increment_count($link->{id});
+			if (!$success) {
+				warn "did not increment links_for_stories.count for id '$link->{id}'";
+			}
+		}
 		redirect($link->{url});
 	}
 }
@@ -30,7 +37,7 @@ sub main {
 main();
 
 sub printDeadPage {
-	my ($link) = @_;
+	my($link) = @_;
 	slashDisplay("deadPage", { link => $link });
 }
 

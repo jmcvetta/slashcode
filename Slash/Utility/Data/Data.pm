@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.142 2005/03/16 17:13:19 pudge Exp $
+# $Id: Data.pm,v 1.143 2005/03/18 05:56:36 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -45,7 +45,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1015,6 +1015,8 @@ my %actions = (
 			${$_[0]} = processCustomTags(${$_[0]});		},
 	approveTags => sub {
 			${$_[0]} =~ s/<(.*?)>/approveTag($1)/sge;	},
+	url2html => sub {
+			${$_[0]} = url2html(${$_[0]});			},
 	approveCharrefs => sub {
 			${$_[0]} =~ s{
 				&(\#?[a-zA-Z0-9]+);?
@@ -1107,6 +1109,7 @@ my %mode_actions = (
 			encode_html_ltgt_stray
 			encode_html_amp_ifnotent
 			approveCharrefs
+			url2html
 			breakHtml_ifwhitefix
 			whitespace_tagify
 			newline_indent			)],
@@ -1121,6 +1124,7 @@ my %mode_actions = (
 			encode_html_ltgt_stray
 			encode_html_amp_ifnotent
 			approveCharrefs
+			url2html
 			breakHtml_ifwhitefix		)],
 	CODE, [qw(
 			newline_to_local
@@ -2133,9 +2137,9 @@ sub url2html {
 	my($text) = @_;
 	# find() changes strict, but does not change it back,
 	# so we save and restore value on our own
-	my $old = URI::URL::strict;
-	$finder->find(\$text);
-	URI::URL::strict($old);
+#	my $old = URI::URL::strict;
+#	$finder->find(\$text);
+#	URI::URL::strict($old);
 	return $text;
 }
 }
@@ -3596,4 +3600,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.142 2005/03/16 17:13:19 pudge Exp $
+$Id: Data.pm,v 1.143 2005/03/18 05:56:36 pudge Exp $

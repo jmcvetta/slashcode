@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.67 2002/04/30 22:27:11 brian Exp $
+# $Id: admin.pl,v 1.68 2002/05/03 13:36:55 pudge Exp $
 
 use strict;
 use Image::Size;
@@ -1167,7 +1167,7 @@ sub editStory {
 		autonode_check		=> $autonode_check,
 		fastforward_check	=> $fastforward_check,
 		shortcuts_check		=> $shortcuts_check,
-		subsection_select		=> $subsection_select,
+		subsection_select	=> $subsection_select,
 		user			=> $user,
 		ispell_comments		=> $ispell_comments,
 		extras			=> $extracolumns,
@@ -1526,8 +1526,10 @@ sub saveStory {
 	}
 	my $sid = $slashdb->createStory($data);
 
+	# we can use multiple values in forms now, we don't
+	# need to keep using this idiom -- pudge
 	if ($constants->{multitopics_enabled}) {
-		for my $k(keys %$form) {
+		for my $k (keys %$form) {
 		    if ($k =~ /tid_(.*)/) {
 			push @$tid_ref, $1;
 		    }

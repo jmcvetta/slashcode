@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Relocate.pm,v 1.6 2003/11/25 06:23:41 vroom Exp $
+# $Id: Relocate.pm,v 1.7 2003/11/25 21:07:15 pudge Exp $
 
 package Slash::Relocate;
 
@@ -15,7 +15,7 @@ use Digest::MD5 'md5_hex';
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -45,20 +45,20 @@ sub create {
 	if (!$found) {
 		$values->{$prime} = $id;
 		$self->sqlInsert($table, {
-				id => $id,
-				-last_seen => 'now()',
-				url => $values->{url},
-				stats_type => $values->{stats_type}
-				});
+			id		=> $id,
+			-last_seen	=> 'now()',
+			url		=> $values->{url},
+			stats_type	=> $values->{stats_type}
+		});
 	}
 
 	if ($values->{sid}) {
 		my $where = "$prime='$id' AND sid='$values->{sid}'";
 		my $found  = $self->sqlSelect($prime, 'links_for_stories', $where);
 		$self->sqlInsert('links_for_stories', {
-				id => $id,
-				sid => $values->{sid},
-				}) unless $found;
+			id	=> $id,
+			sid	=> $values->{sid},
+		}) unless $found;
 	}
 
 	return $id ;

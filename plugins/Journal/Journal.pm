@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.30 2003/01/10 17:35:43 pudge Exp $
+# $Id: Journal.pm,v 1.31 2003/01/14 21:27:27 jamie Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -225,16 +225,17 @@ LIMIT $limit
 EOT
 
 	my $losers = $self->{_dbh}->selectall_arrayref($sql);
+	return [ ] if !$losers || !@$losers;
 
-	my $sql2 = sprintf <<EOT, join (',', map { $_->[4] } @$losers);
-SELECT id, description
-FROM journals
-WHERE id IN (%s)
-EOT
-	my $losers2 = $self->{_dbh}->selectall_hashref($sql2, 'id');
+	my $id_list = join(", ", map { $_->[4] } @$losers);
+	my $loserid_hr = $self->sqlSelectAllHashref(
+		"id",
+		"id, description",
+		"journals",
+		"id IN ($id_list)");
 
-	for (@$losers) {
-		$_->[5] = $losers2->{$_->[4]}{description};
+	for my $loser (@$losers) {
+		$loser->[5] = $loserid_hr->{$loser->[4]}{description};
 	}
 
 	return $losers;

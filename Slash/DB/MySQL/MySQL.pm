@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.65 2002/02/04 10:31:25 cliff Exp $
+# $Id: MySQL.pm,v 1.66 2002/02/05 18:15:24 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2857,9 +2857,11 @@ sub getStoryByTime {
 
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
 	if ($section->{isolate}) {
-		$where = 'AND section=' . $self->sqlQuote($story->{'section'})
+		$where  = ' AND displaystatus>=0 AND section=' . $self->sqlQuote($story->{'section'})
+	} elsif ($user->{sectioncollapse}) {
+		$where .= ' AND displaystatus>=0';
 	} else {
-		$where = 'AND displaystatus=0';
+		$where .= ' AND displaystatus=0';
 	}
 
 	$where .= "   AND tid not in ($user->{'extid'})" if $user->{'extid'};
@@ -4172,7 +4174,7 @@ sub getSlashConf {
 	$conf{maxkarma}		= 999  unless defined $conf{maxkarma};
 	$conf{minkarma}		= -999 unless defined $conf{minkarma};
 	$conf{expiry_exponent}	= 1 unless defined $conf{expiry_exponent};
-	$conf{panic}		||=0;
+	$conf{panic}		||= 0;
 	# For all fields that it is safe to default to -1 if their
 	# values are not present...
 	for (qw[min_expiry_days max_expiry_days min_expiry_comm max_expiry_comm]) {

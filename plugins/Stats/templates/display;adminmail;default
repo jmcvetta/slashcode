@@ -78,7 +78,9 @@ gstatic total:        -          -   [% grand_total_static %]
 
    total hits: [% total_hits %]
 
-[% admin_clearpass_warning %][% backup_lag %]
+[% admin_clearpass_warning %]
+[% bad_password_warning %]
+[% backup_lag %]
 
 ------------------------
                             Yesterday   | 2 days ago | 3 days ago
@@ -166,4 +168,4 @@ END %]
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.62 2003/09/08 06:02:29 pudge Exp $
+$Id: display;adminmail;default,v 1.63 2003/09/09 03:43:58 vroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.107 2002/09/24 20:25:40 pudge Exp $
+# $Id: users.pl,v 1.108 2002/10/08 16:31:13 pater Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -241,18 +241,24 @@ sub main {
 			seclev		=> 100,
 			formname	=> $formname,
 			checks		=> [],
+			adminmenu	=> 'info',
+			page		=> 'readonly',
 		},
 		listbanned => {
 			function	=> \&listBanned,
 			seclev		=> 100,
 			formname	=> $formname,
 			checks		=> [],
+			adminmenu	=> 'info',
+			page		=> 'banned',
 		},
 		topabusers 	=> {
 			function	=> \&topAbusers,
 			seclev		=> 100,
 			formname	=> $formname,
 			checks		=> [],
+			adminmenu	=> 'info',
+			page		=> 'abusers',
 		},
 		listabuses 	=> {
 			function	=> \&listAbuses,

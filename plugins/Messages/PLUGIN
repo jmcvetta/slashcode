@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.9 2003/08/29 15:21:07 jamie Exp $
+# $Id: PLUGIN,v 1.10 2003/09/09 18:14:08 vroom Exp $
 name=Messages
 description="Messaging system"
 mysql_schema=mysql_schema
@@ -6,6 +6,7 @@ mysql_dump=dump
 htdoc=messages.pl
 task=message_delete.pl
 task=message_delivery.pl
+template=templates/badpassword_msg;misc;default
 template=templates/commnew;comments;default
 template=templates/commnew_sub;comments;default
 template=templates/dailyheadlines;messages;default

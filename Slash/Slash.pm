@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.52 2002/03/20 14:29:39 pudge Exp $
+# $Id: Slash.pm,v 1.53 2002/03/21 16:55:23 jamie Exp $
 
 package Slash;
 
@@ -1105,7 +1105,7 @@ sub _hard_dispComment {
 		$score_to_display .= ")";
 	}
 
-	$comment_link_to_display = qq|<A HREF="$constants->{rootdir}/comments.pl?sid=$comment->{sid}&cid=$comment->{cid}">#$comment->{cid}</A>|;
+	$comment_link_to_display = qq|<A HREF="$constants->{rootdir}/comments.pl?sid=$comment->{sid}&amp;cid=$comment->{cid}">#$comment->{cid}</A>|;
 
 	if (isAnon($comment->{uid})) {
 		$user_to_display = $comment->{nickname};

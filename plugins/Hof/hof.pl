@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: hof.pl,v 1.10 2002/02/14 20:43:45 pudge Exp $
+# $Id: hof.pl,v 1.11 2002/03/21 16:55:23 jamie Exp $
 
 use strict;
 use Slash;
@@ -77,7 +77,7 @@ sub main {
 # 			$titles{$bid} =~ s/<(.*?)>//g;
 # 			print <<EOT;
 # 
-# <B>$b{$bid}</B> <A HREF="$I{rootdir}/users.pl?op=preview&bid=$bid">$titles{$bid}</A><BR>
+# <B>$b{$bid}</B> <A HREF="$I{rootdir}/users.pl?op=preview&amp;bid=$bid">$titles{$bid}</A><BR>
 # EOT
 # 			last if $x > 10;
 # 		}

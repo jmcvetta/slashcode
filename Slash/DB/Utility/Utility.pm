@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.9 2001/12/18 19:09:00 brian Exp $
+# $Id: Utility.pm,v 1.10 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.

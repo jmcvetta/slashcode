@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Plugin.pm,v 1.5 2001/11/15 15:46:09 pudge Exp $
+# $Id: Plugin.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::Display::Plugin;
 
@@ -37,7 +37,7 @@ use Slash::Constants ();
 use Slash::Utility ();
 use base qw(Template::Plugin);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Forget your stupid theme park!  I'm gonna make my own!
 # With hookers!  And blackjack!  In fact, forget the theme park!

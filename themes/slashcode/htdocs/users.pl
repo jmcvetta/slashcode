@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.50 2002/01/05 17:56:17 jamie Exp $
+# $Id: users.pl,v 1.51 2002/01/08 17:22:09 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);

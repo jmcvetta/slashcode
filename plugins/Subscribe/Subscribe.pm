@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Subscribe.pm,v 1.3 2001/12/21 18:28:45 jamie Exp $
+# $Id: Subscribe.pm,v 1.4 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::Subscribe;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
         my($class) = @_;

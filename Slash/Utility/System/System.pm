@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.3 2001/12/02 04:53:20 pudge Exp $
+# $Id: System.pm,v 1.4 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -39,7 +39,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -375,4 +375,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.3 2001/12/02 04:53:20 pudge Exp $
+$Id: System.pm,v 1.4 2002/01/08 17:22:09 pudge Exp $

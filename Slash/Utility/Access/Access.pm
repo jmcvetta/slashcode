@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.5 2002/01/04 14:21:15 pudge Exp $
+# $Id: Access.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -754,4 +754,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.5 2002/01/04 14:21:15 pudge Exp $
+$Id: Access.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $

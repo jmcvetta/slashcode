@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.12 2001/11/03 03:07:59 brian Exp $
+# $Id: Utility.pm,v 1.13 2002/01/08 17:22:09 pudge Exp $
 
 package Slash::Utility;
 
@@ -38,7 +38,7 @@ use Slash::Utility::System;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::Utility::Access::EXPORT,
 	@Slash::Utility::Anchor::EXPORT,

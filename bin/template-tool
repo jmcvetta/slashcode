@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: template-tool,v 1.7 2001/12/04 00:34:45 pudge Exp $
+# $Id: template-tool,v 1.8 2002/01/08 17:22:09 pudge Exp $
 
 # First version by Brian, brian@tangent.org
 # Updated by Patrick Galbraith, capttofu@slashdot.org
@@ -25,7 +25,7 @@ use Slash::Install;
 use Getopt::Std;
 use Cwd;
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -396,7 +396,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2001 by Open Source Development Network. See README
+Copyright 1997-2002 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

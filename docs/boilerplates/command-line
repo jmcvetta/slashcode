@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: command-line,v 1.4 2001/11/03 04:22:45 brian Exp $
+# $Id: command-line,v 1.5 2002/01/08 17:22:09 pudge Exp $
 
 use strict;
 use File::Basename;
@@ -10,7 +10,7 @@ use FindBin '$Bin';
 use Getopt::Std;
 # more modules
 
-(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -65,7 +65,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2001 by Open Source Development Network. See README
+Copyright 1997-2002 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.50 2002/01/07 23:46:09 brian Exp $
+# $Id: MySQL.pm,v 1.51 2002/01/08 17:22:08 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3100,7 +3100,7 @@ sub getCommentReply {
 	my($self, $sid, $pid) = @_;
 	my $sid_quoted = $self->sqlQuote($sid);
 	my $reply = $self->sqlSelectHashref(
-		"date,subject,comments.points as points,
+		"date,date as time,subject,comments.points as points,
 		comment_text.comment as comment,realname,nickname,
 		fakeemail,homepage,comments.cid as cid,sid,
 		users.uid as uid",
@@ -3116,7 +3116,6 @@ sub getCommentReply {
 	# For a comment we're replying to, there's no need to mod.
 	$reply->{no_moderation} = 1;
 
-	formatDate([$reply]);
 	return $reply;
 }
 

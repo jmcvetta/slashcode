@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: spamarmor.pl,v 1.2 2001/11/03 03:05:02 brian Exp $
+# $Id: spamarmor.pl,v 1.3 2002/01/08 17:22:10 pudge Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -12,7 +12,7 @@ use Slash::DB;
 use Slash::Display;
 use Slash::Utility;
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '30 0 * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.2 2001/11/03 03:08:48 brian Exp $
+# $Id: Banlist.pm,v 1.3 2002/01/08 17:22:08 pudge Exp $
 
 package Slash::Apache::Banlist;
 
@@ -11,7 +11,7 @@ use Digest::MD5 'md5_hex';
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;

@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
-# Copyright 1997-2001 by Open Source Development Network. See README
+# Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashcode-dearchive,v 1.6 2001/11/03 04:21:04 brian Exp $
+# $Id: slashcode-dearchive,v 1.7 2002/01/08 17:22:10 pudge Exp $
 
 use strict;
 use File::Basename;
@@ -12,7 +12,7 @@ use Slash::DB;
 use Slash::DB::Utility;
 use Date::Manip;
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -460,7 +460,7 @@ sub version {
 $PROGNAME $VERSION
 
 This code is a part of Slash, and is released under the GPL.
-Copyright 1997-2001 by Open Source Development Network. See README
+Copyright 1997-2002 by Open Source Development Network. See README
 and COPYING for more information, or see http://slashcode.com/.
 
 EOT

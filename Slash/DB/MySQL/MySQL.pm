@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.4 2001/03/23 20:01:02 pudge Exp $
+# $Id: MySQL.pm,v 1.5 2001/03/25 16:29:35 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -11,7 +11,7 @@ use URI ();
 use vars qw($VERSION @ISA);
 
 @ISA = qw( Slash::DB::Utility );
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: I hate people who love me.  And they hate me.
 
@@ -333,26 +333,15 @@ sub createPollVoter {
 
 ########################################################
 sub createSubmission {
-	my($self, $form) = @_;
-	$form ||= getCurrentForm();
+	my($self, $submission) = @_;
+	return unless $submission;
+
 	my($sec, $min, $hour, $mday, $mon, $year) = localtime;
 	my $subid = "$hour$min$sec.$mon$mday$year";
 
-	my $uid = $form->{from}
-		? getCurrentUser('uid')
-		: getCurrentStatic('anonymous_coward_uid');
-
-	$self->sqlInsert("submissions", {
-			email	=> $form->{email},
-			uid	=> $uid,
-			name	=> $form->{from},
-			story	=> $form->{story},
-			-'time'	=> 'now()',
-			subid	=> $subid,
-			subj	=> $form->{subj},
-			tid	=> $form->{tid},
-			section	=> $form->{section}
-	});
+	$submission->{'-time'} = 'now()';
+	$submission->{'subid'} = $subid;
+	$self->sqlInsert('submissions', $submission);
 }
 
 #################################################################

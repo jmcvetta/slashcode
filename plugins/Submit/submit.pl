@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.37 2001/03/21 13:45:49 brian Exp $
+# $Id: submit.pl,v 1.38 2001/03/25 16:29:35 brian Exp $
 
 use strict;
 use Slash;
@@ -262,7 +262,21 @@ sub saveSub {
 		}
 
 		$form->{story} = strip_html(url2html($form->{story}));
-		$slashdb->createSubmission();
+
+		my $uid ||= $form->{from}
+			? getCurrentUser('uid')
+			: getCurrentStatic('anonymous_coward_uid');
+
+		my $submission = {
+			email	=> $form->{email},
+			uid	=> $uid,
+			name	=> $form->{from},
+			story	=> $form->{story},
+			subj	=> $form->{subj},
+			tid	=> $form->{tid},
+			section	=> $form->{section}
+		};
+		$slashdb->createSubmission($submission);
 		$slashdb->formSuccess($form->{formkey}, 0, length($form->{subj}));
 
 		slashDisplay('saveSub', {

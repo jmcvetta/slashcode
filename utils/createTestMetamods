@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMetamods,v 1.13 2004/04/02 00:43:06 pudge Exp $
+# $Id: createTestMetamods,v 1.14 2004/06/25 16:35:54 jamiemccarthy Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Data::Dumper;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -29,6 +29,7 @@ usage('Invalid number of meta-moderations')
 	if $opts{num_closed} !~ /^\d+$/ || $opts{num_mods} < 0;
 
 createEnvironment($opts{u});
+setCurrentSkin(determineCurrentSkin());
 $slashdb = getCurrentDB();
 $constants = getCurrentStatic();
 my $reasons = $slashdb->getReasons();

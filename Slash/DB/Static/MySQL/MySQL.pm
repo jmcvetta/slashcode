@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.186 2004/10/05 23:48:23 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.187 2004/10/08 01:24:27 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.187 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -636,8 +636,9 @@ sub getDailyMail {
 	# 1 - want all stories in the mainpage nexus, or any
 	# other nexuses linked to it, mailed
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
-# XXXSKIN - fix this - there is no more "sectioncollapse" and the
-# story_always_* need to be used instead
+# XXXSKIN - improve this - "sectioncollapse" is going to be replaced
+# by just having users pick which sections they always want to see,
+# so the story_always_* fields need to be used instead
 	if ($user->{sectioncollapse}) {
 		my $nexuses = $self->getNexusChildrenTids($mp_tid);
 		my $nexus_clause = join ',', @$nexuses, $mp_tid;

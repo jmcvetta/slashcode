@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.686 2004/10/07 01:17:04 jamiemccarthy Exp $
+# $Id: upgrades,v 1.687 2004/10/08 01:24:27 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2579,4 +2579,12 @@ INSERT INTO vars (name, value, description) VALUES ('issue_lookback_days','90','
 # End of T_2_5_0_29, Start of T_2_5_0_30 - 2004/10/06
 
 INSERT INTO vars (name, value, description) VALUES ('slashd_errnote_lastrun','','Last time slashd_errnote ran');
+
+# Changed my mind :)
+DELETE FROM string_param WHERE type='story023';
+INSERT INTO string_param (type, code, name) VALUES ('story023','0','None');
+INSERT INTO string_param (type, code, name) VALUES ('story023','2','Best');
+INSERT INTO string_param (type, code, name) VALUES ('story023','3','All');
+
+# run `perl utils/sectioncollapse_convert.plx VIRTUAL_USER`
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: precache_gse.pl,v 1.8 2004/09/14 19:05:39 jamiemccarthy Exp $
+# $Id: precache_gse.pl,v 1.9 2004/10/08 01:24:28 jamiemccarthy Exp $
 
 # Calls getStoriesEssentials, on each DB that might perform
 # its SQL, a few seconds before the top of each minute, so
@@ -17,7 +17,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "0-59 * * * *";
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -61,9 +61,9 @@ $task{$me}{code} = sub {
 	my @gse_1min = (
 		{ fake_secs_ahead =>  45,
 		  tid => $mp_tid		},
-		{ fake_secs_ahead =>  45,
-		  tid => $mp_tid,
-		  sectioncollapse => 1		},
+#		{ fake_secs_ahead =>  45,
+#		  tid => $mp_tid,
+#		  sectioncollapse => 1		},
 	);
 	my @gse_hrs = ( );
 	for my $i (0..$mins_ahead-1) {

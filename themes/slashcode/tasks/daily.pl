@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily.pl,v 1.11 2004/10/06 23:53:26 pudge Exp $
+# $Id: daily.pl,v 1.12 2004/10/08 01:24:28 jamiemccarthy Exp $
 
 use strict;
 
@@ -54,7 +54,7 @@ sub daily_generateDailyMailees {
 		for my $uid (keys %$users) {
 			my $user = $users->{$uid};
 
-			my $key  = $user->{sectioncollapse};
+			my $key  = $user->{sectioncollapse} || "";
 			for my $value (@{$user}{qw(
 				story_never_topic	story_never_author	story_never_nexus
 				story_always_topic	story_always_author	story_always_nexus

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.36 2002/07/03 01:17:46 brian Exp $
+# $Id: index.pl,v 1.37 2002/07/03 01:30:49 brian Exp $
 
 use strict;
 use Slash;
@@ -168,8 +168,6 @@ sub displayStandardBlocks {
 	} else {
 		@boxes = @{$sectionBoxes->{$getblocks}}
 			if ref $sectionBoxes->{$getblocks};
-#		push(@boxes, @{$sectionBoxes->{'all_sections'}})
-#			if ref $sectionBoxes->{'all_sections'};
 		$boxcache = $cache->{slashboxes}{$getblocks}{$user->{light}} ||= {};
 	}
 

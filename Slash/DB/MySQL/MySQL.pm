@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.172 2002/07/02 14:39:08 pudge Exp $
+# $Id: MySQL.pm,v 1.173 2002/07/03 01:30:49 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3048,11 +3048,12 @@ sub getPortalsCommon {
 	while (my $SB = $sth->fetchrow_hashref) {
 		$self->{_boxes}{$SB->{bid}} = $SB;  # Set the Slashbox
 		next unless $SB->{ordernum} > 0;  # Set the index if applicable
-		push @{$tmp{$SB->{section}}}, $SB->{bid};
 		if ($SB->{all_sections}) {
 			for my $section (keys %$sections) {
 				push @{$tmp{$section}}, $SB->{bid};
 			}
+		} else {
+			push @{$tmp{$SB->{section}}}, $SB->{bid};
 		}
 	}
 	$self->{_sectionBoxes} = \%tmp;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.107 2003/12/31 01:06:26 pudge Exp $
+# $Id: Environment.pm,v 1.108 2004/01/23 00:53:04 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1322,6 +1322,8 @@ sub prepareUser {
 	}
 	if ($user->{seclev} >= 100) {
 		$user->{is_admin} = 1;
+		# can edit users and do all sorts of cool stuff
+		$user->{is_super_admin} = 1 if $user->{seclev} >= 10_000 || $user->{acl}{super_admin};
 		my $sid;
 		#This cookie could go, and we could have session instance
 		#do its own thing without the cookie. -Brian
@@ -1354,7 +1356,7 @@ sub prepareUser {
 sub get_ipids {
 	my($hostip, $no_md5, $locationid) = @_;
 
-	$locationid = 'classbid' if @_ > 2 && !$locationid;
+	$locationid = getCurrentStatic('cookie_location') if @_ > 2 && !$locationid;
 
 	if (!$hostip && $ENV{GATEWAY_INTERFACE}) {
 		my $r = Apache->request;
@@ -2279,4 +2281,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.107 2003/12/31 01:06:26 pudge Exp $
+$Id: Environment.pm,v 1.108 2004/01/23 00:53:04 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.492 2004/01/02 00:14:33 jamie Exp $
+# $Id: MySQL.pm,v 1.493 2004/01/23 00:52:08 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.492 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.493 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6221,6 +6221,7 @@ sub getSlashConf {
 		   || ($conf{m2_consensus}-1)/2 != int(($conf{m2_consensus}-1)/2);
 	$conf{nick_chars}	||= q{ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$_.+!*'(),-};
 	$conf{nick_maxlen}	||= 20;
+	$conf{cookie_location}  ||= 'classbid';
 	$conf{login_temp_minutes} ||= 10;
 	# For all fields that it is safe to default to -1 if their
 	# values are not present...

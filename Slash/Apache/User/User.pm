@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.92 2003/10/06 04:43:41 jamie Exp $
+# $Id: User.pm,v 1.93 2003/10/06 21:56:24 jamie Exp $
 
 package Slash::Apache::User;
 
@@ -23,7 +23,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -95,14 +95,19 @@ sub handler {
 	# data to be, so no later code will try to read from it.  Maybe we
 	# should do this in filter_params itself, but for now it's here.
 	# -- jamie
+	# And gee it sure looks like this makes this handler get executed
+	# twice and the second time through it comes as a GET with no
+	# parameters because they've been nuked.  But when I comment
+	# those three lines out, it at least works, so that's what I'm
+	# doing for now.  We'll figure it out better later.  -- jamie
 
 	my $method = $r->method;
 
 	my $form = filter_params($apr);
 
-	$r->method('GET');
-	$r->method_number(M_GET);
-	$r->headers_in->unset('Content-length');
+#	$r->method('GET');
+#	$r->method_number(M_GET);
+#	$r->headers_in->unset('Content-length');
 
 	# And now the request is safe for CGI.pm or anything else to try
 	# to work with -- or at least it won't hang.

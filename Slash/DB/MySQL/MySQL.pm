@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.406 2003/05/23 18:09:37 pudge Exp $
+# $Id: MySQL.pm,v 1.407 2003/05/27 17:53:04 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.406 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.407 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6829,16 +6829,16 @@ sub _genericSet {
 		# need for a fully sql92 database.
 		# transactions baby, transactions... -Brian
 		for (@param)  {
-			$self->sqlReplace($param_table, { $table_prime => $id, name => $_->[0], value => $_->[1]});
+			$self->sqlReplace($param_table, { $table_prime => $id, name => $_->[0], value => $_->[1] });
 		}
 	} else {
 		$ok = $self->sqlUpdate($table, $value, $table_prime . '=' . $self->sqlQuote($id));
 	}
 
-	my $table_cache= '_' . $table . '_cache';
+	my $table_cache = '_' . $table . '_cache';
 	return $ok unless keys %{$self->{$table_cache}};
 
-	my $table_cache_time= '_' . $table . '_cache_time';
+	my $table_cache_time = '_' . $table . '_cache_time';
 	$self->{$table_cache_time} = time();
 	for (keys %$value) {
 		$self->{$table_cache}{$id}{$_} = $value->{$_};

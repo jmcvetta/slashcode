@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: vcal.pl,v 1.3 2003/03/06 03:41:47 jamie Exp $
+# $Id: vcal.pl,v 1.4 2004/01/27 23:06:54 pudge Exp $
 
 use strict;
 use Slash;
@@ -36,15 +36,13 @@ UID: $story->{sid}
 END: VEVENT
 END: VCALENDAR
 |;
-		my $r = Apache->request;
-		$r->header_out('Cache-Control', 'private');
-		$r->content_type('text/x-vcalendar');
-		$r->status(200);
-		$r->send_http_header;
-		$r->rflush;
-		$r->print($content);
-		$r->status(200);
-		return 1;
+
+		http_send({
+			content_type	=> 'text/x-vcalendar',
+			filename	=> "$story->{sid}.vcal",
+			do_etag		=> 1,
+			content		=> $content
+		});
 	}
 
 }

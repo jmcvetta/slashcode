@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.20 2003/12/19 18:07:43 pudge Exp $
+# $Id: Banlist.pm,v 1.21 2004/01/27 23:06:54 pudge Exp $
 
 package Slash::Apache::Banlist;
 
@@ -16,7 +16,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -87,10 +87,12 @@ print STDERR scalar(localtime) . " Banlist.pm $$ $hostip " . $r->method . " " . 
 
 sub _send_rss {
 	my($r, $type, $ipid) = @_;
-	$r->content_type('text/xml');
-	$r->status(202);
-	$r->send_http_header;
-	$r->print(_get_rss_msg($type, $ipid));
+	http_send({
+		content_type	=> 'text/xml',
+		status		=> 202,
+		content		=> _get_rss_msg($type, $ipid),
+	});
+
 	return DONE;
 }
 

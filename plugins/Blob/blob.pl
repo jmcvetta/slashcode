@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: blob.pl,v 1.7 2003/10/28 00:38:51 pudge Exp $
+# $Id: blob.pl,v 1.8 2004/01/27 23:06:54 pudge Exp $
 
 use strict;
 use Slash;
@@ -27,17 +27,12 @@ sub main {
 		return;
 	}
 
-	my $r = Apache->request;
-	$r->content_type($data->{content_type});
-	$r->header_out('Cache-Control', 'private');
-	$r->header_out('Content-Disposition', "filename=$data->{filename}")
-		if $data->{filename};
-	$r->status(200);
-	$r->send_http_header;
-	$r->rflush;
-	$r->print($data->{data});
-	$r->rflush;
-	$r->status(200);
+	http_send({
+		content_type	=> $data->{content_type},
+		filename	=> $data->{filename},
+		do_etag		=> 1,
+		content		=> $data->{data}
+	});
 }
 main();
 

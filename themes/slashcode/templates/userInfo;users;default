@@ -59,7 +59,7 @@ change your password, or just click pretty widgets to kill time.
 lastjournal.description | strip_notags %]</A></B>,
 [% Slash.timeCalc(useredit.journal_last_entry_date) %]
 ([% lastjournal.commentcount || 0 %] comment[% IF lastjournal.commentcount != 1 %]s[% END %])
-<P>[% lastjournal.article_shrunk %]
+[% IF lastjournal.article_shrunk %]<P>[% lastjournal.article_shrunk; END %]
 [% ELSE %]
 <P><I>(No journal entries.)</I>
 [% END %]
@@ -122,4 +122,4 @@ END %]
 __seclev__
 500
 __version__
-$Id: userInfo;users;default,v 1.76 2004/10/01 00:04:01 jamiemccarthy Exp $
+$Id: userInfo;users;default,v 1.77 2005/02/11 16:20:23 pudge Exp $

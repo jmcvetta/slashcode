@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.266 2004/12/07 00:12:54 pudge Exp $
+# $Id: users.pl,v 1.267 2005/02/11 16:20:12 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1335,18 +1335,21 @@ sub _get_lastjournal {
 			if (length($art_shrunk) < 15) {
 				# This journal entry has too much whitespace
 				# in its first few chars;  scrap it.
-				return undef;
+				undef $art_shrunk;
 			}
-			$art_shrunk = chopEntity($art_shrunk);
+			$art_shrunk = chopEntity($art_shrunk) if defined($art_shrunk);
 		}
-		if (length($art_shrunk) < length($lastjournal->{article})) {
-			$art_shrunk .= " ...";
+
+		if (defined $art_shrunk) {
+			if (length($art_shrunk) < length($lastjournal->{article})) {
+				$art_shrunk .= " ...";
+			}
+			$art_shrunk = strip_html($art_shrunk);
+			$art_shrunk = balanceTags($art_shrunk);
 		}
+
 		$lastjournal->{article_shrunk} = $art_shrunk;
 
-		# Now default:  normalize the text and count comments.
-		$art_shrunk = strip_html($art_shrunk);
-		$art_shrunk = balanceTags($art_shrunk);
 		if ($lastjournal->{discussion}) {
 			$lastjournal->{commentcount} = $reader->getDiscussion(
 				$lastjournal->{discussion}, 'commentcount');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.22 2003/05/27 18:02:42 pudge Exp $
+# $Id: Log.pm,v 1.23 2003/06/08 15:12:33 jamie Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -32,16 +32,10 @@ sub handler {
 
 	my $slashdb = getCurrentDB();
 	my $SECT;
-	$SECT = $slashdb->{"_sections_cache"}{$constants->{section}}
-		if exists($slashdb->{"_sections_cache"})
-		&& exists($slashdb->{"_sections_cache"}{$constants->{section}});
+	$SECT = $slashdb->{_sections_cache}{$constants->{section}}
+		if exists($slashdb->{_sections_cache})
+		&& exists($slashdb->{_sections_cache}{$constants->{section}});
 	$SECT ||= {};
-
-	printf STDERR ("sections : %d : %d : %s : %s : %s : %s : %s : %s\n",
-		$$, scalar(keys %$SECT), $constants->{section}, $ENV{REQUEST_URI},
-		$uri, $dat, $r->status,
-		join('|', %{ getCurrentForm() })
-	);
 
 	# so it will still log it if the admin DOES request
 	# to admin.pl?  i thought you wanted it to NOT log

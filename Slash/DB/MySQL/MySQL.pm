@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.412 2003/06/05 16:17:46 brian Exp $
+# $Id: MySQL.pm,v 1.413 2003/06/08 15:12:33 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.412 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.413 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6835,7 +6835,8 @@ sub _genericSet {
 	}
 
 	my $table_cache = '_' . $table . '_cache';
-	return $ok unless keys %{$self->{$table_cache}};
+	return $ok unless keys %{$self->{$table_cache}}
+		       && keys %{$self->{$table_cache}{$id}};
 
 	my $table_cache_time = '_' . $table . '_cache_time';
 	$self->{$table_cache_time} = time();

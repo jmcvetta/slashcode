@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.20 2004/12/16 22:07:37 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.21 2004/12/22 19:41:13 jamiemccarthy Exp $
 
 use strict;
 
@@ -489,6 +489,7 @@ sub cmd_dbs {
 		sleep 1;
 		$conn->privmsg($channel, $r);
 	}
+	slashdLog("dbs: cmd from $info->{event}{nick}");
 }
 
 { # closure

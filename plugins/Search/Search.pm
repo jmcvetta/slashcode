@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.44 2002/10/01 20:34:08 brian Exp $
+# $Id: Search.pm,v 1.45 2002/10/01 21:11:11 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -101,9 +101,9 @@ sub findComments {
 	$other .= " HAVING score > 0 "
 		if $form->{query};
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC ";
+		$other .= " ORDER BY score DESC ";
 	} else {
-		$other = " ORDER BY cid DESC ";
+		$other .= " ORDER BY cid DESC ";
 	}
 
 
@@ -192,9 +192,9 @@ sub findUsers {
 	$other .= " HAVING score > 0 "
 		if $form->{query};
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score "
+		$other .= " ORDER BY score "
 	} else {
-		$other = " ORDER BY users.uid "
+		$other .= " ORDER BY users.uid "
 	}
 
 	$other .= " LIMIT $start, $limit" if $limit;
@@ -225,9 +225,9 @@ sub findStory {
 	$other .= " HAVING score > 0 "
 		if $form->{query};
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC";
+		$other .= " ORDER BY score DESC";
 	} else {
-		$other = " ORDER BY time DESC";
+		$other .= " ORDER BY time DESC";
 	}
 
 	# The big old searching WHERE clause, fear it
@@ -362,9 +362,9 @@ sub findPollQuestion {
 	$other .= " HAVING score > 0 "
 		if ($form->{query});
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC";
+		$other .= " ORDER BY score DESC";
 	} else {
-		$other = " ORDER BY date DESC";
+		$other .= " ORDER BY date DESC";
 	}
 
 	# The big old searching WHERE clause, fear it
@@ -400,9 +400,9 @@ sub findSubmission {
 	$other .= " HAVING score > 0 "
 		if ($form->{query});
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC";
+		$other .= " ORDER BY score DESC";
 	} else {
-		$other = " ORDER BY time DESC";
+		$other .= " ORDER BY time DESC";
 	}
 
 	# The big old searching WHERE clause, fear it
@@ -437,9 +437,9 @@ sub findRSS {
 	$other .= " HAVING score > 0 "
 		if ($form->{query});
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC";
+		$other .= " ORDER BY score DESC";
 	} else {
-		$other = " ORDER BY created DESC";
+		$other .= " ORDER BY created DESC";
 	}
 
 	# The big old searching WHERE clause, fear it
@@ -469,12 +469,13 @@ sub findDiscussion {
 	my $other;
 	$other .= " HAVING score > 0 "
 		if ($form->{query});
+
 	if ($form->{query} && $sort == 2) {
-		$other = " ORDER BY score DESC";
+		$other .= " ORDER BY score DESC";
 	} elsif ($sort == 3) {
-		$other = " ORDER BY last_update DESC";
+		$other .= " ORDER BY last_update DESC";
 	} else {
-		$other = " ORDER BY ts DESC";
+		$other .= " ORDER BY ts DESC";
 	}
 
 	# The big old searching WHERE clause, fear it

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.50 2003/07/15 22:30:06 pudge Exp $
+# $Id: pollBooth.pl,v 1.51 2003/07/22 19:51:08 vroom Exp $
 
 use strict;
 use Slash;
@@ -151,7 +151,7 @@ sub editpoll {
         } elsif ($qid) {
 		$question = $slashdb->getPollQuestion($qid);
 		$question->{sid} = $slashdb->getSidForQID($qid)
-			unless $question->{autopoll};
+			unless $question->{autopoll} eq "yes";
 		$answers = $slashdb->getPollAnswers(
 			$qid, [qw( answer votes aid )]
 		);
@@ -394,7 +394,8 @@ sub listpolls {
 		startat		=> $min + @$questions,
 		admin		=> getCurrentUser('seclev') >= 100,
 		title		=> "$sitename Polls",
-		width		=> '99%'
+		width		=> '99%',
+                curtime         => $reader->getTime()
 	});
 }
 

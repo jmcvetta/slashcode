@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rss_submit.pl,v 1.6 2004/04/02 00:43:06 pudge Exp $
+# $Id: rss_submit.pl,v 1.7 2004/07/13 19:07:49 jamiemccarthy Exp $
 
 use strict;
 
@@ -29,22 +29,28 @@ $task{$me}{code} = sub {
 		$time_long_ago[5] + 1900, $time_long_ago[4] + 1, $time_long_ago[3];
 
 	my $added_submissions = 0;
-	# First, we grab as many possible submissions as possible
-	my $rss = $slashdb->getRSSNotProcessed($constants->{rss_process_number});
-	for my $rss (@$rss) {
+	# First, we grab as many submissions as possible
+	my $rss_ar = $slashdb->getRSSNotProcessed($constants->{rss_process_number});
+	for my $rss (@$rss_ar) {
 		my $subid;
 		my $block = $slashdb->getBlock($rss->{bid});
 		my $description = $rss->{description} ? $rss->{description} : $rss->{title};
-		if ($block->{'autosubmit'} eq 'yes') {
+		if ($block->{autosubmit} eq 'yes') {
+			my $blockskin = $slashdb->getSkin($block->{skin});
 			my $submission = {
 				email	=> $rss->{link},
 				name	=> $block->{title},
 				story	=> $description,
 				subj	=> $rss->{title},
-				section	=> $block->{section},
+				skid	=> $blockskin->{skid},
 			};
 			$subid = $slashdb->createSubmission($submission);
-			$added_submissions++;
+			if (!$subid) {
+				use Data::Dumper;
+				slashdLog("failed to createSubmission, rss: " . Dumper($rss) . "submission: " . Dumper($submission));
+			} else {
+				$added_submissions++;
+			}
 		}
 		$slashdb->setRSS($rss->{id}, { processed => 'yes', subid => $subid });	
 	}

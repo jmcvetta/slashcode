@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.106 2002/03/19 01:56:37 jamie Exp $
+# $Id: MySQL.pm,v 1.107 2002/03/19 20:15:24 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB::Utility';
 # for palmlog
 use MIME::Base64;
 
-($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4323,7 +4323,7 @@ sub getSlashConf {
 			       . '[' . join("", @chars) . ']'
 			       . '|&#(?:' . join("|", @entities) . ');'
 		       . ')';
-		my $regex =         '^(\s+' . "$dotchar+" . ')\S';
+		my $regex = '^(\s+' . "$dotchar+" . ')\S';
 		$conf{comment_nonstartwordchars_regex} = qr{$regex}i;
 	}
 

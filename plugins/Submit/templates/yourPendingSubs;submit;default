@@ -42,11 +42,7 @@ and their status within the system:</P>
 		CASE 1;
 			status="rejected";
 		CASE 2;
-			IF story_viewable;
-				status='accepted';
-			ELSE;
-				status='pending';
-			END;
+			status='accepted';
 	END %]
 	([% status %])
 	[% summary.$status = summary.$status.defined ? summary.$status + 1 : 1 %]
@@ -71,4 +67,4 @@ don't take it personally.
 __seclev__
 10000
 __version__
-$Id: yourPendingSubs;submit;default,v 1.13 2004/08/03 03:22:12 tvroom Exp $
+$Id: yourPendingSubs;submit;default,v 1.14 2004/11/03 19:02:40 tvroom Exp $

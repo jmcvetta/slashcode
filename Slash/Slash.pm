@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.41 2002/02/07 00:02:35 cliff Exp $
+# $Id: Slash.pm,v 1.42 2002/02/07 21:42:06 pudge Exp $
 
 package Slash;
 
@@ -776,15 +776,15 @@ sub dispStory {
 	my $slashdb      = getCurrentDB();
 	my $constants    = getCurrentStatic();
 	my $form_section = getCurrentForm('section');
-	my $template_name = $other->{story_template} ? 
-		$other->{story_template} : 'dispStory';
+	my $template_name = $other->{story_template}
+		? $other->{story_template} : 'dispStory';
 
 	# Might this logic be better off in the template? It's sole purpose
 	# is aesthetics.
-	$other->{magic} = (!$full && (index($story->{title}, ':') == -1) &&
-			  ($story->{section} ne $constants->{defaultsection} &&
-			   $story->{section} ne $form_section))
-	if !exists $other->{magic};
+	$other->{magic} = (!$full && (index($story->{title}, ':') == -1)
+			&& ($story->{section} ne $constants->{defaultsection}
+			&& $story->{section} ne $form_section))
+		if !exists $other->{magic};
 
 	my $section = $slashdb->getSection($story->{section});
 
@@ -1123,7 +1123,7 @@ sub _hard_dispComment {
 			</TD></TR>
 EOT
 
-	# Do not display comment navigation and reply links if we are in 
+	# Do not display comment navigation and reply links if we are in
 	# archive mode or if we are in metamod. Nicknames are always equal to
 	# '-' in metamod. This logic is extremely old and could probably be
 	# better formulated.

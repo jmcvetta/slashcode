@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.126 2003/01/20 20:32:34 brian Exp $
+# $Id: admin.pl,v 1.127 2003/01/21 21:04:21 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1177,7 +1177,7 @@ sub editStory {
 		$storyref->{introtext_wordcount} = countWords($storyref->{introtext});
 		$storyref->{bodytext_wordcount} = countWords($storyref->{bodytext});
 		if (ref($form->{_multi}{stid}) eq 'ARRAY') {
-			for(@{$form->{_multi}{stid}}) {
+			for (@{$form->{_multi}{stid}}) {
 				push @stid, $_ if $_;
 			}
 		} else {
@@ -1237,7 +1237,7 @@ sub editStory {
 	my @topic_select_sec;
 	if ($section) {
 		for (@stid) {
-			my %$current_hash = %$topic_values;
+			my $current_hash = { %$topic_values };
 			$current_hash->{0} = "$current_hash->{$_} (Delete)";
 			push @topic_select_sec, createSelect('stid',
 				$current_hash,
@@ -1245,7 +1245,7 @@ sub editStory {
 			);
 		}
 		if (@stid < 2) {
-			my %$current_hash = %$topic_values;
+			my $current_hash = { %$topic_values };
 			$current_hash->{0} = "Add Topic";
 			push @topic_select_sec, createSelect('stid',
 				$current_hash,

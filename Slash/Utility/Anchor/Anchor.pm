@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.62 2004/02/10 18:06:54 cowboyneal Exp $
+# $Id: Anchor.pm,v 1.63 2004/02/12 16:41:37 cowboyneal Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -631,7 +631,8 @@ EOT
 	if ($num == 2 && $need_box) {
 		# we need the ad wrapped in a fancybox
 		if (defined $user->{state}{ad}{$num}
-			&& $user->{state}{ad}{$num} !~ /^<!-- no pos/) {
+			&& $user->{state}{ad}{$num} !~ /^<!-- no pos/
+			&& $user->{state}{ad}{$num} !~ /^<!-- place/) {
 			# if we're called from shtml, we won't have colors
 			# set, so we should get some set before making a
 			# box.				-- Pater
@@ -698,4 +699,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.62 2004/02/10 18:06:54 cowboyneal Exp $
+$Id: Anchor.pm,v 1.63 2004/02/12 16:41:37 cowboyneal Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.27 2004/10/15 02:26:48 jamiemccarthy Exp $
+# $Id: System.pm,v 1.28 2004/11/18 16:04:12 cowboyneal Exp $
 
 package Slash::Utility::System;
 
@@ -40,7 +40,7 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -367,7 +367,7 @@ sub doClampeLog {
         my $log_msg = scalar(localtime) . " $sname@msg\n";
 
         open $fh, ">> $file\0" or die "Can't append to $file: $!\nmsg: @msg\n";
-        flock($fh, LOCK_EX);
+        # flock($fh, LOCK_EX);
         seek($fh, 0, SEEK_END);
         print $fh $log_msg;
         print     $log_msg if $stdout;
@@ -539,4 +539,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.27 2004/10/15 02:26:48 jamiemccarthy Exp $
+$Id: System.pm,v 1.28 2004/11/18 16:04:12 cowboyneal Exp $

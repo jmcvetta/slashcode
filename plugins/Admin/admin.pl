@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.174 2003/09/08 06:01:44 pudge Exp $
+# $Id: admin.pl,v 1.175 2003/09/10 22:28:15 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -793,7 +793,7 @@ sub topicEdit {
 		if (!$form->{topicnew} && $form->{nexttid}) {
 			$topic = $slashdb->getTopic($form->{nexttid}, 0, 1);
 			my $topic_image = $slashdb->getTopicImage($topic->{default_image}, 0, 1);
-			%$topic = (%$topic_image, %$topic);
+			%$topic = (%$topic_image, %$topic) if ref $topic_image;
 		} else {
 			$topic = {};
 		}

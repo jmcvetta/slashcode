@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: authors.pl,v 1.9 2002/03/04 17:33:22 pudge Exp $
+# $Id: authors.pl,v 1.10 2002/12/26 19:46:13 jamie Exp $
 
 use strict;
 use Slash;
@@ -25,7 +25,7 @@ sub main {
 		'time'	=> timeCalc(scalar localtime),
 	});
 
-	footer($form->{ssi});
+	footer();
 }
 
 createEnvironment();

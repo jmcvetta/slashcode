@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.13 2002/09/30 12:22:25 pater Exp $
+# $Id: topics.pl,v 1.14 2002/12/26 19:46:13 jamie Exp $
 
 use strict;
 use Slash;
@@ -25,7 +25,7 @@ sub main {
 		listTopics();
 	}
 
-	footer($form->{ssi});
+	footer();
 }
 
 #################################################################

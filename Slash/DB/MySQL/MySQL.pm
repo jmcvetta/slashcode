@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.449 2003/09/09 16:26:16 jamie Exp $
+# $Id: MySQL.pm,v 1.450 2003/09/09 19:36:34 vroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.449 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.450 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1620,12 +1620,12 @@ sub createBadPasswordLog {
 		subnet =>       $subnet,
 	} );
 
-	my $warn_interval = $constants->{bad_password_warn_user_interval} || 0;
+	my $warn_limit = $constants->{bad_password_warn_user_limit} || 0;
 	my $bp_count = $self->getBadPasswordCountByUID($uid);
 
 	# We only warn a user at the Xth bad password attempt.  We don't want to
 	# generate a message for every bad attempt over a threshold
-	if ($bp_count && $bp_count == $warn_interval) {
+	if ($bp_count && $bp_count == $warn_limit) {
 
 		my $messages = getObject("Slash::Messages");
 		return unless $messages;

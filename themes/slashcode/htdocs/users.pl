@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.198 2003/11/07 13:46:29 jamie Exp $
+# $Id: users.pl,v 1.199 2003/11/10 19:19:02 vroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2766,7 +2766,7 @@ sub getUserAdmin {
 		$user_edit->{subscribe_payments} =
 			$subscribe->getSubscriptionsForUser($user_edit->{uid});
 		$user_edit->{subscribe_purchases} =
-			$subscribe->getSubscriptionsPurchasedByUser($user_edit->{uid});
+			$subscribe->getSubscriptionsPurchasedByUser($user_edit->{uid},{ only_types => [ "grant", "gift" ] });
 	}
 
 	my $all_acls = $reader->getAllACLs();

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.15 2002/07/15 12:55:59 pudge Exp $
+# $Id: MySQL.pm,v 1.16 2002/11/04 18:35:29 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -230,13 +230,13 @@ sub _get_web_by_uid {
 
 sub _get_web_count_by_uid {
 	my($self, $uid) = @_;
-	my $table = $self->{_web_table1};
+	my $table = $self->{_web_table};
 	my $cols  = "readed";
-	my $prime = "user";
 
-	my $id_db = $self->sqlQuote($uid || $ENV{SLASH_USER});
+	my $uid_db = $self->sqlQuote($uid || $ENV{SLASH_USER});
 	my $data = $self->sqlSelectAll(
-		$cols, $table, "$prime=$id_db",
+		$cols, $table, "user=$uid_db AND " .
+		"$self->{_web_table1}.$self->{_web_prime1} = $self->{_web_table2}.$self->{_web_prime2}",
 	);
 
 	my $read = grep { $_->[0] } @$data;
@@ -262,7 +262,7 @@ sub _get {
 }
 
 sub _gets {
-	my($self, $count, $delete) = @_;
+	my($self, $count) = @_;
 	my $table = $self->{_drop_table};
 	my $cols  = $self->{_drop_cols};
 

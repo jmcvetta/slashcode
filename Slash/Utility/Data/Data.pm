@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.135 2004/11/03 19:48:15 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.136 2004/11/03 22:26:07 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.135 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -142,7 +142,7 @@ sub nick2matchname {
 # If your site will have multiple formats of sids, you'll want this
 # to continue matching the old formats too.
 sub regexSid {
-	return qr{\b(\d{2}/\d{2}/\d{2}/\d{3,8}\|\d{1,8})\b};
+	return qr{\b(\d{2}/\d{2}/\d{2}/\d{3,8}|\d{1,8})\b};
 }
 
 #========================================================================
@@ -3531,4 +3531,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.135 2004/11/03 19:48:15 jamiemccarthy Exp $
+$Id: Data.pm,v 1.136 2004/11/03 22:26:07 pudge Exp $

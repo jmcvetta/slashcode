@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.79 2002/07/17 21:27:37 jamie Exp $
+# $Id: comments.pl,v 1.80 2002/07/18 19:44:21 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1058,7 +1058,7 @@ sub submitComment {
 		undoModeration($form->{sid});
 		printComments($discussion, $maxCid, $maxCid);
 
-		my $tc = $slashdb->getVar('totalComments', 'value');
+		my $tc = $slashdb->getVar('totalComments', 'value', 1);
 		$slashdb->setVar('totalComments', ++$tc);
 
 		# This is for stories. If a sid is only a number

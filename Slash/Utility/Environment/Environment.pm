@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.3 2001/11/25 15:33:33 jamie Exp $
+# $Id: Environment.pm,v 1.4 2001/12/04 01:49:28 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1313,18 +1313,24 @@ sub getObject {
 	}
 
 	if ($objects->{$class}) {
-		return $objects->{$class};
+		if ($objects->{$class} eq 'NA') {
+			return undef;
+		} else {
+			return $objects->{$class};
+		}
 	} else {
-		$user    ||= getCurrentVirtualUser();
+		$user ||= getCurrentVirtualUser();
 		return undef unless $user;
 
 		eval "require $class";
 		if ($@) {
 			errorLog($@);
+			$objects->{$class} = 'NA';
 			return undef;
 		} elsif (!$class->can("new")) {
 			errorLog("Class $class is not working properly.  Try " .
 				"`perl -M$class -le '$class->new'` to see why.\n");
+			$objects->{$class} = 'NA';
 			return undef;
 		}
 		return $objects->{$class} = $class->new($user, @args);
@@ -1528,4 +1534,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.3 2001/11/25 15:33:33 jamie Exp $
+$Id: Environment.pm,v 1.4 2001/12/04 01:49:28 pudge Exp $

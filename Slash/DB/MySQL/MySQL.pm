@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.540 2004/03/25 01:00:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.541 2004/03/26 14:23:14 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.540 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.541 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3826,19 +3826,25 @@ sub checkForOpenProxy {
 	local $_proxy_port = undef;
 	sub _cfop_callback {
 		my($data, $response, $protocol) = @_;
-		if ($response->is_success()
-			&& $response->content() =~ /\bok\b/) {
-			# We got one success;  the IP is a proxy;
-			# we can quit listening on any of the
+#print STDERR scalar(localtime) . " _cfop_callback protocol '$protocol' port '$_proxy_port' succ '" . ($response->is_success()) . "' data '$data' content '" . ($response->is_success() ? $response->content() : "(fail)") . "'\n";
+		if ($response->is_success() && $data eq "ok\n") {
+			# We got a success, so the IP is a proxy.
+			# We should know the proxy's port at this
+			# point;  if not, that's remarkable, so
+			# print an error.
+			my $orig_req = $response->request();
+			$_proxy_port = $orig_req->{_slash_proxytest_port};
+			if (!$_proxy_port) {
+				print STDERR scalar(localtime) . " _cfop_callback got data but false port, protocol '$protocol' port '$_proxy_port' succ '" . ($response->is_success()) . "' data '$data' content '" . $response->content() . "'\n";
+			}
+			$_proxy_port ||= 1;
+			# We can quit listening on any of the
 			# other ports that may have connected,
 			# returning immediately from the wait().
 			# So we want to return C_ENDALL.  Except
 			# C_ENDALL doesn't seem to _work_, it
 			# crashes in _remove_current_connection.
 			# Argh.  So we use C_LASTCON.
-			my $orig_req = $response->request();
-			$_proxy_port = $orig_req->{_slash_proxytest_port} || 1;
-#print STDERR scalar(localtime) . " _cfop_callback protocol '$protocol' port '$_proxy_port' succ '" . $response->is_success() . "'\n";
 			return LWP::Parallel::UserAgent::C_LASTCON;
 		}
 #print STDERR scalar(localtime) . " _cfop_callback protocol '$protocol' succ '0'\n";

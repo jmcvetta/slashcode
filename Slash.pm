@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.32 2000/07/05 18:49:35 cbwood Exp $
+#  $Id: Slash.pm,v 1.33 2000/07/07 12:35:28 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1512,7 +1512,13 @@ EOT
 
 ########################################################
 sub redirect {
-	my $url = URI->new_abs(shift, $I{rootdir})->canonical->as_string;
+	my $url = shift;
+
+	if ($I{rootdir}) {	# rootdir strongly recommended
+		$url = URI->new_abs($url, $I{rootdir})->canonical->as_string;
+	} elsif ($url !~ m|^https?://|i) {	# but not required
+		$url =~ s|^/*|$I{rootdir}/|;
+	}
 
 	my %params = (
 		-type		=> 'text/html',
@@ -2961,8 +2967,6 @@ EOT
 	}
 	return(1);
 }
-
-
 
 ########################################################
 sub CLOSE { $I{dbh}->disconnect if $I{dbh} }

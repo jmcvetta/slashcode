@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.736 2004/11/23 19:32:03 tvroom Exp $
+# $Id: upgrades,v 1.737 2004/11/23 19:59:32 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2766,4 +2766,6 @@ ALTER TABLE dbs ADD COLUMN weight_adjust float UNSIGNED NOT NULL DEFAULT 1.0;
 DELETE FROM vars WHERE name='search_db_user';
 
 ALTER TABLE discussions ADD COLUMN archivable enum("no","yes") DEFAULT 'yes' NOT NULL;
+
+UPDATE vars SET value=300 WHERE name='freshenup_max_stories';
 

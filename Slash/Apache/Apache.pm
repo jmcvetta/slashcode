@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.61 2004/07/06 17:30:54 pudge Exp $
+# $Id: Apache.pm,v 1.62 2004/07/17 17:35:19 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -402,7 +402,22 @@ sub IndexHandler {
 			# $USER_MATCH defined above
 			if ($dbon && $is_user) {
 				$r->args("section=$key");
-				$r->uri("/$index_handler");
+				# For any directory which can be accessed by a
+				# logged-in user in the URI form /foo or /foo/,
+				# but which is not a skin's directory, there
+				# is a problem;  we cannot simply bounce the uri
+				# back to /index.pl or whatever, since the
+				# index handler will not recognize the section
+				# key argument above and will just present the
+				# ordinary homepage.  I don't know the best way
+				# to handle this situation at the moment, so
+				# instead I'm hardcoding in the solution for the
+				# most common problem. - Jamie 2004/07/17
+				if ($key eq "faq") {
+					$r->uri("/faq/index.shtml");
+				} else {
+					$r->uri("/$index_handler");
+				}
 				$r->filename("$basedir/$index_handler");
 				return OK;
 			} else {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+# $Id: Messages.pm,v 1.7 2002/02/06 16:59:38 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -118,9 +118,10 @@ sub create {
 				# real actual UID for "database integrity"
 	}
 
+	my $origtype = $type;
 	(my($code), $type) = $self->getDescription('messagecodes', $type);
 	unless (defined $code) {
-		messagedLog(getData("type not found", { type => $type }, "messages"));
+		messagedLog(getData("type not found", { type => $origtype }, "messages"));
 		return 0;
 	}
 
@@ -892,4 +893,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.6 2002/01/08 17:22:09 pudge Exp $
+$Id: Messages.pm,v 1.7 2002/02/06 16:59:38 pudge Exp $

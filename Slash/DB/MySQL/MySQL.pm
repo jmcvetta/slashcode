@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.630 2004/07/17 15:32:53 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.631 2004/07/17 15:50:04 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.630 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.631 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6563,19 +6563,14 @@ sub getStoriesEssentials {
 	});
 	my $columns;
 	if ($options->{return_min_stoid_only}) {
-		$columns = "MIN(stories.stoid) AS minstoid";
+		$columns = "stories.stoid";
 		$can_restrict_by_min_stoid = 0;
 	} else {
 		$columns = "stories.stoid, sid, time, commentcount, hitparade,"
 			. " primaryskid, body_length, word_count, discussion, $column_time";
 	}
 	my $tables = "stories, story_topics_rendered";
-	my $other;
-	if ($options->{return_min_stoid_only}) {
-		$other = "LIMIT " . ($offset+$limit);
-	} else {
-		$other = "GROUP BY stories.stoid ORDER BY time DESC LIMIT $offset, $limit";
-	}
+	my $other = "GROUP BY stories.stoid ORDER BY time DESC LIMIT $offset, $limit";
 #print STDERR "gSE r_m_s_o '$options->{return_min_stoid_only}' other '$other' columns '$columns'\n";
 
 	my $where = "stories.stoid = story_topics_rendered.stoid AND in_trash = 'no' AND $where_time";
@@ -6611,6 +6606,15 @@ sub getStoriesEssentials {
 	}
 	$cursor->finish;
 	$self->_querylog_finish($qlid);
+
+	if ($options->{return_min_stoid_only}) {
+		my $min = $stories[0]{stoid} || 0;
+		return 0 if !$min;
+		for my $story (@stories) {
+			$min = $story->{stoid} if $story->{stoid} < $min;
+		}
+		return $min;
+	}
 
 	return \@stories;
 }

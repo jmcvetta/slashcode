@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_gse_min_stoid.pl,v 1.1 2004/07/17 15:32:56 jamiemccarthy Exp $
+# $Id: set_gse_min_stoid.pl,v 1.2 2004/07/17 15:50:05 jamiemccarthy Exp $
 
 # Does the most common getStoriesEssentials call, determines the
 # minimum stoid returned, and writes it to a var.
@@ -15,7 +15,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 3;
@@ -43,14 +43,12 @@ $task{$me}{code} = sub {
 	# But again for a safety margin, we want more.
 	$future_secs = $future_secs * 3 + 86400;
 
-	my $retval = $slashdb->getStoriesEssentials({
+	my $min_stoid = $slashdb->getStoriesEssentials({
 		return_min_stoid_only	=> 1,
 		try_future		=> 1,
 		limit_extra		=> $limit_extra,
 		future_secs		=> $future_secs,
 	});
-#use Data::Dumper; print STDERR "gSE retval: " . Dumper($retval);
-	my $min_stoid = $retval->[0]{minstoid};
 
 	# More safety margin.
 	$min_stoid -= 100;

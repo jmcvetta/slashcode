@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.74 2004/06/23 19:17:13 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.75 2004/07/08 20:49:17 pudge Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -58,8 +58,8 @@ sub findComments {
 	my $columns;
 	$columns .= "primaryskid, url, discussions.uid AS author_uid, discussions.title AS title, ";
 	$columns .= "pid, subject, ts, date, comments.uid AS uid, cid, ";
-	$columns .= "discussions.id AS did, ";
-	$columns .= "TRUNCATE( "
+	$columns .= "discussions.id AS did";
+	$columns .= ", TRUNCATE( "
 		. $self->_score('comments.subject', $form->{query}, $constants->{search_method})
 		. ", 1) AS score "
 		if $form->{query};

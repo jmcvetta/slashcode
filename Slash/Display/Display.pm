@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.14 2002/05/03 02:54:29 cliff Exp $
+# $Id: Display.pm,v 1.15 2002/05/10 21:52:16 cliff Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -390,7 +390,7 @@ perl function C<substr>.
 	[% myscalar.substr(2)    # all but first two characters %]
 	[% myscalar.substr(2, 1) # third character %]
 
-Additional list ops include C<rand>, C<lowval>, C<highval>, C<remove>.
+Additional list ops include C<rand>, C<lowval>, C<highval>, C<grepn> and C<remove>.
 
 C<rand> returns a random value from the list.
 
@@ -398,6 +398,9 @@ C<rand> returns a random value from the list.
 
 C<lowval>, and C<highval> do exacly what they sound like, they return the 
 lowest or the highest value in the list.
+
+C<grepn> returns the position of the first occurance of a given value. See 
+C<Slash::Utility::grepn>.
 
 C<remove> returns the list with all entries matching the given parameter,
 removed.
@@ -451,16 +454,16 @@ my %list_ops = (
 		return $minval;
 	},
 
-	'inlist'	=> sub {
+	'grepn'		=> sub {
 		my($list, $searchval) = @_;
 		
-		return inList($list, $searchval);
+		return grepn($list, $searchval);
 	},
 
 	'remove'	=> sub {
 		my($list, $remove_val) = @_;
 
-		return [ delFromList($list, $remove_val) ];
+		return [ grep { $_ ne $remove_val } @$list ];
 	},
 );
 

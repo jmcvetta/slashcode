@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.127 2002/04/15 14:43:55 pudge Exp $
+# $Id: MySQL.pm,v 1.128 2002/04/15 18:44:46 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4883,6 +4883,11 @@ sub getContentFilter {
 sub getSubmission {
 	my $answer = _genericGet('submissions', 'subid', 'submission_param', @_);
 	return $answer;
+}
+
+########################################################
+sub setSubmission {
+	_genericSet('submissions', 'subid', 'submission_param', @_);
 }
 
 ########################################################

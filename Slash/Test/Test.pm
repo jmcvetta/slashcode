@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Test.pm,v 1.7 2002/07/26 20:52:04 pudge Exp $
+# $Id: Test.pm,v 1.8 2002/08/26 17:38:17 pudge Exp $
 
 package Slash::Test;
 
@@ -42,6 +42,11 @@ You can also pass in a UID to use instead of anonymous coward:
 
 	% perl -MSlash::Test=virtualuser,2 -e 'print Dumper $user'
 
+Plugin variables automatically spring into existence, such as $journal, $messages,
+etc.  Feel free to do:
+
+	% perl -MSlash::Test -e 'print Dumper $journal->themes'
+
 =head1 EXPORTED FUNCTIONS
 
 =cut
@@ -58,7 +63,7 @@ use strict;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = (
 	@Slash::EXPORT,
 	@Slash::Constants::EXPORT_OK,
@@ -179,4 +184,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Test.pm,v 1.7 2002/07/26 20:52:04 pudge Exp $
+$Id: Test.pm,v 1.8 2002/08/26 17:38:17 pudge Exp $

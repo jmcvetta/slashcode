@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.44 2002/08/23 15:24:51 brian Exp $
+# $Id: Environment.pm,v 1.45 2002/08/26 17:38:17 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1188,9 +1188,7 @@ sub prepareUser {
 
 	if ($uri =~ m[^/$]) {
 		$user->{currentPage} = 'index';
-	} elsif ($uri =~ m{/([^/]+)\.pl$}) {
-		$user->{currentPage} = $1;
-	} elsif ($uri =~ m{([^/]+)\.pl$}) {
+	} elsif ($uri =~ m{(?:/|\b)([^/]+)\.pl$}) {
 		$user->{currentPage} = $1;
 	} else {
 		$user->{currentPage} = 'misc';
@@ -1269,6 +1267,7 @@ Hashref of cleaned-up data.
 		uthreshold voters width
 		textarea_rows textarea_cols
 		subid tpid tid qid aid
+		url_id spider_id miner_id keyword_id
 	);
 
 	# fields that have ONLY a-zA-Z0-9_
@@ -1699,4 +1698,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.44 2002/08/23 15:24:51 brian Exp $
+$Id: Environment.pm,v 1.45 2002/08/26 17:38:17 pudge Exp $

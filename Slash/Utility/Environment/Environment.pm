@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.43 2002/08/23 02:21:10 brian Exp $
+# $Id: Environment.pm,v 1.44 2002/08/23 15:24:51 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1642,12 +1642,10 @@ sub createEnvironment {
 			$new_cfg->{rootdir} = $_->{url};
 			$new_cfg->{cookiedomain} = $_->{cookiedomain} if $_->{cookiedomain};
 			$new_cfg->{defaultsection} = $_->{section};
-# this is in Apache, but not here?  should it be here?  -- pudge
-#			$new_cfg->{section} = $_->{section};
+			$new_cfg->{section} = $_->{section};
 			$new_cfg->{basedomain} = $_->{hostname};
 			$new_cfg->{static_section} = $_->{section};
 			$new_cfg->{index_handler} = $_->{index_handler};
-			$new_cfg->{form_override}{section} = $_->{section};
 			$site_constants->{$_->{hostname}} = $new_cfg;
 		}
 	}
@@ -1701,4 +1699,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.43 2002/08/23 02:21:10 brian Exp $
+$Id: Environment.pm,v 1.44 2002/08/23 15:24:51 brian Exp $

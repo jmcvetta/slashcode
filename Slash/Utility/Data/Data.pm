@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.38 2002/06/28 17:11:08 jamie Exp $
+# $Id: Data.pm,v 1.39 2002/07/01 13:32:50 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -1028,7 +1028,7 @@ in HREFs through C<fudgeurl>.
 
 sub approveTag {
 	my($wholetag) = @_;
-#print STDERR "BEGIN <$wholetag>\n";
+#print STDERR "BEGIN approveTag <$wholetag>\n";
 
 	$wholetag =~ s/^\s*?(.*)\s*?$/$1/; # trim leading and trailing spaces
 	$wholetag =~ s/\bstyle\s*=(.*)$//is; # go away please
@@ -1113,10 +1113,15 @@ sub approveTag {
 		# tag is invalid.
 		return "" unless $num_req_found == scalar(keys %required);
 
+	} else {
+
+		# No attributes allowed.
+		$wholetag = $t;
+
 	}
 
 	# If we made it here, the tag is valid.
-#print STDERR "END <$wholetag>\n";
+#print STDERR "END approveTag <$wholetag>\n";
 	return "<$wholetag>";
 }
 
@@ -2466,4 +2471,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.38 2002/06/28 17:11:08 jamie Exp $
+$Id: Data.pm,v 1.39 2002/07/01 13:32:50 jamie Exp $

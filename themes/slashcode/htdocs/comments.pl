@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.68 2002/06/04 18:13:40 pudge Exp $
+# $Id: comments.pl,v 1.69 2002/07/01 13:32:50 jamie Exp $
 
 use strict;
 use HTML::Entities;
@@ -700,8 +700,9 @@ sub validateComment {
 	my $form_success = 1;
 	my $message = '';
 
-	$$comm ||= $form->{postercomment};
-	$$subj ||= $form->{postersubj};
+# No reason for these 2 lines, that we can see - pudge (& jamie), 2002/07/01
+#	$$comm ||= $form->{postercomment};
+#	$$subj ||= $form->{postersubj};
 
 	if ($slashdb->checkReadOnly('comments')) {
 		$$error_message = getError('readonly');

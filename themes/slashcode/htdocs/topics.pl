@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.15 2003/02/11 20:00:08 brian Exp $
+# $Id: topics.pl,v 1.16 2003/02/14 21:58:12 brian Exp $
 
 use strict;
 use Slash;
@@ -49,22 +49,21 @@ sub hierarchy {
 		if ($topic->{parent_topic}) {
 			push(@{$parents{$topic->{parent_topic}}{child}}, $topic);
 		}
-		$parents{$topic->{tid}}{parent} = $topic;
+		$parents{$topic->{tid}} = $topic;
 	}
 	
 	for my $parent (values %parents) {
 		# We remove children that have no children. No Welfare state for us! 
-		next if $parent->{parent}{parent_topic} && !$parent->{child};
 		if ($parent->{child}) {
 			my @children = sort({ $a->{alttext} cmp $b->{alttext} } @{$parent->{child}});
 			$parent->{child} = \@children;
 		}
+		next if $parent->{parent_topic};
 		push @topics, $parent;
 	}
-	@topics = sort({ $a->{parent}{alttext} cmp $b->{parent}{alttext} } @topics);
+	@topics = sort({ $a->{alttext} cmp $b->{alttext} } @topics);
 
 	slashDisplay('hierarchy', {
-		title		=> 'Hierarchy of Topics',
 		topics		=> \@topics,
 	});
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.94 2002/03/06 17:49:51 cliff Exp $
+# $Id: MySQL.pm,v 1.95 2002/03/06 20:16:55 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,14 +16,14 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
 # For the getDecriptions() method
 my %descriptions = (
 	'sortcodes'
-		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='$_[1]'") },
+		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='sortcodes'") },
 
 	'generic'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='$_[2]'") },
@@ -1739,6 +1739,7 @@ sub getPollVoter {
 # Yes, I hate the name of this. -Brian
 sub savePollQuestion {
 	my($self, $poll) = @_;
+	$poll->{section} ||= getCurrentStatic('defaultsection');
 	$poll->{voters} ||= "0";
 	my $qid_quoted = "";
 	$qid_quoted = $self->sqlQuote($poll->{qid}) if $poll->{qid};

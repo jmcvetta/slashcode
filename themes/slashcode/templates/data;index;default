@@ -64,13 +64,13 @@ __template__
 
 [% CASE 'comments' %]
 	<B>[% IF cc.0 -%]
-<A HREF="[% cc.0.0 %]"[% IF cc.0.2 %] TITLE="[% cc.0.2 %]"[% END %]>[% cc.0.1 %]</A> of 
+<A HREF="[% cc.0.0 | strip_attribute %]"[% IF cc.0.2 %] TITLE="[% cc.0.2 | strip_attribute %]"[% END %]>[% cc.0.1 | strip_html %]</A> of 
 	[%- END -%]
-<A HREF="[% cc.1.0 %]"[% IF cc.1.2 %] TITLE="[% cc.1.2 %]"[% END %]>[% cc.1.1 %]</A></B> comment[% cc.3 != 1 ? 's' : '' %]
+<A HREF="[% cc.1.0 | strip_attribute %]"[% IF cc.1.2 %] TITLE="[% cc.1.2 | strip_attribute %]"[% END %]>[% cc.1.1 | strip_html %]</A></B> comment[% cc.3 != 1 ? 's' : '' %]
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.19 2004/01/29 23:52:59 pudge Exp $
+$Id: data;index;default,v 1.20 2004/04/06 19:38:46 jamiemccarthy Exp $

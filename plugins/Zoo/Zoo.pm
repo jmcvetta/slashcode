@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.1 2001/11/06 03:42:54 brian Exp $
+# $Id: Zoo.pm,v 1.2 2001/11/19 23:48:04 brian Exp $
 
 package Slash::Zoo;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -69,7 +69,7 @@ sub _getOpposite {
 	my $people = $self->sqlSelectAll(
 		'people.person, nickname, journal_last_entry_date',
 		'people, users',
-		"person = $uid AND type =\"$type\" AND person = users.uid"
+		"person = $uid AND type =\"$type\" AND users.uid = people.uid"
 	);
 	return $people;
 }

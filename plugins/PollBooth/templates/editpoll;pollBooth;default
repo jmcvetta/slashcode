@@ -34,7 +34,8 @@ __template__
 		[% skins.${question.primaryskid}.title %] *<BR>
 		<INPUT TYPE="hidden" name="primaryskid" value="[% question.primaryskid %]">
 	[% ELSE %]
-		[% Slash.createSelect('primaryskid', skins, question.primaryskid, 1) %]
+		[% primaryskid_val = question.primaryskid.defined ? question.primaryskid : constants.mainpage_skid %]
+		[% Slash.createSelect('primaryskid', skins, primaryskid_val, 1, 0, 1) %]
 	[% END %]
 	[% PROCESS formLabel value => "Poll Topic" comment => "" %]
 	[% DEFAULT question.topic=constants.discussion_default_topic %]
@@ -91,4 +92,4 @@ Story Related Display - Poll is displayed on the specified story's page<BR>
 __seclev__
 10000
 __version__
-$Id: editpoll;pollBooth;default,v 1.13 2004/07/17 00:32:16 tvroom Exp $
+$Id: editpoll;pollBooth;default,v 1.14 2004/12/14 17:42:27 tvroom Exp $

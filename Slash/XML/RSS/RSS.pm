@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.5 2002/03/12 20:58:21 pudge Exp $
+# $Id: RSS.pm,v 1.6 2002/03/12 21:29:01 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -220,9 +220,9 @@ sub create {
 	if ($param->{image}) {
 		# set defaults
 		my %image = (
-			title	=> $constants->{sitename},
+			title	=> $channel{title},
 			url	=> $constants->{rdfimg},
-			'link'	=> $constants->{absolutedir} . '/',
+			'link'	=> $channel{'link'},
 		);
 
 		# let $param->{image} override
@@ -246,7 +246,7 @@ sub create {
 			title		=> 'Search ' . $constants->{sitename},
 			description	=> 'Search ' . $constants->{sitename} . ' stories',
 			name		=> 'query',
-			'link'		=> $constants->{absolutedir} . '/search.pl',
+			'link'		=> $channel{'link'} . 'search.pl',
 		);
 
 		# let $param->{textinput} override
@@ -276,7 +276,7 @@ sub create {
 			# story data
 			if ($item->{story}) {
 				# set up story params in $encoded_item ref
-				$self->rss_story($item, $encoded_item, $version);
+				$self->rss_story($item, $encoded_item, $version, \%channel);
 			}
 
 			for my $key (keys %$item) {
@@ -334,7 +334,7 @@ The encoded item.
 =cut
 
 sub rss_story {
-	my($self, $item, $encoded_item, $version) = @_;
+	my($self, $item, $encoded_item, $version, $channel) = @_;
 
 	# delete it so it won't be processed later
 	my $story = delete $item->{story};
@@ -344,10 +344,10 @@ sub rss_story {
 	my $topics = $slashdb->getTopics();
 
 	$encoded_item->{title}  = $self->encode($story->{title});
-	$encoded_item->{'link'} = $self->encode("$constants->{absolutedir}/article.pl?sid=$story->{sid}", 'link');
+	$encoded_item->{'link'} = $self->encode("$channel->{'link'}article.pl?sid=$story->{sid}", 'link');
 
 	if ($version >= 0.91) {
-		my $desc = $self->rss_item_description($item->{description});
+		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
 		$encoded_item->{description} = $self->encode($desc) if $desc;
 	}
 
@@ -437,4 +437,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.5 2002/03/12 20:58:21 pudge Exp $
+$Id: RSS.pm,v 1.6 2002/03/12 21:29:01 pudge Exp $

@@ -6,7 +6,7 @@
    <title>Slashdot FAQ V1.2 - Rev 03/03/2002 - Index Page</title>
 <!--#include virtual="/slashhead.inc"-->
 
-<!-- ($VERSION) = '$Id: index.shtml,v 1.1 2003/01/28 13:52:17 jamie Exp $' =~ /^\$Id: \S+ (\S+) -->
+<!-- ($VERSION) = '$Id: index.shtml,v 1.2 2003/01/28 14:20:38 jamie Exp $' =~ /^\$Id: \S+ (\S+) -->
 
 </head>
 <body>

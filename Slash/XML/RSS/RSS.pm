@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.22 2004/11/30 18:38:08 cowboyneal Exp $
+# $Id: RSS.pm,v 1.23 2004/12/04 00:06:14 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -372,9 +372,12 @@ sub rss_story {
 		if $story->{title};
 	if ($story->{sid}) {
 		if ($story->{primaryskid}) {
-			my $rootdir = $reader->getSkin($story->{primaryskid})->{absolutedir};
+			my $dir = url2abs(
+				$reader->getSkin($story->{primaryskid})->{rootdir},
+				$channel->{'link'}
+			);
 			$encoded_item->{'link'} = $self->encode(
-                                _tag_link("$rootdir/article.pl?sid=$story->{sid}"),
+                                _tag_link("$dir/article.pl?sid=$story->{sid}"),
                                 'link'
                         );
 		} else {
@@ -507,4 +510,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.22 2004/11/30 18:38:08 cowboyneal Exp $
+$Id: RSS.pm,v 1.23 2004/12/04 00:06:14 pudge Exp $

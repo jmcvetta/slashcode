@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: 404.pl,v 1.6 2001/03/26 09:44:32 pudge Exp $
+# $Id: 404.pl,v 1.7 2001/03/26 11:10:52 pudge Exp $
 
 use strict;
 use Slash;
@@ -24,7 +24,7 @@ sub main {
 
 	header('404 File Not Found');
 
-	my($new_url, $errnum) = fixHref($url, 1);
+	my($new_url, $errnum) = fixHref($ENV{REQUEST_URI}, 1);
 
 	if ($errnum && $errnum !~ /^\d+$/) {
 		slashDisplay('main', {

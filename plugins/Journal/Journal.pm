@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.6 2001/03/26 09:44:32 pudge Exp $
+# $Id: Journal.pm,v 1.7 2001/03/26 11:10:52 pudge Exp $
 
 package Slash::Journal;
 
@@ -14,7 +14,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Slash::DB::Utility Slash::DB::MySQL);
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -37,7 +37,6 @@ sub set {
 	my(%j1, %j2);
 	%j1 = %$values;
 	$j2{article}  = delete $j1{article};
-	$j2{original} = delete $j1{original};
 
 	$self->sqlUpdate('journals', \%j1, "id=$id");
 	$self->sqlUpdate('journals_text', \%j2, "id=$id");
@@ -51,7 +50,7 @@ sub getsByUid {
 	$where .= " AND journals.id = $id" if $id;
 
 	my $answer = $self->sqlSelectAll(
-		'date, article, description, journals.id',
+		'date, article, description, journals.id, posttype',
 		'journals, journals_text', $where, $order
 	);
 	return $answer;
@@ -67,7 +66,7 @@ sub list {
 }
 
 sub create {
-	my($self, $description, $article, $original, $posttype) = @_;
+	my($self, $description, $article, $posttype) = @_;
 	return unless $description;
 	return unless $article;
 	my $uid = $ENV{SLASH_USER};
@@ -82,7 +81,6 @@ sub create {
 	$self->sqlInsert("journals_text", {
 		id		=> $id,
 		article 	=> $article,
-		original	=> $original,
 	});
 
 	my($date) = $self->sqlSelect('date', 'journals', "id=$id");
@@ -203,7 +201,7 @@ sub get {
 		}
 	} else {
 		$answer = $self->sqlSelectHashref('*', 'journals', "id=$id");
-		@{$answer}{qw(article original)} = $self->sqlSelect('article,original', 'journals_text', "id=$id");
+		($answer->{article}) = $self->sqlSelect('article', 'journals_text', "id=$id");
 	}
 
 	return $answer;

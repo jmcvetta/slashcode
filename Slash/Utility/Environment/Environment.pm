@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.31 2002/07/11 02:41:02 pudge Exp $
+# $Id: Environment.pm,v 1.32 2002/07/16 11:23:14 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1042,9 +1042,11 @@ sub setCookie {
 # Need to scan the connection class to find this information.
 # (I'll do it later). This may also be in $r->protocol -Brian
 # Brian advises port() is the best way, yes it's icky -Jamie
-	if ($constants->{cookiesecure} && $r->port == 443) {
-		$cookiehash{-secure} = 1;
-	}
+# This doesn't work yet! I think I want $r->connection->local_addr
+# (and then unpack it and look at the port) - Jamie
+#	if ($constants->{cookiesecure} && $r->port == 443) {
+#		$cookiehash{-secure} = 1;
+#	}
 
 	my $cookie = Apache::Cookie->new($r, %cookiehash);
 
@@ -1702,4 +1704,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.31 2002/07/11 02:41:02 pudge Exp $
+$Id: Environment.pm,v 1.32 2002/07/16 11:23:14 jamie Exp $

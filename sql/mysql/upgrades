@@ -6,7 +6,7 @@
 # then you need to place your changes there.
 
 #
-# $Id: upgrades,v 1.528 2004/02/25 10:19:41 pudge Exp $
+# $Id: upgrades,v 1.529 2004/02/25 18:44:55 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -2144,3 +2144,6 @@ INSERT INTO vars (name, value, description) VALUES ('mod_limit_with_comments', '
 
 INSERT INTO vars (name, value, description) VALUES ('show_m2s_with_mods', '1', 'Show metamods intertwined with mods?');
 INSERT INTO vars (name, value, description) VALUES ('m2_limit_with_mods', '', 'Maximum number of metamods to show intertwined with a group of mods (Empty string for no limit)');
+
+INSERT INTO vars (name, value, description) VALUES ('anchortags_bridge_breaks', '0', 'Are <A> tags allowed to stretch across breaking tags (defined in approvedtags_break)?');
+

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.159 2003/10/11 13:46:58 jamie Exp $
+# $Id: adminmail.pl,v 1.160 2003/10/14 04:43:30 vroom Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -66,6 +66,9 @@ $task{$me}{code} = sub {
 
 	# compute dates for the last 3 days so we can get the
 	# average hits per story for each in the e-mail	
+	
+	# we use this array to figure out what comment count
+	# days we put in the the stats e-mail too
 
 	my @ah_days = ($yesterday);
 	for my $db (1, 2) {
@@ -74,6 +77,8 @@ $task{$me}{code} = sub {
         	        $day[5] + 1900, $day[4] + 1, $day[3];
 		push @ah_days, $day;
 	}
+	
+	
 	
 	# let's do the errors
 	$data{not_found} = $logdb->countByStatus("404");
@@ -425,8 +430,13 @@ EOT
 		my $avg_comments= $stats->getAverageCommentCountPerStoryOnDay($d) || 0;
 		$statsSave->createStatDaily("avg_comments_per_story", $avg_comments, 
 						{ overwrite => 1, day => $d });
-		push @{$data{avg_comments_per_story}}, sprintf("%12.1f", $avg_comments);
 	}
+	
+	foreach my $day (@ah_days){
+		my $avg = $stats->sqlSelect("value", "stats_daily", "day='$day' and section='all' and name='avg_comments_per_story'");
+		push @{$data{avg_comments_per_story}}, sprintf("%12.1f", $avg);
+	}
+
 
 
 	my $total_bytes = $logdb->countBytesByPage('', {

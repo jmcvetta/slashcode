@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.36 2002/06/24 15:54:05 jamie Exp $
+# $Id: Data.pm,v 1.37 2002/06/25 15:28:26 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -791,7 +791,9 @@ sub breakHtml {
 
 	# And we also need a regex that will find an HTML entity or
 	# character references, excluding ones that would break words:
-	# a non-breaking entity.
+	# a non-breaking entity.  For now, let's assume *all* entities
+	# are non-breaking (except an encoded space which would be
+	# kinda dumb).
 	my $nbe = qr{ (?:
 		&
 		(?! \# (?:32|x20) )
@@ -849,6 +851,11 @@ sub breakHtml {
 	# an nbsp to work around the IE bug.  This mildly affects rendering
 	# for non-IE readers (grumble), but prevents getting around the
 	# filter by evenly spacing bug characters every $mwl characters.
+	# This could be done less-intrusively (the nbsp doesn't need to
+	# appear in every case, only when it's at exactly the boundary of
+	# the mwl), but the algorithm would be too complicated to
+	# implement in a regex, at least practically speaking, and
+	# walking through the string is also fairly complex.
 	$text =~ s{ ($nswcr)}{ &nbsp;$1}gs;
 #print STDERR "text 7 '$text'\n";
 
@@ -2459,4 +2466,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.36 2002/06/24 15:54:05 jamie Exp $
+$Id: Data.pm,v 1.37 2002/06/25 15:28:26 jamie Exp $

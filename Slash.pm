@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.42 2000/07/31 17:16:26 pudge Exp $
+#  $Id: Slash.pm,v 1.43 2000/07/31 21:12:34 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1203,6 +1203,9 @@ sub stripByMode {
 	$fmode ||= 'nohtml';
 
 	$str =~ s/(\S{90})/$1 /g unless $no_white_fix;
+	# ASCII only ?
+#	$str =~ s/[^\011\040\033-176]/sprintf '&#%d;', ord $1/ge;
+
 	if ($fmode eq 'literal' || $fmode eq 'exttrans' || $fmode eq 'attribute') {
 		# Encode all HTML tags
 		$str =~ s/&/&amp;/g;
@@ -1226,7 +1229,8 @@ sub stripByMode {
 
 	} elsif ($fmode eq 'attribute') {
 		$str =~ s/"/&#34;/g;
-		$str =~ s/'/&#39;/g;
+#		$str =~ s/'/&#39;/g;	# ' should be OK if we use
+					# " consistently
 
 	} else {
 		$str = stripBadHtml($str);

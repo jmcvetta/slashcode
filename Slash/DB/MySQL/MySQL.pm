@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.690 2004/09/28 03:28:02 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.691 2004/09/28 03:45:23 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.690 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.691 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1415,6 +1415,8 @@ sub wouldBeSafeToAddTopic {
 # because it would introduce loops.
 sub wouldBeSafeToAddTopicLink {
 	my($self, $parent_tid, $child_tid) = @_;
+
+	return 0 if !$parent_tid || !$child_tid || $parent_tid == $child_tid;
 
 	my %all_parents = ( $parent_tid, 1 );
 	my @new_parents = $self->getAllParentsTids($parent_tid);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.16 2002/07/18 08:56:00 slashteam Exp $
+# $Id: Display.pm,v 1.17 2002/07/19 14:30:45 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -25,7 +25,6 @@ LONG DESCRIPTION.
 =cut
 
 use strict;
-# use Date::Manip qw(ParseDate UnixDate);
 use Slash::Display;
 use Slash::Utility::Data;
 use Slash::Utility::Environment;
@@ -33,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -1123,4 +1122,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.16 2002/07/18 08:56:00 slashteam Exp $
+$Id: Display.pm,v 1.17 2002/07/19 14:30:45 pudge Exp $

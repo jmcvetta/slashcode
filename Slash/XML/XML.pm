@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: XML.pm,v 1.3 2002/01/08 17:22:09 pudge Exp $
+# $Id: XML.pm,v 1.4 2002/07/19 14:30:45 pudge Exp $
 
 package Slash::XML;
 
@@ -24,7 +24,6 @@ Slash::XML aids in creating XML.  Right now, only RSS is supported.
 =cut
 
 use strict;
-# use Date::Manip;
 use Time::Local;
 use Slash;
 use Slash::Utility;
@@ -32,7 +31,7 @@ use Slash::Utility;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = qw(xmlDisplay);
 
 # FRY: There must be layers and layers of old stuff down there!

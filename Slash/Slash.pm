@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.20 2001/11/22 19:10:18 brian Exp $
+# $Id: Slash.pm,v 1.21 2001/11/24 21:01:36 jamie Exp $
 
 package Slash;
 
@@ -863,7 +863,7 @@ sub getOlderStories {
 	my $form = getCurrentForm();
 
 	for (@$stories) {
-		my($sid, $sect, $title, $time, $commentcount, $day) = @{$_}; 
+		my($sid, $sect, $title, $time, $commentcount, $day, $hp, $secs) = @{$_}; 
 		my($w, $m, $d, $h, $min, $ampm) = split m/ /, $time;
 		push @$newstories, {
 			sid		=> $sid,
@@ -878,6 +878,7 @@ sub getOlderStories {
 			h		=> $h,
 			min		=> $min,
 			ampm		=> $ampm,
+			secs		=> $secs,
 			'link'		=> linkStory({
 				'link'	=> $title,
 				sid	=> $sid,
@@ -906,6 +907,7 @@ sub getOlderStories {
 	slashDisplay('getOlderStories', {
 		stories		=> $newstories,
 		section		=> $section,
+		cur_time	=> time,
 		yesterday	=> $yesterday,
 		start		=> $section->{artcount} + $form->{start} + scalar(@$stories),
 	}, 1);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.30 2001/11/19 22:29:07 brian Exp $
+# $Id: MySQL.pm,v 1.31 2001/11/24 21:01:36 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3527,7 +3527,8 @@ sub getStoriesEssentials {
 	my $constants = getCurrentStatic();
 
 	$limit ||= 15;
-	my $columns = 'sid, section, title, time, commentcount, time, hitparade';
+	my $columns;
+	$columns = 'sid, section, title, time, commentcount, hitparade';
 
 	my $where = "time < NOW() ";
 	# Added this to narrow the query a bit more, I need
@@ -3590,8 +3591,14 @@ error in getStoriesEssentials
 EOT
 
 	while (my $data = $cursor->fetchrow_arrayref) {
+		# Rather than have MySQL/DBI return us "time" three times
+		# because we'd want three different representations, we
+		# just get it once in position 3 and then drop it into
+		# its traditional other locations in the array.
+		$data = [ @$data[0..4], $data->[3], $data->[5], $data->[3] ];
 		formatDate([$data], 3, 3, '%A %B %d %I %M %p');
 		formatDate([$data], 5, 5, '%Y%m%d'); # %Q
+		formatDate([$data], 7, 7, '%s');
 		next if $form->{issue} && $data->[5] > $form->{issue};
 		push @stories, [@$data];
 		last if ++$count >= $limit;

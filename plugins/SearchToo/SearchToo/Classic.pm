@@ -7,7 +7,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::SearchToo';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -152,7 +152,7 @@ sub findRecords {
 		$records = $oldsearch->findSubmission(\%terms, $start, $max, $sort);
 	}
 
-	$self->prepResults($results, $records, $total, $matches, $start, $max);
+	$self->prepResults($results, $records, [$total, $matches, $start, $max]);
 	return $results;
 }
 
@@ -171,7 +171,7 @@ sub testSearch {
 	my $max		= $opts->{records_max} || 26;
 
 	$records = [ @{$records}[$start .. ($start + $max)] ];
-	$searchDB->prepResults($results, $records, $total, $matches, $start, $max);
+	$searchDB->prepResults($results, $records, [$total, $matches, $start, $max]);
 
 	my %return;
 	$return{results}   = $results;

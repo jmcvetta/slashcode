@@ -94,6 +94,14 @@ __template__
    END;
 
    FOREACH t = topic_children;
+      NEXT IF !form.tid && (
+          topics.$t.textname == "Geeks in Space" ||
+          topics.$t.textname == "Features" ||
+          topics.$t.textname == "Polls" ||
+          topics.$t.textname == "Search" ||
+          topics.$t.textname == "Taco Hell" ||
+          topics.$t.textname == "The 2000 Beanies"
+      );
       listnames.${topics.$t.textname} = t;
    END;
    
@@ -135,4 +143,4 @@ Topics</b>
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.21 2004/07/16 20:22:48 pudge Exp $
+$Id: searchform;search;default,v 1.22 2004/07/17 04:48:28 pudge Exp $

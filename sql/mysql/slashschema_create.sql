@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.127 2003/09/02 20:13:18 jamie Exp $
+# $Id: slashschema_create.sql,v 1.128 2003/09/28 21:22:11 jamie Exp $
 #
 
 #
@@ -422,7 +422,7 @@ CREATE TABLE menus (
 
 DROP TABLE IF EXISTS metamodlog;
 CREATE TABLE metamodlog (
-	id mediumint UNSIGNED NOT NULL AUTO_INCREMENT,
+	id int UNSIGNED NOT NULL AUTO_INCREMENT,
 	mmid int UNSIGNED DEFAULT '0' NOT NULL,
 	uid mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	val tinyint  DEFAULT '0' NOT NULL,

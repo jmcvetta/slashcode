@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.55 2002/10/01 20:34:08 brian Exp $
+# $Id: search.pl,v 1.56 2002/10/02 02:40:53 pudge Exp $
 
 use strict;
 use Slash;
@@ -324,7 +324,7 @@ sub storySearch {
 			$forward = 0;
 		}
 
-		for(@$stories) {
+		for (@$stories) {
 			$_->{introtext} = substr(strip_nohtml($_->{introtext}),0,$constants->{search_text_length});
 			$_->{introtext} =~ s/(.*) .*$/$1.../g;
 		}
@@ -616,7 +616,8 @@ sub journalSearch {
 		} else {
 			$forward = 0;
 		}
-		for(@$entries) {
+
+		for (@$entries) {
 			$_->{article} = substr(strip_nohtml($_->{article}),0,$constants->{search_text_length});
 			$_->{article} =~ s/(.*) .*$/$1.../g;
 		}
@@ -697,7 +698,8 @@ sub submissionSearch {
 		} else {
 			$forward = 0;
 		}
-		for(@$entries) {
+
+		for (@$entries) {
 			$_->{story} = substr(strip_nohtml($_->{story}),0,$constants->{search_text_length});
 			$_->{story} =~ s/(.*) .*$/$1.../g;
 		}
@@ -767,7 +769,7 @@ sub rssSearch {
 	# and if we get the extra one, we know we have extra ones, and
 	# we pop it off
 	if ($entries && @$entries) {
-		for(@$entries) {
+		for (@$entries) {
 			$_->{title} = strip_plaintext($_->{title});
 			$_->{description} = substr(strip_plaintext($_->{description}),0,$constants->{search_text_length});
 		}

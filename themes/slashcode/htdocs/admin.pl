@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: admin.pl,v 1.19 2000/07/12 15:54:02 cbwood Exp $
+#  $Id: admin.pl,v 1.20 2000/07/12 16:15:20 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -1125,7 +1125,7 @@ sub editstory {
 
 	my $newarticle = 1 if !$sid && !$I{F}{sid};
 
-	print "$msg" if (defined($msg));
+	print $msg if defined $msg;
 
 	print <<EOT;
 

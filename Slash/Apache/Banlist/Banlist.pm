@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.6 2002/04/03 19:39:31 jamie Exp $
+# $Id: Banlist.pm,v 1.7 2002/04/03 20:38:15 jamie Exp $
 
 package Slash::Apache::Banlist;
 
@@ -11,7 +11,7 @@ use Digest::MD5 'md5_hex';
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -70,18 +70,18 @@ lot of pages, to programs that attempt to coordinate an avalanche of posts
 in the forums (often through misconfigured "Open Relay" proxy servers).<p> 
 &middot; You might be using a proxy server that is also being used by another person  
 who did something from the above list. You should have your <b>proxy server  
-administrator</b> <a href="mailto:banned@slashdot.org">contact us</a>. <br> 
+administrator</b> <a href="mailto:banned\@slashdot.org">contact us</a>. <br> 
 <br> 
-<i><small> Answered by: <a href="mailto:malda@slashdot.org">CmdrTaco</a> <br> 
+<i><small> Answered by: <a href="mailto:malda\@slashdot.org">CmdrTaco</a> <br> 
 Last Modified: 3/26/02<br> 
 </small></i> <a name="ac1000"></a>  
 <h2>How do I get an IP Unbanned?</h2> 
-<p>Email <a href="mailto:banned@slashdot.org">banned@slashdot.org</a>. Make  
+<p>Email <a href="mailto:banned\@slashdot.org">banned\@slashdot.org</a>. Make  
 sure to include the IP in question, and any other pertinent information. If  
 you are connecting through a proxy server, you might need to have your proxy  
 server's admin contact us instead of you. <br> 
 <br> 
-<i><small> Answered by: <a href="mailto:malda@slashdot.org">CmdrTaco</a> <br> 
+<i><small> Answered by: <a href="mailto:malda\@slashdot.org">CmdrTaco</a> <br> 
 Last Modified: 3/26/02</small></i><i><small><br></small></i> 
 </BODY>
 </HTML>

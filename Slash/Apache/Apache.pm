@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.23 2002/04/25 18:13:11 brian Exp $
+# $Id: Apache.pm,v 1.24 2002/05/03 13:37:43 pudge Exp $
 
 package Slash::Apache;
 
@@ -19,7 +19,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -312,6 +312,33 @@ sub IndexHandler {
 			}
 			writeLog('shtml');
 			return OK;
+		}
+	}
+
+	if ($uri =~ m|^/(\w+)/$|) {
+		my $key = $1;
+		my $slashdb = getCurrentDB();
+		my $section = $slashdb->getSection($key);
+		if ($section) {
+			my $basedir = $constants->{basedir};
+			my $index_handler = $section->{index_handler}
+				|| $constants->{index_handler};
+
+			# $USER_MATCH defined above
+			if ($dbon && $r->header_in('Cookie') =~ $USER_MATCH) {
+				$r->args("section=$key");
+				$r->uri("/$index_handler");
+				$r->filename("$basedir/$index_handler");
+				return OK;
+			} else {
+				# consider using File::Basename::basename() here
+				# for more robustness, if it ever matters -- pudge
+				my($base) = split(/\./, $index_handler);
+				$r->uri("/$key/$base.shtml");
+				$r->filename("$basedir/$key/$base.shtml");
+				writeLog('shtml');
+				return OK;
+			}
 		}
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.156 2004/06/23 21:03:31 pudge Exp $
+# $Id: MySQL.pm,v 1.157 2004/06/25 04:41:23 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -589,9 +589,9 @@ sub getDailyMail {
 	my $nexuses = $self->getNexusChildrenTids($mp_tid);
 	my $nexus_clause = join ',', @$nexuses, $mp_tid;
 	if ($user->{sectioncollapse}) {
-		$where .= "AND story_topics_rendered.tid = $mp_tid ";
-	} else {
 		$where .= "AND story_topics_rendered.tid in ($nexus_clause) ";
+	} else {
+		$where .= "AND story_topics_rendered.tid = $mp_tid ";
 	}
 
 	$where .= "AND story_topics_rendered.tid not in ($user->{extid}) "

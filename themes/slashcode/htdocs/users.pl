@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.187 2003/07/02 13:14:20 jamie Exp $
+# $Id: users.pl,v 1.188 2003/07/15 19:10:40 vroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -490,6 +490,7 @@ sub main {
 #################################################################
 sub checkList {
 	my $string = shift;
+        my $len = shift; 
 	my $constants = getCurrentStatic();
 	# what is this supposed to be for? -- pudge
 	$string = substr($string, 0, -1);
@@ -497,7 +498,7 @@ sub checkList {
 	$string =~ s/[^\w,-]//g;
 	my @e = split m/,/, $string;
 	$string = sprintf "'%s'", join "','", @e;
-	my $len = $constants->{checklist_length} || 255;
+	$len ||= $constants->{checklist_length} || 255;
 
 	if (length($string) > $len) {
 		print getError('checklist_err');
@@ -2275,6 +2276,7 @@ sub saveHome {
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
+	my $constants = getCurrentStatic();
 	my $uid;
 	my($extid, $exaid, $exsect) = '';
 
@@ -2325,7 +2327,7 @@ sub saveHome {
 	$form->{maxstories} = 1 if $form->{maxstories} < 1;
 
 	my $users_index_table = {
-		extid		=> checkList($extid),
+		extid		=> ($constants->{subscribe} && $user->{is_subscriber}) ? checkList($extid,1024) : checkList($extid),
 		exaid		=> checkList($exaid),
 		exsect		=> checkList($exsect),
 		exboxes		=> checkList($exboxes),

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.71 2003/02/11 20:31:53 pudge Exp $
+# $Id: Environment.pm,v 1.72 2003/02/13 22:01:32 brian Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1175,8 +1175,36 @@ sub prepareUser {
 	} else {
 		$hostip = '';
 	}
+	
+	# First we find a good reader DB so that we can use that for the user.
+	my $databases = $slashdb->getDBs();
+	my %user_types;
+	for my $type (keys %$databases) {
+		my $db = $databases->{$type};
 
+		# shuffle the deck
+		my $i = @$db;
+		while ($i--) {
+			my $j = int rand($i+1);
+			@$db[$i, $j] = @$db[$j, $i];
+		}
+
+		# there can be only one
+		my $virtual_user;
+		for (@$db) {
+			if ($_->{isalive} eq 'yes') {
+				$virtual_user = $_->{virtual_user};
+				last;
+			}
+		}
+
+		# save in user's state
+		$user_types{$type} = $virtual_user;
+	}
 	$uid = $constants->{anonymous_coward_uid} unless defined($uid) && $uid ne '';
+
+	my $reader = getObject('Slash::DB', { db_type => $user_types{'reader'} });
+	$reader ||= $slashdb;
 
 	if (isAnon($uid)) {
 		if ($ENV{GATEWAY_INTERFACE}) {
@@ -1187,18 +1215,15 @@ sub prepareUser {
 		$user->{is_anon} = 1;
 
 	} else {
-		my $fetchdb;
-		if ($constants->{prepuser_backup_prob}
-			&& $constants->{backup_db_user}
-			&& rand(1) < $constants->{prepuser_backup_prob}) {
-			$fetchdb = getObject('Slash::DB', $constants->{backup_db_user});
-			$fetchdb ||= $slashdb; # In case it fails
-		} else {
-			$fetchdb = $slashdb;
-		}
-		$user = $fetchdb->getUser($uid);
+		$user = $reader->getUser($uid);
 		$user->{is_anon} = 0;
 	}
+
+	# Now store the DB information from above in the user. -Brian
+	for my $type (keys %user_types) {
+		$user->{state}{dbs}{$type} = $user_types{$type};
+	}
+
 
 	unless ($user->{is_anon} && $ENV{GATEWAY_INTERFACE}) { # already done in Apache.pm
 		setUserDate($user);
@@ -1292,30 +1317,6 @@ sub prepareUser {
 		$user->{state}{lostprivs} = 1;
 	}
 
-	# set DBs
-	my $databases = $slashdb->getDBs();
-	for my $type (keys %$databases) {
-		my $db = $databases->{$type};
-
-		# shuffle the deck
-		my $i = @$db;
-		while ($i--) {
-			my $j = int rand($i+1);
-			@$db[$i, $j] = @$db[$j, $i];
-		}
-
-		# there can be only one
-		my $virtual_user;
-		for (@$db) {
-			if ($_->{isalive} eq 'yes') {
-				$virtual_user = $_->{virtual_user};
-				last;
-			}
-		}
-
-		# save in user's state
-		$user->{state}{dbs}{$type} = $virtual_user;
-	}
 
 	return $user;
 }
@@ -2088,4 +2089,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.71 2003/02/11 20:31:53 pudge Exp $
+$Id: Environment.pm,v 1.72 2003/02/13 22:01:32 brian Exp $

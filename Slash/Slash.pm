@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.109 2003/02/05 18:38:11 jamie Exp $
+# $Id: Slash.pm,v 1.110 2003/02/13 22:01:31 brian Exp $
 
 package Slash;
 
@@ -87,17 +87,15 @@ sub selectComments {
 	$cache_read_only = 1 if timeCalc($header->{ts}, '%s') <
 		time - 3600 * $constants->{comment_cache_max_hours};
 
-	my $fetchdb;
-	if (!$options->{force_read_from_master}
-		&& $constants->{backup_db_user}
-		&& $constants->{selectcomm_backup_prob}
-		&& rand(1) < $constants->{selectcomm_backup_prob}) {
-		$fetchdb = getObject('Slash::DB', $constants->{backup_db_user});
-		$fetchdb ||= $slashdb;
+	my $thisComment;
+	if ($options->{force_read_from_master}) {
+		$thisComment = $slashdb->getCommentsForUser($header->{id}, $cid, $cache_read_only);
 	} else {
-		$fetchdb = $slashdb;
+		my $reader = getObject('Slash::DB', { db_type => 'reader' });
+		$reader ||= $slashdb;
+		$thisComment = $reader->getCommentsForUser($header->{id}, $cid, $cache_read_only);
 	}
-	my $thisComment = $fetchdb->getCommentsForUser($header->{id}, $cid, $cache_read_only);
+
 
 	if (!$thisComment) {
 		_print_cchp($header);

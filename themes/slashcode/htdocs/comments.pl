@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.118 2003/02/03 20:46:03 jamie Exp $
+# $Id: comments.pl,v 1.119 2003/02/07 21:51:04 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -682,6 +682,9 @@ sub editComment {
 	my $error_flag = 0;
 	my $label = getData('label');
 
+	$form->{nobonus}  = $user->{nobonus}  unless $form->{nobonus_present};
+	$form->{postanon} = $user->{postanon} unless $form->{postanon_present};
+
 	# Get the comment we may be responding to. Remember to turn off
 	# moderation elements for this instance of the comment.
 	my $reply = $slashdb->getCommentReply($form->{sid}, $form->{pid});
@@ -713,11 +716,6 @@ sub editComment {
 #	my $format_select = $form->{posttype}
 #		? createSelect('posttype', $formats, $form->{posttype}, 1)
 #		: createSelect('posttype', $formats, $user->{posttype}, 1);
-
-	if ($form->{op} =~ /^reply$/i) {
-		$form->{nobonus}  = $user->{nobonus};
-		$form->{postanon} = $user->{postanon};
-	}
 
 	slashDisplay('edit_comment', {
 		error_message 	=> $error_message,
@@ -1015,6 +1013,9 @@ sub previewForm {
 # story id.
 sub submitComment {
 	my($form, $slashdb, $user, $constants, $discussion) = @_;
+
+	$form->{nobonus}  = $user->{nobonus}  unless $form->{nobonus_present};
+	$form->{postanon} = $user->{postanon} unless $form->{postanon_present};
 
 	my $id = $form->{sid};
 	my $label = getData('label');

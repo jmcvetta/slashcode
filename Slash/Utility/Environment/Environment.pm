@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.67 2003/02/07 02:25:41 jamie Exp $
+# $Id: Environment.pm,v 1.68 2003/02/07 21:51:04 jamie Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1311,7 +1311,8 @@ Hashref of cleaned-up data.
 		isolate issue last maillist max
 		maxcommentsize maximum_length maxstories
 		min minimum_length minimum_match next
-		ordernum pid posttype ratio retrieve
+		nobonus_present ordernum pid
+		postanon_present posttype ratio retrieve
 		seclev start startat threshold
 		thresh_count thresh_secs thresh_hps
 		uid uthreshold voters width
@@ -1994,4 +1995,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.67 2003/02/07 02:25:41 jamie Exp $
+$Id: Environment.pm,v 1.68 2003/02/07 21:51:04 jamie Exp $

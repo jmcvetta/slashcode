@@ -133,10 +133,10 @@ ends. Your day may vary.)
 	<TR>
 	<TD VALIGN="top" ALIGN="center"><INPUT TYPE="RADIO"
 		NAME="buypage_[% page.pagename %]"
-		VALUE="0" [% IF !page.isbought; " CHECKED"; END %]></TD>
+		VALUE="0" [% IF !page.isbought; constants.markup_checked_attribute; END %]></TD>
 	<TD VALIGN="top" ALIGN="center"><INPUT TYPE="RADIO"
 		NAME="buypage_[% page.pagename %]"
-		VALUE="1" [% IF  page.isbought; " CHECKED"; END %]></TD>
+		VALUE="1" [% IF  page.isbought; constants.markup_checked_attribute; END %]></TD>
 	<TD VALIGN="top" ALIGN="left">&nbsp;[% page.descr %]</TD>
 	</TR>
 
@@ -208,4 +208,4 @@ __seclev__
 10000
 
 __version__
-$Id: edit;subscribe;default,v 1.26 2004/07/02 00:13:51 pudge Exp $
+$Id: edit;subscribe;default,v 1.27 2004/10/11 17:56:43 jamiemccarthy Exp $

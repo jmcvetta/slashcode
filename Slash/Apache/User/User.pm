@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.28 2002/04/17 00:15:55 brian Exp $
+# $Id: User.pm,v 1.29 2002/04/22 14:01:50 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -293,6 +293,7 @@ sub userdir_handler {
 	$uri =~ s/^\S+\s+//;
 	$uri =~ s/\s+\S+$//;
 	$uri =~ s/\+/ /g;
+	my $saveuri = $uri;
 	$uri =~ s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;
 
 	if ($constants->{rootdir}) {
@@ -384,9 +385,13 @@ sub userdir_handler {
 	# returning it, we have to re-encode it with fixparam().  that
 	# will change if somehow Apache/mod_perl no longer decodes before
 	# returning the data. -- pudge
-	if ($uri =~ m[^/~(.+)]) {
+	if ($saveuri =~ m[^/~(.+)]) {
 		# this won't work if the nick has a "/" in it ...
 		my($nick, $op, $extra) = split /\//, $1, 4;
+		for ($nick, $op, $extra) {
+			s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;
+		}
+
 		my $slashdb = getCurrentDB();
 		my $uid = $slashdb->getUserUID($nick);
 		$nick = fixparam($nick);	# make safe to pass back to script

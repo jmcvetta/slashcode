@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: comments.pl,v 1.11 2000/06/09 17:07:40 pudge Exp $
+#  $Id: comments.pl,v 1.12 2000/06/19 20:41:58 pudge Exp $
 ###############################################################################
 use strict;
 use Date::Manip;
@@ -83,7 +83,9 @@ sub main {
 		$I{F}{op} eq "Preview" || $I{F}{op} eq "Reply") {
 
 		if ($I{F}{op} eq 'Reply') {
-			insertFormkey("comments",$id,$I{F}{sid});	
+			insertFormkey("comments", $id, $I{F}{sid});
+		} else {
+			updateFormkeyId();
 		}
 
 		# find out their Karma

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.94 2003/11/11 23:14:10 jamie Exp $
+# $Id: User.pm,v 1.95 2003/11/25 06:18:09 vroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -165,7 +165,7 @@ sub handler {
 				? "$constants->{rootdir}/users.pl?op=changepasswd" .
 					# XXX This "note" field is ignored now...
 					# right?  - Jamie 2002/09/17
-				  "&note=Please+change+your+password+now!"
+				  "&note=Please+change+your+password+now!&oldpass=$form->{upasswd}"
 				: $form->{returnto}
 					? $form->{returnto}
 					: $uri),

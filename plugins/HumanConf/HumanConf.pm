@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.2 2002/04/19 21:38:23 jamie Exp $
+# $Id: HumanConf.pm,v 1.3 2002/05/08 17:13:04 jamie Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -78,11 +78,13 @@ sub createFormkeyHC {
 			"hcpid, html",
 			"humanconf_pool",
 			"hcqid=" . $slashdb->sqlQuote($hcqid)
-				. " AND filename != ''",
+				. " AND filename != ''"
+				. " AND inuse = 0",
 			"ORDER BY RAND() LIMIT 1"
 		);
 		if (!$hcpid) {
-			print STDERR "Empty humanconf_pool for question $hcqid\n";
+			warn "HumanConf warning: empty humanconf_pool"
+				. " for question $hcqid";
 			return 0;
 		}
 

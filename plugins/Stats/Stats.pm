@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.149 2004/11/23 19:26:26 tvroom Exp $
+# $Id: Stats.pm,v 1.150 2004/11/23 20:27:54 pudge Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -1002,7 +1002,6 @@ sub countDailyByPages {
 }
 
 ########################################################
-
 sub countFromRSSBySections {
 	my ($self) = @_;
 	$self->sqlSelectAllHashref("skid", "skid,count(*) AS cnt", "accesslog_temp", 'referer="rss"', "GROUP By skid");
@@ -1766,4 +1765,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.149 2004/11/23 19:26:26 tvroom Exp $
+$Id: Stats.pm,v 1.150 2004/11/23 20:27:54 pudge Exp $

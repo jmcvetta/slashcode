@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.83 2003/04/09 19:37:24 pudge Exp $
+# $Id: Data.pm,v 1.84 2003/04/25 01:04:02 brian Exp $
 
 package Slash::Utility::Data;
 
@@ -41,9 +41,10 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
+	createStoryTopicData
 	slashizeLinks
 	approveCharref
 	parseDomainTags
@@ -2805,6 +2806,39 @@ sub sitename2filename {
 	return $filename;
 }
 
+##################################################################
+sub createStoryTopicData {
+	my ($slashdb, $form) = @_;	
+	$form ||= getCurrentForm();
+	# Probably should not be changing stid
+	my @tids;
+	if ($form->{_multi}{stid} eq 'ARRAY') {
+		for (@{$form->{_multi}{stid}}) {
+			push @tids, $_;
+		}
+	}
+	push @tids, $form->{stid} if $form->{stid};
+	push @tids, $form->{tid} if $form->{tid};
+	my @original = @tids;
+	my $loop_protection = 0;
+	for my $tid (@tids) {
+		my $new_tid = $slashdb->sqlSelect("parent_topic", "topics", "tid = $tid");
+		push @tids, $new_tid if $new_tid && grep(!/$new_tid/,@tids);
+		#This is here to kill some runaway logic loop
+		$loop_protection++;
+		last if $loop_protection > 30;
+	}
+
+	my %tid_ref;
+	for my $tid (@tids) {
+		# Jump to the next tid if it is zero
+		next unless $tid;
+		$tid_ref{$tid} =  scalar(grep(/^$tid$/,@original))  ? 'no' : 'yes' ;
+	}
+
+	return \%tid_ref;
+}
+
 
 1;
 
@@ -2817,4 +2851,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.83 2003/04/09 19:37:24 pudge Exp $
+$Id: Data.pm,v 1.84 2003/04/25 01:04:02 brian Exp $

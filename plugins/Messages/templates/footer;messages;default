@@ -20,10 +20,10 @@ __template__
 [% oldpage = user.currentPage;
    user.currentPage = 'misc';
    PROCESS 'footer';
-   user.currentPage = 'messages';
+   user.currentPage = oldpage;
 %]
 
 __seclev__
 10000
 __version__
-$Id: footer;messages;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: footer;messages;default,v 1.5 2003/03/07 19:11:53 pudge Exp $

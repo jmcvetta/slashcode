@@ -45,7 +45,7 @@ gstatic total:        -          -   [% grand_total_static %]
 [% IF journal_page > 0 -%]
      journals: [% journal_uids %]   [% journal_ipids %]   [% journal_page %] ([% journal_bytes %])
 [% END -%]
-[% IF users__page > 0 -%]
+[% IF users_page > 0 -%]
         users: [% users_uids %]   [% users_ipids %]   [% users_page %] ([% users_bytes %])
 [% END -%]
 [% IF palm_page > 0 -%]
@@ -158,4 +158,4 @@ END %]
 __seclev__
 100
 __version__
-$Id: display;adminmail;default,v 1.59 2003/04/16 20:38:19 brian Exp $
+$Id: display;adminmail;default,v 1.60 2003/08/05 20:17:38 jamie Exp $

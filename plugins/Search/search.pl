@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.45 2002/07/09 22:49:16 brian Exp $
+# $Id: search.pl,v 1.46 2002/07/12 16:24:31 pater Exp $
 
 use strict;
 use Slash;
@@ -220,7 +220,7 @@ sub commentSearch {
 		my $forward;
 		if (@$comments == $constants->{search_default_display} + 1) {
 			pop @$comments;
-			$forward = $start + $constants->{search_default_display};
+			$forward = $start + $constants->{search_default_display} + 1;
 		} else {
 			$forward = 0;
 		}

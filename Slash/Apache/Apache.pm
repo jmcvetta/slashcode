@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.63 2004/07/17 18:05:39 cowboyneal Exp $
+# $Id: Apache.pm,v 1.64 2004/09/20 14:32:15 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -330,6 +330,7 @@ sub IndexHandler {
 	return DECLINED unless $r->is_main;
 	my $constants = getCurrentStatic();
 
+#print STDERR scalar(localtime) . " $$ IndexHandler A\n";
 	setCurrentSkin(determineCurrentSkin());
 	my $gSkin     = getCurrentSkin();
 
@@ -392,6 +393,7 @@ sub IndexHandler {
 		my $slashdb = getCurrentDB();
 		my $new_skin = $slashdb->getSkin($key);
 		my $new_skid = $new_skin->{skid} || $constants->{mainpage_skid};
+#print STDERR scalar(localtime) . " $$ IndexHandler B new_skid=$new_skid\n";
 		setCurrentSkin($new_skid);
 		$gSkin = getCurrentSkin();
 

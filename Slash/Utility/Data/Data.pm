@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.129 2004/09/17 21:00:32 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.130 2004/09/20 14:32:26 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use Lingua::Stem;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -56,6 +56,7 @@ use vars qw($VERSION @EXPORT);
 	changePassword
 	chopEntity
 	cleanRedirectUrl
+	cleanRedirectUrlFromForm
 	commify
 	countTotalVisibleKids
 	countWords
@@ -394,6 +395,34 @@ sub cleanRedirectUrl {
 	}
 
 	return $clean;
+}
+
+#========================================================================
+
+sub cleanRedirectUrlFromForm {
+	my($redirect_formname) = @_;
+	my $constants = getCurrentStatic();
+	my $gSkin = getCurrentSkin();
+	my $form = getCurrentForm();
+
+	my $formname = $redirect_formname ? "returnto_$redirect_formname" : "returnto";
+	my $formname_confirm = "${formname}_confirm";
+	my $returnto = $form->{$formname} || "";
+	return undef if !$returnto;
+
+	my $returnto_confirm = $form->{$formname_confirm} || "";
+
+	my $returnto_passwd = $constants->{returnto_passwd};
+	my $confirmed = md5_hex("$returnto$returnto_passwd") eq $returnto_confirm;
+	if ($confirmed) {
+		# The URL and the password have been concatted together
+		# and confirmed with the MD5, so we know it comes from a
+		# trusted source.  Approve it.
+		return $returnto;
+	} else {
+		# There is no proper MD5, so don't redirect.
+		return undef;
+	}
 }
 
 #========================================================================
@@ -3448,4 +3477,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.129 2004/09/17 21:00:32 jamiemccarthy Exp $
+$Id: Data.pm,v 1.130 2004/09/20 14:32:26 jamiemccarthy Exp $

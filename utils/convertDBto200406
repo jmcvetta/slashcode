@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.24 2004/09/15 14:59:26 jamiemccarthy Exp $
+# $Id: convertDBto200406,v 1.25 2004/09/20 14:32:27 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -196,6 +196,7 @@ CREATE TABLE skins_new (
         index_handler VARCHAR(30) DEFAULT 'index.pl' NOT NULL,
         max_rewrite_secs MEDIUMINT UNSIGNED DEFAULT '3600' NOT NULL,
         last_rewrite TIMESTAMP NOT NULL,
+	ac_uid mediumint UNSIGNED DEFAULT '0' NOT NULL,
         PRIMARY KEY (skid),
         UNIQUE name (name)
 ) TYPE=InnoDB;

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.164 2004/09/14 19:05:39 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.165 2004/09/20 14:32:13 jamiemccarthy Exp $
 #
 
 #
@@ -693,6 +693,7 @@ CREATE TABLE skins (
 	index_handler VARCHAR(30) DEFAULT 'index.pl' NOT NULL,
 	max_rewrite_secs MEDIUMINT UNSIGNED DEFAULT '3600' NOT NULL,
 	last_rewrite TIMESTAMP NOT NULL,
+	ac_uid mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (skid),
 	UNIQUE name (name)
 ) TYPE=InnoDB;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.113 2004/08/04 21:55:05 pudge Exp $
+# $Id: User.pm,v 1.114 2004/09/20 14:32:26 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -287,7 +287,14 @@ sub handler {
 	# This has happened to me a couple of times.
 	delete $cookies->{user} if $cookies->{user} && !$cookies->{user}->value;
 
-	$uid = $constants->{anonymous_coward_uid} unless defined $uid;
+	if (!$uid) {
+		if ($gSkin && $gSkin->{ac_uid}) {
+			$uid = $gSkin->{ac_uid};
+		} else {
+			$uid = $constants->{anonymous_coward_uid};
+		}
+	}
+#print STDERR scalar(localtime) . " $$ User handler uid=$uid gSkin->skid=$gSkin->{skid}\n";
 
 	# Ok, yes we could use %ENV here, but if we did and
 	# if someone ever wrote a module in another language
@@ -481,7 +488,10 @@ sub userLogin {
 			$slashdb->getUser($uid, 'session_login'));
 		return($uid, $newpass);
 	} else {
-		return getCurrentStatic('anonymous_coward_uid');
+		my $gSkin = getCurrentSkin();
+		return $gSkin && $gSkin->{ac_uid}
+			? $gSkin->{ac_uid}
+			: getCurrentStatic('anonymous_coward_uid');
 	}
 }
 

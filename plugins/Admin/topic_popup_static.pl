@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: topic_popup_static.pl,v 1.3 2004/07/13 22:44:05 pudge Exp $
+# $Id: topic_popup_static.pl,v 1.4 2004/10/25 22:52:18 pudge Exp $
 
 use strict;
 
@@ -20,11 +20,11 @@ $task{$me}{code} = sub {
 
 	Slash::Utility::Anchor::getSkinColors();
 	for my $type ('css', 'js') {
-		my $new = Slash::Admin::PopupTree::getPopupTree({}, {}, { type => $type, Nocomm => 1 });
+		my $new = Slash::Admin::PopupTree::getPopupTree({}, { type => $type, Nocomm => 1 });
 		next unless $new;
 
 		if ($type eq 'js') {
-			my $tree = Slash::Admin::PopupTree::getPopupTree({}, {}, { type => 'tree', Nocomm => 1 });
+			my $tree = Slash::Admin::PopupTree::getPopupTree({}, { type => 'tree', Nocomm => 1 });
 			$tree =~ s/'/\\'/g;
 			$tree =~ s/\n/\\n/g;
 			$new .= "\n\ndocument.write('$tree');\n\n";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.11 2004/09/24 23:44:10 pudge Exp $
+# $Id: PopupTree.pm,v 1.12 2004/10/25 22:52:18 pudge Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -64,7 +64,7 @@ Foooooooo.
 =cut
 
 sub getPopupTree {
-	my($stid, $stid_names, $options, $param) = @_;
+	my($stid, $options, $param) = @_;
 	my $reader	= getObject('Slash::DB', { db_type => 'reader' });
 	my $constants	= getCurrentStatic();
 	my $tree	= $reader->getTopicTree;
@@ -114,7 +114,6 @@ sub getPopupTree {
 		slashtopics		=> \%topics,
 		stid			=> $stid,
 		stcid			=> $stcid,
-		stid_names		=> $stid_names,
 		slashorig		=> $tree,
 		title			=> 'Select Topics',
 		button_label		=> 'Choose',
@@ -140,7 +139,15 @@ sub _output_generate {
 	$param->{slashtopics} = $self->{slashtopics};
 	$param->{stid}        = $self->{stid} || {};
 	$param->{stcid}       = $self->{stcid} || {};
-	$param->{stid_names}  = $self->{stid_names} || {};
+
+	for my $key (qw(stid stcid)) {
+		$param->{"${key}_ordered"} = [
+			map  { $_->[0] }
+			sort { $b->[1] <=> $a->[1] }
+			map  { [ $_, $param->{$key}{$_} ] }
+			keys %{$param->{$key}}
+		];
+	}
 
 	$self->{_template_options}{type} = 'ui' if
 		!$self->{_template_options}{type} || $self->{_template_options}{type} !~ /^tree|js|css|ui(?:_\w+)?$/;
@@ -170,4 +177,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.11 2004/09/24 23:44:10 pudge Exp $
+$Id: PopupTree.pm,v 1.12 2004/10/25 22:52:18 pudge Exp $

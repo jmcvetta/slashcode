@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.717 2004/10/23 18:23:32 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.718 2004/10/25 22:52:16 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.717 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.718 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3420,6 +3420,11 @@ sub saveTopic {
 			}
 
 			$self->sqlInsert('topic_parents', \%relation, { ignore => 1 });
+			# update changed weights
+			$self->sqlUpdate('topic_parents',
+				{ min_weight => $relation{min_weight} },
+				"tid = $relation{tid} AND parent_tid = $relation{parent_tid}",
+			) if $relation{min_weight};
 		}
 	}
 
@@ -8660,6 +8665,8 @@ sub getSlashConf {
 						  0.90 => [qw( +0.02 -2     +4  0   )],
 						  1.00 => [qw( +0.05  0     +5 +0.5 )],	},
 		m2_consequences_repeats =>	{ 3 => -4, 5 => -12, 10 => -100 },
+		# 40=0|30=Mainpage|20=0|10=Sectional|0=0
+		topic_popup_weights	=>	{ 40 => 0, 30 => 'Mainpage', 20 => 0, 10 => 'Sectional', 0 => 0 },
 	);
 	for my $key (keys %conf_fixup_arrays) {
 		if (defined($conf{$key})) {

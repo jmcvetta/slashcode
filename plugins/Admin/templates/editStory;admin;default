@@ -151,7 +151,7 @@ __template__
 		<FONT COLOR="[% user.colors.fg_3 %]">
 		[% IF topic_select %]
 			[% topic_select %]
-		[% END %]<BR>
+		[% END %]
 		[% shown_in_desc %]
 		</FONT></TD>
 	</TR>
@@ -270,4 +270,4 @@ storyref.bodytext_wordcount %] word[% IF storyref.bodytext_wordcount != 1; "s"; 
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.56 2004/10/19 21:42:38 pudge Exp $
+$Id: editStory;admin;default,v 1.57 2004/10/25 22:52:18 pudge Exp $

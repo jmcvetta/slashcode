@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.139 2004/09/20 14:32:26 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.140 2004/09/21 18:45:39 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1425,7 +1425,7 @@ sub prepareUser {
 	} else {
 		$user = $reader->getUser($uid);
 		$user->{is_anon} = 0;
-		$user->{logtoken} = bakeUserCookie($uid, $reader->getLogToken($uid));
+		$user->{logtoken} = bakeUserCookie($uid, $slashdb->getLogToken($uid));
 	}
 #print STDERR scalar(localtime) . " $$ prepareUser user->uid=$user->{uid} is_anon=$user->{is_anon}\n";
 
@@ -2637,4 +2637,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.139 2004/09/20 14:32:26 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.140 2004/09/21 18:45:39 pudge Exp $

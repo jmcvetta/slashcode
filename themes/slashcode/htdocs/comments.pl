@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.164 2003/12/01 22:22:06 jamie Exp $
+# $Id: comments.pl,v 1.165 2003/12/12 16:37:35 jamie Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1430,7 +1430,7 @@ sub moderate {
 	# ascending, maybe also by val ascending, or some way to try to
 	# get the single-point-spends first and then to only do the
 	# multiple-point-spends if the user still has points.
-	my $can_del = ($constants->{authors_unlimited} && $user->{seclev} > $constants->{authors_unlimited})
+	my $can_del = ($constants->{authors_unlimited} && $user->{seclev} >= $constants->{authors_unlimited})
 		|| $user->{acl}{candelcomments_always};
 	for my $key (sort keys %{$form}) {
 		if ($can_del && $key =~ /^del_(\d+)$/) {
@@ -1538,14 +1538,17 @@ sub undoModeration {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
-	# We abandon this operation if:
+	# We abandon this operation, thus allowing mods to remain while
+	# the post goes forward, if:
 	#	1) Moderation is off
-	#	2) The user is anonymous (they aren't allowed to anyway).
-	#	3) The user's seclev is too low and they don't have the ACL
+	#	2) The user is anonymous (posting anon is the only way
+	#	   to contribute to a discussion after you moderate)
+	#	3) The user has the "always modpoints" ACL
+	#	4) The user has a sufficient seclev
 	return if !$constants->{allow_moderation}
 		|| $user->{is_anon}
-		|| ( (!$constants->{authors_unlimited} || $user->{seclev} < $constants->{authors_unlimited})
-			&& !$user->{acl}{modpoints_always});
+		|| $user->{acl}{modpoints_always}
+		|| $constants->{authors_unlimited} && $user->{seclev} >= $constants->{authors_unlimited};
 
 	if ($sid !~ /^\d+$/) {
 		$sid = $slashdb->getDiscussionBySid($sid, 'header');

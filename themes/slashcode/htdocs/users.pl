@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.250 2004/10/06 03:27:44 jamiemccarthy Exp $
+# $Id: users.pl,v 1.251 2004/10/06 04:17:55 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2543,10 +2543,10 @@ sub saveHome {
 	my $slashboxes = $edit_user->{slashboxes};
 	# Only go through all this if the user clicked save,
 	# not "Restore Slashbox Defaults"!
+	my($boxes, $skinBoxes) = $slashdb->getPortalsCommon();
 	my $default_slashboxes_textlist = join ",",
 		@{$skinBoxes->{$constants->{mainpage_skid}}};
 	if (!$form->{restore_slashbox_defaults}) {
-		my($boxes, $skinBoxes) = $slashdb->getPortalsCommon();
 		$slashboxes = $default_slashboxes_textlist if !$slashboxes;
 		my @slashboxes = split /,/, $slashboxes;
 		my %slashboxes = ( );

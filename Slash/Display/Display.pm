@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.11 2002/04/08 16:48:43 cliff Exp $
+# $Id: Display.pm,v 1.12 2002/04/12 15:29:23 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -344,8 +344,6 @@ sub get_template {
 		PLUGINS		=> { Slash => 'Slash::Display::Plugin' },
 		%$cfg1,
 		LOAD_TEMPLATES	=> [ Slash::Display::Provider->new({
-			# this won't work until Template 2.05, but won't
-			# hurt anything in the meantime
 			FACTORY		=> 'Slash::Display::Directive',
 			PRE_CHOMP	=> $constants->{template_pre_chomp},
 			POST_CHOMP	=> $constants->{template_post_chomp},
@@ -430,21 +428,15 @@ my %list_ops = (
 		return $list->[rand @$list];
 	},
 
-	'highval'		=> sub {
+	'highval'	=> sub {
 		my $list = $_[0];
-		my $maxval;
-
-		$maxval = (!defined($maxval) or $_ > $maxval) ?  $_ : $maxval
-			for @{$list};
+		my($maxval) = sort { $b <=> $a } @$list;
 		return $maxval;
 	},
 
-	'lowval'		=> sub {
+	'lowval'	=> sub {
 		my $list = $_[0];
-		my $minval;
-
-		$minval = (!defined($minval) or $_ < $minval) ?  $_ : $minval
-			for @{$list};
+		my($minval) = sort { $a <=> $b } @$list;
 		return $minval;
 	},
 );

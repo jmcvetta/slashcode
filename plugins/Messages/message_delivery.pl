@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.13 2003/08/26 14:51:07 vroom Exp $
+# $Id: message_delivery.pl,v 1.14 2003/08/26 15:10:35 jamie Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -69,23 +69,24 @@ $task{$me}{code} = sub {
 
 			# perhaps put these formatting things in templates?
 			if ($mode == MSG_MODE_EMAIL) {
-				$message = join "\n\n" . ('=' x 80) . "\n\n", grep{ $_ } map {
-					$_->{message}
-				} @$coll;
-
+				$message = join "\n\n" . ('=' x 80) . "\n\n",
+					grep { $_ }
+					map { $_->{message} }
+					@$coll;
 			} elsif ($mode == MSG_MODE_WEB) {
-				$message = join "\n\n<P><HR><P>\n\n", grep { $_ } map {
-					$_->{message}
-				} @$coll;
-
+				$message = join "\n\n<P><HR><P>\n\n",
+					grep { $_ }
+					map { $_->{message} }
+					@$coll;
 			} else {
 				next;
 			}
 
-			if($constants->{message_delivery_debug} > 0 ){
+			if ($constants->{message_delivery_debug} > 0) {
 				use Data::Dumper;
-				foreach my $m(@$coll){
-					messagedLog("Empty message: ".Dumper($m)) unless $m->{message};
+				foreach my $m (@$coll) {
+					messagedLog("Empty message: " . Dumper($m))
+						unless $m->{message};
 				}
 			}
 			

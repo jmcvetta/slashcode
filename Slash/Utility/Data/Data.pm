@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.41 2002/07/03 07:26:55 jamie Exp $
+# $Id: Data.pm,v 1.42 2002/07/03 16:24:58 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -649,9 +649,31 @@ sub stripBadHtml {
 		)
 	}{&lt;$1}gx;
 
-	$str =~ s/&(#?[a-zA-Z0-9]+);?/approveCharref($1)/sge;
+	my $re = qr{&(#?[a-zA-Z0-9]+);?};
+	my($newstr, $tmpstr, $open) = ('', '', 0);
+	for my $char (split //, $str) {
+		$tmpstr .= $char;
+		if (!$open && $char eq '<') {
+			$open = 1;
+		} elsif ($open && $char eq '>') {
+			$open = 0;
+		}
 
-	return $str;
+		if (($char eq '<' || $char eq '>') && length $tmpstr) {
+			$tmpstr =~ s/$re/approveCharref($1)/sge if $char eq '<';
+			$newstr .= $tmpstr;
+			$tmpstr = '';
+		}
+	}
+
+	if ($tmpstr) {  # we must be outside <...> here
+		$tmpstr =~ s/$re/approveCharref($1)/sge;
+		$newstr .= $tmpstr;
+	}
+
+#	$str =~ s/&(#?[a-zA-Z0-9]+);?/approveCharref($1)/sge;
+
+	return $newstr;
 }
 
 #========================================================================
@@ -2483,4 +2505,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.41 2002/07/03 07:26:55 jamie Exp $
+$Id: Data.pm,v 1.42 2002/07/03 16:24:58 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.300 2003/01/20 20:32:34 brian Exp $
+# $Id: MySQL.pm,v 1.301 2003/01/21 04:51:13 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.300 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.301 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4052,16 +4052,41 @@ sub setCommentCleanup {
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
 
+	my $allreasons_hr = $self->sqlSelectAllHashref(
+		"reason",
+		"reason, COUNT(*) AS c",
+		"moderatorlog",
+		"cid=$cid AND active=1",
+		"GROUP BY reason"
+	);
+
+	# Changes we're going to make to this comment.
 	my $update = {
 		-points => "points$val",
 		reason => $self->getCommentMostCommonReason($cid,
-			$newreason, $oldreason),
+			$allreasons_hr, $newreason, $oldreason),
 		lastmod => $user->{uid},
 	};
+
+	# If more than n downmods, a comment loses its karma bonus.
+	my $reasons = $self->getReasons();
+	my $num_downmods = 0;
+	for my $reason (keys %$allreasons_hr) {
+		$num_downmods += $allreasons_hr->{$reason}{c}
+			if $reasons->{$reason}{val} < 0;
+	}
+	if ($num_downmods > $constants->{mod_karma_bonus_max_downmods}) {
+		$update->{karma_bonus} = "no";
+	}
+
+	# Make sure we apply this change to the right comment :)
 	my $where = "cid=$cid AND points ";
-	$where .= " > $constants->{comment_minscore}" if $val < 0;
-	$where .= " < $constants->{comment_maxscore}" if $val > 0;
-	$where .= " AND lastmod<>$user->{uid}"
+	if ($val < 0) {
+		$where .= " > $constants->{comment_minscore}";
+	} else {
+		$where .= " < $constants->{comment_maxscore}";
+	}
+	$where .= " AND lastmod <> $user->{uid}"
 		unless $constants->{authors_unlimited}
 			&& $user->{seclev} >= $constants->{authors_unlimited};
 
@@ -4077,23 +4102,36 @@ sub setCommentCleanup {
 # positive, only consider positive mod reasons, and if negative, only
 # negative.  If zero, use the current logic. XXX - Jamie 2002/08/14
 sub getCommentMostCommonReason {
-	my($self, $cid, @tiebreaker_reasons) = @_;
+	my($self, $cid, $allreasons_hr, @tiebreaker_reasons) = @_;
 
 	my $reasons = $self->getReasons();
 	my $listable_reasons = join(",",
 		sort grep { $reasons->{$_}{listable} }
 		keys %$reasons);
 	return undef if !$listable_reasons;
-	my $hr = $self->sqlSelectAllHashref(
-		"reason",
-		"reason, COUNT(*) AS c",
-		"moderatorlog",
-		"cid=$cid AND active=1
-		 AND reason IN ($listable_reasons)",
-		"GROUP BY reason"
-	);
 
-	# If no mods, return undef.
+	# Build the hashref of reason counts for this comment, for all
+	# listable reasons.  If allreasoncounts_hr was passed in, this
+	# is easy (just grep out the nonlistable ones).  If not, we have
+	# to do a DB query.
+	my $hr = { };
+	if ($allreasons_hr) {
+		for my $reason (%$allreasons_hr) {
+			$hr->{$reason} = $allreasons_hr->{$reason}
+				if $reasons->{$reason}{listable};
+		}
+	} else {
+		$hr = $self->sqlSelectAllHashref(
+			"reason",
+			"reason, COUNT(*) AS c",
+			"moderatorlog",
+			"cid=$cid AND active=1
+			 AND reason IN ($listable_reasons)",
+			"GROUP BY reason"
+		);
+	}
+
+	# If no mods that are listable, return undef.
 	return undef if !keys %$hr;
 
 	# Sort first by popularity and secondarily by reason.

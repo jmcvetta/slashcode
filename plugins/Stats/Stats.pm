@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.89 2003/01/14 23:35:06 brian Exp $
+# $Id: Stats.pm,v 1.90 2003/01/21 04:51:13 jamie Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -304,6 +304,7 @@ sub getReverseMods {
 	my $unm2able =  0.5;	$unm2able = $options->{unm2able} if defined $options->{unm2able};
 	my $denomadd =  4  ;	$denomadd = $options->{denomadd} if defined $options->{denomadd};
 	my $limit =    12  ;	$limit = $options->{limit} if defined $options->{limit};
+	my $min_tokens = -100; # fudge factor: only users who are likely to mod soon
 
 	my $reasons = $self->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
@@ -322,7 +323,8 @@ sub getReverseMods {
 		"comments.cid=moderatorlog.cid
 		 AND users.uid=moderatorlog.uid
 		 AND users_info.uid=moderatorlog.uid
-		 AND moderatorlog.active",
+		 AND moderatorlog.active
+		 AND tokens >= $min_tokens",
 		"GROUP BY muid ORDER BY score DESC, karma, tokens, muid LIMIT $limit",
 	);
 	for my $rm (@$ar) {
@@ -924,4 +926,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.89 2003/01/14 23:35:06 brian Exp $
+$Id: Stats.pm,v 1.90 2003/01/21 04:51:13 jamie Exp $

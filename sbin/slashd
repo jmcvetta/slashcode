@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slashd,v 1.25 2002/06/16 14:04:58 jamie Exp $
+# $Id: slashd,v 1.26 2002/06/17 13:09:44 pudge Exp $
 
 ############################################################
 #
@@ -550,6 +550,7 @@ sub main {
 		# coredumps and other bad stuff.  For more, see the
 		# comment at the top of the REAPER function.
 		# slashdLog("SIGCHLD called in $$")
+		# NOTE: perl 5.8 has safe signals.
 	};
 
 	MAINLOOP: while (1) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.45 2002/10/01 21:11:11 brian Exp $
+# $Id: Search.pm,v 1.46 2002/10/01 23:13:48 brian Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -369,7 +369,7 @@ sub findPollQuestion {
 
 	# The big old searching WHERE clause, fear it
 	my $key = " MATCH (question) AGAINST ($query) ";
-	my $where = " 1 = 1 ";
+	my $where = " 1 = 1 AND autopoll = 'no' ";
 	$where .= " AND $key" if $form->{query};
 	$where .= " AND date < now() ";
 	$where .= " AND uid=" . $self->sqlQuote($form->{uid})

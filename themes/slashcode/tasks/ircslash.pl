@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.19 2004/12/14 17:53:15 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.20 2004/12/16 22:07:37 jamiemccarthy Exp $
 
 use strict;
 
@@ -562,7 +562,10 @@ sub possible_check_dbs {
 				my $response = getIRCData('dbs_response', { dbids => \@dbids, dbs => $dbs_data });
 				chomp $response;
 				my @responses = split /\n/, $response;
-				$conn->privmsg($channel, getIRCData('dbalert_prefix'));
+				my $prefix = getIRCData('dbalert_prefix');
+				if ($prefix && $prefix =~ /\S/) {
+					$conn->privmsg($channel, $prefix);
+				}
 				for my $r (@responses) {
 					sleep 1;
 					$conn->privmsg($channel, $r);

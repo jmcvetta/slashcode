@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.198 2005/01/25 15:42:26 tvroom Exp $
+# $Id: adminmail.pl,v 1.199 2005/01/27 15:51:39 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -302,7 +302,10 @@ EOT
 
 	# 2 hours
 	slashdLog("Page Counting Begin");
-	my $sdTotalHits = $backupdb->getVar('totalhits', 'value', 1);
+	# I'm pulling the value out with "+0" because that returns us an
+	# exact integer instead of scientific notation which rounds off.
+	# Another one of those SQL oddities! - Jamie 2003/08/12
+	my $sdTotalHits = $backupdb->sqlSelect("value+0", "vars", "name='totalhits'");
 	my $daily_total = $logdb->countDailyByPage('', {
 		no_op => $constants->{op_exclude_from_countdaily},
 	});
@@ -743,6 +746,7 @@ EOT
 
 	$statsSave->createStatDaily("sub_comments", $data{sub_comments});
 	$statsSave->createStatDaily("total_hits", $sdTotalHits);
+	$slashdb->setVar("totalhits", $sdTotalHits);
 
 	$data{homepage} = sprintf("%8u", $homepage);
 	$data{day} = $yesterday ;

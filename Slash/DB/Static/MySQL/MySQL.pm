@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.213 2005/01/13 14:43:59 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.214 2005/01/27 15:51:38 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.214 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2346,12 +2346,6 @@ sub deleteOldFormkeys {
 	my($self, $timeframe) = @_;
 	my $delete_before_time = time - ($timeframe || 14400);
 	$self->sqlDelete("formkeys", "ts < $delete_before_time");
-}
-
-########################################################
-sub countAccesslogDaily {
-	my($self) = @_;
-	return $self->sqlCount("accesslog", "TO_DAYS(NOW()) - TO_DAYS(ts)=1");
 }
 
 ########################################################

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_archive.pl,v 1.29 2004/10/05 14:15:26 jamiemccarthy Exp $
+# $Id: daily_archive.pl,v 1.30 2005/01/27 15:51:38 jamiemccarthy Exp $
 
 use strict;
 
@@ -23,19 +23,18 @@ use vars qw( %task $me );
 
 $task{$me}{timespec} = '7 8 * * *';
 $task{$me}{timespec_panic_2} = ''; # if major panic, dailyStuff can wait
-$task{$me}{resource_locks} = { log_slave => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 	my $basedir = $constants->{basedir};
 
-	# Takes approx. 90 seconds on Slashdot
-	# (approx. 6 minutes if subscribe_hits_only is set)
+	# Takes approx. 18 minutes on Slashdot
+	# (longer if subscribe_hits_only is set)
 	slashdLog('Updating User Logins Begin');
 	$slashdb->updateLastaccess();
 	slashdLog('Updating User Logins End');
 
-	# Takes approx. 7 seconds on Slashdot
+	# Takes approx. 30 seconds on Slashdot
 	slashdLog('Decaying User Tokens Begin');
 	my $decayed = $slashdb->decayTokens();
 	slashdLog("Decaying User Tokens End ($decayed decayed)");
@@ -43,18 +42,7 @@ $task{$me}{code} = sub {
 		$statsSave->addStatDaily("mod_tokens_lost_decayed", $decayed);
 	}
 
-	# Takes approx. 190 seconds on Slashdot
-	my $logdb = getObject('Slash::DB', { db_type => 'log_slave' });
-	slashdLog('Update Total Counts Begin');
-	# I'm pulling the value out with "+0" because that returns us an
-	# exact integer instead of scientific notation which rounds off.
-	# Another one of those SQL oddities! - Jamie 2003/08/12
-	my $totalHits = $slashdb->sqlSelect("value+0", "vars", "name='totalhits'");
-	$totalHits += $logdb->countAccesslogDaily();
-	$slashdb->setVar("totalhits", $totalHits);
-	slashdLog('Update Total Counts End');
-
-	# Takes approx. 30 seconds on Slashdot
+	# Takes approx. 3 seconds on Slashdot
 	slashdLog('Daily Deleting Begin');
 	$slashdb->deleteDaily();
 	slashdLog('Daily Deleting End');

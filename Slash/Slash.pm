@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.162 2003/08/05 22:33:07 jamie Exp $
+# $Id: Slash.pm,v 1.163 2003/08/05 22:45:17 pudge Exp $
 
 package Slash;
 
@@ -1503,7 +1503,7 @@ sub getData {
 
 	if (defined $var->{$value}) {
 #		print STDERR "getData $$ value='$value' cache_hit\n";
-		return $val->{$value};
+		return $var->{$value};
 	}
 
 	my $str = slashDisplay($name, $hashref, $opts);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.9 2002/07/01 18:30:23 pudge Exp $
+# $Id: Messages.pm,v 1.10 2002/07/01 18:46:29 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -456,18 +456,16 @@ sub getWebCount {
 # allowed to get email sent to them, and whether or not they are
 # allowed to get this particular email type
 sub quicksend {
-	my($self, $user, $subj, $message, $code, $pr) = @_;
+	my($self, $tuser, $subj, $message, $code, $pr) = @_;
 	my $slashdb = getCurrentDB();
 
-	return unless $user;
+	return unless $tuser;
 	($code, my($type)) = $self->getDescription('messagecodes', $code);
 	$code = -1 unless defined $code;
 
 	my %msg = (
 		id		=> 0,
 		fuser		=> 0,
-		altto		=> '',
-		user		=> $slashdb->getUser($user),
 		subject		=> $subj,
 		message		=> $message,
 		code		=> $code,
@@ -478,9 +476,12 @@ sub quicksend {
 	);
 
 	# allow for altto
-	if ($user =~ /\D/) {
-		$msg->{user}{uid} = 0;
-		$msg->{altto} = $user;
+	if ($tuser =~ /\D/) {
+		$msg->{user}{uid}	= 0;
+		$msg->{altto}		= $tuser;
+	} else {
+		$msg->{user}		= $slashdb->getUser($tuser);
+		$msg->{altto}		= '';
 	}
 
 	$self->send(\%msg);
@@ -909,4 +910,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.9 2002/07/01 18:30:23 pudge Exp $
+$Id: Messages.pm,v 1.10 2002/07/01 18:46:29 pudge Exp $

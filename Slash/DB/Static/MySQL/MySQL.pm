@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.16 2001/12/08 08:41:48 brian Exp $
+# $Id: MySQL.pm,v 1.17 2001/12/12 05:58:45 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -16,7 +16,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -319,6 +319,8 @@ sub deleteDaily {
 
 ########################################################
 # For dailystuff
+# With users_hits now storing "lastclick", this gets a lot
+# easier. - Jamie XXX
 sub updateStamps {
 	my($self) = @_;
 	my $columns = "uid";
@@ -516,6 +518,14 @@ SELECT COUNT(*) FROM stories
 WHERE section='$_->{section}'
 	AND TO_DAYS(NOW()) - TO_DAYS(time) <= 2 AND time < NOW()
 	AND displaystatus > -1
+EOT
+
+		$_->{count_sectional} =
+			$self->{_dbh}->selectrow_array(<<EOT);
+SELECT COUNT(*) FROM stories
+WHERE section='$_->{section}'
+	AND TO_DAYS(NOW()) - TO_DAYS(time) <= 2 AND time < NOW()
+	AND displaystatus > 0
 EOT
 
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.1 2001/11/30 01:12:27 jamie Exp $
+# $Id: subscribe.pl,v 1.2 2001/12/12 05:58:45 jamie Exp $
 
 use strict;
 
@@ -68,7 +68,7 @@ sub save {
 		$user_update->{hits_paidfor} = $user->{hits_paidfor} || 0;
 		$user_update->{hits_paidfor} += $buymore;
 	}
-	for my $key (grep /^boughtpage_\w+$/, keys %$form) {
+	for my $key (grep /^buypage_\w+$/, keys %$form) {
 		# Empty string means delete the row from users_param.
 		$user_update->{$key} = $form->{$key} ? 1 : "";
 	}

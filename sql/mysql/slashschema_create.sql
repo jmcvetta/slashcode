@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.9 2001/12/06 23:41:08 brian Exp $
+# $Id: slashschema_create.sql,v 1.10 2001/12/12 05:58:45 jamie Exp $
 #
 
 #
@@ -718,6 +718,18 @@ CREATE TABLE users_count (
 # Table structure for table 'users_index'
 #
 
+DROP TABLE IF EXISTS users_hits;
+CREATE TABLE users_hits (
+	uid mediumint UNSIGNED NOT NULL,
+	lastclick TIMESTAMP,
+	hits int DEFAULT '0' NOT NULL,
+	PRIMARY KEY (uid)
+) TYPE = myisam;
+
+#
+# Table structure for table 'users_index'
+#
+
 DROP TABLE IF EXISTS users_index;
 CREATE TABLE users_index (
 	uid mediumint UNSIGNED NOT NULL,
@@ -738,7 +750,6 @@ CREATE TABLE users_index (
 DROP TABLE IF EXISTS users_info;
 CREATE TABLE users_info (
 	uid mediumint UNSIGNED NOT NULL,
-	hits int DEFAULT '0' NOT NULL,
 	totalmods mediumint DEFAULT '0' NOT NULL,
 	realname varchar(50),
 	bio text,

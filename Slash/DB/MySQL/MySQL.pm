@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.698 2004/10/05 23:48:19 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.699 2004/10/06 04:19:14 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.698 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.699 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6283,6 +6283,7 @@ sub getStoryByTime {
 	$key .= "|$story->{stoid}";
 
 	if (!$topic && !$section) {
+		# XXXSECTIONTOPICS this is almost right, but not quite
 		$where .= " AND story_topics_rendered.tid NOT IN ($user->{story_never_topic})" if $user->{story_never_topic};
 		$where .= " AND uid NOT IN ($user->{story_never_author})" if $user->{story_never_author};
 		# don't cache if user has own prefs -- pudge
@@ -7441,8 +7442,11 @@ sub getStoriesEssentials {
 	my @stories_where = ( );
 	push @stories_where, "in_trash = 'no' AND $where_time";
 	if (@$uid) {
+		# XXXSECTIONTOPIC This is wrong, this clause should be OR'd
+		# with the rest if it is present.
 		push @stories_where, "uid IN ("       . join(",", @$uid)     . ")";
 	} elsif (@$uid_x) {
+		# This is correct, this should be AND'd.
 		push @stories_where, "uid NOT IN ("   . join(",", @$uid_x)   . ")";
 	}
 	if ($issue) {
@@ -7559,6 +7563,11 @@ print STDERR "gSE $$ one SELECT, min_stoid=$min_stoid\n";
 
 		# Need both tables.
 		$tables = "stories, story_topics_rendered";
+
+		# XXXSECTIONTOPICS if $tid_x is defined, this needs to do a
+		# LEFT JOIN on another copy of story_topics_rendered and
+		# eliminate any stoids which have a corresponding row with
+		# an unwanted tid.
 
 		# If we'd done multiple SELECTs, this logic would have been
 		# done on the story_topics_rendered table;  as it is, these

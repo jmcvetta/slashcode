@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.36 2003/01/21 21:19:47 pudge Exp $
+# $Id: Display.pm,v 1.37 2003/02/08 00:30:05 brian Exp $
 
 package Slash::Utility::Display;
 
@@ -32,7 +32,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createMenu
 	createSelect
@@ -211,21 +211,14 @@ true/false if operation is successful.
 =cut
 
 sub selectTopic {
-	my($label, $default, $section, $return, $all) = @_;
+	my($label, $default, $section, $return) = @_;
 	my $slashdb = getCurrentDB();
 	$section ||= getCurrentStatic('defaultsection');
 	$default ||= getCurrentStatic('defaulttopic');
 
 	my $topics = $slashdb->getDescriptions('topics_section', $section);
 
-	my $ordered = [
-		map  { $_->[0] }
-		sort { $a->[1] cmp $b->[1] }
-		map  { [$_, lc $topics->{$_}] }
-		keys %$topics
-	];
-
-	createSelect($label, $topics, $default, $return, 0, $ordered);
+	createSelect($label, $topics, $default, $return, 0, 1);
 }
 
 #========================================================================
@@ -1234,4 +1227,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.36 2003/01/21 21:19:47 pudge Exp $
+$Id: Display.pm,v 1.37 2003/02/08 00:30:05 brian Exp $

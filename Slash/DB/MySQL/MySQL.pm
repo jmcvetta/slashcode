@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.324 2003/02/07 16:44:36 jamie Exp $
+# $Id: MySQL.pm,v 1.325 2003/02/08 00:30:05 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.324 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.325 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2218,7 +2218,8 @@ sub saveTopic {
 			image	=> $image,
 			alttext	=> $topic->{alttext},
 			width	=> $topic->{width},
-			height	=> $topic->{height}
+			height	=> $topic->{height},
+			parent_topic	=> $topic->{parent_topic},
 		});
 		$tid = $self->getLastInsertId();
 	} else {
@@ -2228,6 +2229,7 @@ sub saveTopic {
 			width	=> $topic->{width},
 			height	=> $topic->{height},
 			name	=> $topic->{name},
+			parent_topic	=> $topic->{parent_topic},
 		}, "tid=$tid");
 	}
 
@@ -6313,6 +6315,7 @@ sub setUser {
 # Nicknames
 sub getUsersNicknamesByUID {
 	my ($self, $people) = @_;
+	return unless (ref($people) eq 'ARRAY') && scalar(@$people);
 	my $list = join(",", @$people);
 	$self->sqlSelectAllHashref("uid", "uid,nickname", "users", "uid IN ($list)");
 }

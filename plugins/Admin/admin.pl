@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.131 2003/01/31 05:46:04 jamie Exp $
+# $Id: admin.pl,v 1.132 2003/02/08 00:30:05 brian Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -760,7 +760,10 @@ sub topicEdit {
 	}
 	$topics_select = createSelect('nexttid', 
 		$slashdb->getDescriptions($tdesc, $user->{section}, 1),
-		$form->{nexttid} ? $form->{nexttid} : $constants->{defaulttopic}, 1);
+		$form->{nexttid} ? $form->{nexttid} : $constants->{defaulttopic}, 
+		1, 
+		0, 
+		1);
 	my $sections = {};
 	if ($user->{section} && $user->{seclev} <= 9000) {
 		$sections->{$user->{section}} = $slashdb->getSection($user->{section}, 'title', '', 1);
@@ -808,6 +811,18 @@ sub topicEdit {
 		$image2 = $image;
 	}
 
+	my $parent_topic_values = $slashdb->getDescriptions('topics_all');
+	$form->{parent_topic} ||= 0;
+	if ($form->{parent_topic}) {
+		my $current_hash = { %$parent_topic_values };
+		$current_hash->{0} = "$current_hash->{$_} (Delete)";
+		$parent_topic_values = $current_hash;
+	} else {
+		my $current_hash = { %$parent_topic_values };
+		$current_hash->{0} = "Add Parent Topic";
+		$parent_topic_values = $current_hash;
+	}
+
 	my $topicname = $topic->{name} || '';
 	slashDisplay('topicEdit', {
 		title			=> getTitle('editTopic-title', { tname => $topicname }),
@@ -817,7 +832,8 @@ sub topicEdit {
 		topic			=> $topic,
 		topics_select		=> $topics_select,
 		image_select		=> $image_select,
-		sectionref		=> $sectionref
+		sectionref		=> $sectionref,
+		parent_topic_values	=> $parent_topic_values,
 	});
 }
 

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.75 2002/11/07 19:49:23 brian Exp $
+# $Id: slashschema_create.sql,v 1.76 2002/11/15 17:32:45 jamie Exp $
 #
 
 #
@@ -167,6 +167,7 @@ CREATE TABLE comments (
 	subject varchar(50) NOT NULL,
 	uid mediumint UNSIGNED NOT NULL,
 	points tinyint DEFAULT '0' NOT NULL,
+	pointsorig tinyint DEFAULT '0' NOT NULL,
 	lastmod mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	reason tinyint UNSIGNED DEFAULT '0' NOT NULL,
 	signature char(32) DEFAULT '' NOT NULL,
@@ -376,6 +377,8 @@ CREATE TABLE misc_user_opts (
 DROP TABLE IF EXISTS moderatorlog;
 CREATE TABLE moderatorlog (
 	id int UNSIGNED NOT NULL auto_increment,
+	ipid char(32) DEFAULT '' NOT NULL,
+	subnetid char(32) DEFAULT '' NOT NULL,
 	uid mediumint UNSIGNED NOT NULL,
 	val tinyint DEFAULT '0' NOT NULL,
 	sid mediumint UNSIGNED DEFAULT '' NOT NULL,

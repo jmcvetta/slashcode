@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.65 2005/03/11 19:58:24 pudge Exp $
+# $Id: article.pl,v 1.66 2005/04/01 04:29:20 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -37,7 +37,8 @@ sub main {
 	my $future_err = 0;
 	if ($story
 		&& $story->{is_future} && !$story->{neverdisplay}
-		&& !($user->{is_admin} || $user->{author})) {
+		&& !( $user->{is_admin} || $user->{author} || $user->{has_daypass} )
+	) {
 		$future_err = 1 if !$constants->{subscribe}
 			|| !$user->{is_subscriber}
 			|| !$user->{state}{page_plummy};

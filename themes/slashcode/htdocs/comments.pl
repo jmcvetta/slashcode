@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.216 2005/03/23 18:36:02 pudge Exp $
+# $Id: comments.pl,v 1.217 2005/04/01 04:29:20 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -126,7 +126,8 @@ sub main {
 		# like it is with getStory.  We have to add it manually here.
 		$discussion->{is_future} = 1 if $slashdb->checkDiscussionIsInFuture($discussion);
 		# Now check to make sure this discussion can be seen.
-		if (!($user->{author} || $user->{is_admin}) && $discussion) {
+		if (!( $user->{author} || $user->{is_admin} || $user->{has_daypass} )
+			&& $discussion) {
 			my $null_it_out = 0;
 			if ($discussion->{is_future}) {
 				# Discussion is from the future;  decide here

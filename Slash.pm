@@ -22,7 +22,7 @@ package Slash;
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: Slash.pm,v 1.49 2000/09/23 23:48:53 cbwood Exp $
+#  $Id: Slash.pm,v 1.50 2000/10/02 13:43:32 pudge Exp $
 ###############################################################################
 use strict;  # ha ha ha ha ha!
 use Apache::SIG ();
@@ -1206,7 +1206,7 @@ sub stripByMode {
 	# ASCII only ?
 #	$str =~ s/[^\011\040\033-176]/sprintf '&#%d;', ord $1/ge;
 
-	if ($fmode eq 'literal' || $fmode eq 'exttrans' || $fmode eq 'attribute') {
+	if ($fmode eq 'literal' || $fmode eq 'exttrans' || $fmode eq 'attribute' || $fmode eq 'code') {
 		$str =~ s/(\S{90})/$1 /g unless $no_white_fix;
 		# Encode all HTML tags
 		$str =~ s/&/&amp;/g;
@@ -1215,13 +1215,14 @@ sub stripByMode {
 	}
 
 	# this "if" block part of patch from Ben Tilly
-	if ($fmode eq 'plaintext' || $fmode eq 'exttrans') {
+	if ($fmode eq 'plaintext' || $fmode eq 'exttrans' || $fmode eq 'code') {
 		$str = stripBadHtml($str, $no_white_fix);
 		$str =~ s/\n/<BR>/gi;  # pp breaks
 		$str =~ s/(?:<BR>\s*){2,}<BR>/<BR><BR>/gi;
 		# Preserve leading indents
 		$str =~ s/\t/    /g;
 		$str =~ s/<BR>\n?( +)/"<BR>\n" . ("&nbsp; " x length($1))/ieg;
+		$str = '<CODE>' . $str . '</CODE>' if $fmode eq 'code';
 
 	} elsif ($fmode eq 'nohtml') {
 		$str =~ s/<.*?>//g;

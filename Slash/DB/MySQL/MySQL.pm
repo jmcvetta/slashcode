@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.655 2004/08/02 20:01:08 pudge Exp $
+# $Id: MySQL.pm,v 1.656 2004/08/03 16:52:15 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.655 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.656 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2249,7 +2249,8 @@ sub getDBs {
 	for (keys %$dbs) {
 		my $db = $dbs->{$_};
 		$databases{$db->{type}} ||= [];
-		push @{$databases{$db->{type}}}, $db;
+		$db->{weight} = 1 if !$db->{weight} || $db->{weight} < 1;
+		push @{$databases{$db->{type}}}, ($db) x $db->{weight};
 	}
 
 	# The amount of time to cache this has to be hardcoded,
@@ -2282,7 +2283,11 @@ sub getDB {
 
 	my $users = $self->sqlSelectColArrayref('virtual_user', 'dbs',
 		'type=' . $self->sqlQuote($db_type) . " AND isalive='yes'");
-	return $users->[rand @$users];
+	my $weighted = [];
+	for my $db (@$users) {
+		push @$weighted, ($db) x $db->{weight};
+	}
+	return $weighted->[rand @$weighted];
 }
 
 } # end closure surrounding getDBs and getDB

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.43 2001/12/04 01:49:40 pudge Exp $
+# $Id: users.pl,v 1.44 2001/12/12 19:20:11 pudge Exp $
 
 use strict;
 use Date::Manip qw(UnixDate DateCalc);
@@ -254,10 +254,10 @@ sub main {
 
 	if ($form->{op} && ! defined $ops->{$op}) {
 		$note .= getError('bad_op', { op => $form->{op}}, 0, 1);
-		$op = isAnon($user->{uid}) ? 'userlogin' : 'userinfo'; 
+		$op = $user->{is_anon} ? 'userlogin' : 'userinfo'; 
 	}
 
-	if ($op eq 'userlogin' && ! isAnon($user->{uid})) {
+	if ($op eq 'userlogin' && ! $user->{is_anon}) {
 		# why disable "returnto" ?  What's going on? -- pudge
 		# no one responded, so i am changing it back
 # 		my $refer = URI->new_abs($constants->{rootdir},
@@ -315,7 +315,7 @@ sub main {
 	print createMenu($formname) if ! $user->{is_anon};
 
 	$op = 'userinfo' if (! $form->{op} && ($form->{uid} || $form->{nick}));
-	$op ||= isAnon($user->{uid}) ? 'userlogin' : 'userinfo';
+	$op ||= $user->{is_anon} ? 'userlogin' : 'userinfo';
 
 	if ($user->{is_anon} && $ops->{$op}{seclev} > 0) {
 		$op = 'default';
@@ -324,7 +324,7 @@ sub main {
 	}
 
 	if ($ops->{$op}{post} && !$postflag) {
-		$op = isAnon($user->{uid}) ? 'default' : 'userinfo';
+		$op = $user->{is_anon} ? 'default' : 'userinfo';
 	}
 
 	if ($user->{seclev} < 100) {
@@ -1195,7 +1195,7 @@ sub editHome {
 
 	$title = getTitle('editHome_title');
 
-	return if $user->{seclev} < 100 && $user_edit->{is_anon};
+	return if $user->{seclev} < 100 && isAnon($user_edit->{uid});
 
 	$formats = $slashdb->getDescriptions('dateformats');
 	$tzformat_select = createSelect('tzformat', $formats, $user_edit->{dfid}, 1);
@@ -1981,7 +1981,7 @@ sub displayForm {
 		suadmin_flag 	=> $suadmin_flag,
 		title 		=> $title,
 		title2 		=> $title2,
-		logged_in	=> isAnon($user->{uid}) ? 0 : 1,
+		logged_in	=> $user->{is_anon} ? 0 : 1,
 		msg1 		=> $msg1,
 		msg2 		=> $msg2
 	});

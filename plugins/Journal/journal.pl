@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.25 2001/12/11 23:21:07 brian Exp $
+# $Id: journal.pl,v 1.26 2001/12/12 19:20:10 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -241,8 +241,8 @@ sub displayArticle {
 	# clean it up
 	my $start = fixint($form->{start}) || 0;
 	my $articles = $journal->getsByUid($uid, $start,
-			$constants->{journal_default_display} + 1, $form->{id}
-		);
+		$constants->{journal_default_display} + 1, $form->{id}
+	);
 
 	unless ($articles && @$articles) {
 		print getData('noentries_found');

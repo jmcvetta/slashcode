@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.8 2001/12/04 00:34:26 pudge Exp $
+# $Id: Display.pm,v 1.9 2001/12/12 19:20:10 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.06;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -81,8 +81,8 @@ out and processed.
 =item DATA
 
 Hashref of additional parameters to pass to the template.
-Default passed parameters include constants, env, user, and
-form, which can be overriden (see C<_populate>).
+Default passed parameters include constants, env, user, anon,
+and form.  These cannot be overriden.
 
 =item OPTIONS
 
@@ -216,7 +216,6 @@ sub slashDisplay {
 	}
 
 	$data ||= {};
-	_populate($data);
 
 	# let us pass in a context if we have one
 	my $template = $CONTEXT || get_template(0, 0, 1);
@@ -360,49 +359,6 @@ sub get_template {
 
 	return $template;
 }
-
-=head1 PRIVATE FUNCTIONS
-
-=cut
-
-#========================================================================
-
-=head2 _populate(DATA)
-
-Put universal data stuff into each template: constants, user, form, env.
-Each can be overriden by passing a hash key of the same name to
-C<slashDisplay>.
-
-=over 4
-
-=item Parameters
-
-=over 4
-
-=item DATA
-
-A hashref to be populated.
-
-=back
-
-=item Return value
-
-Populated hashref.
-
-=back
-
-=cut
-
-sub _populate {
-	my($data) = @_;
-	$data->{constants} = getCurrentStatic()
-		unless exists $data->{constants};
-	$data->{user} = getCurrentUser() unless exists $data->{user};
-	$data->{form} = getCurrentForm() unless exists $data->{form};
-	$data->{env} = { map { (lc, $ENV{$_}) } keys %ENV }
-		unless exists $data->{env};
-}
-
 
 =head1 TEMPLATE ENVIRONMENT
 

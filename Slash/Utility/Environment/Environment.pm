@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.6 2001/12/12 05:58:45 jamie Exp $
+# $Id: Environment.pm,v 1.7 2001/12/12 19:20:10 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -31,7 +31,7 @@ use Digest::MD5 'md5_hex';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	createCurrentAnonymousCoward
 	createCurrentCookie
@@ -1216,7 +1216,8 @@ sub filter_params {
 	for (keys %params) {
 		$form{$_} = $params{$_};
 		# We don't filter the multivalue params yet -Brian
-		if (exists $multivalue{$_} && $apr) {
+		# allow any param ending in _multiple to be multiple -- pudge
+		if ($apr && (exists $multivalue{$_} || /_multiple$/)) {
 			my @multi = $apr->param($_);
 			$form{$_} = \@multi;
 			next;
@@ -1545,4 +1546,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.6 2001/12/12 05:58:45 jamie Exp $
+$Id: Environment.pm,v 1.7 2001/12/12 19:20:10 pudge Exp $

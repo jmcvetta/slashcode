@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.4 2001/11/03 03:08:48 brian Exp $
+# $Id: Provider.pm,v 1.5 2001/12/12 19:20:10 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar
@@ -211,7 +211,7 @@ sub ident {
 	my ($class, $ident) = @_;
 	return "''" unless @$ident;
 
-	my $types = qr/^(constants|form|user)$/;
+	my $types = qr/^'(constants|form|user|anon)'$/;
 	if ($ident->[0] =~ $types && (my $type = $1) && @$ident == 4 && $ident->[2] =~ /^'(.+)'$/s) {
 		(my $data = $1) =~ s/'/\\'/;
 		return "\$${type}->{'$data'}";
@@ -240,11 +240,12 @@ sub template {
 	return "sub { return '' }" unless $block =~ /\S/;
 
 	my $extra;
+	$extra .= "my \$anon = Slash::getCurrentAnonymousCoward();\n" if $block =~ /\$anon->/;
 	$extra .= "my \$user = Slash::getCurrentUser();\n" if $block =~ /\$user->/;
 	$extra .= "my \$form = Slash::getCurrentForm();\n" if $block =~ /\$form->/;
 	$extra .= "my \$constants = Slash::getCurrentStatic();\n" if $block =~ /\$constants->/;
 
-    return <<EOF;
+	my $template = <<EOF;
 sub {
     my \$context = shift || die "template sub called without context\\n";
     my \$stash   = \$context->stash;
@@ -263,6 +264,8 @@ $block
     return \$output;
 }
 EOF
+
+	return $template;
 }
 
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.34 2001/12/10 22:17:10 pudge Exp $
+# $Id: comments.pl,v 1.35 2001/12/12 19:20:10 pudge Exp $
 
 use strict;
 use HTML::Entities;
@@ -34,19 +34,19 @@ sub main {
 			function		=> \&displayComments,
 			seclev			=> 0,
 			formname		=> 'discussions',
-			checks			=> ($form->{sid} || isAnon($user->{uid})) ? [] : ['generate_formkey'],
+			checks			=> ($form->{sid} || $user->{is_anon}) ? [] : ['generate_formkey'],
 		},
 		change		=> { 
 			function		=> \&displayComments,
 			seclev			=> 0,
 			formname		=> 'discussions',
-			checks			=> ($form->{sid} || isAnon($user->{uid})) ? [] : ['generate_formkey'],
+			checks			=> ($form->{sid} || $user->{is_anon}) ? [] : ['generate_formkey'],
 		},
 		'index'			=> {
 			function		=> \&commentIndex,
 			seclev			=> 0,
 			formname 		=> 'discussions',
-			checks			=> ($form->{sid} || isAnon($user->{uid})) ? [] : ['generate_formkey'],
+			checks			=> ($form->{sid} || $user->{is_anon}) ? [] : ['generate_formkey'],
 		},
 		creator_index			=> {
 			function		=> \&commentIndexCreator,

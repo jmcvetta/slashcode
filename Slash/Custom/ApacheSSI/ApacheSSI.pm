@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ApacheSSI.pm,v 1.2 2004/04/02 00:42:59 pudge Exp $
+# $Id: ApacheSSI.pm,v 1.3 2005/02/24 17:32:37 pudge Exp $
 
 # this merely overrides a "broken" method in Apache::SSI,
 # where include directives don't work for mixing with Apache::Compress
@@ -16,9 +16,25 @@ use strict;
 use base 'Apache::SSI';
 use vars qw($VERSION);
 
-use Apache::Constants qw(:common OPT_INCNOEXEC);
+use Apache::Constants qw(:common :http OPT_INCNOEXEC);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+
+sub output {
+    my $self = shift;
+    
+    my @parts = split m/(<!--#.*?-->)/s, $self->{'text'};
+    while (@parts) {
+#        $self->{_r}->print( ('', shift @parts)[1-$self->{'suspend'}[0]] );
+        print( ('', shift @parts)[1-$self->{'suspend'}[0]] );
+        last unless @parts;
+        my $ssi = shift @parts;
+        if ($ssi =~ m/^<!--#(.*)-->$/s) {
+#            $self->{_r}->print( $self->output_ssi($1) );
+            print( $self->output_ssi($1) );
+        } else { die 'Parse error' }
+    }
+}
 
 sub ssi_perl {
   my($self, $args, $margs) = @_;
@@ -41,16 +57,15 @@ sub ssi_include {
       $self->error("Include of ", $subr->filename, " failed: $!");
     }
   } else {
-    unless ($subr->run == OK) {
-      $self->error("Include of '@{[$subr->filename()]}' failed: $!");
+    if ( $subr->status == HTTP_OK ) {
+      # Subrequests can fuck up %ENV, make sure it's restored upon exit.
+      # Unfortunately 'local(%ENV)=%ENV' reportedly causes segfaults.
+      my %save_ENV = %ENV;
+      $subr->run == OK
+        or $self->error("Include of '@{[$subr->filename()]}' failed: $!");
+      %ENV = %save_ENV;
     }
   }
-  
-  ## Make sure that all of the variables set in the include are present here.
-  #my $env = $subr->subprocess_env();
-  #foreach ( keys %$env ) {
-  #  $self->{_r}->subprocess_env($_, $env->{$_});
-  #}
   
   return '';
 }

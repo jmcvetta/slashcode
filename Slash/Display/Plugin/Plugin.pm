@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Plugin.pm,v 1.8 2002/06/21 19:43:37 pudge Exp $
+# $Id: Plugin.pm,v 1.9 2003/02/27 22:25:03 pudge Exp $
 
 package Slash::Display::Plugin;
 
@@ -64,7 +64,7 @@ use Slash::Constants ();
 use Slash::Utility ();
 use base qw(Template::Plugin);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Forget your stupid theme park!  I'm gonna make my own!
 # With hookers!  And blackjack!  In fact, forget the theme park!
@@ -96,7 +96,7 @@ sub new {
 	}, $class;
 }
 
-sub db { Slash::Utility::getCurrentDB() }
+sub db  { Slash::Utility::getObject('Slash::DB', { db_type => 'reader' }) }
 
 # not to be confused with Slash::Test::Display(); that may only be
 # called from Slash::Test, this may only be called from plugins

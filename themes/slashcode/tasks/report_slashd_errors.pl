@@ -2,7 +2,7 @@
 ## This code is a part of Slash, and is released under the GPL.
 ## Copyright 1997-2004 by Open Source Development Network. See README
 ## and COPYING for more information, or see http://slashcode.com/.
-## $Id: report_slashd_errors.pl,v 1.4 2004/10/07 01:34:55 jamiemccarthy Exp $
+## $Id: report_slashd_errors.pl,v 1.5 2004/10/15 02:14:42 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -23,14 +23,28 @@ $task{$me}{code} = sub {
 		'slashd_errnotes',
 		"ts BETWEEN '$lastrun' AND '$now'",
 		'GROUP BY taskname, line ORDER BY taskname, line');
-	my $num_errors = $data{errors} ? scalar(@{$data{errors}}) : 0;
+	my $num_errors = $data{errors} ? scalar(keys %{$data{errors}}) : 0;
+
+# sample dump of $data{errors}:
+# $VAR1 = {
+#	'run_pdagen.pl' => {
+#	       'errnote' => 'error \'65535\' on system() \'/usr/local/slash/site/sitename/sbin/pdaGen.pl slash\'',
+#	       'line' => '26',
+#	       'moreinfo' => undef,
+#	       'num' => '289',
+#	       'taskname' => 'run_pdagen.pl'
+#	     }
+# };
 
 	my $messages = getObject('Slash::Messages');
 
-	if ($messages && keys %{$data{errors}}) {
+	if ($messages && $num_errors) {
 		$data{template_name} = 'display';
 		$data{subject} = 'slashd Error Alert';
 		$data{template_page} = 'slashderrnote';
+		# shouldn't we loop thru the keys here and create a message
+		# for each iteration based on feeding its data to a template
+		# or something?
 		my $admins = $messages->getMessageUsers(MSG_CODE_ADMINMAIL);
 		for my $uid (@$admins) {
 			$messages->create($uid, MSG_CODE_ADMINMAIL, \%data);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.61 2002/11/20 03:50:08 jamie Exp $
+# $Id: Data.pm,v 1.62 2002/11/26 05:21:18 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -509,6 +509,8 @@ my %action_data = ( );
 my %actions = (
 	newline_to_local => sub {
 			${$_[0]} =~ s/(?:\015?\012|\015)/\n/g;		},
+	trailing_whitespace => sub {
+			${$_[0]} =~ s/[t ]+\n/\n/g;			},
 	encode_html_amp => sub {
 			${$_[0]} =~ s/&/&amp;/g;			},
 	encode_html_amp_ifnotent => sub {
@@ -596,11 +598,13 @@ my %mode_actions = (
 			encode_html_ltgt_stray		)],
 	NOHTML, [qw(
 			newline_to_local
+			trailing_whitespace
 			remove_tags
 			remove_ltgt
 			encode_html_amp			)],
 	PLAINTEXT, [qw(
 			newline_to_local
+			trailing_whitespace
 			processCustomTags
 			remove_trailing_lts
 			approveTags
@@ -613,6 +617,7 @@ my %mode_actions = (
 			newline_indent			)],
 	HTML, [qw(
 			newline_to_local
+			trailing_whitespace
 			processCustomTags
 			remove_trailing_lts
 			approveTags
@@ -623,6 +628,7 @@ my %mode_actions = (
 			breakHtml_ifwhitefix		)],
 	CODE, [qw(
 			newline_to_local
+			trailing_whitespace
 			encode_html_amp
 			encode_html_ltgt
 			whitespace_tagify
@@ -630,6 +636,7 @@ my %mode_actions = (
 			breakHtml_ifwhitefix		)],
 	EXTRANS, [qw(
 			newline_to_local
+			trailing_whitespace
 			encode_html_amp
 			encode_html_ltgt
 			breakHtml_ifwhitefix
@@ -2660,4 +2667,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.61 2002/11/20 03:50:08 jamie Exp $
+$Id: Data.pm,v 1.62 2002/11/26 05:21:18 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.56 2004/11/09 15:47:25 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.57 2004/11/22 00:19:08 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -186,6 +186,8 @@ $task{$me}{code} = sub {
 	if ($extra_minutes) {
 		$extra_minutes = 5 if $extra_minutes > 5;
 		$timeout_shtml += 60 * $extra_minutes;
+		slashdLog("Will process for $extra_minutes extra minutes, "
+			. scalar(@$stories) . " stories");
 	}
 
 	STORIES_FRESHEN: for my $story (@$stories) {

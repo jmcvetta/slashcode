@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.3 2002/07/08 23:35:06 patg Exp $
+# $Id: Page.pm,v 1.4 2002/07/09 18:14:40 pudge Exp $
 
 package Slash::Page;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Exporter';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -79,9 +79,9 @@ sub displayStories {
 		my $subsections = $slashdb->getDescriptions('section_subsection_names', $section); 
 		# from title to id
 		$misc->{subsection} = $subsections->{$other->{subsection}};
-		$limit = $other->{count} ? $other->{count} : $slashdb->getSubSection($misc->{subsection}, 'artcount');
+		$limit = $other->{count} || $slashdb->getSubSection($misc->{subsection}, 'artcount');
 	} else {
-		$limit = $other->{count} ? $other->{count} : $slashdb->getSection($section, 'artcount');
+		$limit = $other->{count} || $slashdb->getSection($section, 'artcount');
 	}
 
 	my $storystruct = [];

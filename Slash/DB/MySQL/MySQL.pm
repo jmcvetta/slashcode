@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.178 2002/07/09 00:29:47 patg Exp $
+# $Id: MySQL.pm,v 1.179 2002/07/09 18:14:40 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -99,8 +99,10 @@ my %descriptions = (
 
 	'section_subsection'
 		=> sub { $_[0]->sqlSelectMany('id,title', 'subsections', "section='$_[2]'") },
+
 	'section_subsection_names'
 		=> sub { $_[0]->sqlSelectMany('title,id', 'subsections', "section='$_[2]'") },
+
 	'maillist'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='maillist'") },
 
@@ -115,6 +117,7 @@ my %descriptions = (
 
 	'displaycodes_sectional'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='displaycodes_sectional'") },
+
 	'commentcodes'
 		=> sub { $_[0]->sqlSelectMany('code,name', 'code_param', "type='commentcodes'") },
 

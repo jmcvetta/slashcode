@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.207 2004/06/23 18:05:16 pudge Exp $
+# $Id: admin.pl,v 1.208 2004/06/23 20:53:15 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1246,6 +1246,7 @@ sub editStory {
 	my $page = 'index';
 	# If the user is a section only admin, we do that, if they have filled out a form we do that but 
 	# if none of these apply we just do defaultsection -Brian
+	# XXXSKIN - ???
 	my $section = $user->{section} || $form->{section} || $constants->{defaultsection};
 
 	for (keys %{$form}) { $storyref->{$_} = $form->{$_} }

@@ -1,16 +1,17 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.28 2002/09/04 02:30:58 jamie Exp $
+# $Id: Utility.pm,v 1.29 2002/09/09 17:23:58 pudge Exp $
 
 package Slash::DB::Utility;
 
 use strict;
+use Config '%Config';
 use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -219,9 +220,9 @@ sub sqlConnect {
 			local @_;
 			eval {
 				local $SIG{'ALRM'} = sub { die "Connection timed out" };
-				alarm $timeout;
+				alarm $timeout if $Config{d_alarm};
 				$self->{_dbh} = DBIx::Password->connect_cached($self->{virtual_user});
-				alarm 0;
+				alarm 0        if $Config{d_alarm};
 			};
 
 			if ($@ || !defined $self->{_dbh}) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.156 2003/02/25 17:34:30 pater Exp $
+# $Id: users.pl,v 1.157 2003/02/26 15:26:56 pater Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1093,8 +1093,8 @@ sub showInfo {
 		$constants->{user_submitter_display_default}
 	) unless !$storycount || $requested_user->{nonuid};
 
-	my $subcount = $slashdb->countSubmissionsByNetID($id, $fieldkey) if $requested_user->{nonuid};
-	my $submissions = $slashdb->getSubmissionsByNetID($id, $fieldkey) if $requested_user->{nonuid};
+	my $subcount = $slashdb->countSubmissionsByNetID($netid, $fieldkey) if $requested_user->{nonuid};
+	my $submissions = $slashdb->getSubmissionsByNetID($netid, $fieldkey) if $requested_user->{nonuid};
 
 	if ($requested_user->{nonuid}) {
 		slashDisplay('netIDInfo', {

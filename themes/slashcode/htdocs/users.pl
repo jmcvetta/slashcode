@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.144 2003/01/21 20:01:20 brian Exp $
+# $Id: users.pl,v 1.145 2003/01/24 21:11:52 brian Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1031,6 +1031,10 @@ sub showInfo {
 		}
 		$comment->{points} += $user->{karma_bonus}
 			if $user->{karma_bonus} && $comment->{karma_bonus} eq 'yes';
+
+		# fix points in case they are out of bounds
+		$comment->{points} = $constants->{comment_minscore} if $comment->{points} < $constants->{comment_minscore};
+		$comment->{points} = $constants->{comment_maxscore} if $comment->{points} > $constants->{comment_maxscore};
 
 		my $data = {
 			pid 		=> $comment->{pid},

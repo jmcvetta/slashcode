@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: topic_tree_draw.pl,v 1.1 2004/07/01 18:05:22 jamiemccarthy Exp $
+# $Id: topic_tree_draw.pl,v 1.2 2004/07/14 00:14:20 jamiemccarthy Exp $
 
 use strict;
 
@@ -82,7 +82,7 @@ $task{$me}{code} = sub {
 		);
 		for my $ctid ( @{$topic->{children}} ) {
 			$g->add_edge($tid, $ctid,
-				style => $topic->{child}{$ctid} >= 3 ? "dashed" : "solid",
+				style => $topic->{child}{$ctid} >= 30 ? "dashed" : "solid",
 				color => $hsv[ ($tid+$ctid) % @hsv ],
 			);
 		}

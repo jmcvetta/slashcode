@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.121 2004/01/29 15:49:07 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.122 2004/01/29 16:01:59 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -610,6 +610,13 @@ sub getTop10Comments {
 	my $cids = [];
 	my $comments = [];
 	my $num_top10_comments = 0;
+	my $max_cid = $self->getMaxCid();
+
+	# To make this select a LOT faster, we limit not only by date
+	# but by the primary key.  If any site gets more than 20,000
+	# comments in a day, my hat's off to ya.
+	my $min_cid = ($max_cid || 0) - 20_000;
+	$min_cid = 0 if $min_cid < 1;
 
 	while (1) {
 		# Select the latest comments with high scores.  If we
@@ -618,7 +625,8 @@ sub getTop10Comments {
 		$cids = $self->sqlSelectAll(
 			'cid',
 			'comments',
-			"date >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+			"cid >= $min_cid
+				AND date >= DATE_SUB(NOW(), INTERVAL 1 DAY)
 				AND points >= $max_score",
 			'ORDER BY date DESC');
 

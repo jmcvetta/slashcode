@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.233 2002/10/11 16:14:25 jamie Exp $
+# $Id: MySQL.pm,v 1.234 2002/10/11 17:12:58 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.233 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.234 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3101,7 +3101,7 @@ sub getAccessListInfo {
 		} elsif ($user_check->{subnetid}) {
 			$where = "WHERE subnetid = '$user_check->{subnetid}'";
 		} else {
-			return "";
+			return {};
 		}
 	} else {
 		$user_check = $self->getCurrentUser();

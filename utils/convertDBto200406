@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.13 2004/07/16 23:04:32 jamiemccarthy Exp $
+# $Id: convertDBto200406,v 1.14 2004/07/17 15:29:12 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -28,7 +28,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -280,7 +280,7 @@ for my $section (@old_sections) {
                 print ");\n";
         }
 }
-print "UPDATE skins SET submittable='no' WHERE name='search';\n";
+print "UPDATE skins_new SET submittable='no' WHERE name='search';\n";
 
 #
 # Convert color blocks

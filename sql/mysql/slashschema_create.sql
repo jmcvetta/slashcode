@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.31 2002/03/28 22:39:59 brian Exp $
+# $Id: slashschema_create.sql,v 1.32 2002/04/03 03:13:47 brian Exp $
 #
 
 #
@@ -272,6 +272,20 @@ CREATE TABLE formkeys (
 	KEY ts (ts),
 	KEY last_ts (ts),
 	KEY submit_ts (submit_ts)
+) TYPE = myisam;
+
+#
+# Table structure for table 'hooks'
+#
+
+DROP TABLE IF EXISTS hooks;
+CREATE TABLE hooks (
+	id mediumint(5) UNSIGNED NOT NULL auto_increment,
+	param varchar(50) DEFAULT '' NOT NULL,
+	class varchar(100) DEFAULT '' NOT NULL,
+	subroutine varchar(100) DEFAULT '' NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE hook_param (param,class,subroutine)
 ) TYPE = myisam;
 
 #

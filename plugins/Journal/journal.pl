@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.83 2004/07/02 00:04:23 pudge Exp $
+# $Id: journal.pl,v 1.84 2004/09/23 02:21:15 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -208,9 +208,11 @@ sub displayRSS {
 	$user		= $reader->getUser($form->{uid}, ['nickname', 'fakeemail']) if $form->{uid};
 	my $uid		= $form->{uid} || $user->{uid};
 	my $nickname	= $user->{nickname};
+	my $tree	= $reader->getTopicTree;
 
 	my $articles = $journal->getsByUid($uid, 0, 15);
 	my @items;
+	my $usertext = $nickname;
 	for my $article (@$articles) {
 		push @items, {
 			story		=> {
@@ -218,11 +220,12 @@ sub displayRSS {
 			},
 			title		=> $article->[2],
 			description	=> strip_mode($article->[1], $article->[4]),
-			'link'		=> "$gSkin->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]"
+			'link'		=> "$gSkin->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]",
+			creator		=> $usertext,
+			subject		=> $tree->{$article->[5]}{keyword},
 		};
 	}
 
-	my $usertext = $nickname;
 	$usertext .= " <$user->{fakeemail}>" if $user->{fakeemail};
 	xmlDisplay(rss => {
 		channel => {

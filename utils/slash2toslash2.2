@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash2toslash2.2,v 1.5 2002/04/17 20:27:13 pudge Exp $
+# $Id: slash2toslash2.2,v 1.6 2002/09/09 17:12:56 pudge Exp $
 
 use strict;
 use File::Basename;
@@ -10,7 +10,7 @@ use Getopt::Std;
 use DBIx::Password;
 use Digest::MD5 'md5_hex';
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my(%opts, %forced_plugins, %sacred_tables);
@@ -621,10 +621,7 @@ sub load_vars {
 # Technically, this will work on any table with a non date/int key that
 # we want to update. Something to think about for the future.
 sub update_stories {
-	my (@stories, %hitlist);
-
-	map { s/^(database=)?([^;]+);?(.+)?$/$2/; }
-		my($old_name, $new_name)=($dbh_old->{Name}, $dbh_new->{Name}); 
+	my(@stories, %hitlist);
 
 	# There should be a DESTQUERY "DELETE FROM stories..." to remove stories
 	# within the last two weeks. Then these stories (remember to grab SIDs!)
@@ -1527,4 +1524,4 @@ if they so desire.
 
 =head1 VERSION
 
-$Id: slash2toslash2.2,v 1.5 2002/04/17 20:27:13 pudge Exp $
+$Id: slash2toslash2.2,v 1.6 2002/09/09 17:12:56 pudge Exp $

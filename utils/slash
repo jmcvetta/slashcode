@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: slash,v 1.10 2002/01/08 17:22:10 pudge Exp $
+# $Id: slash,v 1.11 2002/09/09 17:12:56 pudge Exp $
 
 # /etc/init.d/slash
 #
@@ -66,7 +66,7 @@ case "$1" in
 			# if you aren't using GMT for internal dates, please change
 			# the appropriate lines, below.
 			if [ "$OS" = "FreeBSD" ] ; then
-				su - $USERNAME "-c 'TZ=GMT $SLASHD $SERVER_NAME'" &
+				TZ=GMT su $USERNAME -c "$SLASHD $SERVER_NAME" &
 			elif [ "$OS" = "Linux" ] ; then 
 				su - $USERNAME -c "TZ=GMT $SLASHD $SERVER_NAME" &
 			else

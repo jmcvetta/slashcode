@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: subscribe.pl,v 1.29 2003/12/02 17:53:32 vroom Exp $
+# $Id: subscribe.pl,v 1.30 2004/03/02 03:05:53 tvroom Exp $
 
 use strict;
 
@@ -49,10 +49,6 @@ sub main {
 			function	=> \&confirm,
 			seclev		=> 1
 		},
-		msg 	=> {
-			function	=> \&message,
-			seclev		=> 1
-		}
 	};
 
 	if ($user->{is_anon} && $op !~ /^(paypal|makepayment)$/) {

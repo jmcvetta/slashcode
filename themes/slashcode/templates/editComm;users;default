@@ -211,8 +211,8 @@ __template__
 
 		<P><B>Comment Limit</B> (only display this many comments, 
 		for best results, set this to a low number and sort by score)
-		If set above [% constants.breaking %], then it is reset to
-		[% result = constants.breaking / 2; result; %]<BR>
+		If set above [% constants.breaking %], then it is ignored and
+		[% result = constants.breaking / 2; result; %] is used instead.<BR>
 		<INPUT TYPE="TEXT" NAME="commentlimit" SIZE="6" VALUE="[% user_edit.commentlimit %]">
 
 		<P><B>Comment Byte Limit</B> (number of bytes of comments
@@ -290,4 +290,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.34 2003/07/29 10:21:13 pater Exp $
+$Id: editComm;users;default,v 1.35 2003/08/05 15:08:45 pater Exp $

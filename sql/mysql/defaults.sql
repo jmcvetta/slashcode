@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.190 2004/08/06 04:19:26 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.191 2004/08/10 16:30:54 tvroom Exp $
 #
 
 #
@@ -879,6 +879,7 @@ INSERT INTO vars (name, value, description) VALUES ('panic','0','0:Normal, 1:No 
 INSERT INTO vars (name, value, description) VALUES ('poll_cache','0','On home page, cache and display default poll for users (if false, is extra hits to database)');
 INSERT INTO vars (name, value, description) VALUES ('poll_discussions','1','Allow discussions on polls');
 INSERT INTO vars (name, value, description) VALUES ('poll_fwdfor','1','Loose proxy management for voting?');
+INSERT INTO vars (name, value, description) VALUES ('qps_sample_time','15','How many seconds to sample qps and accesslog to log qps and qpp based on');
 INSERT INTO vars (name, value, description) VALUES ('prepuser_backup_prob','0','Probability that Environment.pm prepareUser will look to backup_db_user instead of the main db: 0=never, 1=always');
 INSERT INTO vars (name, value, description) VALUES ('rdfencoding','ISO-8859-1','Site encoding');
 INSERT INTO vars (name, value, description) VALUES ('rdfimg','http://www.example.com/images/topics/topicslash.gif','site icon to be used by RSS subscribers');

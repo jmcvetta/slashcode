@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.98 2004/05/10 16:55:36 pudge Exp $
+# $Id: index.pl,v 1.99 2004/05/13 06:53:26 pudge Exp $
 
 use strict;
 use Slash;
@@ -111,6 +111,7 @@ my $start_time = Time::HiRes::time;
 
 	# See comment in plugins/Journal/journal.pl for its call of
 	# getSectionColors() as well.
+	$user->{currentSection} = $section->{section};
 	Slash::Utility::Anchor::getSectionColors();
 
 	# displayStories() pops stories off the front of the @$stories array.

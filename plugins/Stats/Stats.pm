@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.157 2005/01/09 02:44:09 tvroom Exp $
+# $Id: Stats.pm,v 1.158 2005/01/09 03:52:27 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -920,7 +920,7 @@ sub countCommentsDaily {
 
 
 sub getSummaryStats {
-	my ($self, $options);
+	my ($self, $options) = @_;
 	my @where;
 	
 	my $no_op = $options->{no_op} || [ ];
@@ -930,11 +930,11 @@ sub getSummaryStats {
 		push @where,  "op NOT IN ($op_not_in)";
 	}
 
-	push @where, "op = ".$self->sqlSqlQuote($options->{op}) if $options->{op};
-	push @where, "skid = ".$self->sqlSqlQuote($options->{skid}) if $options->{skid};
+	push @where, "op = ".$self->sqlQuote($options->{op}) if $options->{op};
+	push @where, "skid = ".$self->sqlQuote($options->{skid}) if $options->{skid};
 
 	my $where = join ' AND ', @where;
-	$self->sqlSelectHashrf("COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) as uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where);
+	$self->sqlSelectHashref("COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) as uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp", $where);
 }
 
 
@@ -1853,4 +1853,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.157 2005/01/09 02:44:09 tvroom Exp $
+$Id: Stats.pm,v 1.158 2005/01/09 03:52:27 tvroom Exp $

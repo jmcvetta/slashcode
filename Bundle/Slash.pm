@@ -1,10 +1,10 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.37 2004/11/03 20:08:00 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.38 2005/03/11 17:19:24 pudge Exp $
 #
 
-$Bundle::Slash::VERSION = '2.35';
+$Bundle::Slash::VERSION = '2.50';
 
 1;
 
@@ -108,6 +108,8 @@ Template		- Template Toolkit
 LWP::Parallel
 
 Lingua::Stem
+
+URI::Find
 
 
 =head1 DESCRIPTION

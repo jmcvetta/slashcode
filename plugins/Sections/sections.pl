@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: sections.pl,v 1.32 2003/03/15 02:13:12 brian Exp $
+# $Id: sections.pl,v 1.33 2003/03/22 23:10:24 brian Exp $
 
 use strict;
 use Slash;
@@ -206,12 +206,13 @@ sub editSection {
 		print getData('subsection_removed');
 	}
 
-	my $qid = $this_section->{qid} ? 
-		createSelect('qid', 
-			$slashdb->getPollQuestions(),
-			$this_section->{qid},
-			1
-		) : '';
+	my $qid;
+#	my $qid = $this_section->{qid} ? 
+#		createSelect('qid', 
+#			$slashdb->getPollQuestions(),
+#			$this_section->{qid},
+#			1
+#		) : '';
 	my $issue = createSelect('issue', 
 		$slashdb->getDescriptions('issuemodes'),
 		$this_section->{issue}, 

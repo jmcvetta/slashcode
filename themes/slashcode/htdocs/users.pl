@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.185 2003/05/30 19:14:00 pudge Exp $
+# $Id: users.pl,v 1.186 2003/06/30 19:28:51 jamie Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -554,8 +554,8 @@ sub newUser {
 	my $suadmin_flag = $user->{seclev} >= 10000 ? 1 : 0;
 
 	# Check if User Exists
-	$form->{newusernick} = fixNickname($form->{newusernick});
-	(my $matchname = lc $form->{newusernick}) =~ s/[^a-zA-Z0-9]//g;
+	$form->{newusernick} = nickFix($form->{newusernick});
+	my $matchname = nick2matchname($form->{newusernick});
 
 	if (!$form->{email} || $form->{email} !~ /\@/) {
 		print getError('email_invalid', 0, 1);
@@ -2762,13 +2762,6 @@ sub getOtherUserParams {
 }
 
 #################################################################
-sub fixNickname {
-	local($_) = @_;
-	s/\s+/ /g;
-	s/[^ a-zA-Z0-9\$_.+!*'(),-]+//g;
-	$_ = substr($_, 0, 20);
-	return $_;
-}
 
 createEnvironment();
 main();

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.416 2003/06/26 19:19:31 pudge Exp $
+# $Id: MySQL.pm,v 1.417 2003/06/30 19:28:51 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.416 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.417 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5441,6 +5441,8 @@ sub getSlashConf {
 	$conf{m2_consensus}       = 2*int(($conf{m2_consensus} || 5)/2) + 1
 		if !$conf{m2_consensus}
 		   || ($conf{m2_consensus}-1)/2 != int(($conf{m2_consensus}-1)/2);
+	$conf{nick_chars}	||= q{ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$_.+!*'(),-};
+	$conf{nick_maxlen}	||= 20;
 	# For all fields that it is safe to default to -1 if their
 	# values are not present...
 	for (qw[min_expiry_days max_expiry_days min_expiry_comm max_expiry_comm]) {

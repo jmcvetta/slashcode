@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.87 2003/05/16 21:58:39 jamie Exp $
+# $Id: Data.pm,v 1.88 2003/06/30 19:28:51 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -67,6 +67,8 @@ use vars qw($VERSION @EXPORT);
 	getArmoredEmail
 	grepn
 	html2text
+	nickFix
+	nick2matchname
 	root2abs
 	set_rootdir
 	sitename2filename
@@ -98,6 +100,26 @@ use vars qw($VERSION @EXPORT);
 # 	processCustomTags
 # 	stripByMode
 # );
+
+#========================================================================
+
+sub nickFix {
+	my($nick) = @_;
+	my $constants = getCurrentStatic();
+	$nick =~ s/\s+/ /g;
+	$nick =~ s/[^$constants->{nick_chars}]+//g;
+	$nick = substr($nick, 0, $constants->{nick_maxlen});
+	return $nick;
+}
+
+#========================================================================
+
+sub nick2matchname {
+	my($nick) = @_;
+	$nick = lc $nick;
+	$nick =~ s/[^a-zA-Z0-9]//g;
+	return $nick;
+}
 
 #========================================================================
 
@@ -2872,4 +2894,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.87 2003/05/16 21:58:39 jamie Exp $
+$Id: Data.pm,v 1.88 2003/06/30 19:28:51 jamie Exp $

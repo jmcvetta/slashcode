@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.26 2001/12/19 04:37:40 brian Exp $
+# $Id: Slash.pm,v 1.27 2001/12/21 16:20:19 brian Exp $
 
 package Slash;
 
@@ -1046,6 +1046,17 @@ sub _hard_dispComment {
 	}
 
 	my $ipidinfo_to_display = '';
+	my $people_display;
+	unless ($user->{is_anon} || isAnon($comment->{uid}) || $comment->{uid} == $user->{uid}) {
+		if ($user->{people}{$comment->{uid}} == FRIEND) {
+			$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=delecheck&amp&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/friend.gif" ALT="Friend"></A>|;
+		} elsif ($user->{people}{$comment->{uid}} == FOE) {
+			$people_display .= qq|<A HREF="$constants->{rootdir}/zoo.pl?op=deletecheck&amp;amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/foe.gif" ALT="Foe"></A> |;
+		} else {
+			$people_display = qq|<A HREF="$constants->{rootdir}/zoo.pl?op=addcheck&amp;type=friend&amp;uid=$comment->{uid}"><IMG BORDER=0 SRC="$constants->{imagedir}/neutral.gif" ALT="Alter Relationship"></A>|;
+		}
+	}
+	
 	if ($user->{seclev} >= 100 and $comment->{ipid} and $comment->{subnetid}) {
 		my $vislength = $constants->{id_md5_vislength};
 		my $short_ipid = $comment->{ipid};
@@ -1065,8 +1076,8 @@ EOT
 				<FONT SIZE="3" COLOR="$user->{fg}[2]">
 				$title $score_to_display
 				</FONT>
-				<BR>by $user_to_display on $time_to_display ($comment_link_to_display)
-				$userinfo_to_display $ipidinfo_to_display
+				<BR>by $user_to_display on $time_to_display ($comment_link_to_display) $people_display
+				$userinfo_to_display $ipidinfo_to_display 
 			</TD></TR>
 			<TR><TD>
 				$comment_to_display

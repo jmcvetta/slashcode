@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.48 2002/07/12 03:58:37 jamie Exp $
+# $Id: Data.pm,v 1.49 2002/07/15 03:16:11 jamie Exp $
 
 package Slash::Utility::Data;
 
@@ -41,7 +41,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	slashizeLinks
@@ -912,7 +912,9 @@ sub breakHtml {
 			|	\S		# or an ordinary char
 			)
 		){$mwl}			# $mwl non-HTML-tag chars in a row
-	)}{$1<nobr> <wbr></nobr>}gsx;
+	)}{
+		substr($1, 0, -1) . "<nobr>" . substr($1, -1) . "<wbr></nobr> "
+	}gsex;
 
 	# Just to be tidy, if we appended that word break at the very end
 	# of the text, eliminate it.
@@ -2543,4 +2545,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.48 2002/07/12 03:58:37 jamie Exp $
+$Id: Data.pm,v 1.49 2002/07/15 03:16:11 jamie Exp $

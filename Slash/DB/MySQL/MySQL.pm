@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.407 2003/05/27 17:53:04 pudge Exp $
+# $Id: MySQL.pm,v 1.408 2003/05/28 21:32:06 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.407 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.408 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4822,7 +4822,7 @@ sub getStoriesEssentials {
 	my($column_time, $where_time) = $self->_stories_time_clauses({
 		try_future => 1, must_be_subscriber => 0
 	});
-	my $columns = "sid, section, title, time, commentcount, hitparade, tid, $column_time";
+	my $columns = "sid, section, title, time, commentcount, hitparade, tid, body_length, word_count, $column_time";
 
 	my $where = "$where_time ";
 

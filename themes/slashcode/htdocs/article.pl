@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.13 2001/12/19 23:08:39 brian Exp $
+# $Id: article.pl,v 1.14 2001/12/21 19:17:49 brian Exp $
 
 use strict;
 use Slash;
@@ -30,6 +30,17 @@ sub main {
 		my $title = $SECT->{isolate} ?
 			"$SECT->{title} | $story->{title}" :
 			"$constants->{sitename} | $story->{title}";
+		my $authortext;
+		if ($user->{is_admin} ) {
+			my $future = $slashdb->getStoryByTimeAdmin('>', $story, "3");
+			$future = [ reverse(@$future) ];
+			my $past = $slashdb->getStoryByTimeAdmin('<', $story, "3");
+
+			$authortext = slashDisplay('futurestorybox', {
+							past => $past,
+							future => $future,
+						}, { Return => 1 });
+		}
 
 		# set things up to use the <LINK> tag in the header
 		my $next = $slashdb->getStoryByTime('>', $story, $SECT);
@@ -53,6 +64,7 @@ sub main {
 			section_block		=> $slashdb->getBlock($SECT->{section}),
 			show_poll		=> $pollbooth ? 1 : 0,
 			story			=> $story,
+			authortext		=> $authortext,
 			'next'			=> $next,
 			prev			=> $prev,
 		});

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.44 2002/06/21 15:27:34 jamie Exp $
+# $Id: MySQL.pm,v 1.45 2002/07/03 23:57:04 brian Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1186,6 +1186,13 @@ sub setSlashdStatus {
 		$options,
 		"task=" . $self->sqlQuote($taskname)
 	);
+}
+########################################################
+sub countPollQuestion {
+	my($self, $qid) = @_;
+	my $answer = $slashdb->sqlSelect("SUM(votes)", "pollanswers","qid = $qid","GROUP BY qid");
+	
+	return $answer;
 }
 
 ########################################################

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.57 2002/07/01 22:14:56 brian Exp $
+# $Id: slashschema_create.sql,v 1.58 2002/07/03 23:57:04 brian Exp $
 #
 
 #
@@ -488,11 +488,11 @@ CREATE TABLE sections (
 DROP TABLE IF EXISTS sections_contained;
 CREATE TABLE sections_contained (
 	id SMALLINT UNSIGNED NOT NULL auto_increment,
-	container SMALLINT UNSIGNED,
-	section SMALLINT UNSIGNED,
+	container varchar(30) NOT NULL,
+	section varchar(30) NOT NULL,
 	UNIQUE (container,section),
-	FOREIGN KEY (container) REFERENCES sections(id),
-	FOREIGN KEY (section) REFERENCES sections(id),
+	FOREIGN KEY (container) REFERENCES sections(section),
+	FOREIGN KEY (section) REFERENCES sections(section),
 	PRIMARY KEY (id)
 ) TYPE = myisam;
 

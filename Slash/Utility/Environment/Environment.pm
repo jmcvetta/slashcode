@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.151 2004/11/09 17:59:13 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.152 2004/11/16 20:12:27 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -32,7 +32,7 @@ use Time::HiRes;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2083,6 +2083,7 @@ sub getObject {
 			$vuser = $data->{virtual_user};
 
 		} else {
+			# this really isn't used and is not well-tested anymore -- pudge
 			my $classes = getCurrentStatic('classes');
 
 			# try passed db first, then db for given class
@@ -2657,4 +2658,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.151 2004/11/09 17:59:13 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.152 2004/11/16 20:12:27 pudge Exp $

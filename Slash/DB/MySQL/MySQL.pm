@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.580 2004/05/25 17:59:51 tvroom Exp $
+# $Id: MySQL.pm,v 1.581 2004/05/28 15:22:47 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.580 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.581 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4031,16 +4031,18 @@ sub checkForOpenProxy {
 # called in scalar context, or a list of (number of comments, sum of
 # the mods done to them) in list context.
 sub getNumCommPostedAnonByIPID {
-	my($self, $ipid, $hours) = @_;
+	my($self, $ipid, $hours, $start_cid) = @_;
 	$ipid = $self->sqlQuote($ipid);
 	$hours ||= 24;
+	$start_cid ||= 0;
 	my $ac_uid = $self->sqlQuote(getCurrentStatic("anonymous_coward_uid"));
 	my $ar = $self->sqlSelectArrayRef(
 		"COUNT(*) AS count, SUM(pointsorig-points) AS sum",
 		"comments",
 		"ipid=$ipid
 		 AND uid=$ac_uid
-		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
+		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)
+		 AND cid >= $start_cid"
 	);
 	my($num_comm, $sum_mods) = @$ar;
 	$sum_mods ||= 0;
@@ -4056,14 +4058,16 @@ sub getNumCommPostedAnonByIPID {
 # called in scalar context, or a list of (number of comments, sum of
 # the mods done to them) in list context.
 sub getNumCommPostedByUID {
-	my($self, $uid, $hours) = @_;
+	my($self, $uid, $hours, $start_cid) = @_;
 	$uid = $self->sqlQuote($uid);
 	$hours ||= 24;
+	$start_cid ||= 0;
 	my $ar = $self->sqlSelectArrayRef(
 		"COUNT(*) AS count, SUM(points-pointsorig) AS sum",
 		"comments",
 		"uid=$uid
-		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)"
+		 AND date >= DATE_SUB(NOW(), INTERVAL $hours HOUR)
+		 AND cid >= $start_cid"
 	);
 	my($num_comm, $sum_mods) = @$ar
 		if ref($ar) eq 'ARRAY';

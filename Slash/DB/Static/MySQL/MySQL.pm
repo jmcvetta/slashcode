@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.105 2003/07/15 22:25:13 pudge Exp $
+# $Id: MySQL.pm,v 1.106 2003/07/18 04:08:33 jamie Exp $
 
 package Slash::DB::Static::MySQL;
 #####################################################################
@@ -17,7 +17,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -278,22 +278,24 @@ sub _deleteThread {
 # For dailystuff
 # This just updates the counts for the day before
 # -Brian
-sub updateStoriesCounts {
-	my($self) = @_;
-	my $constants = getCurrentStatic();
-	my $counts = $self->sqlSelectAll(
-		'dat,count(*)',
-		'accesslog',
-		"op='article' AND dat !='' AND to_days(now()) - to_days(ts) = 1",
-		'GROUP BY(dat)'
-	);
-
-	for my $count (@$counts) {
-		$self->sqlUpdate('stories', { -hits => "hits+$count->[1]" },
-			'sid=' . $self->sqlQuote($count->[0])
-		);
-	}
-}
+# This is now done more efficiently throughout the day,
+# by the counthits.pl task - Jamie
+#sub updateStoriesCounts {
+#	my($self) = @_;
+#	my $constants = getCurrentStatic();
+#	my $counts = $self->sqlSelectAll(
+#		'dat,count(*)',
+#		'accesslog',
+#		"op='article' AND dat !='' AND to_days(now()) - to_days(ts) = 1",
+#		'GROUP BY(dat)'
+#	);
+#
+#	for my $count (@$counts) {
+#		$self->sqlUpdate('stories', { -hits => "hits+$count->[1]" },
+#			'sid=' . $self->sqlQuote($count->[0])
+#		);
+#	}
+#}
 
 ########################################################
 # For dailystuff
@@ -411,7 +413,7 @@ sub deleteDaily {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 
-	$self->updateStoriesCounts();
+#	$self->updateStoriesCounts();
 	my $archive_delay_mod =
 		   $constants->{archive_delay_mod}
 		|| $constants->{archive_delay}

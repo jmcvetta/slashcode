@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: updateRenderedStory,v 1.1 2003/05/22 19:11:52 brian Exp $
+# $Id: updateRenderedStory,v 1.2 2003/06/03 20:27:17 brian Exp $
 
 use strict;
 use File::Basename;
@@ -13,7 +13,7 @@ use Benchmark;
 
 use vars qw( $slashdb $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -32,6 +32,7 @@ main();
 
 sub main {
 	my $sids = $slashdb->sqlSelectColArrayref('sid', 'stories');
+	Slash::Utility::Anchor::getSectionColors();
 
 	print "Updating " .  scalar(@$sids) ." \n";
 	for my $sid (@$sids) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.73 2003/07/29 14:45:54 vroom Exp $
+# $Id: search.pl,v 1.74 2003/07/30 06:28:41 jamie Exp $
 
 use strict;
 use Slash;
@@ -51,7 +51,7 @@ sub main {
 	# shouldn't be in one.				--Pater
 	$form->{section}	||= $user->{currentSection} || '';
 
-        # switch search mode to poll if in polls section and other
+	# switch search mode to poll if in polls section and other
 	# search type isn't specified
 	if ($user->{currentSection} eq 'polls' and !$form->{op}) {
 		$form->{op} = 'polls';

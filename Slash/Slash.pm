@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.99 2003/01/24 05:20:30 jamie Exp $
+# $Id: Slash.pm,v 1.100 2003/01/27 22:07:47 jamie Exp $
 
 package Slash;
 
@@ -703,7 +703,7 @@ sub _getTopModReasons{
 	my @reasonsTop = ( );
 
 	# Algorithm by MJD in Perl Quiz of the Week #7
-	# http://perl.plover.com/qotw/r/007
+	# http://perl.plover.com/qotw/r/solution/007
 	my @p = map { $_*10/$reasonTotal } @reasonHist;
 	my @r = map { int($_+0.5) } @p;
 	my @e = map { $p[$_] - $r[$_] } (0..$#r);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.16 2002/11/14 18:31:45 pudge Exp $
+# $Id: Messages.pm,v 1.17 2002/12/05 16:10:55 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -210,6 +210,10 @@ The message ID.
 
 sub create_web {
 	my($self, $msg) = @_;
+
+	# shrug, dunno why this might happen, but sometimes it do ...
+	# not much we can do but bail.
+	return unless $msg->{message} && $msg->{subject};
 
 	my($msg_id) = $self->_create_web(
 		$msg->{user}{uid},
@@ -923,4 +927,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.16 2002/11/14 18:31:45 pudge Exp $
+$Id: Messages.pm,v 1.17 2002/12/05 16:10:55 pudge Exp $

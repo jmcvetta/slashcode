@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.157 2002/05/30 17:26:02 jamie Exp $
+# $Id: MySQL.pm,v 1.158 2002/05/30 18:37:20 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4815,6 +4815,10 @@ sub getSimilarStories {
 #print STDERR "uncommon intersection: '@text_uncommon_words'\n";
 	# If there is no intersection, return now.
 	return [ ] unless @text_uncommon_words;
+	# If that list is too long, don't use all of them.
+	my $maxwords = $constants->{similarstorymaxwords} || 30;
+	$#text_uncommon_words = $maxwords-1
+		if $#text_uncommon_words > $maxwords-1;
 	# Find previous stories which have used these words.
 	my $where = "";
 	my @where_clauses = ( );

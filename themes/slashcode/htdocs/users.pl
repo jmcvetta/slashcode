@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.192 2003/08/05 17:51:48 pater Exp $
+# $Id: users.pl,v 1.193 2003/08/19 16:04:48 vroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -566,6 +566,9 @@ sub newUser {
 	if (!$form->{email} || $form->{email} !~ /\@/) {
 		print getError('email_invalid', 0, 1);
 		return;
+	} elsif($form->{email} ne $form->{email2}){
+		print getError('email_do_not_match', 0, 1);
+		return;	
 	} elsif ($slashdb->existsEmail($form->{email})) {
 		print getError('emailexists_err', 0, 1);
 		return;

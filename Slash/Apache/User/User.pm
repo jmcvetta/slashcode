@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.29 2002/04/22 14:01:50 pudge Exp $
+# $Id: User.pm,v 1.30 2002/05/06 20:36:06 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -21,7 +21,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -385,7 +385,7 @@ sub userdir_handler {
 	# returning it, we have to re-encode it with fixparam().  that
 	# will change if somehow Apache/mod_perl no longer decodes before
 	# returning the data. -- pudge
-	if ($saveuri =~ m[^/~(.+)]) {
+	if ($saveuri =~ m[^/(?:%7[eE]|~)(.+)]) {
 		# this won't work if the nick has a "/" in it ...
 		my($nick, $op, $extra) = split /\//, $1, 4;
 		for ($nick, $op, $extra) {

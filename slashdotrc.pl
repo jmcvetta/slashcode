@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: slashdotrc.pl,v 1.6 2000/06/01 18:06:00 pudge Exp $
+#  $Id: slashdotrc.pl,v 1.7 2000/06/09 17:07:40 pudge Exp $
 ###############################################################################
 require URI;
 
@@ -121,6 +121,8 @@ my %my_conf = (
 		],
 
 	],
+
+	submit_categories => ['Back'],
 );
 
 # these keys dependent on values set above

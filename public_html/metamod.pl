@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: metamod.pl,v 1.2 2000/05/16 20:43:33 pudge Exp $
+#  $Id: metamod.pl,v 1.3 2000/06/09 17:07:40 pudge Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -79,7 +79,7 @@ sub metaModerate {
 
 	my %m2victims;
 	foreach (keys %{$I{F}}) {
-		if ($y < 10 && /mm(.*)/) { 
+		if ($y < 10 && /^mm(\d+)$/) { 
 			my $id = $1;
 			$y++;
 			my($muid) = sqlSelect("uid","moderatorlog",

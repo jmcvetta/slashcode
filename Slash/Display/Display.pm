@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.12 2002/04/12 15:29:23 pudge Exp $
+# $Id: Display.pm,v 1.13 2002/04/29 15:34:55 pudge Exp $
 
 package Slash::Display;
 
@@ -48,9 +48,9 @@ use Slash::Utility::System;
 use Template 2.06;
 
 use base 'Exporter';
-use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT);
+use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -295,23 +295,24 @@ my $strip_mode = sub {
 # However, it's better if you have a specific style 
 # for a template and you don't want your tags running
 # up against each other.		- Cliff 8/1/01
-my $filters = Template::Filters->new({
-	FILTERS => {
-		fixparam	=> \&fixparam,
-		fixurl		=> \&fixurl,
-		fudgeurl	=> \&fudgeurl,
-		strip_anchor	=> \&strip_anchor,
-		strip_attribute	=> \&strip_attribute,
-		strip_code	=> \&strip_code,
-		strip_extrans	=> \&strip_extrans,
-		strip_html	=> \&strip_html,
-		strip_literal	=> \&strip_literal,
-		strip_nohtml	=> \&strip_nohtml,
-		strip_notags	=> \&strip_notags,
-		strip_plaintext	=> \&strip_plaintext,
-		strip_mode	=> [ $strip_mode, 1 ]
-	}
-});
+%FILTERS = (
+	fixparam	=> \&fixparam,
+	fixurl		=> \&fixurl,
+	fudgeurl	=> \&fudgeurl,
+	strip_anchor	=> \&strip_anchor,
+	strip_attribute	=> \&strip_attribute,
+	strip_code	=> \&strip_code,
+	strip_extrans	=> \&strip_extrans,
+	strip_html	=> \&strip_html,
+	strip_literal	=> \&strip_literal,
+	strip_nohtml	=> \&strip_nohtml,
+	strip_notags	=> \&strip_notags,
+	strip_plaintext	=> \&strip_plaintext,
+	strip_mode	=> [ $strip_mode, 1 ],
+	%FILTERS
+);
+
+my $filters = Template::Filters->new({ FILTERS => \%FILTERS });
 
 sub get_template {
 	my($cfg1, $cfg2, $VirtualUser) = @_;

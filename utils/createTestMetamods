@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMetamods,v 1.8 2002/09/07 21:59:30 jamie Exp $
+# $Id: createTestMetamods,v 1.9 2002/09/17 19:55:29 jamie Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Data::Dumper;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -55,6 +55,7 @@ my $reasons = $slashdb->getReasons();
 	my $startcount = getM2ClosedCount(); 
 	my($curcount, $m2count) = (0, 0);
 	my(@cids);
+	my $users_without_m2 = 0;
 	LOOP: { do {{
 		my $m2uid = getRandomUID();
 		my($m2user, $comments);
@@ -66,12 +67,15 @@ my $reasons = $slashdb->getReasons();
 
 			if (!$comments || !@$comments) {
 				# No more M2 for this user.
+				last LOOP if ++$users_without_m2 > 10;
 				getRandomUID('exclude', $m2user->{uid});
-				next;
+				next LOOP;
 			}
 		}
 		last LOOP if !$m2uid;
-		
+
+		$users_without_m2 = 0;
+
 		@cids = @{$comments};
 		{
 			local $" = ', ';

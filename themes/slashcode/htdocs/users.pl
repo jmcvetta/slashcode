@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-#  $Id: users.pl,v 1.18 2000/07/31 17:30:14 pudge Exp $
+#  $Id: users.pl,v 1.19 2000/08/01 14:38:31 capttofu Exp $
 ###############################################################################
 use strict;
 use lib '../';
@@ -332,7 +332,7 @@ customize $I{sitename}, change your password, or just click pretty widgets to ki
 EOT
 
 			# Users should be able to see their own points.
-			if ($I{U}{uid} == $uid) {
+			if ($I{U}{uid} == $uid && $points > 0) {
 				print <<EOT;
 <P>You're a moderator with $points points. Please read the
 <A HREF="$I{rootdir}/moderation.shtml">Moderator Guidelines</A> before you do any moderation.

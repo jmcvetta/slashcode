@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.157 2003/06/03 19:33:29 brian Exp $
+# $Id: admin.pl,v 1.158 2003/06/06 12:38:22 jamie Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1195,13 +1195,6 @@ sub editStory {
 			$storyref->{'time'} = $form->{'time'};
 		}
 
-		# (I presume this wrapped around some other code which
-		# has since been deleted, so we can delete this now,
-		# right?) - Jamie 2003/05/13
-		my $tmp = $user->{currentSection};
-		$user->{currentSection} = $storyref->{section};
-		$user->{currentSection} = $tmp;
-
 		if (ref($form->{_multi}{stid}) eq 'ARRAY') {
 			@stid = grep { $_ } @{$form->{_multi}{stid}};
 		} elsif ($form->{stid}) {
@@ -1680,8 +1673,14 @@ sub updateStory {
 	my $rendered;
 	{
 		local $user->{currentSection} = "index";
-		local $user->{no_icons} = "";
+		local $user->{noicons} = "";
 		local $user->{light} = "";
+
+		# ugly hack, but for now, needed: without it, when an
+		# editor edits in foo.sitename.com, saved stories get
+		# rendered with that section
+		Slash::Utility::Anchor::getSectionColors();
+
 		$rendered =  displayStory($form->{sid}, '', { get_cacheable => 1 });
 	}
 	my $data = {

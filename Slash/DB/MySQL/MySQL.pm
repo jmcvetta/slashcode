@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.739 2004/11/25 04:46:46 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.740 2004/11/30 21:15:01 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.739 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.740 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10205,8 +10205,9 @@ sub getTemplateByName {
 				push @caller_info, "$c[0] line $c[2]";
 				last if scalar(@caller_info) >= 3;
 			}
-			errorLog("Failed template lookup on '$name;$page\[misc\];$skin\[default\]'"
-				. ", callers: " . join(", ", @caller_info));
+			errorLog("Failed template lookup on '$name;$page\[misc\];$skin\[default\]'" .
+				", keys: " . scalar(keys %{$self->{$table_cache_id}}) .
+				", callers: " . join(", ", @caller_info));
 		}
 		return ;
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.15 2002/10/21 15:28:13 pudge Exp $
+# $Id: Messages.pm,v 1.16 2002/11/14 18:31:45 pudge Exp $
 
 package Slash::Messages;
 
@@ -42,7 +42,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -404,6 +404,10 @@ sub send {
 	} elsif ($mode == MSG_MODE_EMAIL) {
 		my($addr, $content, $subject, $contemp, $subtemp);
 
+		# print errors to slashd.log under slashd only if high level
+		# of verbosity -- pudge
+		my $log_error = defined &main::verbosity ? main::verbosity() >= 3 : 1;
+
 		unless ($constants->{send_mail}) {
 			messagedLog(getData("send_mail false", 0, "messages"));
 			return 0;
@@ -415,7 +419,7 @@ sub send {
 				addr	=> $addr,
 				uid	=> $msg->{user}{uid},
 				error	=> "Invalid address"
-			}, "messages"));
+			}, "messages")) if $log_error;
 			return 0;
 		}
 
@@ -434,7 +438,7 @@ sub send {
 				addr	=> $addr,
 				uid	=> $msg->{user}{uid},
 				error	=> $Mail::Sendmail::error
-			}, "messages"));
+			}, "messages")) if $log_error;
 			return 0;
 		}
 
@@ -919,4 +923,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.15 2002/10/21 15:28:13 pudge Exp $
+$Id: Messages.pm,v 1.16 2002/11/14 18:31:45 pudge Exp $

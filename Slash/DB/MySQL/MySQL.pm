@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.423 2003/07/15 22:23:40 pudge Exp $
+# $Id: MySQL.pm,v 1.424 2003/07/15 22:49:32 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.423 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.424 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5600,7 +5600,7 @@ sub getSlashConf {
 				$server = [ $1, $2 ];
 			}
 		}
-		use MemCachedClient;
+		require MemCachedClient;
 		$self->{_mcd} = MemCachedClient->new({
 			servers =>	[ @servers ],
 			debug =>	$conf{memcached_debug} > 1 ? 1 : 0,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.36 2003/01/15 17:49:39 jamie Exp $
+# $Id: zoo.pl,v 1.37 2003/01/20 19:07:18 brian Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo   = getObject('Slash::Zoo');
@@ -158,7 +158,6 @@ sub friends {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $friends = $zoo->getFriends($uid); 
 	my $friends = $zoo->getRelationships($uid, FRIEND);
 		
 	if ($form->{content_type} eq 'rss') {
@@ -227,7 +226,6 @@ sub fof {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $friends = $zoo->getFof($uid); 
 	my $friends = $zoo->getRelationships($uid, FOF);
 		
 	if ($form->{content_type} eq 'rss') {
@@ -296,7 +294,6 @@ sub enof {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $friends = $zoo->getEof($uid); 
 	my $friends = $zoo->getRelationships($uid, EOF);
 		
 	if ($form->{content_type} eq 'rss') {
@@ -360,7 +357,6 @@ sub foes {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $foes = $zoo->getFoes($uid); 
 	my $foes = $zoo->getRelationships($uid, FOE);
 
 	if ($form->{content_type} eq 'rss') {
@@ -486,7 +482,6 @@ sub freaks {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $freaks = $zoo->getFreaks($uid);
 	my $freaks = $zoo->getRelationships($uid, FREAK);
 
 	if ($form->{content_type} eq 'rss') {
@@ -550,7 +545,6 @@ sub all {
 	}
 
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
-	#my $people = $zoo->getAll($uid);
 	my $people = $zoo->getRelationships($uid);
 
 	if ($form->{content_type} eq 'rss') {

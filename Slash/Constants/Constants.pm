@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.13 2002/05/10 00:47:15 brian Exp $
+# $Id: Constants.pm,v 1.14 2002/05/24 19:32:07 pudge Exp $
 
 package Slash::Constants;
 
@@ -29,7 +29,7 @@ use strict;
 use base 'Exporter';
 use vars qw(@ISA $VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS %CONSTANTS);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 constants();
 @EXPORT		= qw();
@@ -169,6 +169,18 @@ These constants are used to define different constants in the people system.
 
 # 1 2 3 4 5 6
 
+=head2 slashd
+
+These constants are used to define different constants in the people system.
+
+	SLASHD_LOG_NEXT_TASK
+	SLASHD_WAIT
+	SLASHD_NOWAIT
+
+=cut
+
+# -1 0 1
+
 __END__
 
 =head1 TODO
@@ -183,4 +195,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.13 2002/05/10 00:47:15 brian Exp $
+$Id: Constants.pm,v 1.14 2002/05/24 19:32:07 pudge Exp $

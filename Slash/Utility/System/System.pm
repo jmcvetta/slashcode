@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.8 2002/04/17 15:15:54 pudge Exp $
+# $Id: System.pm,v 1.9 2002/05/24 19:32:07 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -26,6 +26,7 @@ LONG DESCRIPTION.
 
 use strict;
 use Email::Valid;
+use Fcntl qw(:flock :seek);
 use File::Basename;
 use File::Path;
 use File::Spec::Functions;
@@ -39,7 +40,7 @@ use Symbol 'gensym';
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -281,6 +282,8 @@ sub doLog {
 	my $log_msg = scalar(localtime) . " $sname@msg\n";
 
 	open $fh, ">> $file\0" or die "Can't append to $file: $!\nmsg: @msg\n";
+	flock($fh, LOCK_EX);
+	seek($fh, 0, SEEK_END);
 	print $fh $log_msg;
 	print     $log_msg if $stdout;
 	close $fh;
@@ -391,4 +394,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.8 2002/04/17 15:15:54 pudge Exp $
+$Id: System.pm,v 1.9 2002/05/24 19:32:07 pudge Exp $

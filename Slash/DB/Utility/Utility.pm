@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.22 2002/04/17 03:17:55 jamie Exp $
+# $Id: Utility.pm,v 1.23 2002/05/24 19:32:07 pudge Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -207,7 +207,13 @@ sub sqlConnect {
 # the database connection.
 # Ok, first lets see if we already have a connection
 	my($self, $restart) = @_;
-	$self->{_dbh}->disconnect if $restart;
+	if ($restart == 2) {
+		# don't disconnect, undef and get new connection -- pudge
+		$self->{_dbh}{InactiveDestroy} = 0;
+		undef $self->{_dbh};
+	} elsif ($restart) {
+		$self->{_dbh}->disconnect if $restart;
+	}
 
 	if (!(defined $self->{_dbh}) || !$self->{_dbh}->ping) {
 	#if (!(defined $self->{_dbh}) || !$self->{_dbh}->can("ping") || !$self->{_dbh}->ping) {

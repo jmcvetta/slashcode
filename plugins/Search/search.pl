@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.80 2004/06/23 19:17:13 jamiemccarthy Exp $
+# $Id: search.pl,v 1.81 2004/07/19 16:11:07 pudge Exp $
 
 use strict;
 use Slash;
@@ -166,8 +166,8 @@ sub commentSearch {
 	);
 
 	slashDisplay('searchform', {
-		sections	 => _skins(),
-		topics		 => _topics(),
+#		sections	 => 1, # _skins(),
+#		topics		 => 1, # _topics(),
 		tref		 => $slashdb->getTopic($form->{tid}),
 		op		 => $form->{op},
 		'sort'		 => _sort(),
@@ -262,8 +262,8 @@ sub storySearch {
 	my $stories = $searchDB->findStory($form, $start, $constants->{search_default_display} + 1, $form->{sort});
 
 	slashDisplay('searchform', {
-		sections	=> _skins(),
-		topics		=> _topics(),
+		sections	=> 1, # _skins(),
+		topics		=> 1, # _topics(),
 		tref		=> $slashdb->getTopic($form->{tid}),
 		op		=> $form->{op},
 		authors		=> _authors(),
@@ -318,8 +318,8 @@ sub pollSearch {
 	my $polls = $searchDB->findPollQuestion($form, $start, $constants->{search_default_display} + 1, $form->{sort});
 	slashDisplay('searchform', {
 		op		=> $form->{op},
-		topics		=> _topics(),
-		sections	=> _skins(),
+#		topics		=> 1, # _topics(),
+#		sections	=> 1, # _skins(),
 		tref		=> $slashdb->getTopic($form->{tid}),
 		'sort'		=> _sort(),
 	});
@@ -577,8 +577,8 @@ sub submissionSearch {
 	my $entries = $searchDB->findSubmission($form, $start, $constants->{search_default_display} + 1, $form->{sort});
 	slashDisplay('searchform', {
 		op		=> $form->{op},
-		sections	=> _skins(),
-		topics		=> _topics(),
+		sections	=> 1, # _skins(),
+		topics		=> 1, # _topics(),
 		submission_notes => $slashdb->getDescriptions('submission-notes'),
 		tref		=> $slashdb->getTopic($form->{tid}),
 		'sort'		=> _sort(),

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.163 2003/06/25 19:27:05 pater Exp $
+# $Id: admin.pl,v 1.164 2003/07/01 20:03:19 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1000,7 +1000,7 @@ sub getRelated {
 		my($a_attr, $label) = ($1, $2);
 		if ($a_attr =~ m/(\bTITLE\s*=\s*(["'])(.*?)\2)/si) {
 			$label = $3;
-			$a_attr =~ s/$1//;
+			$a_attr =~ s/\Q$1\E//;
 		}
 
 		$a_attr =~ /\bHREF\s*=\s*(["'])(.*?)\1/;

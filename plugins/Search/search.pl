@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.19 2001/12/25 19:37:04 brian Exp $
+# $Id: search.pl,v 1.20 2002/01/03 00:39:46 brian Exp $
 
 use strict;
 use Slash;
@@ -94,7 +94,7 @@ sub main {
 sub _authors {
 	my $slashdb = getCurrentDB();
 	my $authors = $slashdb->getDescriptions('all-authors');
-	$authors->{''} = 'All Authors';
+	$authors->{''} = getData('all_authors');
 
 	return $authors;
 }
@@ -112,7 +112,7 @@ sub _topics {
 		$topics = $slashdb->getDescriptions('topics');
 	}
 
-	$topics->{''} = 'All Topics';
+	$topics->{''} = getData('all_topics');
 
 	return $topics;
 }
@@ -130,7 +130,7 @@ sub _sort {
 sub _sections {
 	my $slashdb = getCurrentDB();
 	my $sections = $slashdb->getDescriptions('sections');
-	$sections->{''} = 'All Sections';
+	$sections->{''} = getData('all_sections');
 
 	return $sections;
 }

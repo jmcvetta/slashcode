@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.196 2004/10/28 20:31:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.197 2004/11/02 15:39:49 cowboyneal Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.196 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.197 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2502,7 +2502,7 @@ sub getTopRecentRealemailDomains {
 		}
 	}
 
-	return $domains, $daysback, $newaccounts, $newnicks;
+	return($domains, $daysback, $newaccounts, $newnicks);
 }
 
 

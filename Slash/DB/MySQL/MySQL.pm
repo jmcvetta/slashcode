@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.499 2004/02/02 21:18:14 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.500 2004/02/03 17:42:40 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.499 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.500 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5890,17 +5890,21 @@ sub calcModval {
 		"GROUP BY hoursback",
 	);
 
+	my $max_halflives = $constants->{istroll_max_halflives};
 	my $modval = 0;
 	for my $hoursback (keys %$hr) {
 		my $val = $hr->{$hoursback}{valsum};
 		next unless $val;
 		if ($hoursback <= $halflife) {
 			$modval += $val;
-		} elsif ($hoursback > $halflife*10) {
-			# So old it's not worth looking at.
-		} else {
+		} elsif ($hoursback <= $halflife*$max_halflives) {
 			# Logarithmically weighted.
 			$modval += $val / (2 ** ($hoursback/$halflife));
+		} elsif ($hoursback > $halflife*12) {
+			# So old it's not worth looking at.
+		} else {
+			# Half-lives, half-lived...
+			$modval += $val / (2 ** $max_halflives);
 		}
 	}
 

@@ -2,18 +2,17 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_cids.pl,v 1.7 2004/05/28 15:14:57 tvroom Exp $
+# $Id: set_cids.pl,v 1.8 2004/10/14 00:51:30 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
-use Safe;
 use Slash;
 use Slash::DB;
 use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '5-59/10 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important

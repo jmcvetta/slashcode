@@ -2,11 +2,10 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.6 2004/09/07 22:21:34 jamiemccarthy Exp $
+# $Id: log_db_qps.pl,v 1.7 2004/10/14 00:51:30 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
-use Safe;
 use Slash;
 use Slash::DB;
 use Slash::Display;
@@ -14,7 +13,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important

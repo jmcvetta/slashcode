@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.153 2003/11/10 17:27:52 pater Exp $
+# $Id: comments.pl,v 1.154 2003/11/17 15:19:15 pater Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -760,7 +760,8 @@ sub editComment {
 		indextype	=> $form->{indextype},
 		preview		=> $preview,
 		reply		=> $reply,
-		gotmodwarning	=> $gotmodwarning
+		gotmodwarning	=> $gotmodwarning,
+		newdiscussion	=> $form->{newdiscussion}
 	});
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dailyStuff,v 1.11 2002/01/08 17:22:09 pudge Exp $
+# $Id: dailyStuff,v 1.12 2002/06/13 18:25:40 pudge Exp $
 
 ###############################################################################
 # dailyStuff - this program runs various housekeeping tasks, sends out the
@@ -93,6 +93,9 @@ sub generateDailyMail {
 
 		1 while chomp($story{introtext});
 		1 while chomp($story{bodytext});
+
+		$story{introtext} = parseSlashizedLinks($story{introtext});
+		$story{bodytext} =  parseSlashizedLinks($story{bodytext});
 
 		my $asciitext = $story{introtext};
 		$asciitext .= "\n\n" . $story{bodytext}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.173 2003/08/29 19:56:28 pudge Exp $
+# $Id: admin.pl,v 1.174 2003/09/08 06:01:44 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -343,7 +343,7 @@ sub templateEdit {
 		my $getpage    = $page    eq 'All' ? '' : $page;
 		my $getsection = $section eq 'All' ? '' : $section;
 
-		unless ($form->{templatesection} || $form->{templatepage} || $form->{templatesearch}) {
+		unless ($form->{templatesection} || $form->{templatepage} || $form->{templatepageandsection} || $form->{templatesearch}) {
 			$form->{ $form->{templatelastselect} } = 1;
 		}
 

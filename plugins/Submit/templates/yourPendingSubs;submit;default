@@ -48,7 +48,7 @@ and their status within the system:</P>
 			END;
 	END %]
 	([% status %])
-	[% summary.$status = summary.$staus + 1 %]
+	[% summary.$status = summary.$status + 1 %]
 	</LI>
 [% END %]
 </UL>
@@ -70,4 +70,4 @@ don't take it personally.
 __seclev__
 10000
 __version__
-$Id: yourPendingSubs;submit;default,v 1.10 2004/04/06 00:23:41 tvroom Exp $
+$Id: yourPendingSubs;submit;default,v 1.11 2004/04/12 17:24:18 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.53 2002/01/10 22:05:36 brian Exp $
+# $Id: MySQL.pm,v 1.54 2002/01/14 22:55:50 brian Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2850,7 +2850,7 @@ sub getStoryByTime {
 
 	my $time = $story->{'time'};
 	my $returnable = $self->sqlSelectHashref(
-			'title, sid, section',
+			'title, sid, section, tid',
 			'stories',
 			"time $sign '$time' AND writestatus != 'delete' AND time < now() $where",
 			"ORDER BY time $order LIMIT $limit"
@@ -3616,7 +3616,7 @@ sub getStoriesEssentials {
 
 	$limit ||= 15;
 	my $columns;
-	$columns = 'sid, section, title, time, commentcount, hitparade';
+	$columns = 'sid, section, title, time, commentcount, hitparade, tid';
 
 	my $where = "time < NOW() ";
 	# Added this to narrow the query a bit more, I need
@@ -3683,7 +3683,7 @@ EOT
 		# because we'd want three different representations, we
 		# just get it once in position 3 and then drop it into
 		# its traditional other locations in the array.
-		$data = [ @$data[0..4], $data->[3], $data->[5], $data->[3] ];
+		$data = [ @$data[0..4], $data->[3], $data->[5], $data->[3], $data->[6] ];
 		formatDate([$data], 3, 3, '%A %B %d %I %M %p');
 		formatDate([$data], 5, 5, '%Y%m%d'); # %Q
 		formatDate([$data], 7, 7, '%s');

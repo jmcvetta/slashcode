@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.209 2003/12/16 20:48:33 pudge Exp $
+# $Id: users.pl,v 1.210 2003/12/18 02:07:20 vroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2331,7 +2331,6 @@ sub saveComm {
 		commentspill    => 50,
 		mode            => 'thread'
 	};
-	$defaults = { mode => undef, commentspill=> undef};
 
 	my @reasons = ( );
 	my $reasons = $slashdb->getReasons();

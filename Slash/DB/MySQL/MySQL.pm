@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2003 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.495 2004/01/27 20:34:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.496 2004/01/27 22:08:11 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -18,7 +18,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.495 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.496 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -481,6 +481,7 @@ sub createModeratorLog {
 		-ts	=> 'NOW()',
 		active 	=> $active,
 		spent	=> $points_spent,
+		points_orig => $comment->{points},
 	});
 }
 

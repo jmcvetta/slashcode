@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.136 2004/01/27 18:03:02 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.137 2004/01/27 22:08:10 jamiemccarthy Exp $
 #
 
 #
@@ -471,6 +471,7 @@ CREATE TABLE moderatorlog (
 	spent tinyint DEFAULT '1' NOT NULL,
 	m2count mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	m2status tinyint DEFAULT '0' NOT NULL,
+	points_orig tinyint DEFAULT NULL,
 	PRIMARY KEY (id),
 	KEY sid (sid,cid),
 	KEY sid_2 (sid,uid,cid),

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2004 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.603 2004/06/28 13:37:21 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.604 2004/06/28 14:56:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.603 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.604 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6947,8 +6947,16 @@ sub createStory {
 		}
 	}
 	if (!$error) {
-		my $storyskin = $self->getSkin($story->{primaryskid});
-		my $rootdir = $storyskin->{rootdir};
+		my $rootdir;
+		if ($story->{primaryskid}) {
+			my $storyskin = $self->getSkin($story->{primaryskid});
+			$rootdir = $storyskin->{rootdir};
+		} else {
+			# The story is set never-display so its discussion's rootdir
+			# probably doesn't matter.  Just go with the default.
+			my $storyskin = $self->getSkin($comments->{mainpage_skid});
+			$rootdir = $storyskin->{rootdir};
+		}
 		my $comment_codes = $self->getDescriptions("commentcodes");
 
 		my $discussion = {

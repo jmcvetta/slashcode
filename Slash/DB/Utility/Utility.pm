@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.12 2002/02/14 03:51:18 brian Exp $
+# $Id: Utility.pm,v 1.13 2002/02/14 04:15:52 brian Exp $
 
 package Slash::DB::Utility;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use DBIx::Password;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -209,14 +209,8 @@ sub sqlConnect {
 	my($self, $restart) = @_;
 	$self->{_dbh}->disconnect if $restart;
 
-	if (defined $self->{_dbh} && $self->{_dbh}->ping) {
-		unless ($self->{_dbh}) {
-			print STDERR "Undefining and calling to reconnect: $@\n";
-			$self->{_dbh}->disconnect;
-			undef $self->{_dbh};
-			$self->sqlConnect();
-		}
-	} else {
+	if (!(defined $self->{_dbh}) || !$self->{_dbh}->ping) {
+	#if (!(defined $self->{_dbh}) || !$self->{_dbh}->can("ping") || !$self->{_dbh}->ping) {
 # Ok, new connection, lets create it
 	#	print STDERR "Having to rebuild the database handle\n";
 		{
@@ -241,6 +235,7 @@ sub sqlConnect {
 			#}
 		}
 	}
+
 	return 1; # We return true that the sqlConnect was ok.
 }
 

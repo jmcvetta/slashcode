@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2002 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.123 2002/04/11 04:56:59 jamie Exp $
+# $Id: MySQL.pm,v 1.124 2002/04/11 18:38:25 jamie Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.123 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4482,7 +4482,7 @@ sub getSlashdStatus {
 	$answer->{next_begin_hhmm} =
 		substr($answer->{next_begin}, 11, 5)
 		if defined($answer->{next_begin});
-	$answer->{summary_trim} =
+	$answer->{summary_trunc} =
 		substr($answer->{summary}, 0, 30)
 		if $answer->{summary};
 	return $answer;
@@ -4503,7 +4503,7 @@ sub getSlashdStatuses {
 		$answer->{$task}{next_begin_hhmm} =
 			substr($answer->{$task}{next_begin}, 11, 5)
 			if defined($answer->{$task}{next_begin});
-		$answer->{$task}{summary_trim} =
+		$answer->{$task}{summary_trunc} =
 			substr($answer->{$task}{summary}, 0, 30)
 			if $answer->{$task}{summary};
 	}

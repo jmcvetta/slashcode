@@ -20,6 +20,8 @@ __template__
 [% PROCESS maintable_tr_end %]
 [% PROCESS maintable_end %]
 
+</FONT>
+
 <P>
 
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
@@ -66,4 +68,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: footer;misc;default,v 1.8 2003/03/04 19:07:59 pudge Exp $
+$Id: footer;misc;default,v 1.9 2003/07/01 22:16:45 pudge Exp $

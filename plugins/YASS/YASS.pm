@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2001 by Open Source Development Network. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.1 2001/12/29 20:50:51 brian Exp $
+# $Id: YASS.pm,v 1.2 2002/01/05 06:52:38 jamie Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -38,15 +38,17 @@ sub getActive {
 
 	my $sids;
 	unless($limit) {
-		$sids = $self->sqlSelectAll('sid', 
-															 'story_parm', 
-															 "name = 'active' AND value = 'yes' ",
-															 "ORDER by title");
+		$sids = $self->sqlSelectAll(
+			"sid", 
+			"story_param", 
+			"name = 'active' AND value = 'yes'",
+			"ORDER BY title");
 	} else {
-		$sids = $self->sqlSelectAll('story_param.sid', 
-															 'story_parm, stories', 
-															 "name = 'active' AND value = 'yes' AND stories.sid = story_param.sid ",
-															 "ORDER by date DESC LIMIT $limit");
+		$sids = $self->sqlSelectAll(
+			"story_param.sid", 
+			"story_param, stories", 
+			"name = 'active' AND value = 'yes' AND stories.sid = story_param.sid",
+			"ORDER BY date DESC LIMIT $limit");
 	}
 
 	my @all;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.59 2005/03/11 19:57:47 pudge Exp $
+# $Id: Utility.pm,v 1.60 2005/04/07 03:57:01 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -658,7 +658,7 @@ sub sqlSelectAll {
 # returns:
 # hash ref of all records
 sub sqlSelectAllHashref {
-	my($self, $id, $select, $from, $where, $other) = @_;
+	my($self, $id, $select, $from, $where, $other, $options) = @_;
 	# Yes, if $id is not in $select things will be bad
 	
 	# Allow $id to be an arrayref to collect multiple rows of results
@@ -682,6 +682,11 @@ sub sqlSelectAllHashref {
 			$reference = \%{$reference->{$row->{$next_id}}};
 		}
 		%$reference = %$row;
+		if ($options->{thin}) {
+			for my $next_id (@$id) {
+				delete $reference->{$next_id};
+			}
+		}
 	}
 	$sth->finish;
 	$self->_querylog_finish($qlid);

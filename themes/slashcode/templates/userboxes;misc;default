@@ -85,10 +85,11 @@ IF !useredit.is_anon;
 		IF useredit.homepage;
 			'<BR><A HREF="';
 			useredit.homepage | strip_attribute;
+			'"';
 			IF useredit.karma <= constants.goodkarma;
 				' rel="nofollow"';
 			END;
-			'">';
+			'>';
 			Slash.ellipsify(Slash.strip_literal(useredit.homepage)); '</A>';
 		END;
 
@@ -204,4 +205,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: userboxes;misc;default,v 1.26 2005/03/23 18:34:46 pudge Exp $
+$Id: userboxes;misc;default,v 1.27 2005/04/07 17:06:16 pudge Exp $

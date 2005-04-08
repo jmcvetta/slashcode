@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.6 2005/04/08 04:57:25 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.7 2005/04/08 07:35:20 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -13,7 +13,7 @@ use base 'Slash::DB::Utility';
 # For sqlReplace, for now
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -65,7 +65,7 @@ sub getDaypassesAvailable {
 					minduration =>	$minduration,
 					startts =>	time - 60,
 					endts =>	time + 3600,
-					acl =>		$acl,
+					aclreq =>	$acl,
 				} ];
 			} else {
 				$_getDA_cache = [ ];

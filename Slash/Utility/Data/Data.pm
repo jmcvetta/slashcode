@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.150 2005/04/07 19:45:43 pudge Exp $
+# $Id: Data.pm,v 1.151 2005/04/08 21:27:12 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -44,7 +44,7 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2068,7 +2068,7 @@ sub fudgeurl {
 		if ($url =~ /#/) {
 			# no # is OK, unless ...
 			$url =~ s/#/%23/g;
-			if ($url =~ m|^https?://$|i) {
+			if ($url =~ m|^https?://|i) {
 				# HTTP, in which case the first # is OK
 				$url =~ s/%23/#/;
 			}
@@ -3602,4 +3602,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.150 2005/04/07 19:45:43 pudge Exp $
+$Id: Data.pm,v 1.151 2005/04/08 21:27:12 pudge Exp $

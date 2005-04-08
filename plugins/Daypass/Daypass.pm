@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.7 2005/04/08 07:35:20 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.8 2005/04/08 16:39:44 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -13,7 +13,7 @@ use base 'Slash::DB::Utility';
 # For sqlReplace, for now
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -59,9 +59,10 @@ sub getDaypassesAvailable {
 			my $minduration = $constants->{daypass_offer_method1_minduration} || 10;
 			my $avail = $self->checkAdposRegex($pos, $regex);
 			if ($avail) {
+				my $adnum = $constants->{daypass_adnum} || 13;
 				$_getDA_cache = [ {
 					daid =>		999, # dummy placeholder, not used
-					adnum =>	$pos,
+					adnum =>	$adnum,
 					minduration =>	$minduration,
 					startts =>	time - 60,
 					endts =>	time + 3600,
@@ -81,6 +82,7 @@ sub getDaypassesAvailable {
 sub checkAdposRegex {
 	my($self, $pos, $regex) = @_;
 	my $ad_text = getAd($pos);
+	return 0 if !$ad_text;
 	my $neg = 0;
 	if (substr($regex, 0, 1) eq '!') {
 		# Strip off leading char.

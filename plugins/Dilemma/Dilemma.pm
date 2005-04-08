@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Dilemma.pm,v 1.12 2005/04/07 23:49:55 jamiemccarthy Exp $
+# $Id: Dilemma.pm,v 1.13 2005/04/08 22:16:10 jamiemccarthy Exp $
 #
 # XXX Every place we have getDilemmaInfo() needs to (a) know the $trid
 # for the tournament and (b) change to getDilemmaTournamentInfo($trid)
@@ -17,7 +17,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # ZOIDBERG: Friends! Help! A guinea pig tricked me!
 
@@ -238,13 +238,13 @@ sub doTickHousekeeping {
 	my $idle_food_q = $self->sqlQuote($tour_info->{idle_food});
 	$self->sqlUpdate("dilemma_agents",
 		{ -food => "food - $idle_food_q" },
-		"alive = 'yes'");
+		"alive = 'yes' AND trid=$trid");
 	# Get the stats per species
 	my $species_stats_hr = $self->sqlSelectAllHashref(
 		"dsid",
 		"dsid, COUNT(*) AS c",
 		"dilemma_agents",
-		"alive = 'yes' AND food <= 0",
+		"alive = 'yes' AND food <= 0 AND trid=$trid",
 		"GROUP BY dsid");
 	# Update the species stats for the deaths.
 	for my $dsid (keys %$species_stats_hr) {
@@ -259,7 +259,7 @@ sub doTickHousekeeping {
 	# Kill off the newly dead agents.
 	$self->sqlUpdate("dilemma_agents",
 		{ alive => 'no' },
-		"food <= 0 AND alive = 'yes'");
+		"food <= 0 AND alive = 'yes' AND trid=$trid");
 	
 	##########
 	# Any agents with food stores exceeding the birth_food,

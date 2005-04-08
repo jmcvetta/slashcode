@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hook.pm,v 1.7 2005/03/11 19:57:56 pudge Exp $
+# $Id: Hook.pm,v 1.8 2005/04/08 23:34:18 jamiemccarthy Exp $
 
 package Slash::Hook;
 use strict;
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashHook);
 
 my %classes;
@@ -25,6 +25,7 @@ sub slashHook {
 	my($param, $options) = @_;
 	my $slashdb = getCurrentDB();
 
+	my $retval = undef;
 	my $hooks = $slashdb->getHooksByParam($param);
 	for my $hook (@$hooks) {
 		my $class = $hook->{class};
@@ -52,13 +53,16 @@ sub slashHook {
 			$code = \&{ $function };
 		}
 		if (defined (&$code)) {
-			unless ($code->($options)) {
+			$retval = $code->($options);
+			if (!$retval) {
 				errorLog("Failed executing hook ($param) - $function");
 			}
 		} else {
 			errorLog("Failed trying to do hook ($param) - $function");
 		}
 	}
+
+	$retval;
 }
 
 1;

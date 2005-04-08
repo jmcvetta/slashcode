@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.81 2005/03/11 19:58:13 pudge Exp $
+# $Id: Search.pm,v 1.82 2005/04/08 06:34:21 jamiemccarthy Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -182,8 +182,8 @@ sub findStory {
 	my $gSkin = getCurrentSkin();
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $skin = $reader->getSkin($form->{section});
-	$skin ||= $reader->getSkin($gSkin->{skid} || $constants->{mainpage_skid});
+	my $skin = $reader->getSkin($form->{section} || $gSkin->{skid});
+	$skin ||= $constants->{mainpage_skid};
 	if ($skin->{skid} && $skin->{skid} != $constants->{mainpage_skid}) {
 		# XXXSKIN this is wrong, we want to join on story_topics_rendered
 		# by putting $skin->{nexus} into the list of tids we demand

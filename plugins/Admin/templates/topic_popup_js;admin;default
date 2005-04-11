@@ -402,10 +402,11 @@ function [% name %]_show(type) {
 		name = name + "-" + type;
 		iname = iname + "_" + type;
 
-		if (type == 'ab') {
-			var searchobj = document.getElementById(name + "-searchfield");
-			searchobj.focus();
-		}
+// Moz unhappy with this
+//		if (type == 'ab') {
+//			var searchobj = document.getElementById(name + "-searchfield");
+//			searchobj.focus();
+//		}
 	}
 
 	var mybuttons = new Array ('[% names.join("','") %]');
@@ -734,4 +735,4 @@ function [% name %]_visit() {
 __seclev__
 10000
 __version__
-$Id: topic_popup_js;admin;default,v 1.17 2005/04/07 16:56:58 pudge Exp $
+$Id: topic_popup_js;admin;default,v 1.18 2005/04/11 20:41:03 pudge Exp $

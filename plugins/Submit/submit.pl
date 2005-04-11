@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.114 2005/03/29 20:47:05 pudge Exp $
+# $Id: submit.pl,v 1.115 2005/04/11 18:12:17 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -554,9 +554,9 @@ sub displayForm {
 
 	my $fixedstory;
 	if ($form->{sub_type} && $form->{sub_type} eq 'plain') {
-		$fixedstory = strip_plaintext($form->{story});
+		$fixedstory = strip_plaintext(url2html($form->{story}));
 	} else {
-		$fixedstory = strip_html($form->{story});
+		$fixedstory = strip_html(url2html($form->{story}));
 
 		# some submitters like to add whitespace before and
 		# after their introtext. This is never wanted. --Pater
@@ -612,9 +612,9 @@ sub saveSub {
 	}
 
 	if ($form->{sub_type} && $form->{sub_type} eq 'plain') {
-		$form->{story} = strip_plaintext($form->{story});
+		$form->{story} = strip_plaintext(url2html($form->{story}));
 	} else {
-		$form->{story} = strip_html($form->{story});
+		$form->{story} = strip_html(url2html($form->{story}));
 	}
 	$form->{story} = balanceTags($form->{story});
 
@@ -701,26 +701,6 @@ sub processSub {
 	}
 
 	return $home;
-}
-
-#################################################################
-sub url2html_old {
-	my($introtext) = @_;
-	$introtext =~ s/\n\n/\n<P>/gi;
-	$introtext .= " ";
-
-	# this is kinda experimental ... esp. the $extra line
-	# we know the $extra line can break real URLs, but probably will
-	# preserve real URLs more often than it will break them
-	$introtext =~  s{(?<!['"=>])(http|https|ftp|gopher|telnet)://([$URI::uric#]+)}{
-		my($proto, $url) = ($1, $2);
-		my $extra = '';
-		$extra = $1 if $url =~ s/([?!;:.,']+)$//;
-		$extra = ')' . $extra if $url !~ /\(/ && $url =~ s/\)$//;
-		qq[<A HREF="$proto://$url">$proto://$url</A>$extra];
-	}ogie;
-	$introtext =~ s/\s+$//;
-	return $introtext;
 }
 
 #################################################################

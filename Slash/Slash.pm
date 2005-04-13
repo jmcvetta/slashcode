@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.233 2005/03/17 05:18:02 pudge Exp $
+# $Id: Slash.pm,v 1.234 2005/04/13 18:49:56 pudge Exp $
 
 package Slash;
 
@@ -695,7 +695,7 @@ sub printComments {
 			# add them back at the last step.  In-between, we chop
 			# the comment down to size, then massage it to make sure
 			# we still have good HTML after the chop.
-			$more_comment_text->{$cid} =~ s{</A[^>]+>}{</A>}gi;
+			$more_comment_text->{$cid} =~ s{</a[^>]+>}{</a>}gi;
 			my $text = chopEntity($more_comment_text->{$cid},
 				$user->{maxcommentsize});
 			$text = strip_html($text);

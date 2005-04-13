@@ -11,8 +11,8 @@ en_US
 __name__
 default
 __template__
-&middot; <A HREF="[% item.link | strip_attribute %]">[% item.title | strip_notags %]</A><BR>
+&middot; <a href="[% item.link | strip_attribute %]">[% item.title | strip_notags %]</a><br[% ' /' IF constants.xhtml %]>
 __seclev__
 10000
 __version__
-$Id: default;portald;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: default;portald;default,v 1.5 2005/04/13 18:50:11 pudge Exp $

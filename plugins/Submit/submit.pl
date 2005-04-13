@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.115 2005/04/11 18:12:17 pudge Exp $
+# $Id: submit.pl,v 1.116 2005/04/13 18:50:00 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -563,7 +563,7 @@ sub displayForm {
 		$fixedstory =~ s/^<(?:P|BR)(?:>|\s[^>]*>)//i;
 		$fixedstory =~ s/<(?:P|BR)(?:>|\s[^>]*>)$//i;
 	}
-	$fixedstory = balanceTags($fixedstory);
+	$fixedstory = balanceTags($fixedstory, { deep_nesting => 1 });
 
 	slashDisplay('displayForm', {
 		fixedstory	=> $fixedstory,
@@ -616,7 +616,7 @@ sub saveSub {
 	} else {
 		$form->{story} = strip_html(url2html($form->{story}));
 	}
-	$form->{story} = balanceTags($form->{story});
+	$form->{story} = balanceTags($form->{story}, { deep_nesting => 1 });
 
 	my $uid ||= $form->{name}
 		? getCurrentUser('uid')

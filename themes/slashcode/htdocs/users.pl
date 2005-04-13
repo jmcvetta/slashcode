@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.268 2005/03/11 19:58:43 pudge Exp $
+# $Id: users.pl,v 1.269 2005/04/13 18:50:09 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2279,7 +2279,7 @@ sub saveUser {
 	for my $key (keys %extr) {
 		my $dat = $extr{$key};
 		$dat = strip_html($dat);
-		$dat = balanceTags($dat, 1); # only 1 nesting tag (UL, OL, BLOCKQUOTE) allowed
+		$dat = balanceTags($dat, { deep_nesting => 2 }); # only 2 nesting tags (UL, OL, BLOCKQUOTE) allowed
 		$dat = addDomainTags($dat) if $dat;
 
 		# If the sig becomes too long to fit (domain tagging causes

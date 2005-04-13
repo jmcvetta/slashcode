@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.218 2005/04/11 18:12:35 pudge Exp $
+# $Id: comments.pl,v 1.219 2005/04/13 18:50:02 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -634,10 +634,9 @@ sub validateComment {
 		}
 	}
 
-	unless (defined($$comm = balanceTags($$comm, $constants->{nesting_maxdepth}))) {
-		# If we didn't return from right here, one or more later
-		# error messages would overwrite this one.
-		$$error_message = getError('nesting too deep');
+	unless (defined($$comm = balanceTags($$comm, { deep_nesting => 1 }))) {
+		# only time this should return an error is if the HTML is busted
+		$$error_message = getError('broken html');
 		return ;
 	}
 

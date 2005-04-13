@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.766 2005/04/01 13:28:35 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.767 2005/04/13 18:49:57 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.766 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.767 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8974,14 +8974,13 @@ sub getSlashConf {
 						# See <http://www.iana.org/assignments/uri-schemes>
 		anonymous_coward_uids =>	[ $conf{anonymous_coward_uid} ],
 		approved_url_schemes =>		[qw( ftp http gopher mailto news nntp telnet wais https )],
-		approvedtags =>			[qw( B I P A LI OL UL EM BR TT STRONG BLOCKQUOTE DIV ECODE DL DT DD)],
-		approvedtags_break =>		[qw( P LI OL UL BR BLOCKQUOTE DIV HR DL DT DD)],
+		approvedtags =>			[qw( b i p br a ol ul li dl dt dd em strong tt blockquote div ecode)],
+		approvedtags_break =>		[qw(     p br   ol ul li dl dt dd              blockquote div       img hr)],
 		charrefs_bad_entity =>		[qw( zwnj zwj lrm rlm )],
 		charrefs_bad_numeric =>		[qw( 8204 8205 8206 8207 8236 8237 8238 )],
 		charrefs_good_entity =>		[qw( amp lt gt euro pound yen )],
 		charrefs_good_numeric =>	[ ],
 		cur_performance_stat_ops =>	[ ],
-		lonetags =>			[qw( P LI BR IMG DT DD)],
 		fixhrefs =>			[ ],
 		hc_possible_fonts =>		[ ],
 		lonetags =>			[ ],
@@ -9073,25 +9072,29 @@ sub getSlashConf {
 		$conf{$regex} = qr{$conf{$regex}};
 	}
 
+	for my $var (qw(approvedtags approvedtags_break lonetags)) {
+		$conf{$var} = [ map lc, @{$conf{$var}} ];
+	}
+
 	if ($conf{approvedtags_attr}) {
 		my $approvedtags_attr = $conf{approvedtags_attr};
 		$conf{approvedtags_attr} = {};
-		my @tags = split(/\s+/, $approvedtags_attr);
-		foreach my $tag(@tags){
-			my ($tagname,$attr_info) = $tag=~/([^:]*):(.*)$/;
-			my @attrs = split( ",", $attr_info );
-			my $ord=1;
-			foreach my $attr(@attrs){
-				my($at,$extra) = split( /_/, $attr );
-				$at = uc($at);
-				$tagname = uc($tagname);
-				$conf{approvedtags_attr}->{$tagname}{$at}{ord}=$ord;
-				$conf{approvedtags_attr}->{$tagname}{$at}{req}=1 if $extra=~/R/;
-				$conf{approvedtags_attr}->{$tagname}{$at}{url}=1 if $extra=~/U/;
-				$ord++
+		my @tags = split /\s+/, $approvedtags_attr;
+		foreach my $tag (@tags){
+			my($tagname, $attr_info) = $tag =~ /([^:]*):(.*)$/;
+			my @attrs = split ',', $attr_info;
+			my $ord = 1;
+			foreach my $attr (@attrs){
+				my($at, $extra) = split /_/, $attr;
+				$at = lc $at;
+				$tagname = lc $tagname;
+				$conf{approvedtags_attr}{$tagname}{$at}{ord} = $ord;
+				$conf{approvedtags_attr}{$tagname}{$at}{req} = 1 if $extra =~ /R/;
+				$conf{approvedtags_attr}{$tagname}{$at}{req} = 2 if $extra =~ /N/; # "necessary"
+				$conf{approvedtags_attr}{$tagname}{$at}{url} = 1 if $extra =~ /U/;
+				$ord++;
 			}
-		}   
-
+		}
 	}
 
 	# We only need to do this on startup.

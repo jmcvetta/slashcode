@@ -10,9 +10,9 @@
 # This source code is available under the license at:
 #     http://www.w3.org/Consortium/Legal/copyright-software
 #
-# $Id: Validator.pm,v 1.1 2005/04/14 14:57:04 pudge Exp $
+# $Id: Validator.pm,v 1.2 2005/04/14 15:08:19 pudge Exp $
 
-package Slash::Custom::Validator;
+package Slash::Validator;
 
 #
 # Disable buffering on STDOUT!
@@ -95,10 +95,23 @@ use vars qw($DEBUG $CFG $RSRC $VERSION $HAVE_IPC_RUN);
 #our $HAVE_SOAP_LITE;
 
 
+use Slash::Constants ':messages';
+use Slash::Utility;
+
 #
 # Things inside BEGIN don't happen on every request in persistent
 # environments, such as mod_perl.  So let's do globals, eg. read config here.
-BEGIN {
+sub new {  # BEGIN
+  my($class, $user) = @_;
+  my $self = {};
+
+  my $plugin = getCurrentStatic('plugin');
+  return unless $plugin->{'Validator'};
+
+  bless($self, $class);
+  $self->{virtual_user} = $user;
+  $self->sqlConnect;
+
   $ENV{W3C_VALIDATOR_CFG} = '/usr/local/validator/htdocs/config/validator.conf';
 
   #
@@ -152,7 +165,7 @@ BEGIN {
 
   #
   # Strings
-  $VERSION    =  q$Revision: 1.1 $;
+  $VERSION    =  q$Revision: 1.2 $;
   $VERSION    =~ s/Revision: ([\d\.]+) /$1/;
 
   #
@@ -196,6 +209,8 @@ open($file) returned: $!
     return \%cfg;
   }
 
+  return $self;
+
 } # end of BEGIN block.
 
 #
@@ -208,7 +223,7 @@ open($file) returned: $!
 ###############################################################################
 
 sub validate {
-	my($data, $opts) = @_;
+	my($self, $data, $opts) = @_;
 #
 # Create a new CGI object.
 =begin comment
@@ -230,7 +245,7 @@ $File->{'Header'} = &prepSSI({
                              });
 $File->{'Footer'} = &prepSSI({
                               File => $CFG->{'Footer'},
-                              Date => q$Date: 2005/04/14 14:57:04 $,
+                              Date => q$Date: 2005/04/14 15:08:19 $,
                              });
 
 #
@@ -3450,11 +3465,8 @@ sub check {
 #  charset, content_type, type, max_errors
 #  data_type, data_id
 
-use Slash::Constants ':messages';
-use Slash::Utility;
-
 sub isValid {
-	my($data, $opts) = @_;
+	my($self, $data, $opts) = @_;
 	my $File = validate($data, $opts);
 
 	if (@{$File->{Errors}}) {

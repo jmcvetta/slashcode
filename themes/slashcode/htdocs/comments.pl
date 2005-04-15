@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.219 2005/04/13 18:50:02 pudge Exp $
+# $Id: comments.pl,v 1.220 2005/04/15 20:58:37 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1147,6 +1147,20 @@ sub submitComment {
 				$users{$usera}++;
 			}
 		}
+
+		if ($constants->{validate_html}) {
+			my $validator = getObject('Slash::Validator');
+			my $test = $tempComment;
+			if ($user->{nickname} eq 'pudge') {
+				$test .= '</div>';  # intentionally break to test
+			}
+			$validator->isValid($test, {
+				data_type	=> 'comment',
+				data_id		=> $maxCid
+			}) if $validator;
+		}
+
+
 		# If discussion created
 		if ($form->{newdiscussion}) {
 			if (!$header_emitted) {

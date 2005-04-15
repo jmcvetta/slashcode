@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.88 2005/03/11 19:58:13 pudge Exp $
+# $Id: search.pl,v 1.89 2005/04/15 20:58:37 pudge Exp $
 
 use strict;
 use Slash;
@@ -676,7 +676,7 @@ sub rssSearch {
 	# we pop it off
 	if ($entries && @$entries) {
 		for (@$entries) {
-			$_->{title} = strip_plaintext($_->{introtext});
+			$_->{title} = strip_notags($_->{introtext});
 			$_->{description} = _shorten(strip_notags($_->{description}));
 		}
 		my $forward;

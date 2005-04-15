@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestUsers,v 1.15 2005/03/11 19:58:48 pudge Exp $
+# $Id: createTestUsers,v 1.16 2005/04/15 20:58:38 pudge Exp $
 
 BEGIN {
 	{
@@ -22,7 +22,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my %opts;
@@ -98,7 +98,7 @@ $werder = new Silly::Werder;
 		my $sig = "";
 		$sig = make_werds(5+int(rand(20)), 0.2) if int(rand(2));
 		$sig = strip_html(substr($sig, 0, 120));
-		$sig = balanceTags($sig);
+		$sig = balanceTags($sig, { deep_nesting => 1 });
 		$sig = addDomainTags($sig);
 		if (length($sig) <= 160) {
 			$hr->{sig} = $sig;

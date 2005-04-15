@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.269 2005/04/13 18:50:09 pudge Exp $
+# $Id: users.pl,v 1.270 2005/04/15 20:58:38 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1321,8 +1321,7 @@ sub _get_lastjournal {
 		$maxsize = 600 if $maxsize > 600;
 		$art_shrunk = chopEntity($art_shrunk, $maxsize);
 
-		my $approvedtags_break = $constants->{approvedtags_break}
-			|| [qw(HR BR LI P OL UL BLOCKQUOTE DIV)];
+		my $approvedtags_break = $constants->{approvedtags_break} || [];
 		my $break_tag = join '|', @$approvedtags_break;
 		if (scalar(() = $art_shrunk =~ /<(?:$break_tag)>/gi) > 2) {
 			$art_shrunk =~ s/\A
@@ -2279,7 +2278,7 @@ sub saveUser {
 	for my $key (keys %extr) {
 		my $dat = $extr{$key};
 		$dat = strip_html($dat);
-		$dat = balanceTags($dat, { deep_nesting => 2 }); # only 2 nesting tags (UL, OL, BLOCKQUOTE) allowed
+		$dat = balanceTags($dat, { deep_nesting => 2 });
 		$dat = addDomainTags($dat) if $dat;
 
 		# If the sig becomes too long to fit (domain tagging causes
@@ -2700,7 +2699,7 @@ sub saveHome {
 	# purpose), plus the fact that this could be used to amplify the
 	# seriousness of any future vulnerabilities, means it's way past
 	# time to shut this feature down.  - Jamie 2002/03/06
-	$user_edits_table->{mylinks} = strip_html($form->{mylinks} || '');
+	$user_edits_table->{mylinks} = balanceTags(strip_html($form->{mylinks} || ''), { deep_nesting => 2 });
 	$user_edits_table->{mylinks} = '' unless defined $user_edits_table->{mylinks};
 
 	$error = 1;

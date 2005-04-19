@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.116 2005/04/13 18:50:00 pudge Exp $
+# $Id: submit.pl,v 1.117 2005/04/19 21:31:10 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -296,12 +296,7 @@ sub previewForm {
 				# Max of 12 chars per word.
 				$word = substr($word, 0, 12);
 			}
-			if (length($sim->{title}) > 35) {
-				# Max of 35 char title.
-				$sim->{title} = substr($sim->{title}, 0, 30);
-				$sim->{title} =~ s/\s+\S+$//;
-				$sim->{title} .= "...";
-			}
+			$sim->{title} = chopEntity($sim->{title}, 35);
 		}
 	}
 
@@ -411,11 +406,10 @@ sub submissionEd {
 		$sub->{is_anon} = isAnon($sub->{uid});
 
 		my @strs = (
-			substr($sub->{subj}, 0, 35),
-			substr($sub->{name}, 0, 20),
-			substr($sub->{email}, 0, 20)
+			chopEntity($sub->{subj}, 35),
+			chopEntity($sub->{name}, 20),
+			chopEntity($sub->{email}, 20)
 		);
-		$strs[0] .= '...' if length($sub->{subj}) > 35;
 		$sub->{strs} = \@strs;
 
 		my $skin = $slashdb->getSkin($sub->{primaryskid});

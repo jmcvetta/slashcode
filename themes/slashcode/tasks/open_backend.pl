@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.26 2005/03/11 19:58:47 pudge Exp $
+# $Id: open_backend.pl,v 1.27 2005/04/20 14:31:39 cowboyneal Exp $
 
 use strict;
 use Slash;
@@ -74,6 +74,7 @@ sub _do_rss {
 
 	my $ext = $version == 0.9 ? 'rdf' : 'rss';
 	save2file("$constants->{basedir}/$file.$ext", $rss, \&fudge);
+	save2file("$constants->{basedir}/privaterss/$file.$ext", $rss, \&fudge);
 }
 
 sub newrdf { _do_rss(@_, "0.9") } # RSS 0.9

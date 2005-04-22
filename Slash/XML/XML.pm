@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: XML.pm,v 1.13 2005/03/11 19:58:01 pudge Exp $
+# $Id: XML.pm,v 1.14 2005/04/22 21:36:26 pudge Exp $
 
 package Slash::XML;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = qw(xmlDisplay);
 
 # FRY: There must be layers and layers of old stuff down there!
@@ -154,7 +154,7 @@ sub xmlDisplay {
 
 #========================================================================
 
-=head2 date2iso8601([TIME])
+=head2 date2iso8601([TIME, Z])
 
 Return a standard ISO 8601 time string.
 
@@ -169,6 +169,16 @@ Return a standard ISO 8601 time string.
 Some sort of string in GMT that can be parsed by Date::Parse.
 If no TIME given, uses current time.
 
+=item Z
+
+By default, strings of the form "2005-04-18T22:38:55+00:00" are returned,
+where the "+00:00" denotes the time zone differential.  If Z is true, the
+alternate form "2005-04-18T22:38:55Z" will be used, where the string is
+forced into UTC and "Z" is used to denote the fact.
+
+Both forms should be acceptable, but some applications may require one
+or the other.
+
 =back
 
 =item Return value
@@ -180,17 +190,20 @@ The time string.
 =cut
 
 sub date2iso8601 {
-	my($self, $time) = @_;
+	my($self, $time, $z) = @_;
 	if ($time) {	# force to GMT
 		$time .= ' GMT' unless $time =~ / GMT$/;
 	} else {	# get current seconds
 		my $t = defined $time ? 0 : time();
-		$time = scalar localtime($t);
+		$time = $z ? scalar gmtime($t) : scalar localtime($t);
 	}
 
 	# calculate timezone differential from GMT
-	my $diff = (timelocal(localtime) - timelocal(gmtime)) / 36;
-	($diff = sprintf '%+0.4d', $diff) =~ s/(\d{2})$/:$1/;
+	my $diff = 'Z';
+	unless ($z) {
+		$diff = (timelocal(localtime) - timelocal(gmtime)) / 36;
+		($diff = sprintf '%+0.4d', $diff) =~ s/(\d{2})$/:$1/;
+	}
 
 	return scalar timeCalc($time, "%Y-%m-%dT%H:%M:%S$diff", 0);
 }

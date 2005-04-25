@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: oai.pl,v 1.1 2005/04/19 20:32:13 pudge Exp $
+# $Id: oai.pl,v 1.2 2005/04/25 22:45:58 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -29,7 +29,7 @@ sub main {
 		return;
 	}
 
-	my $request = $form->{verb};
+	my $verb = $form->{verb};
 	my %args;
 	for (keys %$form) {
 		next if /^(?:verb|query_apache)$/;
@@ -37,8 +37,8 @@ sub main {
 	}
 
 	xmlDisplay('OAI', {
-		request => $request,
-		args	=> \%args
+		verb => $verb,
+		args => \%args
 	});
 }
 

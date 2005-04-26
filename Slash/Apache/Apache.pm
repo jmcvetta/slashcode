@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.67 2005/04/20 14:23:16 cowboyneal Exp $
+# $Id: Apache.pm,v 1.68 2005/04/26 18:10:49 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -241,6 +241,8 @@ sub SlashCompileTemplates ($$$) {
 	$slashdb->{_dbh}->disconnect;
 }
 
+# This handler is called in the first Apache phase, post-read-request.
+#
 # This can be used in conjunction with mod_proxy_add_forward or somesuch,
 # if you use a frontend/backend Apache setup, where all requests come
 # from 127.0.0.1 or some other predictable IP number(s).  For speed, we

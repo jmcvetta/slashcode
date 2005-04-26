@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.17 2005/03/11 19:58:08 pudge Exp $
+# $Id: login.pl,v 1.18 2005/04/26 18:30:33 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -91,6 +91,7 @@ sub newUser {
 		$error = 1;
 	} elsif ($matchname ne '' && $form->{newusernick} ne '') {
 		if ($constants->{newuser_portscan}) {
+			# XXXSRCID Convert to use getAL2($srcid, 'trusted')
 			my $is_trusted = $slashdb->checkIsTrusted($user->{ipid});
 			if ($is_trusted ne 'yes') {
 				my $is_proxy = $slashdb->checkForOpenProxy($user->{hostip});
@@ -216,7 +217,7 @@ sub mailPasswd {
 	my $user_send = $reader->getUser($uid);
 
 	if (!$error) {
-		if ($reader->checkReadOnly(nopost => { ipid => $user->{ipid} })) {
+		if ($reader->checkAL2($user->{srcids}, 'nopost')) {
 			push @note, getData('mail_readonly');
 			$error = 1;
 

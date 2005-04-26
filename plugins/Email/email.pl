@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.12 2005/03/11 19:58:06 pudge Exp $
+# $Id: email.pl,v 1.13 2005/04/26 18:30:33 jamiemccarthy Exp $
 
 # Slash::Email - web script
 # 
@@ -16,7 +16,7 @@ use Slash::Utility;
 use Slash::Constants ':messages';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think
@@ -177,17 +177,10 @@ sub emailStory {
 		return;
 	}
 
-	for (qw(ipid subnetid uid)) {
-		# We skip the UID test for anonymous users.
-		next if $_ eq 'uid' && $user->{is_anon};
-		# Otherwise we perform the specific read-only test.
-		my $read_only = $slashdb->checkReadOnly('nopost', {
-			$_ => $user->{$_},
-		});
-		if ($read_only) {
-			print getData('readonly');
-			return;
-		}
+	# XXXSRCID might want to do this on a reader db
+	if ($slashdb->checkAL2($user->{srcids}, 'nopost')) {
+		print getData('readonly');
+		return;
 	}
 
 	# Retrieve story and all information necessary for proper display.

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.221 2005/04/16 04:21:16 pudge Exp $
+# $Id: comments.pl,v 1.222 2005/04/26 18:30:34 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -481,22 +481,18 @@ sub validateComment {
 	my $form_success = 1;
 	my $message = '';
 
-	my $read_only;
 	if (!dbAvailable("write_comments")) {
 		$$error_message = getError('comment_db_down');
 		$form_success = 0;
 		return;
 	}
-	for (qw(ipid subnetid uid)) {
-		# We skip the UID test for anonymous users.
-		next if $_ eq 'uid' && $user->{is_anon};
-		# Otherwise we perform the specific read-only test.
-		$read_only = $slashdb->checkReadOnly('nopost', {
-			$_ => $user->{$_},
-		});
-		# Bail if a specific test returns TRUE
-		last if $read_only;
-	}
+
+	my $srcids_to_check = $user->{srcids};
+	# We skip the UID test for anonymous users (anonymous posting
+	# is banned by setting nopost for the anonymous uid, and we
+	# want to check that separately elsewhere).
+	delete $srcids_to_check->{uid} if $user->{is_anon};
+	my $read_only = $reader->checkAL2($srcids_to_check, 'nopost');
 	if ($read_only) {
 		$$error_message = getError('readonly');
 		$form_success = 0;

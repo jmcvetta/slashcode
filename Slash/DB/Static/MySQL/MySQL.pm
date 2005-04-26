@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.215 2005/03/11 19:57:30 pudge Exp $
+# $Id: MySQL.pm,v 1.216 2005/04/26 18:30:30 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.215 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.216 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1858,6 +1858,13 @@ sub _set_csq {
                 $hr->{sql_possible} = "GREATEST($column-" . ($i+1) . ", $min)"
                         if $hr->{chance};
         }
+}
+
+# XXXSRCID This needs to actually be, like, written.
+sub recalcAL2 {
+        my($self, $srcid) = @_;
+	my $log = $self->getAL2Log($srcid);
+	# remember to delete from memcached
 }
 
 ########################################################

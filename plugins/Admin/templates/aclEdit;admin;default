@@ -38,9 +38,13 @@ __template__
 	be able to assign it to other users by editing them in users.pl.
 	To delete a category, simply remove it from all users.)
 	<BR>Recognized ACL categories so far: <tt>candelcomments_always modpoints_always stats</tt>
+	<br>Don't name an ACL the same as an AL2 type, or there
+	will be trouble! Current AL2 types: <tt>comment ban
+	expired nopost nopalm norss nosubmit trusted proxy</tt>
+	<!-- XXXSRCID The code needs to check getAL2Types() to prevent that error from even being possible -->
 </FORM>
 
 __seclev__
 500
 __version__
-$Id: aclEdit;admin;default,v 1.4 2004/06/17 16:11:53 jamiemccarthy Exp $
+$Id: aclEdit;admin;default,v 1.5 2005/04/26 18:30:33 jamiemccarthy Exp $

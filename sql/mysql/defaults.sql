@@ -3,12 +3,27 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.227 2005/04/22 21:51:27 pudge Exp $
+# $Id: defaults.sql,v 1.228 2005/04/26 18:30:33 jamiemccarthy Exp $
 #
 
 #
 # Dumping data for table 'abusers'
 #
+
+
+#
+# Dumping data for table 'al2_types'
+#
+
+INSERT INTO al2_types VALUES (1, NULL, 'comment', 'Comment');
+INSERT INTO al2_types VALUES (2, 0, 'ban', 'Ban');
+INSERT INTO al2_types VALUES (3, 1, 'expired', 'Expired');
+INSERT INTO al2_types VALUES (4, 2, 'nopost', 'No Comment Post');
+INSERT INTO al2_types VALUES (5, 3, 'nopalm', 'No Palm');
+INSERT INTO al2_types VALUES (6, 4, 'norss', 'No RSS');
+INSERT INTO al2_types VALUES (7, 5, 'nosubmit', 'No Story Submit');
+INSERT INTO al2_types VALUES (8, 6, 'trusted', 'Trusted');
+INSERT INTO al2_types VALUES (9, 7, 'proxy', 'Valid Proxy');
 
 
 #

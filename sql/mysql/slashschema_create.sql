@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.189 2005/02/22 17:33:36 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.190 2005/04/26 18:30:34 jamiemccarthy Exp $
 #
 
 #
@@ -118,6 +118,57 @@ CREATE TABLE accesslog_artcom (
 	c smallint unsigned NOT NULL DEFAULT '0',
 	INDEX uid (uid),
 	INDEX ts (ts)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'al2'
+#
+
+CREATE TABLE al2 (
+	srcid           BIGINT UNSIGNED NOT NULL DEFAULT '0',
+	value           INT UNSIGNED NOT NULL DEFAULT '0',
+	updatecount     INT UNSIGNED NOT NULL DEFAULT '0',
+	PRIMARY KEY (srcid)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'al2_log'
+#
+
+CREATE TABLE al2_log (
+	al2lid          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	srcid           BIGINT UNSIGNED NOT NULL DEFAULT '0',
+	ts              DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	adminuid        MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
+	al2tid          TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	val             ENUM('set', 'clear') DEFAULT NULL,
+	PRIMARY KEY (al2lid),
+	INDEX ts (ts),
+	INDEX srcid_ts (srcid, ts)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'al2_log_comments'
+#
+
+CREATE TABLE al2_log_comments (
+	al2lid          INT UNSIGNED NOT NULL DEFAULT '0',
+	comment         TEXT NOT NULL DEFAULT '',
+	PRIMARY KEY (al2lid)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'al2_types'
+#
+
+CREATE TABLE al2_types (
+	al2tid          TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	bitpos          TINYINT UNSIGNED DEFAULT NULL,
+	name            VARCHAR(30) NOT NULL DEFAULT '',
+	title           VARCHAR(64) NOT NULL DEFAULT '',
+	PRIMARY KEY (al2tid),
+	UNIQUE name (name),
+	UNIQUE bitpos (bitpos)
 ) TYPE=InnoDB;
 
 #

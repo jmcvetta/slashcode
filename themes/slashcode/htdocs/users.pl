@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.271 2005/04/26 18:30:52 jamiemccarthy Exp $
+# $Id: users.pl,v 1.272 2005/04/26 21:34:56 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -3140,7 +3140,7 @@ sub getUserAdmin {
 	} elsif ($field eq 'ipid') {
 		$user_edit->{nonuid} = 1;
 		$user_edit->{ipid} = $id;
-		$srcid = convert_srcid( 32 => $id );
+		$srcid = convert_srcid( ipid => $id );
 		$user_editfield = $id;
 		$uidstruct = $reader->getUIDStruct('ipid', $user_edit->{ipid});
 		@accesshits = $logdb->countAccessLogHitsInLastX('host_addr', $user_edit->{ipid}) if defined($logdb);
@@ -3154,7 +3154,7 @@ sub getUserAdmin {
 
 	} elsif ($field eq 'subnetid') {
 		$user_edit->{nonuid} = 1;
-		$srcid = convert_srcid( 24 => $id );
+		$srcid = convert_srcid( ipid => $id );
 		if ($id =~ /^(\d+\.\d+\.\d+)(?:\.\d)?/) {
 			$id = $1 . ".0";
 			$user_edit->{subnetid} = $id;

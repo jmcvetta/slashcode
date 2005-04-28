@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.60 2005/03/11 19:58:47 pudge Exp $
+# $Id: freshenup.pl,v 1.61 2005/04/28 19:34:33 pudge Exp $
 
 use File::Path;
 use File::Temp;
@@ -310,8 +310,8 @@ $task{$me}{code} = sub {
 	if ($do_setstories) {
 		for my $stoid (sort { $a <=> $b } keys %story_set) {
 			my $options = undef;
-			$options->{last_updated} = $story_set{last_updated}
-				if $story_set{last_updated};
+			$options->{last_update} = $story_set{$stoid}{last_update}
+				if $story_set{$stoid}{last_update};
 			my $set_ok = $slashdb->setStory($stoid, $story_set{$stoid}, $options);
 			if (!$set_ok) {
 				$logmsg .= "; setStory($stoid) '$set_ok'";

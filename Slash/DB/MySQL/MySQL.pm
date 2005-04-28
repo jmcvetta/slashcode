@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.770 2005/04/28 02:56:18 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.771 2005/04/28 19:30:26 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.770 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.771 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4276,8 +4276,9 @@ sub setStory {
 
 	# We always touch stories.last_update, even for writes that only
 	# affect story_text and story_param, _unless_ the change is only
-	# commentcount and hitparade (which may matter sometime in the
-	# future, I hope).
+	# commentcount, hitparade, or hits (which may matter sometime in the
+	# future, I hope), in which case we need to tell the table to
+	# keep the value the same.
 	# Note:  this isn't exactly right.  If the stories table is the
 	# only one being written to, we shouldn't set last_update
 	# manually, we should let it be set iff another column changes.
@@ -4285,8 +4286,12 @@ sub setStory {
 
 	if (!exists($change_hr->{last_update})
 		&& !exists($change_hr->{-last_update})) {
-		my @non_cchp = grep !/^(commentcount|hitparade)$/, keys %$change_hr;
-		$change_hr->{-last_update} = 'NOW()' if @non_cchp > 0;
+		my @non_cchp = grep !/^(commentcount|hitparade|hits)$/, keys %$change_hr;
+		if (@non_cchp > 0) {
+			$change_hr->{-last_update} = 'NOW()';
+		} else {
+			$change_hr->{-last_update} = 'last_update';
+		}
 	}
 
 	# If a topics_chosen change_hr was given, we write not just that,

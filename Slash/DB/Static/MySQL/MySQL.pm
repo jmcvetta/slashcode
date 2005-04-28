@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.216 2005/04/26 18:30:30 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.217 2005/04/28 19:30:38 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.216 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.217 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -375,7 +375,9 @@ sub forgetStoryTextRendered {
 	my $days_back = $constants->{freshenup_text_render_daysback} || 7;
 	return $self->sqlUpdate(
 		"story_text, stories",
-		{ rendered => undef },
+		{ rendered => undef,
+		  -last_update => 'last_update'
+		},
 		"story_text.stoid = stories.stoid
 		 AND rendered IS NOT NULL
 		 AND time < DATE_SUB(NOW(), INTERVAL $days_back DAY)");

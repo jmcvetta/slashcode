@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: oai.pl,v 1.2 2005/04/25 22:45:58 pudge Exp $
+# $Id: oai.pl,v 1.3 2005/04/28 19:54:35 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -22,7 +22,13 @@ sub main {
 	my $form      = getCurrentForm();
 	my $gSkin     = getCurrentSkin();
 
-	my $allowed = 1;  # XXX
+	my $allowed = 1;
+	if ($constants->{oai_allowed_ip} && $ENV{GATEWAY_INTERFACE}) {
+		$allowed = 0;
+		for my $ip (split /\|/, $constants->{oai_allowed_ip}) {
+			$allowed = 1, last if $user->{hostip} eq $ip;
+		}
+	}
 
 	if (!$allowed) {
 		redirect("$gSkin->{rootdir}/");

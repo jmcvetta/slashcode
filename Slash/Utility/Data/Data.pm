@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.155 2005/04/22 21:53:24 pudge Exp $
+# $Id: Data.pm,v 1.156 2005/04/28 19:29:07 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -54,7 +54,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.155 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1727,7 +1727,6 @@ sub approveTag {
 	my $constants = getCurrentStatic();
 
 	$wholetag =~ s/^\s*(.*?)\s*$/$1/; # trim leading and trailing spaces
-	$wholetag =~ s/\bstyle\s*=(.*)$//is; # go away please
 
 	# Take care of URL:foo and other HREFs
 	# Using /s means that the entire variable is treated as a single line
@@ -3988,4 +3987,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.155 2005/04/22 21:53:24 pudge Exp $
+$Id: Data.pm,v 1.156 2005/04/28 19:29:07 pudge Exp $

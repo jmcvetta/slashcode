@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.222 2005/04/26 18:30:34 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.223 2005/04/29 16:20:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1152,7 +1152,8 @@ sub submitComment {
 			}
 			$validator->isValid($test, {
 				data_type	=> 'comment',
-				data_id		=> $maxCid
+				data_id		=> $maxCid,
+				message		=> 1
 			}) if $validator;
 		}
 

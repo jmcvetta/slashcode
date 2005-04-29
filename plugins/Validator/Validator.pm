@@ -10,7 +10,7 @@
 # This source code is available under the license at:
 #     http://www.w3.org/Consortium/Legal/copyright-software
 #
-# $Id: Validator.pm,v 1.4 2005/04/16 01:30:51 pudge Exp $
+# $Id: Validator.pm,v 1.5 2005/04/29 16:20:48 pudge Exp $
 
 package Slash::Validator;
 
@@ -96,7 +96,7 @@ use vars qw($DEBUG $CFG $RSRC $VERSION $HAVE_IPC_RUN);
 
   #
   # Strings
-  ($VERSION    =  q$Revision: 1.4 $) =~ s/Revision: ([\d\.]+) /$1/;
+  ($VERSION    =  q$Revision: 1.5 $) =~ s/Revision: ([\d\.]+) /$1/;
 
 
 use Slash::Constants ':messages';
@@ -248,7 +248,7 @@ $File->{'Header'} = &prepSSI({
                              });
 $File->{'Footer'} = &prepSSI({
                               File => $CFG->{'Footer'},
-                              Date => q$Date: 2005/04/16 01:30:51 $,
+                              Date => q$Date: 2005/04/29 16:20:48 $,
                              });
 
 #
@@ -3472,9 +3472,9 @@ sub isValid {
 	my($self, $data, $opts) = @_;
 	my $File = $self->validate($data, $opts);
 
-	if (@{$File->{Errors}}) {
+	if (grep { $_->{type} ne 'W' } @{$File->{Errors}}) {
 		my $messages = getObject('Slash::Messages');
-		if ($messages) {
+		if ($messages && $opts->{message}) {
 			my $users = $messages->getMessageUsers(MSG_CODE_HTML_INVALID);
 			my $msg   = {
 				template_name	=> 'html_invalid',

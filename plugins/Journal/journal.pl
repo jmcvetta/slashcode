@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.101 2005/04/15 20:58:36 pudge Exp $
+# $Id: journal.pl,v 1.102 2005/04/29 16:20:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -717,7 +717,8 @@ sub saveArticle {
 		}
 		$validator->isValid($strip_art, {
 			data_type	=> 'journal',
-			data_id		=> $form->{id}
+			data_id		=> $form->{id},
+			message		=> 1
 		}) if $validator;
 	}
 

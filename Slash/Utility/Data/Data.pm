@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.156 2005/04/28 19:29:07 pudge Exp $
+# $Id: Data.pm,v 1.157 2005/04/29 16:20:09 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -54,7 +54,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -943,20 +943,36 @@ my %ansi_to_ascii = (
 );
 
 my %ansi_to_utf = (
+	128	=> 8364,
+	129	=> '',
+	130	=> 8218,
 	131	=> 402,
+	132	=> 8222,
 	133	=> 8230,
+	134	=> 8224,
+	135	=> 8225,
+	136	=> 710,
+	137	=> 8240,
 	138	=> 352,
+	139	=> 8249,
 	140	=> 338,
+	141	=> '',
 	142	=> 381,
+	143	=> '',
+	144	=> '',
 	145	=> 8216,
 	146	=> 8217,
 	147	=> 8220,
 	148	=> 8221,
+	149	=> 8226,
 	150	=> 8211,
 	151	=> 8212,
+	152	=> 732,
 	153	=> 8482,
 	154	=> 353,
+	155	=> 8250,
 	156	=> 339,
+	157	=> '',
 	158	=> 382,
 	159	=> 376,
 );
@@ -992,8 +1008,8 @@ sub _charsetConvert {
 	# entering &#147; or some such, if they feel they need to, it is
 	# to help catch it when browsers send non-Latin-1 data even though
 	# they shouldn't
-	$char = $ansi_to_utf{$char} if $ansi_to_utf{$char};
-	$str ||= sprintf('&#%u;', $char);
+	$char = $ansi_to_utf{$char} if exists $ansi_to_utf{$char};
+	$str ||= sprintf('&#%u;', $char) if length $char;
 	return $str;
 }
 
@@ -3987,4 +4003,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.156 2005/04/28 19:29:07 pudge Exp $
+$Id: Data.pm,v 1.157 2005/04/29 16:20:09 pudge Exp $

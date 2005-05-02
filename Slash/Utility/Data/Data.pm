@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.157 2005/04/29 16:20:09 pudge Exp $
+# $Id: Data.pm,v 1.158 2005/05/02 18:03:45 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -54,7 +54,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1754,7 +1754,8 @@ sub approveTag {
 	}
 
 	# Build the hash of approved tags
-	my $approvedtags = $Slash::Data::Utility::approveTag::admin && $constants->{approvedtags_admin}
+	# XXX someday maybe should be an option, not a global var ...
+	my $approvedtags = $Slash::Utility::Data::approveTag::admin && $constants->{approvedtags_admin}
 		? $constants->{approvedtags_admin}
 		: $constants->{approvedtags};
 	my %approved =
@@ -1770,12 +1771,12 @@ sub approveTag {
 		if ($replace{$t_lc} && $approved{ $replace{$t_lc} }) {
 			$t = $t_lc = $replace{$t_lc};
 		} else {
-			$Slash::Data::Utility::approveTag::removed->{$t_lc}++
+			$Slash::Utility::Data::approveTag::removed->{$t_lc}++
 				if $constants->{approveTag_debug};
 			return '';
 		}
 	}
-	
+
 	# These are now stored in a var approvedtags_attr
 	#
 	# A string in the format below:
@@ -1794,7 +1795,7 @@ sub approveTag {
 	# }
 	# this is decoded in Slash/DB/MySQL.pm getSlashConf
 
-	my $attr = $Slash::Data::Utility::approveTag::admin && $constants->{approvedtags_attr_admin}
+	my $attr = $Slash::Utility::Data::approveTag::admin && $constants->{approvedtags_attr_admin}
 		? $constants->{approvedtags_attr_admin}
 		: $constants->{approvedtags_attr};
 	$attr ||= {};
@@ -4003,4 +4004,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.157 2005/04/29 16:20:09 pudge Exp $
+$Id: Data.pm,v 1.158 2005/05/02 18:03:45 pudge Exp $

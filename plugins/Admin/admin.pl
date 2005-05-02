@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.251 2005/04/22 21:40:02 pudge Exp $
+# $Id: admin.pl,v 1.252 2005/05/02 18:03:58 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1341,7 +1341,7 @@ sub editStory {
 		$extracolumns = $slashdb->getNexusExtrasForChosen($chosen_hr);
 
 		for my $field (qw( introtext bodytext )) {
-			local $Slash::Data::Utility::approveTag::admin = 1;
+			local $Slash::Utility::Data::approveTag::admin = 1;
 			$storyref->{$field} = $slashdb->autoUrl($form->{section}, $storyref->{$field});
 			$storyref->{$field} = cleanSlashTags($storyref->{$field});
 			$storyref->{$field} = strip_html($storyref->{$field});
@@ -1948,7 +1948,7 @@ sub updateStory {
 	my $time = findTheTime();
 
 	for my $field (qw( introtext bodytext )) {
-		local $Slash::Data::Utility::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 1;
 		$form->{$field} = cleanSlashTags($form->{$field});
 		$form->{$field} = strip_html($form->{$field});
 		$form->{$field} = slashizeLinks($form->{$field});
@@ -2280,7 +2280,7 @@ sub saveStory {
 		if $form->{relatedtext} && $form->{relatedtext} =~ /^\s*<li>/;
 
 	for my $field (qw( introtext bodytext )) {
-		local $Slash::Data::Utility::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 1;
 		$form->{$field} = cleanSlashTags($form->{$field});
 		$form->{$field} = strip_html($form->{$field});
 		$form->{$field} = slashizeLinks($form->{$field});

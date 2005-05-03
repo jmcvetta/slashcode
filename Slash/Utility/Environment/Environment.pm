@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.166 2005/04/26 18:30:32 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.167 2005/05/03 19:47:59 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -99,6 +99,7 @@ use vars qw($VERSION @EXPORT);
 	get_srcid_sql_in
 	get_srcid_sql_out
 	get_srcid_type
+	get_srcid_vis
 	decode_srcid_prependbyte
 
 );
@@ -2942,6 +2943,27 @@ sub get_srcid_type {
 }
 
 #========================================================================
+
+=head2 get_srcid_vis
+
+Pass this a srcid, either in decimal form (which is what uids will
+typically be in) or as a 64-bit (16-char) hex string, and it will return
+a short text string suitable for display, typically as the text that
+is linked in HTML.
+
+For speed, does not do error-checking against the value passed in.
+
+=cut
+
+sub get_srcid_vis {
+	my($srcid) = @_;
+	my $type = get_srcid_type($srcid);
+	return $srcid if $type eq 'uid';
+	my $vislen = getCurrentStatic('id_md5_vislength') || 5;
+	return substr($srcid, 2, $vislen);
+}
+
+#========================================================================
 {my @prof;
 sub slashProf {
 	return unless getCurrentStatic('use_profiling');
@@ -3136,4 +3158,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.166 2005/04/26 18:30:32 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.167 2005/05/03 19:47:59 jamiemccarthy Exp $

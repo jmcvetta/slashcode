@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.26 2005/04/26 18:30:26 jamiemccarthy Exp $
+# $Id: Banlist.pm,v 1.27 2005/05/04 03:19:11 jamiemccarthy Exp $
 
 # This handler is called in the fourth Apache phase, access control.
 
@@ -17,7 +17,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -34,9 +34,9 @@ sub handler {
 
 	my $hostip = $r->connection->remote_ip;
 	my($cur_ip, $cur_subnet) = get_srcids({ ip => $hostip },
-		{ no_md5 => 1,	masks => [qw( ip subnet )] });
+		{ no_md5 => 1,	return_only => [qw( ip subnet )] });
 	my($cur_ipid, $cur_subnetid) = get_srcids({ ip => $hostip },
-		{ 		masks => [qw( ip subnet )] });
+		{ 		return_only => [qw( ip subnet )] });
 
 	# Set up DB objects.
 
@@ -52,6 +52,8 @@ sub handler {
 	# Abort this Apache request if this IP address is outright banned.
 
 	my $banlist = $reader->getBanList;
+#use Data::Dumper; $Data::Dumper::Sortkeys=1;
+#print STDERR "cur_ipid='$cur_ipid' cur_subnetid='$cur_subnetid' banlist: " . Dumper($banlist);
 	if ($banlist->{$cur_ipid} || $banlist->{$cur_subnetid}) {
 		# Send a special "you are banned" page if the user is
 		# hitting RSS.

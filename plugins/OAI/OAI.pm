@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: OAI.pm,v 1.4 2005/04/28 19:54:35 pudge Exp $
+# $Id: OAI.pm,v 1.5 2005/05/04 17:10:48 pudge Exp $
 
 package Slash::XML::OAI;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our %Verbs = (
 	GetRecord		=> \&GetRecord,
@@ -303,9 +303,9 @@ my @elements = qw(
 
 my @descriptions;
 push @descriptions, <<'EOT';
-   <oai-identifier 
-    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier 
-    http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
+   <oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
    <scheme>oai</scheme>
    <repositoryIdentifier>DLIST.OAI2</repositoryIdentifier>
    <delimiter>:</delimiter>
@@ -437,8 +437,7 @@ sub head {
 <?xml version="1.0" encoding="UTF-8" ?>
 <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
-         http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
  <responseDate>$date</responseDate>
  <request$args>$url</request>
 $third
@@ -546,12 +545,10 @@ EOT
 		next if $options->{verb} eq 'ListIdentifiers';
 		$xml .= <<'EOT';
    <metadata>
-    <oai_dc:dc
-     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-     xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/
-     http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+               xmlns:dc="http://purl.org/dc/elements/1.1/"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
 EOT
 
 		# same on all: publisher, rights, type, format, language
@@ -675,4 +672,4 @@ Slash(3), Slash::XML(3), L<http://www.openarchives.org/OAI/openarchivesprotocol.
 
 =head1 VERSION
 
-$Id: OAI.pm,v 1.4 2005/04/28 19:54:35 pudge Exp $
+$Id: OAI.pm,v 1.5 2005/05/04 17:10:48 pudge Exp $

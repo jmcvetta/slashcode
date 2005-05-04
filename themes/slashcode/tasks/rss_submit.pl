@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: rss_submit.pl,v 1.10 2005/03/11 19:58:47 pudge Exp $
+# $Id: rss_submit.pl,v 1.11 2005/05/04 18:48:09 pudge Exp $
 
 use strict;
 
@@ -41,11 +41,13 @@ $task{$me}{code} = sub {
 			++$non_autosubmit;
 		} else {
 			my $blockskin = $slashdb->getSkin($block->{skin});
+			# createSubmission expects much of the data to be filtered
+			# already.  so deal!
 			my $submission = {
-				email	=> $rss->{link},
-				name	=> $block->{title},
+				email	=> strip_attribute($rss->{link}),
+				name	=> strip_nohtml($block->{title}),
 				story	=> $description,
-				subj	=> $rss->{title},
+				subj	=> strip_attribute($rss->{title}),
 				primaryskid => $blockskin->{skid},
 			};
 			$subid = $slashdb->createSubmission($submission);

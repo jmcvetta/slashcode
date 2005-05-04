@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.169 2005/05/04 03:17:26 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.170 2005/05/04 03:37:43 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.170 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2609,6 +2609,7 @@ sub get_srcids {
 		if (!defined($no_md5)) {
 			# Error in options passed.
 			warn "Error in options passed to get_srcids";
+#use Data::Dumper; $Data::Dumper::Sortkeys=1; print STDERR "options: " . Dumper($options);
 			return undef;
 		}
 		if (!$ip) {
@@ -2724,13 +2725,14 @@ sub _get_srcids_options {
 				if ($mask_size_name{$k}) {
 					# It's the name of a valid mask.
 					push @ret, $mask_size_name{$k};
-				} elsif ( $mask_size_name{"{$k}id"} ) {
+				} elsif ( $mask_size_name{"${k}id"} ) {
 					# It's the name of a valid mask
 					# minus the "id", which is close
 					# enough.
 					push @ret, $mask_size_name{"${k}id"};
 				} else {
 					# Invalid value, abort.
+#use Data::Dumper; $Data::Dumper::Sortkeys=1; print STDERR "k='$k' options: " . Dumper($options);
 					return undef;
 				}
 			}
@@ -3161,4 +3163,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.169 2005/05/04 03:17:26 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.170 2005/05/04 03:37:43 jamiemccarthy Exp $

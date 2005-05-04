@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.168 2005/05/04 03:15:14 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.169 2005/05/04 03:17:26 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2898,6 +2898,7 @@ Pass this the name of a column with srcid data, and it returns the SQL
 necessary to retrieve data from that column in srcid format.  The
 column data is returned in decimal format if it can be represented in
 decimal in an ordinarily-compiled perl, as a hex string otherwise.
+"Non-decimal characters in the result will be uppercase," say the docs.
 
 Usage:
 
@@ -3160,4 +3161,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.168 2005/05/04 03:15:14 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.169 2005/05/04 03:17:26 jamiemccarthy Exp $

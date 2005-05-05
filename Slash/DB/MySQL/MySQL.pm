@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.772 2005/05/03 19:47:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.773 2005/05/05 00:46:12 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.772 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.773 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4632,7 +4632,6 @@ sub createFormkey {
 	my $last_submitted = $self->getLastTs($formname, 1);
 
 	my $formkey = "";
-#	my $num_tries = 50; # XXXSRCID - it's silly for us to keep this so high
 	my $num_tries = 10;
 	while (1) {
 		$formkey = getFormkey();

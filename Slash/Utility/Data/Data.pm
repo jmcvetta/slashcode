@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.158 2005/05/02 18:03:45 pudge Exp $
+# $Id: Data.pm,v 1.159 2005/05/10 20:06:15 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -23,6 +23,10 @@ LONG DESCRIPTION.
 =head1 EXPORTED FUNCTIONS
 
 =cut
+
+BEGIN {
+#	$HTML::TreeBuilder::DEBUG = 2;
+}
 
 use strict;
 use Date::Format qw(time2str);
@@ -54,7 +58,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.159 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1813,8 +1817,11 @@ sub approveTag {
 			grep { $allowed{$_}{req} }
 			keys   %allowed;
 
-		my $tree = HTML::TreeBuilder->new_from_content("<$wholetag>");
-		my($elem) = $tree->look_down(_tag => 'body')->content_list;
+		my $tree = HTML::TreeBuilder->new; #_from_content("<$wholetag>");
+		$tree->implicit_tags(0);
+		$tree->parse("<$wholetag>");
+		$tree->eof;
+		my $elem = $tree->look_down(_tag => $t_lc);
 		# look_down() can return a string for some kinds of bogus data
 		return "" unless $elem && ref($elem) eq 'HTML::Element';
 		my @attr_order =
@@ -1830,7 +1837,7 @@ sub approveTag {
 			next unless $allowed{$a_lc};
 			my $data = $attr_data{$a_lc};
 			$data = fudgeurl($data) if $allowed{$a_lc}{url};
-			next unless $data;
+			next unless length $data;
 			$wholetag .= qq{ $a_lc="$data"};
 			++$found{$a_lc} if $required{$a_lc};
 		}
@@ -2507,7 +2514,7 @@ sub balanceTags {
 				# text and then loop back to catch it properly
 				# XXX we could optimize here so we don't need to loop back
 				} else {
-					_substitute(\$html, $whole, "</$stack[-1]>", 1);
+					_substitute(\$html, $whole, "</$stack[-1]>", 1, 1);
 				}
 
 			# Close tag not on stack; just delete it, since it is
@@ -2573,7 +2580,8 @@ sub balanceTags {
 								$newtag .= "</$pop>";
 								last if $needs_list{$pop};
 							}
-							_substitute(\$html, $whole, $newtag . $whole);
+							_substitute(\$html, $whole, $newtag, 0, 1);
+							_substitute(\$html, '', $whole);
 							last;
 						}
 					}
@@ -2654,9 +2662,22 @@ sub balanceTags {
 
 sub _removeEmpty {
 	my($html) = @_;
-	my $p = getCurrentStatic('xhtml') ? '<p />' : '<p>';
+	my $p    = getCurrentStatic('xhtml') ? '<p />' : '<p>';
+	my $ws_re = qr{(?: \s | </? (?:br|p) (?:\ /)?> )*}x;
+
 	$$html =~ s|<p>\s*</p>|$p|g;
-	$$html =~ s|<(\w+)>\s*</\1>||g;
+	while ($$html =~ m|<(\w+)>\s*</\1>|) {
+		$$html =~ s|<(\w+)>\s*</\1>\s*||g;
+	}
+
+	# for now, only remove <br> and <p> as whitespace inside
+	# lists, where we are more likely to mistakenly run into it,
+	# where it will cause more problems
+	for my $re (values %lists_re) {
+		while ($$html =~ m|<($re)>$ws_re</\1>|) {
+			$$html =~ s|<($re)>$ws_re</\1>\s*||g;
+		}
+	}
 }
 
 
@@ -2703,7 +2724,10 @@ sub _validateLists {
 				# if open tag ...
 				if ($tag =~ /^(?:$re)$/) {
 					# add new close tag if we are current inside a tag
-					_substitute(\$content, $whole, "</$in>$whole") if $in;
+					if ($in) {
+						_substitute(\$content, $whole, "</$in>", 0, 1);
+						_substitute(\$content, '', $whole);
+					}
 					# set new open tag
 					$in = $tag;
 					next;
@@ -2730,7 +2754,7 @@ sub _validateLists {
 		}
 
 		# now done with loop, so add rest of $in if there is any
-		$content .= "</$in>" if $in;
+		$content =~ s|(\s+)?$|</$in>$1| if $in;
 
 		# we have nesting to deal with, so replace this part
 		# with a temporary token and cache the result in the hash
@@ -2752,14 +2776,28 @@ sub _validateLists {
 # put a string into the current position in that string, and update
 # pos() accordingly
 sub _substitute {
-	my($full, $old, $new, $zeropos) = @_;
+	my($full, $old, $new, $zeropos, $ws_backup) = @_;
 	# zeropos is for when we add a close tag or somesuch, but don't touch
 	# the stack, and just let the code handle it by keeping pos right in
 	# front of the new tag
 
-	my $len  = length $old;
-
+	my $len = length $old;
 	my $p = pos($$full) - $len;
+
+	# back up insert past whitespace
+	if ($ws_backup) {
+		my $o = $p;
+		while (substr($$full, $p-1, 1) =~ /\s/) {
+			# just in case
+			last if $p == 0;
+			$p--;
+			$len++ unless $zeropos;
+		}
+		if (!$zeropos && $p != $o) {
+			$new .= substr($$full, $p, $o-$p);
+		}
+	}
+
 	substr($$full, $p, ($zeropos ? 0 : $len)) = $new;
 	pos($$full) = $p + ($zeropos ? 0 : length($new));
 }
@@ -4004,4 +4042,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.158 2005/05/02 18:03:45 pudge Exp $
+$Id: Data.pm,v 1.159 2005/05/10 20:06:15 pudge Exp $

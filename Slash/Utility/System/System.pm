@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: System.pm,v 1.31 2005/03/11 19:58:01 pudge Exp $
+# $Id: System.pm,v 1.32 2005/05/10 21:53:49 pudge Exp $
 
 package Slash::Utility::System;
 
@@ -40,7 +40,7 @@ use Time::HiRes ();
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	bulkEmail
 	doEmail
@@ -394,9 +394,14 @@ sub save2file {
 		return if $current eq $new;
 	}
 
-	open my $fh, '>', $file or die "Can't open > $file: $!";
-	print $fh $data;
-	close $fh;
+	if (open my $fh, '>', $file) {
+		print $fh $data;
+		close $fh;
+		return 1;
+	} else {
+		warn "Can't open > $file: $!";
+		return 0;
+	}
 }
 
 
@@ -540,4 +545,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: System.pm,v 1.31 2005/03/11 19:58:01 pudge Exp $
+$Id: System.pm,v 1.32 2005/05/10 21:53:49 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.26 2005/04/13 18:50:00 pudge Exp $
+# $Id: RSS.pm,v 1.27 2005/05/12 03:13:52 jamiemccarthy Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -494,11 +494,13 @@ sub rss_item_description {
 
 sub _tag_link {
 	my($link) = @_;
-	if ($link =~ /\?/) {
-		$link .= '&from=rss';
+	my $uri = URI->new($link);
+	if (my $orig_query = $uri->query) {
+		$uri->query("$orig_query&from=rss");
 	} else {
-		$link .= '?from=rss';
+		$uri->query("from=rss");
 	}
+	return $uri->as_string;
 }
 
 1;
@@ -512,4 +514,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.26 2005/04/13 18:50:00 pudge Exp $
+$Id: RSS.pm,v 1.27 2005/05/12 03:13:52 jamiemccarthy Exp $

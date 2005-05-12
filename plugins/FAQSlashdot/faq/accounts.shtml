@@ -5,7 +5,7 @@
 <!--#include virtual="/slashhead.inc"-->
 
 <!--
-($VERSION) = '$Id: accounts.shtml,v 1.12 2004/07/07 13:47:02 cowboyneal Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: accounts.shtml,v 1.13 2005/05/12 03:34:58 jamiemccarthy Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <TABLE>
@@ -255,7 +255,8 @@ web browser rendering. <br>
     severity of the abuse, you should be back in a couple of days.
     If, after 72 hours, you are still banned, please Email <a
     href="mailto:banned@slashdot.org">banned@slashdot.org</a> and ask
-    for help. Please include the approximate time of the ban, the MD5
+    for help. Please include the approximate time of the ban, the
+    srcid hex string
     that the ban message told you to tell us, and what <em>you</em>
     think your IP number is.
 

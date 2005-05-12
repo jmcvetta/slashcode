@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.170 2005/05/04 03:37:43 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.171 2005/05/12 02:42:10 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.170 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2582,7 +2582,7 @@ The uid and/or ip converted to an encoded hashref.  If a uid was passed
 in, the field "uid" stores the converted uid (which happens to be the
 uid itself).  If an ip was passed in, there will be one or more fields
 whose names are integer values between 1 and 32 and whose values are
-64-bit (16-char) hex strings with the encoded values of the ip.
+64-bit (16-char) lowercase hex strings with the encoded values of the ip.
 There will also be the convenience field "ip" set which contains the
 original ip value passed in.  (But see OPTIONS:  if return_only is set,
 only one of the fields of the hashref will be returned.)
@@ -2651,7 +2651,7 @@ sub get_srcids {
 			} else {
 				my $md5 = md5_hex($str);
 				my $md5_trunc = substr($md5, 0, 14);
-				$val = uc("$prepend_code$md5_trunc");
+				$val = lc("$prepend_code$md5_trunc");
 			}
 			$retval->{$mask} = $val;
 		}
@@ -2684,7 +2684,7 @@ sub convert_srcid {
 	return $old_id_str if $type eq 'uid';
 	# IPIDs get a prepended byte and a truncate.
 	if ($type =~ /^(ipid|subnetid)$/) {
-		my $str_trunc = substr($old_id_str, 0, 14);
+		my $str_trunc = lc(substr($old_id_str, 0, 14));
 		my $prependbyte = get_srcid_prependbyte({
 			type => 'ipid',
 			mask => $mask_size_name{$type}
@@ -2900,7 +2900,8 @@ Pass this the name of a column with srcid data, and it returns the SQL
 necessary to retrieve data from that column in srcid format.  The
 column data is returned in decimal format if it can be represented in
 decimal in an ordinarily-compiled perl, as a hex string otherwise.
-"Non-decimal characters in the result will be uppercase," say the docs.
+"Non-decimal characters in the result will be uppercase," say the docs,
+so we lowercase them.
 
 Usage:
 
@@ -2911,7 +2912,7 @@ $slashdb->sqlSelectColArrayref(get_srcid_sql_out('srcid') . ' AS srcid',
 
 sub get_srcid_sql_out {
 	my($colname) = @_;
-	return "IF($colname < (1 << 31), $colname, CONV($colname, 10, 16))";
+	return "IF($colname < (1 << 31), $colname, LOWER(CONV($colname, 10, 16)))";
 }
 
 #========================================================================
@@ -3163,4 +3164,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.170 2005/05/04 03:37:43 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.171 2005/05/12 02:42:10 jamiemccarthy Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.190 2005/04/26 18:30:34 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.191 2005/05/12 21:01:38 jamiemccarthy Exp $
 #
 
 #
@@ -144,7 +144,8 @@ CREATE TABLE al2_log (
 	val             ENUM('set', 'clear') DEFAULT NULL,
 	PRIMARY KEY (al2lid),
 	INDEX ts (ts),
-	INDEX srcid_ts (srcid, ts)
+	INDEX srcid_ts (srcid, ts),
+	INDEX al2tid_val_adminuid_srcid (al2tid, val, adminuid, srcid)
 ) TYPE=InnoDB;
 
 #

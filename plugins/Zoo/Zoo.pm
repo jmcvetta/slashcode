@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.47 2005/03/11 19:58:22 pudge Exp $
+# $Id: Zoo.pm,v 1.48 2005/05/17 17:52:37 jamiemccarthy Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -93,6 +93,7 @@ sub setFoe {
 sub _set {
 	my($self, $uid, $person, $type, $const) = @_;
 	my $slashdb = getCurrentDB();
+
 #Removed this, since when we make the relationship it will now swap whatever bits we 
 #need swapped, this no longer matters. -Brian
 #	# Lets see if we need to wipe out a relationship first....
@@ -100,6 +101,7 @@ sub _set {
 #	# We need to check to see if type has value to make sure we are not looking at fan or freak
 #	$self->delete($uid, $person, $current_standing->{type})
 #		if ($current_standing && $current_standing->{type});
+
 	# First we do the main person
 	# We insert to make sure a position exists for this relationship and then we update.
 	# If I ever removed freak/fan from the table this could be done as a replace.
@@ -116,12 +118,24 @@ sub _set {
 	$self->sqlInsert('people', { uid => $person,  person => $uid }, { ignore => 1});
 	$self->sqlUpdate('people', { perceive => $s_type }, "uid = $person AND person = $uid");
 
+	# Mark other users as dirty (needing to be changed) as 
+	# appropriate, but do it a few at a time with a short
+	# sleep between, to avoid bogging the master DB or
+	# lagging its slave DBs.  Yes, this method is called
+	# by interactive code, not (just) the backend, so I
+	# don't really like adding the sleep(), but we still
+	# need to do this.
 	my $uid_ar = $self->sqlSelectColArrayref('uid', 'people',
 		"person=$uid AND type='friend'");
 	push @$uid_ar, $person;
-	my $uid_list = join (',', @$uid_ar);
-	$self->sqlUpdate("users_info", { people_status => 'dirty' }, "uid IN ($uid_list)");
-	$self->setUser_delete_memcached($uid_ar);
+	my $splice_count = 100;
+	while (@$uid_ar) {
+		my @uid_chunk = splice @$uid_ar, 0, $splice_count;
+		my $uid_list = join (',', @uid_chunk);
+		$self->sqlUpdate("users_info", { people_status => 'dirty' }, "uid IN ($uid_list)");
+		$self->setUser_delete_memcached($uid_ar);
+		Time::HiRes::sleep(0.2);
+	}
 }
 
 

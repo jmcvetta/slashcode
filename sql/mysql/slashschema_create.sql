@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.193 2005/05/17 17:53:20 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.194 2005/05/17 18:58:48 jamiemccarthy Exp $
 #
 
 #
@@ -131,7 +131,8 @@ CREATE TABLE al2 (
 	srcid           BIGINT UNSIGNED NOT NULL DEFAULT '0',
 	value           INT UNSIGNED NOT NULL DEFAULT '0',
 	updatecount     INT UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY (srcid)
+	PRIMARY KEY (srcid),
+	INDEX value (value)
 ) TYPE=InnoDB;
 
 #

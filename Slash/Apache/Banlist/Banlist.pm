@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.28 2005/05/04 21:59:57 jamiemccarthy Exp $
+# $Id: Banlist.pm,v 1.29 2005/05/17 17:51:45 jamiemccarthy Exp $
 
 # This handler is called in the fourth Apache phase, access control.
 
@@ -17,7 +17,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -124,6 +124,7 @@ sub _send_rss {
 # templates don't work with Slash::XML right now,
 # and redirecting will cause *more* traffic than
 # just spitting it out here; so cache it in $RSS_*
+# XXX that really should be a cache that eventually expires
 my(%RSS);
 
 sub _get_rss_msg {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.192 2005/05/12 21:08:50 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.193 2005/05/17 17:53:20 jamiemccarthy Exp $
 #
 
 #
@@ -122,6 +122,9 @@ CREATE TABLE accesslog_artcom (
 
 #
 # Table structure for table 'al2'
+# (The 'value' column could and should be of type BIT(32), if
+# Slash required MySQL 5.0.5 or later.  Since we don't, the
+# code in MySQL.pm treats the INT UNSIGNED like a bit field.)
 #
 
 CREATE TABLE al2 (

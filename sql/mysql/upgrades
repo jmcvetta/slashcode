@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.800 2005/05/19 16:21:39 pudge Exp $
+# $Id: upgrades,v 1.801 2005/05/20 15:50:35 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3019,4 +3019,7 @@ ALTER TABLE al2 ADD INDEX value (value);
 # SLASHDOT LAST UPDATED HERE
 
 # End of T_2_5_0_65, Start of T_2_5_0_66 - 2005/05/17
+
+SELECT @maxbitpos := MAX(bitpos) FROM al2_types;
+INSERT INTO al2_types VALUES (NULL, @maxbitpos+1, 'nopostanon', 'No Comment Post Anon');
 

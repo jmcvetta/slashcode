@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.775 2005/05/17 18:58:45 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.776 2005/05/20 15:50:35 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.775 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.776 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1978,6 +1978,8 @@ sub createAccessLog {
 	if (!$ipid || !$subnetid) {
 		($ipid, $subnetid) = get_ipids($r->connection->remote_ip);
 	}
+#use Data::Dumper; $Data::Dumper::Sortkeys=1;
+#print STDERR scalar(localtime) . " createAccessLog pid=$$ op='$op' dat='$dat' status='$status' ipid='$ipid' subnetid='$subnetid' gCUi='" . getCurrentUser('ipid') . "' gCUs='" . getCurrentUser('subnetid') . "' r->c->r_i='" . ($r->connection->remote_ip) . "' srcids: " . Dumper(getCurrentUser('srcids'));
 
 	if ( $op eq 'index' && $dat =~ m|^([^/]*)| ) {
 		my $firstword = $1;
@@ -5852,6 +5854,10 @@ sub setAL2 {
 
 	my $al2types = $self->getAL2Types;
 	my $srcid_sql_in = get_srcid_sql_in($srcid);
+#if (!$srcid_sql_in) {
+#use Data::Dumper; $Data::Dumper::Sortkeys = 1;
+#print STDERR "srcid=$srcid srcid_sql_in=$srcid_sql_in for type_hr: " . Dumper($type_hr);
+#}
 	# First check the al2 table to get an updatecount for any
 	# existing row for this srcid.  It's quite possible there
 	# is none, which is fine.
@@ -5871,8 +5877,6 @@ sub setAL2 {
 		sort { $a <=> $b }
 		map { $al2types->{$_}{al2tid} }
 		keys %$type_hr;
-#use Data::Dumper; $Data::Dumper::Sortkeys = 1;
-#print STDERR "srcid=$srcid srcid_sql_in=$srcid_sql_in types='@types' for type_hr: " . Dumper($type_hr);
 	for my $type (@types) {
 		# undef for a type field means "don't change or log anything"
 		next if !defined $type_hr->{$type};
@@ -5948,9 +5952,10 @@ sub createAL2Log {
 		al2tid =>	$al2tid,
 		val =>		$val,
 	});
-	if (!$rows) {
-		warn scalar(localtime) . " $$ createAL2Log log insert failed '$hr->{srcid_sql_in}'";
-	}
+#	if (!$rows) {
+#		use Data::Dumper; $Data::Dumper::Sortkeys = 1;
+#		warn scalar(localtime) . " $$ createAL2Log log insert failed for hr: " . Dumper($hr);
+#	}
 	if ($rows && $hr->{type} eq 'comment') {
 		# The type named 'comment' is a special case:  we insert
 		# a row into al2_log_comments as well.
@@ -6099,6 +6104,16 @@ sub getAL2Comments {
 
 sub checkAL2 {
 	my($self, $srcids, $type) = @_;
+
+	# If the caller is querying about a type that does not
+	# exist for this site, that's OK, it just means that no
+	# srcid can have it.  So we can return without querying
+	# the DB.
+	my $types = $self->getAL2Types();
+	return 0 if !exists $types->{$type};
+
+	# It's at least possible that the srcids have this type,
+	# so run the check.
 	my $data = $self->getAL2($srcids);
 	return $data->{$type} ? 1 : 0;
 }

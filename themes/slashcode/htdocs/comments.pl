@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.223 2005/04/29 16:20:48 pudge Exp $
+# $Id: comments.pl,v 1.224 2005/05/20 15:50:35 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -488,11 +488,23 @@ sub validateComment {
 	}
 
 	my $srcids_to_check = $user->{srcids};
+
 	# We skip the UID test for anonymous users (anonymous posting
 	# is banned by setting nopost for the anonymous uid, and we
 	# want to check that separately elsewhere).
 	delete $srcids_to_check->{uid} if $user->{is_anon};
-	my $read_only = $reader->checkAL2($srcids_to_check, 'nopost');
+
+	# If the user is anonymous, check to see whether anonymous
+	# posting is turned off for this srcid.
+	my $read_only = 0;
+	$read_only = 1 if $user->{is_anon}
+		&& $reader->checkAL2($srcids_to_check, 'nopostanon');
+
+	# Whether the user is anonymous or not, check to see whether
+	# all posting is turned off for this srcid.
+	$read_only ||= $reader->checkAL2($srcids_to_check, 'nopost');
+
+	# If posting is disabled, return the error message.
 	if ($read_only) {
 		$$error_message = getError('readonly');
 		$form_success = 0;

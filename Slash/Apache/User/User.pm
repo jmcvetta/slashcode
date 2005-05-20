@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.126 2005/04/26 21:24:35 pudge Exp $
+# $Id: User.pm,v 1.127 2005/05/20 15:50:35 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -157,17 +157,18 @@ sub handler {
 			$logtoken = $form->{logtoken};
 		}
 
-		# Don't allow login attempts from IPIDs that have been marked
-		# as "nopost" -- those are mostly open proxies.  Check both
-		# the ipid and the subnetid (we can't use values in $user
-		# because that doesn't get set up until prepareUser is called,
-		# later in this function).  XXXSRCID: really should have a
-		# separate 'openproxy' attribute instead of piggybacking off
-		# 'nopost'.
+		# Don't allow login attempts from IPIDs that have been
+		# marked as "nopost" or "nopostanon" -- those are mostly
+		# open proxies.	Check both the ipid and the subnetid (we
+		# can't use values in $user because that doesn't get set
+		# up until prepareUser is called, later in this function).
+		# XXXSRCID: really should have a separate 'openproxy'
+		# attribute instead of piggybacking off 'nopost'.
 		my $read_only = 0;
 		my $hostip = $r->connection->remote_ip;
 		my $srcids = get_srcids({ ip => $hostip });
-		$read_only = 1 if $reader->checkAL2($srcids, 'nopost');
+		$read_only = 1 if $reader->checkAL2($srcids, 'nopost')
+			|| $reader->checkAL2($srcids, 'nopostanon');
 
 		my $newpass;
 		if ($read_only || !$tmpuid) {

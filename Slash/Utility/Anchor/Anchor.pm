@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.79 2005/05/20 15:50:05 jamiemccarthy Exp $
+# $Id: Anchor.pm,v 1.80 2005/05/24 19:09:50 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -663,6 +663,7 @@ EOT
 	if ($num == 2 && $need_box) {
 		# we need the ad wrapped in a fancybox
 		if (defined $user->{state}{ad}{$num}
+			&& $user->{state}{ad}{$num} =~ /\S/
 			&& $user->{state}{ad}{$num} !~ /^<!-- no pos/
 			&& $user->{state}{ad}{$num} !~ /^<!-- (?:fDA )place/) {
 			# if we're called from shtml, we won't have colors
@@ -670,7 +671,7 @@ EOT
 			# box.				-- Pater
 			getSkinColors() unless $user->{colors};
 
-			return fancybox($constants->{fancyboxwidth}, 'Advertisement', "<CENTER>" . $user->{state}{ad}{$num} . "</CENTER>", 1, 1);
+			return fancybox($constants->{fancyboxwidth}, 'Advertisement', '<div align="center">' . $user->{state}{ad}{$num} . '</div>', 1, 1);
 		} else { return ""; }
 	} else {
 		return $user->{state}{ad}{$num} || "";
@@ -751,4 +752,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.79 2005/05/20 15:50:05 jamiemccarthy Exp $
+$Id: Anchor.pm,v 1.80 2005/05/24 19:09:50 pudge Exp $

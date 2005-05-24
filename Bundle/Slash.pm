@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.39 2005/03/29 19:02:04 pudge Exp $
+# $Id: Slash.pm,v 1.40 2005/05/24 19:10:24 pudge Exp $
 #
 
 $Bundle::Slash::VERSION = '2.51';
@@ -127,6 +127,6 @@ Our optional modules, which are not required for a default install
 and thus not installed by default, but which may become required as
 you edit your site configuration, are: Cache::Memcached Silly::Werder
 GD GD::Text GD::Graph Apache::SSI Apache::RegistryFilter GraphViz
-Net::IRC Proc::ProcessTable
+Net::IRC Proc::ProcessTable Net::Jabber IO::Socket::SSL
 
 =cut

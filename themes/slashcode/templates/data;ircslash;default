@@ -20,7 +20,7 @@ __template__
 [% SWITCH value %]
 
 [% CASE 'help' %]
-	Commands: help, [un]hush, [un]ignore, slashd, ping, who, whois (uid|nick), quote (symbol), dbs, [% IF plugins.daddypants %], daddypants [now|next|today|tomorrow|n days][% END %]
+	Commands: help, [un]hush, [un]ignore, slashd, ping, who, whois (uid|nick), lcr [SITE], lcrset SITE TAG, quote (symbol), dbs, [% IF plugins.daddypants %], daddypants [now|next|today|tomorrow|n days][% END %]
 
 [% CASE 'exiting' %]
 	Exiting (slashd should restart me within a minute)
@@ -91,6 +91,18 @@ __template__
 [% CASE 'dbs_nodata' %]
 	Error: no dbs_readerstatus data found within the last minute.
 
+[% CASE 'lcr_ok' %]
+	[% '/topic ' IF topic %]LCR: [% FOREACH site = lcrs;
+	site.site.uc %]: [% IF site.date; Slash.timeCalc(site.date, "%L/%e %l%p");
+	END %] [% site.tag || "no tag";
+	%][% UNLESS loop.last %] -- [% END; END %]
+
+[% CASE 'lcr_not_found' %]
+	LCR: [% site %] not found
+
+[% CASE 'na' %]
+	Don't understand request, try "help"
+
 [% CASE DEFAULT %]
 	-- MISSING USER MESSAGE SEGMENT -- [[% value %]] block not found.
 
@@ -99,4 +111,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;ircslash;default,v 1.11 2004/12/22 19:41:13 jamiemccarthy Exp $
+$Id: data;ircslash;default,v 1.12 2005/05/24 19:10:26 pudge Exp $

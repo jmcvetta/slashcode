@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.32 2005/03/11 19:57:23 pudge Exp $
+# $Id: Log.pm,v 1.33 2005/05/25 16:10:58 cowboyneal Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -146,9 +146,9 @@ sub UserLog {
 	$slashdb->setUser($user->{uid}, $user_update) if $user_update && %$user_update;
 
 	# stats for clampe
-        if ($constants->{clampe_stats} && $user->{uid} > 827000 && $user->{uid} < 832000) {
-                my $fname = catfile('clampe', $user->{uid});
-                my $comlog = "URL: $ENV{REQUEST_URI} IPID: $user->{ipid} UID: $user->{uid} Dispmode: $user->{mode} Thresh: $user->{threshold} Karma: $user->{karma}";
+        if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME} && $user->{currentPage} =~ /users|index|comments|article/) {
+                my $fname = catfile('clampe', $user->{ipid});
+                my $comlog = "URL: $ENV{REQUEST_URI} Page: $user->{currentPage} UID: $user->{uid} Dispmode: $user->{mode} Thresh: $user->{threshold} Sort: $user->{commentsort} SaveChanges: $form->{savechanges}";
                 doClampeLog($fname, [$comlog]);
         }
 

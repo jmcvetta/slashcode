@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.160 2005/05/23 17:06:09 pudge Exp $
+# $Id: Data.pm,v 1.161 2005/05/25 14:51:06 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -58,7 +58,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2651,8 +2651,9 @@ sub balanceTags {
 
 	# cheap and easy hack to make sure everything in a blockquote is also
 	# inside another block element; extra divs don't hurt anything
-	$html =~ s|<blockquote> (?!<div>)|<blockquote><div>|gi;
-	$html =~ s|(?<!</div>) </blockquote>|</div></blockquote>|gi;
+	### assumes a space between tags, put in by strip_*
+	$html =~ s|<blockquote>(?! <div>)|<blockquote><div>|gi;
+	$html =~ s|(?<!</div> )</blockquote>|</div></blockquote>|gi;
 
 	_validateLists(\$html);
 	_removeEmpty(\$html);
@@ -4042,4 +4043,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.160 2005/05/23 17:06:09 pudge Exp $
+$Id: Data.pm,v 1.161 2005/05/25 14:51:06 pudge Exp $

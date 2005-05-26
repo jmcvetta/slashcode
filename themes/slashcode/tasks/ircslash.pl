@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.25 2005/05/24 19:10:25 pudge Exp $
+# $Id: ircslash.pl,v 1.26 2005/05/26 02:56:16 pudge Exp $
 
 use strict;
 
@@ -21,6 +21,7 @@ use vars qw(
 	$remarks_active	$next_remark_id	$next_handle_remarks
 );
 
+$! = 0;
 $task{$me}{timespec} = '* * * * *';
 $task{$me}{on_startup} = 1;
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -28,8 +29,6 @@ $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;
 	return unless $constants->{ircslash} || $constants->{jabberslash};
 
-	require Net::IRC if $constants->{ircslash};
-	require Net::Jabber if $constants->{jabberslash};
 	$has_proc_processtable ||= eval { require Proc::ProcessTable };
 
 	my $start_time = time;
@@ -88,6 +87,8 @@ sub ircinit {
 	my $constants = getCurrentStatic();
 	return 0 unless $constants->{ircslash};
 
+	require Net::IRC;
+
 	my $server =	$constants->{ircslash_server}
 				|| 'irc.slashnet.org';
 	my $port =	$constants->{ircslash_port}
@@ -130,6 +131,8 @@ sub ircinit {
 sub jabberinit {
 	my $constants = getCurrentStatic();
 	return 0 unless $constants->{jabberslash};
+
+	require Net::Jabber;
 
 	$jserver =	$constants->{jabberslash_server}
 				|| 'jabber.org';

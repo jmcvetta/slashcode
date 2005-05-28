@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.23 2005/03/11 19:58:08 pudge Exp $
+# $Id: Static.pm,v 1.24 2005/05/28 20:58:19 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -94,6 +94,8 @@ sub deleteOldFromPool {
 	my $loop_num = 1;
 	my $remaining_to_delete = $want_delete;
 	my $secs = $constants->{hc_pool_secs_before_del} || 21600;
+	my $lastused_max_secs = $secs * 2;
+	$lastused_max_secs = 86400*3 if $lastused_max_secs < 86400*3;
 	my $q_hr = $self->sqlSelectAllHashref(
 		"hcqid",
 		"hcqid, filedir",
@@ -117,7 +119,7 @@ sub deleteOldFromPool {
 			"humanconf_pool",
 			{ inuse => 2, -lastused => "lastused" },
 			"lastused < DATE_SUB(NOW(), INTERVAL $secs SECOND) 
-			 AND inuse = 0
+			 AND (inuse = 0 OR lastused < DATE_SUB(NOW(), INTERVAL $lastused_max_secs SECOND))
 			 $hcpid_clause"
 		);
 		next if !$rows;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.171 2005/05/12 02:42:10 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.172 2005/05/28 12:24:16 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2682,8 +2682,15 @@ sub convert_srcid {
 	my($type, $old_id_str) = @_;
 	# UIDs are easy, they haven't changed.
 	return $old_id_str if $type eq 'uid';
-	# IPIDs get a prepended byte and a truncate.
-	if ($type =~ /^(ipid|subnetid)$/) {
+	# IPs, Subnets, and Class B's get converted to MD5s and then
+	# treated like IPIDs, SubnetIDs, and ClassBIDs..
+	if ($mask_size_name{"${type}id"}) {
+		$old_id_str = md5_hex($old_id_str);
+		$type = "${type}id";
+	}
+	# IPIDs, SubnetIDs, and ClassBIDs get a prepended byte and a
+	# truncate to convert them..
+	if ($mask_size_name{$type}) {
 		my $str_trunc = lc(substr($old_id_str, 0, 14));
 		my $prependbyte = get_srcid_prependbyte({
 			type => 'ipid',
@@ -3164,4 +3171,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.171 2005/05/12 02:42:10 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.172 2005/05/28 12:24:16 jamiemccarthy Exp $

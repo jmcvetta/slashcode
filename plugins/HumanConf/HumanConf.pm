@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.10 2005/03/11 19:58:08 pudge Exp $
+# $Id: HumanConf.pm,v 1.11 2005/05/29 15:02:29 jamiemccarthy Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -191,7 +191,7 @@ sub validFormkeyHC {
 		# wasted by previous incorrect answers.
                 return 'invalidhc';
         }
-        if ($form->{hcanswer} && $form->{hcanswer} eq $answer) {
+        if ($form->{hcanswer} && lc($form->{hcanswer}) eq lc($answer)) {
 		# Correct answer submitted.
                 return 'ok';
         }

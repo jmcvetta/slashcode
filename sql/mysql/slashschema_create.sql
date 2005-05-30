@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.194 2005/05/17 18:58:48 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.195 2005/05/30 19:44:47 jamiemccarthy Exp $
 #
 
 #
@@ -620,9 +620,10 @@ DROP TABLE IF EXISTS open_proxies;
 CREATE TABLE open_proxies (
         ip	VARCHAR(15) NOT NULL,
 	port	SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+	dur	FLOAT DEFAULT NULL,
 	ts	DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	xff	VARCHAR(15) DEFAULT NULL,
-	ipid char(32) DEFAULT '' NOT NULL,
+	ipid	CHAR(32) DEFAULT '' NOT NULL,
 	PRIMARY KEY (ip),
 	KEY ts (ts),
 	KEY ipid (ipid)

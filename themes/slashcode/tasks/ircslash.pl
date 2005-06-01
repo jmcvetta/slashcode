@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.27 2005/06/01 03:35:28 pudge Exp $
+# $Id: ircslash.pl,v 1.28 2005/06/01 20:06:58 jamiemccarthy Exp $
 
 use strict;
 
@@ -184,7 +184,7 @@ sub ircshutdown {
 }
 
 sub jabbershutdown {
-	$jabber->disconnect if $jabber->Connected;
+	$jabber->disconnect if $jabber && $jabber->Connected;
 }
 
 sub on_connect {

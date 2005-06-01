@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: stats.pl,v 1.30 2005/03/11 19:58:15 pudge Exp $
+# $Id: stats.pl,v 1.31 2005/06/01 03:36:01 pudge Exp $
 
 use strict;
 use File::Path;
@@ -13,7 +13,7 @@ use Slash::Utility;
 use URI::Escape;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -48,7 +48,7 @@ sub main {
 	}
 
 	if (!$ops{$op}[ALLOWED]) {
-		redirect("$gSkin->{rootdir}/users.pl");
+		redirect("$gSkin->{rootdir}/");
 		return;
 	}
 

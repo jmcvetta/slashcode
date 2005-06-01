@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.28 2005/06/01 20:06:58 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.29 2005/06/01 20:26:17 pudge Exp $
 
 use strict;
 
@@ -174,6 +174,8 @@ sub jabberinit {
 }
 
 sub ircshutdown {
+	return 0 unless $constants->{ircslash} && $conn;
+
 	$conn->quit("exiting");
 	# The disconnect seems to be unnecessary, and throws an error
 	# in my testing, but just to be sure let's call it anyway.
@@ -184,7 +186,9 @@ sub ircshutdown {
 }
 
 sub jabbershutdown {
-	$jabber->disconnect if $jabber && $jabber->Connected;
+	return 0 unless $constants->{jabberslash} && $jabber;
+
+	$jabber->disconnect if $jabber->Connected;
 }
 
 sub on_connect {

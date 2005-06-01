@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.225 2005/05/30 19:44:47 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.226 2005/06/01 21:03:16 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -556,7 +556,7 @@ sub validateComment {
 
 	my $min_cid_1_day_old = $slashdb->getVar('min_cid_last_1_days','value', 1) || 0;
 	
-	if ($user->{is_anon} && $constants->{comments_perday_anon}
+	if (($user->{is_anon} || $form->{postanon}) && $constants->{comments_perday_anon}
 		&& !$user->{is_admin}) {
 		my($num_comm, $sum_mods) = $reader->getNumCommPostedAnonByIPID(
 			$user->{ipid}, 24, $min_cid_1_day_old);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.16 2005/04/28 19:31:35 pudge Exp $
+# $Id: counthits.pl,v 1.17 2005/06/02 22:42:42 jamiemccarthy Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 20;
@@ -37,6 +37,10 @@ $task{$me}{code} = sub {
 
 	# Find out where in the accesslog we need to start scanning from.
 	# Don't start scanning from too far back.
+	# XXX We need to make this getObject() NOT fall back on the log
+	# (from the log_slave).  To do so impacts performance.  And
+	# afterwards, it can throw an error because counthits_lastmaxid
+	# can reflect the max from the master when the slave is behind.
 	my $logdb = getObject('Slash::DB', { db_type => "log_slave" });
 	my $lastmaxid = ($slashdb->getVar('counthits_lastmaxid', 'value', 1) || 0) + 1;
 	my $newmaxid = $logdb->sqlSelect("MAX(id)", "accesslog");
@@ -45,7 +49,12 @@ $task{$me}{code} = sub {
                 slashdLog("Nothing to do, lastmaxid '$lastmaxid', newmaxid '$newmaxid'");
 		if ($lastmaxid > $newmaxid + 2) {
 			# Something odd is going on... this ID is off.
-			slashdErrnote("counthits_lastmaxid '$lastmaxid' is higher than it should be '$newmaxid' -- maybe accesslog got rebuilt, or db unavailable and failover order is incorrect?");
+			slashdErrnote(<<EOT
+counthits_lastmaxid '$lastmaxid' is higher than it should be '$newmaxid'.
+Maybe accesslog got rebuilt, or more likely the log_slave was unavailable
+and failover went to the master, now back to the slave.
+EOT
+);
 		}
                 return "";
         }

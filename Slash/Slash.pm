@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.235 2005/05/25 17:34:00 cowboyneal Exp $
+# $Id: Slash.pm,v 1.236 2005/06/02 21:21:18 pudge Exp $
 
 package Slash;
 
@@ -1581,13 +1581,13 @@ sub getOlderDays {
 			$today    = $reader->getDay(0);
 			$tomorrow = timeCalc(scalar localtime(
 				timelocal(0, 0, 12, $d, $m - 1, $y - 1900) + 86400
-			), '%Y%m%d');
+			), '%Y%m%d', 0);
 			$yesterday = timeCalc(scalar localtime(
 				timelocal(0, 0, 12, $d, $m - 1, $y - 1900) - 86400
-			), '%Y%m%d');
+			), '%Y%m%d', 0);
 			$week_ago  = timeCalc(scalar localtime(
 				timelocal(0, 0, 12, $d, $m - 1, $y - 1900) - 86400 * 8 
-			), '%Y%m%d');
+			), '%Y%m%d', 0);
 		}
 	} else {
 		$today     = $reader->getDay(0);

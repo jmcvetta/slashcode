@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.127 2005/05/20 15:50:35 jamiemccarthy Exp $
+# $Id: User.pm,v 1.128 2005/06/03 02:23:20 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -863,6 +863,7 @@ Fry:Hooray, we don't have to do anything!
 Fry:Prepare to be thought at!
 Fry:I did it!  And it's all thanks to the books at my local library.
 Fry:Existing is basically all I do!
+Fry:It's a widely-believed fact!
 EOT
 
 1;

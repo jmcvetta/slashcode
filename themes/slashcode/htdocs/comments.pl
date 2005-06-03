@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.227 2005/06/02 00:58:43 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.228 2005/06/03 16:28:27 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -164,6 +164,20 @@ sub main {
 	}
 
 	$form->{pid} ||= "0";
+
+	# this is so messed up ... it's done again under header(), but
+	# sometimes we need it done before header() is called, because,
+	# like i said, this is so messed up ...
+	{
+		my $skid;
+		if ($section) {
+			my $skin = $slashdb->getSkin($section);
+			$skid = $skin->{skid} if $skin;
+		}
+		setCurrentSkin($skid || determineCurrentSkin());
+		Slash::Utility::Anchor::getSkinColors();
+	}
+
 
 	# If this is a comment post, we can't write the header yet,
 	# because submitComment() _may_ want to do a redirect

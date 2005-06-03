@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.781 2005/06/02 21:52:48 pudge Exp $
+# $Id: MySQL.pm,v 1.782 2005/06/03 21:50:41 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.781 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.782 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7673,15 +7673,22 @@ sub getCommentMostCommonReason {
 sub getCommentReply {
 	my($self, $sid, $pid) = @_;
 
+	my $constants = getCurrentStatic();
+
 	# If we're not replying to anything, we already know the answer.
 	return { } if !$pid;
 
 	my $sid_quoted = $self->sqlQuote($sid);
-	my $reply = $self->sqlSelectHashref(
+	my $select =
 		"date,date as time,subject,comments.points as points,comments.tweak as tweak,
 		comment_text.comment as comment,realname,nickname,
 		fakeemail,homepage,comments.cid as cid,sid,
-		users.uid as uid,reason",
+		users.uid as uid,reason, karma_bonus";
+	if ($constants->{plugin}{Subscribe} && $constants->{subscribe}) {
+		$select .= ", subscriber_bonus";
+	}
+	my $reply = $self->sqlSelectHashref(
+		$select,
 		"comments,comment_text,users,users_info,users_comments",
 		"sid=$sid_quoted
 		AND comments.cid=$pid

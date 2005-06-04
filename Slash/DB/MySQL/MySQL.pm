@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.783 2005/06/04 18:55:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.784 2005/06/04 23:02:19 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.783 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.784 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4845,7 +4845,9 @@ sub checkPostInterval {
 		$speedlimit = int($speedlimit + 0.5);
 	}
 
-	my $formkey_earliest = time() - $constants->{formkey_timeframe};
+	my $timeframe = $constants->{formkey_timeframe};
+	$timeframe = $speedlimit if $speedlimit > $timeframe;
+	my $formkey_earliest = getTime({ unix_format => 1 }) - $timeframe;
 
 	my $where = $self->_whereFormkey();
 	$where .= " AND formname = '$formname' ";

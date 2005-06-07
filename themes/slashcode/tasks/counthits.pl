@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: counthits.pl,v 1.17 2005/06/02 22:42:42 jamiemccarthy Exp $
+# $Id: counthits.pl,v 1.18 2005/06/07 22:54:57 pudge Exp $
 
 # Counts hits from accesslog and updates stories.hits columns.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 20;
@@ -49,12 +49,11 @@ $task{$me}{code} = sub {
                 slashdLog("Nothing to do, lastmaxid '$lastmaxid', newmaxid '$newmaxid'");
 		if ($lastmaxid > $newmaxid + 2) {
 			# Something odd is going on... this ID is off.
-			slashdErrnote(<<EOT
+			slashdErrnote(<<EOT);
 counthits_lastmaxid '$lastmaxid' is higher than it should be '$newmaxid'.
 Maybe accesslog got rebuilt, or more likely the log_slave was unavailable
 and failover went to the master, now back to the slave.
 EOT
-);
 		}
                 return "";
         }

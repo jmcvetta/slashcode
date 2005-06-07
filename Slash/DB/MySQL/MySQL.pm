@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.786 2005/06/07 20:45:31 tvroom Exp $
+# $Id: MySQL.pm,v 1.787 2005/06/07 22:51:50 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.786 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.787 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3322,12 +3322,12 @@ sub deleteSubmission {
 	if ($form->{subid} && !$options->{nodelete}) {
 		my $subid_q = $self->sqlQuote($form->{subid});
 
-		# skip if someone got here first
-		unless ($self->sqlSelect('del', 'submissions', "subid=$subid_q")) {
-			$self->sqlUpdate("submissions",
-				{ del => 1 }, "subid=$subid_q"
-			);
+		# Try updating del to 1, but only if it's still 0
+		my $rows = $self->sqlUpdate("submissions",
+			{ del => 1 }, "subid=$subid_q AND del=0"
+		);
 
+		if ($rows) {
 			$self->setUser($uid,
 				{ -deletedsubmissions => 'deletedsubmissions+1' }
 			);
@@ -3370,11 +3370,11 @@ sub deleteSubmission {
 				push @subid, $n;
 
 			} else {
-				# skip if someone got here first
-				unless ($self->sqlSelect('del', 'submissions', "subid=$n_q")) {
-					$self->sqlUpdate('submissions',
-						{ del => 1 }, "subid=$n_q"
-					);
+				# Try updating del to 1, but only if it's still 0
+				my $rows = $self->sqlUpdate('submissions',
+					{ del => 1 }, "subid=$n_q AND del=0"
+				);
+				if ($rows) {
 					$self->setUser($uid,
 						{ -deletedsubmissions => 'deletedsubmissions+1' }
 					);

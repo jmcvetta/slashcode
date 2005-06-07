@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.161 2005/05/25 14:51:06 pudge Exp $
+# $Id: Data.pm,v 1.162 2005/06/07 22:52:36 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -49,6 +49,9 @@ use XML::Parser;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
+# whitespace regex
+our $WS_RE = qr{(?: \s | </? (?:br|p) (?:\ /)?> )*}x;
+
 # without this, HTML::TreeBuilder will skip slash
 BEGIN {
 	$HTML::Tagset::isKnown{slash} = 1;
@@ -58,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2664,7 +2667,6 @@ sub balanceTags {
 sub _removeEmpty {
 	my($html) = @_;
 	my $p    = getCurrentStatic('xhtml') ? '<p />' : '<p>';
-	my $ws_re = qr{(?: \s | </? (?:br|p) (?:\ /)?> )*}x;
 
 	$$html =~ s|<p>\s*</p>|$p|g;
 	while ($$html =~ m|<(\w+)>\s*</\1>|) {
@@ -2675,8 +2677,8 @@ sub _removeEmpty {
 	# lists, where we are more likely to mistakenly run into it,
 	# where it will cause more problems
 	for my $re (values %lists_re) {
-		while ($$html =~ m|<($re)>$ws_re</\1>|) {
-			$$html =~ s|<($re)>$ws_re</\1>\s*||g;
+		while ($$html =~ m|<($re)>$WS_RE</\1>|) {
+			$$html =~ s|<($re)>$WS_RE</\1>\s*||g;
 		}
 	}
 }
@@ -4043,4 +4045,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.161 2005/05/25 14:51:06 pudge Exp $
+$Id: Data.pm,v 1.162 2005/06/07 22:52:36 pudge Exp $

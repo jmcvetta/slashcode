@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.228 2005/06/03 16:28:27 pudge Exp $
+# $Id: comments.pl,v 1.229 2005/06/07 22:55:47 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -447,6 +447,18 @@ sub editComment {
 	# moderation elements for this instance of the comment.
 	my $pid = $form->{pid} || 0; # this is guaranteed numeric, from filter_params
 	my $reply = $slashdb->getCommentReply($sid, $pid);
+
+	# calculate proper points value ... maybe this should be a public,
+	# and *sane*, API?  like, no need to pass reasons, users, or min/max,
+	# or even user (get those all automatically if not passed);
+	# but that might be dangerous, since $reply/$comment is a little
+	# bit specific -- pudge
+	$reply->{points} = Slash::_get_points(
+		$reply, $user,
+		$constants->{comment_minscore}, $constants->{comment_maxscore},
+		$slashdb->countUsers({ max => 1 }), $slashdb->getReasons
+	);
+
 
 	# If anon posting is turned off, forbid it.  The "post anonymously"
 	# checkbox should not appear in such a case, but check that field

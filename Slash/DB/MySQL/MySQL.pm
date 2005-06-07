@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.785 2005/06/05 00:25:08 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.786 2005/06/07 20:45:31 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.785 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.786 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -239,14 +239,14 @@ my %descriptions = (
 
 ########################################################
 sub _whereFormkey {
-	my($self) = @_;
+	my($self, $options) = @_;
 
 	my $ipid = getCurrentUser('ipid');
 	my $uid = getCurrentUser('uid');
 	my $where;
 
 	# anonymous user without cookie, check host, not ipid
-	if (isAnon($uid)) {
+	if (isAnon($uid) || $options->{force_ipid}) {
 		$where = "ipid = '$ipid'";
 	} else {
 		$where = "uid = '$uid'";
@@ -4815,7 +4815,7 @@ sub checkPostInterval {
 	my $speedlimit_name = "${formname}_speed_limit";
 	my $speedlimit_anon_name = "${formname}_anon_speed_limit";
 	my $speedlimit = 0;
-	$speedlimit = $constants->{$speedlimit_anon_name} if $user->{is_anon};
+	$speedlimit = $constants->{$speedlimit_anon_name} if $user->{is_anon} || getCurrentForm("postanon");
 	$speedlimit ||= $constants->{$speedlimit_name} || 0;
 
 	# If this user has access modifiers applied, check for possible
@@ -4849,8 +4849,10 @@ sub checkPostInterval {
 	my $timeframe = $constants->{formkey_timeframe};
 	$timeframe = $speedlimit if $speedlimit > $timeframe;
 	my $formkey_earliest = $time - $timeframe;
-
-	my $where = $self->_whereFormkey();
+	
+	my $options = {};
+	$options->{force_ipid} = 1 if getCurrentForm("postanon");
+	my $where = $self->_whereFormkey($options);
 	$where .= " AND formname = '$formname' ";
 	$where .= "AND ts >= $formkey_earliest";
 

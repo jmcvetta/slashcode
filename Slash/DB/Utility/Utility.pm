@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.61 2005/06/14 17:39:26 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.62 2005/06/14 18:55:49 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -791,7 +791,8 @@ sub sqlSelectAllKeyValue {
 # Note that there must not be "holes" in the table where a value of the
 # numeric key is missing even though there are values present both above
 # and below it, or the answer may impose an incorrectly strict limitation
-# (this bug may be fixed in the future).
+# (this bug may be fixed in the future).  This includes "holes" in the
+# values for that key in the rows returned by the where clause.
 #
 # For example, if you wanted to count the number of distinct uids in
 # a very large accesslog table in several hours, the easy way is:

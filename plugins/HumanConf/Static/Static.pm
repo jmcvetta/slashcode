@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.24 2005/05/28 20:58:19 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.25 2005/06/14 20:35:21 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -574,12 +574,10 @@ sub drawImage {
 sub shortRandText {
 	my($self) = @_;
 	my $constants = getCurrentStatic();
+	my $omit = $constants->{hc_q1_lettersomit} || 'hlou';
+	my $omit_regex = qr{[^$omit]};
 	my $num_chars = $constants->{hc_q1_numchars} || 3;
-	my @c = ('a'..'g', 'i'..'k',
-		# Noel, Noel
-		# (we don't use letters that could be confused
-		# with numbers or other letters)
-		'm', 'n', 'p'..'t', 'v'..'z');
+	my @c = grep /$omit_regex/, ('a' .. 'z');
 	my $text = "";
 	while (!$text) {
 		for (1..$num_chars) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.788 2005/06/09 22:41:47 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.789 2005/06/14 19:13:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.788 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.789 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5132,9 +5132,8 @@ sub setKnownOpenProxy {
 		$xff = $r->header_in('X-Forwarded-For') if $r;
 #use Data::Dumper; print STDERR "sKOP headers_in: " . Dumper([ $r->headers_in ]) if $r;
 	}
-	$xff ||= undef;
-	$xff = $1 if $xff && length($xff) > 15
-		&& $xff =~ /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
+	$xff = undef unless $xff && length($xff) >= 7
+		&& $xff =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 	$duration = undef if !$duration;
 #print STDERR scalar(localtime) . " setKnownOpenProxy doing sqlReplace ip '$ip' port '$port'\n";
 	return $self->sqlReplace("open_proxies", {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.217 2005/04/28 19:30:38 pudge Exp $
+# $Id: MySQL.pm,v 1.218 2005/06/14 18:49:52 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.217 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.218 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -613,8 +613,8 @@ sub deleteOldModRows {
 	# First delete from the bottom up for the moderatorlog.
 
 	my $junk_bottom = $reader->sqlSelect('MIN(id)', 'moderatorlog');
-	my $need_bottom = $reader->sqlSelect('MIN(id)',
-		'moderatorlog',
+	my $need_bottom = $reader->sqlSelectNumericKeyAssumingMonotonic(
+		'moderatorlog', 'min', 'id',
 		"ts >= DATE_SUB(NOW(), INTERVAL $archive_delay_mod DAY)");
 	while ($need_bottom && $junk_bottom < $need_bottom) {
 		$junk_bottom += $max_rows;
@@ -627,8 +627,8 @@ sub deleteOldModRows {
 	# Now delete from the bottom up for the metamodlog.
 
 	$junk_bottom = $reader->sqlSelect('MIN(id)', 'metamodlog');
-	$need_bottom = $reader->sqlSelect('MIN(id)',
-		'metamodlog',
+	$need_bottom = $reader->sqlSelectNumericKeyAssumingMonotonic(
+		'metamodlog', 'min', 'id',
 		"ts >= DATE_SUB(NOW(), INTERVAL $archive_delay_mod DAY)");
 	while ($need_bottom && $junk_bottom < $need_bottom) {
 		$junk_bottom += $max_rows;
@@ -2551,14 +2551,12 @@ sub getLastUIDCreatedBeforeDaysBack {
 	$yesterday = substr($yesterday, 0, 10);
 	my $where = '';
 	if ($where) {
-		$where = "created_at < DATE_SUB('$yesterday 00:00',INTERVAL $num_days DAY)";
+		$where = "created_at < DATE_SUB('$yesterday 00:00', INTERVAL $num_days DAY)";
 	} else {
 		$where = "created_at < '$yesterday 00:00'";
 	}
-	return $self->sqlSelect(
-		"MAX(uid)",
-		"users_info",
-		$where);
+	return $self->sqlSelectNumericKeyAssumingMonotonic(
+		'users_info', 'max', 'uid', $where);
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.62 2005/06/14 18:55:49 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.63 2005/06/19 15:18:27 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -1021,7 +1021,7 @@ sub sqlErrorLog {
 	my($self, $sql) = @_;
 	my $error = $self->sqlError || 'no error string';
 
-	my @return = ("DB='$self->{virtual_user}'", "hostinfo='$self->{_dbh}->{mysql_hostinfo}'", $error);
+	my @return = ("virtuser='$self->{virtual_user}'", "hostinfo='$self->{_dbh}->{mysql_hostinfo}'", $error);
 	push @return, $sql if $sql;
 	errorLog(join ' -- ', @return);
 }

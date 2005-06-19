@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: delete_accesslog.pl,v 1.11 2005/03/11 19:58:47 pudge Exp $
+# $Id: delete_accesslog.pl,v 1.12 2005/06/19 15:26:53 jamiemccarthy Exp $
 
 use strict;
 
@@ -28,10 +28,9 @@ $task{$me}{code} = sub {
 	my $counter = 0;
 	my $hoursback = $constants->{accesslog_hoursback} || 60;
 	my $failures = 10; # This is probably related to a lock failure
-	my $id = $logdb->sqlSelect('MAX(id)',
-		'accesslog',
+	my $id = $logdb->sqlSelectNumericKeyAssumingMonotonic(
+		'accesslog', 'max', 'id',
 		"ts < DATE_SUB(NOW(), INTERVAL $hoursback HOUR)");
-
 	if (!$id) {
 		slashdLog("no accesslog rows older than $hoursback hours");
 		return "nothing to do";

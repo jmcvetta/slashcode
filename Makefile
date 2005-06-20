@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.28 2005/03/11 19:57:18 pudge Exp $
+# $Id: Makefile,v 1.29 2005/06/20 20:24:58 jamiemccarthy Exp $
 
 ##
 ##  Makefile -- Current one for Slash
@@ -38,7 +38,7 @@ UNAME = `uname`
 MAKE = make -s
 
 # Plugins (any directory in plugins/)
-PLUGINS = `find . -name CVS -prune -o -type d -name [a-zA-Z]\* -maxdepth 1 -print`
+PLUGINS = `find . -maxdepth 1 -name CVS -prune -o -type d -name [a-zA-Z]\* -print`
 
 # Perl scripts, grouped by directory.
 BINFILES = `find bin -name CVS -prune -o -name [a-zA-Z]\* -type f -print`

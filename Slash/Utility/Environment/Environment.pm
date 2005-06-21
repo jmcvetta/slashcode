@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.172 2005/05/28 12:24:16 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.173 2005/06/21 22:41:30 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -72,6 +72,7 @@ use vars qw($VERSION @EXPORT);
 	isSubscriber
 	prepareUser
 	filter_params
+	loadClass
 
 	setUserDate
 	isDST
@@ -2133,11 +2134,7 @@ sub getObject {
 		}
 
 	} else {
-		# see if module has been loaded in already ...
-		(my $file = $class) =~ s|::|/|g;
-		# ... because i really hate eval
-		local $@; # $@ won't get cleared unless eval is performed
-		eval "require $class" unless exists $INC{"$file.pm"};
+		local $@ = loadClass($class);
 
 		if ($@) {
 			errorLog($@);
@@ -2156,6 +2153,17 @@ sub getObject {
 		return undef;
 	}
 }
+
+sub loadClass {
+	my($class) = @_;
+	# see if module has been loaded in already ...
+	(my $file = $class) =~ s|::|/|g;
+	# ... because i really hate eval
+	local $@;
+	eval "require $class" unless exists $INC{"$file.pm"};
+	return $@;
+}
+
 
 #========================================================================
 
@@ -3171,4 +3179,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.172 2005/05/28 12:24:16 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.173 2005/06/21 22:41:30 pudge Exp $

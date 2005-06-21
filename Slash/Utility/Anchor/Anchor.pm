@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.81 2005/05/27 19:47:23 pudge Exp $
+# $Id: Anchor.pm,v 1.82 2005/06/21 22:41:12 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -665,7 +665,7 @@ EOT
 		if (defined $user->{state}{ad}{$num}
 			&& $user->{state}{ad}{$num} =~ /\S/
 			&& $user->{state}{ad}{$num} !~ /^<!-- no pos/
-			&& $user->{state}{ad}{$num} !~ /^<!-- (?:fDA )place/) {
+			&& $user->{state}{ad}{$num} !~ /^<!-- (?:fDA )?place/) {
 			# if we're called from shtml, we won't have colors
 			# set, so we should get some set before making a
 			# box.				-- Pater
@@ -752,4 +752,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.81 2005/05/27 19:47:23 pudge Exp $
+$Id: Anchor.pm,v 1.82 2005/06/21 22:41:12 pudge Exp $

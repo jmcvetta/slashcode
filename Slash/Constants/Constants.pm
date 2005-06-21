@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Constants.pm,v 1.25 2005/03/28 23:02:51 pudge Exp $
+# $Id: Constants.pm,v 1.26 2005/06/21 22:42:05 pudge Exp $
 
 package Slash::Constants;
 
@@ -29,7 +29,7 @@ use strict;
 use base 'Exporter';
 use vars qw(@ISA $VERSION @EXPORT @EXPORT_OK %EXPORT_TAGS %CONSTANTS);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 constants();
 @EXPORT		= qw();
@@ -141,6 +141,19 @@ These constants are used for web programs, for the op hashes.
 
 # 0 1
 
+=head2 reskey
+
+These constants are used for resource keys.
+
+	RESKEY_NOOP
+	RESKEY_SUCCESS
+	RESKEY_FAILURE
+	RESKEY_DEATH
+
+=cut
+
+# -1 0 1 2
+
 =head2 strip
 
 These constants are used to define the modes passed to stripByMode().  Only
@@ -203,4 +216,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Constants.pm,v 1.25 2005/03/28 23:02:51 pudge Exp $
+$Id: Constants.pm,v 1.26 2005/06/21 22:42:05 pudge Exp $

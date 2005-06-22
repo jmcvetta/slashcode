@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.818 2005/06/16 01:48:04 pudge Exp $
+# $Id: upgrades,v 1.819 2005/06/22 01:50:50 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3066,4 +3066,6 @@ INSERT INTO vars (name, value, description) VALUES ('hc_q1_lettersomit', 'hlou',
 # SLASHDOT LAST UPDATED HERE
 
 # End of T_2_5_0_72, Start of T_2_5_0_73 - 2005/06/14
+
+# End of T_2_5_0_73, Start of T_2_5_0_74 - 2005/06/21
 

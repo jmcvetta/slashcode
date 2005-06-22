@@ -1,0 +1,7 @@
+# $Id: PLUGIN,v 1.1 2005/06/22 22:09:36 pudge Exp $
+description="Resource Keys"
+name=ResKey
+mysql_dump=mysql_dump.sql
+mysql_schema=mysql_schema.sql
+template=templates/data;reskey;default
+task=tasks/reskey_purge.pl

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.30 2005/06/02 02:57:24 pudge Exp $
+# $Id: ircslash.pl,v 1.31 2005/06/23 15:40:56 jamiemccarthy Exp $
 
 use strict;
 
@@ -788,7 +788,7 @@ sub cmd_dbs {
 # first checks come after 1 minute, so we are sure we joined the
 # IRC channel OK.
 my $next_check_dbs = $^T + 60;
-my $next_report_bad_dbs = $^T + 60;
+my $next_report_bad_dbs = 0;
 sub possible_check_dbs {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();

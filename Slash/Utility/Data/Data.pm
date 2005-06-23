@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.162 2005/06/07 22:52:36 pudge Exp $
+# $Id: Data.pm,v 1.163 2005/06/23 00:41:07 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1939,7 +1939,8 @@ sub approveCharref {
 		}
 	} elsif ($ok == 1 && $charref =~ /^([a-z0-9]+)$/i) {
 		# Character entity.
-		my $entity = lc $1;
+#		my $entity = lc $1;
+		my $entity = $1;  # case matters
 		if ($constants->{draconian_charrefs}) {
 			if (!$constants->{good_entity}{$entity}) {
 				$decimal = ord $entity2char{$entity};
@@ -4045,4 +4046,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.162 2005/06/07 22:52:36 pudge Exp $
+$Id: Data.pm,v 1.163 2005/06/23 00:41:07 pudge Exp $

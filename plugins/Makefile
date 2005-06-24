@@ -1,12 +1,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Makefile,v 1.8 2005/03/11 19:58:05 pudge Exp $
+# $Id: Makefile,v 1.9 2005/06/24 13:02:11 jamiemccarthy Exp $
 
 ##
 ##  Makefile -- Plugins Makefile, implements only one target: clean.
 ##
-PLUGINS=`find . -name CVS -prune -o -maxdepth 1 -type d -print | sed 's/^\\.$$//'`
+PLUGINS=`find . -maxdepth 1 -name CVS -prune -o -type d -print | sed 's/^\\.$$//'`
 
 all: clean
 

@@ -137,13 +137,20 @@ CASE "not enough points" %]
 
 [% CASE "no-tid-specified" %]
 	<b>Please go back and select a topic before proceeding.</b>
+
 [% # COMMENT TABLE NOT AVAILABLE FOR WRITING
 CASE "comment_db_down" %]
-Database maintenance is currently taking place.  Some items such
-as comment posting and moderation are currently unavailable.
+	Database maintenance is currently taking place.  Some items such
+	as comment posting and moderation are currently unavailable.
+
+[% CASE "ispell_nonrec" %]
+	<i>ispell doesn't recognize:</i>
+
+[% CASE "ispell_sugg" %]
+	<br><i>Suggested:</i>
 
 [% END %]
 __seclev__
 10000
 __version__
-$Id: data;admin;default,v 1.18 2004/10/12 15:01:11 tvroom Exp $
+$Id: data;admin;default,v 1.19 2005/06/24 02:20:34 jamiemccarthy Exp $

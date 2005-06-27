@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.1 2005/06/22 22:34:08 pudge Exp $
+# $Id: mysql_schema.sql,v 1.2 2005/06/27 23:31:40 pudge Exp $
 #
 
 DROP TABLE IF EXISTS reskeys;
@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS reskey_resource_checks;
 CREATE TABLE reskey_resource_checks (
     rkrcid      SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     rkrid       TINYINT UNSIGNED NOT NULL,
-    type        ENUM('create', 'touch', 'use') NOT NULL,
+    type        ENUM('create', 'touch', 'use', 'all') NOT NULL,
     class       VARCHAR(255),
     ordernum    SMALLINT UNSIGNED DEFAULT 0,
     PRIMARY KEY (rkrcid),

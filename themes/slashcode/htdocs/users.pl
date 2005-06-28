@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.277 2005/06/02 00:41:49 jamiemccarthy Exp $
+# $Id: users.pl,v 1.278 2005/06/28 18:32:04 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -913,7 +913,11 @@ sub showInfo {
 
 	} elsif ($user->{is_admin}) {
 		$id ||= $form->{userfield} || $user->{uid};
-		if ($id =~ /^\d+$/) {
+		if ($id =~ /^[0-9a-f]{16}$/) {
+			$requested_user->{nonuid} = 1;
+			$fieldkey = "srcid";
+			$requested_user->{$fieldkey} = $id;
+		} elsif ($id =~ /^\d+$/) {
 			# If it's longer than a uid could possibly be, it
 			# must be a srcid.  The uid column right now is a
 			# MEDIUMINT (max 16M) but at most might someday

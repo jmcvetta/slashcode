@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.34 2005/05/26 01:56:09 pudge Exp $
+# $Id: Log.pm,v 1.35 2005/07/04 14:51:20 cowboyneal Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -149,7 +149,8 @@ sub UserLog {
         if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME} && $user->{currentPage} =~ /users|index|comments|article/) {
 		my $form = getCurrentForm();
                 my $fname = catfile('clampe', $user->{ipid});
-                my $comlog = "URL: $ENV{REQUEST_URI} Page: $user->{currentPage} UID: $user->{uid} Dispmode: $user->{mode} Thresh: $user->{threshold} Sort: $user->{commentsort} SaveChanges: $form->{savechanges}";
+		my $change = $form->{op} eq 'Change' ? 1 : 0;
+                my $comlog = "URL: $ENV{REQUEST_URI} Page: $user->{currentPage} UID: $user->{uid} IPID: $user->{ipid} Dispmode: $user->{mode} Thresh: $user->{threshold} Sort: $user->{commentsort} Changes: $change";
                 doClampeLog($fname, [$comlog]);
         }
 

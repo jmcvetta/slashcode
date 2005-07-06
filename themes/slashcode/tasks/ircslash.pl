@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.31 2005/06/23 15:40:56 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.32 2005/07/06 21:55:56 pudge Exp $
 
 use strict;
 
@@ -391,6 +391,10 @@ sub send_msg {
 				}
 				push @to, $to;
 			}
+			# append bot nick to msg, else if two bots sharing
+			# same account, we don't know which is which,
+			# in privmsg
+			$msg = "[$jnick] $msg";
 		# ... or the channel
 		} else {
 			$type = 'groupchat';

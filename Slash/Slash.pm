@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.237 2005/07/10 16:06:47 cowboyneal Exp $
+# $Id: Slash.pm,v 1.238 2005/07/10 16:13:04 cowboyneal Exp $
 
 package Slash;
 
@@ -585,7 +585,7 @@ sub printComments {
 	# stats for clampe 	 
         if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME}) {
 		my $fname = catfile('clampe', $user->{ipid});
-		my $change = $form{op} eq 'Change' ? 1 : 0;
+		my $change = $form->{op} eq 'Change' ? 1 : 0;
 		my $comlog = "URL: $ENV{REQUEST_URI} Page: $user->{currentPage} UID: $user->{uid} IPID: $user->{ipid} Dispmode: $user->{mode} Thresh: $user->{threshold} Sort: $user->{commentsort} Changes: $change #Comments: $count";
 		doClampeLog($fname, [$comlog]); 	 
 	}

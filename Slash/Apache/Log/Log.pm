@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.37 2005/07/10 16:14:43 cowboyneal Exp $
+# $Id: Log.pm,v 1.38 2005/07/10 16:42:05 cowboyneal Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -67,7 +67,7 @@ sub UserLog {
 	my $constants = getCurrentStatic();
 
 	# stats for clampe
-        if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME} && $user->{currentPage} =~ /users|index|article/) {
+        if ($constants->{clampe_stats} && $ENV{SCRIPT_NAME} && $user->{currentPage} =~ /users|index/) {
 		my $form = getCurrentForm();
                 my $fname = catfile('clampe', $user->{ipid});
 		my $change = $form->{op} eq 'Change' ? 1 : 0;

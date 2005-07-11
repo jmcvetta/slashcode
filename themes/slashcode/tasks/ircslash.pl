@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.33 2005/07/06 22:14:36 pudge Exp $
+# $Id: ircslash.pl,v 1.34 2005/07/11 05:58:58 pudge Exp $
 
 use strict;
 
@@ -225,7 +225,7 @@ sub on_public {
 	my $constants = getCurrentStatic();
 
 	my($arg) = $event->args();
-	if (my($cmd) = $arg =~ /^$nick\b\S*\s*(.+)/) {
+	if (my($cmd) = $arg =~ /^(?:\.|$nick\b\S*\s*)(\w.+)/) {
 		handle_cmd('irc', $cmd, $event);
 	}
 }
@@ -303,7 +303,7 @@ sub j_on_msg {
 =cut
 
 	my $event = { nick => $from };
-	if (my($cmd) = $body =~ /^$jnick\b\S*\s*(.+)/) {
+	if (my($cmd) = $body =~ /^(?:\.|$jnick\b\S*\s*)(\w.+)/) {
 		handle_cmd('jabber', $cmd, $event);
 	}
 }
@@ -335,6 +335,7 @@ my %cmds = (
 	quote		=> \&cmd_quote,
 	lcr		=> \&cmd_lcr,
 	lcrset		=> \&cmd_lcrset,
+	re		=> \&cmd_re,
 );
 sub handle_cmd {
 	my($service, $cmd, $event) = @_;
@@ -452,6 +453,11 @@ sub cmd_exit {
 	slashdLog("got exit from $info->{event}{nick}");
 	send_msg(getIRCData('exiting'), { jabber => 1, irc => 1 });
 	$clean_exit_flag = 1;
+}
+
+sub cmd_re {
+	my($service, $info) = @_;
+	send_msg(getIRCData('re', { nickname => $info->{event}{nick} }), { $service => 1 });
 }
 
 sub cmd_ignore {

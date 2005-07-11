@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: block_proxy_net.pl,v 1.1 2005/05/28 12:47:02 jamiemccarthy Exp $
+# $Id: block_proxy_net.pl,v 1.2 2005/07/11 17:48:06 jamiemccarthy Exp $
 
 use strict;
 use Socket qw( inet_aton inet_ntoa );
@@ -14,7 +14,7 @@ use Slash::Constants ':slashd';
 
 use vars qw( $VERSION %task $me $task_exit_flag );
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Update once a day, in the middle of the night.
 $task{$me}{timespec} = '10 8 * * *';
@@ -39,7 +39,7 @@ $task{$me}{code} = sub {
 
 	}
 
-	slashdLog("old: $old new: $new");
+	return "old: $old new: $new";
 };
 
 sub load_from_source {

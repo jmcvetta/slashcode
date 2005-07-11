@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.254 2005/06/24 02:20:34 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.255 2005/07/11 17:58:54 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1520,7 +1520,7 @@ sub editStory {
 	});
 
 	my $ispell_comments = {
-		introtext =>    get_ispell_comments($storyref->{introtext}),
+		introtext =>    get_ispell_comments("$storyref->{title} $storyref->{introtext}"),
 		bodytext =>     get_ispell_comments($storyref->{bodytext}),
 	} unless $user->{no_spell};
 

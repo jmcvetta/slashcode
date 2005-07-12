@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.255 2005/07/11 17:58:54 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.256 2005/07/12 18:02:14 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2009,6 +2009,7 @@ sub updateStory {
 		introtext	=> $form->{introtext},
 		relatedtext	=> $form->{relatedtext},
 		-rendered	=> 'NULL', # freshenup.pl will write this
+		is_dirty	=> 1
 	};
 
 	for (qw(dept bodytext relatedtext)) {

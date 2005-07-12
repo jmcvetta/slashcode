@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.789 2005/06/14 19:13:06 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.790 2005/07/12 17:59:02 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.789 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.790 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4287,7 +4287,7 @@ sub setStory {
 	# keep the value the same.
 	# Note:  this isn't exactly right.  If the stories table is the
 	# only one being written to, we shouldn't set last_update
-	# manually, we should let it be set iff another column changes.
+	# manually, we should let it be set if another column changes.
 	# Doing it this way doesn't really hurt anything though.
 
 	if (!exists($change_hr->{last_update})
@@ -9238,7 +9238,7 @@ sub getSlashConf {
 						)],
 		charrefs_bad_entity =>		[qw( zwnj zwj lrm rlm )],
 		charrefs_bad_numeric =>		[qw( 8204 8205 8206 8207 8236 8237 8238 )],
-		charrefs_good_entity =>		[qw( amp lt gt euro pound yen )],
+		charrefs_good_entity =>		[qw( amp lt gt euro pound yen rsquo lsquo rdquo ldquo ndash mdash )],
 		charrefs_good_numeric =>	[ ],
 		cur_performance_stat_ops =>	[ ],
 		fixhrefs =>			[ ],

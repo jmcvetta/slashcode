@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.163 2005/06/23 00:41:07 pudge Exp $
+# $Id: Data.pm,v 1.164 2005/07/12 18:01:45 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1423,7 +1423,12 @@ sub processCustomTags {
 			my $substr = substr($str, $pos);
 			if ($substr =~ m/^$close/si) {
 				my $len = length($1);
-				my $code = strip_code($3);
+				my $codestr = $3;
+				# remove these if they were added by url2html; I know
+				# this is a rather cheesy way to do this, but c'est la vie
+				# -- pudge
+				$codestr =~ s{<a href="[^"]+" rel="url2html-$$">(.+?)</a>}{$1}g;
+				my $code = strip_code($codestr);
 				my $newstr = "<blockquote>$code</blockquote>";
 				substr($str, $pos, $len) = $newstr;
 				pos($str) = $pos + length($newstr);
@@ -2249,7 +2254,7 @@ sub url2html {
 		my $extra = '';
 		$extra = $1 if $url =~ s/([?!;:.,']+)$//;
 		$extra = ')' . $extra if $url !~ /\(/ && $url =~ s/\)$//;
-		qq[<a href="$url">$url</a>$extra];
+		qq[<a href="$url" rel="url2html-$$">$url</a>$extra];
 	}ogie;
 
 	return $text;
@@ -4046,4 +4051,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.163 2005/06/23 00:41:07 pudge Exp $
+$Id: Data.pm,v 1.164 2005/07/12 18:01:45 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: html_update.pl,v 1.3 2005/07/11 05:58:58 pudge Exp $
+# $Id: html_update.pl,v 1.4 2005/07/19 16:56:51 jamiemccarthy Exp $
 
 use strict;
 
@@ -108,14 +108,20 @@ $task{$me}{code} = sub {
 				if ($name eq 'stories') {
 					$html{is_dirty} = 1;
 					$html{-last_update} = 'last_update';
-					$slashdb->setStory($id, \%html);
+					my $success = $slashdb->setStory($id, \%html);
+					if (!$success) {
+						slashdLog("setStory failed for id=$id");
+					}
 				} else {
 					if ($name =~ /^user/) {
 						$slashdb->setUser_delete_memcached($id);
 					}
-					$slashdb->sqlUpdate($set->{table}, \%html,
+					my $rows = $slashdb->sqlUpdate($set->{table}, \%html,
 						"$set->{id} = $id"
 					);
+					if (!$rows) {
+						slashdLog("update failed for $set->{table} $set->{id}=$id");
+					}
 				}
 
 			} continue {

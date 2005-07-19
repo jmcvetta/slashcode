@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.26 2005/07/08 19:08:35 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.27 2005/07/19 17:22:57 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -510,7 +510,8 @@ sub drawImage {
 	my $poly = new GD::Polygon;
 	if ($width+$height > 100) {
 		# Draw a grid of lines on the image, same color as the text.
-		my $pixels_between = ($width+$height)/8;
+		my $lc = $constants->{hc_q1_linecloseness} || 8;
+		my $pixels_between = ($width+$height)/$lc;
 		$pixels_between = 20 if $pixels_between < 20;
 		my $offset = int(rand($pixels_between));
 		my $x = int(rand($pixels_between));

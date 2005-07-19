@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.82 2005/06/21 22:41:12 pudge Exp $
+# $Id: Anchor.pm,v 1.83 2005/07/19 16:33:30 pudge Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -642,16 +642,7 @@ EOT
 	# If this is the first time that getAd() is being called, we have
 	# to set up all the ad data at once before we can return anything.
 	if (!defined $user->{state}{ad}) {
-		if ($constants->{use_minithin} && $constants->{plugin}{MiniThin}) {
-			# new way
-			my $minithin = getObject('Slash::MiniThin', { db_type => 'reader' });
-			$minithin->minithin;
-			# append Falk ads here temporarily
-			if ($constants->{use_falk} && $constants->{plugin}{Falk}) {
-				my $falk = getObject('Slash::Falk', { db_type => 'reader' });
-				$falk->falk(1);  # append
-			}
-		} elsif ($constants->{use_falk} && $constants->{plugin}{Falk}) {
+		if ($constants->{use_falk} && $constants->{plugin}{Falk}) {
 			my $falk = getObject('Slash::Falk', { db_type => 'reader' });
 			$falk->falk;
 		} else {
@@ -752,4 +743,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.82 2005/06/21 22:41:12 pudge Exp $
+$Id: Anchor.pm,v 1.83 2005/07/19 16:33:30 pudge Exp $

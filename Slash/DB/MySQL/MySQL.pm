@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.790 2005/07/12 17:59:02 pudge Exp $
+# $Id: MySQL.pm,v 1.791 2005/07/19 16:16:09 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.790 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.791 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4287,8 +4287,8 @@ sub setStory {
 	# keep the value the same.
 	# Note:  this isn't exactly right.  If the stories table is the
 	# only one being written to, we shouldn't set last_update
-	# manually, we should let it be set if another column changes.
-	# Doing it this way doesn't really hurt anything though.
+	# manually, we should let it be set if and only if another column
+	# changes.  Doing it this way doesn't really hurt anything though.
 
 	if (!exists($change_hr->{last_update})
 		&& !exists($change_hr->{-last_update})) {

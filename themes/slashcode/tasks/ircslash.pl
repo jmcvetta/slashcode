@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.34 2005/07/11 05:58:58 pudge Exp $
+# $Id: ircslash.pl,v 1.35 2005/07/20 22:59:28 pudge Exp $
 
 use strict;
 
@@ -457,7 +457,9 @@ sub cmd_exit {
 
 sub cmd_re {
 	my($service, $info) = @_;
-	send_msg(getIRCData('re', { nickname => $info->{event}{nick} }), { $service => 1 });
+	send_msg(getIRCData('re', {
+		nickname	=> $info->{text} || $info->{event}{nick},
+	}), { $service => 1 });
 }
 
 sub cmd_ignore {

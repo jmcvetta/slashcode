@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.164 2005/07/12 18:01:45 pudge Exp $
+# $Id: Data.pm,v 1.165 2005/07/20 22:08:19 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1476,6 +1476,8 @@ The text.
 
 sub breakHtml {
 	my($text, $mwl) = @_;
+	return $text if $Slash::Utility::Data::approveTag::admin;
+
 	my $constants = getCurrentStatic();
 	$mwl = $mwl || $constants->{breakhtml_wordlength} || 50;
 
@@ -2391,6 +2393,10 @@ to use var (nesting_maxdepth).  Default is 0.
 Integer for how deep to allow nesting sup/sub tags, 0 means no limit, 1 means
 to use var (nest_su_maxdepth).  Default is 0.
 
+=item length
+
+A maximum length limit for the result.
+
 =back
 
 =back
@@ -2446,14 +2452,18 @@ The 'approvedtags' entry in the vars table.
 
 	# define the lists, and the content elements in the lists, in both directions
 	my %lists = (
-		dl	=> ['dd', 'dt'],
-		ul	=> ['li'],
-		ol	=> ['li'],
+		dl		=> ['dd', 'dt'],
+		ul		=> ['li'],
+		ol		=> ['li'],
+		# blockquote not a list, but has similar semantics:
+		# everything in a blockquote needs to be in a block element,
+		# so we choose two that would fit the bill
+		blockquote	=> ['div', 'p'],
 	);
 	my %needs_list = (
-		dd	=> qr/dl/,
-		dt	=> qr/dl/,
-		li	=> qr/ul|ol/,
+		dd		=> qr/dl/,
+		dt		=> qr/dl/,
+		li		=> qr/ul|ol/,
 	);
 
 	# regexes to use later
@@ -2466,6 +2476,7 @@ The 'approvedtags' entry in the vars table.
 
 sub balanceTags {
 	my($html, $options) = @_;
+	my $orightml = $html;
 	my $constants = getCurrentStatic();
 	my $cache = getCurrentCache();
 
@@ -2658,14 +2669,17 @@ sub balanceTags {
 	# add on any unclosed tags still on stack
 	$html .= join '', map { "</$_>" } grep { !exists $really_empty{$_} } reverse @stack;
 
-	# cheap and easy hack to make sure everything in a blockquote is also
-	# inside another block element; extra divs don't hurt anything
-	### assumes a space between tags, put in by strip_*
-	$html =~ s|<blockquote>(?! <div>)|<blockquote><div>|gi;
-	$html =~ s|(?<!</div> )</blockquote>|</div></blockquote>|gi;
-
 	_validateLists(\$html);
 	_removeEmpty(\$html);
+
+	# if over limit, do it again
+	if ($options->{length} && $options->{length} < length($html)) {
+		my $limit = delete $options->{length};
+		while ($limit > 0 && length($html) > $limit) {
+			$limit -= 1;
+			$html = balanceTags(chopEntity($orightml, $limit), $options);
+		}
+	}
 
 	return $html;
 }
@@ -4051,4 +4065,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.164 2005/07/12 18:01:45 pudge Exp $
+$Id: Data.pm,v 1.165 2005/07/20 22:08:19 pudge Exp $

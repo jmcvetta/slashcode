@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: html_update.pl,v 1.4 2005/07/19 16:56:51 jamiemccarthy Exp $
+# $Id: html_update.pl,v 1.5 2005/07/20 23:00:05 pudge Exp $
 
 use strict;
 
@@ -166,12 +166,7 @@ sub _html_update_fix {
 		$html = slashizeLinks($html);
 		$html = balanceTags($html);
 	} else {
-		$html = balanceTags(strip_html($html), { deep_nesting => 2 });
-	}
-
-	while ($limit > 0 && length($html) > $limit) {
-		$limit -= 10;
-		$html = balanceTags(chopEntity($html, $limit), { deep_nesting => 2 });
+		$html = balanceTags(strip_html($html), { deep_nesting => 2, length => $limit });
 	}
 
 	if ($html && $field =~ /^(?:sig|bio|comment)$/) {

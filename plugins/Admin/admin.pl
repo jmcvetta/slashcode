@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.256 2005/07/12 18:02:14 pudge Exp $
+# $Id: admin.pl,v 1.257 2005/07/26 21:49:26 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1334,6 +1334,7 @@ sub editStory {
 		my($chosen_hr) = extractChosenFromForm($form);
 		$storyref->{topics_chosen} = $chosen_hr;
 		my $rendered_hr = $slashdb->renderTopics($chosen_hr);
+		$storyref->{topics_rendered} = $rendered_hr;
 		$storyref->{primaryskid} = $slashdb->getPrimarySkidFromRendered($rendered_hr);
 		$storyref->{topiclist} = $slashdb->getTopiclistFromChosen($chosen_hr,
 			{ skid => $storyref->{primaryskid} });
@@ -1354,11 +1355,6 @@ sub editStory {
 		$subid = $form->{subid};
 		$sid = $form->{sid};
 
-		$storyref->{topics_chosen} = $chosen_hr;
-		$storyref->{topics_rendered} = $rendered_hr;
-		$storyref->{primaryskid} = $slashdb->getPrimarySkidFromRendered($rendered_hr);
-		$storyref->{topiclist} = $slashdb->getTopiclistFromChosen($chosen_hr,
-			{ skid => $storyref->{primaryskid} });
 		# not normally set here, so we force it to be safe
 		$storyref->{tid} = $storyref->{topiclist};
 
@@ -1693,7 +1689,12 @@ sub getDescForTopicsRendered {
 
 	my $desc;
 	if (!@sorted_nexuses) {
-		$desc = "This story will not appear.";
+		$desc = "This story will not appear because ";
+		if (!%$topics_rendered) {
+			$desc .= "no topics are selected.";
+		} else {
+			$desc .= "no topics in any nexuses are selected.";
+		}
 	} else {
 		$desc = "This story ";
 		if ($display) {

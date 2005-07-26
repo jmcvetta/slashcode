@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.20 2005/03/11 19:58:02 pudge Exp $
+# $Id: runtask,v 1.21 2005/07/26 20:14:10 jamiemccarthy Exp $
 
 use sigtrap;
 use strict;
@@ -30,7 +30,7 @@ use vars qw(
 	$task_exit_flag
 );
 
-(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -181,10 +181,6 @@ EOT
 		}
 		if ($!) {
 			slashdLog("requiring '$fullname' caused error: $!");
-			$ok = 0;
-		}
-		if (!$task{$file}{timespec}) {
-			slashdLog("'$fullname' did not set timespec properly");
 			$ok = 0;
 		}
 		if (!$task{$file}{code} or ref $task{$file}{code} ne 'CODE') {

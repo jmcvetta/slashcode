@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.27 2005/05/12 03:13:52 jamiemccarthy Exp $
+# $Id: RSS.pm,v 1.28 2005/07/27 18:29:42 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -126,6 +126,10 @@ then the item is passed to rss_story().  Otherwise, "title" and "link" must
 be defined keys, and any other single-level key may be defined
 (no multiple level hash keys).
 
+=item nocreate
+
+Don't actually create RSS feed, just return data structure.
+
 =back
 
 =back
@@ -141,9 +145,9 @@ The complete RSS data as a string.
 
 sub create {
 	my($class, $param) = @_;
-	my $self = bless {}, $class;
-
 	return unless exists $param->{items};
+
+	my $self = bless {}, $class;
 
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
@@ -320,7 +324,7 @@ sub create {
 		$rss->add_item(%$_);
 	}
 
-	return $rss->as_string;
+	return $param->{nocreate} ? $rss : $rss->as_string;
 }
 
 #========================================================================
@@ -366,7 +370,7 @@ sub rss_story {
 	my $constants = getCurrentStatic();
 	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $topics = $reader->getTopics();
+	my $topics = $reader->getTopics;
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
@@ -405,7 +409,10 @@ sub rss_story {
 
 		$encoded_item->{slash}{comments}   = $self->encode($story->{commentcount})
 			if $story->{commentcount};
-		$encoded_item->{slash}{hitparade}  = $self->encode($story->{hitparade})
+		# old bug, was "hit_parade" in mod_slash RSS module, so since that
+		# has been around forever, we just change the new created feeds
+		# to use that
+		$encoded_item->{slash}{hit_parade}  = $self->encode($story->{hitparade})
 			if $story->{hitparade};
 		$encoded_item->{slash}{department} = $self->encode($story->{dept})
 			if $story->{dept} && $constants->{use_dept};
@@ -464,6 +471,12 @@ sub rss_item_description {
 			$desc = parseSlashizedLinks($desc);
 			$desc = processSlashTags($desc);
 
+			# here we could reprocess content as XHTML if we
+			# choose to, since that is in some ways better
+			# for feeds ... just set $constants->{xhtml}
+			# and run through balanceTags again?
+
+
 		} else {
 			$desc = strip_notags($desc);
 			$desc =~ s/\s+/ /g;
@@ -514,4 +527,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.27 2005/05/12 03:13:52 jamiemccarthy Exp $
+$Id: RSS.pm,v 1.28 2005/07/27 18:29:42 pudge Exp $

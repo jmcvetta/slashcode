@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: XML.pm,v 1.14 2005/04/22 21:36:26 pudge Exp $
+# $Id: XML.pm,v 1.15 2005/07/27 18:29:42 pudge Exp $
 
 package Slash::XML;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT = qw(xmlDisplay);
 
 # FRY: There must be layers and layers of old stuff down there!
@@ -98,7 +98,7 @@ sub xmlDisplay {
 
 	my($class, $file);
 	$type =~ s/[^\w]+//g;
-	for my $try (uc($type), $type) {
+	for my $try (uc($type), $type, ucfirst($type)) {
 		$class = "Slash::XML::$try";
 		$file  = "Slash/XML/$try.pm";
 
@@ -133,17 +133,26 @@ sub xmlDisplay {
 		return $content;
 	} else {
 		my $r = Apache->request;
+		my $content_type = 'text/xml';
+		my $suffix = 'xml';
 
+		# normalize for etag
 		my $temp = $content;
-		# normalize
-		if ($type eq 'rss') {
+
+		if ($type =~ /^rss$/i) {
 			$temp =~ s|[dD]ate>[^<]+</||;
+			$content_type = 'application/rss+xml';
+			$suffix = 'rss';
+		} elsif ($type =~ /^atom$/) {
+			$temp =~ s|updated>[^<]+</||;
+			$content_type = 'application/atom+xml';
+			$suffix = 'atom';
 		}
 
-		$opt->{filename} .= '.xml' if $opt->{filename} && $opt->{filename} !~ /\./;
+		$opt->{filename} .= ".$suffix" if $opt->{filename} && $opt->{filename} !~ /\./;
 
 		http_send({
-			content_type	=> 'text/xml',
+			content_type	=> $content_type,
 			filename	=> $opt->{filename},
 			etag		=> md5_hex($temp),
 			dis_type	=> 'inline',

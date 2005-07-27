@@ -12,8 +12,8 @@ en_US
 __name__
 delSectCancel
 __template__
-<B>Canceled deletion of [% section %].</B><BR>
+<b>Canceled deletion of [% section %].</b><br>
 __seclev__
 10000
 __version__
-$Id: delSectCancel;sections;default,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: delSectCancel;sections;default,v 1.6 2005/07/27 22:54:13 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.37 2005/03/11 19:57:48 pudge Exp $
+# $Id: Display.pm,v 1.38 2005/07/27 22:53:52 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -123,10 +123,6 @@ name.  By default, the skin that is used is whatever skin
 the user is in, but it can be overridden by setting this parameter.
 If a template in the current skin is not found, it defaults
 to skin "default".
-
-Skin will also default first to "light" if the user is in light
-mode (and fall back to "default," again, if no template for the
-"light" skin exists).
 
 A Skin value of "NONE" will cause no skin to be defined, so
 "default" will be used.
@@ -255,9 +251,6 @@ sub slashDisplayName {
 
 	if ($opt->{Skin} && $opt->{Skin} eq 'NONE') {
 		$user->{currentSkin} = 'default';
-	# light is a special case
-	} elsif ($user->{light}) {
-		$user->{currentSkin} = 'light';
 	} elsif ($opt->{Skin}) {
 		$user->{currentSkin} = $opt->{Skin};
 	}

@@ -17,11 +17,11 @@ main
 __template__
 [% PROCESS titlebar %]
 
-<MULTICOL COLS="3">
+<multicol cols="3">
 [% FOREACH portal = portals %][% portal.box %][% END %]
-</MULTICOL>
+</multicol>
 
 __seclev__
 10000
 __version__
-$Id: main;cheesyportal;default,v 1.5 2003/03/04 19:07:58 pudge Exp $
+$Id: main;cheesyportal;default,v 1.6 2005/07/27 22:53:54 pudge Exp $

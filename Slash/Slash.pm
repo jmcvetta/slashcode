@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.238 2005/07/10 16:13:04 cowboyneal Exp $
+# $Id: Slash.pm,v 1.239 2005/07/27 22:53:50 pudge Exp $
 
 package Slash;
 
@@ -1139,9 +1139,12 @@ sub displayThread {
 
 		if ($comment->{kids} && ($user->{mode} ne 'parents' || $pid)) {
 			$return .= $const->{cagebegin} if $cagedkids;
-			$return .= $const->{indentbegin} if $indent;
-			$return .= displayThread($sid, $cid, $lvl+1, $comments, $const);
-			$return .= $const->{indentend} if $indent;
+			my $thread = displayThread($sid, $cid, $lvl+1, $comments, $const);
+			if ($thread) {
+				$return .= $const->{indentbegin} if $indent;
+				$return .= $thread;
+				$return .= $const->{indentend} if $indent;
+			}
 			$return .= $const->{cageend} if $cagedkids;
 
 			# in flat or nested mode, all visible kids will

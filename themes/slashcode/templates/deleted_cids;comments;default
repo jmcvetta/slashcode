@@ -20,8 +20,8 @@ The following
 [% FOR c = comments_deleted %]
 #[% c %][% UNLESS c == comments_deleted.last %], [% END %]
 [% END %]
-<BR>
+<br>
 __seclev__
 1000
 __version__
-$Id: deleted_cids;comments;default,v 1.6 2003/12/20 06:36:19 jamie Exp $
+$Id: deleted_cids;comments;default,v 1.7 2005/07/27 22:54:46 pudge Exp $

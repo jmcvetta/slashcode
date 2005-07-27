@@ -15,9 +15,9 @@ en_US
 __name__
 lockTest
 __template__
-<B>[% percent %]%</B> matching with <FONT COLOR="[% user.colors.fg_1 %]">[% subject %]</FONT> by <B>[% nickname %]</B><BR>
+<b>[% percent %]%</b> matching with [% subject %] by <b>[% nickname %]</b><br>
 
 __seclev__
 10000
 __version__
-$Id: lockTest;misc;default,v 1.6 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: lockTest;misc;default,v 1.7 2005/07/27 22:54:48 pudge Exp $

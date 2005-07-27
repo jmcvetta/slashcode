@@ -24,11 +24,11 @@ __template__
 [% CASE 'offertext' %]
 	[% returnme.data_constant = 1 %]
 	You're invited to <a href="/daypass.pl">earn a daypass</a>
-	and become an honorary subscriber for the day.<BR>
+	and become an honorary subscriber for the day.<br>
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;daypass;default,v 1.1 2005/02/03 05:33:45 jamiemccarthy Exp $
+$Id: data;daypass;default,v 1.2 2005/07/27 22:53:54 pudge Exp $

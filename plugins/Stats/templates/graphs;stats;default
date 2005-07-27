@@ -86,8 +86,8 @@ SWITCH gtitle;
 
   CASE 'Hits';
   IF (form.stats_skid && form.stats_skid != 0);
-      %] <B>[% gtitle %]</B> graph for [% form.stats_skid %] is unavailable.
-	Try the <B>Pages</B> graph instead.
+      %] <b>[% gtitle %]</b> graph for [% form.stats_skid %] is unavailable.
+	Try the <b>Pages</b> graph instead.
      [%
 #      PROCESS make_graph
 #         showtotal => 1,
@@ -330,4 +330,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: graphs;stats;default,v 1.15 2004/11/30 18:28:00 tvroom Exp $
+$Id: graphs;stats;default,v 1.16 2005/07/27 22:54:13 pudge Exp $

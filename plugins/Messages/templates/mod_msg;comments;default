@@ -19,16 +19,16 @@ __template__
 %]
 [% IF msg.mode == 1 %]
 
-<P>
-<B><A HREF="[% gSkin.rootdir %]/comments.pl?sid=[% comment.sid %]&amp;cid=[% comment.cid %]"
->[% comment.subject %]</A></B>, posted to
-<B><A HREF="[% gSkin.rootdir %][% discussion.realurl %]">[% discussion.title %]</A></B>, has been moderated
-<B>[% reasons.${moderation.reason}.name %] ([% moderation.value %])</B>.
-</P>
+<p>
+<b><a href="[% gSkin.rootdir %]/comments.pl?sid=[% comment.sid %]&amp;cid=[% comment.cid %]"
+>[% comment.subject %]</a></b>, posted to
+<b><a href="[% gSkin.rootdir %][% discussion.realurl %]">[% discussion.title %]</a></b>, has been moderated
+<b>[% reasons.${moderation.reason}.name %] ([% moderation.value %])</b>.
+</p>
 
-<P>
-It is currently scored <B>[% reasons.${comment.reason}.name %] ([% cur_score %])</B>.
-</P>
+<p>
+It is currently scored <b>[% reasons.${comment.reason}.name %] ([% cur_score %])</b>.
+</p>
 
 [% ELSE %]
 
@@ -46,4 +46,4 @@ It is currently scored [% reasons.${comment.reason}.name %] ([% cur_score %]).
 __seclev__
 500
 __version__
-$Id: mod_msg;comments;default,v 1.10 2004/06/17 16:11:59 jamiemccarthy Exp $
+$Id: mod_msg;comments;default,v 1.11 2005/07/27 22:54:11 pudge Exp $

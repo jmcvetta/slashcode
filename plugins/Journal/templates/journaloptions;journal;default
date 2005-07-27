@@ -11,31 +11,29 @@ en_US
 __name__
 journaloptions
 __template__
-<FORM ACTION="[% gSkin.rootdir %]/journal.pl" METHOD="POST" ENCTYPE="application/x-www-form-urlencoded">
-<INPUT TYPE="hidden" NAME="op" VALUE="setprefs">
-[% USE Slash %]
-<TABLE>
-
-[%- IF themes.size > 1 %]
-	<TR VALIGN="TOP"><TD>
-			[% PROCESS formLabel value => "Theme", comment => "Select how your journal will be viewed" %]
+	
+<form action="[% gSkin.rootdir %]/journal.pl" method="post" enctype="application/x-www-form-urlencoded">
+	<fieldset>
+		<legend>
+			Journal Preferences
+		</legend>
+		<input type="hidden" name="op" value="setprefs">
+		[%- IF themes.size > 1 %]
+			[% PROCESS formLabel value => "Theme" %]
 			[% Slash.createSelect("journal_theme", themes, default, 1) %]
-	</TD></TR>
-[%- END %]
-
-	<TR VALIGN="TOP"><TD>
-		[% PROCESS formLabel value => "Comments", comment => "Select default for new entries";
- 		   jdcodename = (user.is_subscriber || user.is_admin) ? 'commentcodes_extended' : 'commentcodes';
+			[% PROCESS formNote note => "Select how your journal will be viewed" %]
+		[%- END %]
+		[% PROCESS formLabel value => "Comments" %]
+		[% jdcodename = (user.is_subscriber || user.is_admin) ? 'commentcodes_extended' : 'commentcodes';
 		   jds = Slash.db.getDescriptions(jdcodename);
 		   def_jd = user.journal_discuss || constants.defaultcommentmode;
 		   Slash.createSelect("journal_discuss", jds, def_jd, 1) %]
-	</TD></TR>
-</TABLE>
-<INPUT TYPE="submit" NAME="submit" VALUE="change">
-</FORM>
-
+		 [% PROCESS formNote note => "Select default for new entries" %]
+		<input type="submit" name="submit" value="change" class="button">
+	</fieldset>
+</form>
 
 __seclev__
 100
 __version__
-$Id: journaloptions;journal;default,v 1.6 2005/02/02 23:21:39 pudge Exp $
+$Id: journaloptions;journal;default,v 1.7 2005/07/27 22:54:10 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Plugin.pm,v 1.13 2005/03/11 19:57:48 pudge Exp $
+# $Id: Plugin.pm,v 1.14 2005/07/27 22:53:53 pudge Exp $
 
 package Slash::Display::Plugin;
 
@@ -12,7 +12,6 @@ Slash::Display::Plugin - Template Toolkit plugin for Slash
 
 =head1 SYNOPSIS
 
-	[% USE Slash %]
 	[% Slash.someFunction('some data') %]
 	[% Slash.db.someMethod(var1, var2) %]
 
@@ -22,7 +21,7 @@ Slash::Display::Plugin - Template Toolkit plugin for Slash
 Call available exported functions from Slash and Slash::Utility
 from within your template.  Also call methods from Slash::DB
 with the C<db> method.  Constants from Slash::Constants are
-available.  Invoke with C<[% USE Slash %]>.
+available.
 
 C<[% Slash.version %]> gives the version of Slash.
 C<[% Slash.VERSION %]> (note case) gives the version
@@ -64,7 +63,7 @@ use Slash::Constants ();
 use Slash::Utility ();
 use base qw(Template::Plugin);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # BENDER: Forget your stupid theme park!  I'm gonna make my own!
 # With hookers!  And blackjack!  In fact, forget the theme park!

@@ -14,22 +14,18 @@ en_US
 __name__
 users
 __template__
-<TABLE BGCOLOR="[% user.colors.bg_5 %]" BORDER="0"  WIDTH="100%" CELLPADDING="2" CELLSPACING="0">
-	<TR>
-		<TD>
-[ [% needbar = 0; FOR i = items %]
+<div id="usermenu-top">
+	<ul>
+	[% needbar = 0; FOR i = items %]
 	[% IF i.label %]
-		[% " | " IF needbar; needbar = 0 %]
-		[% IF i.value; needbar = 1 %]<A HREF="[% i.value %]">[% END
-		%][% i.label
-		%][% IF i.value %]</A>[% END %]
-	[% END %]
-[% END %] ]
-		</TD>
-	</TR>
-</TABLE>
+		[% "" IF needbar; needbar = 0 %]
+		[% IF i.value; needbar = 1 %]<li><a href="[% i.value %]">[% END %][% i.label %][% IF i.value %]</a></li>[% END %]
+		[% END %]
+	[% END %] 
+	</ul>
+</div>
 
 __seclev__
 10000
 __version__
-$Id: users;menu;default,v 1.7 2004/06/17 16:12:26 jamiemccarthy Exp $
+$Id: users;menu;default,v 1.8 2005/07/27 22:54:48 pudge Exp $

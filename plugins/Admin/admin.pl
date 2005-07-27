@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.258 2005/07/26 23:23:47 pudge Exp $
+# $Id: admin.pl,v 1.259 2005/07/27 22:53:53 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1039,8 +1039,8 @@ sub importImage {
 	}
 
 	my($w, $h) = imgsize("/tmp/slash/$tf");
-	return qq[<IMG SRC="$rootdir/$section/] .  getsiddir() . $filename
-		. qq[" WIDTH="$w" HEIGHT="$h" ALT="$section">];
+	return qq[<img src="$rootdir/$section/] .  getsiddir() . $filename
+		. qq[" width="$w" height="$h" alt="$section">];
 }
 
 ##################################################################

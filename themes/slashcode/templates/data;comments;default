@@ -71,7 +71,7 @@ __template__
 	MetaModeration completed.
 
 [% CASE 'metamods_performed' %]
-	<P>[% num %] MetaModeration(s) Completed.
+	<p>[% num %] MetaModeration(s) Completed.
 
 [% CASE 'moderating' %]
 	[% returnme.data_constant = 1 %]
@@ -102,4 +102,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;comments;default,v 1.22 2004/11/27 18:50:11 jamiemccarthy Exp $
+$Id: data;comments;default,v 1.23 2005/07/27 22:54:46 pudge Exp $

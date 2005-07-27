@@ -39,7 +39,7 @@ __template__
 
 [% CASE 'readmore' %]
 	[% returnme.data_constant = 1 %]
-	<B>Read More...</B>
+	<b>Read More...</b>
 
 [% CASE 'bytes' %]
 	[% returnme.data_constant = 1 %]
@@ -50,14 +50,14 @@ __template__
 	words in story
 
 [% CASE 'comments' %]
-	<B>[% IF cc.0 -%]
-<A HREF="[% cc.0.0 %]"[% IF cc.0.2 %] TITLE="[% cc.0.2 %]"[% END %]>[% cc.0.1 %]</A> of 
+	<b>[% IF cc.0 -%]
+<a href="[% cc.0.0 %]"[% IF cc.0.2 %] TITLE="[% cc.0.2 %]"[% END %]>[% cc.0.1 %]</a> of 
 	[%- END -%]
-<A HREF="[% cc.1.0 %]"[% IF cc.1.2 %] TITLE="[% cc.1.2 %]"[% END %]>[% cc.1.1 %]</A></B> comment[% cc.3 != 1 ? 's' : '' %]
+<a href="[% cc.1.0 %]"[% IF cc.1.2 %] TITLE="[% cc.1.2 %]"[% END %]>[% cc.1.1 %]</a></b> comment[% cc.3 != 1 ? 's' : '' %]
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;page;default,v 1.8 2004/07/02 00:13:51 pudge Exp $
+$Id: data;page;default,v 1.9 2005/07/27 22:54:12 pudge Exp $

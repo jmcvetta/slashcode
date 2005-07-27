@@ -15,10 +15,12 @@ en_US
 __name__
 friendsview
 __template__
+<ul>
 [% FOR article = articles %]
-	<LI><A HREF="[% gSkin.rootdir %]/~[% article.nickname | fixparam %]/journal/[% article.id %]">[% article.description %]</A> - <A HREF="[% gSkin.rootdir %]/~[% article.nickname | fixparam %]">[% article.nickname | strip_literal %]</A>
+	<li><a href="[% gSkin.rootdir %]/~[% article.nickname | fixparam %]/journal/[% article.id %]">[% article.description %]</a> - <a href="[% gSkin.rootdir %]/~[% article.nickname | fixparam %]">[% article.nickname | strip_literal %]</a>
 [% END %]
+</ul>
 __seclev__
 10000
 __version__
-$Id: friendsview;index;default,v 1.4 2004/07/02 00:13:57 pudge Exp $
+$Id: friendsview;index;default,v 1.5 2005/07/27 22:54:47 pudge Exp $

@@ -18,7 +18,6 @@ en_US
 __name__
 maininfo
 __template__
-[% USE Slash %]
 <p>[% PROCESS titlebar title => 'Dilemma Info' width='100%' %]
 <tt>
 [% FOREACH key = info.keys.sort %]
@@ -43,4 +42,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: maininfo;dilemma;default,v 1.4 2004/10/15 14:26:22 jamiemccarthy Exp $
+$Id: maininfo;dilemma;default,v 1.5 2005/07/27 22:53:54 pudge Exp $

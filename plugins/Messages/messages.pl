@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.26 2005/03/11 19:58:09 pudge Exp $
+# $Id: messages.pl,v 1.27 2005/07/27 22:54:10 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -15,7 +15,7 @@ use Slash::Utility;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 my $start_time = Time::HiRes::time;
@@ -208,19 +208,21 @@ sub display_prefs {
 		color =>	'colored',
 		tab_selected =>	'preferences',
 	});
-	slashDisplay('prefs_titlebar', {
+	slashDisplay('journuserboxes');
+	my $prefs_titlebar = slashDisplay('prefs_titlebar', {
 		nickname => $user->{nickname},
 		uid => $user->{uid},
 		tab_selected => 'messages'
-	});
-	print createMenu('messages');
-	slashDisplay('journuserboxes');
+	}, { Return => 1 });
+	my $messages_menu =  createMenu('messages');
 	slashDisplay('display_prefs', {
 		userm		=> $userm,
 		prefs		=> $prefs,
 		note		=> $note,
 		messagecodes	=> $messagecodes,
 		deliverymodes	=> $deliverymodes,
+		prefs_titlebar	=> $prefs_titlebar,
+		messages_menu	=> $messages_menu
 	});
 	footer();
 }
@@ -271,17 +273,19 @@ sub list_messages {
 		color =>	'colored',
 		tab_selected =>	'me',
 	});
-	slashDisplay('user_titlebar', {
+	slashDisplay('journuserboxes');
+	my $user_titlebar = slashDisplay('user_titlebar', {
 		nickname => $user->{nickname},
 		uid => $user->{uid},
 		tab_selected => 'messages'
-	});
-	print createMenu('messages'); # [ Message Preferences | Inbox ]
-	slashDisplay('journuserboxes');
+	}, { Return => 1} );
+	my $messages_menu = createMenu('messages'); # [ Message Preferences | Inbox ]
 	slashDisplay('list_messages', {
 		note		=> $note,
 		messagecodes	=> $messagecodes,
 		message_list	=> $message_list,
+		messages_menu 	=> $messages_menu,
+		user_titlebar	=> $user_titlebar,
 	});
 	footer();
 }

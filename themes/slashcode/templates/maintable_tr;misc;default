@@ -15,7 +15,7 @@ __name__
 maintable_tr
 __template__
 
-<TR[% IF mt_valign %] VALIGN="[% mt_valign %]"[% END %]>
+<TR[% IF mt_valign %] valign="[% mt_valign %]"[% END %]>
 
 [%
 user.state.mt.curcol = 1;
@@ -36,4 +36,4 @@ user.state.mt.currow = min_rows + 1;
 __seclev__
 10000
 __version__
-$Id: maintable_tr;misc;default,v 1.6 2003/03/04 19:07:59 pudge Exp $
+$Id: maintable_tr;misc;default,v 1.7 2005/07/27 22:54:48 pudge Exp $

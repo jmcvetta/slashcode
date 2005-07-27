@@ -19,22 +19,22 @@ __template__
 -%]
 Pages:
 [%- IF form.pagenum == 1; '&lt;'; ELSE -%]
-<A HREF="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% form.pagenum - 1 %]" TITLE="Previous Page">&lt;</A>
+<a href="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% form.pagenum - 1 %]" title="Previous Page">&lt;</a>
 [% END -%]
 [%-   FOREACH mypage = [ 0 .. user.state.pagebreaks ];
         mypage = mypage + 1;
         IF mypage == form.pagenum %]
-<B>[% mypage %]</B>
+<b>[% mypage %]</b>
 [%-     ELSE -%]
-<A HREF="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% mypage %]" TITLE="Page [% mypage %]">[% mypage %]</A>
+<a href="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% mypage %]" title="Page [% mypage %]">[% mypage %]</a>
 [%-      END;
         " | " UNLESS loop.last;
       END %]
 [% IF form.pagenum == user.state.pagebreaks + 1; '&gt;'; ELSE -%]
-<A HREF="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% form.pagenum + 1 %]" TITLE="Next Page">&gt;</A>
+<a href="[% storylinks.0 | strip_attribute %]&amp;pagenum=[% form.pagenum + 1 %]" title="Next Page">&gt;</a>
 [%- END -%]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: pagemenu;misc;default,v 1.3 2004/05/09 14:18:44 jamiemccarthy Exp $
+$Id: pagemenu;misc;default,v 1.4 2005/07/27 22:54:48 pudge Exp $

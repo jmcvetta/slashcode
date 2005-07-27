@@ -15,8 +15,8 @@ __template__
 
 [% CASE 'nomorechances' %]
 	[% returnme.data_constant = 1 %]
-	<B>Sorry, you failed to prove your humanity. To try again,
-	you have to start over.</B>
+	<b>Sorry, you failed to prove your humanity. To try again,
+	you have to start over.</b>
 
 [% CASE 'imgalttext' %]
 	[% returnme.data_constant = 1 %]
@@ -27,4 +27,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: data;humanconf;default,v 1.4 2004/02/13 17:40:54 jamiemccarthy Exp $
+$Id: data;humanconf;default,v 1.5 2005/07/27 22:54:10 pudge Exp $

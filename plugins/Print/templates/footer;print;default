@@ -35,22 +35,22 @@ ELSE;
 	sitename = "$constants.sitename ($absdir)";
 END -%]
 
-<HR>
-<CENTER><SMALL>&copy; Copyright [% Slash.timeCalc(Slash.db.getTime, '%Y') %]
-- [% constants.sitepublisher %], All Rights Reserved</SMALL></CENTER>
-<HR>
+<hr>
+<center><small>&copy; Copyright [% Slash.timeCalc(Slash.db.getTime, '%Y') %]
+- [% constants.sitepublisher %], All Rights Reserved</small></center>
+<hr>
 
-<P>
-<SMALL>printed from [% sitename %], [% url %] on [% time %]</SMALL>
-</P>
+<p>
+<small>printed from [% sitename %], [% url %] on [% time %]</small>
+</p>
 [% IF form.auto -%]
 <SCRIPT LANGUAGE="JavaScript1.2">
 <!--
 	if (window.print) { window.print(); }
 //-->
-</SCRIPT>
+</script>
 [% END -%]
-</BODY>
-</HTML>
+</body>
+</html>
 __version__
-$Id: footer;print;default,v 1.7 2004/06/17 16:12:00 jamiemccarthy Exp $
+$Id: footer;print;default,v 1.8 2005/07/27 22:54:12 pudge Exp $

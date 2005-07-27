@@ -14,9 +14,9 @@ en_US
 __name__
 del_message
 __template__
-[% total_deleted %] comments deleted. Comment count set to [% comment_count %]<BR>
+[% total_deleted %] comments deleted. Comment count set to [% comment_count %]<br>
 
 __seclev__
 1000
 __version__
-$Id: del_message;comments;default,v 1.5 2003/03/04 19:07:59 pudge Exp $
+$Id: del_message;comments;default,v 1.6 2005/07/27 22:54:46 pudge Exp $

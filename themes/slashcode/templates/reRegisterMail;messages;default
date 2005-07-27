@@ -25,10 +25,10 @@ http:[% gSkin.rootdir %]/users.pl?validateuser=1&id=[% registryid %]
 and follow the displayed instructions. Re-registration should be quick and easy.
 
 We apologize for the inconvenience. If we can improve this procedure in any way, please
-send your suggestions to the <A HREF="[% useradmin %]">administrator</A>.
+send your suggestions to the <a href="[% useradmin %]">administrator</a>.
 
 
 __seclev__
 1000
 __version__
-$Id: reRegisterMail;messages;default,v 1.4 2004/06/17 16:12:25 jamiemccarthy Exp $
+$Id: reRegisterMail;messages;default,v 1.5 2005/07/27 22:54:48 pudge Exp $

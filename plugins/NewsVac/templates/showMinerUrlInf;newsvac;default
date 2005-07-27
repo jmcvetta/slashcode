@@ -22,8 +22,8 @@ num_sizes=[
 nbsp='0';
 maxsize=num_sizes.highval;
 -%]
-	<p><font size="+1"><b>URL: <a href="[% url %]" target="_new">[% url 
-	-%]</a></b></font><br>
+	<p><b>URL: <a href="[% url %]" target="_new">[% url 
+	-%]</a></b><br>
 	<table width="90%" border=0 cellspacing=0>
 	<tr align=left>
 		<td align=right>Original length:</td>
@@ -49,10 +49,10 @@ maxsize=num_sizes.highval;
 	<pre>[% tags.size %] '&lt;a href' tags in remaining text:
 
 [% FOR t=tags -%]
-[% t.0 %]. [% t.1 %]<a href="[% t.2 %]"><font color="red">[% t.2 %]</font></a>[% t.3 %]
+[% t.0 %]. [% t.1 %]<a href="[% t.2 %]">[% t.2 %]</a>[% t.3 %]
 [% END -%]
 	</pre>
 __seclev__
 100
 __version__
-$Id: showMinerUrlInf;newsvac;default,v 1.4 2003/03/04 19:07:59 pudge Exp $
+$Id: showMinerUrlInf;newsvac;default,v 1.5 2005/07/27 22:54:12 pudge Exp $

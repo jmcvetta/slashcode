@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.791 2005/07/19 16:16:09 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.792 2005/07/27 22:53:50 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.791 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.792 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -896,6 +896,68 @@ sub getMetamodsForUserRaw {
 	}
 
 	return \@ids;
+}
+
+sub getCSSValuesHashForCol {
+	my($self, $col) = @_;
+	my $values = $self->sqlSelectColArrayref($col, 'css', '', '', { distinct => 1 });
+	my $result = { map { $_ => 1 } @$values };
+	return $result;
+}
+
+sub getCSS {
+	my($self) = @_;
+	my $user = getCurrentUser();
+	my $page = $user->{currentPage};
+	my $skid = getCurrentSkin('skid');
+	my $admin = $user->{is_admin};
+	my $theme = $user->{light} ? 'light' : "";
+	my $constants = getCurrentStatic();
+	
+	my $expire_time = $constants->{css_expire} || 3600;
+	$expire_time += int(rand(60)) if $expire_time;
+	_genericCacheRefresh($self, 'css', $expire_time);
+	_genericCacheRefresh($self, 'css_pages', $expire_time);
+	_genericCacheRefresh($self, 'css_skids', $expire_time);
+	_genericCacheRefresh($self, 'css_themes', $expire_time);
+	
+	my $css_ref 	 	= $self->{_css_cache} ||= {};
+	my $css_pages_ref	= $self->{_css_pages_cache};
+	my $css_skids_ref	= $self->{_css_skids_cache};
+	my $css_themes_ref	= $self->{_css_themes_cache};
+
+	$css_pages_ref = $self->getCSSValuesHashForCol('page') if !$css_pages_ref;
+	$css_skids_ref = $self->getCSSValuesHashForCol('skid')   if !$css_skids_ref;
+	$css_themes_ref= $self->getCSSValuesHashForCol('theme') if !$css_themes_ref;
+
+	$page   = '' if !$css_pages_ref->{$page};	
+	$skid   = 0  if !$css_skids_ref->{$skid};	
+	$theme  = '' if !$css_themes_ref->{$theme};	
+
+	return $css_ref->{$skid}{$page}{$admin}{$theme} if exists $css_ref->{$skid}{$page}{$admin}{$theme};
+	
+	my @clauses;
+
+	my $page_q = $self->sqlQuote($page);
+        my $page_in = $page ? "(page = '' or page = $page_q)" : "page = ''";
+        push @clauses, $page_in;
+
+        my $skid_in = $skid ? "(skid = 0 or skid = '$skid')" : "skid = 0";
+        push @clauses, $skid_in;
+
+        push @clauses, "admin='no'" if !$admin;
+	
+	my $theme_q  = $self->sqlQuote($theme);
+	my $theme_in = $theme ? "(theme='' or theme=$theme_q)" : "theme=''";
+	push @clauses, $theme_in;
+
+        my $where = "css.ctid=css_type.ctid AND ";
+	$where .= join ' AND ', @clauses;
+
+        my $css = $self->sqlSelectAllHashrefArray("rel,type,media,file,title", "css, css_type", $where, "ORDER BY css_type.ordernum, css.ordernum");
+	
+	$css_ref->{$skid}{$page}{$admin}{$theme} = $css;
+        return $css;
 }
 
 ########################################################
@@ -9252,7 +9314,7 @@ sub getSlashConf {
 		stats_sfnet_groupids =>		[ 4421 ],
 		submit_categories =>		[ ],
 		skins_recenttopics =>           [ ],
-		subnet_karma_post_limit_range => [ ]
+		subnet_karma_post_limit_range => [ ],
 	);
 	my %conf_fixup_hashes = (
 		# var name			# default hash of keys/values
@@ -10560,7 +10622,6 @@ sub getTemplateByName {
 		$page ||= 'misc';
 	}
 	unless ($skin) {
-		$skin = "light" if $user->{light};
 		$skin ||= getCurrentSkin('name');
 		$skin ||= 'default';
 	}

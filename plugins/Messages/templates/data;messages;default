@@ -60,8 +60,11 @@ __template__
 [% CASE 'unknown mode' %]
 	Unknown delivery mode '[% mode %]' for user [% uid %]
 
+[% CASE 'messages_div_begin' %]
+	<div id="users">
+
 [% END %]
 __seclev__
 500
 __version__
-$Id: data;messages;default,v 1.7 2003/08/06 04:52:31 jamie Exp $
+$Id: data;messages;default,v 1.8 2005/07/27 22:54:11 pudge Exp $

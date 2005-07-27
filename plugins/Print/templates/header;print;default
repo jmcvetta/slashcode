@@ -13,12 +13,12 @@ header
 __seclev__
 10000
 __template__
-</HEAD>
-<BODY>
+</head>
+<body>
 
-<H1>[% constants.sitename %]<BR>
-<SMALL>[% constants.slogan %]</SMALL><BR>
-<SMALL>[% gSkin.absolutedir %]/</SMALL></H1>
+<h1>[% constants.sitename %]<br>
+<small>[% constants.slogan %]</small><br>
+<small>[% gSkin.absolutedir %]/</small></h1>
 
 [% IF constants.run_ads -%]
 <!-- add code. You can use your own ad system - we use one that 
@@ -28,4 +28,4 @@ in this block -->
 <!-- end ad code -->
 [% END -%]
 __version__
-$Id: header;print;default,v 1.7 2004/06/17 16:12:00 jamiemccarthy Exp $
+$Id: header;print;default,v 1.8 2005/07/27 22:54:12 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.96 2005/04/26 18:30:31 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.97 2005/07/27 22:53:53 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.96 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -49,12 +49,14 @@ use vars qw($VERSION @EXPORT);
 	matchingStrings
 	pollbooth
 	portalbox
+	portalsidebox
 	processSlashTags
 	selectMode
 	selectSection
 	selectSortcode
 	selectThreshold
 	selectTopic
+	sidebox
 	titlebar
 );
 
@@ -834,27 +836,23 @@ sub fancybox {
 	my($width, $title, $contents, $center, $return, $class, $id) = @_;
 	return unless $title && $contents;
 
-	my $tmpwidth = $width;
-	# allow width in percent or raw pixels
-	my $pct = 1 if $tmpwidth =~ s/%$//;
-	# used in some blocks
-	my $mainwidth = $tmpwidth-4;
-	my $insidewidth = $mainwidth-8;
-	if ($pct) {
-		for ($mainwidth, $insidewidth) {
-			$_ .= '%';
-		}
-	}
-
 	slashDisplay('fancybox', {
 		width		=> $width,
 		contents	=> $contents,
 		title		=> $title,
 		center		=> $center,
-		mainwidth	=> $mainwidth,
-		insidewidth	=> $insidewidth,
 		class           => $class,
 		id              => $id,
+	}, $return);
+}
+
+sub sidebox {
+	my ($title, $contents, $name, $return) = @_;
+	return unless $title && $contents;
+	slashDisplay('sidebox', {
+		contents	=> $contents,
+		title		=> $title,
+		name            => $name,
 	}, $return);
 }
 
@@ -935,6 +933,32 @@ sub portalbox {
 	}
 
 	fancybox($width, $title, $contents, 0, 1, $class, $id);
+}
+
+sub portalsidebox {
+	my($title, $contents, $bid, $url, $getblocks, $name) = @_;
+	return unless $title && $contents;
+	my $constants = getCurrentStatic();
+	my $user = getCurrentUser();
+	$getblocks ||= 'index';
+
+	$title = slashDisplay('portalboxtitle', {
+		title	=> $title,
+		url	=> $url,
+	}, { Return => 1, Nocomm => 1 });
+
+	if (
+		   ($user->{slashboxes} && $getblocks == $constants->{mainpage_skid})
+		|| ($user->{slashboxes} && $constants->{slashbox_sections})
+	) {
+		$title = slashDisplay('portalmap', {
+			title	=> $title,
+			bid	=> $bid,
+		}, { Return => 1, Nocomm => 1 });
+	}
+	$name ||= $bid;
+
+	sidebox($title, $contents, $name, 1);
 }
 
 #========================================================================
@@ -1679,4 +1703,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.96 2005/04/26 18:30:31 jamiemccarthy Exp $
+$Id: Display.pm,v 1.97 2005/07/27 22:53:53 pudge Exp $

@@ -14,7 +14,8 @@ __name__
 prefs_titlebar
 __template__
 [% title = title || "$user.nickname (This is you!)";
-PROCESS titlebar title=title width="100%";
+PROCESS titlebar title=title;
+'<div id="usermenu">'; 
 
 tabs = [
 	{ link = "/users.pl?op=edituser",	label = "User",		sel_label = "user" },
@@ -37,9 +38,9 @@ tabs.push(
 	{ link = "/my/password",		label = "Password",	sel_label = "password" },
 );
 
-PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selected %]
+PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selected; '</div>' %]
 
 __seclev__
 10000
 __version__
-$Id: prefs_titlebar;misc;default,v 1.8 2004/05/04 21:43:33 pudge Exp $
+$Id: prefs_titlebar;misc;default,v 1.9 2005/07/27 22:54:48 pudge Exp $

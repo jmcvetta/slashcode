@@ -9,7 +9,6 @@ Template for editing user
 * nickname_checked = whether or not nickname is checked
 * author_flag = current user is author
 * authoredit_flag = current user can edit authors
-* accesslist = hashref of fields from user/id's accesslist entry
 
 __title__
 users admin
@@ -141,12 +140,6 @@ __template__
 						[% END %]
 						</b>
 					[% END %]
-			[% END %]
-			[% IF useredit.nonuid && accesslist.estimate_users %]
-				<label>
-					Estimated Users
-				</label>
-				[% accesslist.estimated_users %]
 			[% END %]
 			[% IF useredit.uid %]
 				<label>
@@ -288,4 +281,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.71 2005/07/27 22:54:47 pudge Exp $
+$Id: getUserAdmin;users;default,v 1.72 2005/08/07 20:18:56 jamiemccarthy Exp $

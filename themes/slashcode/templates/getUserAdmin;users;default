@@ -148,8 +148,9 @@ __template__
 				<input type="text" name="tokens" size="6" value="[% useredit.tokens | strip_attribute %]">&nbsp;&nbsp;
 				<b>Latest M2 Info:</b> <input type="text" name="m2info" value="[% useredit.m2info | strip_attribute %]">
 			[% END %]
-
+				<p>
 				<input type="submit" name="saveuseradmin" value="Save [% IF useredit.nickname; useredit.nickname | strip_attribute; END %]" class="button">
+				</p>
 			[% IF ! useredit.nonuid %]
 				[% IF constants.subscribe && (useredit.subscribe_payments.size or useredit.subscribe_purchases.size) %]
 					<label>
@@ -281,4 +282,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.72 2005/08/07 20:18:56 jamiemccarthy Exp $
+$Id: getUserAdmin;users;default,v 1.73 2005/08/08 14:42:45 lancelot Exp $

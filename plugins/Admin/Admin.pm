@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.15 2005/07/26 23:23:47 pudge Exp $
+# $Id: Admin.pm,v 1.16 2005/08/10 21:25:35 pudge Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -227,7 +227,11 @@ sub otherLinks {
 		aid		=> $aid,
 		tids		=> \@tids,
 		topics		=> $topics,
-	}, { Return => 1, Nocomm => 1 });
+	}, {
+		Return  => 1,
+		Nocomm  => 1,
+		Page	=> 'admin'
+	});
 }
 
 ##################################################################

@@ -14,7 +14,7 @@ mid_tab
 __template__
 
 [% IF tab_is_selected %]
-        <li[% details.selected %]><a href="[% link %]">[% label %]</a></li>
+        <li[% details.selected %]><a href="[% link %]"><b>[% label %]</b></a></li>
 [% ELSE %]
          <li[% details.unselected %]><a href="[% link %]">[% label %]</a></li>
 [% END %]
@@ -22,4 +22,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: mid_tab;misc;default,v 1.11 2005/07/27 22:54:48 pudge Exp $
+$Id: mid_tab;misc;default,v 1.12 2005/08/10 16:34:09 lancelot Exp $

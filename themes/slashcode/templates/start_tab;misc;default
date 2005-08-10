@@ -18,11 +18,11 @@ __name__
 start_tab
 __template__
 [% IF tab_is_selected %]
-	<li[% details.selected %]><a href="[% link %]" class="begin">[% label %]</a></li>
+	<li[% details.selected %]><a href="[% link %]" class="begin"><b>[% label %]</b></a></li>
 [% ELSE %]
 	<li[% details.unselected %]><a href="[% link %]" class="begin">[% label %]</a></li>
 [% END %]
 __seclev__
 10000
 __version__
-$Id: start_tab;misc;default,v 1.11 2005/07/27 22:54:48 pudge Exp $
+$Id: start_tab;misc;default,v 1.12 2005/08/10 16:34:09 lancelot Exp $

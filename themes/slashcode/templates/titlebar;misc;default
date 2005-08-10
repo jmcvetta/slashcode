@@ -20,7 +20,9 @@ titlebar
 __template__
 
 [% future = 0 %]
-
+[% IF future %]
+<div class="future">
+[% END %]
 <div class="generaltitle">
 	<div class="title">
 		<h3>
@@ -28,8 +30,9 @@ __template__
 		</h3>
 	</div>
 </div>
+[% END %]
 
 __seclev__
 10000
 __version__
-$Id: titlebar;misc;default,v 1.9 2005/07/27 22:54:48 pudge Exp $
+$Id: titlebar;misc;default,v 1.10 2005/08/10 20:15:45 lancelot Exp $

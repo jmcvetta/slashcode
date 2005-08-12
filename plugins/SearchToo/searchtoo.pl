@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: searchtoo.pl,v 1.7 2005/03/11 19:58:14 pudge Exp $
+# $Id: searchtoo.pl,v 1.8 2005/08/12 21:37:48 pudge Exp $
 
 use strict;
 use Slash;
@@ -51,7 +51,7 @@ sub main {
 		$form->{op} = 'stories' unless $constants->{submiss_view};
 	}
  
-	my $rss = $form->{content_type} eq 'rss' && $constants->{search_rss_enabled};
+	my $rss = $form->{content_type} =~ $constants->{feed_types} && $constants->{search_rss_enabled};
 
 	my $querystring    = strip_notags($form->{query});
 	my $header_title   = getData('search_header_title',   { text => $querystring });
@@ -110,7 +110,7 @@ sub main {
 			}, { Return => 0, Nocomm => 1 });
 
 			if (@{$return->{rss}{items}}) {
-				xmlDisplay(rss => $return->{rss});
+				xmlDisplay($form->{content_type} => $return->{rss});
 			} else {
 				# we redirect here, because we might not know
 				# if the op can do RSS until we get the result

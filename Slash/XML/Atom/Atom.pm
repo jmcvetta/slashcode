@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Atom.pm,v 1.1 2005/07/27 18:29:42 pudge Exp $
+# $Id: Atom.pm,v 1.2 2005/08/12 21:37:48 pudge Exp $
 
 package Slash::XML::Atom;
 
@@ -33,7 +33,7 @@ use base 'Slash::XML';
 use base 'Slash::XML::RSS';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %syn_ok_fields = (
 	'updateBase' => '',
@@ -189,10 +189,18 @@ sub as_atom_1_0 {
 	$output .= qq[<link href="$val"/>\n];
 
 	# self link
+	$val = '';
 	if ($self->{channel}{selflink}) {
 		$val = $self->encode($self->{channel}{selflink});
-		$output .= qq[<link rel="self" href="$val"/>\n];
+	} elsif ($ENV{REQUEST_URI}) {
+		(my $host = $ENV{HTTP_HOST}) =~ s/:\d+$//;
+		my $scheme = defined &Slash::Apache::ConnectionIsSSL
+	        	     && Slash::Apache::ConnectionIsSSL()
+			? 'https'
+			: 'http';
+		$val = $self->encode("$scheme://$host$ENV{REQUEST_URI}");
 	}
+	$output .= qq[<link rel="self" href="$val"/>\n] if $val;
 
 	# description
 	$output .= atom_encode($self, 'subtitle', $self->{channel}{description});
@@ -257,10 +265,11 @@ sub as_atom_1_0 {
 			$val = $self->encode($item->{'link'});
 			$output .= qq[<link href="$val"/>\n];
 
-			# XXXX this should be "summary" in cases where the whole story
-			# is not included, but we can't tell that with current system
+			# XXXX if at some point we can know this is the whole text
+			# of the article, it should be "content" instead of
+			# "summary"
 			if ($item->{description}) {
-				$output .= atom_encode($self, 'content', $item->{description});
+				$output .= atom_encode($self, 'summary', $item->{description});
 			}
 
 			# Dublin Core module
@@ -338,4 +347,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: Atom.pm,v 1.1 2005/07/27 18:29:42 pudge Exp $
+$Id: Atom.pm,v 1.2 2005/08/12 21:37:48 pudge Exp $

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: sites.pl,v 1.10 2004/06/17 16:12:18 jamiemccarthy Exp $
+# $Id: sites.pl,v 1.11 2005/08/12 21:37:48 pudge Exp $
 
 use strict;
 use Slash;
@@ -14,11 +14,11 @@ sub main {
 	my $form = getCurrentForm();
 	my $gSkin = getCurrentSkin();
 
-	if ($form->{'content_type'} eq 'rss') {
-		return xmlDisplay('rss', {
+	if ($form->{content_type} =~ $constants->{feed_types}) {
+		return xmlDisplay($form->{content_type} => {
 				channel => {
 				title   => "$constants->{sitename} links",
-				'link'  => "$gSkin->{absolutedir}/sites.pl?content_type=rss",
+				'link'  => "$gSkin->{absolutedir}/sites.pl",
 			},
 			items   => $yass->getActive(15),
 		});

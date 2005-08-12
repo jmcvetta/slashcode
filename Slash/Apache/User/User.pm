@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.128 2005/06/03 02:23:20 jamiemccarthy Exp $
+# $Id: User.pm,v 1.129 2005/08/12 21:37:48 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -233,12 +233,12 @@ sub handler {
 			# or vars or somesuch, but how?  is there danger in
 			# opening it up to everything instead of closing it off?
 			if (
-				($constants->{rss_allow_index} && $form->{content_type} eq 'rss' && $uri =~ m{^/index\.pl$})
+				($constants->{rss_allow_index} && $form->{content_type} =~ $constants->{feed_types} && $uri =~ m{^/index\.pl$})
 					||
 				($constants->{plugin}{ScheduleShifts} && $uri =~ m{^/shifts\.pl$})
 					||
 				# hmmm ... journal.pl no work, because can be called as /journal/
-				($constants->{journal_rdfitemdesc_html} && $form->{content_type} eq 'rss' && $uri =~ m{\bjournal\b})
+				($constants->{journal_rdfitemdesc_html} && $form->{content_type} =~ $constants->{feed_types} && $uri =~ m{\bjournal\b})
 			) {
 				$logtoken = $form->{logtoken};
 			} else {
@@ -676,12 +676,12 @@ sub userdir_handler {
 				if ($extra =~ s/^friends\///) {
 					$args =~ s/display/friendview/;
 				}
-				if ($extra =~ /^rss(\/(\d+::\w+)?)?$/) {
+				if ($extra =~ m{^ (rss|atom) (?: / (\d+::\w+)? )? $}x) {
 					if ($2) {
 						(my $logtoken = $2) =~ s/::/%3A%3A/;
 						$args .= "&logtoken=$logtoken";
 					}
-					$args .= "&content_type=rss";
+					$args .= "&content_type=$1";
 				}
 			}
 			$args .= "&$query";

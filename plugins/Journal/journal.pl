@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.103 2005/07/27 22:54:10 pudge Exp $
+# $Id: journal.pl,v 1.104 2005/08/12 21:37:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -94,8 +94,8 @@ sub main {
 		$op = 'default';
 	}
 
-	# hijack RSS feeds
-	if ($form->{content_type} eq 'rss') {
+	# hijack feeds
+	if ($form->{content_type} =~ $constants->{feed_types}) {
 		if ($op eq 'top' && $top_ok) {
 			displayTopRSS($journal, $constants, $user, $form, $reader, $gSkin);
 		} else {
@@ -270,7 +270,7 @@ sub displayRSS {
 		$link     = '/journal/';
 	}
 
-	xmlDisplay(rss => {
+	xmlDisplay($form->{content_type} => {
 		channel => {
 			title		=> "$title $journals",
 			description	=> "$title $constants->{sitename} $journals",
@@ -316,7 +316,7 @@ sub displayTopRSS {
 		};
 	}
 
-	xmlDisplay(rss => {
+	xmlDisplay($form->{content_type} => {
 		channel => {
 			title		=> "$constants->{sitename} Journals",
 			description	=> "Top $constants->{journal_top} Journals",

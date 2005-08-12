@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.119 2005/06/14 19:47:57 pudge Exp $
+# $Id: submit.pl,v 1.120 2005/08/12 21:37:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -26,7 +26,7 @@ sub main {
 	my $error_flag = 0;
 	my $success = 0;
 
-	if (($form->{content_type} eq 'rss') and ($form->{op} eq 'list') and $constants->{submiss_view}) {
+	if (($form->{content_type} =~ $constants->{feed_types}) && ($form->{op} eq 'list') && $constants->{submiss_view}) {
 		my $success = displayRSS($slashdb, $constants, $user, $form);
 		return if $success;
 	}
@@ -455,7 +455,7 @@ sub displayRSS {
 		});
 	}
 
-	xmlDisplay('rss', {
+	xmlDisplay($form->{content_type} => {
 		channel	=> {
 			title	=> "$constants->{sitename} Submissions",
 			'link'	=> "$gSkin->{absolutedir}/submit.pl?op=list",

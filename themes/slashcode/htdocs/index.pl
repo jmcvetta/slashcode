@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.128 2005/07/27 22:54:16 pudge Exp $
+# $Id: index.pl,v 1.129 2005/08/12 21:37:48 pudge Exp $
 
 use strict;
 use Slash;
@@ -44,7 +44,7 @@ my $start_time = Time::HiRes::time;
 	}
 
 
-	my $rss = $constants->{rss_allow_index} && $form->{content_type} eq 'rss' && (
+	my $rss = $constants->{rss_allow_index} && $form->{content_type} =~ $constants->{feed_types} && (
 		$user->{is_admin}
 			||
 		($constants->{rss_allow_index} > 1 && $user->{is_subscriber})
@@ -284,9 +284,9 @@ sub do_rss {
 	}
 
 	my $title = getData('rsshead', { skin => $skin_name });
-	my $name = lc($gSkin->{basedomain}) . '.rss';
+	my $name = lc($gSkin->{basedomain}) . '.' . $form->{content_type};
 
-	xmlDisplay('rss', {
+	xmlDisplay($form->{content_type} => {
 		channel	=> {
 			title	=> $title,
 		},

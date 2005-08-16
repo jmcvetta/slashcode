@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.165 2005/07/20 22:08:19 pudge Exp $
+# $Id: Data.pm,v 1.166 2005/08/16 19:01:27 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2458,7 +2458,7 @@ The 'approvedtags' entry in the vars table.
 		# blockquote not a list, but has similar semantics:
 		# everything in a blockquote needs to be in a block element,
 		# so we choose two that would fit the bill
-		blockquote	=> ['div', 'p'],
+		blockquote	=> ['div'],
 	);
 	my %needs_list = (
 		dd		=> qr/dl/,
@@ -2759,9 +2759,9 @@ sub _validateLists {
 				} elsif ($tag =~ /^\/(?:$re)$/) {
 					# remove if we are not already inside a tag
 					_substitute(\$content, $whole, '') unless $in;
-					# this should never happen, as we've already
-					# balanced the tags
-					warn "huh?  $tag ne /$in?" if $tag ne "/$in";
+					# this should not usually happen, as
+					# we've already balanced the tags
+					#warn "huh?  $tag ne /$in?" if $tag ne "/$in";
 					# set to no open tag
 					$in = '';
 					next;
@@ -4065,4 +4065,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.165 2005/07/20 22:08:19 pudge Exp $
+$Id: Data.pm,v 1.166 2005/08/16 19:01:27 pudge Exp $

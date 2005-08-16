@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Atom.pm,v 1.2 2005/08/12 21:37:48 pudge Exp $
+# $Id: Atom.pm,v 1.3 2005/08/16 21:59:53 pudge Exp $
 
 package Slash::XML::Atom;
 
@@ -33,7 +33,7 @@ use base 'Slash::XML';
 use base 'Slash::XML::RSS';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %syn_ok_fields = (
 	'updateBase' => '',
@@ -259,10 +259,13 @@ sub as_atom_1_0 {
 	foreach my $item (@{$self->{items}}) {
 		if ($item->{title}) {
 			$output .= "<entry>\n";
-			$output .= atom_encode($self, 'id', $item->{'link'});
-			$output .= atom_encode($self, 'title', $item->{title});
 
 			$val = $self->encode($item->{'link'});
+			$output .= qq[<id>$val</id>\n];
+
+			$output .= atom_encode($self, 'title', $item->{title});
+
+			# $val still same as directly above
 			$output .= qq[<link href="$val"/>\n];
 
 			# XXXX if at some point we can know this is the whole text
@@ -311,7 +314,7 @@ sub atom_encode {
 	return '' unless $value;
 	$value = $self->encode($value);
 	# XXX make this more robust?
-	my $type = $value =~ /(?:&amp;\w+;|&[lg]t;)/ ? 'html' : 'text';
+	my $type = $value =~ /(?:&amp;#?\w+;|&[lg]t;)/ ? 'html' : 'text';
 
 	# try parsing.  If well formed, replace the value and type
 	if ($type eq 'html' && $value =~ /&[lg]t;/) {
@@ -347,4 +350,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: Atom.pm,v 1.2 2005/08/12 21:37:48 pudge Exp $
+$Id: Atom.pm,v 1.3 2005/08/16 21:59:53 pudge Exp $

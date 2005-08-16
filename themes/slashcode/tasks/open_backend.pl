@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.29 2005/08/12 21:37:48 pudge Exp $
+# $Id: open_backend.pl,v 1.30 2005/08/16 21:59:53 pudge Exp $
 
 use strict;
 use Slash;
@@ -24,7 +24,7 @@ $task{$me}{code} = sub {
 		newxml(@_, undef, $stories);
 		newrdf(@_, undef, $stories);
 		newrss(@_, undef, $stories);
-#		newatom(@_, undef, $stories);
+		newatom(@_, undef, $stories);
 	}
 
 	my $skins = $slashdb->getSkins();
@@ -36,7 +36,7 @@ $task{$me}{code} = sub {
 			newxml(@_, $name, $stories);
 			newrdf(@_, $name, $stories);
 			newrss(@_, $name, $stories);
-#			newatom(@_, $name, $stories);
+			newatom(@_, $name, $stories);
 		}
 	}
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.793 2005/08/12 21:37:48 pudge Exp $
+# $Id: MySQL.pm,v 1.794 2005/08/16 21:59:53 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.793 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.794 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8651,6 +8651,7 @@ sub getSubmissionForUser {
 			'submission_param',
 			"subid=" . $self->sqlQuote($sub->{subid})
 		);
+		$sub->{orig_time} = $sub->{'time'};
 		for my $key (keys %$append) {
 			$sub->{$key} = $append->{$key};
 		}

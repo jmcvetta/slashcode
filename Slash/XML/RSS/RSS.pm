@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.28 2005/07/27 18:29:42 pudge Exp $
+# $Id: RSS.pm,v 1.29 2005/08/16 21:59:53 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -178,6 +178,7 @@ sub create {
 		title		=> $constants->{sitename},
 		description	=> $constants->{slogan},
 		'link'		=> $absolutedir . '/',
+		selflink	=> '',
 
 		# dc
 		date		=> $self->date2iso8601(),
@@ -295,6 +296,11 @@ sub create {
 			if ($item->{story}) {
 				# set up story params in $encoded_item ref
 				$self->rss_story($item, $encoded_item, $version, \%channel);
+			} else {
+				$encoded_item->{dc}{date} = $self->encode($self->date2iso8601($item->{'time'}))
+					if $item->{'time'};
+				$encoded_item->{dc}{creator} = $self->encode($item->{creator})
+					if $item->{creator};
 			}
 
 			for my $key (keys %$item) {
@@ -527,4 +533,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.28 2005/07/27 18:29:42 pudge Exp $
+$Id: RSS.pm,v 1.29 2005/08/16 21:59:53 pudge Exp $

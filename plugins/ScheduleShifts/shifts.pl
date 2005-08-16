@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: shifts.pl,v 1.5 2005/04/01 19:54:31 pudge Exp $
+# $Id: shifts.pl,v 1.6 2005/08/16 17:42:27 pudge Exp $
 
 # shifts.pl -- Part of the ScheduleShifts plugin.
 
@@ -17,7 +17,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -35,6 +35,7 @@ sub main {
 		save	=> [ $admin,  \&saveShifts	],
 		default	=> [ $admin,  \&showShifts	],
 		daddy	=> [ $shifts, \&getDaddyList	],
+		lcr	=> [ $shifts, \&setLCR		],
 	);
 
 	my $op = $form->{op};
@@ -59,6 +60,16 @@ sub main {
 		footer();
 	}
 }
+
+sub setLCR {
+	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;
+
+	my $lcr_tag  = $form->{tag};
+	my $lcr_site = $form->{site};
+
+	$slashdb->setVar("ircslash_lcr_$lcr_site", $slashdb->getTime . "|$lcr_tag");
+}
+
 
 sub getDaddyList {
 	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;
@@ -93,7 +104,8 @@ sub getDaddyList {
 		push @items, $item;
 	}
 
-	xmlDisplay(rss => {
+	$form->{content_type} ||= 'rss';
+	xmlDisplay($form->{content_type} => {
 		channel			=> {
 			title	=> "$constants->{sitename} shifts for $when",
 			'link'	=> $link,

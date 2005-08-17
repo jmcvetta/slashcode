@@ -19,8 +19,7 @@ linkCommentPages
 __template__
 [% UNLESS (total < user.commentlimit) || (user.commentlimit < 1) %]
 	[% pages = total / user.commentlimit %]
-
-	<tr><td bgcolor="[% user.colors.bg_2 %]" align="CENTER">
+	<div class="linkCommentPage">
 	[% FOREACH p = [0 .. pages] %]
 		[% start = user.commentlimit * p %]
 		[% IF p != 0 %] | [% END %]
@@ -41,11 +40,10 @@ __template__
 	[% IF user.breaking %]
 		([% constants.sitename %] Overload: CommentLimit [% user.commentlimit %])
 	[% END %]
-
-	</td></tr>
+	</div>
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: linkCommentPages;misc;default,v 1.8 2005/07/27 22:54:48 pudge Exp $
+$Id: linkCommentPages;misc;default,v 1.9 2005/08/17 18:00:34 tvroom Exp $

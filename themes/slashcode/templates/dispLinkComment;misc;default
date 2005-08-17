@@ -20,8 +20,7 @@ dispLinkComment
 __template__
 [% IF user.mode != 'metamod' %]
 	[% IF user.is_admin || original_pid || !user.state.discussion_archived %]
-	<tr>
-		<td class="commentSub">
+		<div class="commentSub">
 
 		[ [% IF !user.state.discussion_archived && !user.state.discussion_future_nopost %][% Slash.linkComment({
 			sid	=> sid,
@@ -58,12 +57,11 @@ __template__
 		<input type="checkbox" name="del_[% cid %]">
 		[% END %]
 		]
-		</td></tr>
+	[% END %]</div>
 
-	[% END %]
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.26 2005/07/27 22:54:46 pudge Exp $
+$Id: dispLinkComment;misc;default,v 1.27 2005/08/17 18:00:34 tvroom Exp $

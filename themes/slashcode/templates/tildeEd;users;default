@@ -191,10 +191,10 @@ __template__
 
 <div class="notes">
 	[% tilded_customize_msg %]
-</div>
 	[% tilded_box_msg %]
+</div>
 
 __seclev__
 500
 __version__
-$Id: tildeEd;users;default,v 1.26 2005/07/27 22:54:48 pudge Exp $
+$Id: tildeEd;users;default,v 1.27 2005/08/19 06:59:52 lancelot Exp $

@@ -32,7 +32,6 @@ __template__
 %]
 
 [% PROCESS titlebar title = "$constants.sitename Story Submissions" %]
-<div class="generalbody">
 [% IF constants.submiss_view %]
 	<p>
 		<b>
@@ -150,8 +149,7 @@ __template__
 		[% END %]
 		</fieldset>
 	</form>
-</div>
 __seclev__
 10000
 __version__
-$Id: displayForm;submit;default,v 1.31 2005/07/27 22:54:13 pudge Exp $
+$Id: displayForm;submit;default,v 1.32 2005/08/19 15:26:04 tvroom Exp $

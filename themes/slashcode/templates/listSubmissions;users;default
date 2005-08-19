@@ -32,7 +32,6 @@ cur_time = Slash.db.getTime();
 [% admin_link_ipid = admin_flag && !useredit.ipid %]
 [% IF submissions.size > 0 %]
 	[% PROCESS titlebar title = title -%]
-	<div class="generalbody">
 	<table width="100%" border=0 cellpadding=3 cellspacing=0>
 		<tr class="data_head">
 			<th>Title</th>
@@ -104,5 +103,5 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listSubmissions;users;default,v 1.10 2005/07/27 22:54:48 pudge Exp $
+$Id: listSubmissions;users;default,v 1.11 2005/08/19 15:23:25 tvroom Exp $
 

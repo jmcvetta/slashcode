@@ -22,8 +22,6 @@ __name__
 dispStory
 __template__
 <div class="article">
-	<div class="title">																		
-		<h3>
 [% IF magic;
 	thisskin = Slash.db.getSkin(story.primaryskid);
 	IF thisskin.rootdir;
@@ -39,11 +37,8 @@ __template__
 ELSE;
 	title = story.title;
 END %]
-		[% title %]
-		</h3>
-	</div>
 [% seen_topics = {} %]
-[%# PROCESS titlebar future=story.is_future %]
+[% PROCESS titlebar future=story.is_future %]
 	<div class="details">
 		posted by <a href="[% author.homepage %]">[% author.nickname | strip_literal %]</a> [% story.atstorytime %]
 		[% IF constants.plugin.Print %] 
@@ -113,4 +108,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.44 2005/07/27 22:54:46 pudge Exp $
+$Id: dispStory;misc;default,v 1.45 2005/08/19 15:24:02 tvroom Exp $

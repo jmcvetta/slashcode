@@ -29,7 +29,7 @@ __template__
 	<form action="[% gSkin.rootdir %]/comments.pl" method="post">
 [% END %]
 [% IF cid %]
-	<ul id="commentlisting" class="[% lvl %]">
+	<ul id="commentlisting" class="[% user.mode %]">
 	[% Slash.dispComment(comment) %]
 
 	[% IF previous %]
@@ -90,4 +90,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.19 2005/08/19 05:57:55 lancelot Exp $
+$Id: printCommComments;misc;default,v 1.20 2005/08/19 06:26:42 lancelot Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_recent_topics.pl,v 1.14 2005/03/11 19:58:47 pudge Exp $
+# $Id: set_recent_topics.pl,v 1.15 2005/08/19 19:22:06 pudge Exp $
 
 # This task (and its associated templates and other changes)
 # was rewritten almost in its entirety, by Shane Zatezalo
@@ -60,7 +60,7 @@ sub updateRecentTopics {
 				image	 => $cur_story->{image},
 				width	 => $cur_story->{width},
 				height	 => $cur_story->{height},
-				textname => $cur_story->{alttext},
+				textname => $cur_story->{textname},
 			}, 1);
 		}
 #		if ($num_stories <= $constants->{recent_topic_txt_count}) {

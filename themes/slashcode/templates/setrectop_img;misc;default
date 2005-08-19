@@ -14,9 +14,9 @@ __name__
 setrectop_img
 __template__
 <li>
-	<a href="[% gSkin.rootdir %]/search.pl?tid=[% id %]"><img src="[% image %]" width="[% width %]" height="[% height %]" alt="[% textname %]" title="[% textname %]" ></a>
+	<a href="[% gSkin.rootdir %]/search.pl?tid=[% id %]"><img src="[% image %]" width="[% width %]" height="[% height %]" alt="[% textname | strip_attribute %]" title="[% textname | strip_attribute %]" ></a>
 </li>
 __seclev__
 10000
 __version__
-$Id: setrectop_img;misc;default,v 1.7 2005/07/27 22:54:48 pudge Exp $
+$Id: setrectop_img;misc;default,v 1.8 2005/08/19 19:22:06 pudge Exp $

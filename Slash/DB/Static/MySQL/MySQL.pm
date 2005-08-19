@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.219 2005/08/03 14:42:55 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.220 2005/08/19 19:22:06 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.219 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.220 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -157,8 +157,8 @@ sub getNewStoryTopics {
 
 	my $topics = $self->getTopics;
 	for my $topic (@$ar) {
-		@{ $topic                   }{qw(alttext image width height)} =
-		@{ $topics->{$topic->{tid}} }{qw(alttext image width height)};
+		@{ $topic                   }{qw(textname image width height)} =
+		@{ $topics->{$topic->{tid}} }{qw(textname image width height)};
 	}
 
 	return $ar;

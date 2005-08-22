@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.794 2005/08/16 21:59:53 pudge Exp $
+# $Id: MySQL.pm,v 1.795 2005/08/22 01:12:21 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.794 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.795 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2011,8 +2011,9 @@ sub createAccessLog {
 	$user ||= {};
 	$user->{state} ||= {};
 	
+	return if $op eq "css" && $constants->{accesslog_css_skip};
+	
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-
 	if ($op eq 'image' && $constants->{accesslog_imageregex}) {
 		return if $constants->{accesslog_imageregex} eq 'NONE';
 		my $uri = $r->uri;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.97 2005/07/27 22:53:53 pudge Exp $
+# $Id: Display.pm,v 1.98 2005/08/22 01:12:21 tvroom Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1122,6 +1122,8 @@ sub createMenu {
 	my $user = getCurrentUser();
 	my $gSkin = getCurrentSkin();
 
+	return if $menu eq "users" && $constants->{users_menu_no_display};
+
 	# The style of menu desired.  While we're "evolving" the way we do
 	# menus, createMenu() handles several different styles.
 	my $style = $options->{style} || "";
@@ -1292,7 +1294,7 @@ sub _hard_linkComment {
 	my $gSkin = getCurrentSkin();
 
 	my $subject = $comment->{color}
-	? qq|<FONT COLOR="$comment->{color}">$comment->{subject}</FONT>|
+	? qq|$comment->{subject}|
 		: $comment->{subject};
 
 	my $display = qq|<a href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}|;
@@ -1320,9 +1322,9 @@ sub _hard_linkComment {
 	$display .= qq|">$subject</a>|;
 	if (!$comment->{subject_only}) {
 		$display .= qq| by $comment->{nickname}|;
-		$display .= qq| <FONT SIZE="-1">(Score:$comment->{points})</FONT> |
+		$display .= qq| (Score:$comment->{points})|
 			if !$user->{noscores} && $comment->{points};
-		$display .= qq| <FONT SIZE="-1">| . timeCalc($comment->{date}) . qq| </FONT>|
+		$display .= timeCalc($comment->{date}) 
 			if $date;
 	}
 	$display .= "\n";
@@ -1703,4 +1705,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.97 2005/07/27 22:53:53 pudge Exp $
+$Id: Display.pm,v 1.98 2005/08/22 01:12:21 tvroom Exp $

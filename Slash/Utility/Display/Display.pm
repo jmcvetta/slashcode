@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.98 2005/08/22 01:12:21 tvroom Exp $
+# $Id: Display.pm,v 1.99 2005/08/24 23:18:50 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1122,7 +1122,7 @@ sub createMenu {
 	my $user = getCurrentUser();
 	my $gSkin = getCurrentSkin();
 
-	return if $menu eq "users" && $constants->{users_menu_no_display};
+	return if $menu eq 'users' && $constants->{users_menu_no_display};
 
 	# The style of menu desired.  While we're "evolving" the way we do
 	# menus, createMenu() handles several different styles.
@@ -1293,9 +1293,7 @@ sub _hard_linkComment {
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
 
-	my $subject = $comment->{color}
-	? qq|$comment->{subject}|
-		: $comment->{subject};
+	my $subject = $comment->{subject};
 
 	my $display = qq|<a href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}|;
 	$display .= "&amp;op=$comment->{op}" if $comment->{op};
@@ -1705,4 +1703,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.98 2005/08/22 01:12:21 tvroom Exp $
+$Id: Display.pm,v 1.99 2005/08/24 23:18:50 pudge Exp $

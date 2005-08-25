@@ -51,7 +51,6 @@ __template__
 	[% IF next %]
 		[% Slash.linkComment(next, 1) %]&gt;&gt;
 	[% END %]
-
 	[% Slash.moderatorCommentLog('cid', cid, { show_m2s => (form.show_m2s.defined ? form.show_m2s : user.m2_with_comm_mod), need_m2_form => !moderate_form, need_m2_button => 1, title=>" " }); %]
 [% END %]
 
@@ -90,4 +89,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.20 2005/08/19 06:26:42 lancelot Exp $
+$Id: printCommComments;misc;default,v 1.21 2005/08/25 14:22:47 tvroom Exp $

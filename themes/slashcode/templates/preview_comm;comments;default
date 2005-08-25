@@ -13,12 +13,11 @@ en_US
 __name__
 preview_comm
 __template__
-<table border="0" cellpadding="0" cellspacing="0" width="95%" align="CENTER">
+<ul id="commentlisting">
 [% Slash.dispComment(preview) %]
-</table>
-
+</ul>
 
 __seclev__
 1000
 __version__
-$Id: preview_comm;comments;default,v 1.6 2005/07/27 22:54:48 pudge Exp $
+$Id: preview_comm;comments;default,v 1.7 2005/08/25 14:22:47 tvroom Exp $

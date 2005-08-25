@@ -73,6 +73,7 @@ to do this unless you need more context to fairly meta moderate.<br><br></li>
 		[% IF reasons.${C.modreason}.unfairname; reasons.${C.modreason}.name; ELSE; "Fair"; END %]
 		</b>&nbsp;&nbsp;|&nbsp;
 		<a href="[% context_url %]">See Context</a><hr>
+	</li>
 [% END %]
 [% IF comments.size %]
 </ul>
@@ -85,4 +86,4 @@ to do this unless you need more context to fairly meta moderate.<br><br></li>
 __seclev__
 1000
 __version__
-$Id: dispTheComments;metamod;default,v 1.16 2005/08/17 18:00:34 tvroom Exp $
+$Id: dispTheComments;metamod;default,v 1.17 2005/08/25 14:23:16 tvroom Exp $

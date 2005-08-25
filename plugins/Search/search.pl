@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.91 2005/08/16 21:59:53 pudge Exp $
+# $Id: search.pl,v 1.92 2005/08/25 14:33:09 tvroom Exp $
 
 use strict;
 use Slash;
@@ -153,7 +153,7 @@ sub _buildargs {
 		my $x = "";
 		$x =  $form->{$_} if defined $form->{$_} && $x eq "";
 		$x =~ s/ /+/g;
-		$uri .= "$_=$x&" unless $x eq "";
+		$uri .= "$_=$x&amp;" unless $x eq "";
 	}
 	$uri =~ s/&$//;
 

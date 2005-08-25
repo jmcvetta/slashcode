@@ -129,7 +129,7 @@ ends. Your day may vary.)
 	<p><table border=0 cellspacing=1 width="100%">
 	<tr><th>&nbsp;&nbsp;Ads&nbsp;&nbsp;</th>
 	<th>&nbsp;&nbsp;No&nbsp;Ads&nbsp;&nbsp;</th>
-	<th width="100%">&nbsp;&nbsp;</th></tr>
+	<th>&nbsp;&nbsp;</th></tr>
 
 	[% FOREACH page = pages %]
 
@@ -211,4 +211,4 @@ For a list of subscriber-only benefits, see
 __seclev__
 10000
 __version__
-$Id: edit;subscribe;default,v 1.31 2005/07/27 22:54:13 pudge Exp $
+$Id: edit;subscribe;default,v 1.32 2005/08/25 14:33:09 tvroom Exp $

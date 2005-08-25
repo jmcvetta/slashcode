@@ -40,7 +40,7 @@ __template__
 					<td align="right" class="barVotes">[% votes %] votes</td>
         			</tr>
 			</table>
-[% END %]
+		[% END %]
 		<b class="totalVotes">[% voters %] total votes.</b>
 		<br>
 		[
@@ -61,4 +61,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: vote;pollBooth;default,v 1.6 2005/07/27 22:54:12 pudge Exp $
+$Id: vote;pollBooth;default,v 1.7 2005/08/25 14:33:08 tvroom Exp $

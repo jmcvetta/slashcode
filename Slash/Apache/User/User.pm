@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.131 2005/08/25 20:10:30 pudge Exp $
+# $Id: User.pm,v 1.132 2005/08/25 22:42:43 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -665,7 +665,7 @@ sub userdir_handler {
 
 		} elsif ($op eq 'journal') {
 			my $args = "op=display&nick=$nick&uid=$uid";
-			$extra .= '/' . $more if length $more;
+			$extra .= '/' . $more;
 			if ($extra) {
 				if ($extra =~ /^(\d+)\/$/) {
 					$args .= "&id=$1";
@@ -708,7 +708,7 @@ sub userdir_handler {
 
 		} elsif ($op =~ /^(?:friends|fans|freaks|foes|zoo)$/) {
 			my $args = "op=$op&nick=$nick&uid=$uid";
-			$extra .= '/' . $more if length $more;
+			$extra .= '/' . $more;
 
 			if ($op eq 'friends' && $extra =~ s/^friends\///) {
 				$args =~ s/friends/fof/;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: searchtoo.pl,v 1.8 2005/08/12 21:37:48 pudge Exp $
+# $Id: searchtoo.pl,v 1.9 2005/08/25 20:10:42 pudge Exp $
 
 use strict;
 use Slash;
@@ -172,9 +172,9 @@ sub _buildargs {
 		my $x = "";
 		$x =  $query->{$_} if defined $query->{$_} && $x eq "";
 		$x =~ s/ /+/g;
-		$uri .= "$_=$x&" unless $x eq "";
+		$uri .= "$_=$x&amp;" unless $x eq "";
 	}
-	$uri =~ s/&$//;
+	$uri =~ s/&amp;$//;
 
 	return fixurl($uri);
 }

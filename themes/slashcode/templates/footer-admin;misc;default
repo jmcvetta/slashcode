@@ -11,6 +11,7 @@ en_US
 __name__
 footer-admin
 __template__
+</div>
 <div id="adminfooter">
         <hr>
         <div class="btmnav">
@@ -68,4 +69,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: footer-admin;misc;default,v 1.5 2005/07/27 22:54:47 pudge Exp $
+$Id: footer-admin;misc;default,v 1.6 2005/08/25 14:25:01 tvroom Exp $

@@ -79,6 +79,7 @@ __template__
 							[%- word -%][% UNLESS words_seen.$word %]<input type="checkbox" name="set_common_word" value="[% word %]">[%- END -%]
 							[% words_seen.$word = 1; %]
 						[% END %]
+						<br>
 					[% END %]
 				</fieldset>
 			[% END %]
@@ -202,4 +203,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.59 2005/07/27 22:53:54 pudge Exp $
+$Id: editStory;admin;default,v 1.60 2005/08/25 14:25:49 tvroom Exp $

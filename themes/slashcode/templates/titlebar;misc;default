@@ -26,11 +26,11 @@ __template__
 	<div class="title">
 		<h3>
 			[% title %]
+			[% IF max_min_button %]
+			<span class="max_min_button">[% max_min_button %]</span>
+			[% END %]
 		</h3>
 	</div>
-	[% IF max_min_button %]
-	<div class="max_min_button">[% max_min_button %]</div>
-	[% END %]
 </div>
 [% IF future %]
 </div>
@@ -40,4 +40,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: titlebar;misc;default,v 1.13 2005/08/19 15:23:25 tvroom Exp $
+$Id: titlebar;misc;default,v 1.14 2005/08/25 14:20:43 tvroom Exp $

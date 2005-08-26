@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.197 2005/07/27 22:54:15 pudge Exp $
+# $Id: slashschema_create.sql,v 1.198 2005/08/26 14:18:42 jamiemccarthy Exp $
 #
 
 #
@@ -1454,6 +1454,8 @@ ALTER TABLE pollquestions ADD FOREIGN KEY (discussion) REFERENCES discussions(id
 # but it doesn't explain why discussions.topic SMALLINT UNSIGNED NOT NULL
 # DEFAULT '0' is able to be foreign-keyed to topics.tid SMALLINT UNSIGNED
 # NOT NULL AUTO_INCREMENT.
+# (And note that MySQL 4.0 allows an AUTO_INCREMENT column to be declared
+# with a DEFAULT, but MySQL 4.1 throws an error on that formulation.)
 
 #ALTER TABLE blocks ADD FOREIGN KEY (rss_template) REFERENCES templates(name);
 #ALTER TABLE discussions ADD FOREIGN KEY (sid) REFERENCES stories(sid);

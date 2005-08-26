@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: delete_accesslog.pl,v 1.12 2005/06/19 15:26:53 jamiemccarthy Exp $
+# $Id: delete_accesslog.pl,v 1.13 2005/08/26 14:27:27 jamiemccarthy Exp $
 
 use strict;
 
@@ -24,11 +24,12 @@ $task{$me}{resource_locks} = { logdb => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
+	my $log_slave = getObject('Slash::DB', { db_type => 'log_slave' } );
 	my $logdb = getObject('Slash::DB', { db_type => 'log' } );
 	my $counter = 0;
 	my $hoursback = $constants->{accesslog_hoursback} || 60;
 	my $failures = 10; # This is probably related to a lock failure
-	my $id = $logdb->sqlSelectNumericKeyAssumingMonotonic(
+	my $id = $log_slave->sqlSelectNumericKeyAssumingMonotonic(
 		'accesslog', 'max', 'id',
 		"ts < DATE_SUB(NOW(), INTERVAL $hoursback HOUR)");
 	if (!$id) {

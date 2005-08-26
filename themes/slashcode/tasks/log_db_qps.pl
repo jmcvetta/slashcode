@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.8 2005/03/11 19:58:47 pudge Exp $
+# $Id: log_db_qps.pl,v 1.9 2005/08/26 14:27:27 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -57,11 +57,11 @@ $task{$me}{code} = sub {
 
 	my $new_last_time = time;
 	
-	my $logdb = getObject('Slash::DB', { db_type => "log" });
-	my $accesslog_last = $slashdb->getVar('db_questions_accesslog_last','value', 1);
+	my $log_slave = getObject('Slash::DB', { db_type => 'log_slave' });
+	my $accesslog_last = $slashdb->getVar('db_questions_accesslog_last', 'value', 1);
 	my $new_accesslog_last =
 		$save_vars->{db_questions_accesslog_last} =
-			$logdb->sqlSelect("MAX(id)", "accesslog") || 1;
+			$log_slave->sqlSelect("MAX(id)", "accesslog") || 1;
 	$save_vars->{db_questions_lasttime} = $new_last_time;
 
 	my $time = $slashdb->getTime();	
@@ -75,7 +75,7 @@ $task{$me}{code} = sub {
 		if ($constants->{accesslog_imageregex} eq 'NONE') {
 			$pages = $new_accesslog_last - $accesslog_last;
 		} else {
-			$pages = $logdb->sqlCount("accesslog",
+			$pages = $log_slave->sqlCount("accesslog",
 				"id BETWEEN $accesslog_last AND $new_accesslog_last
 				 AND op != 'image'");
 		}

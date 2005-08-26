@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.260 2005/08/25 14:46:35 tvroom Exp $
+# $Id: admin.pl,v 1.261 2005/08/26 14:27:27 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2104,7 +2104,7 @@ sub displayRecentSubs {
 sub displayRecentWebheads {
 	my($form, $slashdb, $user, $constants) = @_;
 
-	my $admindb = getObject("Slash::Admin", { db_type => 'log' });
+	my $admindb = getObject("Slash::Admin", { db_type => 'log_slave' });
 
 	my $data_hr = $admindb->getRecentWebheads(10, 5000);
 

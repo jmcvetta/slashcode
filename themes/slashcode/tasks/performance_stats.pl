@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: performance_stats.pl,v 1.8 2005/03/11 19:58:47 pudge Exp $
+# $Id: performance_stats.pl,v 1.9 2005/08/26 14:27:27 jamiemccarthy Exp $
 
 use strict;
 
@@ -20,7 +20,7 @@ $task{$me}{on_startup} = 1;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
-	my $logdb = getObject("Slash::DB", { db_type => 'log' });
+	my $log_slave = getObject("Slash::DB", { db_type => 'log_slave' });
 
 	my $weeks_back = $constants->{cur_performance_stats_weeks} || 4;
 	my $secs_per_week = 60 * 60 * 24 * 7;
@@ -41,12 +41,12 @@ $task{$me}{code} = sub {
 	my ($cur_results, $hist_results);
 
 	my $start_id = $slashdb->getVar("cur_performance_stats_lastid", "value", 1) || 0;
-	my($pps, $max_id) = $logdb->getAccesslogPPS($start_id);
+	my($pps, $max_id) = $log_slave->getAccesslogPPS($start_id);
 	$slashdb->setVar("cur_performance_pps", $pps);
 
 	if ($start_id) {
 		$hist_results = $slashdb->avgDynamicDurationForHour($ops, \@dates, $cur_hour);
-		$cur_results  = $logdb->avgDynamicDurationForMinutesBack($ops, 1, $start_id);
+		$cur_results  = $log_slave->avgDynamicDurationForMinutesBack($ops, 1, $start_id);
 	}
 	$slashdb->setVar("cur_performance_stats_lastid", $max_id);
 	return "$pps pps" if !$start_id;

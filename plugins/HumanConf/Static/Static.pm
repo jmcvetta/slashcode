@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.28 2005/07/21 18:06:30 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.29 2005/08/26 14:17:17 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -503,7 +503,10 @@ sub drawImage {
 	# Paint the white background.
 	$image->filledRectangle(0, 0, $width, $height, $background);
 
-	$image->setThickness($constants->{hc_q1_linethick} || 1);
+	if ($image->has('setThickness')) {
+		# I don't think GD prior to 2.07 has setThickness().
+		$image->setThickness($constants->{hc_q1_linethick} || 1);
+	}
 	my $poly = new GD::Polygon;
 	if ($width+$height > 100) {
 		# Draw a grid of lines on the image, same color as the text.

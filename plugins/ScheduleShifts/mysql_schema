@@ -1,4 +1,4 @@
-# $Id: mysql_schema,v 1.1 2005/03/08 22:33:35 pudge Exp $
+# $Id: mysql_schema,v 1.2 2005/08/28 16:53:24 jamiemccarthy Exp $
 CREATE TABLE shifts (
     date            DATETIME,
     uid             MEDIUMINT(8),
@@ -8,4 +8,4 @@ CREATE TABLE shifts (
     INDEX byuser    (uid),
     INDEX bytime    (last_changed),
     INDEX byshift   (shift, uid, type)
-);
+) ENGINE=InnoDB;

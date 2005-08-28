@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.63 2005/06/19 15:18:27 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.64 2005/08/28 17:30:15 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -806,7 +806,7 @@ sub sqlSelectAllKeyValue {
 # $minid = $slashdb->sqlSelectNumericKeyAssumingMonotonic("accesslog", "min", "id", "ts >= '2001-01-01 01:00:00'");
 # $maxid = $slashdb->sqlSelectNumericKeyAssumingMonotonic("accesslog", "max", "id", "ts <= '2001-01-01 03:00:00'");
 # $c = $slashdb->sqlSelect("COUNT(DISTINCT uid)", "accesslog",
-#     "id BETWEEN $minid AND $maxid");
+#     "id BETWEEN $minid AND $maxid AND ts BETWEEN '2001-01-01 01:00:00' AND '2001-01-01 03:00:00'");
 
 sub sqlSelectNumericKeyAssumingMonotonic {
 	my($self, $table, $minmax, $keycol, $clause) = @_;

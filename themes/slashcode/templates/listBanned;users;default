@@ -1,7 +1,7 @@
 __section__
 default
 __description__
-lists top abusers
+lists banned IPs
 __title__
 admin interface Banlist Template
 __page__
@@ -43,4 +43,4 @@ No banned users
 __seclev__
 100
 __version__
-$Id: listBanned;users;default,v 1.7 2005/07/27 22:54:48 pudge Exp $
+$Id: listBanned;users;default,v 1.8 2005/08/28 17:51:06 jamiemccarthy Exp $

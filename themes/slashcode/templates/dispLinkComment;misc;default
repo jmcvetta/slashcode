@@ -57,11 +57,12 @@ __template__
 		<input type="checkbox" name="del_[% cid %]">
 		[% END %]
 		]
-	[% END %]</div>
+		</div>
+	[% END %]
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.27 2005/08/17 18:00:34 tvroom Exp $
+$Id: dispLinkComment;misc;default,v 1.28 2005/08/31 17:06:06 tvroom Exp $

@@ -80,7 +80,6 @@ cur_time = Slash.db.getTime();
 		<tr class="data_hl1"><td colspan="5"><i>(Rejected submissions are not listed.)</i></td></tr>
 		[% END %]
 	</table>
-</div>
 [% END %]
 
 [% BLOCK nick_and_uid;
@@ -103,4 +102,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listSubmissions;users;default,v 1.13 2005/08/30 13:28:30 tvroom Exp $
+$Id: listSubmissions;users;default,v 1.14 2005/09/01 20:39:49 tvroom Exp $

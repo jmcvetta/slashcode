@@ -28,7 +28,7 @@ __template__
 <input type="hidden" name="note" value="[% form.note | strip_attribute %]">
 <input type="hidden" name="skin" value="[% form.skin | strip_attribute %]">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="submit_story_list">
 
 [%# # temporarily disable %]
 [% IF 0 && weighted.size -%]
@@ -111,4 +111,4 @@ BLOCK sub_display -%]
 __seclev__
 10000
 __version__
-$Id: subEdAdmin;submit;default,v 1.26 2005/08/30 13:30:19 tvroom Exp $
+$Id: subEdAdmin;submit;default,v 1.27 2005/09/01 15:28:53 tvroom Exp $

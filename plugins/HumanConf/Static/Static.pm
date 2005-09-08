@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.30 2005/09/08 11:20:55 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.31 2005/09/08 22:23:05 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -194,7 +194,7 @@ sub deleteOldFromPool {
 	}
 
 	if ($loop_num > 1) {
-		slashdLog("deleteOldFromPool looped $loop_num times, deleted $successfully_deleted of $want_delete");
+		warn "deleteOldFromPool looped $loop_num times, deleted $successfully_deleted of $want_delete";
 	}
 	
 	# Return the number of rows successfully deleted.  This

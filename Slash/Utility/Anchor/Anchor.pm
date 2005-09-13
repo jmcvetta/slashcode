@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.84 2005/07/27 22:53:53 pudge Exp $
+# $Id: Anchor.pm,v 1.85 2005/09/13 02:15:05 tvroom Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -668,7 +668,7 @@ EOT
 			# box.				-- Pater
 			getSkinColors() unless $user->{colors};
 
-			return sidebox('Advertisement', qq'<div class="ad$num" align="center">' . $user->{state}{ad}{$num} . "</div>", "advertisement");
+			return sidebox('Advertisement', qq'<div class="ad$num" align="center">' . $user->{state}{ad}{$num} . "</div>", "advertisement", 1);
 		} else { return ''; }
 	} else {
 		return $user->{state}{ad}{$num} ? qq'<div class="ad$num">$user->{state}{ad}{$num}</div>': '';
@@ -683,7 +683,9 @@ sub getSectionBlock {
 	my($name) = @_;
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
-	my $thissect = $user->{currentSection};
+	my $thissect = $user->{light}
+		? 'light'
+		: $user->{currentSection};
 
 	my $block;
 	if ($thissect && $thissect ne 'index') {
@@ -747,4 +749,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.84 2005/07/27 22:53:53 pudge Exp $
+$Id: Anchor.pm,v 1.85 2005/09/13 02:15:05 tvroom Exp $

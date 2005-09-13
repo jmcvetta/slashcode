@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.133 2005/09/02 19:24:08 pudge Exp $
+# $Id: User.pm,v 1.134 2005/09/13 21:33:03 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.133 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.134 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -574,6 +574,7 @@ sub userdir_handler {
 
 			} elsif ($op =~ /^(?:friends|fans|freaks|foes|zoo)$/) {
 				my $args = "op=$op";
+				$extra .= '/';
 
 				if ($op eq 'friends' && $extra =~ s/^friends\///) {
 					$args =~ s/friends/fof/;

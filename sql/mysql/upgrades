@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.840 2005/09/13 02:16:00 tvroom Exp $
+# $Id: upgrades,v 1.841 2005/09/13 21:31:31 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3198,7 +3198,7 @@ ALTER TABLE css DROP INDEX page_skid;
 ALTER TABLE css DROP INDEX skid_page;
 UPDATE css,skins SET css.skin = skins.name WHERE css.skid=skins.skid;
 ALTER TABLE css DROP skid;
-ALTER TABLE ADD INDEX page_skin (page,skin);
-ALTER TABLE ADD INDEX skin_page (skin,page);
+ALTER TABLE css ADD INDEX page_skin (page,skin);
+ALTER TABLE css ADD INDEX skin_page (skin,page);
 UPDATE css set theme='', skin='light' WHERE theme = "light";
 

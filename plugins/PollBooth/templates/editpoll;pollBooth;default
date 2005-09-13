@@ -29,6 +29,8 @@ __template__
 	[% PROCESS titlebar %]
 	<div class="generalbody">
 <form action="[% env.script_name %]" method="post">
+	<legend>Poll Edit Page</legend>
+	<fieldset>
 	[% IF warning.invalid_sid %]<b>Story ID specified does not exist invalid</b><br>[% END %]
 	[% IF warning.attached_to_other %]<b>Story is already attached to another poll -- detach poll from that story before attaching this one</b><br>[% END %]
 	
@@ -91,10 +93,11 @@ __template__
 
         <input type="submit" name="op" value="preview" class="button">
 	<input type="submit" name="op" value="save" class="button">
+	</fieldset>
 </form>
 	</div>
 </div>
 __seclev__
 10000
 __version__
-$Id: editpoll;pollBooth;default,v 1.15 2005/07/27 22:54:12 pudge Exp $
+$Id: editpoll;pollBooth;default,v 1.16 2005/09/13 02:18:29 tvroom Exp $

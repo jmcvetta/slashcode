@@ -11,15 +11,15 @@ en_US
 __name__
 index
 __template__
-[% PROCESS indexhead %]
-
-[% stories %]
-
-<p>
-
-[% UNLESS user.noboxes; boxes; END %]
-
+	<a name="blocks"></a>
+	<div id="slashboxes">
+	</div>
+	[% PROCESS indexhead %]
+	<a name="main-articles"></a>
+	<div id="articles">
+	[% stories %]
+	</div>
 __seclev__
 10000
 __version__
-$Id: index;index;light,v 1.17 2005/07/27 22:54:48 pudge Exp $
+$Id: index;index;light,v 1.18 2005/09/13 02:10:49 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.797 2005/09/13 02:15:05 tvroom Exp $
+# $Id: MySQL.pm,v 1.798 2005/09/14 00:46:39 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.797 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.798 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4478,7 +4478,7 @@ sub setStory {
 		}
 		my $lu = $self->sqlSelect("last_update", "stories",
 			"stoid=$stoid");
-#print STDERR "D lu '$lu' options->{lu} '$options->{last_update}'\n";
+print STDERR scalar(gmtime) . " stoid '$stoid' lu '$lu' options_lu '$options->{last_update}'\n";
 		if ($lu ne $options->{last_update}) {
 			$self->sqlDo("ROLLBACK");
 			$self->sqlDo("SET AUTOCOMMIT=1");
@@ -11869,6 +11869,9 @@ sub _getUser_do_selects {
 			print STDERR scalar(gmtime) . " $$ mcd gU_ds answer people thawed\n";
 		}
 	}
+	# And adjust the users_hits.lastclick value, a timestamp,
+	# to work the same in 4.1 and later as it did in 4.0.
+	$answer->{lastclick} =~ s/\D+//g if $answer->{lastclick};
 
 	return $answer;
 }

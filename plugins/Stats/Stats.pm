@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.171 2005/06/19 15:25:49 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.172 2005/09/14 00:46:40 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -1556,6 +1556,8 @@ sub getTopBadPasswordsByUID{
 	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 
+	# XXXTIMESTAMP The _ts_between_clause works for MySQL 4.0 but
+	# not 4.1, which formats timestamps as YYYY-MM-DD HH:MM:SS.
 	return $self->sqlSelectAllHashrefArray(
 		"nickname, users.uid AS uid, count(DISTINCT password) AS count",
 		"badpasswords, users",
@@ -1573,6 +1575,8 @@ sub getTopBadPasswordsByIP{
 	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 	
+	# XXXTIMESTAMP The _ts_between_clause works for MySQL 4.0 but
+	# not 4.1, which formats timestamps as YYYY-MM-DD HH:MM:SS.
 	return $self->sqlSelectAllHashrefArray(
 		"ip, count(DISTINCT password) AS count",
 		"badpasswords",
@@ -1590,6 +1594,8 @@ sub getTopBadPasswordsBySubnet{
 	$other .= " HAVING count >= $options->{min}" if $min;
 	$other .= "  ORDER BY count DESC LIMIT $limit";
 
+	# XXXTIMESTAMP The _ts_between_clause works for MySQL 4.0 but
+	# not 4.1, which formats timestamps as YYYY-MM-DD HH:MM:SS.
 	return $self->sqlSelectAllHashrefArray(
 		"subnet, count(DISTINCT password) AS count",
 		"badpasswords",
@@ -2038,4 +2044,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.171 2005/06/19 15:25:49 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.172 2005/09/14 00:46:40 jamiemccarthy Exp $

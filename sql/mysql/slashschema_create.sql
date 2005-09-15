@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.199 2005/09/13 02:16:00 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.200 2005/09/15 16:54:59 jamiemccarthy Exp $
 #
 
 #
@@ -390,7 +390,7 @@ CREATE TABLE css (
 	PRIMARY KEY  (csid),
 	KEY ctid (ctid),
 	KEY page_skin (page,skin),
-	KEY skin_page (skin,page),
+	KEY skin_page (skin,page)
 ) TYPE=InnoDB;
 
 #

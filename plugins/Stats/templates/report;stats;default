@@ -11,6 +11,7 @@ en_US
 __name__
 report
 __template__
+<div class="generalbody">
 [%
    # handy sprintf-style formats
    USE format;
@@ -172,7 +173,8 @@ END %]
 </form>
 
 [% reportblock %]
+</div>
 __seclev__
 1000
 __version__
-$Id: report;stats;default,v 1.34 2005/07/27 22:54:13 pudge Exp $
+$Id: report;stats;default,v 1.35 2005/09/16 14:40:29 lancelot Exp $

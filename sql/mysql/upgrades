@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.842 2005/09/13 21:33:22 pudge Exp $
+# $Id: upgrades,v 1.843 2005/09/19 20:30:28 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3201,4 +3201,8 @@ ALTER TABLE css ADD INDEX skin_page (skin,page);
 UPDATE css set theme='', skin='light' WHERE theme = "light";
 
 # PUDGE LAST UPDATED HERE
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
+
+# End of T_2_5_0_79, Start of T_2_5_0_80 - 2005/09/19
 

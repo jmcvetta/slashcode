@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.91 2005/09/15 16:00:47 tvroom Exp $
+# $Id: THEME,v 1.92 2005/09/19 01:36:52 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -281,13 +281,11 @@ template=templates/ssifoot;misc;default
 template=templates/ssihead;misc;default
 template=templates/start_tab;misc;default
 template=templates/storylink;index;default
-#template=templates/storylink;index;light
 template=templates/tabbedmenu;misc;default
 template=templates/three;misc;default
 template=templates/tildeEd;users;default
 template=templates/timeago;misc;default
 template=templates/titlebar;misc;default
-#template=templates/titlebar;misc;light
 template=templates/titles;users;default
 template=templates/topAbusers;users;default
 template=templates/topTopics;topics;default

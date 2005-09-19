@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.93 2005/08/25 20:10:42 pudge Exp $
+# $Id: search.pl,v 1.94 2005/09/19 02:55:47 tvroom Exp $
 
 use strict;
 use Slash;
@@ -81,6 +81,7 @@ sub main {
 		my $header_title   = getData('search_header_title',   { text => $text });
 		my $titlebar_title = getData('search_titlebar_title', { text => $text });
 		header($header_title) or return;
+		print getData("search_slashboxes");	
 		titlebar("100%", $titlebar_title);
 
 		$form->{op} = 'stories' unless exists $ops{$form->{op}};

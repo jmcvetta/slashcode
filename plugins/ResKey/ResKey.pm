@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.4 2005/09/14 18:57:32 pudge Exp $
+# $Id: ResKey.pm,v 1.5 2005/09/19 18:45:23 pudge Exp $
 
 package Slash::ResKey;
 
@@ -33,7 +33,9 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+
+our $DEBUG = 0;
 
 #========================================================================
 sub new {
@@ -51,8 +53,9 @@ sub new {
 
 #========================================================================
 sub key {
-	my($self, $resource, $reskey) = @_;
-	return Slash::ResKey::Key->new($self->{virtual_user}, $resource, $reskey);
+	my($self, $resource, $reskey, $debug) = @_;
+	$debug = $DEBUG unless defined $debug;
+	return Slash::ResKey::Key->new($self->{virtual_user}, $resource, $reskey, $debug);
 }
 
 #========================================================================
@@ -75,7 +78,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.4 2005/09/14 18:57:32 pudge Exp $
+$Id: ResKey.pm,v 1.5 2005/09/19 18:45:23 pudge Exp $
 
 
 =head1 TODO

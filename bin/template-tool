@@ -4,7 +4,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: template-tool,v 1.33 2005/03/11 19:58:02 pudge Exp $
+# $Id: template-tool,v 1.34 2005/09/19 18:49:10 pudge Exp $
 
 # First version by Brian, brian@tangent.org
 # Updated by Patrick Galbraith, capttofu@slashdot.org
@@ -26,13 +26,13 @@ use Slash::Install;
 use Getopt::Std;
 use Cwd;
 
-(my $VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
 # Remember to doublecheck these match usage()!
 usage('Options used incorrectly')
-	unless getopts('cdilrsTtVvUg:D:O:P:S:p:f:u:B:h', \%opts);
+	unless getopts('cdilrsTtVvUDg:O:P:S:p:f:u:B:h', \%opts);
 usage() if ($opts{'h'} || !keys %opts);
 usage('Option -t requires -s or -U') if $opts{'t'} && !$opts{'s'} && !$opts{'U'};
 version() if $opts{'v'};
@@ -299,8 +299,9 @@ if ($opts{'s'}) {
 
 	for my $name (sort keys %templates_in_db) {
 		next if $templates_on_disk{$name};
-		print "id $templates_in_db{$name}\t$name is in the DB but not on disk\n";
 		++$stats{extraneous};
+		next unless $opts{D};
+		print "id $templates_in_db{$name}\t$name is in the DB but not on disk\n";
 	}
 
 	print "Different templates: $stats{different}\n"
@@ -606,6 +607,8 @@ Main options:
 	-U	Upgrade your templates to the latest for your theme and
 		plugins, scans base install dir (default /usr/local/slash)
 		and "does the right thing"
+	-D	Print out which templates are in the DB, but not on disk
+		(works only with -U)
 	-t	test saved files, this will return what files are new
 		or modified but does not change the templates
 

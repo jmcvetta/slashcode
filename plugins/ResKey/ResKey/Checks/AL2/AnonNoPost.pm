@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: AnonNoPost.pm,v 1.5 2005/09/14 19:00:36 pudge Exp $
+# $Id: AnonNoPost.pm,v 1.6 2005/09/20 21:53:32 pudge Exp $
 
 package Slash::ResKey::Checks::AL2::AnonNoPost;
 
@@ -14,9 +14,9 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
-sub _Check {
+sub doCheck {
 	my($self) = @_;
 
 	my $user = getCurrentUser();

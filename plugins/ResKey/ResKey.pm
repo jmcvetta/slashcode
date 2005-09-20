@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.5 2005/09/19 18:45:23 pudge Exp $
+# $Id: ResKey.pm,v 1.6 2005/09/20 21:53:32 pudge Exp $
 
 package Slash::ResKey;
 
@@ -19,6 +19,21 @@ Slash::ResKey - Resource management for Slash
 	if ($key->use) { ... }
 	else { print $key->errstr }
 
+
+=head1 DESCRIPTION
+
+Slash::ResKey is for managing resources.  You get a key object by requesting
+a specific sort of resource with the C<key> method, which takes the name
+of the resource (an arbitrary string, defined in the database table
+C<reskey_resources>).
+
+Optionally, C<key> takes a hashref of keys "reskey" and "debug".  Debug levels
+are 0, 1, and 2, with default 0.  If you don't include a reskey, it will
+be determined automatically from C<getCurrentForm('reskey')>.
+
+See L<Slash::ResKey::Key> for more info on what to do with an object returned
+by <key>.
+
 =cut
 
 use warnings;
@@ -33,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -53,9 +68,15 @@ sub new {
 
 #========================================================================
 sub key {
-	my($self, $resource, $reskey, $debug) = @_;
-	$debug = $DEBUG unless defined $debug;
-	return Slash::ResKey::Key->new($self->{virtual_user}, $resource, $reskey, $debug);
+	my($self, $resource, $opts) = @_;
+	$opts ||= {};
+	$opts->{debug} = $DEBUG unless defined $opts->{debug};
+	return Slash::ResKey::Key->new(
+		$self->{virtual_user},
+		$resource,
+		$opts->{reskey},
+		$opts->{debug}
+	);
 }
 
 #========================================================================
@@ -78,7 +99,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.5 2005/09/19 18:45:23 pudge Exp $
+$Id: ResKey.pm,v 1.6 2005/09/20 21:53:32 pudge Exp $
 
 
 =head1 TODO

@@ -44,7 +44,7 @@ __template__
 		You must preview once, provide a subject, some text, and a topic before you can submit
 	</div>
 	[% IF missing_required.size > 0  %]
-	<div class=" message error">
+	<div class="message error">
 		You're also missing the following required fields
 		<ul>
 		[% FOREACH required = missing_required %]
@@ -152,4 +152,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: displayForm;submit;default,v 1.33 2005/09/20 14:12:53 lancelot Exp $
+$Id: displayForm;submit;default,v 1.34 2005/09/20 16:25:07 jamiemccarthy Exp $

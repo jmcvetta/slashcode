@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.64 2005/03/11 19:58:11 pudge Exp $
+# $Id: pollBooth.pl,v 1.65 2005/09/21 18:47:00 tvroom Exp $
 
 use strict;
 use Slash;
@@ -53,7 +53,7 @@ sub main {
 sub poll_booth {
 	my($form) = @_;
 
-	print pollbooth($form->{'qid'}, 0, 1);
+	print getData("slashbox_head") . sidebox('Poll',pollbooth($form->{'qid'}, 0, 1),'poll', 1) . getData("slashbox_foot");
 }
 
 #################################################################

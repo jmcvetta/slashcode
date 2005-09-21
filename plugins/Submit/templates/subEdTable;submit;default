@@ -21,8 +21,8 @@ en_US
 __name__
 subEdTable
 __template__
-[% PROCESS titlebar %]
 <div class="generalbody">
+[% PROCESS titlebar %]
 	<form action="[% env.script_name %]" method="post">
 		<fieldset>
 			<legend>Submissions List</legend>
@@ -58,4 +58,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: subEdTable;submit;default,v 1.10 2005/07/27 22:54:13 pudge Exp $
+$Id: subEdTable;submit;default,v 1.11 2005/09/21 18:46:14 tvroom Exp $

@@ -66,13 +66,16 @@ __template__
 [% CASE 'noanswer' %]
 	[% returnme.data_constant = 1 %]
 	You must provide one or more answers.
+
 [% CASE 'slashbox_head' %]
 	<div id="slashboxes">
+
 [% CASE 'slashbox_foot' %]
 	</div>
+
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;pollBooth;default,v 1.8 2005/09/21 18:47:00 tvroom Exp $
+$Id: data;pollBooth;default,v 1.9 2005/09/21 22:08:01 pudge Exp $

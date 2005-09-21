@@ -18,8 +18,15 @@ en_US
 __name__
 listpolls
 __template__
-
-<div id="polls-wide">
+<div id="slashboxes">
+[% Slash.sidebox(
+	Slash.db.getBlock('poll', 'title'),
+	Slash.pollbooth('_currentqid', 1, 0, 1),
+	'poll',
+        1);
+%]
+</div>
+<div id="polls">
 	[% PROCESS titlebar %]
 	<div class="generalbody">
 		[% skins = Slash.db.getSkins %]
@@ -64,4 +71,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: listpolls;pollBooth;default,v 1.11 2005/07/27 22:54:12 pudge Exp $
+$Id: listpolls;pollBooth;default,v 1.12 2005/09/21 17:33:15 tvroom Exp $

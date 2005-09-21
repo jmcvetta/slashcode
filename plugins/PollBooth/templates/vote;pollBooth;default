@@ -31,7 +31,7 @@ __template__
 			percent    = poll.3
 		%]
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="bar">
-				<caption class="barAnswer">[% answer %]</CAPTION>
+				<caption class="barAnswer">[% answer %]</caption>
 			        <tr>
 				[% IF percent > 0 %]
        	        			<td width="[% percent %]%" class="barColor">&nbsp;</td>
@@ -61,4 +61,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: vote;pollBooth;default,v 1.7 2005/08/25 14:33:08 tvroom Exp $
+$Id: vote;pollBooth;default,v 1.8 2005/09/21 17:33:14 tvroom Exp $

@@ -56,7 +56,7 @@ END %]
 			[% IF user.noicons %]
 				[ <a href="[% gSkin.rootdir %]/search.pl?tid=[% topic.tid %]">[% topic.textname %]</a> ]
 			[% ELSIF topic.image %]
-				<a href="http://[% gSkin.rootdir %]/search.pl?tid=[% topic.tid %]">
+				<a href="[% gSkin.rootdir %]/search.pl?tid=[% topic.tid %]">
 					<img src="[% constants.imagedir %]/topics/[% topic.image %]" width="[% topic.width %]" height="[% topic.height %]" alt="[% topic.textname %]" title="[% topic.textname %]" >
 				</a>
 			[% END %]
@@ -108,4 +108,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.45 2005/08/19 15:24:02 tvroom Exp $
+$Id: dispStory;misc;default,v 1.46 2005/09/22 20:13:47 tvroom Exp $

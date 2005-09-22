@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.166 2005/08/16 19:01:27 pudge Exp $
+# $Id: Data.pm,v 1.167 2005/09/22 20:08:46 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -420,6 +420,11 @@ sub urlFromSite {
 	# based on whether the current page is secure.
 	my $base = root2abs();
 	my $clean = URI->new_abs($url || $gSkin->{rootdir}, $base);
+
+	# obviously, file: URLs are local
+	if ($clean->scheme eq 'file') {
+		return 1;
+	}
 
 	my @site_domain = split m/\./, $gSkin->{basedomain};
 	my $site_domain = join '.', @site_domain[-2, -1];
@@ -2057,7 +2062,7 @@ Prepares data to be a URL.  Such as:
 
 =over 4
 
-	my $url = fixparam($someurl);
+	my $url = fudgeurl($someurl);
 
 =item Parameters
 
@@ -2571,12 +2576,13 @@ sub balanceTags {
 			# we are directly inside a list (UL), but this tag must be
 			# a list element (LI)
 			# this comes now because it could include a closing tag
-			if (@stack && $lists{$stack[-1]} && !(grep { $tag eq $_ } @{$lists{$stack[-1]}}) ) {
-				my $replace = $lists{$stack[-1]}[0];
-				_substitute(\$html, $whole, "<$replace>$whole");
-				$tags{$replace}++;
-				push @stack, $replace;
-			}
+# this isn't necessary anymore, with _validateLists()
+#			if (@stack && $lists{$stack[-1]} && !(grep { $tag eq $_ } @{$lists{$stack[-1]}}) ) {
+#				my $replace = $lists{$stack[-1]}[0];
+#				_substitute(\$html, $whole, "<$replace>$whole");
+#				$tags{$replace}++;
+#				push @stack, $replace;
+#			}
 
 			if ($needs_list{$tag}) {
 				# tag needs a list, like an LI needs a UL or OL, but we
@@ -4065,4 +4071,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.166 2005/08/16 19:01:27 pudge Exp $
+$Id: Data.pm,v 1.167 2005/09/22 20:08:46 pudge Exp $

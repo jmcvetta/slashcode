@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.200 2005/09/15 16:54:59 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.201 2005/09/22 20:02:33 jamiemccarthy Exp $
 #
 
 #
@@ -1431,7 +1431,8 @@ ALTER TABLE backup_blocks ADD FOREIGN KEY (bid) REFERENCES blocks(bid);
 ALTER TABLE comment_text ADD FOREIGN KEY (cid) REFERENCES comments(cid);
 #ALTER TABLE discussions ADD FOREIGN KEY (topic) REFERENCES topics(tid);
 #ALTER TABLE metamodlog ADD FOREIGN KEY (mmid) REFERENCES moderatorlog(id);
-ALTER TABLE pollquestions ADD FOREIGN KEY (discussion) REFERENCES discussions(id);
+# This doesn't work, since discussion may be 0.
+#ALTER TABLE pollquestions ADD FOREIGN KEY (discussion) REFERENCES discussions(id);
 # This doesn't work, since in the install pollquestions is populated before users, alphabetically
 #ALTER TABLE pollquestions ADD FOREIGN KEY (uid) REFERENCES users(uid);
 # This doesn't work, makes createStory die

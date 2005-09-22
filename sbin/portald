@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.44 2005/04/13 18:50:00 pudge Exp $
+# $Id: portald,v 1.45 2005/09/22 20:11:32 pudge Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -74,19 +74,20 @@ sub getTop10Comments {
 
 	my $reasons = $slashdb->getReasons;
 
-	my $block;
+	my $block = '<ul>';
 	foreach (@$A) {
 		my($sid, $title, $cid, $subj, $d, $nickname, $points, $reason) = @$_;
 		$block .= <<EOT;
 
-&middot; <b><a href="$gSkin->{rootdir}/comments.pl?sid=$sid&amp;cid=$cid">$subj</a>
+<li> <b><a href="$gSkin->{rootdir}/comments.pl?sid=$sid&amp;cid=$cid">$subj</a>
 	($points points, $reasons->{$reason}{name})
 	by $nickname</b>
 	on $d
 	<small>attached to
-	<a href="$gSkin->{rootdir}/article.pl?sid=$sid">$title</a></small>$br
+	<a href="$gSkin->{rootdir}/article.pl?sid=$sid">$title</a></small></li>
 EOT
 	}
+	$block .= '</ul>';
 	setblock('top10comments', $block);
 
 }

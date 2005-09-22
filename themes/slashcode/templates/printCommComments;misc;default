@@ -31,7 +31,7 @@ __template__
 [% IF cid %]
 	<ul id="commentlisting" class="[% user.mode %]">
 	[% Slash.dispComment(comment) %]
-
+	<div class="comment_footer">
 	[% IF previous %]
 		&lt;&lt;[% Slash.linkComment(previous, 1) %]
 	[% END %]
@@ -39,7 +39,7 @@ __template__
 	[% IF previous && (comment.pid || next) %]
 		|
 	[% END %]
-
+	
 	[% IF comment.pid %]
 		[% Slash.linkComment(comment, 1) %]
 	[% END %]
@@ -51,6 +51,7 @@ __template__
 	[% IF next %]
 		[% Slash.linkComment(next, 1) %]&gt;&gt;
 	[% END %]
+	</div>
 	[% Slash.moderatorCommentLog('cid', cid, { show_m2s => (form.show_m2s.defined ? form.show_m2s : user.m2_with_comm_mod), need_m2_form => !moderate_form, need_m2_button => 1, title=>" " }); %]
 [% END %]
 
@@ -89,4 +90,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.21 2005/08/25 14:22:47 tvroom Exp $
+$Id: printCommComments;misc;default,v 1.22 2005/09/22 01:51:46 tvroom Exp $

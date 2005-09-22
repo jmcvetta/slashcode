@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.241 2005/08/22 01:12:21 tvroom Exp $
+# $Id: Slash.pm,v 1.242 2005/09/22 12:46:43 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1260,7 +1260,7 @@ sub dispComment {
 		vislenify($comment); # create $comment->{ipid_vis} and {subnetid_vis}
 		if ($constants->{comments_hardcoded}) {
 			$comment->{ipid_display} = <<EOT;
-<a href="$constants->{real_rootdir}/users.pl?op=userinfo&amp;userfield=$comment->{ipid}&amp;fieldname=ipid">$comment->{ipid_vis}</A>&nbsp;&nbsp;SubnetID: 
+<br>IPID: <a href="$constants->{real_rootdir}/users.pl?op=userinfo&amp;userfield=$comment->{ipid}&amp;fieldname=ipid">$comment->{ipid_vis}</a>&nbsp;&nbsp;SubnetID: 
 <a href="$constants->{real_rootdir}/users.pl?op=userinfo&amp;userfield=$comment->{subnetid}&amp;fieldname=subnetid">$comment->{subnetid_vis}</a>
 EOT
 		} else {

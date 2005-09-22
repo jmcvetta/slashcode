@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.220 2005/08/19 19:22:06 pudge Exp $
+# $Id: MySQL.pm,v 1.221 2005/09/22 23:26:23 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.220 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.221 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -72,7 +72,10 @@ sub showQueryCount {
 # For rss, rdf etc feeds, basically used by tasks.
 # Ultimately this should be subsumed into
 # getStoriesEssentials since they serve the same purpose.
-# XXXSECTIONTOPICS let's get the NOW() out of here
+# XXXSECTIONTOPICS let's get the NOW() out of here.
+# This is much slower than getStoriesEssentials but fortunately
+# is not called very often.  Its calling code really should be
+# rewritten to use getStoriesEssentials.
 sub getBackendStories {
 	my($self, $options) = @_;
 

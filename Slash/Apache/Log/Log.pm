@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.38 2005/07/10 16:42:05 cowboyneal Exp $
+# $Id: Log.pm,v 1.39 2005/09/23 17:20:51 jamiemccarthy Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -116,6 +116,9 @@ sub UserLog {
 		my @gmt = gmtime;
 		my $today = sprintf("%04d%02d%02d",
 			$gmt[5]+1900, $gmt[4]+1, $gmt[3]);
+		# See the code near the end of MySQL.pm _getUser_do_selects()
+		# which forces $user->{lastclick} to be in the numeric format
+		# originally used by the MySQL 4.0 TIMESTAMP column type.
 		if ($today eq substr($user->{lastclick}, 0, 8)) {
 			# User may or may not be a subscriber, and may or may not
 			# be buying this page.  The day has not rolled over.

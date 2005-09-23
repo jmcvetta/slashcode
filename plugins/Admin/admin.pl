@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.262 2005/09/23 17:13:26 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.263 2005/09/23 20:37:21 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1661,9 +1661,15 @@ sub get_ispell_comments {
 			if !-e $ispell or !-f _ or !-r _ or !-x _;
 	}
 
+	# Get the contents of the 'ispellok' template, separate it out to
+	# one word per line, and add a short header if aspell requires.
 	my $ok = $slashdb->getTemplateByName('ispellok', { cache_flag => 1, ignore_errors => 1 });
 	$ok = $ok ? ($ok->{template} || "") : "";
 	$ok =~ s/\s+/\n/g;
+	if ($constants->{ispell_is_really_aspell_with_lang}) {
+		my $n_lines = $ok =~ tr/\n/\n/;
+		$ok = "personal_ws-1.1 $constants->{ispell_is_really_aspell_with_lang} $n_lines\n$ok";
+	}
 
 	my $ispell_fh;
 	my $tmptext = write_to_temp_file($text);

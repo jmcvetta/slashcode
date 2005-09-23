@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.261 2005/08/26 14:27:27 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.262 2005/09/23 17:13:26 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -525,6 +525,11 @@ sub templateSave {
 	$exists = 1 if ($name eq $temp->{name} &&
 			$skin eq $temp->{skin} &&
 			$page eq $temp->{page});
+
+	# Strip non-unix newlines.
+	for (qw( template title description )) {
+		$form->{$_} =~ s/(\r\n|\r)/\n/g;
+	}
 
 	if ($form->{save_new}) {
 		if ($id->{tpid} || $exists) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.230 2005/08/16 21:59:53 pudge Exp $
+# $Id: comments.pl,v 1.231 2005/09/26 09:08:13 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -857,7 +857,10 @@ sub previewForm {
 	my $extras = [];	
 	my $disc_skin = $slashdb->getSkin($discussion->{primaryskid});
 	
-	$extras =  $slashdb->getNexusExtrasForChosen({$disc_skin->{nexus} => 1}, {content_type => "comment"}) if $disc_skin && $disc_skin->{nexus};
+	$extras = $slashdb->getNexusExtrasForChosen(
+		{ $disc_skin->{nexus} => 1 },
+		{ content_type => "comment" })
+		if $disc_skin && $disc_skin->{nexus};
 
 	my $preview = {
 		nickname		=> $form->{postanon}
@@ -1063,7 +1066,7 @@ sub submitComment {
 		subject		=> $tempSubject,
 		comment		=> $tempComment,
 		sid		=> $id , 
-		pid		=> $form->{pid} ,
+		pid		=> $form->{pid},
 		ipid		=> $user->{ipid},
 		subnetid	=> $user->{subnetid},
 		uid		=> $posters_uid,

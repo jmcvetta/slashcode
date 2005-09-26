@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.16 2005/08/10 21:25:35 pudge Exp $
+# $Id: Admin.pm,v 1.17 2005/09/26 16:55:24 jamiemccarthy Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -81,6 +81,7 @@ sub getAccesslogAbusersByID {
 	my $slashdb = $options->{slashdb} || $self;
 	my $logdb = $options->{logdb} || $self;
 	my $min_id = $options->{min_id} || 0;
+	my $max_id = $logdb->sqlSelect('MAX(id)', 'accesslog');
 	my $thresh_count = $options->{thresh_count} || 100;
 	my $thresh_hps = $options->{thresh_hps} || 0.1;
 	my $limit = 500;
@@ -91,7 +92,7 @@ sub getAccesslogAbusersByID {
 		 UNIX_TIMESTAMP(MAX(ts))-UNIX_TIMESTAMP(MIN(ts)) AS secs,
 		 COUNT(*)/GREATEST(UNIX_TIMESTAMP(MAX(ts))-UNIX_TIMESTAMP(MIN(ts)),1) AS hps",
 		"accesslog",
-		"id >= $min_id",
+		"id BETWEEN $min_id AND $max_id",
 		"GROUP BY host_addr,op
 		 HAVING c >= $thresh_count
 			AND hps >= $thresh_hps
@@ -102,19 +103,23 @@ sub getAccesslogAbusersByID {
 
 	# If we're returning data, find any IPIDs which are already listed
 	# as banned and put the reason in too.
-	my @ipids = map { $self->sqlQuote($_->{ipid}) } @$ar;
-	my $ipids = join(",", @ipids);
-	my $hr = $slashdb->sqlSelectAllHashref(
-		"ipid",
-		"ipid, ts, reason",
-		"accesslist",
-		"ipid IN ($ipids) AND now_ban = 'yes' AND reason != ''"
-	);
-	for my $row (@$ar) {
-		next unless exists $hr->{$row->{ipid}};
-		$row->{bannedts}     = $hr->{$row->{ipid}}{ts};
-		$row->{bannedreason} = $hr->{$row->{ipid}}{reason};
-	}
+	# XXX This feature was taken out because accesslist is gone now;
+	# it would be nice to replace this feature with the AL2
+	# equivalent - Jamie 2005/07/21
+#	my @ipids = map { $self->sqlQuote($_->{ipid}) } @$ar;
+#	my $ipids = join(",", @ipids);
+#	my $hr = $slashdb->sqlSelectAllHashref(
+#		"ipid",
+#		"ipid, ts, reason",
+#		"accesslist",
+#		"ipid IN ($ipids) AND now_ban = 'yes' AND reason != ''"
+#	);
+#	for my $row (@$ar) {
+#		next unless exists $hr->{$row->{ipid}};
+#		$row->{bannedts}     = $hr->{$row->{ipid}}{ts};
+#		$row->{bannedreason} = $hr->{$row->{ipid}}{reason};
+#	}
+
 	return $ar;
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.231 2005/09/26 09:08:13 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.232 2005/09/26 16:55:24 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -567,8 +567,8 @@ sub validateComment {
 		&& ( $constants->{comments_portscan} == 2
 			|| $constants->{comments_portscan} == 1 && $user->{is_anon} )
 	) {
-		my $is_trusted = $slashdb->checkIsTrusted($user->{ipid});
-		if ($is_trusted ne 'yes') {
+		my $is_trusted = $slashdb->checkAL2($user->{srcids}, 'trusted');
+		if (!$is_trusted) {
 #use Time::HiRes; my $start_time = Time::HiRes::time;
 			my $is_proxy = $slashdb->checkForOpenProxy($user->{hostip});
 #my $elapsed = sprintf("%.3f", Time::HiRes::time - $start_time); print STDERR scalar(localtime) . " comments.pl cfop returned '$is_proxy' for '$user->{hostip}' in $elapsed secs\n";

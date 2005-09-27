@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.263 2005/09/23 20:37:21 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.264 2005/09/27 20:19:54 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1644,6 +1644,8 @@ sub write_to_temp_file {
 ##################################################################
 sub get_ispell_comments {
 	my($text) = @_;
+	my $constants = getCurrentStatic();
+
 	$text = strip_nohtml($text);
 	return "" unless $text && $text =~ /\S/;
 

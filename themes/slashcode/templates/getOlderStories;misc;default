@@ -55,10 +55,9 @@ __template__
 	<li>
 		<a href="[% story.link.0 | strip_urlattr %]"[% IF story.link.2 %] title="[% story.link.2 | strip_attribute %]"[% END %]>[% story.link.1 %]</a>
 		<em>([% story.commentcount %])</em>
-		[% start = start + 1; c = c + 1; LAST IF c >= max_older_stories %]
 	</li>
+	[% start = start + 1; c = c + 1; LAST IF c >= max_older_stories %]
 [% END %]
-			</li>	
 		</ul>
 	</li>
 </ul>
@@ -82,4 +81,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getOlderStories;misc;default,v 1.20 2005/09/21 18:40:59 tvroom Exp $
+$Id: getOlderStories;misc;default,v 1.21 2005/09/28 02:31:44 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.5 2005/09/29 02:40:00 pudge Exp $
+# $Id: Key.pm,v 1.6 2005/09/29 06:54:59 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -101,7 +101,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -286,9 +286,11 @@ sub _createActionMethod {
 		$self->_flow($name);
 		$self->type($name);
 
-		my $ok = 1;
-		$ok = $self->fakeUse if $self->type eq 'use';
-		$ok = $self->check if $ok;
+		if ($self->type eq 'use') {
+			return unless $self->fakeUse;
+		}
+
+		my $ok = $self->check;
 
 		# don't bother if type is create, and checks failed ...
 		# we only continue on for touch/use to update the DB
@@ -761,4 +763,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.5 2005/09/29 02:40:00 pudge Exp $
+$Id: Key.pm,v 1.6 2005/09/29 06:54:59 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.4 2005/09/20 21:53:32 pudge Exp $
+# $Id: Key.pm,v 1.5 2005/09/29 02:40:00 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -101,7 +101,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -116,7 +116,7 @@ sub new {
 	my $self = bless {}, $class;
 
 	$self->debug($debug);
-	$self->reskey($reskey || getCurrentForm('reskey'));
+	$self->reskey($reskey || getCurrentForm('rkey'));
 
 	if ($resname =~ /[a-zA-Z]/) {
 		my $resources = $self->getResources;
@@ -761,4 +761,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.4 2005/09/20 21:53:32 pudge Exp $
+$Id: Key.pm,v 1.5 2005/09/29 02:40:00 pudge Exp $

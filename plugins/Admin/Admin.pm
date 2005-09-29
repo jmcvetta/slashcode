@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.17 2005/09/26 16:55:24 jamiemccarthy Exp $
+# $Id: Admin.pm,v 1.18 2005/09/29 02:41:54 pudge Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -183,6 +183,7 @@ sub getRelated {
 		my $a_href_domain = $1;
 
 		$label = strip_notags($label);
+		next if $label !~ /\S/;
 		$label =~ s/(\S{30})/$1 /g;
 		# Instead of hard-coding the HTML here, we should
 		# do something a little more flexible.

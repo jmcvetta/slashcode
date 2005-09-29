@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.280 2005/09/26 16:55:24 jamiemccarthy Exp $
+# $Id: users.pl,v 1.281 2005/09/29 03:23:14 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -3125,7 +3125,7 @@ sub getUserAdmin {
 		$user_edit = $slashdb->getUser($id);
 		$user_editfield = $user_edit->{uid};
 		$srcid = convert_srcid( uid => $id );
-		$expired = $slashdb->checkExpired($user_edit->{uid}) ? $constants->{markup_checked_attribute} : '';
+		#$expired = $slashdb->checkExpired($user_edit->{uid}) ? $constants->{markup_checked_attribute} : '';
 		$ipstruct = $slashdb->getNetIDStruct($user_edit->{uid});
 		@accesshits = $logdb->countAccessLogHitsInLastX($field, $user_edit->{uid}) if defined($logdb);
 		$section_select = createSelect('section', $sectionref, $user_edit->{section}, 1);
@@ -3133,7 +3133,7 @@ sub getUserAdmin {
 	} elsif ($field eq 'nickname') {
 		$user_edit = $slashdb->getUser($slashdb->getUserUID($id));
 		$user_editfield = $user_edit->{nickname};
-		$expired = $slashdb->checkExpired($user_edit->{uid}) ? $constants->{markup_checked_attribute} : '';
+		#$expired = $slashdb->checkExpired($user_edit->{uid}) ? $constants->{markup_checked_attribute} : '';
 		$ipstruct = $slashdb->getNetIDStruct($user_edit->{uid});
 		@accesshits = $logdb->countAccessLogHitsInLastX('uid', $user_edit->{uid}) if defined($logdb);
 		$section_select = createSelect('section', $sectionref, $user_edit->{section}, 1);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.54 2005/09/27 18:51:47 pudge Exp $
+# $Id: zoo.pl,v 1.55 2005/09/29 02:41:36 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo		= getObject('Slash::Zoo');
@@ -165,6 +165,8 @@ sub action {
 	my $rkey = $reskey->key('zoo');
 	unless ($rkey->use) {
 		_printHead('mainhead', { errstr => $rkey->errstr, rkey => $rkey }) or return;
+		use Data::Dumper;
+		print STDERR Dumper({ reskey => $rkey });
 		return 1;
 	}
 
@@ -243,6 +245,8 @@ sub check {
 	my $rkey = $reskey->key('zoo');
 	unless ($rkey->create) {
 		_printHead('mainhead', { errstr => $rkey->errstr, rkey => $rkey }) or return;
+		use Data::Dumper;
+		print STDERR Dumper({ reskey => $rkey });
 		return 1;
 	}
 

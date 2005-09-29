@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.281 2005/09/29 03:23:14 pudge Exp $
+# $Id: users.pl,v 1.282 2005/09/29 18:59:47 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2199,10 +2199,10 @@ print STDERR "al2_change: " . Dumper($al2_change);
 
 	if (!$user_edit->{nonuid}) {
 		if ($form->{expired} eq 'on') {
-			$slashdb->setExpired($user_edit->{uid});
+#			$slashdb->setExpired($user_edit->{uid});
 
 		} else {
-			$slashdb->setUnexpired($user_edit->{uid});
+#			$slashdb->setUnexpired($user_edit->{uid});
 		}
 	}
 

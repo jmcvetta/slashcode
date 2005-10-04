@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.10 2005/09/22 22:51:13 jamiemccarthy Exp $
+# $Id: log_db_qps.pl,v 1.11 2005/10/04 19:34:01 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -123,7 +123,8 @@ $task{$me}{code} = sub {
 		$qpp = $queries / $pages;
 		$stats->createStatDaily("qpp_$hour", $qpp);
 	}
-	return "q: $queries p: $pages e: $elapsed qpp: $qpp";
+	return sprintf("q: %d p: %d e: %d qpp: %.3f",
+		$queries, $pages, $elapsed, $qpp);
 };
 
 1;

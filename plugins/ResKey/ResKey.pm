@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.6 2005/09/20 21:53:32 pudge Exp $
+# $Id: ResKey.pm,v 1.7 2005/10/05 06:36:01 pudge Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -83,9 +83,8 @@ sub key {
 # For tasks/reskey_purge.pl
 sub purge_old {
 	my($self) = @_;
-	my $timeframe = getCurrentStatic('reskey_timeframe');
-	my $delete_before_time = time - ($timeframe || 14400);
-	$self->sqlDelete('reskeys', 'ts < $delete_before_time');
+	my $timeframe = getCurrentStatic('reskey_timeframe') || 14400;
+	$self->sqlDelete('reskeys', "create_ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
 }
 
 1;
@@ -99,7 +98,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.6 2005/09/20 21:53:32 pudge Exp $
+$Id: ResKey.pm,v 1.7 2005/10/05 06:36:01 pudge Exp $
 
 
 =head1 TODO

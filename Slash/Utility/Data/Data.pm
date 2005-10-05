@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.167 2005/09/22 20:08:46 pudge Exp $
+# $Id: Data.pm,v 1.168 2005/10/05 02:10:55 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2684,6 +2684,13 @@ sub balanceTags {
 		while ($limit > 0 && length($html) > $limit) {
 			$limit -= 1;
 			$html = balanceTags(chopEntity($orightml, $limit), $options);
+
+			# until we get wrap fix in CSS
+			my $nobr  = () = $html =~ m|<nobr>|g;
+			my $wbr   = () = $html =~ m|<wbr>|g;
+			my $nobre = () = $html =~ m|</nobr>|g;
+			$html .= '<wbr>'   if $nobr > $wbr;
+			$html .= '</nobr>' if $nobr > $nobre;
 		}
 	}
 
@@ -4071,4 +4078,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.167 2005/09/22 20:08:46 pudge Exp $
+$Id: Data.pm,v 1.168 2005/10/05 02:10:55 pudge Exp $

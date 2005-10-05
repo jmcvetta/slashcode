@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.853 2005/10/05 02:31:44 pudge Exp $
+# $Id: upgrades,v 1.854 2005/10/05 02:36:38 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3220,9 +3220,9 @@ INSERT INTO vars VALUES ('reskey_checks_duration_max-failures_comments', 10, 'ho
 
 UPDATE vars SET value = 'T_2_5_0_83' WHERE name = 'cvs_tag_currentcode';
 
+# End of T_2_5_0_83, Start of T_2_5_0_84 - 2005/10/04
+
 # PUDGE LAST UPDATED HERE
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
-
-# End of T_2_5_0_83, Start of T_2_5_0_84 - 2005/10/04
 

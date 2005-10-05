@@ -89,7 +89,7 @@ or <a href="[% gSkin.rootdir %]/faq/com-mod.shtml#cm2200">where you change their
 
 
 <div>
-<input type="hidden" name="rkey" value="[% rkey %]">
+[% PROCESS reskey_tag %]
 <input type="hidden" name="op" value="action">
 <input type="hidden" name="uid" value="[% uid %]">
 </div>
@@ -99,4 +99,4 @@ or <a href="[% gSkin.rootdir %]/faq/com-mod.shtml#cm2200">where you change their
 __seclev__
 500
 __version__
-$Id: confirm;zoo;default,v 1.26 2005/09/27 18:51:47 pudge Exp $
+$Id: confirm;zoo;default,v 1.27 2005/10/05 02:26:03 pudge Exp $

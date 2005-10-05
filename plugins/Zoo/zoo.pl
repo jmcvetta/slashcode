@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.55 2005/09/29 02:41:36 pudge Exp $
+# $Id: zoo.pl,v 1.56 2005/10/05 02:26:03 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo		= getObject('Slash::Zoo');
@@ -315,7 +315,7 @@ sub check {
 		over_socialized		=> testSocialized($zoo, $constants, $user),
 		uids_2_nicknames	=> $uids_2_nicknames,
 		mutual 			=> \%mutual,
-		rkey			=> $rkey->reskey,
+		rkey			=> $rkey,
 	});
 
 	# Store the new user we're looking at, if any.

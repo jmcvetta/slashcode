@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.5 2005/09/20 21:53:32 pudge Exp $
+# $Id: Duration.pm,v 1.6 2005/10/05 02:12:35 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -40,8 +40,15 @@ sub doCheckTouch {
 		return RESKEY_SUCCESS;
 	}
 
-	my @return = maxUsesPerTimeframe($self, $self->get);
-	return @return || RESKEY_SUCCESS;
+	my $reskey_obj = $self->get;
+
+	my @return = maxUsesPerTimeframe($self, $reskey_obj);
+	return @return if @return;
+
+	@return = maxFailures($self, $reskey_obj);
+	return @return if @return;
+
+	return RESKEY_SUCCESS;
 }
 
 sub doCheckUse {
@@ -59,6 +66,9 @@ sub doCheckUse {
 	my @return = maxUsesPerTimeframe($self, $reskey_obj);
 	return @return if @return;
 
+	@return = maxFailures($self, $reskey_obj);
+	return @return if @return;
+
 	# we only check these on use, not create or touch, because the limits
 	# are so short that there's no point in checking them until use, so
 	# as not to increase the chance of giving users a rather spurious error
@@ -73,6 +83,28 @@ sub doCheckUse {
 }
 
 
+
+sub maxFailures {
+	my($self, $reskey_obj) = @_;
+	$reskey_obj ||= {};
+
+	my $constants = getCurrentStatic();
+	my $slashdb = getCurrentDB();
+
+	my $max_failures = $constants->{'reskey_checks_duration_max-failures_' . $self->resname};
+	if ($max_failures && $reskey_obj->{rkid}) {
+		my $where = "rkid=$reskey_obj->{rkid} AND failures > $max_failures";
+		my $rows = $slashdb->sqlCount('reskeys', $where);
+		if ($rows) {
+			return(RESKEY_DEATH, ['too many failures', {
+				max_failures	=> $max_failures,
+				uses		=> $rows
+			}]);
+		}
+	}
+
+	return;
+}
 
 sub maxUsesPerTimeframe {
 	my($self, $reskey_obj) = @_;

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.851 2005/10/05 00:50:00 jamiemccarthy Exp $
+# $Id: upgrades,v 1.852 2005/10/05 02:14:36 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3218,4 +3218,7 @@ DROP TABLE IF EXISTS accesslist;
 # End of T_2_5_0_82, Start of T_2_5_0_83 - 2005/09/27
 
 INSERT INTO vars (name, value, description) VALUES ('cvs_tag_currentcode','T_2_5_0_82','The current cvs tag that the code was updated to - this does not affect site behavior but may be useful for your records');
+
+INSERT INTO vars VALUES ('reskey_checks_duration_max-failures_zoo', 4, 'how many failures per reskey');
+INSERT INTO vars VALUES ('reskey_checks_duration_max-failures_comments', 10, 'how many failures per reskey');
 

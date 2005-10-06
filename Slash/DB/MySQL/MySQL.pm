@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.801 2005/09/26 16:55:23 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.802 2005/10/06 23:06:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.801 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.802 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2962,6 +2962,7 @@ sub getDBVirtualUsers {
 #################################################################
 # get list of DBs, never cache
 # (do caching in getSlashConf)
+# See code comment in getObject().
 sub getClasses {
 	my($self) = @_;
 	my $classes = $self->sqlSelectAllHashref('class', '*', 'classes');
@@ -9328,7 +9329,8 @@ sub getSlashConf {
 		}
 	}
 
-	# We only need to do this on startup.
+	# We only need to do this on startup.  This var isn't really used;
+	# see the code comment in getObject().
 	$conf{classes} = $self->getClasses();
 
 	return \%conf;

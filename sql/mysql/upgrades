@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.854 2005/10/05 02:36:38 pudge Exp $
+# $Id: upgrades,v 1.855 2005/10/11 19:17:15 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3225,4 +3225,19 @@ UPDATE vars SET value = 'T_2_5_0_83' WHERE name = 'cvs_tag_currentcode';
 # PUDGE LAST UPDATED HERE
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+# Install MIME::Types if any of your Slash sites are using the Blob plugin.
+
+# Changes for plugins/Daypass
+ALTER TABLE daypass_keys DROP INDEX uid_daypasskey;
+ALTER TABLE daypass_keys DROP COLUMN uid, ADD COLUMN daid SMALLINT UNSIGNED NOT NULL DEFAULT 0 AFTER daypasskey;
+ALTER TABLE daypass_keys ADD UNIQUE INDEX daypasskey (daypasskey);
+CREATE TABLE daypass_confcodes (
+	confcode	CHAR(20) NOT NULL DEFAULT '',
+	gooduntil	DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	PRIMARY KEY confcode (confcode)
+) TYPE=InnoDB;
+DROP TABLE daypass_users;
+
+INSERT INTO vars (name, value, description) VALUES ('cvs_tag_currentcode_emit','1','Emit cvs_tag_currentcode revision number in the X-Powered-By header. If you are paranoid or believe in security through obscurity feel free to leave this false, but in the event of a security hole it may help us contact you');
 

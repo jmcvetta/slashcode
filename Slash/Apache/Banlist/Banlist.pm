@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.31 2005/08/12 21:37:48 pudge Exp $
+# $Id: Banlist.pm,v 1.32 2005/10/11 20:34:25 pudge Exp $
 
 # This handler is called in the fourth Apache phase, access control.
 
@@ -17,7 +17,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -76,7 +76,7 @@ sub handler {
 
 	my $rsslist = $reader->getNorssList;
 	if ($is_rss && ($rsslist->{$cur_srcid_ip} || $rsslist->{$cur_srcid_subnet})) {
-		return _send_rss($r, 'abuse', $cur_srcid_ip);
+		return _send_rss($r, 'abuse', $cur_srcid_ip, $feed_type);
 	}
 
 	# Send a special "Palm banned" page if this IP addresss is banned
@@ -110,7 +110,7 @@ sub _check_rss_and_palm {
 
 	# XXX Should we also check for content_type in POST?
 	my $is_palm = $r->uri =~ /^\/palm/;
-	return ($is_rss, $is_palm, $feed_type);
+	return($is_rss, $is_palm, $feed_type);
 }
 
 sub _send_rss {
@@ -135,6 +135,7 @@ sub _get_rss_msg {
 	my($type, $srcid_ip, $feed_type) = @_;
 	$type ||= 'abuse';
 	$srcid_ip ||= '(unknown)';
+	$feed_type ||= 'rss';
 
 	return $RSS{$type}{$srcid_ip} if exists $RSS{$type}{$srcid_ip};
 

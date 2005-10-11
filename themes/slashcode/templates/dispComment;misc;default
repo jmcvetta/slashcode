@@ -60,7 +60,7 @@ __template__
 	<div class="commentBody">
 		[% comment %]
 		[% UNLESS user.nosigs %]
-			<br>[% sig %]
+			<div class="sig">[% sig %]</div>
 		[% END %]
 		
 	[% IF comment_shrunk;
@@ -80,4 +80,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.31 2005/08/25 14:48:31 tvroom Exp $
+$Id: dispComment;misc;default,v 1.32 2005/10/11 19:34:28 tvroom Exp $

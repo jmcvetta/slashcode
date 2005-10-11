@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.99 2005/08/24 23:18:50 pudge Exp $
+# $Id: Display.pm,v 1.100 2005/10/11 18:03:29 tvroom Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1322,7 +1322,7 @@ sub _hard_linkComment {
 		$display .= qq| by $comment->{nickname}|;
 		$display .= qq| (Score:$comment->{points})|
 			if !$user->{noscores} && $comment->{points};
-		$display .= timeCalc($comment->{date}) 
+		$display .= " " . timeCalc($comment->{date}) 
 			if $date;
 	}
 	$display .= "\n";
@@ -1703,4 +1703,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.99 2005/08/24 23:18:50 pudge Exp $
+$Id: Display.pm,v 1.100 2005/10/11 18:03:29 tvroom Exp $

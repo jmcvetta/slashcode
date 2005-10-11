@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.221 2005/09/22 23:26:23 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.222 2005/10/11 02:29:56 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.221 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.222 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2113,10 +2113,25 @@ sub getStoriesToDelete {
 # files rewritten (which mainly means they have a row present
 # in the story_dirty table), starting with the most recent.
 sub getStoriesToRefresh {
-	my($self, $limit, $tid) = @_;
+	my($self, $limit, $tid, $options) = @_;
+	$options ||= {};
 	$limit ||= 10;
 	my $tid_clause = "";
 	$tid_clause = " AND story_topics_rendered.tid = $tid" if $tid;
+	my $stoid_clause = "";
+	
+	if ($options->{stoid}) {
+		my @stoids;
+		if(ref $options->{stoid} eq "ARRAY") {
+			@stoids = @{$options->{stoid}}
+		} elsif (!ref $options->{stoid}) {
+			push @stoids, $options->{stoid};
+		}
+		if (@stoids) {
+			my $stoid_in = join ',', map { $self->sqlQuote($_) } @stoids;
+			$stoid_clause = " AND stories.stoid IN ($stoid_in) ";
+		}
+	}
 
 	# Include story_topics_rendered in this select just to make
 	# sure there is at least one topic assigned to such stories.
@@ -2131,7 +2146,8 @@ sub getStoriesToRefresh {
 		 AND stories.stoid = story_text.stoid
 		 AND story_dirty.stoid IS NOT NULL
 		 AND stories.stoid = story_topics_rendered.stoid
-		 $tid_clause",
+		 $tid_clause
+		 $stoid_clause",
 		"ORDER BY time DESC LIMIT $limit");
 	return [ ] if !@$retval;
 

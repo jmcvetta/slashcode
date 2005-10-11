@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daypass.pl,v 1.3 2005/03/29 22:22:47 jamiemccarthy Exp $
+# $Id: daypass.pl,v 1.4 2005/10/11 19:16:12 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -35,14 +35,14 @@ print STDERR scalar(localtime) . " daypass.pl $$ dps: " . Dumper($dps);
 
 	if ($dpk) {
 
-		if ($daypass_writer->confirmDaypasskey($dpk)) {
-			# Pause to allow replication to catch up, so when
-			# the user gets back to the homepage, they will
-			# show up as having the daypass.
-			sleep 2;
-			redirect($gSkin->{rootdir});
-			# Having done that, don't continue with the rest of this
-			# function (in particular, don't create a new key).
+		my $confcode = $daypass_writer->confirmDaypasskey($dpk);
+		if ($confcode) {
+			# Do the housekeeping required to echo the
+			# conf code out to the client's browser,
+			# and then don't continue with the rest of
+			# this function (in particular, don't create a
+			# new key).
+			key_confirmed($confcode);
 			return ;
 		}
 		# The user probably didn't watch enough of the
@@ -93,6 +93,17 @@ print STDERR scalar(localtime) . " daypass.pl $$ cannot show key\n";
 	});
 
 	footer();
+}
+
+sub key_confirmed {
+	my($confcode) = @_;
+	# Pause to allow replication to catch up, so when
+	# the user gets back to the homepage, they will
+	# show up as having the daypass.
+	sleep 2;
+	setCookie('daypassconfcode', $confcode, '+24h');
+	my $gSkin = getCurrentSkin();
+	redirect($gSkin->{rootdir});
 }
 
 #################################################################

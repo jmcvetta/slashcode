@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.106 2005/10/11 20:50:57 pudge Exp $
+# $Id: journal.pl,v 1.107 2005/10/11 22:12:39 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -597,8 +597,6 @@ sub doSaveArticle {
 
 		$journal->set($form->{id}, \%update);
 
-		$form = { id => $form->{id} };
-
 	} else {
 		my $id = $journal->create($description,
 			$form->{article}, $form->{posttype}, $form->{tid});
@@ -641,7 +639,7 @@ sub doSaveArticle {
 			}
 		}
 
-		$form = { id => $id };
+		$form->{id} = $id;
 	}
 
 	if ($constants->{validate_html}) {
@@ -945,7 +943,7 @@ sub modify_entry {
 	my($err) = $saveArticle->($journal, $constants, $user, $entry, $reader, $gSkin, $rkey);
 	return if $err;
 
-	return getCurrentForm('id') == $id ? $id : undef;
+	return $id;
 }
 
 sub add_entry {
@@ -974,7 +972,7 @@ sub add_entry {
 	my($err) = $saveArticle->($journal, $constants, $user, $form, $reader, $gSkin, $rkey);
 	return if $err;
 
-	return getCurrentForm('id');
+	return $form->{id};
 }
 
 

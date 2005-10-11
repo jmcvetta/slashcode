@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.2 2005/06/27 23:31:40 pudge Exp $
+# $Id: mysql_schema.sql,v 1.3 2005/10/11 20:44:36 pudge Exp $
 #
 
 DROP TABLE IF EXISTS reskeys;
@@ -49,4 +49,13 @@ CREATE TABLE reskey_resource_checks (
     PRIMARY KEY (rkrcid),
     UNIQUE rkrid_name (rkrid, type, class)
 );
+
+DROP TABLE IF EXISTS reskey_vars;
+CREATE TABLE reskey_vars (
+    rkrid TINYINT UNSIGNED NOT NULL,
+    name VARCHAR(48) DEFAULT '' NOT NULL,
+    value TEXT,
+    description VARCHAR(255),
+    UNIQUE name_rkrid (name, rkrid)
+) TYPE=InnoDB;
 

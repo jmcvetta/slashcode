@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.7 2005/10/05 06:36:01 pudge Exp $
+# $Id: ResKey.pm,v 1.8 2005/10/11 20:49:18 pudge Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -69,13 +69,16 @@ sub new {
 #========================================================================
 sub key {
 	my($self, $resource, $opts) = @_;
+
 	$opts ||= {};
 	$opts->{debug} = $DEBUG unless defined $opts->{debug};
+
 	return Slash::ResKey::Key->new(
 		$self->{virtual_user},
 		$resource,
 		$opts->{reskey},
-		$opts->{debug}
+		$opts->{debug},
+		$opts
 	);
 }
 
@@ -98,14 +101,14 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.7 2005/10/05 06:36:01 pudge Exp $
+$Id: ResKey.pm,v 1.8 2005/10/11 20:49:18 pudge Exp $
 
 
 =head1 TODO
 
 =head2 Check Classes
 
-The default failure value is DEATH, rather than FATAL, which is non-fatal:
+The default failure value is DEATH, rather than FAILURE, which is non-fatal:
 callers can choose to re-display the form on FAILURE, whereas with DEATH
 there's no reason to continue, but one must start over with a new form (if
 indeed even that).

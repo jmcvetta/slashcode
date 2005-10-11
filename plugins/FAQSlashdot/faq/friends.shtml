@@ -3,17 +3,16 @@
 <html>
 <head>
         <title>Slashdot FAQ - Friends and Journals</title>
-<!-- $Id: friends.shtml,v 1.6 2005/08/22 22:41:27 pudge Exp $ -->
+<!-- $Id: friends.shtml,v 1.7 2005/10/11 02:32:13 tvroom Exp $ -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
-        <table width="100%">
-                <tr>
-                        <td><a href="accounts.shtml">Previous section</a></td>
-                        <td><a href="subscriptions.shtml">Next section</a></td>
-                        <td><a href="index.shtml">Index</a></td>
-                </tr>
-        </table>
+        <ul class="menu">
+                 <li><a href="accounts.shtml">Previous section</a></li>
+                 <li><a href="subscriptions.shtml">Next section</a></li>
+                 <li><a href="index.shtml">Index</a></li>
+        </ul>
+        
         <hr>
 
 <h2><a name="fj100" id="fj100">Where is my journal?</a></h2>
@@ -109,12 +108,12 @@
         </small></em></p>
 
         <hr>
-        <table width="100%">
-                <tr>
-                        <td><a href="accounts.shtml">Previous section</a></td>
-                        <td><a href="subscriptions.shtml">Next section</a></td>
-                        <td><a href="index.shtml">Index</a></td>
-                </tr>
-        </table>
+        <ul class="menu">
+                
+                        <li><a href="accounts.shtml">Previous section</a></li>
+                        <li><a href="subscriptions.shtml">Next section</a></li>
+                        <li><a href="index.shtml">Index</a></li>
+                </ul>
+        
 
 <!--#include virtual="/slashfoot.inc"-->

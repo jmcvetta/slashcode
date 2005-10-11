@@ -17,7 +17,7 @@ __template__
 					<input type="hidden" name="id" value="[% article.id %]">
 					<input type="hidden" name="state" value="editing">
 					<input type="hidden" name="preview" value="active">
-					[% PROCESS formkey_tag %]
+					[% PROCESS reskey_tag %]
 
 					[% PROCESS formLabel value => "Subject", comment => "This is required" %]
 					<input type="text" name="description" size="60" maxlength="60" value="[% article.description | strip_attribute %]">
@@ -61,4 +61,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.16 2005/07/27 22:54:10 pudge Exp $
+$Id: journaledit;journal;default,v 1.17 2005/10/11 20:50:57 pudge Exp $

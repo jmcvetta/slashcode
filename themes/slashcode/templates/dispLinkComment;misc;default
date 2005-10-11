@@ -47,8 +47,8 @@ __template__
 		[% IF original_pid && ( can_mod || ((constants.authors_unlimited && user.seclev >= constants.authors_unlimited) || user.acl.candelcomments_always) ) %] | [% END %]
 
 		[% IF can_mod %]
-		[% Slash.createSelect("reason_$cid", reasons, '', 1, 1) 
-		%][% END %]
+		<div class="modsel">[% Slash.createSelect("reason_$cid", reasons, '', 1, 1) 
+		%]</div>[% END %]
 
 		[% IF can_mod && ((constants.authors_unlimited && user.seclev >= constants.authors_unlimited) || user.acl.candelcomments_always) %] | [% END %]
 
@@ -65,4 +65,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.28 2005/08/31 17:06:06 tvroom Exp $
+$Id: dispLinkComment;misc;default,v 1.29 2005/10/11 17:56:16 tvroom Exp $

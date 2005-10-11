@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.168 2005/10/05 02:10:55 pudge Exp $
+# $Id: Data.pm,v 1.169 2005/10/11 20:35:15 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2187,12 +2187,14 @@ sub fudgeurl {
 		$url = $uri->canonical->as_string;
 
 		if ($url =~ /#/) {
+			my $token = ':::INSERT__23__HERE:::';
 			# no # is OK, unless ...
-			$url =~ s/#/%23/g;
-			if ($url =~ m|^https?://|i) {
+			$url =~ s/#/$token/g;
+			if ($url =~ m|^https?://|i || $url =~ m|^/|) {
 				# HTTP, in which case the first # is OK
-				$url =~ s/%23/#/;
+				$url =~ s/$token/#/;
 			}
+			$url =~ s/$token/%23/g;
 		}
 	}
 
@@ -4078,4 +4080,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.168 2005/10/05 02:10:55 pudge Exp $
+$Id: Data.pm,v 1.169 2005/10/11 20:35:15 pudge Exp $

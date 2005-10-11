@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.61 2005/04/28 19:34:33 pudge Exp $
+# $Id: freshenup.pl,v 1.62 2005/10/11 02:26:21 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -29,6 +29,7 @@ $task{$me}{code} = sub {
 	my %dirty_skins = ( );
 	my $stories;
 
+
 	# Every tenth invocation, we do a big chunk of work.  The other
 	# nine times, we update the top three stories and the front
 	# page, skipping all other nexuses and other stories -- and to
@@ -50,6 +51,21 @@ $task{$me}{code} = sub {
 		? $constants->{freshenup_max_stories}
 		: 100;
 	$max_stories = 3 unless $do_all;
+
+	my $stoids_to_refresh = [];
+	if ($constants->{task_options}{stoid} || $constants->{task_options}{sid}) {
+		my $sids_to_refresh = [];
+		@$stoids_to_refresh = split (/ /, $constants->{task_options}{stoid}) if $constants->{task_options}{stoid};
+		@$sids_to_refresh = split (/ /, $constants->{task_options}{sid}) if $constants->{task_options}{sid};
+		foreach (@$sids_to_refresh) {
+			my $stoid = $slashdb->getStoidFromSidOrStoid($_);
+			push @$stoids_to_refresh, $stoid if $stoid;
+		}
+		foreach (@$stoids_to_refresh) {
+			$slashdb->markStoryDirty($_);
+		}
+		$do_all = 1 if @$stoids_to_refresh;
+	}
 
 	############################################################
 	# deletions
@@ -168,8 +184,10 @@ $task{$me}{code} = sub {
 	$stories = [ ];
 	if (!$task_exit_flag) {
 		my $mp_tid = $constants->{mainpage_nexus_tid};
+		my $gstr_options = {};
+		$gstr_options->{stoid} = $stoids_to_refresh if @$stoids_to_refresh;
 		$stories = $slashdb->getStoriesToRefresh($max_stories,
-			$do_all ? 0 : $mp_tid);
+			$do_all ? 0 : $mp_tid, $gstr_options);
 	}
 
 	my $bailed = 0;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.222 2005/10/11 02:29:56 tvroom Exp $
+# $Id: MySQL.pm,v 1.223 2005/10/11 19:14:32 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.222 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.223 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2121,8 +2121,8 @@ sub getStoriesToRefresh {
 	my $stoid_clause = "";
 	
 	if ($options->{stoid}) {
-		my @stoids;
-		if(ref $options->{stoid} eq "ARRAY") {
+		my @stoids = ( );
+		if (ref $options->{stoid} eq "ARRAY") {
 			@stoids = @{$options->{stoid}}
 		} elsif (!ref $options->{stoid}) {
 			push @stoids, $options->{stoid};

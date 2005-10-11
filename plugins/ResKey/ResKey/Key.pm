@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.7 2005/10/05 02:25:54 pudge Exp $
+# $Id: Key.pm,v 1.8 2005/10/11 20:49:55 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -107,11 +107,11 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
-	my($class, $user, $resname, $reskey, $debug) = @_;
+	my($class, $user, $resname, $reskey, $debug, $opts) = @_;
 	my $rkrid;
 
 	my $plugin = getCurrentStatic('plugin');
@@ -763,6 +763,35 @@ sub getChecks {
 	return $checks;
 }
 
+#========================================================================
+sub getAllCheckVars {
+	my($self) = @_;
+
+	my $vars = $self->{_check_vars} ||= {};
+	return $vars if keys %$vars;
+
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+
+	my $all = $reader->sqlSelectAll('rkrid, name, value', 'reskey_vars');
+	for my $row (@$all) {
+		$vars->{ $row->[0] }{ $row->[1] } = $row->[2];
+	}
+
+	return $vars;
+}
+
+#========================================================================
+sub getCheckVars {
+	my($self) = @_;
+
+	if ($self->rkrid) {
+		my $vars = $self->getAllCheckVars;
+		return $vars->{ $self->rkrid };
+	}
+
+	return;
+}
+
 1;
 
 __END__
@@ -774,4 +803,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.7 2005/10/05 02:25:54 pudge Exp $
+$Id: Key.pm,v 1.8 2005/10/11 20:49:55 pudge Exp $

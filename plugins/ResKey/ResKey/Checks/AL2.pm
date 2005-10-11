@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: AL2.pm,v 1.2 2005/09/13 21:57:45 pudge Exp $
+# $Id: AL2.pm,v 1.3 2005/10/11 20:49:55 pudge Exp $
 
 package Slash::ResKey::Checks::AL2;
 
@@ -13,14 +13,13 @@ use Exporter;
 use Slash::Utility;
 use Slash::Constants ':reskey';
 
-our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 our @EXPORT = qw(AL2Check);
 
 # simple AL2 check that others can inherit; returns death if check returns true
 sub AL2Check {
 	my($self, $check, $srcids) = @_;
 
-	my $constants = getCurrentStatic();
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
 

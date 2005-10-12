@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ACL.pm,v 1.4 2005/10/11 20:49:55 pudge Exp $
+# $Id: ACL.pm,v 1.5 2005/10/12 17:38:46 pudge Exp $
 
 package Slash::ResKey::Checks::ACL;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub doCheck {
 	my($self) = @_;
@@ -24,10 +24,9 @@ sub doCheck {
 	my $acl    = $check_vars->{acl};
 	my $acl_no = $check_vars->{acl_no};
 
-	# by default, is_admin is an automatic exception to lack of ACL
+	# is_admin is an exception to lack of ACL if adminbypass set
 	my $acl_nobypass_admin = (!$user->{is_admin} || (
-		$user->{is_admin} &&
-		$check_vars->{acl_nobypass_admin}
+		$user->{is_admin} && !$check_vars->{adminbypass}
 	));
 
 	if ($acl && !$user->{acl}{$acl} && $acl_nobypass_admin) {

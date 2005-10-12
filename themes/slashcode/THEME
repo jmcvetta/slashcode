@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.93 2005/10/11 19:33:27 jamiemccarthy Exp $
+# $Id: THEME,v 1.94 2005/10/12 17:41:18 pudge Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -238,7 +238,6 @@ template=templates/maintable_end;misc;default
 template=templates/messages;users;default
 template=templates/metakeywordsd;misc;default
 template=templates/mid_tab;misc;default
-template=templates/miniAdminMenu;users;default
 template=templates/modCommentLog;misc;default
 template=templates/mod_footer;comments;default
 template=templates/mod_header;comments;default

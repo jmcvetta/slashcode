@@ -20,9 +20,9 @@ __template__
 	<table cellspacing=2 border=0>
 	[% FOREACH acl = acls.keys %]
 		<tr>
-			<td>[% acl | strip_nohtml %]</td>
-			<td align="right">([% acls.$acl.size %])</td>
-			<td>
+			<td valign="top">[% acl | strip_nohtml %]</td>
+			<td valign="top" align="right">([% acls.$acl.size %])</td>
+			<td valign="top">
 			[% FOREACH uid = acls.$acl.nsort %]
 				<a href="[% gSkin.rootdir %]/users.pl?uid=[% uid | strip_attribute %]">[% uid %]</a>
 			[% END %]
@@ -51,4 +51,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: aclEdit;admin;default,v 1.7 2005/09/16 14:50:09 lancelot Exp $
+$Id: aclEdit;admin;default,v 1.8 2005/10/18 19:00:21 jamiemccarthy Exp $

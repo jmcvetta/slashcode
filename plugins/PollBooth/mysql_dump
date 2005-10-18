@@ -1,7 +1,7 @@
 #
-# $Id: mysql_dump,v 1.5 2005/09/19 20:03:25 tvroom Exp $
+# $Id: mysql_dump,v 1.6 2005/10/18 19:28:11 tvroom Exp $
 #
 
 INSERT INTO hooks (param, class, subroutine) VALUES ('admin_save_story_success','Slash::PollBooth','createAutoPollFromStory');
 
-INSERT INTO css (rel, type, media, file, title, skin, page, admin, theme, ctid, ordernum) VALUES ('stylesheet','text/css','screen, projection','polls.css','','','pollBooth','no','',2,0);
+INSERT INTO css (rel, type, media, file, title, skin, page, admin, theme, ctid, ordernum, ie_cond) VALUES ('stylesheet','text/css','screen, projection','polls.css','','','pollBooth','no','',2,0, '');

@@ -21,7 +21,7 @@ __template__
 <div id="slashboxes">
 [% Slash.sidebox(
 	Slash.db.getBlock('poll', 'title'),
-	Slash.pollbooth('_currentqid', 1, 0, 1),
+	Slash.pollbooth('_currentqid', 1, 0),
 	'poll',
         1);
 %]
@@ -71,4 +71,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: listpolls;pollBooth;default,v 1.12 2005/09/21 17:33:15 tvroom Exp $
+$Id: listpolls;pollBooth;default,v 1.13 2005/10/18 21:37:18 pudge Exp $

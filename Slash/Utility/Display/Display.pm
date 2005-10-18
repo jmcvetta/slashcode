@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.100 2005/10/11 18:03:29 tvroom Exp $
+# $Id: Display.pm,v 1.101 2005/10/18 21:38:10 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.100 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -543,7 +543,7 @@ sub linkStory {
 
 #========================================================================
 
-=head2 pollbooth(QID [, NO_TABLE, CENTER, RETURNTO])
+=head2 pollbooth(QID [, NO_TABLE, CENTER])
 
 Creates a voting pollbooth.
 
@@ -567,13 +567,6 @@ If false, then will be formatted inside a C<fancybox>.
 Whether or not to center the tabled pollbooth (only
 works with NO_TABLE).
 
-=item RETURNTO
-
-If this parameter is specified, the voting widget will take the vote and return
-the user to the specified URI. Note that you WILL NOT be able to redirect
-outside of the site using this parameter for security reasons (hence the need for
-URIs as opposed to URLs).
-
 =back
 
 =item Return value
@@ -594,7 +587,7 @@ The 'pollbooth' template block.
 # attention
 
 sub pollbooth {
-	my($qid, $no_table, $center, $returnto) = @_;
+	my($qid, $no_table, $center) = @_;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
@@ -625,7 +618,6 @@ sub pollbooth {
 		can_vote	=> $can_vote,
 		voters		=> $poll->{pollq}{voters},
 		comments	=> $n_comments,
-		returnto	=> $returnto,
 	}, 1);
 }
 
@@ -1703,4 +1695,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.100 2005/10/11 18:03:29 tvroom Exp $
+$Id: Display.pm,v 1.101 2005/10/18 21:38:10 pudge Exp $

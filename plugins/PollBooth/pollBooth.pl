@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.67 2005/10/18 06:59:40 pudge Exp $
+# $Id: pollBooth.pl,v 1.68 2005/10/18 21:37:18 pudge Exp $
 
 use strict;
 use Slash;
@@ -22,7 +22,6 @@ sub main {
 		list		=> \&listpolls,
 		default		=> \&default,
 		vote		=> \&vote,
-		vote_return	=> \&vote_return,
 		get		=> \&poll_booth,
 		preview         => \&editpoll,
 		detach		=> \&detachpoll,
@@ -53,7 +52,7 @@ sub main {
 sub poll_booth {
 	my($form) = @_;
 
-	print sidebox('Poll',pollbooth($form->{'qid'}, 0, 1),'poll', 1);
+	print sidebox('Poll', pollbooth($form->{'qid'}, 0, 1), 'poll', 1);
 }
 
 #################################################################
@@ -401,7 +400,7 @@ sub savepoll {
 }
 
 #################################################################
-sub vote_return {
+sub vote {
 	my($form, $slashdb) = @_;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
@@ -415,29 +414,6 @@ sub vote_return {
 		print $rkey->errstr;
 		return;
 	}
-
-	my(%all_aid) = map { ($_->[0], 1) }
-		@{$reader->getPollAnswers($qid, ['aid'])};
-	my $poll_open = $reader->isPollOpen($qid);
-	my $has_voted = $slashdb->hasVotedIn($qid);
-
-	if ($has_voted) {
-		# Specific reason why can't vote.
-	} elsif (!$poll_open) {
-		# Voting is closed on this poll.
-	} elsif (exists $all_aid{$aid}) {
-		$slashdb->createPollVoter($qid, $aid);
-	}
-}
-
-#################################################################
-sub vote {
-	my($form, $slashdb) = @_;
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-
-	my $qid = $form->{'qid'};
-	my $aid = $form->{'aid'};
-	return unless $qid;
 
 	my(%all_aid) = map { ($_->[0], 1) }
 		@{$reader->getPollAnswers($qid, ['aid'])};

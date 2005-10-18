@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.802 2005/10/06 23:06:06 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.803 2005/10/18 19:17:29 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.802 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.803 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -963,7 +963,7 @@ sub getCSS {
         my $where = "css.ctid=css_type.ctid AND ";
 	$where .= join ' AND ', @clauses;
 
-        my $css = $self->sqlSelectAllHashrefArray("rel,type,media,file,title", "css, css_type", $where, "ORDER BY css_type.ordernum, css.ordernum");
+        my $css = $self->sqlSelectAllHashrefArray("rel,type,media,file,title,ie_cond", "css, css_type", $where, "ORDER BY css_type.ordernum, css.ordernum");
 	
 	$css_ref->{$skin}{$page}{$admin}{$theme} = $css;
         return $css;

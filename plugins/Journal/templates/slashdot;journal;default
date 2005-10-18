@@ -54,18 +54,7 @@ __template__
                 [% END %]
         [% END %]
         <div class="journalpage">
-        [% back = back || 0;
-           IF (back > -1) || forward %]
-                                [% IF forward %]
-                                        <a href="[% gSkin.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% forward %]">&lt; Previous  [% constants.journal_default_display %] entries</a>
-                                [% END %]
-                                [% IF (back > -1) && forward %]
-                                        |
-                                [% END %]
-                                [% IF (back > -1) %]
-                                        <a href="[% gSkin.rootdir %]/journal.pl?op=display&amp;uid=[% uid %]&amp;start=[% back %]">Next [% constants.journal_default_display %] entries &gt;</a>
-                                [% END %]
-        [% END %]
+		[% PROCESS pagination %]
                 <br>
                 <a href="[% gSkin.rootdir %]/journal.pl?op=list&amp;uid=[% uid %]" class="all">List all Journal entries</a>
         </div>
@@ -74,4 +63,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: slashdot;journal;default,v 1.19 2005/07/27 22:54:10 pudge Exp $
+$Id: slashdot;journal;default,v 1.20 2005/10/18 06:59:40 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.66 2005/10/04 18:58:28 tvroom Exp $
+# $Id: pollBooth.pl,v 1.67 2005/10/18 06:59:40 pudge Exp $
 
 use strict;
 use Slash;
@@ -408,6 +408,13 @@ sub vote_return {
 	my $qid = $form->{'qid'};
 	my $aid = $form->{'aid'};
 	return unless $qid && $aid;
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('pollbooth');
+	unless ($rkey->use) {
+		print $rkey->errstr;
+		return;
+	}
 
 	my(%all_aid) = map { ($_->[0], 1) }
 		@{$reader->getPollAnswers($qid, ['aid'])};

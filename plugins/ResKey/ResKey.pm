@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.8 2005/10/11 20:49:18 pudge Exp $
+# $Id: ResKey.pm,v 1.9 2005/10/18 06:59:40 pudge Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -88,6 +88,16 @@ sub purge_old {
 	my($self) = @_;
 	my $timeframe = getCurrentStatic('reskey_timeframe') || 14400;
 	$self->sqlDelete('reskeys', "create_ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
+
+	my $rkids = $self->sqlSelectAll('rkf.rkid',
+		'reskey_failures AS rkf LEFT JOIN reskeys AS rk ON rk.rkid=rkf.rkid',
+		'rk.rkid IS NULL'
+	);
+
+	if (@$rkids) {
+		my $rkid_string = join ',', map { $_->[0] } @$rkids;
+		$self->sqlDelete('reskey_failures', "rkid IN ($rkid_string)");
+	}
 }
 
 1;
@@ -101,7 +111,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.8 2005/10/11 20:49:18 pudge Exp $
+$Id: ResKey.pm,v 1.9 2005/10/18 06:59:40 pudge Exp $
 
 
 =head1 TODO

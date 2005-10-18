@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.107 2005/10/11 22:12:39 pudge Exp $
+# $Id: journal.pl,v 1.108 2005/10/18 06:59:40 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -917,6 +917,10 @@ use Slash::Utility;
 sub modify_entry {
 	my($class, $id) = (shift, shift);
 
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
+
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
@@ -934,10 +938,6 @@ sub modify_entry {
 		$entry->{$_} = $form->{$_} if defined $form->{$_};
 	}
 
-	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
-
 	no strict 'refs';
 	my $saveArticle = *{ $user->{state}{packagename} . '::doSaveArticle' };
 	my($err) = $saveArticle->($journal, $constants, $user, $entry, $reader, $gSkin, $rkey);
@@ -948,6 +948,10 @@ sub modify_entry {
 
 sub add_entry {
 	my($class) = (shift);
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
 
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
@@ -963,10 +967,6 @@ sub add_entry {
 	$form->{journal_discuss}	= $user->{journal_discuss}
 		unless defined $form->{journal_discuss};
 
-	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
-
 	no strict 'refs';
 	my $saveArticle = *{ $user->{state}{packagename} . '::doSaveArticle' };
 	my($err) = $saveArticle->($journal, $constants, $user, $form, $reader, $gSkin, $rkey);
@@ -978,6 +978,11 @@ sub add_entry {
 
 sub delete_entry {
 	my($class, $id) = @_;
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
+
 	my $journal   = getObject('Slash::Journal');
 	my $user      = getCurrentUser();
 
@@ -985,9 +990,6 @@ sub delete_entry {
 
 	$id =~ s/\D+//g;
 
-	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
 	$rkey->use or return;
 
 	return $journal->remove($id);
@@ -995,6 +997,11 @@ sub delete_entry {
 
 sub get_entry {
 	my($class, $id) = @_;
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
+
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
 	my $slashdb   = getCurrentDB();
@@ -1017,6 +1024,11 @@ sub get_entry {
 
 sub get_entries {
 	my($class, $uid, $num) = @_;
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
+
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
@@ -1049,6 +1061,11 @@ sub get_entries {
 # SOAP working (this will be in the Search SOAP API, i think)
 sub get_uid_from_nickname {
 	my($self, $nick) = @_;
+
+	my $reskey = getObject('Slash::ResKey');
+	my $rkey = $reskey->key('journal-soap');
+	$rkey->create or return;
+
 	return getCurrentDB()->getUserUID($nick);
 }
 

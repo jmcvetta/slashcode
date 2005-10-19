@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.68 2005/10/18 21:37:18 pudge Exp $
+# $Id: pollBooth.pl,v 1.69 2005/10/19 23:34:38 pudge Exp $
 
 use strict;
 use Slash;
@@ -408,13 +408,6 @@ sub vote {
 	my $aid = $form->{'aid'};
 	return unless $qid && $aid;
 
-	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('pollbooth');
-	unless ($rkey->use) {
-		print $rkey->errstr;
-		return;
-	}
-
 	my(%all_aid) = map { ($_->[0], 1) }
 		@{$reader->getPollAnswers($qid, ['aid'])};
 
@@ -430,6 +423,13 @@ sub vote {
 	if (getCurrentUser('is_anon') && !getCurrentStatic('allow_anon_poll_voting')) {
 		$notes = getData('anon');
 	} elsif ($aid > 0) {
+		my $reskey = getObject('Slash::ResKey');
+		my $rkey = $reskey->key('pollbooth');
+		unless ($rkey->use) {
+			print $rkey->errstr;
+			return;
+		}
+
 		my $poll_open = $reader->isPollOpen($qid);
 		my $has_voted = $slashdb->hasVotedIn($qid);
 

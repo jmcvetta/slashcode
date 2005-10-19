@@ -19,7 +19,7 @@ __template__
 	</tr>
 	<tr>
 		<td>
-			<h2>New Sites:</h2>
+			<h2>Most Recent Sites:</h2>
 			[% FOREACH site = new_sites %]
 				<a href="[% site.url %]">[% site.title %]</a><br>
 			[% END %]
@@ -39,4 +39,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: index;sites;default,v 1.7 2005/07/27 22:54:13 pudge Exp $
+$Id: index;sites;default,v 1.8 2005/10/19 04:14:05 jamiemccarthy Exp $

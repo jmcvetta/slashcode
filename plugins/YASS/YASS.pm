@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.17 2005/10/18 19:11:34 jamiemccarthy Exp $
+# $Id: YASS.pm,v 1.18 2005/10/20 23:22:23 jamiemccarthy Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -78,13 +78,11 @@ sub setURL {
 
 sub exists {
 	my ($self, $sid, $url) = @_;
-	my $q_url = $self->sqlQuote($url);
-	my $q_sid = $self->sqlQuote($sid);
-	my $return = 1 
-		if  $self->sqlSelect('id', 'yass_sites', "sid = $q_sid AND url = $q_url");
-	unless ($return) {
-		$return = $self->sqlSelect('sid', 'yass_sites', "sid = $q_sid");
-	}
+	my $url_q = $self->sqlQuote($url);
+	my $sid_q = $self->sqlQuote($sid);
+	my $return = $self->sqlSelect('id', 'yass_sites', "sid = $sid_q AND url = $url_q")
+		|| $self->sqlSelect('id', 'yass_sites', "sid = $sid_q")
+		|| 0;
 	return $return;
 }
 

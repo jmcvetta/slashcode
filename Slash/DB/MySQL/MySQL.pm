@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.803 2005/10/18 19:17:29 tvroom Exp $
+# $Id: MySQL.pm,v 1.804 2005/10/20 19:53:10 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.803 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.804 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3964,6 +3964,7 @@ sub hasPollActivated{
 # specially taken to mean a conflation of IP address (possibly thru proxy)
 # and uid, such that only one anonymous reader can post from any given
 # IP address.
+# XXXX NO LONGER USED, REPLACED BY reskeys -- pudge 2005-10-20
 sub hasVotedIn {
 	my($self, $qid) = @_;
 	my $constants = getCurrentStatic();

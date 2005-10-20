@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.101 2005/10/18 21:38:10 pudge Exp $
+# $Id: Display.pm,v 1.102 2005/10/20 19:53:10 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.101 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -605,8 +605,6 @@ sub pollbooth {
 	my $n_comments = $reader->countCommentsBySid(
 		$poll->{pollq}{discussion});
 	my $poll_open = $reader->isPollOpen($qid);
-	my $has_voted = $reader->hasVotedIn($qid);
-	my $can_vote = !$has_voted && $poll_open;
 
 	return slashDisplay('pollbooth', {
 		question	=> $poll->{pollq}{question},
@@ -614,8 +612,6 @@ sub pollbooth {
 		qid		=> $qid,
 		has_activated   => $reader->hasPollActivated($qid),
 		poll_open	=> $poll_open,
-		has_voted	=> $has_voted,
-		can_vote	=> $can_vote,
 		voters		=> $poll->{pollq}{voters},
 		comments	=> $n_comments,
 	}, 1);
@@ -1695,4 +1691,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.101 2005/10/18 21:38:10 pudge Exp $
+$Id: Display.pm,v 1.102 2005/10/20 19:53:10 pudge Exp $

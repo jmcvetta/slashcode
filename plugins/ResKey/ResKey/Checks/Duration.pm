@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.7 2005/10/11 20:49:55 pudge Exp $
+# $Id: Duration.pm,v 1.8 2005/10/20 19:53:10 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -116,6 +116,7 @@ sub maxUsesPerTimeframe {
 	my $limit = $constants->{reskey_timeframe};
 	if ($max_uses && $limit) {
 		my $where = $self->whereUser;
+		$where .= ' AND rkrid=' . $self->rkrid;
 		$where .= ' AND is_alive="no" AND ';
 		$where .= "rkid != '$reskey_obj->{rkid}' AND " if $reskey_obj->{rkid};
 		$where .= "submit_ts > DATE_SUB(NOW(), INTERVAL $limit SECOND)";
@@ -142,8 +143,9 @@ sub minDurationBetweenUses {
 	my $limit = $check_vars->{duration_uses};
 	if ($limit) {
 		my $where = $self->whereUser;
+		$where .= ' AND rkrid=' . $self->rkrid;
 		$where .= ' AND is_alive="no" AND ';
-		$where .= "rkid != '$reskey_obj->{rkid}' AND ";
+		$where .= "rkid != '$reskey_obj->{rkid}' AND " if $reskey_obj->{rkid};
 		$where .= "submit_ts > DATE_SUB(NOW(), INTERVAL $limit SECOND)";
 
 		my $rows = $slashdb->sqlCount('reskeys', $where);
@@ -164,8 +166,9 @@ sub minDurationBetweenCreateAndUse {
 	my $check_vars = $self->getCheckVars;
 
 	my $limit = $check_vars->{'duration_creation-use'};
-	if ($limit) {
+	if ($limit && $reskey_obj->{rkid}) {
 		my $where = "rkid=$reskey_obj->{rkid}";
+		$where .= ' AND rkrid=' . $self->rkrid;
 		$where .= ' AND is_alive="no" AND ';
 		$where .= "create_ts > DATE_SUB(NOW(), INTERVAL $limit SECOND)";
 

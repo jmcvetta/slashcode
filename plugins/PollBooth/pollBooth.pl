@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.69 2005/10/19 23:34:38 pudge Exp $
+# $Id: pollBooth.pl,v 1.70 2005/10/20 19:53:10 pudge Exp $
 
 use strict;
 use Slash;
@@ -423,22 +423,18 @@ sub vote {
 	if (getCurrentUser('is_anon') && !getCurrentStatic('allow_anon_poll_voting')) {
 		$notes = getData('anon');
 	} elsif ($aid > 0) {
-		my $reskey = getObject('Slash::ResKey');
-		my $rkey = $reskey->key('pollbooth');
-		unless ($rkey->use) {
-			print $rkey->errstr;
-			return;
-		}
-
 		my $poll_open = $reader->isPollOpen($qid);
-		my $has_voted = $slashdb->hasVotedIn($qid);
 
-		if ($has_voted) {
-			# Specific reason why can't vote.
-			$notes = getData('uid_voted');
-		} elsif (!$poll_open) {
+		if (!$poll_open) {
 			# Voting is closed on this poll.
 			$notes = getData('poll_closed');
+		}
+
+		my $reskey = getObject('Slash::ResKey');
+		my $rkey = $reskey->key('pollbooth', { qid => $qid });
+
+		if (!$rkey->createuse) {
+			$notes = $rkey->errstr;
 		} elsif (exists $all_aid{$aid}) {
 			$notes = getData('success', { aid => $aid });
 			$slashdb->createPollVoter($qid, $aid);

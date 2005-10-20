@@ -77,9 +77,13 @@ __template__
 	You may not post using an open proxy.
 
 
+[%# Post %]
+[% CASE 'post method required' %]
+	You must access this resource using the appropriate method.
+	
 
 [% END %]
 __seclev__
 10000
 __version__
-$Id: data;reskey;default,v 1.5 2005/10/05 02:51:09 pudge Exp $
+$Id: data;reskey;default,v 1.6 2005/10/20 19:53:10 pudge Exp $

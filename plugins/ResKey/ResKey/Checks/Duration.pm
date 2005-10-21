@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.8 2005/10/20 19:53:10 pudge Exp $
+# $Id: Duration.pm,v 1.9 2005/10/21 18:22:56 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -115,7 +115,7 @@ sub maxUsesPerTimeframe {
 	my $max_uses = $check_vars->{'duration_max-uses'};
 	my $limit = $constants->{reskey_timeframe};
 	if ($max_uses && $limit) {
-		my $where = $self->whereUser;
+		my $where = $self->getWhereUserClause;
 		$where .= ' AND rkrid=' . $self->rkrid;
 		$where .= ' AND is_alive="no" AND ';
 		$where .= "rkid != '$reskey_obj->{rkid}' AND " if $reskey_obj->{rkid};
@@ -142,7 +142,7 @@ sub minDurationBetweenUses {
 
 	my $limit = $check_vars->{duration_uses};
 	if ($limit) {
-		my $where = $self->whereUser;
+		my $where = $self->getWhereUserClause;
 		$where .= ' AND rkrid=' . $self->rkrid;
 		$where .= ' AND is_alive="no" AND ';
 		$where .= "rkid != '$reskey_obj->{rkid}' AND " if $reskey_obj->{rkid};

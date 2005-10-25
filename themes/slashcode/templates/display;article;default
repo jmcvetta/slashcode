@@ -20,6 +20,7 @@ __name__
 display
 __template__
 <div id="slashboxes">
+[% UNLESS user.lowbandwidth %]
 [% PROCESS userboxes hits => story.hits  %]
 [%
 IF show_poll;
@@ -44,8 +45,9 @@ IF section_block.block;
 		contents	= section_block.block
 		name		= section.title;
 END %]
-
+[% END %]
 </div>
+<a name="main-articles"></a>
 <div id="articles">
 [% Slash.displayStory(story.sid, 'Full', { is_future => story.is_future, topiclist => Slash.db.getTopiclistForStory(story.sid) }) %]
 
@@ -91,4 +93,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: display;article;default,v 1.28 2005/07/27 22:54:47 pudge Exp $
+$Id: display;article;default,v 1.29 2005/10/25 18:44:14 tvroom Exp $

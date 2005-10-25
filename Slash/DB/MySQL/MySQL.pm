@@ -1,7 +1,11 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.805 2005/10/25 20:01:29 pudge Exp $
+<<<<<<< MySQL.pm
+# $Id: MySQL.pm,v 1.806 2005/10/25 20:03:59 tvroom Exp $
+=======
+# $Id: MySQL.pm,v 1.806 2005/10/25 20:03:59 tvroom Exp $
+>>>>>>> 1.805
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +23,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.805 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.806 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -925,9 +929,9 @@ sub getCSS {
 	my($self) = @_;
 	my $user = getCurrentUser();
 	my $page = $user->{currentPage};
-	my $skin = $user->{light} ? "light" : getCurrentSkin('name');
+	my $skin = getCurrentSkin('name');
 	my $admin = $user->{is_admin};
-	my $theme = $user->{css_theme};
+	my $theme = $user->{simpledesign} ? "light" : $user->{css_theme};
 	my $constants = getCurrentStatic();
 	
 	my $expire_time = $constants->{css_expire} || 3600;
@@ -946,11 +950,13 @@ sub getCSS {
 	$css_skins_ref = $self->getCSSValuesHashForCol('skin')   if !$css_skins_ref;
 	$css_themes_ref= $self->getCSSValuesHashForCol('theme') if !$css_themes_ref;
 
+	my $lowbandwidth = $user->{lowbandwidth} ? "yes" : "no";
+
 	$page   = '' if !$css_pages_ref->{$page};	
 	$skin   = ''  if !$css_skins_ref->{$skin};	
 	$theme  = '' if !$css_themes_ref->{$theme};	
 
-	return $css_ref->{$skin}{$page}{$admin}{$theme} if exists $css_ref->{$skin}{$page}{$admin}{$theme};
+	return $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth} if exists $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth};
 	
 	my @clauses;
 
@@ -967,12 +973,14 @@ sub getCSS {
 	my $theme_in = $theme ? "(theme='' or theme=$theme_q)" : "theme=''";
 	push @clauses, $theme_in;
 
+	push @clauses, "lowbandwidth='$lowbandwidth'" if $lowbandwidth eq "no";
+
         my $where = "css.ctid=css_type.ctid AND ";
 	$where .= join ' AND ', @clauses;
 
         my $css = $self->sqlSelectAllHashrefArray("rel,type,media,file,title,ie_cond", "css, css_type", $where, "ORDER BY css_type.ordernum, css.ordernum");
 	
-	$css_ref->{$skin}{$page}{$admin}{$theme} = $css;
+	$css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth} = $css;
         return $css;
 }
 
@@ -9290,6 +9298,7 @@ sub getSlashConf {
 	for my $regex (qw(
 		accesslog_imageregex
 		x_forwarded_for_trust_regex
+		lowbandwidth_bids_regex
 	)) {
 		next if !$conf{$regex} || $conf{$regex} eq 'NONE';
 		$conf{$regex} = qr{$conf{$regex}};
@@ -10533,7 +10542,7 @@ sub getTemplateByName {
 		$page ||= 'misc';
 	}
 	unless ($skin) {
-		$skin = "light" if $user->{light};
+#		$skin = "light" if $user->{light};
 		$skin ||= getCurrentSkin('name');
 		$skin ||= 'default';
 	}

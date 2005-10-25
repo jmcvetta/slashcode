@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.807 2005/10/25 20:06:30 tvroom Exp $
+# $Id: MySQL.pm,v 1.808 2005/10/25 20:31:09 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.807 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.808 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -949,10 +949,11 @@ sub getCSS {
 	my $lowbandwidth = $user->{lowbandwidth} ? "yes" : "no";
 
 	$page   = '' if !$css_pages_ref->{$page};	
-	$skin   = ''  if !$css_skins_ref->{$skin};	
+	$skin   = '' if !$css_skins_ref->{$skin};	
 	$theme  = '' if !$css_themes_ref->{$theme};	
 
-	return $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth} if exists $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth};
+	return $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth}
+		if exists $css_ref->{$skin}{$page}{$admin}{$theme}{$lowbandwidth};
 	
 	my @clauses;
 

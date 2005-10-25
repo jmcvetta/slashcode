@@ -22,7 +22,9 @@ editUser
 __template__
 [% orig_title = title %]
 <div id="slashboxes">
+[% UNLESS user.lowbandwidth %]
 [% PROCESS userboxes %]
+[% END %]
 </div>
 [% title = orig_title %]
 <div id="users-blocks">
@@ -107,4 +109,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editUser;users;default,v 1.21 2005/07/27 22:54:47 pudge Exp $
+$Id: editUser;users;default,v 1.22 2005/10/25 18:43:14 tvroom Exp $

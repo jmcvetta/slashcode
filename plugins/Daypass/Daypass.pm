@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.9 2005/10/11 19:16:12 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.10 2005/10/25 20:42:49 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -12,7 +12,7 @@ use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -49,7 +49,8 @@ sub getDaypassesAvailable {
 			my $reader = getObject('Slash::DB', { db_type => 'reader' });
 			$_getDA_cache = $reader->sqlSelectAllHashrefArray(
 				"daid, adnum, minduration,
-				 UNIX_TIMESTAMP(starttime) AS startts, UNIX_TIMESTAMP(endtime) AS endts, aclreq",
+				 UNIX_TIMESTAMP(starttime) AS startts, UNIX_TIMESTAMP(endtime) AS endts,
+				 aclreq",
 				"daypass_available");
 		} else {
 			my $pos = $constants->{daypass_offer_method1_adpos} || 31;
@@ -113,7 +114,8 @@ sub getDaypass {
 		if ($hr->{aclreq}) {
 			$user ||= getCurrentUser();
 			print STDERR scalar(localtime) . " $$ cannot get user in getDaypass\n" if !$user;
-			next unless $user && $user->{acl}{ $hr->{aclreq} };
+			next unless $user && !$user->{is_anon}
+				&& $user->{acl}{ $hr->{aclreq} };
 		}
 		push @ads_available, $hr;
 	}
@@ -210,7 +212,10 @@ sub getGoodUntil {
 		$off_set
 		? $slashdb->sqlSelect("DATE_SUB(
 				CONCAT(
-					DATE( DATE_ADD( NOW(), INTERVAL $off_set SECOND ) ),
+					SUBSTRING(
+						DATE_ADD( NOW(), INTERVAL $off_set SECOND ),
+						1, 10
+					),
 					' 23:59:59'
 				),
 			INTERVAL $off_set SECOND)")

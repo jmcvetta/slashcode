@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.176 2005/10/11 19:15:08 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.177 2005/10/25 18:58:13 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1451,7 +1451,7 @@ sub prepareUser {
 	my @defaults = (
 		['mode', 'thread'], qw[
 		savechanges commentsort threshold
-		posttype noboxes light
+		posttype noboxes lowbandwidth simpledesign
 	]);
 
 	for my $param (@defaults) {
@@ -3190,4 +3190,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.176 2005/10/11 19:15:08 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.177 2005/10/25 18:58:13 tvroom Exp $

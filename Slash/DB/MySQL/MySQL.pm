@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.804 2005/10/20 19:53:10 pudge Exp $
+# $Id: MySQL.pm,v 1.805 2005/10/25 20:01:29 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.804 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.805 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -321,14 +321,21 @@ sub createComment {
 	$comment->{len} = length($comment_text);
 	$comment->{pointsorig} = $comment->{points} || 0;
 	$comment->{pointsmax}  = $comment->{points} || 0;
+
+	$comment->{sid} = $self->getStoidFromSidOrStoid($comment->{sid})
+		or return -1;
+
 	if ($comment->{pid}) {
-		# If we're being asked to parent this comment to another,
-		# verify that the other comment exists and is in this
-		# same discussion.
-		my $pid_sid = 0;
-		$pid_sid = $self->sqlSelect("sid", "comments",
-			"cid=" . $self->sqlQuote($comment->{pid}));
-		return -1 unless $pid_sid && $pid_sid == $comment->{sid};
+		$comment->{pid} = $self->getStoidFromSidOrStoid($comment->{pid});
+		if ($comment->{pid}) {
+			# If we're being asked to parent this comment to another,
+			# verify that the other comment exists and is in this
+			# same discussion.
+			my $pid_sid = 0;
+			$pid_sid = $self->sqlSelect("sid", "comments",
+				"cid=" . $self->sqlQuote($comment->{pid}));
+			return -1 unless $pid_sid && $pid_sid == $comment->{sid};
+		}
 	}
 
 #	$self->{_dbh}{AutoCommit} = 0;

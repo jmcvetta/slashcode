@@ -19,6 +19,7 @@ en_US
 __name__
 printCommentsNone
 __template__
+<a name="comments"></a>
 <div class="commentwrap">
 <div class="commentBox">
 [% IF title %]
@@ -74,4 +75,4 @@ We are not responsible for them in any way.
 __seclev__
 10000
 __version__
-$Id: printCommentsNone;misc;default,v 1.9 2005/08/17 17:57:14 tvroom Exp $
+$Id: printCommentsNone;misc;default,v 1.10 2005/10/25 18:41:17 tvroom Exp $

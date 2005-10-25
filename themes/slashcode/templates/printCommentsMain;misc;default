@@ -19,6 +19,7 @@ en_US
 __name__
 printCommentsMain
 __template__
+<a name="comments"></a>
 <div class="commentwrap">
 <div class="commentBox">
 [% IF title %]
@@ -104,4 +105,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.24 2005/08/25 14:20:43 tvroom Exp $
+$Id: printCommentsMain;misc;default,v 1.25 2005/10/25 18:41:17 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.129 2005/08/12 21:37:48 pudge Exp $
+# $Id: index.pl,v 1.130 2005/10/25 19:01:03 tvroom Exp $
 
 use strict;
 use Slash;
@@ -394,6 +394,8 @@ sub displayStandardBlocks {
 	}
 
 	for my $bid (@boxes) {
+		next if $user->{lowbandwidth}  && $constants->{lowbandwidth_bids_regex} eq "NONE";
+		next if $user->{lowbandwidth} && !($bid =~ $constants->{lowbandwidth_bids_regex} );
 		if ($bid eq 'mysite') {
 			$return .= portalsidebox(
 				getData('userboxhead'),

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.204 2005/10/18 20:00:21 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.205 2005/10/25 20:05:09 tvroom Exp $
 #
 
 #
@@ -351,6 +351,7 @@ CREATE TABLE css (
 	ctid TINYINT(4) NOT NULL DEFAULT '0',
 	ordernum int(11) DEFAULT '0',
 	ie_cond VARCHAR(16) DEFAULT '',
+	lowbandwidth ENUM('no','yes') DEFAULT 'no',
 	PRIMARY KEY  (csid),
 	KEY ctid (ctid),
 	KEY page_skin (page,skin),

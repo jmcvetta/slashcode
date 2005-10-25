@@ -13,7 +13,7 @@ en_US
 __name__
 printCommNoArchive
 __template__
-<a name="comments">
+<a name="comments"></a>
 <div class="commentwrap">
 <div class="commentBox">
 	[% IF discussion.is_future %]
@@ -61,4 +61,4 @@ This discussion was created by <a href="[% gSkin.rootdir %]/~[% d_nickname | fix
 __seclev__
 10000
 __version__
-$Id: printCommNoArchive;misc;default,v 1.17 2005/10/25 18:41:17 tvroom Exp $
+$Id: printCommNoArchive;misc;default,v 1.18 2005/10/25 20:01:45 pudge Exp $

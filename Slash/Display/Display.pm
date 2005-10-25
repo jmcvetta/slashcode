@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.40 2005/09/13 22:17:25 pudge Exp $
+# $Id: Display.pm,v 1.41 2005/10/25 18:59:11 tvroom Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -255,9 +255,6 @@ sub slashDisplayName {
 
 	if ($opt->{Skin} && $opt->{Skin} eq 'NONE') {
 		$user->{currentSkin} = 'default';
-	# light is a special case
-	} elsif ($user->{light}) {
-		$user->{currentSkin} = 'light';
 	} elsif ($opt->{Skin}) {
 		$user->{currentSkin} = $opt->{Skin};
 	}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.282 2005/09/29 18:59:47 pudge Exp $
+# $Id: users.pl,v 1.283 2005/10/25 18:52:56 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1863,6 +1863,8 @@ sub editHome {
 	$tzformat_select = createSelect('tzformat', $formats, $user_edit->{dfid}, 1);
 
 	my $l_check = $user_edit->{light}	? $constants->{markup_checked_attribute} : '';
+	my $lb_check = $user_edit->{lowbandwidth} ? $constants->{markup_checked_attribute} : '';
+	my $sd_check = $user_edit->{simpledesign} ? $constants->{markup_checked_attribute} : '';
 	my $i_check = $user_edit->{noicons}	? $constants->{markup_checked_attribute} : '';
 	my $w_check = $user_edit->{willing}	? $constants->{markup_checked_attribute} : '';
 
@@ -1876,6 +1878,8 @@ sub editHome {
 		l_check			=> $l_check,
 		i_check			=> $i_check,
 		w_check			=> $w_check,
+		lb_check		=> $lb_check,
+		sd_check		=> $sd_check,
 		tilde_ed		=> $tilde_ed,
 		note			=> $note,
 	});
@@ -2740,6 +2744,8 @@ sub saveHome {
 		maxstories	=> 30, # XXXSKIN fix this later
 		noboxes		=> ($form->{useslashboxes} ? 0 : 1),
 		light		=> ($form->{light} ? 1 : 0),
+		lowbandwidth	=> ($form->{lowbandwidth} ? 1 : 0),
+		simpledesign	=> ($form->{simpledesign} ? 1 : 0),
 		noicons		=> ($form->{noicons} ? 1 : 0),
 		willing		=> ($form->{willing} ? 1 : 0),
 	};

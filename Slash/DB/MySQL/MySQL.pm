@@ -1,11 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-<<<<<<< MySQL.pm
-# $Id: MySQL.pm,v 1.806 2005/10/25 20:03:59 tvroom Exp $
-=======
-# $Id: MySQL.pm,v 1.806 2005/10/25 20:03:59 tvroom Exp $
->>>>>>> 1.805
+# $Id: MySQL.pm,v 1.807 2005/10/25 20:06:30 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -23,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.806 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.807 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 

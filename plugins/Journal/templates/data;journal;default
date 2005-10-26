@@ -22,14 +22,14 @@ __template__
 	[% constants.sitename %] Journal System
 
 [% CASE 'userhead' %]
-[% IF user.light %]
+[% IF user.lowbandwidth %]
 	<a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/journal/">Journal</a> of <a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname | strip_literal %]</a> ([% uid %])
 [% ELSE %]
 	<a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/journal/">Journal</a> of <a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname | strip_literal %]</a> ([% uid %])  [% PROCESS zoo_icons person=uid implied="" %]
 [% END %]
 
 [% CASE 'friendhead' %]
-[% IF user.light %]
+[% IF user.lowbandwidth %]
 	<a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname | strip_literal %]</a>'s <a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/friends/">Friends</a>
 [% ELSE %]
 	<a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname | strip_literal %]</a>'s <a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/friends/">Friends</a>
@@ -79,4 +79,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;journal;default,v 1.16 2005/10/11 20:50:57 pudge Exp $
+$Id: data;journal;default,v 1.17 2005/10/26 04:27:37 tvroom Exp $

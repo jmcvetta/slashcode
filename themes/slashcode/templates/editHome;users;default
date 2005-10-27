@@ -86,9 +86,10 @@ __template__
 
 
 <!-- Possible removal due to CSS styling availabilty -->
-
-		Light Mode has been replaced by 2 toggle-able settings.  These are 'lowbandwidth' and 'simpledesign'.  
-		You can use them individually, or together. 
+		<div class="note">
+		Light Mode has been replaced by 2 toggle-able settings.  These are 'lowbandwidth' and 'simpledesign'. 
+		You can use them individually, or together.
+		</div>
 		<label>
 			<input type="checkbox" name="simpledesign"[% sd_check %]>Simple Design
 		</label>
@@ -137,4 +138,4 @@ of the UI.
 __seclev__
 500
 __version__
-$Id: editHome;users;default,v 1.23 2005/10/26 04:34:02 tvroom Exp $
+$Id: editHome;users;default,v 1.24 2005/10/27 15:17:06 tvroom Exp $

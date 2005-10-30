@@ -25,9 +25,9 @@ __template__
 [% END %]
 [% css = Slash.db.getCSS() %]
 [%- FOREACH file = css -%]
-[% IF file.ie_cond %]<!--[if [% file.ie_cond %]]>[% END %]<link rel="[% file.rel %]" type="[% file.type %]" media="[% file.media %]" href="[% gSkin.rootdir %]/[% file.file %]" [% IF file.title %]title="[% file.title %]"[% END %] >[% IF file.ie_cond %]<![endif]-->[% END %]
+[% IF file.ie_cond %]<!--[if [% file.ie_cond %]]>[% END %]<link rel="[% file.rel %]" type="[% file.type %]" media="[% file.media %]" href="[% IF constants.css_use_imagedir %][% gSkin.rootdir %][% ELSE %][% constants.imagedir %][% END %]/[% file.file %]" [% IF file.title %]title="[% file.title %]"[% END %] >[% IF file.ie_cond %]<![endif]-->[% END %]
 [% END -%]
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.9 2005/10/18 19:19:38 tvroom Exp $
+$Id: html-header;misc;default,v 1.10 2005/10/30 20:47:30 tvroom Exp $

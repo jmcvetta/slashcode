@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.870 2005/10/27 03:13:41 pudge Exp $
+# $Id: upgrades,v 1.871 2005/10/30 20:51:13 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3419,3 +3419,4 @@ UPDATE vars SET value = 'T_2_5_0_86' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 
+INSERT INTO vars (name, value, description) VALUES ('css_use_imagedir','0','Place .css files in imagedir instead for your rootdir?  You may want to utilize this if you are using boa or another lightweight webserver to serve images');

@@ -3,7 +3,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: convertDBto200406,v 1.29 2005/03/11 19:58:48 pudge Exp $
+# $Id: convertDBto200406,v 1.30 2005/10/31 22:35:18 jamiemccarthy Exp $
 
 # This script converts a Slash DB from old-style (pre-June 2004)
 # to new-style (June 2004), commonly called the "section-topics"
@@ -59,7 +59,7 @@ use vars qw( $slashdb
         $old_section_topics_ar
         %topics %skins %nexuses %subsections );
 
-(my $VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 $Data::Dumper::Sortkeys = 1;
 
@@ -127,7 +127,7 @@ print <<EOT;
 
 DROP TABLE IF EXISTS topics_new;
 CREATE TABLE topics_new (
-        tid SMALLINT UNSIGNED NOT NULL DEFAULT 0 AUTO_INCREMENT,
+        tid SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
         keyword VARCHAR(20) NOT NULL,
         textname VARCHAR(80) NOT NULL,
         series ENUM('no', 'yes') DEFAULT 'no' NOT NULL,
@@ -216,7 +216,7 @@ EOT
 print <<EOT;
 DROP TABLE IF EXISTS skins_new;
 CREATE TABLE skins_new (
-        skid SMALLINT UNSIGNED NOT NULL DEFAULT 0 AUTO_INCREMENT,
+        skid SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
         nexus SMALLINT UNSIGNED NOT NULL,
         artcount_min MEDIUMINT UNSIGNED DEFAULT '10' NOT NULL,
         artcount_max MEDIUMINT UNSIGNED DEFAULT '30' NOT NULL,

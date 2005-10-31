@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.232 2005/09/26 16:55:24 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.233 2005/10/31 22:34:05 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -886,8 +886,12 @@ sub previewForm {
 			? 1 : 0;
 	}
 
+	#####
+	# Set the user mode temporarily to 'archive' for purposes of
+	# displaying this comment.
 	my $tm = $user->{mode};
 	$user->{mode} = 'archive';
+
 	my $previewForm;
 	if ($form->{newdiscussion} && $user->{seclev} < $constants->{discussion_create_seclev}) { 
 		$previewForm = slashDisplay('newdiscussion', {
@@ -899,7 +903,9 @@ sub previewForm {
 			preview => $preview,
 		}, 1);
 	}
+
 	$user->{mode} = $tm;
+	#####
 
 	return $previewForm;
 }

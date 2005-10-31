@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.205 2005/10/25 20:05:09 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.206 2005/10/31 21:59:37 jamiemccarthy Exp $
 #
 
 #
@@ -1392,8 +1392,8 @@ CREATE TABLE vars (
 	PRIMARY KEY (name)
 ) TYPE=InnoDB;
 
-ALTER TABLE backup_blocks ADD FOREIGN KEY (bid) REFERENCES blocks(bid);
-ALTER TABLE comment_text ADD FOREIGN KEY (cid) REFERENCES comments(cid);
+#ALTER TABLE backup_blocks ADD FOREIGN KEY (bid) REFERENCES blocks(bid);
+#ALTER TABLE comment_text ADD FOREIGN KEY (cid) REFERENCES comments(cid);
 #ALTER TABLE discussions ADD FOREIGN KEY (topic) REFERENCES topics(tid);
 #ALTER TABLE metamodlog ADD FOREIGN KEY (mmid) REFERENCES moderatorlog(id);
 # This doesn't work, since discussion may be 0.

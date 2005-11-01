@@ -1,10 +1,10 @@
-# $Id: PLUGIN,v 1.4 2005/07/27 22:54:12 pudge Exp $
+# $Id: PLUGIN,v 1.5 2005/11/01 19:46:13 tvroom Exp $
 name=PollBooth
 description="PollBooth"
 mysql_schema=mysql_schema
 mysql_dump=mysql_dump
 htdoc=pollBooth.pl
-htdoc=polls.css
+css=polls.css
 template=templates/data;pollBooth;default
 template=templates/editpoll;pollBooth;default
 template=templates/listpolls;pollBooth;default

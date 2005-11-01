@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.97 2005/10/31 23:24:39 jamiemccarthy Exp $
+# $Id: THEME,v 1.98 2005/11/01 19:41:44 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -107,14 +107,14 @@ htdoc=htdocs/ok.txt
 htdoc=htdocs/robots.txt
 htdoc=htdocs/topics.pl
 htdoc=htdocs/users.pl
-htdoc=htdocs/admin.css
-htdoc=htdocs/base.css
-htdoc=htdocs/comments.css
-htdoc=htdocs/handheld.css
-htdoc=htdocs/print.css
-htdoc=htdocs/slashcode.css
-htdoc=htdocs/slashcode_lite.css
-htdoc=htdocs/slashcode_low_bw.css
+css=htdocs/admin.css
+cssc=htdocs/base.css
+css=htdocs/comments.css
+css=htdocs/handheld.css
+css=htdocs/print.css
+css=htdocs/slashcode.css
+css=htdocs/slashcode_lite.css
+css=htdocs/slashcode_low_bw.css
 mysql_dump=sql/mysql/datadump.sql
 mysql_prep=sql/mysql/prep.sql
 pg_dump=sql/postgresql/datadump.sql

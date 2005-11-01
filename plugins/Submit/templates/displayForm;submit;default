@@ -78,9 +78,7 @@ __template__
 			<legend>
 				Story Submission Form
 			</legend>
-		[% IF form.formkey %]
-			<input type="hidden" name="formkey" value="[% form.formkey %]">
-		[% END %]
+		[% PROCESS reskey_tag %]
 		[%# username is the only of from, email, subj that needs to be filtered in %]
 		[%# the tag attribute; the others already have been in submit.pl.          %]
 			[% PROCESS formLabel value => "Your Name" %]
@@ -152,4 +150,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: displayForm;submit;default,v 1.34 2005/09/20 16:25:07 jamiemccarthy Exp $
+$Id: displayForm;submit;default,v 1.35 2005/11/01 21:21:29 pudge Exp $

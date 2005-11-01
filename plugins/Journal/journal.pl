@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.109 2005/11/01 20:30:48 jamiemccarthy Exp $
+# $Id: journal.pl,v 1.110 2005/11/01 21:21:29 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -999,8 +999,8 @@ sub get_entry {
 	my($class, $id) = @_;
 
 	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
+	my $rkey = $reskey->key('journal-soap-get');
+	$rkey->createuse or return;
 
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
@@ -1026,8 +1026,8 @@ sub get_entries {
 	my($class, $uid, $num) = @_;
 
 	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
+	my $rkey = $reskey->key('journal-soap-get');
+	$rkey->createuse or return;
 
 	my $journal   = getObject('Slash::Journal');
 	my $constants = getCurrentStatic();
@@ -1063,8 +1063,8 @@ sub get_uid_from_nickname {
 	my($self, $nick) = @_;
 
 	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('journal-soap');
-	$rkey->create or return;
+	my $rkey = $reskey->key('journal-soap-get');
+	$rkey->createuse or return;
 
 	return getCurrentDB()->getUserUID($nick);
 }
@@ -1092,7 +1092,15 @@ sub _save_params {
 		return;
 	}
 
-	$form{journal_discuss} = 'enabled' if $form{journal_discuss} == 1;
+	if ($form{journal_discuss}) {
+		my $user = getCurrentUser();
+		$form{journal_discuss} = $user->{journal_discuss} eq 'disabled'
+			? 'enabled'
+			: $user->{journal_discuss};
+	} elsif (defined $form{journal_discuss}) {
+		$form{journal_discuss} = 'disabled';
+	}
+
 	$form{tid} =~ s/\D+//g;
 
 	return \%form;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.39 2005/11/01 21:28:00 jamiemccarthy Exp $
+# $Id: Journal.pm,v 1.40 2005/11/01 23:33:46 jamiemccarthy Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -67,8 +67,8 @@ sub getsByUid {
 sub getsByUids {
 	my($self, $uids, $start, $limit, $options) = @_;
 	return unless @$uids;
+	my $t_o = $options->{titles_only};
 	my $uids_list = join(",", @$uids);
-	my $answer;
 	my $order = "ORDER BY journals.date DESC";
 	$order .= " LIMIT $start, $limit" if $limit;
 
@@ -87,9 +87,10 @@ sub getsByUids {
 		'journals',
 		"uid IN ($uids_list)",
 		$order);
-
+	return unless $journals_hr;
+	
 	# Second, pull nickname from users for the uids identified.
-	my @uids_found = sort keys %{( map { ($_, 1) } values %$journals_hr )};
+	my @uids_found = sort keys %{ { map { ($_, 1) } values %$journals_hr } };
 	my $uids_found_list = join(',', @uids_found);
 	my $uid_nick_hr = $self->sqlSelectAllKeyValue(
 		'uid, nickname',
@@ -106,7 +107,6 @@ sub getsByUids {
 	# That should be fixed someday.
 	my @journal_ids_found = sort keys %$journals_hr;
 	my $journal_ids_found_list = join(',', @journal_ids_found);
-	my $t_o = $options->{titles_only};
 	my $columns =	$t_o	? 'id, description'
 				: 'date, article, description, journals.id,
 				   posttype, tid, discussion, journals.uid';

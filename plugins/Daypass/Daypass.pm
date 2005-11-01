@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.11 2005/10/26 01:03:35 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.12 2005/11/01 13:49:18 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -12,7 +12,7 @@ use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -219,7 +219,7 @@ sub getGoodUntil {
 					' 23:59:59'
 				),
 			INTERVAL $off_set SECOND)")
-		: $slashdb->sqlSelect("CONCAT(DATE(NOW()), ' 23:59:59')");
+		: $slashdb->sqlSelect("CONCAT(SUBSTRING(NOW(), 1, 10), ' 23:59:59')");
 	# If there was an error of some kind, note it and at least
 	# return a legal value.
 	if (!$gmt_end_of_tz_day) {

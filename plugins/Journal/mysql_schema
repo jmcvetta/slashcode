@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.11 2005/10/31 21:59:37 jamiemccarthy Exp $
+# $Id: mysql_schema,v 1.12 2005/11/01 21:28:00 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS journals;
@@ -12,7 +12,7 @@ CREATE TABLE journals (
 	discussion MEDIUMINT  UNSIGNED,
 	tid SMALLINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
-	KEY uidarticle (uid),
+	KEY uid_date_id (uid,date,id),
 	KEY IDandUID (id,uid),
 	KEY tid (tid)
 );

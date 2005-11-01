@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.244 2005/10/31 22:34:05 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.245 2005/11/01 19:01:28 tvroom Exp $
 
 package Slash;
 
@@ -1305,7 +1305,7 @@ EOT
 	return _hard_dispComment(
 		$comment, $constants, $user, $form, $comment_shrunk,
 		$can_mod, $reasons
-	) if $constants->{comments_hardcoded} && !$user->{light};
+	) if $constants->{comments_hardcoded};
 
 	return slashDisplay('dispComment', {
 		%$comment,
@@ -1468,7 +1468,8 @@ sub displayStory {
 	if (	   !$constants->{no_prerendered_stories}
 		&& $constants->{cache_enabled}
 		&& $story->{rendered} && !$options->{force_cache_freshen}
-		&& !$form->{light} && !$user->{light}
+		&& !$form->{simpledesign} && !$user->{simpledesign}
+		&& !$form->{lowbandwidth} && !$user->{lowbandwidth}
 		&& (!$form->{ssi} || $form->{ssi} ne 'yes')
 		&& !$user->{noicons}
 		&& !$form->{issue}

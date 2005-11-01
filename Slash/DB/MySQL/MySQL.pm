@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.810 2005/10/31 22:34:05 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.811 2005/11/01 19:10:28 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.810 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.811 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10537,7 +10537,6 @@ sub getTemplateByName {
 		$page ||= 'misc';
 	}
 	unless ($skin) {
-#		$skin = "light" if $user->{light};
 		$skin ||= getCurrentSkin('name');
 		$skin ||= 'default';
 	}

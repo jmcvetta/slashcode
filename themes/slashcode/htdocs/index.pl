@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.130 2005/10/25 19:01:03 tvroom Exp $
+# $Id: index.pl,v 1.131 2005/11/01 20:30:48 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -439,12 +439,12 @@ sub displayStandardBlocks {
 				$getblocks
 			);
 		} elsif ($bid eq 'friends_journal' && $constants->{plugin}{Journal} && $constants->{plugin}{Zoo}) {
-			my $journal = getObject("Slash::Journal");
-			my $zoo = getObject("Slash::Zoo");
+			my $journal = getObject("Slash::Journal", { db_type => 'reader' });
+			my $zoo = getObject("Slash::Zoo", { db_type => 'reader' });
 			my $uids = $zoo->getFriendsUIDs($user->{uid});
 			my $articles = $journal->getsByUids($uids, 0,
-				$constants->{journal_default_display}, { titles_only => 1})
-				if ($uids && @$uids);
+				$constants->{journal_default_display}, { titles_only => 1 })
+				if $uids && @$uids;
 			# We only display if the person has friends with data
 			if ($articles && @$articles) {
 				$return .= portalsidebox(

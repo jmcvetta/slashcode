@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.177 2005/10/25 18:58:13 tvroom Exp $
+# $Id: Environment.pm,v 1.178 2005/11/02 18:02:03 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1261,7 +1261,11 @@ Value to be placed in the cookie.
 
 =item SESSION
 
-Flag to determine if the cookie should be a session cookie.
+Flag to determine if the cookie should be a session cookie.  "1" means
+yes, expire it after the current session.  "2" means to expire it
+according to the login_temp_minutes var.  And a value that looks like
+a session time, like "+24h", is passed along directly (in that case,
+expires 24 hours from now).
 
 =back
 
@@ -1316,6 +1320,8 @@ sub setCookie {
 	# lines, and uncomment the one right above "bake"
 	if (!$val) {
 		$cookie->expires('-1y');  # delete
+	} elsif ($session && $session =~ /^\+\d+[mhdy]$/) {
+		$cookie->expires($session);
 	} elsif ($session && $session > 1) {
 		my $minutes = $constants->{login_temp_minutes};
 		$cookie->expires("+${minutes}m");
@@ -3190,4 +3196,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.177 2005/10/25 18:58:13 tvroom Exp $
+$Id: Environment.pm,v 1.178 2005/11/02 18:02:03 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.812 2005/11/01 21:21:29 pudge Exp $
+# $Id: MySQL.pm,v 1.813 2005/11/02 19:18:56 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.812 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.813 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6595,8 +6595,10 @@ sub moderateComment {
 	# an unscrupulous user could have faked their submission with
 	# or without us presenting them the menu options.  So do the
 	# tests again.  XXX  These tests are basically copy-and-pasted
-	# from Slash.pm _can_mod, which should be rectified.
-	# use reskeys instead ...
+	# from Slash.pm _can_mod, which should be rectified. -Jamie
+	# use reskeys instead ... -Pudge
+	# One or more reskey checks will need to invoke can_mod or some
+	# subset of it. -Jamie
 	unless ($superAuthor) {
 		# Do not allow moderation of any comments with the same UID as the
 		# current user (duh!).

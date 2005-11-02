@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.123 2005/11/01 21:21:29 pudge Exp $
+# $Id: submit.pl,v 1.124 2005/11/02 21:32:01 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -39,7 +39,7 @@ sub main {
 	my $op = lc($form->{op} || 'default');
 	$op = 'default' if !$ops{$op} || !$ops{$op}[ALLOWED];
 
-	$form->{del}	||= 0;
+	$form->{del} ||= 0;
 
 	if (($form->{content_type} =~ $constants->{feed_types}) && ($op eq 'list') && $submiss_view) {
 		return if displayRSS($slashdb, $constants, $user, $form);

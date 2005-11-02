@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.877 2005/11/01 23:18:41 pudge Exp $
+# $Id: upgrades,v 1.878 2005/11/02 00:05:15 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3436,7 +3436,6 @@ INSERT INTO reskey_resources VALUES (7, 'journal-soap-get');
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::User',                101);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'use', 'Slash::ResKey::Checks::Post',                151);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::ACL',                 201);
-INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::PollBooth::ResKey',                   251);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::AnonNoPost',     301);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoPostAnon',     401);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoPost',         501);

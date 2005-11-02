@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: YASS.pm,v 1.18 2005/10/20 23:22:23 jamiemccarthy Exp $
+# $Id: YASS.pm,v 1.19 2005/11/02 15:06:44 jamiemccarthy Exp $
 
 package Slash::YASS;
 
@@ -14,7 +14,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -49,7 +49,7 @@ sub getSidsURLs {
 	# The duples are [sid,stoid] now; replace them in place with
 	# [sid,value].
 	for my $duple (@$sid_stoid_ar) {
-		$duple->[1] = $stoid_value_hr->{ $duple->[1] } || '';
+		$duple->[1] = $stoid_value_hr->{ $duple->[1] }{value} || '';
 	}
 	return $sid_stoid_ar;
 }

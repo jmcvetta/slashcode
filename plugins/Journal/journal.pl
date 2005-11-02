@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.112 2005/11/01 21:48:33 pudge Exp $
+# $Id: journal.pl,v 1.113 2005/11/02 21:33:56 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -343,7 +343,7 @@ sub displayArticleFriends {
 	# clean it up
 	my $start = fixint($form->{start}) || 0;
 	my $uids = $zoo->getFriendsUIDs($uid);
-	my $articles = $journal->getsByUids($uids, $start,
+	my $articles = $journal_reader->getsByUids($uids, $start,
 		$constants->{journal_default_display} + 1
 	);
 

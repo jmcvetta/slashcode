@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.40 2005/11/01 23:33:46 jamiemccarthy Exp $
+# $Id: Journal.pm,v 1.41 2005/11/03 14:21:55 jamiemccarthy Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -87,7 +87,7 @@ sub getsByUids {
 		'journals',
 		"uid IN ($uids_list)",
 		$order);
-	return unless $journals_hr;
+	return unless $journals_hr && %$journals_hr;
 	
 	# Second, pull nickname from users for the uids identified.
 	my @uids_found = sort keys %{ { map { ($_, 1) } values %$journals_hr } };

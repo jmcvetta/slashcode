@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.41 2005/11/03 14:21:55 jamiemccarthy Exp $
+# $Id: Journal.pm,v 1.42 2005/11/03 16:19:08 jamiemccarthy Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -70,7 +70,8 @@ sub getsByUids {
 	my $t_o = $options->{titles_only};
 	my $uids_list = join(",", @$uids);
 	my $order = "ORDER BY journals.date DESC";
-	$order .= " LIMIT $start, $limit" if $limit;
+	my $order_limit = $order;
+	$order_limit .= " LIMIT $start, $limit" if $limit;
 
 	# The list may be quite large, potentially hundreds or even
 	# thousands of users, forming a significant portion of all the
@@ -86,7 +87,7 @@ sub getsByUids {
 		'id, uid',
 		'journals',
 		"uid IN ($uids_list)",
-		$order);
+		$order_limit);
 	return unless $journals_hr && %$journals_hr;
 	
 	# Second, pull nickname from users for the uids identified.

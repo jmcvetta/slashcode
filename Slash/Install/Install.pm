@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.46 2005/11/01 19:36:33 tvroom Exp $
+# $Id: Install.pm,v 1.47 2005/11/03 19:41:48 tvroom Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -273,6 +273,7 @@ sub _install {
 	my $prefix_site = $self->getValue('site_install_directory');
 
 	my %stuff = ( # [relative directory, executable]
+		css		=> ["htdocs",			1],
 		htdoc		=> ["htdocs",			1],
 		htdoc_code	=> ["htdocs/code",		0],
 		htdoc_faq	=> ["htdocs/faq",		0],

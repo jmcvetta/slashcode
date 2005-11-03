@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.878 2005/11/02 00:05:15 pudge Exp $
+# $Id: upgrades,v 1.879 2005/11/03 17:10:43 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3414,8 +3414,6 @@ UPDATE vars SET value = 'T_2_5_0_86' WHERE name = 'cvs_tag_currentcode';
 
 # PUDGE LAST UPDATED HERE
 
-# SLASHDOT LAST UPDATED HERE
-
 # You should update all your THEME and PLUGIN files to use css= instead of htdoc= for .css files that are managed through the site's css table
 INSERT INTO vars (name, value, description) VALUES ('css_use_imagedir','0','Place .css files in imagedir instead for your rootdir?  You may want to utilize this if you are using boa or another lightweight webserver to serve images.  Run symlink-tool after switching var');
 
@@ -3469,4 +3467,6 @@ INSERT INTO reskey_vars VALUES (7, 'duration_max-failures',   1, 'how many failu
 UPDATE vars SET value = 'T_2_5_0_87' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+# SLASHDOT LAST UPDATED HERE
 

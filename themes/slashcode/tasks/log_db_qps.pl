@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: log_db_qps.pl,v 1.11 2005/10/04 19:34:01 jamiemccarthy Exp $
+# $Id: log_db_qps.pl,v 1.12 2005/11/07 20:10:41 jamiemccarthy Exp $
 
 use strict;
 use vars qw( %task $me );
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::Constants ':slashd';
 use Time::HiRes;
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '57 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -110,11 +110,11 @@ $task{$me}{code} = sub {
 	}
 	
 	foreach my $varname (keys %$save_vars) {
-		my $cur_val = $slashdb->getVar($varname, 'value', 1);
-		if (!defined $cur_val) {
-			$slashdb->createVar($varname, $save_vars->{$varname});
-		} else {
+		my $varname_exists = $slashdb->getVar($varname, 'name', 1);
+		if ($varname_exists) {
 			$slashdb->setVar($varname, $save_vars->{$varname});
+		} else {
+			$slashdb->createVar($varname, $save_vars->{$varname});
 		}
 	}
 

@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.99 2005/11/01 20:52:28 tvroom Exp $
+# $Id: THEME,v 1.100 2005/11/08 19:06:24 pudge Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -309,6 +309,7 @@ plugin=Messages
 plugin=PollBooth
 plugin=Print
 plugin=PubKey
+plugin=ResKey
 plugin=Search
 plugin=Submit
 plugin=Stats

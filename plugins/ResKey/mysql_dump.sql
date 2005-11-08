@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.10 2005/11/02 00:07:12 pudge Exp $
+# $Id: mysql_dump.sql,v 1.11 2005/11/08 18:15:02 pudge Exp $
 #
 
 ### Possible reskey_vars (default is undef/false unless specified):
@@ -166,6 +166,7 @@ INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Check
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::AnonNoPost',     301);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoPostAnon',     401);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoPost',         501);
+INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoSubmit',       551);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::Duration',            601);
 
 ### vars

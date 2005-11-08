@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.1 2005/10/21 18:22:56 pudge Exp $
+# $Id: ResKey.pm,v 1.2 2005/11/08 19:11:25 pudge Exp $
 
 package Slash::PollBooth::ResKey;
 
@@ -14,7 +14,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub doCheck {
 	my($self) = @_;
@@ -22,6 +22,10 @@ sub doCheck {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
+
+	if ($user->{is_anon} && !$constants->{allow_anon_poll_voting}) {
+		return(RESKEY_DEATH, ['anon', {}, 'pollBooth']);
+	}
 
 	my $qid = $self->opts->{qid};
 

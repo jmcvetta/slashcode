@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.70 2005/10/20 19:53:10 pudge Exp $
+# $Id: pollBooth.pl,v 1.71 2005/11/08 19:11:25 pudge Exp $
 
 use strict;
 use Slash;
@@ -420,9 +420,7 @@ sub vote {
 
 	my $question = $reader->getPollQuestion($qid, ['voters', 'question']);
 	my $notes = getData('display');
-	if (getCurrentUser('is_anon') && !getCurrentStatic('allow_anon_poll_voting')) {
-		$notes = getData('anon');
-	} elsif ($aid > 0) {
+	if ($aid > 0) {
 		my $poll_open = $reader->isPollOpen($qid);
 
 		if (!$poll_open) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: message_delivery.pl,v 1.18 2005/03/11 19:58:09 pudge Exp $
+# $Id: message_delivery.pl,v 1.19 2005/11/09 04:02:42 jamiemccarthy Exp $
 
 use strict;
 use File::Spec::Functions;
@@ -20,7 +20,8 @@ $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
 	my $messages = getObject('Slash::Messages');
-	unless ($messages) {
+	my $messages_reader = getObject('Slash::Messages', { db_type => 'reader' });
+	unless ($messages && $messages_reader) {
 		slashdLog("$me: could not instantiate Slash::Messages object");
 		return;
 	}
@@ -39,10 +40,10 @@ $task{$me}{code} = sub {
 
 	my $msgs;
 	if ($constants->{task_options}{all} || $last_deferred ne $now) {
-		$msgs = $messages->gets();  # do it all, baby
+		$msgs = $messages_reader->gets();  # do it all, baby
 		$slashdb->setVar('message_last_deferred', $now);
 	} else {
-		$msgs = $messages->gets($count, { 'send' => 'now' });
+		$msgs = $messages_reader->gets($count, { 'send' => 'now' });
 	}
 
 	# handle collective msgs
@@ -50,7 +51,7 @@ $task{$me}{code} = sub {
 	my $c = 0;
 	for my $msg (@$msgs) {
 		my $code = $msg->{code};
-		$codes{$code} ||= $messages->getMessageCode($code);
+		$codes{$code} ||= $messages_reader->getMessageCode($code);
 		if ($codes{$code}{'send'} eq 'collective') {
 			push @{ $collective{ $code }{ $msg->{user}{uid} } }, $msg;
 			$msgs->[$c] = undef;
@@ -59,12 +60,12 @@ $task{$me}{code} = sub {
 	}
 
 	for my $code (keys %collective) {
-		my $type = $messages->getDescription('messagecodes', $code);
+		my $type = $messages_reader->getDescription('messagecodes', $code);
 
 		for my $uid (keys %{$collective{ $code }}) {
 			my $coll = $collective{ $code }{ $uid };
 			my $msg  = $coll->[0];
-			my $mode = $messages->getMode($msg);
+			my $mode = $messages_reader->getMode($msg);
 			my $message;
 
 			# perhaps put these formatting things in templates?

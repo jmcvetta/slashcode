@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.224 2005/11/09 04:16:39 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.225 2005/11/09 21:20:49 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.224 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.225 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1095,7 +1095,7 @@ sub getSkinInfo {
 sub convert_tokens_to_points {
 	my($self, $n_wanted) = @_;
 
-	my $reader_db = getObject("Slash::DB", { db_type => 'reader' });
+	my $reader = getObject("Slash::DB", { db_type => 'reader' });
 
 	my $constants = getCurrentStatic();
 	my %granted = ( );
@@ -1103,7 +1103,7 @@ sub convert_tokens_to_points {
 	return unless $n_wanted;
 
 	# Sanity check.
-	my $n_users = $reader_db->countUsers();
+	my $n_users = $reader->countUsers();
 	$n_wanted = int($n_users/10) if $n_wanted > int($n_users)/10;
 
 	my $maxtokens = $constants->{maxtokens} || 60;
@@ -1114,7 +1114,7 @@ sub convert_tokens_to_points {
 	$tokentrade = $maxtokens if $tokentrade > $maxtokens; # sanity check
 	my $half_tokentrade = int($tokentrade/2); # another sanity check
 
-	my $uids = $reader_db->sqlSelectColArrayref(
+	my $uids = $reader->sqlSelectColArrayref(
 		"uid",
 		"users_info",
 		"tokens >= $half_tokentrade",

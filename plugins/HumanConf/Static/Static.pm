@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.32 2005/11/08 20:15:01 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.33 2005/11/09 03:21:37 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -604,7 +604,7 @@ sub drawImage {
 	);
 	$gdtextalign_right->set_font(@font_args);
 	my $cr_y = int(($lr_y+$ur_y)/2);
-	@bb = $gdtextalign_right->draw(int($lr_x), $cr_y, $angle);
+	@bb = $gdtextalign_right->draw(int($lr_x), $cr_y, $angle_right);
 #printf STDERR "gdta_right drew right-bottom $answer_right at lr_x=$lr_x,cr_y$cr_y angle=%.4f, bb: @bb\n", $angle;
 
 	return($answer, $image);

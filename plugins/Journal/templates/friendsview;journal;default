@@ -11,7 +11,7 @@ en_US
 __name__
 friendsview
 __template__
-[% FOREACH diatribe = article.article; topic = diatribe.topic %]
+[% FOREACH diatribe = articles; topic = diatribe.topic %]
 <div id="journalgeneric">
 	<div class="article">
 		<div class="title">
@@ -43,4 +43,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: friendsview;journal;default,v 1.9 2005/11/08 19:10:44 pudge Exp $
+$Id: friendsview;journal;default,v 1.10 2005/11/10 04:13:22 pudge Exp $

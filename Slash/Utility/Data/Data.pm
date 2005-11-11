@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.169 2005/10/11 20:35:15 pudge Exp $
+# $Id: Data.pm,v 1.170 2005/11/11 05:30:58 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.169 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.170 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2243,8 +2243,12 @@ Chomped string.
 =cut
 
 sub chopEntity {
-	my($text, $length) = @_;
-	$text = substr($text, 0, $length) if $length;
+	my($text, $length, $end) = @_;
+	if ($length && $end) {
+		$text = substr($text, -$length);
+	} elsif ($length) {
+		$text = substr($text, 0, $length);
+	}	
 	$text =~ s/&#?[a-zA-Z0-9]*$//;
 	$text =~ s/<[^>]*$//;
 	return $text;
@@ -3614,14 +3618,14 @@ sub ellipsify {
 	if (length($text) > $len) {
 		my $len2 = int(($len-7)/2);
 		if ($len2 >= 4) {
-			$text = substr($text, 0, $len2)
+			$text = chopEntity($text, $len2)
 				. ' ... '
-				. substr($text, -$len2);
+				. chopEntity($text, $len2, 1);
 		} elsif ($len >= 8) {
-			$text = substr($text, 0, $len-4)
+			$text = chopEntity($text, $len-4)
 				. ' ...';
 		} else {
-			$text = substr($text, 0, $len);
+			$text = chopEntity($text, $len);
 		}
 	}
 	return $text;
@@ -4080,4 +4084,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.169 2005/10/11 20:35:15 pudge Exp $
+$Id: Data.pm,v 1.170 2005/11/11 05:30:58 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.284 2005/10/25 18:54:44 tvroom Exp $
+# $Id: users.pl,v 1.285 2005/11/14 17:12:21 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1141,6 +1141,8 @@ sub showInfo {
 		# pollquestions.
 		my($discussion) = $reader->getDiscussion($comment->{sid});
 
+		# This is a pretty crappy way to determine what type of object
+		# the discussion is attached to. - Jamie
 		if ($discussion->{url} =~ /journal/i) {
 			$type = 'journal';
 		} elsif ($discussion->{url} =~ /poll/i) {
@@ -1148,6 +1150,7 @@ sub showInfo {
 		} else {
 			$type = 'story';
 		}
+
 		$comment->{points} += $user->{karma_bonus}
 			if $user->{karma_bonus} && $comment->{karma_bonus} eq 'yes';
 		$comment->{points} += $user->{subscriber_bonus}

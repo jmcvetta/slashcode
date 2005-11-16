@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.225 2005/11/09 21:20:49 pudge Exp $
+# $Id: MySQL.pm,v 1.226 2005/11/16 18:48:52 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.225 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.226 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -79,6 +79,7 @@ sub showQueryCount {
 sub getBackendStories {
 	my($self, $options) = @_;
 
+	my $limit = $options->{limit} || 10;
 	my $topic = $options->{topic} || getCurrentStatic('mainpage_nexus_tid');
 
 	my $select = "stories.stoid AS stoid, sid, title, stories.tid AS tid, primaryskid, time,
@@ -91,7 +92,7 @@ sub getBackendStories {
 		AND stories.stoid = story_topics_rendered.stoid
 		AND story_topics_rendered.tid=$topic";
 
-	my $other = "ORDER BY time DESC LIMIT 10";
+	my $other = "ORDER BY time DESC LIMIT $limit";
 
 	my $returnable = $self->sqlSelectAllHashrefArray($select, $from, $where, $other);
 

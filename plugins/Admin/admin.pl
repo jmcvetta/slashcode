@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.265 2005/09/29 02:41:54 pudge Exp $
+# $Id: admin.pl,v 1.266 2005/11/16 18:48:52 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -667,7 +667,7 @@ sub blockEdit {
 	$blockform_flag = 1 if ((! $form->{blockdelete_confirm} && $bid) || $form->{blocknew});
 
 	my $title = getTitle('blockEdit-title', { bid => $bid }, 1);
-	$blockref->{items} ||= $constants->{max_items};
+	$blockref->{items} ||= $constants->{rss_max_items_incoming};
 
 	slashDisplay('blockEdit', {
 		bid 			=> $bid,

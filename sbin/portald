@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.45 2005/09/22 20:11:32 pudge Exp $
+# $Id: portald,v 1.46 2005/11/16 18:48:52 jamiemccarthy Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -144,13 +144,13 @@ sub setblock {
 
 #################################################################
 sub getRDF {
-	#gets an RDF file, and formats it as a /. block
+	#gets an RDF file, and formats it as a Slash block
 
 	my($bid, $url, $other) = @_;
 	my $rss = new XML::RSS;
 	my $template_name = $slashdb->getBlock($bid, 'rss_template');
 	my $items ||= $slashdb->getBlock($bid, 'items');
-	$items ||= $constants->{max_items};
+	$items ||= $constants->{rss_max_items_incoming};
 	$template_name ||= $constants->{default_rss_template};
 
 	my $d;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.172 2005/11/23 15:31:34 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.173 2005/11/23 15:35:17 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -3812,7 +3812,7 @@ sub findWords {
 		# The default weight for each chunk of text is 1.
 		my $weight_factor = $args_hr->{$key}{weight} || 1;
 
-		my $text = $args_hr->{$key}{text};
+		my $text = $args_hr->{$key}{text} || '';
 
 		# Pull out linked URLs from $text and treat them specially.
 		# We only recognize the two most common types of link.
@@ -4086,4 +4086,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.172 2005/11/23 15:31:34 jamiemccarthy Exp $
+$Id: Data.pm,v 1.173 2005/11/23 15:35:17 jamiemccarthy Exp $

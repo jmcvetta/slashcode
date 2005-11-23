@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.813 2005/11/02 19:18:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.814 2005/11/23 15:17:29 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.813 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.814 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7331,7 +7331,7 @@ sub countUsers {
 	# from memcached.
 	my $count = undef;
 	my $mcd = $self->getMCD();
-	my $mcdkey = "$self->{_mcd_keyprefix}:uc";
+	my $mcdkey = "$self->{_mcd_keyprefix}:uc" if $mcd;
 	if (!$actual && $mcd) {
 		if ($count = $mcd->get($mcdkey)) {
 			return $count;
@@ -9326,6 +9326,7 @@ sub getSlashConf {
 				my $ord = 1;
 				foreach my $attr (@attrs){
 					my($at, $extra) = split /_/, $attr;
+					$extra ||= '';
 					$at = lc $at;
 					$tagname = lc $tagname;
 					$conf{$attrname}{$tagname}{$at}{ord} = $ord;

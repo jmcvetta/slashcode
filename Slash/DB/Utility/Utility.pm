@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.66 2005/11/09 20:20:00 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.67 2005/11/23 15:17:51 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -461,7 +461,7 @@ sub _querylog_writecache {
 
 sub _refCheck {
 	my($self, $where) = @_;
-	return unless $where =~ $query_ref_regex;
+	return if !$where || $where !~ $query_ref_regex;
 	my @c = caller(1);
 	my $w2 = $where; $w2 =~ s/\s+/ /g;
 	warn scalar(gmtime) . " query text contains ref string ($c[0] $c[1] $c[2] $c[3]): $w2\n";

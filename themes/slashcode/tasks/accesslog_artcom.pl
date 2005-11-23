@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: accesslog_artcom.pl,v 1.2 2004/10/26 20:24:50 jamiemccarthy Exp $
+# $Id: accesslog_artcom.pl,v 1.3 2005/11/23 15:28:26 jamiemccarthy Exp $
 # 
 # Transfer article and comments hits from accesslog into a new
 # table, accesslog_artcom, for fast processing by run_moderatord.
@@ -12,7 +12,7 @@ use Slash::DB;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 6;
@@ -48,8 +48,9 @@ $task{$me}{code} = sub {
 			slashdErrnote($err);
 			return $err;
 		}
+		$lastmaxid = 0;
 	}
-	my $newmaxid = $log_db->sqlSelect("MAX(id)", "accesslog");
+	my $newmaxid = $log_db->sqlSelect("MAX(id)", "accesslog") || $lastmaxid;
 	$lastmaxid = $newmaxid - $maxrows if $lastmaxid < $newmaxid - $maxrows;
 	my $youngest_eligible_uid = $slashdb->getYoungestEligibleModerator();
 	$log_db->fetchEligibleModerators_accesslog_insertnew($lastmaxid+1, $newmaxid,

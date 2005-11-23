@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.62 2005/10/11 02:26:21 tvroom Exp $
+# $Id: freshenup.pl,v 1.63 2005/11/23 15:28:26 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -387,8 +387,8 @@ $task{$me}{code} = sub {
 	for my $cleanme (@$dirty_skins) { $dirty_skins{$cleanme} = 1 }
 
 	$args = "$vu ssi=yes";
-	if ($dirty_skins{$constants->{mainpage_skid}} ne "" || $w ne "ok") {
-		my $mp_skid = $constants->{mainpage_skid};
+	my $mp_skid = $constants->{mainpage_skid} || 1;
+	if ($dirty_skins{$mp_skid} || $w ne "ok") {
 		my($base) = split(/\./, $gSkin->{index_handler});
 		$slashdb->setVar("writestatus", "ok");
 		prog2file(

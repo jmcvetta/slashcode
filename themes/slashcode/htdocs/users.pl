@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.285 2005/11/14 17:12:21 jamiemccarthy Exp $
+# $Id: users.pl,v 1.286 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1195,7 +1195,7 @@ sub showInfo {
 	@$commentstruct = sort {
 		$b->{disc_time} cmp $a->{disc_time} || $b->{sid} <=> $a->{sid}
 	} @$commentstruct
-		unless $user->{user_comment_sort_type} == 1;
+		unless $user->{user_comment_sort_type} && $user->{user_comment_sort_type} == 1;
 
 	my $cid_list = [ keys %$cids_seen ];
 	my $cids_to_mods = {};

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.68 2005/04/26 18:10:49 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.69 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -289,16 +289,18 @@ sub ConnectionIsSSL {
 
 	# That probably didn't work so let's get that data the hard way.
 	my $r = Apache->request;
+	return 0 if !$r;
 	my $subr = $r->lookup_uri($r->uri);
-	my $https_on = ($subr && $subr->subprocess_env('HTTPS') eq 'on')
-		? 1 : 0;
-	return 1 if $https_on;
+	if ($subr) {
+		my $se = $subr->subprocess_env('HTTPS');
+		return 1 if $se && $se eq 'on'; # https is on
+	}
 
-	return 1 
-		if $r->header_in('X-SSL-On') eq 'yes'; 
+	my $x = $r->header_in('X-SSL-On');
+	return 1 if $x && $x eq 'yes'; 
 
-	# Nope, it's not SSL.  We're out of ideas, if the above didn't
-	# work we must not be on SSL.
+	# We're out of ideas.  If the above didn't work we must not be
+	# on SSL.
 	return 0;
 }
 

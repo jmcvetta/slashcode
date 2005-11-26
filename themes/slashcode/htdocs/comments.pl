@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.233 2005/10/31 22:34:05 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.234 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -192,7 +192,7 @@ sub main {
 
 #print STDERR scalar(localtime) . " $$ A op=$op header_emitted=$header_emitted\n";
 
-	if ($user->{is_anon} && length($form->{upasswd}) > 1) {
+	if ($user->{is_anon} && $form->{upasswd} && length($form->{upasswd}) > 1) {
 		if (!$header_emitted) {
 			header($title, $section) or return;
 			$header_emitted = 1;
@@ -453,6 +453,7 @@ sub editComment {
 	# or even user (get those all automatically if not passed);
 	# but that might be dangerous, since $reply/$comment is a little
 	# bit specific -- pudge
+	# Yeah, this API needs to be... saner. Agreed. - Jamie
 	$reply->{points} = Slash::_get_points(
 		$reply, $user,
 		$constants->{comment_minscore}, $constants->{comment_maxscore},

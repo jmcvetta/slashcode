@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.33 2005/11/23 15:28:26 jamiemccarthy Exp $
+# $Id: open_backend.pl,v 1.34 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -60,12 +60,12 @@ sub _do_rss {
 	$type ||= 'rss';
 
 	my $file    = sitename2filename($name);
-	my $skin    = {};
+	my $skin    = { };
 	$skin       = $slashdb->getSkin($name) if $name;
 	my $link    = ($skin->{url}  || $gSkin->{absolutedir}) . '/';
 	my $title   = $constants->{sitename};
 	$title = "$title: $skin->{title}"
-		if $skin->{skid} != $constants->{mainpage_skid} && $skin->{title};
+		if $skin->{skid} && $skin->{skid} != $constants->{mainpage_skid} && $skin->{title};
 
 	my $ext = $version == 0.9 && $type eq 'rss' ? 'rdf' : $type;
 	my $filename = "$file.$ext";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.102 2005/10/20 19:53:10 pudge Exp $
+# $Id: Display.pm,v 1.103 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -476,7 +476,9 @@ sub linkStory {
 
 	my $story_ref = $reader->getStory($story_link->{stoid} || $story_link->{sid});
 
-	$story_link->{link} = $story_ref->{title} if $story_link->{'link'} eq '';
+	if (defined $story_link->{link} && $story_link->{link} eq '') {
+		$story_link->{link} = $story_ref->{title};
+	}
 	$title = $story_link->{link};
 	$story_link->{skin} ||= $story_link->{section} || $story_ref->{primaryskid};
 	if ($constants->{tids_in_urls}) {
@@ -822,7 +824,7 @@ The 'fancybox' template block.
 
 sub fancybox {
 	my($width, $title, $contents, $center, $return, $class, $id) = @_;
-	return unless $title && $contents;
+	return '' unless $title && $contents;
 
 	slashDisplay('fancybox', {
 		width		=> $width,
@@ -836,7 +838,7 @@ sub fancybox {
 
 sub sidebox {
 	my ($title, $contents, $name, $return) = @_;
-	return unless $title && $contents;
+	return '' unless $title && $contents;
 	slashDisplay('sidebox', {
 		contents	=> $contents,
 		title		=> $title,
@@ -900,7 +902,7 @@ The 'fancybox', 'portalboxtitle', and
 
 sub portalbox {
 	my($width, $title, $contents, $bid, $url, $getblocks, $class, $id) = @_;
-	return unless $title && $contents;
+	return '' unless $title && $contents;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	$getblocks ||= 'index';
@@ -925,7 +927,7 @@ sub portalbox {
 
 sub portalsidebox {
 	my($title, $contents, $bid, $url, $getblocks, $name) = @_;
-	return unless $title && $contents;
+	return '' unless $title && $contents;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	$getblocks ||= 'index';
@@ -1691,4 +1693,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.102 2005/10/20 19:53:10 pudge Exp $
+$Id: Display.pm,v 1.103 2005/11/26 16:41:51 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: topics.pl,v 1.34 2005/03/11 19:58:42 pudge Exp $
+# $Id: topics.pl,v 1.35 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -14,12 +14,15 @@ sub main {
 	my $form    = getCurrentForm();
 	my $user    = getCurrentUser();
 
-	my $data = ($form->{op} eq 'hierarchy') ? { admin => 1, adminmenu => 'info', tab_selected => 'hierarchy' } : {};
+	my $hierarchy_op = $form->{op} && $form->{op} eq 'hierarchy';
+	my $data = $hierarchy_op
+		? { admin => 1, adminmenu => 'info', tab_selected => 'hierarchy' }
+		: { };
 	header(getData('head'), $form->{section}, $data) or return;
 
 	print createMenu('topics');
 
-	if ($form->{op} eq 'hierarchy') {
+	if ($hierarchy_op) {
 		hierarchy();
 	} else {
 		listTopics();

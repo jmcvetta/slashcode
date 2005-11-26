@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.245 2005/11/01 19:01:28 tvroom Exp $
+# $Id: Slash.pm,v 1.246 2005/11/26 16:41:50 jamiemccarthy Exp $
 
 package Slash;
 
@@ -49,9 +49,6 @@ $VERSION   	= '2.005000';  # v2.5.0
 	getOlderStories getOlderDays moderatorCommentLog printComments
 );
 
-
-# this is the worst damned warning ever, so SHUT UP ALREADY!
-$SIG{__WARN__} = sub { warn @_ unless $_[0] =~ /Use of uninitialized value/ };
 
 # BENDER: Fry, of all the friends I've had ... you're the first.
 
@@ -309,7 +306,7 @@ sub _print_cchp {
 	my($discussion, $count, $hp_ar) = @_;
 	return unless $discussion->{stoid};
 	my $form = getCurrentForm();
-	return unless $form->{ssi} eq 'yes' && $form->{cchp};
+	return unless $form->{ssi} && $form->{ssi} eq 'yes' && $form->{cchp};
 	my $file_suffix = $form->{cchp};
 	$count ||= 0;
 	$hp_ar ||= [ ];
@@ -1581,6 +1578,7 @@ sub getOlderStories {
 	$form->{start} ||= 0;
 
 	my $artcount = $user->{is_anon} ? $section->{artcount} : $user->{maxstories};
+	$artcount ||= 0;
 
 	# The template won't display all of what's passed to it (by default
 	# only the first $section->{artcount}).  "start" is just an offset
@@ -1719,7 +1717,8 @@ sub getData {
 
 sub _dataCacheRefresh {
 	my($cache) = @_;
-	if ($cache->{getdata}{_last_refresh} < time - $cache->{getdata}{_expiration}) {
+	if (($cache->{getdata}{_last_refresh} || 0)
+		< time - ($cache->{getdata}{_expiration} || 0)) {
 		$cache->{getdata} = {};
 		$cache->{getdata}{_last_refresh} = time;
 		$cache->{getdata}{_expiration} = getCurrentStatic('block_expire');

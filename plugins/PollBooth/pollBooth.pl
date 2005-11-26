@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.71 2005/11/08 19:11:25 pudge Exp $
+# $Id: pollBooth.pl,v 1.72 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -28,8 +28,7 @@ sub main {
 		linkstory	=> \&link_story_to_poll
 	);
 
-	my $op = $form->{op};
-	$op = 'default' unless $ops{$form->{op}};
+	my $op = $form->{op} && $ops{$form->{op}} ? $form->{op} : 'default';
 
 	if (defined $form->{aid}) {
 		# Only allow a short range of answer ids here.

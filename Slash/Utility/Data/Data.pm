@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.173 2005/11/23 15:35:17 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.174 2005/11/26 16:41:51 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.174 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -4016,7 +4016,7 @@ sub countTotalVisibleKids {
 	my $last_updated_uid = 0;
 	$pid               ||= 0;
 
-	$total += $comments->{$pid}{visiblekids};
+	$total += $comments->{$pid}{visiblekids} || 0;
 
 	for my $cid (@{$comments->{$pid}{kids}}) {
 		my($num_kids, $date_test, $uid) =
@@ -4086,4 +4086,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.173 2005/11/23 15:35:17 jamiemccarthy Exp $
+$Id: Data.pm,v 1.174 2005/11/26 16:41:51 jamiemccarthy Exp $

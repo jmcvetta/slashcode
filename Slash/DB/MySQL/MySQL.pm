@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.815 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.816 2005/11/27 20:58:07 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.815 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.816 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6156,18 +6156,17 @@ sub getAL2Log {
 
 	# For convenience, pull the al2_type information for each row and
 	# attach that as well.
-	my $al2types = $self->getAL2Types;
 	for my $row (@$rows) {
 		my $al2tid = $row->{al2tid};
-		my $al2type = $self->getAL2TypeById($al2tid)->{name};
+		my $al2type = $self->getAL2TypeById($al2tid);
 		if (!$al2type) {
 			# Sanity checking.
 			warn "no al2type for '$al2tid'";
 			next;
 		}
-		$row->{bitpos} = $al2types->{$al2type}{bitpos};
-		$row->{name}   = $al2types->{$al2type}{name};
-		$row->{title}  = $al2types->{$al2type}{title};
+		$row->{bitpos} = $al2type->{bitpos};
+		$row->{name}   = $al2type->{name};
+		$row->{title}  = $al2type->{title};
 	}
 
 	return $rows;

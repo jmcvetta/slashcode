@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.113 2005/11/02 21:33:56 pudge Exp $
+# $Id: journal.pl,v 1.114 2005/11/27 21:01:40 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -95,7 +95,7 @@ sub main {
 	}
 
 	# hijack feeds
-	if ($form->{content_type} =~ $constants->{feed_types}) {
+	if ($form->{content_type} && $form->{content_type} =~ $constants->{feed_types}) {
 		if ($op eq 'top' && $top_ok) {
 			displayTopRSS($journal, $constants, $user, $form, $journal_reader, $gSkin);
 		} else {
@@ -285,11 +285,11 @@ sub displayTopRSS {
 	my($journal, $constants, $user, $form, $journal_reader, $gSkin) = @_;
 
 	my $journals;
-	my $type;
-	if ($form->{type} eq 'count' && $constants->{journal_top_posters}) {
+	my $type = '';
+	if ($form->{type} && $form->{type} eq 'count' && $constants->{journal_top_posters}) {
 		$type = 'count';
 		$journals = $journal_reader->top;
-	} elsif ($form->{type} eq 'friends' && $constants->{journal_top_friend}) {
+	} elsif ($form->{type} && $form->{type} eq 'friends' && $constants->{journal_top_friend}) {
 		$type = 'friends';
 		my $zoo   = getObject('Slash::Zoo');
 		$journals = $zoo->topFriends;

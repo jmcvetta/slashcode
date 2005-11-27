@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.132 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: index.pl,v 1.133 2005/11/27 20:58:36 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -44,13 +44,13 @@ my $start_time = Time::HiRes::time;
 		return;
 	}
 
-	my $rss = $constants->{rss_allow_index} && $form->{content_type} =~ $constants->{feed_types} && (
-		$user->{is_admin}
-			||
-		($constants->{rss_allow_index} > 1 && $user->{is_subscriber})
-			||
-		($constants->{rss_allow_index} > 2 && !$user->{is_anon})
-	);
+	my $rss = $constants->{rss_allow_index}
+		&& $form->{content_type} && $form->{content_type} =~ $constants->{feed_types}
+		&& (
+			   $user->{is_admin}
+			|| ($constants->{rss_allow_index} > 1 && $user->{is_subscriber})
+			|| ($constants->{rss_allow_index} > 2 && !$user->{is_anon})
+		);
 
 	# $form->{logtoken} is only allowed if using rss
 	if ($form->{logtoken} && !$rss) {

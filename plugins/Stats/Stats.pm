@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.173 2005/09/26 16:55:24 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.174 2005/11/27 20:59:14 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.174 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -1084,9 +1084,13 @@ sub getSummaryStats {
 	push @where, "skid = ".$self->sqlQuote($options->{skid}) if $options->{skid};
 
 	my $where = join ' AND ', @where;
-	my $table_suffix = $options->{table_suffix};
+	my $table_suffix = $options->{table_suffix} || '';
 	
-	$self->sqlSelectHashref("COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) as uids, COUNT(*) as pages, SUM(bytes) as bytes", "accesslog_temp$table_suffix", $where);
+	$self->sqlSelectHashref(
+		"COUNT(DISTINCT host_addr) AS cnt, COUNT(DISTINCT uid) AS uids,
+		 COUNT(*) AS pages, SUM(bytes) AS bytes",
+		"accesslog_temp$table_suffix",
+		$where);
 }
 
 
@@ -2059,4 +2063,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.173 2005/09/26 16:55:24 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.174 2005/11/27 20:59:14 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.32 2005/03/11 19:58:08 pudge Exp $
+# $Id: Messages.pm,v 1.33 2005/11/27 21:11:16 jamiemccarthy Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -968,6 +968,10 @@ always return a list of (code, description).
 
 sub getDescription {
 	my($self, $codetype, $key) = @_;
+	if (!defined($key) || !length($key)) {
+print STDERR "Message.pm getDescription called with codetype='$codetype' key='$key'\n";
+return;
+}
 
 	my $codes = $self->getDescriptions($codetype);
 
@@ -1094,4 +1098,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.32 2005/03/11 19:58:08 pudge Exp $
+$Id: Messages.pm,v 1.33 2005/11/27 21:11:16 jamiemccarthy Exp $

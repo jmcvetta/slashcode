@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.286 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: users.pl,v 1.287 2005/11/27 21:12:08 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -3024,7 +3024,7 @@ sub displayForm {
 
 	my($title, $title2, $msg1, $msg2) = ('', '', '', '');
 
-	if ($form->{op} eq 'userclose') {
+	if ($op eq 'userclose') {
 		$title = getMessage('userclose');
 
 	} elsif ($op eq 'displayForm') {

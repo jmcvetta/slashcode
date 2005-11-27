@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search.pl,v 1.95 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: search.pl,v 1.96 2005/11/27 21:01:06 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -55,7 +55,7 @@ sub main {
 	# search type isn't specified
 # I've caught gSkin being {} here, on a test box.  Not sure if that's a
 # bug or just a misconfiguration of mine. - Jamie 2005-11-26
-#use Data::Dumper; print STDERR "search.pl gSkin: " . Dumper($gSkin) if !$gSkin->{name};
+use Data::Dumper; print STDERR "search.pl gSkin: " . Dumper($gSkin) if !$gSkin->{name};
 	if ($gSkin->{name} eq 'polls' && !$form->{op}) {
 		$form->{op} = 'polls';
 		$form->{section} = '';

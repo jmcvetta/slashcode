@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.234 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.235 2005/11/28 22:45:30 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -22,7 +22,7 @@ sub main {
 	my $error_flag = 0;
 	my $postflag = $user->{state}{post};
 
-	my $op = lc($form->{op});
+	my $op = lc($form->{op}) || '';
 
 	my($formkey, $stories);
 
@@ -200,8 +200,11 @@ sub main {
 		print getError('login error');
 		$op = 'preview';
 	}
-	$op = 'default' if ( ($user->{seclev} < $ops->{$op}{seclev}) || ! $ops->{$op}{function});
-	$op = 'default' if (! $postflag && $ops->{$op}{post});
+	$op = 'default' if
+		   !$ops->{$op}
+		|| !$ops->{$op}{function}
+		|| $user->{seclev} < $ops->{$op}{seclev}
+		|| !$postflag && $ops->{$op}{post};
 
 	if ($future_err) {
 		if (!$header_emitted) {
@@ -495,7 +498,8 @@ sub editComment {
 		if $disc_skin && $disc_skin->{nexus};
 
 	my $gotmodwarning;
-	$gotmodwarning = 1 if (($error_message eq getError("moderations to be lost")) || $form->{gotmodwarning});
+	$gotmodwarning = 1 if $form->{gotmodwarning}
+		|| $error_message && $error_message eq getError("moderations to be lost");
 	slashDisplay('edit_comment', {
 		error_message 	=> $error_message,
 		label		=> $label,

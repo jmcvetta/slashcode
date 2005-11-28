@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.43 2005/11/28 19:45:32 tvroom Exp $
+# $Id: Journal.pm,v 1.44 2005/11/28 21:46:54 tvroom Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -446,8 +446,10 @@ sub createStoryFromJournal {
 	my $text = balanceTags(strip_mode($src_journal->{article}, $src_journal->{posttype}));
 	
 	my $skid = $options->{skid} || $constants->{journal2submit_skid} || $constants->{mainpage_skid};
-	
+
 	my %story = (
+		title		=> $src_journal->{description},
+		uid		=> $journal_user->{uid},
 		introtext	=> $text,
 		bodytext	=> '',
 		'time'		=> $slashdb->getTime(), 
@@ -469,14 +471,15 @@ sub createStoryFromJournal {
 	# 20/10 is for section-only, 40/30 is for mainpage
 	
 
-	my $skin = $slashdb->getSkin($story{skid});
+	my $skin = $slashdb->getSkin($skid);
 	my $skin_nexus = $skin->{nexus};
  	
 	# May need to change
-	$story{topics_chosen} = { $story{tid} => 10, $skin_nexus => 20 };
+	$story{topics_chosen} = { $src_journal->{tid} => 10, $skin_nexus => 20 };
+ 
  	
 	my $topiclist = $slashdb->getTopiclistFromChosen(
- 		{ skid => $story{skid} }
+ 		$story{topics_chosen}
 	);
 
 	my $admindb = getObject('Slash::Admin');

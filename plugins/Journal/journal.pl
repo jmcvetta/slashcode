@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.115 2005/11/28 19:44:04 tvroom Exp $
+# $Id: journal.pl,v 1.116 2005/11/28 22:21:48 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -554,7 +554,8 @@ sub doSaveArticle {
 		}
 	}
 
-	return (getData('submit_must_enable_comments'), 1) if $form->{submit} && $form->{journal_discuss} eq "disabled";
+	return(getData('submit_must_enable_comments'), 1)
+		if $form->{submit} && $form->{journal_discuss} eq "disabled";
 
 	unless ($rkey) {
 		my $reskey = getObject('Slash::ResKey');
@@ -570,7 +571,6 @@ sub doSaveArticle {
 		my %update;
 		my $article = $journal_reader->get($form->{id});
 
-
 		# note: comments_on is a special case where we are
 		# only turning on comments, not saving anything else
 		if ($constants->{journal_comments} && $form->{journal_discuss} ne 'disabled' && !$article->{discussion}) {
@@ -579,9 +579,9 @@ sub doSaveArticle {
 				$description = $article->{description};
 				$form->{tid} = $article->{tid};
 			}
-			
+
 			my $commentstatus = $form->{journal_discuss};
-			
+
 			my $did = $slashdb->createDiscussion({
 				title	=> $description,
 				topic	=> $form->{tid},
@@ -623,7 +623,7 @@ sub doSaveArticle {
 			});
 			$journal->set($id, { discussion => $did });
 		}
-		
+
 		slashHook('journal_save_success', { id => $id });
 
 		# create messages
@@ -821,6 +821,7 @@ sub listArticle {
 	_printHead('userhead',
 		{ nickname => $nickname, uid => $form->{uid} || $user->{uid} },
 		1) or return;
+
 	if (@$list) {
 		slashDisplay('journallist', {
 			default		=> $theme,
@@ -863,12 +864,12 @@ sub removeArticle {
 	my $rkey = $reskey->key('journal');
 
 	# XXX: don't bother printing reskey error?
-	
 	if ($rkey->use) {
 		for my $id (grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form) {
 			$journal->remove($id);
 		}
 	}
+
 	listArticle(@_);
 }
 
@@ -1022,10 +1023,12 @@ sub get_entry {
 	my $entry = $journal_reader->get($id);
 	return unless $entry->{id};
 
+	my $absolutedir = root2abs();
+
 	$entry->{nickname} = $journal_reader->getUser($entry->{uid}, 'nickname');
-	$entry->{url} = "$gSkin->{absolutedir}/~" . fixparam($entry->{nickname}) . "/journal/$entry->{id}";
+	$entry->{url} = "$absolutedir/~" . fixparam($entry->{nickname}) . "/journal/$entry->{id}";
 	$entry->{discussion_id} = delete $entry->{'discussion'};
-	$entry->{discussion_url} = "$gSkin->{absolutedir}/comments.pl?sid=$entry->{discussion_id}"
+	$entry->{discussion_url} = "$absolutedir/comments.pl?sid=$entry->{discussion_id}"
 		if $entry->{discussion_id};
 	$entry->{body} = delete $entry->{article};
 	$entry->{subject} = delete $entry->{description};
@@ -1053,12 +1056,14 @@ sub get_entries {
 
 	return unless $uid;
 
+	my $absolutedir = root2abs();
+
 	my $articles = $journal_reader->getsByUid($uid, 0, $num || 15);
 	my @items;
 	for my $article (@$articles) {
 		push @items, {
 			subject	=> $article->[2],
-			url	=> "$gSkin->{absolutedir}/~" . fixparam($nickname) . "/journal/$article->[3]",
+			url	=> "$absolutedir/~" . fixparam($nickname) . "/journal/$article->[3]",
 			id	=> $article->[3],
 		};
 	}

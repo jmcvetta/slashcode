@@ -73,12 +73,14 @@ __template__
 
 [% CASE 'journalfoot' %]
 	</div></div>
+
 [% CASE 'submit_must_enable_comments' %]
-	You must enable comments if you plan on allowing this journal to be used as a site submission
+	You must enable comments if you plan on allowing this journal to be
+	used as a site submission.
 
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: data;journal;default,v 1.18 2005/11/28 19:46:15 tvroom Exp $
+$Id: data;journal;default,v 1.19 2005/11/28 22:21:48 pudge Exp $

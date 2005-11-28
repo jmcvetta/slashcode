@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.246 2005/11/26 16:41:50 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.247 2005/11/28 22:21:48 pudge Exp $
 
 package Slash;
 
@@ -49,6 +49,9 @@ $VERSION   	= '2.005000';  # v2.5.0
 	getOlderStories getOlderDays moderatorCommentLog printComments
 );
 
+
+# this is the worst damned warning ever, so SHUT UP ALREADY!
+$SIG{__WARN__} = sub { warn @_ unless $_[0] =~ /Use of uninitialized value/ };
 
 # BENDER: Fry, of all the friends I've had ... you're the first.
 

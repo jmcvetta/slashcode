@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.816 2005/11/27 20:58:07 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.817 2005/11/28 19:52:09 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.816 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.817 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8877,6 +8877,7 @@ sub createStory {
 		my $comment_codes = $self->getDescriptions('commentcodes_extended');
 
 		my $discussion = {
+			uid		=> $story->{uid},
 			title		=> $story->{title},
 			primaryskid	=> $primaryskid,
 			topic		=> $tids->[0],

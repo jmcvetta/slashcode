@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.30 2005/09/02 19:24:34 pudge Exp $
+# $Id: RSS.pm,v 1.31 2005/11/30 05:57:26 jamiemccarthy Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -465,6 +465,7 @@ The fixed description.
 
 sub rss_item_description {
 	my($self, $desc) = @_;
+	$desc ||= '';
 
 	my $constants = getCurrentStatic();
 
@@ -533,4 +534,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.30 2005/09/02 19:24:34 pudge Exp $
+$Id: RSS.pm,v 1.31 2005/11/30 05:57:26 jamiemccarthy Exp $

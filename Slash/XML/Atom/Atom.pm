@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Atom.pm,v 1.3 2005/08/16 21:59:53 pudge Exp $
+# $Id: Atom.pm,v 1.4 2005/11/30 05:57:26 jamiemccarthy Exp $
 
 package Slash::XML::Atom;
 
@@ -33,7 +33,7 @@ use base 'Slash::XML';
 use base 'Slash::XML::RSS';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %syn_ok_fields = (
 	'updateBase' => '',
@@ -161,7 +161,7 @@ sub as_atom_1_0 {
 	my($val, $output);
 
 	# XML declaration
-	$output .= qq[<?xml version="1.0" encoding="$self->{encoding}"?>\n\n];
+	$output = qq[<?xml version="1.0" encoding="$self->{encoding}"?>\n\n];
 
 	# namespaces declaration
 	$output .= qq[<feed\n xmlns="http://www.w3.org/2005/Atom"\n];
@@ -350,4 +350,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: Atom.pm,v 1.3 2005/08/16 21:59:53 pudge Exp $
+$Id: Atom.pm,v 1.4 2005/11/30 05:57:26 jamiemccarthy Exp $

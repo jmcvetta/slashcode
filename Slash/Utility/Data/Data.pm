@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.175 2005/11/27 20:58:07 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.176 2005/11/30 00:15:05 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.175 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1836,6 +1836,7 @@ sub approveTag {
 			keys   %allowed;
 
 		my $tree = HTML::TreeBuilder->new; #_from_content("<$wholetag>");
+		$tree->attr_encoded(1);
 		$tree->implicit_tags(0);
 		$tree->parse("<$wholetag>");
 		$tree->eof;
@@ -4095,4 +4096,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.175 2005/11/27 20:58:07 jamiemccarthy Exp $
+$Id: Data.pm,v 1.176 2005/11/30 00:15:05 pudge Exp $

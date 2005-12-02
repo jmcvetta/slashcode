@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.46 2005/11/30 19:29:38 tvroom Exp $
+# $Id: Journal.pm,v 1.47 2005/12/02 18:58:20 tvroom Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -483,7 +483,11 @@ sub createStoryFromJournal {
 	my $skin_nexus = $skin->{nexus};
  	
 	# May need to change
-	$story{topics_chosen} = { $src_journal->{tid} => 10, $skin_nexus => 20 };
+	if ($options->{topics_chosen}) {
+		$story{topics_chosen} = $options->{topics_chosen};
+	} else {
+		$story{topics_chosen} = { $src_journal->{tid} => 10, $skin_nexus => 20 };
+	}
  
  	
 	my $topiclist = $slashdb->getTopiclistFromChosen(

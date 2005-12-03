@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.179 2005/11/10 04:32:27 pudge Exp $
+# $Id: Environment.pm,v 1.180 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2264,7 +2264,8 @@ No value is returned.
 
 sub writeLog {
 	return unless $ENV{GATEWAY_INTERFACE};
-	my $dat = join("\t", @_);
+	my @args = grep { defined $_ } @_;
+	my $dat = @args ? join("\t", @args) : '';
 
 	my $r = Apache->request;
 
@@ -3196,4 +3197,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.179 2005/11/10 04:32:27 pudge Exp $
+$Id: Environment.pm,v 1.180 2005/12/03 22:37:36 jamiemccarthy Exp $

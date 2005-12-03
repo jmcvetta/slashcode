@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.2 2005/11/08 19:11:25 pudge Exp $
+# $Id: ResKey.pm,v 1.3 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 package Slash::PollBooth::ResKey;
 
@@ -14,7 +14,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub doCheck {
 	my($self) = @_;
@@ -32,10 +32,12 @@ sub doCheck {
 	return(RESKEY_DEATH, ['no qid', {}, 'pollBooth']) unless $qid;
 
 	my $md5;
+	my $ra = $ENV{REMOTE_ADDR} || '';
 	if ($constants->{poll_fwdfor}) {
-		$md5 = md5_hex($ENV{REMOTE_ADDR} . $ENV{HTTP_X_FORWARDED_FOR});
+		my $xff = $ENV{HTTP_X_FORWARDED_FOR} || '';
+		$md5 = md5_hex("$ra$xff});
 	} else {
-		$md5 = md5_hex($ENV{REMOTE_ADDR});
+		$md5 = md5_hex($ra);
 	}
 	my $qid_quoted = $slashdb->sqlQuote($qid);
 

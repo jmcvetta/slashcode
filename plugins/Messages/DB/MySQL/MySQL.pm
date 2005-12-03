@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.29 2005/08/23 18:39:18 pudge Exp $
+# $Id: MySQL.pm,v 1.30 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -271,7 +271,7 @@ sub _gets {
 	my $table = $self->{_drop_table};
 	my $cols  = $self->{_drop_cols};
 
-	$count = 1 if $count =~ /\D/;
+	$count = 1 if $count && $count =~ /\D/;
 	my $other = "ORDER BY date ASC";
 	$other .= " LIMIT $count" if $count;
 

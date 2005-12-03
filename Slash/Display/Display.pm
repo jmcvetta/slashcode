@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.42 2005/11/24 05:13:43 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.43 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -197,7 +197,8 @@ sub slashDisplay {
 
 	# we only populate $err if !$ret ... still, if $err
 	# is false, then we assume everything is OK
-	my($err, $ret, $out);
+	my($err, $ret);
+	my $out = '';
 
 	{
 		local $SIG{__WARN__} = \&tempWarn;

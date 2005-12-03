@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_gse_min_stoid.pl,v 1.5 2005/03/11 19:58:47 pudge Exp $
+# $Id: set_gse_min_stoid.pl,v 1.6 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 # Does the most common getStoriesEssentials call, determines the
 # minimum stoid returned, and writes it to a var.
@@ -15,7 +15,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "59 10 * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -35,7 +35,7 @@ $task{$me}{code} = sub {
 	$limit_extra = $limit_extra * 3 + 100;
 
 	# Normally gSE will look this far in the future for stories.
-	my $future_secs = $constants->{subscribe_future_secs};
+	my $future_secs = $constants->{subscribe_future_secs} || 0;
 	# But again for a safety margin, we want more.
 	$future_secs = $future_secs * 3 + 86400;
 

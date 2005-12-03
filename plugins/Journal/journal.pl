@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.116 2005/11/28 22:21:48 pudge Exp $
+# $Id: journal.pl,v 1.117 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -475,10 +475,11 @@ sub displayArticle {
 	}
 
 	my $topics = $journal_reader->getTopics;
+	$date = 'initial_value_which_matches_nothing';
 	for my $article (@$articles) {
 		my($date_current) = timeCalc($article->[0], "%A %B %d, %Y");
 		if ($date ne $date_current) {
-			push @sorted_articles, $collection if ($date and (keys %$collection));
+			push @sorted_articles, $collection if $date && (keys %$collection);
 			$collection = {};
 			$date = $date_current;
 			$collection->{day} = $article->[0];

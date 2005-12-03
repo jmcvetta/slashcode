@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.124 2005/11/02 21:32:01 pudge Exp $
+# $Id: submit.pl,v 1.125 2005/12/03 22:37:36 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -41,7 +41,8 @@ sub main {
 
 	$form->{del} ||= 0;
 
-	if (($form->{content_type} =~ $constants->{feed_types}) && ($op eq 'list') && $submiss_view) {
+	if ($form->{content_type} && $form->{content_type} =~ $constants->{feed_types}
+		&& $op eq 'list' && $submiss_view) {
 		return if displayRSS($slashdb, $constants, $user, $form);
 	}
 
@@ -430,13 +431,13 @@ sub displayForm {
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
 
-	if (length($form->{story}) > $constants->{max_submission_size}) {
+	if ($form->{story} && length($form->{story}) > $constants->{max_submission_size}) {
 		titlebar('100%', getData('max_submissionsize_title'));
 		print getData('max_submissionsize_err', { size => $constants->{max_submission_size}});
 	}
 
 	my %keys_to_check = ( story => 1, subj => 1 );
-	if ($error_message ne '') {
+	if ($error_message && $error_message ne '') {
 		titlebar('100%', getData('filtererror', { err_message => $error_message}));
 		print getData('filtererror', { err_message => $error_message });
 	} else {
@@ -688,9 +689,9 @@ sub genChosenHashrefForTopics {
 	my $chosen_hr ={};
 	for my $tid (@$topics) {
 		$chosen_hr->{$tid} = 
-		$tid == $constants->{mainpage_tid}
-		? 30
-		: $constants->{topic_popup_defaultweight} || 10;
+			$tid == $constants->{mainpage_nexus_tid}
+				? 30
+				: $constants->{topic_popup_defaultweight} || 10;
 	}
 	return $chosen_hr;
 }

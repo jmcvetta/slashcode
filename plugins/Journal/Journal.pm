@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.47 2005/12/02 18:58:20 tvroom Exp $
+# $Id: Journal.pm,v 1.48 2005/12/03 00:41:38 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -220,6 +220,7 @@ sub remove {
 	}
 	$self->sqlDelete("journals_text", "id=$id");
 
+	# XXX UNLESS IS A STORY!
 	if ($journal->{discussion}) {
 		my $slashdb = getCurrentDB();
 		$slashdb->deleteDiscussion($journal->{discussion});
@@ -450,8 +451,8 @@ sub createStoryFromJournal {
 	my $journal_user = $slashdb->getUser($src_journal->{uid});
 
 	my $text = balanceTags(strip_mode($src_journal->{article}, $src_journal->{posttype}));
-	my ($intro, $body) = $self->splitJournalTextForStory($text);
-	
+	my($intro, $body) = $self->splitJournalTextForStory($text);
+
 	my $skid = $options->{skid} || $constants->{journal2submit_skid} || $constants->{mainpage_skid};
 
 	my %story = (
@@ -460,8 +461,7 @@ sub createStoryFromJournal {
 		introtext	=> $intro,
 		bodytext	=> $body,
 		'time'		=> $slashdb->getTime(), 
-		commentstatus	=> 'enabled',  # ?
-	#	discussion_id	=> $src_journal->{discussion}, # journal's discussion ID
+		commentstatus	=> 'enabled',
 		journal_id 	=> $src_journal->{id},
 		journal_disc	=> $src_journal->{discussion},
 		by		=> $journal_user->{nickname},
@@ -483,12 +483,8 @@ sub createStoryFromJournal {
 	my $skin_nexus = $skin->{nexus};
  	
 	# May need to change
-	if ($options->{topics_chosen}) {
-		$story{topics_chosen} = $options->{topics_chosen};
-	} else {
-		$story{topics_chosen} = { $src_journal->{tid} => 10, $skin_nexus => 20 };
-	}
- 
+	$story{topics_chosen} = $options->{topics_chosen}
+		|| { $src_journal->{tid} => 10, $skin_nexus => 20 }; 
  	
 	my $topiclist = $slashdb->getTopiclistFromChosen(
  		$story{topics_chosen}
@@ -508,18 +504,17 @@ sub createStoryFromJournal {
 }
 
 sub splitJournalTextForStory {
-	my ($self, $text) = @_;
-	my ($intro, $body) = split (/<br>|<\/p>/i, $text, 2);
+	my($self, $text) = @_;
+	my($intro, $body) = split(/<br>|<\/p>/i, $text, 2);
 
-	$intro =~ s/^$Slash::Utility::Data::WS_RE+//io;
-	$intro =~ s/$Slash::Utility::Data::WS_RE+$//io;
-	
-	$body =~ s/^$Slash::Utility::Data::WS_RE+//io;
-	$body =~ s/$Slash::Utility::Data::WS_RE+$//io;
+	for ($intro, $body) {
+		s/^$Slash::Utility::Data::WS_RE+//io;
+		s/$Slash::Utility::Data::WS_RE+$//io;
 
-	$intro = balanceTags($intro);
-	$body = balanceTags($body);
-	return ($intro, $body);
+		$_ = balanceTags($_);
+	}
+
+	return($intro, $body);
 }
 
 sub logJournalTransfer {

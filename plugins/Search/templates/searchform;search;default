@@ -109,11 +109,12 @@ Topics
 END %]</li>
 [%- i = i + 1;
     IF i == listcount.int || i == 0;
-       IF i == listcount.int && listex;
-          listext = listex = 1;
+       IF i == listcount.int && listex; # do one more line in this row
+          listex = 1;
           i = -1;
           NEXT;
        END;
+       i = 0;  # end this row
 %]</ul></td>
 <td valign="top">
 <ul>[% END; END # FOREACH %]</ul>
@@ -126,4 +127,4 @@ END %]</li>
 __seclev__
 100
 __version__
-$Id: searchform;search;default,v 1.30 2005/07/27 22:54:12 pudge Exp $
+$Id: searchform;search;default,v 1.31 2005/12/03 00:41:38 pudge Exp $

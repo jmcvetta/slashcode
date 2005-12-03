@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.820 2005/11/30 19:32:33 tvroom Exp $
+# $Id: MySQL.pm,v 1.821 2005/12/03 00:41:37 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.820 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.821 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8875,32 +8875,37 @@ sub createStory {
 			$rootdir = $storyskin->{rootdir};
 		}
 		my $comment_codes = $self->getDescriptions('commentcodes_extended');
-		
-		if (!$story->{discussion}) {
-			my $discussion = {
-				uid		=> $story->{uid},
-				title		=> $story->{title},
-				primaryskid	=> $primaryskid,
-				topic		=> $tids->[0],
-				# XXXSECTIONTOPICS pudge, check this, rootdir look right to you?
-				url		=> "$rootdir/article.pl?sid=$story->{sid}"
-							. ($tids->[0] && $constants->{tids_in_urls}
-							  ? "&tid=$tids->[0]" : ""),
-				stoid		=> $stoid,
-				sid		=> $story->{sid},
-				#XXXSECTIONTOPICS do something here
-				commentstatus	=> $comment_codes->{$commentstatus}
-						   ? $commentstatus
-						   : $constants->{defaultcommentstatus},
-				ts		=> $story->{'time'}
-			};
-			my $id = $self->createDiscussion($discussion);
+
+		my $discussion = {
+			uid		=> $story->{uid},
+			title		=> $story->{title},
+			primaryskid	=> $primaryskid,
+			topic		=> $tids->[0],
+			url		=> "$rootdir/article.pl?sid=$story->{sid}"
+						. ($tids->[0] && $constants->{tids_in_urls}
+						  ? "&tid=$tids->[0]" : ""),
+			stoid		=> $stoid,
+			sid		=> $story->{sid},
+			commentstatus	=> $comment_codes->{$commentstatus}
+					   ? $commentstatus
+					   : $constants->{defaultcommentstatus},
+			ts		=> $story->{'time'}
+		};
+
+		my $id;
+		if ($story->{discussion}) {
+			$id = $story->{discussion};
+			if (!$self->setDiscussion($id, $discussion)) {
+				$error = "Failed to set discussion for story: " . Dumper($discussion);
+			}
+		} else {
+			$id = $self->createDiscussion($discussion);
 			if (!$id) {
 				$error = "Failed to create discussion for story: " . Dumper($discussion);
 			}
-			if (!$error && !$self->setStory($stoid, { discussion => $id })) {
-				$error = "Failed to set discussion '$id' for story '$stoid'\n";
-			}
+		}
+		if (!$error && !$self->setStory($stoid, { discussion => $id })) {
+			$error = "Failed to set discussion '$id' for story '$stoid'\n";
 		}
 	}
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.63 2005/11/23 15:28:26 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.64 2005/12/04 05:45:31 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -467,7 +467,7 @@ sub _read_and_unlink_cchp_file {
 	my $constants = getCurrentStatic();
 	my($cc, $hp) = (undef, undef);
 	my $default_hp = join(",", ("0") x
-		($constants->{maxscore}-$constants->{minscore}+1));
+		($constants->{comment_maxscore}-$constants->{comment_minscore}+1));
 
 	# Now we extract what we need from the file we created
 	Time::HiRes::sleep(0.5); # let filesystem settle

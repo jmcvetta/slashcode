@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.13 2005/11/28 19:48:17 tvroom Exp $
+# $Id: mysql_schema,v 1.14 2005/12/05 21:42:02 tvroom Exp $
 #
 
 DROP TABLE IF EXISTS journals;
@@ -12,7 +12,7 @@ CREATE TABLE journals (
 	discussion MEDIUMINT  UNSIGNED,
 	tid SMALLINT UNSIGNED NOT NULL,
 	submit ENUM ("no","yes") DEFAULT "no",
-	last_update timetamp NOT NULL,
+	last_update timestamp NOT NULL,
 	PRIMARY KEY (id),
 	KEY uid_date_id (uid,date,id),
 	KEY IDandUID (id,uid),

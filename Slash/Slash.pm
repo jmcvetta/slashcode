@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.248 2005/11/28 22:53:23 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.249 2005/12/06 01:06:14 jamiemccarthy Exp $
 
 package Slash;
 
@@ -209,7 +209,7 @@ sub _get_points {
 		score_start => constrain_score($C->{pointsorig} + $C->{tweak_orig}),
 		moderations => constrain_score($C->{points} + $C->{tweak}) - constrain_score($C->{pointsorig} + $C->{tweak_orig}),
 	};
-	my $points = $hr->{score_start};
+	my $points = $hr->{score_start} || 0;
 
 	# User can setup to give points based on size.
 #	my $len = length($C->{comment});
@@ -289,7 +289,7 @@ sub _get_points {
 			$user->{subscriber_bonus};
 	}
 
-	for my $key (grep !/^score_/, keys %$hr) { $points += $hr->{$key} }
+	for my $key (grep !/^score_/, keys %$hr) { $points += $hr->{$key} || 0 }
 	$points = $max if $points > $max;
 	$points = $min if $points < $min;
 	$hr->{score_end} = $points;

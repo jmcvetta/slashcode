@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.177 2005/12/01 00:06:47 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.178 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2261,6 +2261,7 @@ sub chopEntity {
 
 sub url2html {
 	my($text) = @_;
+	return '' if !defined($text) || $text eq '';
 
 	my $scheme_regex = _get_scheme_regex();
 
@@ -2806,7 +2807,7 @@ print STDERR "_validateLists logic error, no entry for list '$list'\n" if !$insi
 		}
 
 		# now done with loop, so add rest of $in if there is any
-		$content =~ s|(\s+)?$|</$in>$1| if $in;
+		$content =~ s|(\s*)$|</$in>$1| if $in;
 
 		# we have nesting to deal with, so replace this part
 		# with a temporary token and cache the result in the hash
@@ -2984,12 +2985,9 @@ sub _slashlink_to_link {
 
 	# skin_id could be a name, a skid, or blank, or invalid.
 	# In any case, get its skin hashref and its name.
-	my $skin;
-	if ($skin_id) {
-		$skin = $reader->getSkin($skin_id);
-	} else {
-		$skin = $reader->getSkin($constants->{mainpage_skid});
-	}
+	my $skin = undef;
+	$skin = $reader->getSkin($skin_id) if $skin_id;
+	$skin ||= $reader->getSkin($constants->{mainpage_skid});
 	my $skin_name = $skin->{name};
 	my $skin_root = $skin->{rootdir};
 	if ($options && $options->{absolute}) {
@@ -3009,7 +3007,6 @@ sub _slashlink_to_link {
 		# Different behavior here, depending on whether we are
 		# outputting for a dynamic page, or a static one.
 		# This is the main reason for doing slashlinks at all!
-print STDERR "_slashlink_to_link skin_id=$skin_id sl='$sl' ssi='$ssi' skin_name='$skin_name' attr{sid}='$attr{sid}' skin_root='$skin_root'\n" if !$skin_name || !$attr{sid} || !$skin_root;
 		if ($ssi) {
 			$url .= qq{$skin_root/};
 			$url .= qq{$skin_name/$attr{sid}.shtml};
@@ -3724,6 +3721,7 @@ EOT
 # fix parameter input that should be integers
 sub fixint {
 	my($int) = @_;
+	return if !defined($int);
 	$int =~ s/^\+//;
 	$int =~ s/^(-?[\d.]+).*$/$1/s or return;
 	return $int;
@@ -4096,4 +4094,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.177 2005/12/01 00:06:47 jamiemccarthy Exp $
+$Id: Data.pm,v 1.178 2005/12/06 00:25:00 jamiemccarthy Exp $

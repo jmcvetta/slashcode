@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: zoo.pl,v 1.56 2005/10/05 02:26:03 pudge Exp $
+# $Id: zoo.pl,v 1.57 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Zoo;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $zoo		= getObject('Slash::Zoo');
@@ -52,7 +52,7 @@ sub main {
 	if ($r = Apache->request) {
 		return if $r->header_only;
 	}
-	footer() unless $form->{content_type} =~ $constants->{feed_types};
+	footer() unless $form->{content_type} && $form->{content_type} =~ $constants->{feed_types};
 }
 
 sub people {
@@ -109,7 +109,7 @@ sub people {
 	my $editable = ($uid == $user->{uid} ? 1 : 0);
 	my $people = $zoo->getRelationships($uid, $zoo_vars->{constant});
 
-	if ($form->{content_type} =~ $constants->{feed_types}) {
+	if ($form->{content_type} && $form->{content_type} =~ $constants->{feed_types}) {
 		_rss($people, $nick, $zoo_vars->{op});
 	} else {
 		my $implied;

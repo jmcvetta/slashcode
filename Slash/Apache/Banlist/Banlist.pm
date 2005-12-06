@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Banlist.pm,v 1.32 2005/10/11 20:34:25 pudge Exp $
+# $Id: Banlist.pm,v 1.33 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 # This handler is called in the fourth Apache phase, access control.
 
@@ -17,7 +17,7 @@ use Slash::XML;
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler {
 	my($r) = @_;
@@ -105,7 +105,7 @@ sub _check_rss_and_palm {
 			|
 		content_type=(rss|atom)
 	)}x;
-	my $feed_type = $1 || $2;
+	my $feed_type = $1 || $2 || 'rss';
 	$feed_type = 'rss' unless $feed_type eq 'atom';
 
 	# XXX Should we also check for content_type in POST?

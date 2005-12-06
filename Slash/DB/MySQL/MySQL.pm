@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.821 2005/12/03 00:41:37 pudge Exp $
+# $Id: MySQL.pm,v 1.822 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.821 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.822 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5550,7 +5550,7 @@ sub getNetIDPostingRestrictions {
 	my $constants = getCurrentStatic();
 	my $restrictions = { no_anon => 0, no_post => 0 };
 	if ($type eq "subnetid") {
-		my $subnet_karma_comments_needed = $constants->{subnet_comments_posts_needed};
+		my $subnet_karma_comments_needed = $constants->{subnet_comments_posts_needed} || 5;
 		my($subnet_karma, $subnet_post_cnt) = $self->getNetIDKarma("subnetid", $value);
 		my($sub_anon_max, $sub_anon_min, $sub_all_max, $sub_all_min ) = @{$constants->{subnet_karma_post_limit_range}};
 		if ($subnet_post_cnt >= $subnet_karma_comments_needed) {
@@ -8082,6 +8082,10 @@ sub getStoriesEssentials {
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
+	if (!$gSkin->{skid}) {
+		# XXX Throw a warning here?  Might not be a bad idea.
+		$gSkin = $self->getSkin($constants->{mainpage_skid});
+	}
 
 	my $mcd = $self->getMCD();
 	my $min_stoid = $constants->{gse_min_stoid} || 0;

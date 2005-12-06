@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.287 2005/11/27 21:12:08 jamiemccarthy Exp $
+# $Id: users.pl,v 1.288 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1143,7 +1143,11 @@ sub showInfo {
 
 		# This is a pretty crappy way to determine what type of object
 		# the discussion is attached to. - Jamie
-		if ($discussion->{url} =~ /journal/i) {
+		if (!$discussion || !$discussion->{url}) {
+			# A comment with no accompanying discussion;
+			# basically we pretend it doesn't exist.
+			next;
+		} elsif ($discussion->{url} =~ /journal/i) {
 			$type = 'journal';
 		} elsif ($discussion->{url} =~ /poll/i) {
 			$type = 'poll';
@@ -1191,6 +1195,7 @@ sub showInfo {
 		}
 		push @$commentstruct, $data;
 	}
+	if (grep { !defined($_->{disc_time}) || !defined($_->{sid}) } @$commentstruct) { use Data::Dumper; print STDERR "showInfo undef in commentstruct for id=$id: " . Dumper($commentstruct) }
 	# Sort so the chosen group of comments is sorted by discussion
 	@$commentstruct = sort {
 		$b->{disc_time} cmp $a->{disc_time} || $b->{sid} <=> $a->{sid}

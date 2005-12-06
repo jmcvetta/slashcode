@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Anchor.pm,v 1.87 2005/11/01 19:02:00 tvroom Exp $
+# $Id: Anchor.pm,v 1.88 2005/12/06 00:25:00 jamiemccarthy Exp $
 
 package Slash::Utility::Anchor;
 
@@ -36,7 +36,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	http_send
 	header
@@ -633,7 +633,7 @@ sub getAd {
 	# sometimes, when this is called from shtml, the section is not
 	# in $user like we'd like it to be. This attempts to remedy this.
 	# 					--Pater
-	$user->{currentSection} = $constants->{static_section} if $user->{currentSection} eq '';
+	$user->{currentSection} = $constants->{static_section} if !defined($user->{currentSection}) || $user->{currentSection} eq '';
 
 	unless ($ENV{SCRIPT_NAME}) {
 		# When run from a slashd task (or from the command line in
@@ -747,4 +747,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Anchor.pm,v 1.87 2005/11/01 19:02:00 tvroom Exp $
+$Id: Anchor.pm,v 1.88 2005/12/06 00:25:00 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.67 2005/07/27 22:54:16 pudge Exp $
+# $Id: article.pl,v 1.68 2005/12/06 00:12:03 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -19,12 +19,12 @@ sub main {
 	my $story;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	my $sid = $form->{sid};
+	my $sid = $form->{sid} || '';
 	if ($sid =~ /^\d+$/) {
 		# Don't accept a stoid;  we need to be fed a sid to
 		# get to the right story.  This prevents crawling
 		# through article.pl?sid=1, article.pl?sid=2, etc.
-		$sid = "";
+		$sid = '';
 	}
 
 	$story = $reader->getStory($sid);

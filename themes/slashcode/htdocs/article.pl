@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.69 2005/12/06 20:09:23 tvroom Exp $
+# $Id: article.pl,v 1.70 2005/12/06 20:34:43 pudge Exp $
 
 use strict;
 use Slash;
@@ -27,7 +27,7 @@ sub main {
 		# through article.pl?sid=1, article.pl?sid=2, etc.
 		$sid = '';
 	}
-	
+
 	$story = $reader->getStory($sid);
 	if ($story && $story->{primaryskid} != $gSkin->{skid} && $form->{ssi} ne "yes") {
 		my $story_skin = $slashdb->getSkin($story->{primaryskid});

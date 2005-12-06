@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.175 2005/12/06 00:25:00 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.176 2005/12/06 01:03:16 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.175 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -1726,7 +1726,10 @@ sub getRelocatedLinksSummary {
 	my($self, $options) = @_;
 	$options ||= {};
 	my $limit = $options->{limit} ? "LIMIT $options->{limit}" : '';
-	return $self->sqlSelectAllHashrefArray("query_string, COUNT(query_string) AS cnt","accesslog_temp_errors","op='relocate-undef' AND dat = '/relocate.pl'",
+	return $self->sqlSelectAllHashrefArray(
+		'query_string, COUNT(query_string) AS cnt',
+		'accesslog_temp_errors',
+		"op='relocate-undef' AND dat = '/relocate.pl'",
 		"GROUP BY query_string ORDER BY cnt DESC $limit");
 }
 
@@ -2064,4 +2067,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.175 2005/12/06 00:25:00 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.176 2005/12/06 01:03:16 jamiemccarthy Exp $

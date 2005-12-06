@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-plugin,v 1.10 2005/03/11 19:58:02 pudge Exp $
+# $Id: install-plugin,v 1.11 2005/12/06 00:07:46 jamiemccarthy Exp $
 
 # This is the plugin install script.
 # -Brian (brian@tangent.org)
@@ -14,7 +14,7 @@ use Getopt::Std;
 use File::Copy;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
@@ -77,6 +77,10 @@ your Slash directories). [Y] ";
 	}
 
 	$install->installPlugins(\@answers, 0, $symlink);
+
+	print "\n\nInstalled.\n\n";
+	print "Please check to see if there are any README files for your site's\n";
+	print "plugins.  If so, now's a good time to read them.\n\n";
 }
 
 sub usage {

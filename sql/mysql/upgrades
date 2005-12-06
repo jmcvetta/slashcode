@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.889 2005/12/03 00:41:38 pudge Exp $
+# $Id: upgrades,v 1.890 2005/12/06 16:48:09 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3490,4 +3490,7 @@ UPDATE vars SET value = 'T_2_5_0_89' WHERE name = 'cvs_tag_currentcode';
 # SLASHDOT LAST UPDATED HERE
 
 # PUDGE LAST UPDATED HERE
+
+ALTER TABLE topic_parents CHANGE COLUMN min_weight min_weight FLOAT DEFAULT 1 NOT NULL;
+ALTER TABLE story_topics_chosen CHANGE COLUMN weight weight FLOAT DEFAULT 1 NOT NULL;
 

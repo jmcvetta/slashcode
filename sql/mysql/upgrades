@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.890 2005/12/06 16:48:09 jamiemccarthy Exp $
+# $Id: upgrades,v 1.891 2005/12/06 21:18:32 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3493,4 +3493,7 @@ UPDATE vars SET value = 'T_2_5_0_89' WHERE name = 'cvs_tag_currentcode';
 
 ALTER TABLE topic_parents CHANGE COLUMN min_weight min_weight FLOAT DEFAULT 1 NOT NULL;
 ALTER TABLE story_topics_chosen CHANGE COLUMN weight weight FLOAT DEFAULT 1 NOT NULL;
+
+INSERT INTO vars (name, value, description) VALUES ("topiclist_ignore_prefix", "", "prefix of any topic keywords that should not show up on topic list or hierarchy, leave blank if you don't want any ignored");
+INSERT INTO vars (name, value, description) VALUES ("search_ignore_skids", "", "list of skids that you want to not include in search results.  Delimit skids with |");
 

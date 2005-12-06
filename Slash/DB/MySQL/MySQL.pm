@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.822 2005/12/06 00:25:00 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.823 2005/12/06 01:02:16 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.822 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.823 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10686,7 +10686,7 @@ sub renderTopics {
 				next if exists $chosen_hr->{$pid};
 				# If we already had this node at
 				# this weight or higher, skip.
-				next if $rendered{$pid} >= $rendered{$tid};
+				next if ($rendered{$pid} || 0) >= ($rendered{$tid} || 0);
 				# If the connection from the child
 				# to parent topic demands a min weight
 				# higher than this weight, skip.
@@ -11244,6 +11244,7 @@ sub getSkins {
 		$rootdir_uri->scheme('');
 		$skins_ref->{$skid}{rootdir} = $rootdir_uri->as_string;
 		$skins_ref->{$skid}{rootdir} =~ s{/+$}{};
+#if (!$skins_ref->{$skid}{rootdir}) { print STDERR scalar(localtime) . " MySQL.pm No rootdir for skid $skid hostname $skins_ref->{$skid}{hostname}\n" }
 
 		# XXXSKIN - untested; can we reuse $rootdir_uri ?
 		if ($constants->{use_https_for_absolutedir_secure}) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.48 2005/05/17 17:52:37 jamiemccarthy Exp $
+# $Id: Zoo.pm,v 1.49 2005/12/06 01:02:16 jamiemccarthy Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -282,6 +282,7 @@ sub rebuildUser {
 			} elsif ($_->{type} eq 'foe') {
 				$people->{FOE()}{$_->{person}} = 1;
 			}
+			# XXX Is {perceive} usually defined? Ever defined?
 			if ($_->{perceive} eq 'fan') {
 				$people->{FAN()}{$_->{person}} = 1;
 			} elsif ($_->{perceive} eq 'freak') {

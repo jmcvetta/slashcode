@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: dilemma.pl,v 1.8 2005/04/05 13:09:48 jamiemccarthy Exp $
+# $Id: dilemma.pl,v 1.9 2005/12/06 02:36:03 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -17,7 +17,7 @@ sub main {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
 	my($stories, $Stories); # could this be MORE confusing please? kthx
-	if ($form->{op} eq 'userlogin' && !$user->{is_anon}
+	if ($form->{op} && $form->{op} eq 'userlogin' && !$user->{is_anon}
 			# Any login attempt, successful or not, gets
 			# redirected to the homepage, to avoid keeping
 			# the password or nickname in the query_string of
@@ -28,6 +28,7 @@ sub main {
 		redirect($refer); return;
 	}
 
+	setCurrentSkin(determineCurrentSkin());
 	my $gSkin = getCurrentSkin();
 	my $skin_name = $gSkin->{name};
 

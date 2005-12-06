@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.68 2005/12/06 00:12:03 jamiemccarthy Exp $
+# $Id: article.pl,v 1.69 2005/12/06 20:09:23 tvroom Exp $
 
 use strict;
 use Slash;
@@ -15,6 +15,7 @@ sub main {
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
 	my $form      = getCurrentForm();
+	my $gSkin     = getCurrentSkin();
 
 	my $story;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
@@ -26,8 +27,12 @@ sub main {
 		# through article.pl?sid=1, article.pl?sid=2, etc.
 		$sid = '';
 	}
-
+	
 	$story = $reader->getStory($sid);
+	if ($story && $story->{primaryskid} != $gSkin->{skid} && $form->{ssi} ne "yes") {
+		my $story_skin = $slashdb->getSkin($story->{primaryskid});
+		redirect("$story_skin->{rootdir}$ENV{REQUEST_URI}") if $story_skin && $story_skin->{rootdir};
+	}
 
 	# Set the $future_err flag if a story would be available to be
 	# displayed, except it is in the future, and the user is not

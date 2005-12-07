@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.203 2005/12/06 00:25:00 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.204 2005/12/07 17:49:27 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -739,7 +739,7 @@ EOT
 	$mod_data{used_plus_1_percent} = sprintf("%.1f", ($modlog_count_yest_total ? ($modlog_yest_hr->{1}{count}*100/$modlog_count_yest_total || 0) : 0));
 	$mod_data{mod_points_avg_spent} = $modlog_count_yest_total ? sprintf("%12.3f", $modlog_spent_yest_total/$modlog_count_yest_total || 0) : "(n/a)";
 	$mod_data{day} = $yesterday;
-	$mod_data{token_conversion_point} = sprintf("%8d", $token_conversion_point);
+	$mod_data{token_conversion_point} = sprintf("%8d", $token_conversion_point || 0);
 	$mod_data{m2_text} = $m2_text;
 
 	$data{comments} = $mod_data{comments};

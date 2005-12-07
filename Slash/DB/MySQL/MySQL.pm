@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.826 2005/12/06 21:20:30 tvroom Exp $
+# $Id: MySQL.pm,v 1.827 2005/12/07 17:42:39 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.826 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.827 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11303,6 +11303,7 @@ sub getSkins {
 # passed in what looks like an ID number, return that!
 sub getSkidFromName {
 	my($self, $name) = @_;
+	return 0 if !$name;
 	return $name if $name =~ /^\d+$/;
 	my $skins = $self->getSkins();
 	for my $skid (keys %$skins) {

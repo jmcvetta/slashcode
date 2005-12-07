@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.71 2005/12/07 03:54:08 pudge Exp $
+# $Id: article.pl,v 1.72 2005/12/07 20:19:38 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -192,7 +192,7 @@ sub main {
 				$called_pc = 1;
 			}
 		}
-		if (!$called_pc && $form->{ssi} eq 'yes' && $form->{cchp}) {
+		if (!$called_pc && $form->{ssi} && $form->{ssi} eq 'yes' && $form->{cchp}) {
 			# This is a real hack, we're kind of skipping down
 			# two levels of code.  But the cchp printing is an
 			# important optimization;  we avoid having to do

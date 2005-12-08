@@ -21,7 +21,12 @@ __template__
 	<table width="100%" cellpadding="0" cellspacing="0">
 		<tr>
 [% x = 0 %]
-		[% FOREACH topic = topics.sort("textname"); x = x + 1; "</tr><tr>" IF (x mod 6) == 1 %]
+		[% FOREACH topic = topics.sort("textname"); %]
+			[%
+			    match_term = "^" _ constants.topiclist_ignore_prefix IF constants.topiclist_ignore_prefix;
+			    NEXT IF match_term && topic.keyword.match(match_term);
+			    x = x + 1; "</tr><tr>" 
+		            IF (x mod 6) == 1 %]
 			<td align="center">
 				<a href="[% gSkin.rootdir %]/search.pl?tid=[% topic.tid %]"><img src="[% constants.imagedir %]/topics/[% topic.image %]" alt="[% topic.textname %]" width="[% topic.width %]" height="[% topic.height %]">
 				[% IF user.is_admin %]
@@ -38,4 +43,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: listTopics;topics;default,v 1.9 2005/07/27 22:54:48 pudge Exp $
+$Id: listTopics;topics;default,v 1.10 2005/12/08 03:43:42 tvroom Exp $

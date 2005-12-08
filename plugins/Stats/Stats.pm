@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.176 2005/12/06 01:03:16 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.177 2005/12/08 19:17:20 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -1465,12 +1465,13 @@ sub getDurationByStaticLocaladdr {
 sub _walk_keys {
 	my($hr) = @_;
 	my @hr_keys = keys %$hr;
-	if (!exists $hr->{$hr_keys[0]}{dur_round}) {
+	if (@hr_keys && !exists $hr->{$hr_keys[0]}{dur_round}) {
 		# We need to recurse down at least one more
 		# level.  Keep track of where we are.
 		my @results = ( );
 		for my $key (sort @hr_keys) {
-			my @sub_results = _walk_keys($hr->{$key});
+			my @sub_results = ( );
+			@sub_results = _walk_keys($hr->{$key}) if %{$hr->{$key}};
 			for my $sub_r (@sub_results) {
 				unshift @$sub_r, $key;
 			}
@@ -2067,4 +2068,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.176 2005/12/06 01:03:16 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.177 2005/12/08 19:17:20 jamiemccarthy Exp $

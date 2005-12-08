@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.72 2005/12/07 20:19:38 jamiemccarthy Exp $
+# $Id: article.pl,v 1.73 2005/12/08 19:17:20 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -29,7 +29,8 @@ sub main {
 	}
 
 	$story = $reader->getStory($sid);
-	if ($story && $story->{primaryskid} != $gSkin->{skid} && $form->{ssi} ne "yes") {
+	if ($story && $story->{primaryskid} != $gSkin->{skid}
+		&& !($form->{ssi} && $form->{ssi} eq "yes")) {
 		my $story_skin = $slashdb->getSkin($story->{primaryskid});
 		if ($story_skin && $story_skin->{rootdir} && $story_skin->{rootdir} ne $gSkin->{rootdir}) {
 			redirect("$story_skin->{rootdir}$ENV{REQUEST_URI}");

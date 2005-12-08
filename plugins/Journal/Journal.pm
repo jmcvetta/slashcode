@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.50 2005/12/08 00:28:05 pudge Exp $
+# $Id: Journal.pm,v 1.51 2005/12/08 23:34:37 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -220,10 +220,16 @@ sub remove {
 	}
 	$self->sqlDelete("journals_text", "id=$id");
 
-	# XXX UNLESS IS A STORY!
 	if ($journal->{discussion}) {
 		my $slashdb = getCurrentDB();
-		$slashdb->deleteDiscussion($journal->{discussion});
+		# if has been submitted as story or submission
+		if ($journal->{submit} eq 'yes') {
+			$slashdb->setDiscussion($journal->{discussion}, {
+				commentstatus	=> 'disabled',
+			});
+		} else {
+			$slashdb->deleteDiscussion($journal->{discussion});
+		}
 	}
 
 	my $date = $self->sqlSelect('MAX(date)', 'journals', "uid=$uid");

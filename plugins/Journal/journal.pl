@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.117 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: journal.pl,v 1.118 2005/12/08 23:34:37 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -864,7 +864,8 @@ sub removeArticle {
 	my $reskey = getObject('Slash::ResKey');
 	my $rkey = $reskey->key('journal');
 
-	# XXX: don't bother printing reskey error?
+	# don't bother printing reskey error, since it will confuse
+	# most people: we show the list regardless -- pudge
 	if ($rkey->use) {
 		for my $id (grep { $_ = /^del_(\d+)$/ ? $1 : 0 } keys %$form) {
 			$journal->remove($id);

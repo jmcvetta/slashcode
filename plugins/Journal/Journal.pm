@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.49 2005/12/07 20:56:06 tvroom Exp $
+# $Id: Journal.pm,v 1.50 2005/12/08 00:28:05 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -430,7 +430,7 @@ sub createSubmissionFromJournal {
 		primaryskid 	=> $primaryskid,
 		journal_id 	=> $src_journal->{id},
 		journal_disc 	=> $src_journal->{discussion},
-		by		=> $options->{subission_param}{by} || $journal_user->{nickname},
+		by		=> $options->{submission_param}{by}     || $journal_user->{nickname},
 		by_url 		=> $options->{submission_param}{by_url} || $journal_user->{homepage} || $journal_user->{fakeemail}
 	};
 
@@ -476,19 +476,17 @@ sub createStoryFromJournal {
 		commentstatus	=> 'enabled',
 		journal_id 	=> $src_journal->{id},
 		journal_disc	=> $src_journal->{discussion},
-		by		=> $options->{story_param}{by} || $journal_user->{nickname},
+		by		=> $options->{story_param}{by}     || $journal_user->{nickname},
 		by_url 		=> $options->{story_param}{by_url} || $journal_user->{homepage} || $fakeemail,
 		discussion	=> $src_journal->{discussion},
 	);
-	
+
 	$story{neverdisplay} = $options->{neverdisplay} if $options->{neverdisplay};
 
 	foreach (keys %$story_param) {
 		$story{$_} = $story_param->{$_} if !defined $story{$_};
 	}
 
-													       
-													       
 	# XXX: we need to update, in the discussion:
 	# stoid, sid, title, url, topic, ts (story's timestamp), type (open), uid?,
 	# flags (ok), primaryskid, commentstatus (enabled), archivable?

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.827 2005/12/07 17:42:39 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.828 2005/12/09 18:51:54 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.827 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.828 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10987,8 +10987,7 @@ sub getTopiclistFromChosen {
 		   (exists $tree->{$a}{nexus} ? 1 : 0) <=> (exists $tree->{$b}{nexus} ? 1 : 0)
 			# Next highest priority is whether this topic
 			# has an icon.  Topics with icons come first.
-			# XXX IS THIS LOGIC BACKWARDS? - Jamie 2005-11-24
-		|| ($tree->{$a}{image} ? 1 : 0) <=> ($tree->{$b}{image} ? 1 : 0)
+		|| ($tree->{$b}{image} ? 1 : 0) <=> ($tree->{$a}{image} ? 1 : 0)
 			# Next highest priority is whether this topic
 			# (at this weight) is in the preferred skid.
 		|| ($in_skid{$b} || 0) <=> ($in_skid{$a} || 0)

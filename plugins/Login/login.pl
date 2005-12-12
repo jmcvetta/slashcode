@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.20 2005/09/26 16:55:24 jamiemccarthy Exp $
+# $Id: login.pl,v 1.21 2005/12/12 23:17:29 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -360,7 +360,6 @@ sub savePrefs {
 		$slashdb->setUser($user->{uid}, $user_save);
 		$note = getData('passchanged');
 
-		my $value  = $slashdb->getLogToken($uid, 1);
 		my $cookie = bakeUserCookie($uid, $slashdb->getLogToken($uid, 1));
 		setCookie('user', $cookie, $user_save->{session_login});
 	}

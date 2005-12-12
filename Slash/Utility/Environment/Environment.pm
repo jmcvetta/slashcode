@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.180 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.181 2005/12/12 23:17:28 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -80,6 +80,7 @@ use vars qw($VERSION @EXPORT);
 	bakeUserCookie
 	eatUserCookie
 	setCookie
+	getPublicLogToken
 
 	debugHash
 	slashProf
@@ -1336,6 +1337,33 @@ sub setCookie {
 		$cookie->bake;
 	}
 }
+
+#========================================================================
+
+=head2 getPublicLogToken([UID])
+
+Just a wrapper around:
+
+	bakeUserCookie($uid, $slashdb->getLogToken($uid, 1, 2));
+
+to get a public logtoken.  Uses current user's UID if none supplied.
+
+=cut
+
+sub getPublicLogToken {
+	my($uid) = @_;
+	$uid ||= getCurrentUser('uid');
+	if ($uid) {
+		my $slashdb = getCurrentDB();
+		my $logtoken = $slashdb->getLogToken($uid, 1, 2);
+		if ($logtoken) {
+			return bakeUserCookie($uid, $logtoken);
+		}
+	}
+	return '';
+}
+
+
 
 #========================================================================
 
@@ -3197,4 +3225,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.180 2005/12/03 22:37:36 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.181 2005/12/12 23:17:28 pudge Exp $

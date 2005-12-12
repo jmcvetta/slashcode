@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.207 2005/12/06 16:48:09 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.208 2005/12/12 23:17:29 pudge Exp $
 #
 
 #
@@ -1340,12 +1340,14 @@ CREATE TABLE users_logtokens (
 	uid MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
 	locationid CHAR(32) NOT NULL DEFAULT '',
 	temp ENUM("yes","no") NOT NULL DEFAULT "no",
+	public ENUM("yes","no") NOT NULL DEFAULT "no",
 	expires DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00',
 	value CHAR(22) NOT NULL DEFAULT '',
 	PRIMARY KEY (lid),
-	UNIQUE uid_locationid_temp (uid, locationid, temp),
+	UNIQUE uid_locationid_temp_public (uid, locationid, temp, public),
 	KEY (locationid),
-	KEY (temp)
+	KEY (temp),
+	KEY (public)
 ) TYPE=InnoDB;
 
 #

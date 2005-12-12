@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.894 2005/12/08 04:30:50 pudge Exp $
+# $Id: upgrades,v 1.895 2005/12/12 23:17:29 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3504,7 +3504,12 @@ UPDATE vars SET value = 'T_2_5_0_90' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
-# PUDGE LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
+
+ALTER TABLE users_logtokens ADD COLUMN public ENUM("yes","no") NOT NULL DEFAULT "no" AFTER temp;
+ALTER TABLE users_logtokens DROP INDEX uid_locationid_temp;
+ALTER TABLE users_logtokens ADD UNIQUE uid_locationid_temp_public (uid, locationid, temp, public);
+ALTER TABLE users_logtokens ADD KEY (public);
+
+# PUDGE LAST UPDATED HERE
 

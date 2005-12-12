@@ -19,7 +19,7 @@ __template__
 		||
 	(constants.rss_allow_index > 2 && !user.is_anon)
 ));
-%][% Slash.root2abs() %]/index.pl?content_type=[% feed_type %]&amp;logtoken=[% user.logtoken | fixparam %][%
+%][% Slash.root2abs() %]/index.pl?content_type=[% feed_type %]&amp;logtoken=[% Slash.getPublicLogToken() | fixparam %][%
     ELSE
 %][% gSkin.rootdir %]/[% Slash.sitename2filename(gSkin.name) %].[% feed_type %][%
     END;
@@ -28,4 +28,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: rsslink;misc;default,v 1.6 2005/08/12 21:37:04 pudge Exp $
+$Id: rsslink;misc;default,v 1.7 2005/12/12 23:17:29 pudge Exp $

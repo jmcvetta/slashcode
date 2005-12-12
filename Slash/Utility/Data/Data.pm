@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.180 2005/12/06 02:34:15 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.181 2005/12/12 23:15:12 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2440,7 +2440,7 @@ The 'approvedtags' entry in the vars table.
 	my %known_tags	= map { ( lc, 1 ) } qw(
 		b i p br a ol ul li dl dt dd em strong tt blockquote div ecode
 		img hr big small sub sup span
-		dfn code samp kbd var cite address ins del
+		q dfn code samp kbd var cite address ins del
 		h1 h2 h3 h4 h5 h6
 	);
 	# NB: ECODE is excluded because it is handled elsewhere.
@@ -2453,12 +2453,12 @@ The 'approvedtags' entry in the vars table.
 
 	# block elements cannot be inside certain other elements; this defines which are which
 	my %is_block    = map { ( lc, 1 ) } qw(p ol ul li dl dt dd blockquote div hr address h1 h2 h3 h4 h5 h6);
-	my %no_block    = map { ( lc, 1 ) } qw(b i strong em tt dfn code samp kbd var cite address ins del big small span p sub sup a h1 h2 h3 h4 h5 h6);
+	my %no_block    = map { ( lc, 1 ) } qw(b i strong em tt q dfn code samp kbd var cite address ins del big small span p sub sup a h1 h2 h3 h4 h5 h6);
 
 	# when a style tag is cut off prematurely because of a newly introduced block
 	# element, we want to re-start the style inside the block; it is not perfect,
 	# but that's why we're here, innit?
-	my %is_style    = map { ( lc, 1 ) } qw(b i strong em tt dfn code samp kbd var cite big small span);
+	my %is_style    = map { ( lc, 1 ) } qw(b i strong em tt q dfn code samp kbd var cite big small span);
 
 	# tags that CAN be empty
 	my %empty	= map { ( lc, 1 ) } qw(p br img hr);
@@ -4213,4 +4213,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.180 2005/12/06 02:34:15 jamiemccarthy Exp $
+$Id: Data.pm,v 1.181 2005/12/12 23:15:12 pudge Exp $

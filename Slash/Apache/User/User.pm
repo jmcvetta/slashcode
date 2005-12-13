@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.136 2005/12/12 23:17:24 pudge Exp $
+# $Id: User.pm,v 1.137 2005/12/13 03:11:15 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.136 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -244,7 +244,7 @@ sub handler {
 			# NOTE: this is only for "public" logtokens that are
 			# separate from regular login logtokens right now;
 			# it can be changed if necessary, it just happens that
-			# way, so we use it to se login_public
+			# way, so we use it to set login_public
 			if (
 				($constants->{rss_allow_index} && $form->{content_type} =~ $constants->{feed_types} && $uri =~ m{^/index\.pl$})
 					||

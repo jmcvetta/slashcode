@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.119 2005/12/13 04:12:23 pudge Exp $
+# $Id: journal.pl,v 1.120 2005/12/13 04:53:36 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -90,7 +90,7 @@ sub main {
 	# if section is defined, perhaps. -- pudge
 	Slash::Utility::Anchor::getSkinColors();
 
-	my $op = $form->{'op'};
+	my $op = $form->{op};
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED]) {
 		$op = 'default';
 	}
@@ -215,7 +215,7 @@ sub displayRSS {
 	}
 	$juser ||= $user;
 
-	if ($form->{op} eq 'friendview') {
+	if ($form->{op} && $form->{op} eq 'friendview') {
 		my $zoo   = getObject('Slash::Zoo');
 		my $uids  = $zoo->getFriendsUIDs($juser->{uid});
 		$articles = $journal_reader->getsByUids($uids, 0, $constants->{journal_default_display} * 3);

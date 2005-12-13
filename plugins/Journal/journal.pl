@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.118 2005/12/08 23:34:37 pudge Exp $
+# $Id: journal.pl,v 1.119 2005/12/13 04:12:23 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -228,7 +228,7 @@ sub displayRSS {
 	my @items;
 	for my $article (@$articles) {
 		my($nickname, $juid);
-		if ($form->{op} eq 'friendview') {
+		if ($form->{op} && $form->{op} eq 'friendview') {
 			$nickname = $article->[8];
 			$juid     = $article->[7];
 		} else {
@@ -259,7 +259,7 @@ sub displayRSS {
 	);
 
 	my($title, $journals, $link);
-	if ($form->{op} eq 'friendview') {
+	if ($form->{op} && $form->{op} eq 'friendview') {
 		$title    = "$juser->{nickname}'s Friends'";
 		$journals = 'Journals';
 		$link     = '/journal/friends/';

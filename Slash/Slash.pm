@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.250 2005/12/08 19:18:20 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.251 2005/12/13 03:47:52 pudge Exp $
 
 package Slash;
 
@@ -243,7 +243,7 @@ sub _get_points {
 	# Adjust reasons. Do we need a reason?
 	# Are you threatening me?
 	my $reason_name = $reasons->{$C->{reason}}{name};
-	if ($user->{"reason_alter_$reason_name"}) {
+	if ($reason_name && $user->{"reason_alter_$reason_name"}) {
 		$hr->{reason_bonus} =
 			$user->{"reason_alter_$reason_name"};
 	}

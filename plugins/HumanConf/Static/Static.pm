@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.34 2005/12/06 01:02:16 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.35 2005/12/13 16:18:39 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -36,7 +36,7 @@ sub new {
 	$self->{imagemargin} = $constants->{hc_q1_margin} || 6;
 
 	# Set the list of possible fonts.
-	if ($constants->{hc_possible_fonts}) {
+	if ($constants->{hc_possible_fonts} && @{$constants->{hc_possible_fonts}}) {
 		@{ $self->{possible_fonts} } = @{$constants->{hc_possible_fonts}};
 	} else {
 		@{ $self->{possible_fonts} } = ( gdMediumBoldFont, gdLargeFont, gdGiantFont );

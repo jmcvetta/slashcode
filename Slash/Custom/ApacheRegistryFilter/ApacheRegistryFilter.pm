@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ApacheRegistryFilter.pm,v 1.4 2005/03/11 19:57:25 pudge Exp $
+# $Id: ApacheRegistryFilter.pm,v 1.5 2005/12/13 03:23:24 jamiemccarthy Exp $
 
 # this merely overrides a "broken" method in Apache::SSI,
 # where include directives don't work for mixing with Apache::Compress
@@ -18,7 +18,7 @@ use vars qw($VERSION);
 
 use Apache::Constants qw(:common);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub handler ($$) {
   my ($class, $r) = @_ > 1 ? (shift, shift) : (__PACKAGE__, shift);
@@ -40,12 +40,12 @@ sub run {
   # We temporarily override the header-sending routines to make them
   # noops.  This lets people leave these methods in their scripts.
   my $warn = $^W;
-  undef $^W;
+  undef $^W if defined $^W;
   local *Apache::send_http_header = sub {
 	$r->content_type($_[0]) if @_;
   };
   local *Apache::send_cgi_header = sub {};
-  $^W = $warn;
+  $^W = $warn if defined $warn;
 
   $pr->SUPER::run(@_);
 }

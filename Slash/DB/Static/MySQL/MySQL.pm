@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.227 2005/12/03 22:37:35 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.228 2005/12/16 00:03:26 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.227 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.228 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2142,8 +2142,8 @@ sub getStoriesToRefresh {
 	# don't include neverdisplay stories.
 	my $retval = $self->sqlSelectAllHashrefArray(
 		"DISTINCT stories.stoid AS stoid, sid, primaryskid, title, time",
-		"stories, story_text, story_topics_rendered
-		 LEFT JOIN story_dirty ON stories.stoid=story_dirty.stoid",
+		"story_text, story_topics_rendered,
+		 stories LEFT JOIN story_dirty ON stories.stoid=story_dirty.stoid",
 		"time < NOW()
 		 AND stories.primaryskid > 0
 		 AND stories.stoid = story_text.stoid

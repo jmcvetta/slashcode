@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.15 2005/03/29 19:52:25 tvroom Exp $
+# $Id: print.pl,v 1.16 2005/12/21 20:17:59 jamiemccarthy Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.15 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -153,9 +153,12 @@ sub main {
 # Thanks for the assist here, pudge!
 sub get_content {
 	my($ref) = @_;
-	my $content;
+	return '' if !$ref || !@{$ref->{_content}};
 
-	$content .= (ref) ? get_content($_) : $_ for @{$ref->{_content}};
+	my $content = '';
+	for my $c (@{$ref->{_content}}) {
+		$content .= ref($c) ? get_content($c) : $c;
+	}
 	
 	return $content;
 }

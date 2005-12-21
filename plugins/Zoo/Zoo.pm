@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.49 2005/12/06 01:02:16 jamiemccarthy Exp $
+# $Id: Zoo.pm,v 1.50 2005/12/21 19:37:04 jamiemccarthy Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -270,22 +270,21 @@ sub getZooUsersForProcessing {
 
 sub rebuildUser {
 	my($self, $uid) = @_;
-	my $data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid = $uid");
+	my $data = $self->sqlSelectAllHashrefArray('*', 'people', "uid = $uid");
 	my $people;
 
 	my @friends;
 	if ($data) {
 		for (@$data) {
-			if ($_->{type} eq 'friend') {
+			if ($_->{type} && $_->{type} eq 'friend') {
 				$people->{FRIEND()}{$_->{person}} = 1;
 				push @friends, $_->{person};
-			} elsif ($_->{type} eq 'foe') {
+			} elsif ($_->{type} && $_->{type} eq 'foe') {
 				$people->{FOE()}{$_->{person}} = 1;
 			}
-			# XXX Is {perceive} usually defined? Ever defined?
-			if ($_->{perceive} eq 'fan') {
+			if ($_->{perceive} && $_->{perceive} eq 'fan') {
 				$people->{FAN()}{$_->{person}} = 1;
-			} elsif ($_->{perceive} eq 'freak') {
+			} elsif ($_->{perceive} && $_->{perceive} eq 'freak') {
 				$people->{FREAK()}{$_->{person}} = 1;
 			}
 		}
@@ -293,7 +292,7 @@ sub rebuildUser {
 
 	my $list = join (',', @friends);
 	if (scalar(@friends) && $list) {
-		$data =  $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
+		$data = $self->sqlSelectAllHashrefArray('*', 'people', "uid IN ($list) AND type IS NOT NULL");
 		for (@$data) {
 			if ($_->{type} eq 'friend') {
 				$people->{FOF()}{$_->{person}}{$_->{uid}} = 1;

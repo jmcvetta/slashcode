@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daypass.pl,v 1.4 2005/10/11 19:16:12 jamiemccarthy Exp $
+# $Id: daypass.pl,v 1.5 2005/12/21 21:22:06 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -13,11 +13,7 @@ use Slash::Utility;
 sub main {
 	my $gSkin = getCurrentSkin();
 	my $daypass_reader = getObject('Slash::Daypass', { db_type => 'reader' });
-use Data::Dumper;
-$Data::Dumper::Sortkeys = 1;
-print STDERR scalar(localtime) . " daypass.pl $$ dp_r: " . Dumper($daypass_reader);
 	my $dps = $daypass_reader->getDaypassesAvailable();
-print STDERR scalar(localtime) . " daypass.pl $$ dps: " . Dumper($dps);
 	if (!$dps || !@$dps) {
 		redirect($gSkin->{rootdir});
 	}

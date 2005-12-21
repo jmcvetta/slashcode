@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.104 2005/11/30 17:32:10 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.105 2005/12/21 19:03:59 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -599,7 +599,7 @@ sub pollbooth {
 	}
 	
 	# If no qid (or no sitewide poll), short-circuit out.
-	return '' if $qid eq '';
+	return '' if !$qid;
 
 	my $poll = $reader->getPoll($qid);
 	return '' unless %$poll;
@@ -1693,4 +1693,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.104 2005/11/30 17:32:10 jamiemccarthy Exp $
+$Id: Display.pm,v 1.105 2005/12/21 19:03:59 jamiemccarthy Exp $

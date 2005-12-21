@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.105 2005/12/21 19:03:59 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.106 2005/12/21 21:02:45 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1225,10 +1225,11 @@ sub createMenu {
 # use lockTest to test if a story is being edited by someone else
 ########################################################
 sub getImportantWords {
-	my $s = shift;
+	my($s) = @_;
+	return ( ) if !defined($s) || $s eq '';
 	$s =~ s/[^A-Z0-9 ]//gi;
 	my @w = split m/ /, $s;
-	my @words;
+	my @words = ( );
 	foreach (@w) {
 		if (length($_) > 3 || (length($_) < 4 && uc($_) eq $_)) {
 			push @words, $_;
@@ -1693,4 +1694,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.105 2005/12/21 19:03:59 jamiemccarthy Exp $
+$Id: Display.pm,v 1.106 2005/12/21 21:02:45 jamiemccarthy Exp $

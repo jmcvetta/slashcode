@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Hof.pm,v 1.12 2005/03/11 19:58:07 pudge Exp $
+# $Id: Hof.pm,v 1.13 2005/12/21 19:36:04 jamiemccarthy Exp $
 
 package Slash::Hof;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -120,8 +120,8 @@ sub countStoriesTopHits {
 	my($self) = @_;
 	my $stories = $self->sqlSelectAll(
 		'stories.sid, title, primaryskid, hits, users.nickname',
-		"stories, story_text, users
-		 LEFT JOIN story_param
+		"story_text, users,
+		 stories LEFT JOIN story_param
 			ON stories.stoid=story_param.stoid AND story_param.name='neverdisplay'",
 		'stories.stoid=story_text.stoid
 		 AND story_param.name IS NULL

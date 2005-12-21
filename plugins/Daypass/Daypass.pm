@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.12 2005/11/01 13:49:18 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.13 2005/12/21 19:56:28 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -12,7 +12,7 @@ use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -111,6 +111,10 @@ sub getDaypass {
 	for my $hr (@$da_ar) {
 		next unless $hr->{startts} <= $time;
 		next unless $time <= $hr->{endts};
+		if ($constants->{daypass_offer_onlytologgedin}) {
+			$user ||= getCurrentUser();
+			next unless $user && !$user->{is_anon};
+		}
 		if ($hr->{aclreq}) {
 			$user ||= getCurrentUser();
 			print STDERR scalar(localtime) . " $$ cannot get user in getDaypass\n" if !$user;

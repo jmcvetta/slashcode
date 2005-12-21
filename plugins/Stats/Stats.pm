@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.178 2005/12/16 00:38:37 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.179 2005/12/21 20:51:49 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -891,8 +891,9 @@ sub getAdminModsInfo {
 			for my $fairness (qw( -1 1 )) {
 				$m2_uid_val_mo_hr->{$uid}{$fairness}{nickname} =
 					$m2_uid_nickname->{$uid};
+				$m2_uid_val_mo_hr->{$uid}{$fairness}{count} ||= 0;
 				$m2_uid_val_mo_hr->{$uid}{$fairness}{count} +=
-					$m2_uid_val_hr->{$uid}{$fairness}{count};
+					($m2_uid_val_hr->{$uid}{$fairness}{count} || 0);
 			}
 		}
 	}
@@ -2071,4 +2072,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.178 2005/12/16 00:38:37 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.179 2005/12/21 20:51:49 jamiemccarthy Exp $

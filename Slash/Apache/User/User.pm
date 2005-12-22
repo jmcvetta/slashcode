@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.138 2005/12/22 20:12:50 pudge Exp $
+# $Id: User.pm,v 1.139 2005/12/22 23:25:21 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -811,6 +811,8 @@ Bender:I'm not allowed to sing. Court order.
 Bender:Boy, who knew a cooler could also make a handy wang coffin?
 Bender:I'm so embarrassed. I wish everybody else was dead.
 Bender:Professor! Make a woman out of me!
+Bender:Would we have donkeys?
+Bender:Emotions are dumb and should be hated.
 Bender:An upgrade? I thought we all agreed I was perfect.
 Bender:Curse you, merciful Poseidon!
 Bender:I am a hideous triumph of form and function.
@@ -871,6 +873,8 @@ Fry:I did it!  And it's all thanks to the books at my local library.
 Fry:Existing is basically all I do!
 Fry:It's a widely-believed fact!
 Fry:My hands!  My horrible, human, hands!
+Leela:You did the best you could, I guess, and some of these gorillas are okay.
+Leela:This wangs chung.
 EOT
 
 1;

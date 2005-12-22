@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.61 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.62 2005/12/22 03:30:44 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -359,8 +359,8 @@ sub reconcile_m2 {
 			);
 			if ($statsSave) {
 				my $token_change = $use_possible
-					? $csq->{m1_tokens}{num_possible}
-					: $csq->{m1_tokens}{num_base};
+					? ($csq->{m1_tokens}{num_possible} || 0)
+					: ($csq->{m1_tokens}{num_base} || 0);
 				if ($token_change > 0) {
 					$newstats{mod_tokens_gain_m1fair} += $token_change;
 				} elsif ($token_change < 0) {

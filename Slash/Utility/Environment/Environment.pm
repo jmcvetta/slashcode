@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.181 2005/12/12 23:17:28 pudge Exp $
+# $Id: Environment.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2520,12 +2520,12 @@ sub determineCurrentSkin {
 	my $skin;
 
 	if ($ENV{GATEWAY_INTERFACE} && (my $r = Apache->request)) {
-		my $hostname = $r->header_in('host');
+		my $hostname = $r->header_in('host') || '';
 		$hostname =~ s/:\d+$//;
  
 		my $skins = $reader->getSkins;
 		($skin) = grep {
-				(my $tmp = lc $skins->{$_}{hostname}) =~ s/:\d+$//;
+				(my $tmp = lc $skins->{$_}{hostname} || '') =~ s/:\d+$//;
 				$tmp eq lc $hostname
 			} sort { $a <=> $b } keys %$skins;
 
@@ -2533,9 +2533,9 @@ sub determineCurrentSkin {
 		if (!$skin && $hostname !~ /^\d+\.\d+\.\d+\.\d+$/) {
 			$skin = getCurrentStatic('mainpage_skid');
 			if (!$skin) {
-				errorLog("determineCurrentSkin called but no skin found (even default) for $hostname\n");
+				errorLog("determineCurrentSkin called but no skin found (even default) for '$hostname'\n");
 			} else {
-				errorLog("determineCurrentSkin called but no skin found (so using default) for $hostname\n");
+				errorLog("determineCurrentSkin called but no skin found (so using default) for '$hostname'\n");
 			}
 		}
 	} else {
@@ -3225,4 +3225,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.181 2005/12/12 23:17:28 pudge Exp $
+$Id: Environment.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.181 2005/12/12 23:15:12 pudge Exp $
+# $Id: Data.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1794,8 +1794,10 @@ sub approveTag {
 		if ($replace{$t_lc} && $approved{ $replace{$t_lc} }) {
 			$t = $t_lc = $replace{$t_lc};
 		} else {
-			$Slash::Utility::Data::approveTag::removed->{$t_lc}++
-				if $constants->{approveTag_debug};
+			if ($constants->{approveTag_debug}) {
+				$Slash::Utility::Data::approveTag::removed->{$t_lc} ||= 0;
+				$Slash::Utility::Data::approveTag::removed->{$t_lc}++;
+			}
 			return '';
 		}
 	}
@@ -1960,8 +1962,12 @@ sub approveCharref {
 		my $entity = $1;  # case matters
 		if ($constants->{draconian_charrefs}) {
 			if (!$constants->{good_entity}{$entity}) {
-				$decimal = ord $entity2char{$entity};
-				$ok = $ansi_to_ascii{$decimal} ? 2 : 0;
+				if (defined $entity2char{$entity}) {
+					$decimal = ord $entity2char{$entity};
+					$ok = $ansi_to_ascii{$decimal} ? 2 : 0;
+				} else {
+					$ok = 0;
+				}
 			}
 		} else {
 			$ok = 0 if $constants->{bad_entity}{$entity}
@@ -4213,4 +4219,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.181 2005/12/12 23:15:12 pudge Exp $
+$Id: Data.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $

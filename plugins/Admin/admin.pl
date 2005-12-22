@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.266 2005/11/16 18:48:52 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.267 2005/12/22 03:30:43 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -25,7 +25,7 @@ sub main {
 	# lc just in case
 	my $op = lc($form->{op});
 
-	my($tbtitle);
+	my $tbtitle = '';
 
 	my $ops = {
 		slashd		=> {
@@ -210,7 +210,7 @@ sub main {
 		$tbtitle = " - \"$tbtitle\"";
 		# Undef the form title value if we have SID defined, since the editor
 		# will have to get this information from the database anyways.
-		undef $form->{title} if ($form->{sid} && $form->{op} eq 'edit');
+		undef $form->{title} if $form->{sid} && $form->{op} eq 'edit';
 	}
 
 	my $db_time = $slashdb->getTime();

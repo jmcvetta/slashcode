@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.208 2005/12/12 23:17:29 pudge Exp $
+# $Id: slashschema_create.sql,v 1.209 2005/12/22 20:12:51 pudge Exp $
 #
 
 #
@@ -423,6 +423,7 @@ CREATE TABLE dbs_readerstatus_queries (
 DROP TABLE IF EXISTS discussions;
 CREATE TABLE discussions (
 	id mediumint UNSIGNED NOT NULL auto_increment, 
+	dkid TINYINT UNSIGNED NOT NULL DEFAULT 1,
 	stoid mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	sid char(16) DEFAULT '' NOT NULL,
 	title varchar(128) NOT NULL,
@@ -444,6 +445,18 @@ CREATE TABLE discussions (
 	KEY (primaryskid,ts),
 	INDEX (type,uid,ts),
 	PRIMARY KEY (id)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'discussion_kinds'
+#
+
+DROP TABLE IF EXISTS discussion_kinds;
+CREATE TABLE discussion_kinds (
+	dkid        TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	name        VARCHAR(30) NOT NULL DEFAULT '',
+	PRIMARY KEY (dkid),
+	UNIQUE name (name),
 ) TYPE=InnoDB;
 
 #
@@ -760,7 +773,6 @@ DROP TABLE IF EXISTS sessions;
 CREATE TABLE sessions (
 	session mediumint UNSIGNED NOT NULL auto_increment,
 	uid mediumint UNSIGNED,
-	logintime datetime,
 	lasttime datetime,
 	lasttitle varchar(50),
 	last_subid mediumint UNSIGNED,

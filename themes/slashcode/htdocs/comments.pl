@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.235 2005/11/28 22:45:30 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.236 2005/12/22 20:12:51 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -122,13 +122,18 @@ sub main {
 				$user->{state}{tid} = $discussion->{topic};
 			}
 		}
-		# The is_future field isn't automatically added by getDiscussion
-		# like it is with getStory.  We have to add it manually here.
-		$discussion->{is_future} = 1 if $slashdb->checkDiscussionIsInFuture($discussion);
+
+		my $kinds = $slashdb->getDescriptions('discussion_kinds');
+
 		# Now check to make sure this discussion can be seen.
 		if (!( $user->{author} || $user->{is_admin} || $user->{has_daypass} )
-			&& $discussion) {
+			&& $discussion && $kinds->{ $discussion->{dkid} } eq 'story') {
 			my $null_it_out = 0;
+
+			# The is_future field isn't automatically added by getDiscussion
+			# like it is with getStory.  We have to add it manually here.
+			$discussion->{is_future} = 1 if $slashdb->checkDiscussionIsInFuture($discussion);
+
 			if ($discussion->{is_future}) {
 				# Discussion is from the future;  decide here
 				# whether the user is allowed to see it or not.

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: pollBooth.pl,v 1.72 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: pollBooth.pl,v 1.73 2005/12/22 20:12:51 pudge Exp $
 
 use strict;
 use Slash;
@@ -378,6 +378,7 @@ sub savepoll {
 			);
 		} elsif (!$poll->{discussion}) {
 			$discussion = $slashdb->createDiscussion({
+				kind		=> 'pollbooth',
 				title		=> $form->{question},
 				topic		=> $form->{topic},
 				approved	=> 1, # Story discussions are always approved -Brian

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.31 2005/11/30 05:57:26 jamiemccarthy Exp $
+# $Id: RSS.pm,v 1.32 2005/12/22 20:12:51 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -168,10 +168,13 @@ sub create {
 		encoding	=> $encoding,
 	);
 
-	my $absolutedir = defined &Slash::Apache::ConnectionIsSSL
-	                  && Slash::Apache::ConnectionIsSSL()
-		? $gSkin->{absolutedir_secure}
-		: $gSkin->{absolutedir};
+	my($dynamic, $absolutedir);
+	if (defined &Slash::Apache::ConnectionIsSSL) {
+		$dynamic = 1;
+		$absolutedir = Slash::Apache::ConnectionIsSSL()
+			? $gSkin->{absolutedir_secure}
+			: $gSkin->{absolutedir};
+	}
 
 	# set defaults
 	my %channel = (
@@ -229,6 +232,15 @@ sub create {
 	} else {  # 0.9
 		for (keys %channel) {
 			delete $channel{$_} unless /^(?:link|title|description)$/;
+		}
+	}
+
+	# help users get notification that this feed is specifically for them
+	if ($dynamic && getCurrentForm('logtoken')) {
+		my $user = getCurrentUser();
+		if (!$user->{is_anon}) {
+			$channel{$_} .= ": Generated for $user->{nickname} ($user->{uid})"
+				for qw(title description);
 		}
 	}
 
@@ -534,4 +546,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.31 2005/11/30 05:57:26 jamiemccarthy Exp $
+$Id: RSS.pm,v 1.32 2005/12/22 20:12:51 pudge Exp $

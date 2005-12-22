@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.106 2005/12/21 21:02:45 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.107 2005/12/22 20:12:51 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.106 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1270,7 +1270,7 @@ sub lockTest {
 				percent		=> $pct,
 				subject		=> $_->{subject},
 				nickname	=> $slashdb->getUser($_->{uid}, 'nickname')
-				}, 1);
+			}, 1);
 		}
 	}
 	return $msg;
@@ -1694,4 +1694,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.106 2005/12/21 21:02:45 jamiemccarthy Exp $
+$Id: Display.pm,v 1.107 2005/12/22 20:12:51 pudge Exp $

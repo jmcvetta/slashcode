@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.183 2005/12/22 20:12:51 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1583,15 +1583,12 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 		$user->{is_admin} = 1;
 		# can edit users and do all sorts of cool stuff
 		$user->{is_super_admin} = 1 if $user->{seclev} >= 10_000 || $user->{acl}{super_admin};
-		my $sid;
-		#This cookie could go, and we could have session instance
-		#do its own thing without the cookie. -Brian
-		if ($cookies->{session}) {
-			$sid = $slashdb->getSessionInstance($uid, $cookies->{session}->value);
-		} else {
-			$sid = $slashdb->getSessionInstance($uid);
-		}
-		setCookie('session', $sid) if $sid;
+
+		# cookie no longer used, remove it if it is there -- pudge
+		setCookie('session', '') if $cookies->{session};
+		# this no longer "gets" anything, it only sets -- pudge
+		$slashdb->getSessionInstance($uid);
+
 		if ($constants->{admin_check_clearpass}
 			&& !Slash::Apache::ConnectionIsSecure()) {
 			$user->{state}{admin_clearpass_thisclick} = 1;
@@ -3225,4 +3222,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.182 2005/12/22 03:30:43 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.183 2005/12/22 20:12:51 pudge Exp $

@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.250 2005/12/06 21:18:32 tvroom Exp $
+# $Id: defaults.sql,v 1.251 2005/12/22 20:12:51 pudge Exp $
 #
 
 #
@@ -181,6 +181,17 @@ INSERT INTO dateformats (id, format, description) VALUES (17,'%Y.%m.%d %k:%M','1
 #
 # Dumping data for table 'discussions'
 #
+
+
+#
+# Dumping data for table 'discussion_kinds'
+#
+
+INSERT INTO discussion_kinds (dkid, name) VALUES (1, 'story');
+INSERT INTO discussion_kinds (dkid, name) VALUES (2, 'user_created');
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'journal');
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'journal-story');
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'poll');
 
 
 #

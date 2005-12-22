@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.228 2005/12/16 00:03:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.229 2005/12/22 20:12:51 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.228 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.229 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -392,8 +392,9 @@ sub forgetStoryTextRendered {
 sub forgetUsersLogtokens {
 	my($self) = @_;
 
+	# delete logtokens if they have been expired for a month
 	return $self->sqlDelete("users_logtokens",
-		"DATE_ADD(expires, INTERVAL 1 MONTH) < NOW()");
+		"public = 'no' AND DATE_ADD(expires, INTERVAL 1 MONTH) < NOW()");
 }
 
 ########################################################

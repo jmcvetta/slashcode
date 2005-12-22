@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.901 2005/12/21 19:56:28 jamiemccarthy Exp $
+# $Id: upgrades,v 1.902 2005/12/22 20:12:51 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3527,4 +3527,23 @@ UPDATE vars SET value = 'T_2_5_0_92' WHERE name = 'cvs_tag_currentcode';
 
 # Changes for plugins/Daypass
 INSERT INTO vars (name, value, description) VALUES ('daypass_offer_onlytologgedin', '0', 'If 1, offer a daypass only tologged-in users');
+
+DROP TABLE IF EXISTS discussion_kinds;
+CREATE TABLE discussion_kinds (
+        dkid        TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name        VARCHAR(30) NOT NULL DEFAULT '',
+        PRIMARY KEY (dkid),
+        UNIQUE name (name),
+) TYPE=InnoDB;
+
+ALTER TABLE discussions ADD COLUMN dkid TINYINT UNSIGNED NOT NULL DEFAULT 1 AFTER id;
+
+INSERT INTO discussion_kinds (dkid, name) VALUES (1, 'story');
+INSERT INTO discussion_kinds (dkid, name) VALUES (2, 'user_created');
+# only do these if you use these plugins
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'journal');
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'journal-story');
+INSERT INTO discussion_kinds (dkid, name) VALUES (NULL, 'poll');
+
+ALTER TABLE sessions DROP COLUMN logintime;
 

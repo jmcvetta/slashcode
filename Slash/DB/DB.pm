@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: DB.pm,v 1.19 2005/12/21 19:01:22 jamiemccarthy Exp $
+# $Id: DB.pm,v 1.20 2005/12/22 20:12:50 pudge Exp $
 
 package Slash::DB;
 
@@ -10,7 +10,7 @@ use DBIx::Password;
 use Slash::DB::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Would you cram a sock in it, Bender?
 
@@ -874,28 +874,6 @@ Fixed KEY.
 =back
 
 =head2 deleteSession(KEY)
-
-I am the default documentation, short and stout.
-
-=over 4
-
-=item Parameters
-
-=over 4
-
-=item KEY
-
-Key, as in the KEY
-
-=back
-
-=item Return value
-
-Fixed KEY.
-
-=back
-
-=head2 deleteAuthor(KEY)
 
 I am the default documentation, short and stout.
 

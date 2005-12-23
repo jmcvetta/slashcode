@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.183 2005/12/22 20:12:51 pudge Exp $
+# $Id: Environment.pm,v 1.184 2005/12/23 00:03:45 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.184 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -81,6 +81,8 @@ use vars qw($VERSION @EXPORT);
 	eatUserCookie
 	setCookie
 	getPublicLogToken
+
+	getPollVoterHash
 
 	debugHash
 	slashProf
@@ -1340,6 +1342,22 @@ sub setCookie {
 
 #========================================================================
 
+=head2 getPollVoterHash([UID])
+
+=cut
+
+sub getPollVoterHash {
+	my $constants = getCurrentStatic();
+	my $remote_addr = $ENV{REMOTE_ADDR} || '';
+        if ($constants->{poll_fwdfor} && $ENV{HTTP_X_FORWARDED_FOR}) {
+                return md5_hex($remote_addr . $ENV{HTTP_X_FORWARDED_FOR});
+        } else {
+                return md5_hex($remote_addr);
+        }
+}
+
+#========================================================================
+
 =head2 getPublicLogToken([UID])
 
 Just a wrapper around:
@@ -1362,8 +1380,6 @@ sub getPublicLogToken {
 	}
 	return '';
 }
-
-
 
 #========================================================================
 
@@ -3222,4 +3238,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.183 2005/12/22 20:12:51 pudge Exp $
+$Id: Environment.pm,v 1.184 2005/12/23 00:03:45 jamiemccarthy Exp $

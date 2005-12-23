@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.832 2005/12/22 20:12:50 pudge Exp $
+# $Id: MySQL.pm,v 1.833 2005/12/23 00:03:44 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.832 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.833 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1880,15 +1880,10 @@ sub createPollVoter {
 
 	my $qid_quoted = $self->sqlQuote($qid);
 	my $aid_quoted = $self->sqlQuote($aid);
-	my $md5;
-	if ($constants->{poll_fwdfor}) { 
-		$md5 = md5_hex($ENV{REMOTE_ADDR} . $ENV{HTTP_X_FORWARDED_FOR});
-	} else {
-		$md5 = md5_hex($ENV{REMOTE_ADDR});
-	}
+	my $pollvoter_md5 = getPollVoterHash();
 	$self->sqlInsert("pollvoters", {
 		qid	=> $qid,
-		id	=> $md5,
+		id	=> $pollvoter_md5,
 		-'time'	=> 'NOW()',
 		uid	=> $ENV{SLASH_USER}
 	});
@@ -4014,16 +4009,11 @@ sub hasVotedIn {
 	my($self, $qid) = @_;
 	my $constants = getCurrentStatic();
 
-	my $md5;
-	if ($constants->{poll_fwdfor}) {
-		$md5 = md5_hex($ENV{REMOTE_ADDR} . $ENV{HTTP_X_FORWARDED_FOR});
-	} else {
-		$md5 = md5_hex($ENV{REMOTE_ADDR});
-	}
+	my $pollvoter_md5 = getPollVoterHash();
 	my $qid_quoted = $self->sqlQuote($qid);
 	# Yes, qid/id/uid is a key in pollvoters.
 	my($voters) = $self->sqlSelect('id', 'pollvoters',
-		"qid=$qid_quoted AND id='$md5' AND uid=$ENV{SLASH_USER}"
+		"qid=$qid_quoted AND id='$pollvoter_md5' AND uid=$ENV{SLASH_USER}"
 	);
 
 	# Should be a max of one row returned.  In any case, if any

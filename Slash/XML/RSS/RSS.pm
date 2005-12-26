@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.32 2005/12/22 20:12:51 pudge Exp $
+# $Id: RSS.pm,v 1.33 2005/12/26 21:38:58 jamiemccarthy Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -168,12 +168,11 @@ sub create {
 		encoding	=> $encoding,
 	);
 
-	my($dynamic, $absolutedir);
+	my $dynamic = 0;
+	my $absolutedir = $gSkin->{absolutedir};
 	if (defined &Slash::Apache::ConnectionIsSSL) {
 		$dynamic = 1;
-		$absolutedir = Slash::Apache::ConnectionIsSSL()
-			? $gSkin->{absolutedir_secure}
-			: $gSkin->{absolutedir};
+		$absolutedir = $gSkin->{absolutedir_secure} if Slash::Apache::ConnectionIsSSL();
 	}
 
 	# set defaults
@@ -546,4 +545,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.32 2005/12/22 20:12:51 pudge Exp $
+$Id: RSS.pm,v 1.33 2005/12/26 21:38:58 jamiemccarthy Exp $

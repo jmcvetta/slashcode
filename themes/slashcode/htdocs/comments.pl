@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.237 2005/12/24 23:53:46 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.238 2005/12/26 17:30:59 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -928,6 +928,7 @@ sub previewForm {
 # called manually.
 sub submitComment {
 	my($form, $slashdb, $user, $constants, $discussion) = @_;
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
 	$form->{nobonus}  = $user->{nobonus}	unless $form->{nobonus_present};
 	$form->{postanon} = $user->{postanon}	unless $form->{postanon_present};
@@ -1070,7 +1071,7 @@ sub submitComment {
 	}
 	my $posters_uid = $user->{uid};
 	if ($form->{postanon}
-		&& $slashdb->checkAllowAnonymousPosting()
+		&& $reader->checkAllowAnonymousPosting()
 		&& $user->{karma} > -1
 		&& $discussion->{commentstatus} eq 'enabled') {
 		$posters_uid = getCurrentAnonymousCoward('uid');

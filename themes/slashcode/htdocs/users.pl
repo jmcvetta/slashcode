@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.291 2005/12/27 13:12:34 jamiemccarthy Exp $
+# $Id: users.pl,v 1.292 2005/12/27 13:23:06 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1139,7 +1139,6 @@ sub showInfo {
 
 		# This is cached.
 		my $discussion = $reader->getDiscussion($comment->{sid});
-use Data::Dumper; print STDERR "discussion '$comment->{sid}': " . Dumper($discussion); #if $discussion->{url} && !$discussion->{dkid};
 		if (!$discussion || !$discussion->{dkid}) {
 			# A comment with no accompanying discussion;
 			# basically we pretend it doesn't exist.

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.107 2005/12/22 20:12:51 pudge Exp $
+# $Id: Display.pm,v 1.108 2006/01/02 18:39:54 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1265,10 +1265,10 @@ sub lockTest {
 	my $msg;
 	my $locks = $slashdb->getSessions([qw|lasttitle uid|]);
 	for (values %$locks) {
-		if ($_->{uid} ne getCurrentUser('uid') && (my $pct = matchingStrings($_->{subject}, $subj))) {
+		if ($_->{uid} ne getCurrentUser('uid') && (my $pct = matchingStrings($_->{lasttitle}, $subj))) {
 			$msg .= slashDisplay('lockTest', {
 				percent		=> $pct,
-				subject		=> $_->{subject},
+				subject		=> $_->{lasttitle},
 				nickname	=> $slashdb->getUser($_->{uid}, 'nickname')
 			}, 1);
 		}
@@ -1694,4 +1694,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.107 2005/12/22 20:12:51 pudge Exp $
+$Id: Display.pm,v 1.108 2006/01/02 18:39:54 jamiemccarthy Exp $

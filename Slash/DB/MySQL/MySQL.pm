@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.833 2005/12/23 00:03:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.834 2006/01/02 18:13:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.833 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.834 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -710,6 +710,8 @@ sub _convertModsToComments {
 		}
 		$com_hr->{primaryskid} ||= $mainpage_skid;
 		my $rootdir = $self->getSkin($com_hr->{primaryskid})->{rootdir};
+		# XXX With discussions.kinds we can trust the URL unless it's
+		# a user-created discussion, now.
 		if ($mod_hr->{discussions_sid}) {
 			# This is a comment posted to a story discussion, so
 			# we can link straight to the story, providing even
@@ -7706,7 +7708,7 @@ sub getCommentReply {
 	) || {};
 
 	# For a comment we're replying to, there's no need to mod.
-	$reply->{no_moderation} = 1;
+	$reply->{no_moderation} = 1 if %$reply;
 
 	return $reply;
 }

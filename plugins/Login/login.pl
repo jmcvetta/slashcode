@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.21 2005/12/12 23:17:29 pudge Exp $
+# $Id: login.pl,v 1.22 2006/01/02 21:49:01 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -219,8 +219,15 @@ sub mailPasswd {
 		# A user coming from a srcid that's been marked as not
 		# acceptable for posting from also does not get to
 		# mail a password to anyone.
-		if ($reader->checkAL2($user->{srcids}, 'nopost')
-			|| $reader->checkAL2($user->{srcids}, 'nopostanon')
+
+		## XXX: we added uid to srcids, so now this is broken;
+		## anywhere else we need to address this?
+		my %srcids;
+		@srcids{keys %{$user->{srcids}}} = values %{$user->{srcids}};
+		delete $srcids{uid};
+
+		if ($reader->checkAL2(\%srcids, 'nopost')
+			|| $reader->checkAL2(\%srcids, 'nopostanon')
 		) {
 			push @note, getData('mail_readonly');
 			$error = 1;

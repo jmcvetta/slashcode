@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.64 2005/12/04 05:45:31 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.65 2006/01/02 18:49:57 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -476,6 +476,7 @@ sub _read_and_unlink_cchp_file {
 	} else {
 		my $cchp = <$cchp_fh>;
 		close $cchp_fh;
+		$cchp = '' if !defined($cchp);
 		if ($cchp && (($cc, $hp) = $cchp =~
 			/count (\d+), hitparade (.+)$/m)) {
 		} else {

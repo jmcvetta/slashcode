@@ -51,9 +51,11 @@ __template__
 					<li>
 						<a href="[% gSkin.rootdir %]/authors.pl">authors</a>
 					</li>
-					<li>
-						<a href="[% gSkin.rootdir %]/users.pl">preferences</a>
-					</li>
+                                        [%- IF ! user.is_anon %]
+                                        <li>
+                                                <a href="[% gSkin.rootdir %]/users.pl">preferences</a>
+                                        </li>
+                                        [%- END %]
 					<li>
 						<a href="[% PROCESS rsslink %]"><img src="[% constants.imagedir %]/rssicon.gif" width="36" height="14" alt="RSS feed"></a>
 					</li>
@@ -70,4 +72,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: footer;misc;default,v 1.17 2005/10/25 18:43:14 tvroom Exp $
+$Id: footer;misc;default,v 1.18 2006/01/03 19:16:46 pudge Exp $

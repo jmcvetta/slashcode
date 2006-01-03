@@ -57,7 +57,7 @@ Article [% form.sid %] Saved
 Inserted [% form.sid %] [% form.title %]
 
 [% CASE 'story_update_failed' %]
-Updating [% form.sid %] [% form.title %] failed. Best two out of three?
+Updating [% form.sid %] '[% form.title %]' failed. Best two out of three?
 
 [% CASE 'story_creation_failed' %]
 Failed creating "[% form.title %]". Please try again, the more you play, the more you pay
@@ -101,4 +101,4 @@ ACL Editor
 __seclev__
 10000
 __version__
-$Id: titles;admin;default,v 1.11 2005/07/27 22:53:54 pudge Exp $
+$Id: titles;admin;default,v 1.12 2006/01/03 21:12:34 jamiemccarthy Exp $

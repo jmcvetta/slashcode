@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.30 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.31 2006/01/03 18:54:01 pudge Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -226,7 +226,7 @@ sub _get_web_by_uid {
 	my $prime = "message_web.id=message_web_text.id AND user";
 	my $other = "ORDER BY date ASC";
 
-	my $id_db = $self->sqlQuote($uid || $ENV{SLASH_USER});
+	my $id_db = $self->sqlQuote($uid || getCurrentUser('uid'));
 	my $data = $self->sqlSelectAllHashrefArray(
 		$cols, $table, "$prime=$id_db", $other
 	);
@@ -238,7 +238,7 @@ sub _get_web_count_by_uid {
 	my $table = $self->{_web_table};
 	my $cols  = "readed";
 
-	my $uid_db = $self->sqlQuote($uid || $ENV{SLASH_USER});
+	my $uid_db = $self->sqlQuote($uid || getCurrentUser('uid'));
 	my $data = $self->sqlSelectAll(
 		$cols, $table, "user=$uid_db AND " .
 		"$self->{_web_table1}.$self->{_web_prime1} = $self->{_web_table2}.$self->{_web_prime2}",
@@ -374,7 +374,7 @@ sub _delete_web {
 	my $where2 = "$prime1=$id_db";
 
 	unless ($override) {
-		$uid ||= $ENV{SLASH_USER};
+		$uid ||= getCurrentUser('uid');
 		return 0 unless $uid;
 		my $uid_db = $self->sqlQuote($uid);
 		my $where  = $where1 . " AND user=$uid_db";

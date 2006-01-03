@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.52 2005/12/22 20:12:51 pudge Exp $
+# $Id: Journal.pm,v 1.53 2006/01/03 18:54:01 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -36,7 +36,7 @@ sub new {
 
 sub set {
 	my($self, $id, $values) = @_;
-	my $uid = $ENV{SLASH_USER};
+	my $uid = getCurrentUser('uid');
 	my $constants = getCurrentStatic();
 
 	return unless $self->sqlSelect('id', 'journals', "uid=$uid AND id=$id");
@@ -180,7 +180,7 @@ sub create {
 
 	$submit = $submit ? "yes" : "no";
 
-	my $uid = $ENV{SLASH_USER};
+	my $uid = getCurrentUser('uid');
 	$self->sqlInsert("journals", {
 		uid		=> $uid,
 		description	=> $description,
@@ -207,7 +207,7 @@ sub create {
 
 sub remove {
 	my($self, $id) = @_;
-	my $uid = $ENV{SLASH_USER};
+	my $uid = getCurrentUser('uid');
 
 	my $journal = $self->get($id);
 	return unless $journal->{uid} == $uid;
@@ -313,7 +313,7 @@ EOT
 
 sub themes {
 	my($self) = @_;
-	my $uid = $ENV{SLASH_USER};
+	my $uid = getCurrentUser('uid');
 	my $sql;
 	$sql .= "SELECT name from journal_themes";
 	$self->sqlConnect;

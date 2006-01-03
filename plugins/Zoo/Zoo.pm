@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Zoo.pm,v 1.50 2005/12/21 19:37:04 jamiemccarthy Exp $
+# $Id: Zoo.pm,v 1.51 2006/01/03 18:54:01 pudge Exp $
 
 package Slash::Zoo;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # "There ain't no justice" -Niven
 # We can try. 	-Brian
@@ -209,7 +209,7 @@ sub count {
 
 sub getFriendsWithJournals {
 	my($self) = @_;
-	my $uid = $ENV{SLASH_USER};
+	my $uid = getCurrentUser('uid');
 
 	my($friends, $journals, $ids, %data);
 	$friends = $self->sqlSelectAll(
@@ -243,7 +243,7 @@ sub getFriendsWithJournals {
 sub getFriendsForMessage {
 	my($self) = @_;
 	my $code  = MSG_CODE_JOURNAL_FRIEND;
-	my $uid   = $ENV{SLASH_USER};
+	my $uid   = getCurrentUser('uid');
 	my $cols  = "pp.uid";
 	my $table = "people AS pp, users_messages as um";
 	my $where = <<SQL;

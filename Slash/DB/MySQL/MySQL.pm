@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.834 2006/01/02 18:13:06 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.835 2006/01/03 18:54:01 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.834 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.835 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1887,7 +1887,7 @@ sub createPollVoter {
 		qid	=> $qid,
 		id	=> $pollvoter_md5,
 		-'time'	=> 'NOW()',
-		uid	=> $ENV{SLASH_USER}
+		uid	=> getCurrentUser('uid')
 	});
 
 	$self->sqlUpdate("pollquestions", {
@@ -2005,12 +2005,7 @@ sub createAccessLog {
 		$dat ||= $uri;
 	}
 
-	my $uid;
-	if ($ENV{SLASH_USER}) {
-		$uid = $ENV{SLASH_USER};
-	} else {
-		$uid = $user->{uid} || $constants->{anonymous_coward_uid};
-	}
+	my $uid = $user->{uid} || $constants->{anonymous_coward_uid};
 	my $skin_name = getCurrentSkin('name');
 	# XXXSKIN - i think these are no longer special cases ...
 	# The following two are special cases
@@ -4014,8 +4009,9 @@ sub hasVotedIn {
 	my $pollvoter_md5 = getPollVoterHash();
 	my $qid_quoted = $self->sqlQuote($qid);
 	# Yes, qid/id/uid is a key in pollvoters.
+	my $uid = getCurrentUser('uid');
 	my($voters) = $self->sqlSelect('id', 'pollvoters',
-		"qid=$qid_quoted AND id='$pollvoter_md5' AND uid=$ENV{SLASH_USER}"
+		"qid=$qid_quoted AND id='$pollvoter_md5' AND uid=$uid"
 	);
 
 	# Should be a max of one row returned.  In any case, if any
@@ -4725,7 +4721,7 @@ sub createFormkey {
 		my $rows = $self->sqlInsert('formkeys', {
 			formkey         => $formkey,
 			formname        => $formname,
-			uid             => $ENV{SLASH_USER},
+			uid             => getCurrentUser('uid'),
 			ipid            => $ipid,
 			subnetid        => $subnetid,
 			value           => 0,

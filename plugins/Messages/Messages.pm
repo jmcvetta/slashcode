@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.33 2005/11/27 21:11:16 jamiemccarthy Exp $
+# $Id: Messages.pm,v 1.34 2006/01/03 18:54:01 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -580,7 +580,7 @@ sub getWeb {
 
 sub getWebByUID {
 	my($self, $uid) = @_;
-	$uid ||= $ENV{SLASH_USER};
+	$uid ||= getCurrentUser('uid');
 
 	my $msguser = $self->getUser($uid);
 	my $msgs = $self->_get_web_by_uid($uid) or return 0;
@@ -1098,4 +1098,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.33 2005/11/27 21:11:16 jamiemccarthy Exp $
+$Id: Messages.pm,v 1.34 2006/01/03 18:54:01 pudge Exp $

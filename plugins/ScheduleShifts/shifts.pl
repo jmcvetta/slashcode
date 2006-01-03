@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: shifts.pl,v 1.6 2005/08/16 17:42:27 pudge Exp $
+# $Id: shifts.pl,v 1.7 2006/01/03 22:41:07 pudge Exp $
 
 # shifts.pl -- Part of the ScheduleShifts plugin.
 
@@ -17,7 +17,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -36,6 +36,7 @@ sub main {
 		default	=> [ $admin,  \&showShifts	],
 		daddy	=> [ $shifts, \&getDaddyList	],
 		lcr	=> [ $shifts, \&setLCR		],
+		remark	=> [ $shifts, \&createRemark	],
 	);
 
 	my $op = $form->{op};
@@ -48,18 +49,19 @@ sub main {
 		}
 	}
 
-	if ($op ne 'daddy') {
+	if ($op ne 'daddy' && $op ne 'remark') {
 		header(getData('page_title')) or return;
 	}
 
 	# dispatch of op
 	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $gSkin, $schedule);
 
-	if ($op ne 'daddy') {
+	if ($op ne 'daddy' && $op ne 'remark') {
 		# writeLog('SOME DATA');	# if appropriate
 		footer();
 	}
 }
+
 
 sub setLCR {
 	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;
@@ -68,6 +70,20 @@ sub setLCR {
 	my $lcr_site = $form->{site};
 
 	$slashdb->setVar("ircslash_lcr_$lcr_site", $slashdb->getTime . "|$lcr_tag");
+}
+
+
+sub createRemark {
+	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;
+
+	my($remark) = $form->{remark};
+	$slashdb->createRemark(
+		$constants->{anonymous_coward_uid},
+		0,
+		$remark,
+		'system'
+	);
+	1;
 }
 
 
@@ -115,6 +131,7 @@ sub getDaddyList {
 		rdfitemdesc_html	=> 1,
 	});
 }
+
 
 sub saveShifts {
 	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;

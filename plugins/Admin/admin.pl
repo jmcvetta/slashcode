@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.267 2005/12/22 03:30:43 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.268 2006/01/03 20:07:11 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1379,6 +1379,7 @@ sub editStory {
 	my $topic_select = Slash::Admin::PopupTree::getPopupTree($storyref->{topics_chosen});
 
 	my $authors = $slashdb->getDescriptions('authors', '', 1);
+	$authors->{$storyref->{uid}} = $slashdb->getUser($storyref->{uid}, 'nickname') if $storyref->{uid} && !defined($authors->{$storyref->{uid}});
 	my $author_select = createSelect('uid', $authors, $storyref->{uid}, 1);
 
 	$storyref->{dept} =~ s/ /-/gi;

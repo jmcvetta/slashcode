@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.230 2006/01/04 19:09:09 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.231 2006/01/04 19:38:20 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.230 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.231 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1039,9 +1039,9 @@ sub getSkinInfo {
 		my $mp_tid = $constants->{mainpage_nexus_tid};
 		for my $child_tid (sort { lc $tree->{$a}{textname} cmp lc $tree->{$b}{textname} } keys %{$tree->{$tid}{child}}) {
 			next unless $tree->{$child_tid}{nexus} && $tree->{$child_tid}{skid};
-			$index{$skinname}{$child_tid} ||= [ ];
+			$index{$skinname} ||= [ ];
 			if ($children{$child_tid}) {
-				push @{$index{$skinname}{$child_tid}}, $children{$child_tid};
+				push @{$index{$skinname}}, $children{$child_tid};
 				next;
 			}
 
@@ -1079,7 +1079,7 @@ sub getSkinInfo {
 			$child_data{count_sectional} = scalar(grep { $ds_hr->{$_} == 1 } @$stoids);
 
 			$children{$child_tid} = \%child_data;
-			push @{$index{$skinname}{$child_tid}}, $children{$child_tid};
+			push @{$index{$skinname}}, $children{$child_tid};
 		}
 	}
 

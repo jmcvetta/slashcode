@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.905 2006/01/03 21:12:34 jamiemccarthy Exp $
+# $Id: upgrades,v 1.906 2006/01/04 07:11:08 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3516,8 +3516,6 @@ UPDATE users_logtokens, users SET public='yes' WHERE users_logtokens.uid=users.u
 # 2005-12-11
 UPDATE vars SET value = 'T_2_5_0_91' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # PUDGE LAST UPDATED HERE
 
 # 2005-12-19
@@ -3559,4 +3557,9 @@ ALTER TABLE sessions DROP COLUMN logintime;
 
 UPDATE users_info SET bio='' WHERE bio IS NULL;
 ALTER TABLE users_info CHANGE COLUMN bio bio text NOT NULL;
+
+# 2006-01-03
+UPDATE vars SET value = 'T_2_5_0_93' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

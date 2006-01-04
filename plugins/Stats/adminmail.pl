@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.207 2005/12/17 20:17:06 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.208 2006/01/04 20:49:26 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -698,7 +698,7 @@ EOT
 	}
 	
 	foreach my $day (@ah_days){
-		my $avg = $stats->getStat("avg_hits_per_story", $day, 0);
+		my $avg = $stats->getStat("avg_hits_per_story", $day, 0) || 0;
 		push @{$data{avg_hits_per_story}}, sprintf("%12.1f", $avg);
 	}
 

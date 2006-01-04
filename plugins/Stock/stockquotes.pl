@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: stockquotes.pl,v 1.4 2003/08/29 16:18:45 jamie Exp $
+# $Id: stockquotes.pl,v 1.5 2006/01/04 23:45:42 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -47,7 +47,7 @@ $task{$me}{code} = sub {
 		my $stock = $table->{$stock_key};
 		my($exch, $sym) = ($stock->{exchange}, $stock->{symbol});
 		my %stockfetch = $fq->fetch($exch, $sym);
-		if (!%stockfetch) {
+		if (!%stockfetch || !defined($stockfetch{$sym,"net"})) {
 			slashdLog("failed stockfetch for '$stock_key' '$exch' '$sym'")
 				if verbosity() >= 2;
 			next;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.837 2006/01/04 19:26:41 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.838 2006/01/04 21:34:57 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.837 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.838 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2629,10 +2629,9 @@ sub setLogToken {
 			'users_logtokens', "uid = $uid_q",
 			"ORDER BY expires LIMIT $limit"
 		);
-
-		for my $lid (keys %$logtokens) {
+		my @lids = sort { $a <=> $b } keys %$logtokens;
+		for my $lid (@lids) {
 			my $lt = $logtokens->{$lid};
-			$self->sqlDelete('users_logtokens', "lid=$lid");
 			$self->_logtoken_delete_memcached(
 				$lt->{uid},
 				$lt->{temp},
@@ -2640,6 +2639,8 @@ sub setLogToken {
 				$lt->{locationid}
 			);
 		}
+		my $lids_text = join(",", @lids);
+		$self->sqlDelete('users_logtokens', "lid IN ($lids_text)");
 	}
 
 
@@ -12573,7 +12574,7 @@ sub _genericGets {
 	}
 
 	if ($sth) {
-		while (my $row = $sth->fetchrow_hashref) {
+		while (my $row = $sth->fetchrow_hashref) { if (!defined($row->{$table_prime})) { my @caller_info = ( ); for (my $lvl = 1; $lvl < 99; ++$lvl) { my @c = caller($lvl); last unless @c; next if $c[0] =~ /^Template/; push @caller_info, "$c[0] line $c[2]"; last if scalar(@caller_info) >= 8; } use Data::Dumper; my $t = gmtime() . " _genericGets table_prime='$table_prime' table='$table' param_table='$param_table' values: " . Dumper($values) . " row: " . Dumper($row) . " caller_info='@caller_info'"; $t =~ s/\s+/ /g; print STDERR "$t\n"; }
 			$return{ $row->{$table_prime} } = $row;
 		}
 		$sth->finish;

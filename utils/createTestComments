@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestComments,v 1.28 2005/12/21 19:40:26 jamiemccarthy Exp $
+# $Id: createTestComments,v 1.29 2006/01/04 19:59:28 jamiemccarthy Exp $
 
 BEGIN {
 	{
@@ -23,7 +23,7 @@ use Benchmark;
 
 use vars qw( $slashdb $werder $constants $junk );
 
-(my $VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree, %deep_tree);
@@ -144,7 +144,7 @@ $werder = new Silly::Werder;
 
 		my $score = 1;
 		if ($uid == $constants->{anonymous_coward_uid}
-			or $user->{karma} < $constants->{badkarma}) {
+			|| $user->{karma} < $constants->{badkarma}) {
 			$score = 0;
 		} elsif ($user->{karma} > $constants->{goodkarma}) {
 			$score = 2;

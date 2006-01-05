@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.231 2006/01/04 19:38:20 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.232 2006/01/05 20:01:03 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.231 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.232 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1037,7 +1037,11 @@ sub getSkinInfo {
 
 		my $skinname = $skins->{ $tree->{$tid}{skid} }{name};
 		my $mp_tid = $constants->{mainpage_nexus_tid};
-		for my $child_tid (sort { lc $tree->{$a}{textname} cmp lc $tree->{$b}{textname} } keys %{$tree->{$tid}{child}}) {
+		my @children =
+			sort { lc $tree->{$a}{textname} cmp lc $tree->{$b}{textname} }
+			grep { $tree->{$tid}{child}{$_} > 0 } # poisoned children don't count
+			keys %{$tree->{$tid}{child}};
+		for my $child_tid (@children) {
 			next unless $tree->{$child_tid}{nexus} && $tree->{$child_tid}{skid};
 			$index{$skinname} ||= [ ];
 			if ($children{$child_tid}) {

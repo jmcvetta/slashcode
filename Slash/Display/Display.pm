@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.43 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.44 2006/01/06 00:51:07 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -184,6 +184,15 @@ sub slashDisplay {
 		# and this is the only good way to get the actual name,
 		# page, skin, we bite the bullet and do it
 		$tempdata ||= $reader->getTemplateByName($name, [qw(tpid page skin)]);
+
+		# might as well bail here if we can't find the template
+		if (!$tempdata) {
+			# restore our original values
+			$user->{currentSkin}	= $origSkin;
+			$user->{currentPage}	= $origPage;
+			return;
+		}
+
 		$TEMPNAME = "ID $tempdata->{tpid}, " .
 			"$name;$tempdata->{page};$tempdata->{skin}";
 	}

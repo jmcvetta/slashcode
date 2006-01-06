@@ -30,7 +30,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: print.pl,v 1.16 2005/12/21 20:17:59 jamiemccarthy Exp $
+# $Id: print.pl,v 1.17 2006/01/06 19:54:06 jamiemccarthy Exp $
 
 use strict;
 use HTML::TreeBuilder;
@@ -39,7 +39,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw( $VERSION );
 
-($VERSION) = ' $Revision: 1.16 $' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $constants = getCurrentStatic();
@@ -99,7 +99,9 @@ sub main {
 	# routine in admin.pl to use it instead -- pudge
 	my @story_links;
 	my $tree = new HTML::TreeBuilder;
-	$tree->parse(processSlashTags(parseSlashizedLinks($story->{introtext} . $story->{bodytext})));
+	my $storytext = $story->{introtext} || '';
+	$storytext .= $story->{bodytext} if defined $story->{bodytext};
+	$tree->parse(processSlashTags(parseSlashizedLinks($storytext)));
 	$tree->eof;
 	my $links = $tree->extract_links('a');  # get "A" tags only
 

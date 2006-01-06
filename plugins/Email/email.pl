@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: email.pl,v 1.13 2005/04/26 18:30:33 jamiemccarthy Exp $
+# $Id: email.pl,v 1.14 2006/01/06 19:53:43 jamiemccarthy Exp $
 
 # Slash::Email - web script
 # 
@@ -16,7 +16,7 @@ use Slash::Utility;
 use Slash::Constants ':messages';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 # this is an example main().  feel free to use what you think
@@ -30,8 +30,8 @@ sub main {
 	my $gSkin       = getCurrentSkin();
 
 	# Primary fields.
-	my $sid		= $form->{sid};
-	my $email	= $form->{email};
+	my $sid		= $form->{sid} || '';
+	my $email	= $form->{email} || '';
 
 	# Use for ops where anonymous access is optional.
 	my $allow_anon =
@@ -273,8 +273,8 @@ sub removeOptoutForm {
 sub removeOptout {
 	my($slashdb, $constants, $user, $form, $gSkin, $Plugins) = @_;
 
-	my $email = decode_entities($form->{email});
-	my $rc = $Plugins->{Email}->removeFromOptoutList($form->{email});
+	my $email = decode_entities($form->{email} || '');
+	my $rc = $Plugins->{Email}->removeFromOptoutList($form->{email} || '');
 	print getData('optout_removed', { result => $rc });
 
 	removeOptoutForm(@_);

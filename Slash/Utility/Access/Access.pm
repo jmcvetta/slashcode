@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.28 2005/03/11 19:57:58 pudge Exp $
+# $Id: Access.pm,v 1.29 2006/01/06 19:52:27 jamiemccarthy Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -522,6 +522,12 @@ sub compressOk {
 	my($formname, $field, $content, $wsfactor) = @_;
 	$wsfactor ||= 1;
 
+	# If no content (or I suppose the single char '0') is passed in,
+	# just report that it passes the test.  Hopefully the caller is
+	# performing other checks to make sure that boundary condition
+	# is addresses.
+	return 1 if !$content;
+
 	my $slashdb   = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user      = getCurrentUser();
@@ -813,4 +819,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.28 2005/03/11 19:57:58 pudge Exp $
+$Id: Access.pm,v 1.29 2006/01/06 19:52:27 jamiemccarthy Exp $

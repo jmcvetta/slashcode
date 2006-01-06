@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.35 2005/12/13 16:18:39 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.36 2006/01/06 19:53:54 jamiemccarthy Exp $
 
 package Slash::HumanConf::Static;
 
@@ -18,7 +18,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -341,7 +341,7 @@ sub get_font_args {
 	$self->{prefnumpixels} = $constants->{hc_q1_prefnumpixels} || 1000;
 
 	my @pf = @{ $self->{possible_fonts} };
-	my $font = @pf[rand @pf];
+	my $font = @pf[rand @pf] || '';
 	my $first_fontsize_try = 30; # default first guess
 	if ( $font =~ m{^(\w+)/(\d+)$} ) {
 		$font = $1;

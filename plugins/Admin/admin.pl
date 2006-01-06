@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.268 2006/01/03 20:07:11 tvroom Exp $
+# $Id: admin.pl,v 1.269 2006/01/06 19:53:20 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1347,7 +1347,7 @@ sub editStory {
 			# dispStory() -- pudge
 			$story_copy{$field} = parseSlashizedLinks($storyref->{$field});
 			my $options = $field eq 'bodytext' ? { break => 1 } : undef;
-			$story_copy{$field} = processSlashTags($storyref->{$field}, $options);
+			$story_copy{$field} = processSlashTags($storyref->{$field}, $options) || '';
 		}
 
 		# Get the related text.

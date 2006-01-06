@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.27 2005/03/11 19:58:42 pudge Exp $
+# $Id: metamod.pl,v 1.28 2006/01/06 18:31:31 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -15,7 +15,7 @@ sub main {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
-	my $op = getCurrentForm('op');
+	my $op = getCurrentForm('op') || '';
 	my $section = $slashdb->getSection($form->{section});
 
 	header(getData('header'), $section->{section}) or return;

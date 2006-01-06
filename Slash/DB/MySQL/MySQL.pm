@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.840 2006/01/06 01:41:12 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.841 2006/01/06 19:52:13 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.840 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.841 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5082,7 +5082,7 @@ sub checkMaxMailPasswords {
 	}
 
 	my $max_num = $constants->{mailpass_max_num} || 2;
-	my $user_mp_num = $user_check->{mailpass_num};
+	my $user_mp_num = $user_check->{mailpass_num} || 0;
 	if ($user_mp_num < $max_num) {
 		# It's been within the last max_hours since the user last
 		# got a password sent, but they haven't used up their
@@ -5111,8 +5111,7 @@ sub setUserMailPasswd {
 			mailpass_num		=> 1,
 		});
 	} else {
-		my $user_mp_num = $self->getUser($user_set->{uid},
-			'mailpass_num');
+		my $user_mp_num = $self->getUser($user_set->{uid}, 'mailpass_num') || 0;
 		my $data = {
 			mailpass_num		=> $user_mp_num+1,
 		};
@@ -6411,7 +6410,7 @@ sub getPoll {
 ##################################################################
 sub getSubmissionsSkins {
 	my($self, $skin) = @_;
-	my $del = getCurrentForm('del');
+	my $del = getCurrentForm('del') || 0;
 
 	my $skin_clause = $skin ? " AND skins.name = '$skin' " : '';
 
@@ -6486,7 +6485,7 @@ sub getPortalsCommon {
 	my %tmp;
 	while (my $SB = $sth->fetchrow_hashref) {
 		$self->{_boxes}{$SB->{bid}} = $SB;  # Set the Slashbox
-		next unless $SB->{ordernum} &&$SB->{ordernum} && $SB->{ordernum} > 0;  # Set the index if applicable
+		next unless $SB->{ordernum} && $SB->{ordernum} && $SB->{ordernum} > 0;  # Set the index if applicable
 		if ($SB->{all_skins}) {
 			for my $skin (keys %$skins) {
 				push @{$tmp{$skin}}, $SB->{bid};

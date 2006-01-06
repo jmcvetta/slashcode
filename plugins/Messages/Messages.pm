@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.34 2006/01/03 18:54:01 pudge Exp $
+# $Id: Messages.pm,v 1.35 2006/01/06 19:05:28 jamiemccarthy Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -968,8 +968,10 @@ always return a list of (code, description).
 
 sub getDescription {
 	my($self, $codetype, $key) = @_;
-	if (!defined($key) || !length($key)) {
-print STDERR "Message.pm getDescription called with codetype='$codetype' key='$key'\n";
+if (!defined($key) || !length($key)) {
+my $codetype_str = defined($codetype) ? $codetype : '(undef)';
+my $key_str = defined($key) ? $key : '(undef)';
+print STDERR "Message.pm getDescription called with codetype='$codetype_str' key='$key_str'\n";
 return;
 }
 
@@ -1098,4 +1100,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.34 2006/01/03 18:54:01 pudge Exp $
+$Id: Messages.pm,v 1.35 2006/01/06 19:05:28 jamiemccarthy Exp $

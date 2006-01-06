@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.292 2005/12/27 13:23:06 jamiemccarthy Exp $
+# $Id: users.pl,v 1.293 2006/01/06 00:52:18 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -693,7 +693,7 @@ sub mailPasswd {
 	}
 
 	my $newpasswd = $slashdb->getNewPasswd($uid);
-	my $tempnick = fixparam($user_edit->{nickname});
+	my $tempnick = $user_edit->{nickname};
 
 	my $emailtitle = getTitle('mailPassword_email_title', {
 		nickname	=> $user_edit->{nickname}

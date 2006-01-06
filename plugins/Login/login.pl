@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.22 2006/01/02 21:49:01 pudge Exp $
+# $Id: login.pl,v 1.23 2006/01/06 00:52:18 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -254,7 +254,7 @@ sub _sendMailPasswd {
 
 	my $uid       = $user_send->{uid};
 	my $newpasswd = $slashdb->getNewPasswd($uid);
-	my $tempnick  = fixparam($user_send->{nickname});
+	my $tempnick  = $user_send->{nickname};
 	my $subject   = getData('mail_subject', { nickname => $user_send->{nickname} });
 
 	# Pull out some data passed in with the request.  Only the IP

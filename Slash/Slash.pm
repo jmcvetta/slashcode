@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.252 2005/12/22 03:30:42 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.253 2006/01/06 19:36:22 jamiemccarthy Exp $
 
 package Slash;
 
@@ -397,7 +397,7 @@ sub reparentComments {
 		# But, if all its (great-etc.) grandparents are either invisible
 		# or chronologically precede the root comment, don't reparent it
 		# at all.
-		if ($user->{reparent} && $comments->{$x}{points} >= $user->{threshold}) {
+		if ($user->{reparent} && $comments->{$x}{points} >= $user->{threshold}) { # XXX either $comments->{$x}{points} or $user->{threshold} is undefined here, not sure which or why
 			my $tmppid = $pid;
 			while ($tmppid
 				&& $comments->{$tmppid} && defined($comments->{$tmppid}{points})
@@ -1730,6 +1730,7 @@ sub getData {
 	my $opts_getname = $opts; $opts_getname->{GetName} = 1;
 
 	my $name = slashDisplayName('data', $hashref, $opts_getname);
+	return undef if !$name || !$name->{tempdata} || !defined($name->{tempdata}{tpid});
 	my $var  = $cache->{getdata}{ $name->{tempdata}{tpid} } ||= { };
 
 	if (defined $var->{$value}) {

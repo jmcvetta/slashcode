@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.293 2006/01/06 00:52:18 pudge Exp $
+# $Id: users.pl,v 1.294 2006/01/07 03:54:27 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -804,6 +804,7 @@ sub showComments {
 	) if $commentcount;
 
 	if (ref($comments) eq 'ARRAY') {
+		my $kinds = $reader->getDescriptions('discussion_kinds');
 		for my $comment (@$comments) {
 			# This works since $sid is numeric.
 			$comment->{replies} = $reader->countCommentsBySidPid($comment->{sid}, $comment->{cid});
@@ -813,7 +814,6 @@ sub showComments {
 			# based SID from either the "stories" table or from
 			# pollquestions.
 			my $discussion = $reader->getDiscussion($comment->{sid});
-			my $kinds = $reader->getDescriptions('discussion_kinds');
 
 			if ($kinds->{ $discussion->{dkid} } eq 'journal') {
 				$comment->{type} = 'journal';

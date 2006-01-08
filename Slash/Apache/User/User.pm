@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.140 2006/01/03 18:54:01 pudge Exp $
+# $Id: User.pm,v 1.141 2006/01/08 04:19:03 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -357,7 +357,7 @@ sub handler {
 			slashDisplay('bannedtext_uid', { uid => $uid }, { Return => 1 } )
 		);
 		# Now we need to create a user hashref for that global
-		# current user, so the "uid" field of accesslog gets written
+		# current user, so these fields of accesslog get written
 		# correctly when we log this attempted hit.  We do this
 		# dummy hashref with the bare minimum of values that we need,
 		# instead of going through prepareUser(), because this is

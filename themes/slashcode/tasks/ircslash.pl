@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.36 2006/01/03 22:40:44 pudge Exp $
+# $Id: ircslash.pl,v 1.37 2006/01/08 04:19:03 pudge Exp $
 
 use strict;
 
@@ -332,9 +332,11 @@ my %cmds = (
 	whois		=> \&cmd_whois,
 	excuse		=> \&cmd_excuse,
 	daddypants	=> \&cmd_daddypants,
+	dp		=> \&cmd_daddypants,
 	slashd		=> \&cmd_slashd,
 	dbs		=> \&cmd_dbs,
 	quote		=> \&cmd_quote,
+	quot		=> \&cmd_quote,
 	lcr		=> \&cmd_lcr,
 	lcrset		=> \&cmd_lcrset,
 	re		=> \&cmd_re,

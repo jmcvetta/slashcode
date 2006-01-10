@@ -26,10 +26,6 @@ __template__
 <link rel="search"    title="Search [% constants.sitename | strip_attribute %]" href="[% gSkin.rootdir %]/search.pl">
 [%- END;
    linkrels.push(tmp) %]
-[% tmp = BLOCK -%]
-<link rel="alternate" title="[% constants.sitename | strip_attribute %] RSS" href="[% PROCESS rsslink %]" type="application/rss+xml">
-[%- END;
-   linkrels.push(tmp) %]
 
 [% # XXXSKIN fix! %]
 [% IF link.section;
@@ -100,6 +96,12 @@ ELSE; # default author link, where author is a nickname
 END %]
 
 
+[% tmp = BLOCK -%]
+<link rel="alternate" title="[% constants.sitename | strip_attribute %] RSS" href="[% PROCESS rsslink %]" type="application/rss+xml">
+[%- END;
+   linkrels.push(tmp) %]
+
+
 
 [% FOR linkrel = linkrels;
 	linkrel; "\n";
@@ -108,4 +110,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: linkrel;misc;default,v 1.13 2005/07/27 22:54:48 pudge Exp $
+$Id: linkrel;misc;default,v 1.14 2006/01/10 21:28:45 pudge Exp $

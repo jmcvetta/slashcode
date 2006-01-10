@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.67 2005/11/23 15:17:51 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.68 2006/01/10 21:24:45 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -979,7 +979,6 @@ sub sqlDelete {
 sub sqlInsert {
 	my($self, $table, $data, $options) = @_;
 	my($names, $values);
-	# Hmmmmm... we can trust getCurrentStatic here? - Jamie
 	# What's inside /*! */ will be treated as a comment by most
 	# other SQL servers, but MySQL will parse it.  Kinda pointless
 	# since we've basically given up on ever supporting DBs other

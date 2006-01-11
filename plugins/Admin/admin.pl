@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.269 2006/01/06 19:53:20 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.270 2006/01/11 16:30:42 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -613,7 +613,6 @@ sub blockEdit {
 	if ($bid) {
 		$blockref = $slashdb->getBlock($bid, '', 1);
 	}
-	my $sectionbid = $blockref->{section};
 	my $rss_templates = $slashdb->getTemplateList('','portald');
 	my $rss_ref = { map { ($_, $_) } values %{$rss_templates} };
 
@@ -682,7 +681,6 @@ sub blockEdit {
 		retrieve_checked	=> $retrieve_checked,
 		all_skins_checked	=> $all_skins_checked,
 		blocktype_select	=> $blocktype_select,
-		sectionbid		=> $sectionbid,
 		autosubmit_select	=> $autosubmit_select,
 		rss_select		=> $rss_select,
 		rss_template_code	=> $rss_template_code,

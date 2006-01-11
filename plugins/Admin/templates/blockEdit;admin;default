@@ -122,12 +122,11 @@ __template__
 		[% END %]
 		</fieldset>
 	</form>
-	<a href="[% gSkin.rootdir %]/sections.pl?section=[% sectionbid %]&amp;op=editsection">[% sectionbid %]</a>
-	( <a href="[% gSkin.rootdir %]/users.pl?op=previewbox&amp;bid=[% bid %]">preview</a> )
+	( <a href="[% gSkin.rootdir %]/users.pl?op=previewbox&amp;bid=[% bid %]">Preview</a> )
 </div>
 
 
 __seclev__
 500
 __version__
-$Id: blockEdit;admin;default,v 1.20 2005/07/27 22:53:54 pudge Exp $
+$Id: blockEdit;admin;default,v 1.21 2006/01/11 16:30:43 jamiemccarthy Exp $

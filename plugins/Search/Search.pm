@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Search.pm,v 1.85 2006/01/06 19:54:38 jamiemccarthy Exp $
+# $Id: Search.pm,v 1.86 2006/01/11 23:15:23 pudge Exp $
 
 package Slash::Search;
 
@@ -11,7 +11,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -183,7 +183,10 @@ sub findStory {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	
 	if (@{$constants->{search_ignore_skids}}) {
-		my $skid_list = join ',', map {$reader->sqlQuote($_)} @{$constants->{search_ignore_skids}};
+		my $skid_list = join ',',
+			map  { $reader->sqlQuote($_) }
+			grep { $_ != $gSkin->{skid}  } # allow searching on THIS skid
+			@{$constants->{search_ignore_skids}};
 		$where .= " AND primaryskid NOT IN ($skid_list) ";
 	}
 

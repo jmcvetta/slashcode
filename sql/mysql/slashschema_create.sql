@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.210 2006/01/03 21:12:34 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.211 2006/01/12 21:55:14 jamiemccarthy Exp $
 #
 
 #
@@ -456,7 +456,7 @@ CREATE TABLE discussion_kinds (
 	dkid        TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name        VARCHAR(30) NOT NULL DEFAULT '',
 	PRIMARY KEY (dkid),
-	UNIQUE name (name),
+	UNIQUE name (name)
 ) TYPE=InnoDB;
 
 #

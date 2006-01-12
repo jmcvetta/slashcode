@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.912 2006/01/12 01:45:33 jamiemccarthy Exp $
+# $Id: upgrades,v 1.913 2006/01/12 04:35:47 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3561,8 +3561,6 @@ ALTER TABLE remarks MODIFY COLUMN remark VARCHAR(255);
 
 # PUDGE LAST UPDATED HERE
 
-# SLASHDOT LAST UPDATED HERE
-
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # Changes for plugins/Submit (which you are almost certainly using)
@@ -3572,4 +3570,5 @@ UPDATE vars SET value=REPLACE(value, 'a:href_U,name,title ', 'a:href_U,name,titl
 # 2006-01-11
 UPDATE vars SET value = 'T_2_5_0_94' WHERE name = 'cvs_tag_currentcode';
 
+# SLASHDOT LAST UPDATED HERE
 

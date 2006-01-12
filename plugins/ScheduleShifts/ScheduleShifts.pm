@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ScheduleShifts.pm,v 1.4 2005/03/11 19:58:13 pudge Exp $
+# $Id: ScheduleShifts.pm,v 1.5 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 package Slash::ScheduleShifts;
 
@@ -19,7 +19,7 @@ use base 'Slash::DB::MySQL';
 use constant SHIFT_DEFAULT		=> -2;
 use constant SHIFT_NOTSET		=> -1;
 
-our($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our @DOW = qw(sun mon tue wed thu fri sat);
 our %DOW;
@@ -382,6 +382,7 @@ sub sendShiftChangeMessage {
 
 sub getShift {
 	my($self, $when) = @_;
+	$when ||= '';
 	my $constants = getCurrentStatic();
 
 	my $tzcode   = $constants->{shift_shifts_tz};

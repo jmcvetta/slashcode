@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: balance_readers.pl,v 1.14 2005/03/11 19:58:45 pudge Exp $
+# $Id: balance_readers.pl,v 1.15 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -151,7 +151,7 @@ sub check_readers {
 			# by 4.0.21 -- the Time field on some processes
 			# can be the unsigned version of a small
 			# negative number.  Call it zero.
-			$hr->{Time} = 0 if $hr->{Time} > 4_200_000_000;
+			$hr->{Time} = 0 if !$hr->{Time} || $hr->{Time} > 4_200_000_000;
 
 			# Store the record of what this process is doing.
 			$process{$vu}{$hr->{Id}} = \%{ $hr };

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.232 2006/01/05 20:01:03 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.233 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.232 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.233 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1727,7 +1727,7 @@ sub _csq_bonuses {
 	# Lampe, C. and Resnick, P. "Slash(dot) and Burn: Moderation in a
 	# Large Scale Conversation Space."  Proceedings of the Conference on
 	# Computer Human Interaction (SIGCHI).  April 2004. Vienna, Austria.
-	# ACM Press.  (Forthcoming.)
+	# ACM Press.
 	#
 	# The goal of _csq_bonuses is to reward moderators who take
 	# a little extra effort, by giving them their next set of
@@ -1760,21 +1760,23 @@ sub _csq_bonuses {
 	# conversation and 7% for late comments [fifth quintile]."
 	# Here, quintile 5 is the latest 20% of the discussion, and
 	# quintile 1 is the earliest 20%.
-	if ($mod_hr->{cid_percentile} > 80) {
-		$num *= $constants->{m2_consequences_bonus_quintile_5} || 1;
-		push @applied, 'quintile_5';
-	} elsif ($mod_hr->{cid_percentile} > 60) {
-		$num *= $constants->{m2_consequences_bonus_quintile_4} || 1;
-		push @applied, 'quintile_4';
-	} elsif ($mod_hr->{cid_percentile} > 40) {
-		$num *= $constants->{m2_consequences_bonus_quintile_3} || 1;
-		push @applied, 'quintile_3';
-	} elsif ($mod_hr->{cid_percentile} > 20) {
-		$num *= $constants->{m2_consequences_bonus_quintile_2} || 1;
-		push @applied, 'quintile_2';
-	} else {
-		$num *= $constants->{m2_consequences_bonus_quintile_1} || 1;
-		push @applied, 'quintile_1';
+	if (defined $mod_hr->{cid_percentile}) {
+		if ($mod_hr->{cid_percentile} > 80) {
+			$num *= $constants->{m2_consequences_bonus_quintile_5} || 1;
+			push @applied, 'quintile_5';
+		} elsif ($mod_hr->{cid_percentile} > 60) {
+			$num *= $constants->{m2_consequences_bonus_quintile_4} || 1;
+			push @applied, 'quintile_4';
+		} elsif ($mod_hr->{cid_percentile} > 40) {
+			$num *= $constants->{m2_consequences_bonus_quintile_3} || 1;
+			push @applied, 'quintile_3';
+		} elsif ($mod_hr->{cid_percentile} > 20) {
+			$num *= $constants->{m2_consequences_bonus_quintile_2} || 1;
+			push @applied, 'quintile_2';
+		} else {
+			$num *= $constants->{m2_consequences_bonus_quintile_1} || 1;
+			push @applied, 'quintile_1';
+		}
 	}
 
 	# If a Fair moderation was applied to a comment that was

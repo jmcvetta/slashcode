@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.127 2006/01/06 19:54:38 jamiemccarthy Exp $
+# $Id: submit.pl,v 1.128 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -499,10 +499,10 @@ sub displayForm {
 	$fakeemail ||= '';
 	if ($form->{email}) {
 		$fakeemail = $form->{email};
-	} elsif ($fakeemail eq $user->{fakeemail}) {
+	} elsif ($fakeemail && $user->{fakeemail} && $fakeemail eq $user->{fakeemail}) {
 		$known = "mailto";
 		# we assume this is like if form.email is passed in
-		$fakeemail = strip_attribute($user->{fakeemail});
+		$fakeemail = strip_attribute($fakeemail);
 	}
 
 	my $fixedstory = fixStory($form->{story}, { sub_type => $form->{sub_type} });

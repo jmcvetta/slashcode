@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.75 2005/12/22 03:30:43 jamiemccarthy Exp $
+# $Id: article.pl,v 1.76 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -181,7 +181,7 @@ sub main {
 		if ($story->{discussion}) {
 			# Still not happy with this logic -Brian
 			my $discussion = $reader->getDiscussion($story->{discussion});
-			$discussion->{is_future} = $story->{is_future};
+			$discussion->{is_future} = $story->{is_future} if $discussion;
 			if ($constants->{tids_in_urls}) {
 				# This is to get tid in comments. It would be a mess to
 				# pass it directly to every comment -Brian

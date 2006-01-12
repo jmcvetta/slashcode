@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.240 2006/01/05 23:54:02 pudge Exp $
+# $Id: comments.pl,v 1.241 2006/01/12 21:31:22 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -897,7 +897,9 @@ sub previewForm {
 	}
 
 	if ($constants->{plugin}{Subscribe}) {
-		$preview->{subscriber_bonus} = $user->{is_subscriber} && $form->{nosubscriberbonus} ne 'on'
+		$preview->{subscriber_bonus} =
+			$user->{is_subscriber}
+			&& (!$form->{nosubscriberbonus} || $form->{nosubscriberbonus} ne 'on')
 			? 1 : 0;
 	}
 
@@ -1062,7 +1064,7 @@ sub submitComment {
 			&& !$form->{nobonus};
 		$subscriber_bonus = 1 if $constants->{plugin}{Subscribe}
 			&& $user->{is_subscriber}
-			&& $form->{nosubscriberbonus} ne 'on';
+			&& (!$form->{nosubscriberbonus} || $form->{nosubscriberbonus} ne 'on');
 	}
 	# This is here to prevent posting to discussions that don't exist/are nd -Brian
 	unless ($user->{is_admin} || $form->{newdiscussion}) {

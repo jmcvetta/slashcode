@@ -20,7 +20,8 @@ __template__
 [% 	IF submission.storyonly;
 		subtext = submission.story;
 	ELSIF submission.email && submission.name;
-		subtext = "<a href=\"$submission.email\">$submission.name</a> writes <i>\"$submission.story\"</i>";
+		IF constants.submissions_link_relnofollow; rnf = " rel=\"nofollow\""; ELSE; rnf = ""; END;
+		subtext = "<a href=\"$submission.email\"$rnf>$submission.name</a> writes <i>\"$submission.story\"</i>";
 	ELSIF (submission.name == constants.anon_name) && constants.anon_name_alt;
 		subtext = "$constants.anon_name_alt writes <i>\"$submission.story\"</i>";
 	ELSIF submission.name;
@@ -33,4 +34,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: formatSub;submit;default,v 1.2 2005/07/27 22:54:13 pudge Exp $
+$Id: formatSub;submit;default,v 1.3 2006/01/12 01:35:46 jamiemccarthy Exp $

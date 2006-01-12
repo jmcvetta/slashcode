@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 
-# $Id: subscribemail.pl,v 1.35 2006/01/12 21:31:22 jamiemccarthy Exp $
+# $Id: subscribemail.pl,v 1.36 2006/01/12 21:39:21 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw(:messages);
@@ -373,7 +373,7 @@ EOT
 
 			# Under no circumstances send this message more
 			# than once a week.
-			next if $last_warn + 86400*6.5 > time;
+			next if $last_expire + 86400*6.5 > time;
 
 			# Send this warning only once per payment.
 			# (See above.)

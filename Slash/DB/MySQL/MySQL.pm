@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.843 2006/01/10 21:30:32 pudge Exp $
+# $Id: MySQL.pm,v 1.844 2006/01/12 16:51:20 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.843 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.844 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12559,7 +12559,7 @@ sub _genericGets {
 		}
 		if ($get_values) {
 			my $val = join ',', @$get_values;
-			$val .= ",$table_prime" unless grep $table_prime, @$get_values;
+			$val .= ",$table_prime" if ! grep { $_ eq $table_prime } @$get_values;
 			$qlid = $self->_querylog_start('SELECT', $table);
 			$sth = $self->sqlSelectMany($val, $table);
 		}
@@ -12574,10 +12574,13 @@ sub _genericGets {
 				$qlid = $self->_querylog_start('SELECT', $table);
 				$sth = $self->sqlSelectMany($values, $table);
 			} else {
+				# "values" is a misleading name here since it
+				# must be exactly one value (column name).
+				my $values_q = $self->sqlQuote($values);
 				my $val = $self->sqlSelectAll(
 					"$table_prime, name, value",
 					$param_table,
-					"name=$values"
+					"name=$values_q"
 				);
 				for my $row (@$val) {
 					push @$params, $row;

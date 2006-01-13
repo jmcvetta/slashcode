@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.254 2006/01/07 21:08:04 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.255 2006/01/13 18:22:15 tvroom Exp $
 
 package Slash;
 
@@ -1427,16 +1427,20 @@ sub dispStory {
 
 	$other->{preview} ||= 0;
 	my %data = (
-		story	=> $story,
-		topic	=> $topic,
-		author	=> $author,
-		full	=> $full,
-		stid	=> $other->{stid},
-		topics	=> $other->{topics_chosen},
-		topiclist => $other->{topiclist},
-		magic	=> $other->{magic},
-		width	=> $constants->{titlebar_width},
-		preview => $other->{preview}
+		story		=> $story,
+		topic		=> $topic,
+		author		=> $author,
+		full		=> $full,
+		stid	 	=> $other->{stid},
+		topics	 	=> $other->{topics_chosen},
+		topiclist 	=> $other->{topiclist},
+		magic	 	=> $other->{magic},
+		width	 	=> $constants->{titlebar_width},
+		preview  	=> $other->{preview},
+		dispmode 	=> $other->{dispmode},
+		dispoptions	=> $other->{dispoptions} || {},
+		thresh_commentcount => $other->{thresh_commentcount},
+		storylink	=> $other->{storylink}
 	);
 #use Data::Dumper; print STDERR scalar(localtime) . " dispStory data: " . Dumper(\%data);
 
@@ -1510,6 +1514,12 @@ sub displayStory {
 
 	# There are many cases when we'd not want to return the pre-rendered text
 	# from the DB.
+	#
+	# XXXNEWINDEX - Currently don't have a rendered copy for brief mode
+	#               This is probably okay since brief mode contains basically
+	#               the same info as storylinks which is generated dynamically
+	#               and different users will have different links / threshold counts
+
 	if (	   !$constants->{no_prerendered_stories}
 		&& $constants->{cache_enabled}
 		&& $story->{rendered} && !$options->{force_cache_freshen}
@@ -1521,6 +1531,8 @@ sub displayStory {
 		&& $gSkin->{skid} == $constants->{mainpage_skid}
 		&& !$full
 		&& !$options->{is_future}	 # can $story->{is_future} ever matter?
+		&& ($options->{mode} && $options->{mode} ne "full")
+		&& ($options->{dispmode} ne "brief")
 	) {
 		$return = $story->{rendered};
 	} else {

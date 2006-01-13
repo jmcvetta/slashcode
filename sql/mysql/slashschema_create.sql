@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.211 2006/01/12 21:55:14 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.212 2006/01/13 17:55:03 tvroom Exp $
 #
 
 #
@@ -811,6 +811,7 @@ CREATE TABLE skins (
 	submittable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	searchable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	storypickable ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	skinindex ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	url VARCHAR(255) DEFAULT '' NOT NULL,
 	hostname VARCHAR(128) DEFAULT '' NOT NULL,
 	cookiedomain VARCHAR(128) DEFAULT '' NOT NULL,
@@ -1282,6 +1283,10 @@ CREATE TABLE users_index (
 	story_always_topic text NOT NULL,
 	story_always_author varchar(255) DEFAULT '' NOT NULL,
 	story_always_nexus varchar(255) DEFAULT '' NOT NULL,
+	story_full_brief_nexus varchar(255) DEFAULT '' NOT NULL,
+	story_brief_always_nexus varchar(255) DEFAULT '' NOT NULL,
+	story_full_best_nexus varchar(255) DEFAULT '' NOT NULL,
+	story_brief_best_nexus varchar(255) DEFAULT '' NOT NULL,
 	slashboxes text NOT NULL,
 	maxstories tinyint UNSIGNED DEFAULT '30' NOT NULL,
 	noboxes tinyint DEFAULT '0' NOT NULL,

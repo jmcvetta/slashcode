@@ -21,7 +21,7 @@ en_US
 __name__
 dispStory
 __template__
-[% dispmode ||= "full" %]
+[% IF !dispmode; dispmods = "full"; END %]
 [% IF dispmode == "full" %]
 <div class="article">
 [% IF magic;
@@ -134,8 +134,8 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.48 2006/01/13 17:35:25 tvroom Exp $
+$Id: dispStory;misc;default,v 1.49 2006/01/15 21:09:58 tvroom Exp $
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.48 2006/01/13 17:35:25 tvroom Exp $
+$Id: dispStory;misc;default,v 1.49 2006/01/15 21:09:58 tvroom Exp $

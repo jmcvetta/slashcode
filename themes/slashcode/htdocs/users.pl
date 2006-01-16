@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.296 2006/01/13 17:39:41 tvroom Exp $
+# $Id: users.pl,v 1.297 2006/01/16 04:10:39 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1589,6 +1589,7 @@ sub tildeEd {
 	}
 	my @nexustid_order = sort {($b == $constants->{mainpage_nexus_tid}) <=> ($a == $constants->{mainpage_nexus_tid}) || 
 				    lc $nexus_hr->{$a} cmp lc $nexus_hr->{$b} } keys %$nexus_hr;
+
 	for my $tid (@nexustid_order) {
 		     if ($prefs{story_never_nexus}{$tid}) {
 			$story023_default{nexus}{$tid} = 0;

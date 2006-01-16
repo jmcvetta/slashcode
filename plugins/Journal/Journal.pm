@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.53 2006/01/03 18:54:01 pudge Exp $
+# $Id: Journal.pm,v 1.54 2006/01/16 20:07:44 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -443,7 +443,7 @@ sub createSubmissionFromJournal {
 		tid		=> $src_journal->{tid},
 		primaryskid 	=> $primaryskid,
 		journal_id 	=> $src_journal->{id},
-		journal_disc 	=> $src_journal->{discussion},
+		discussion 	=> $src_journal->{discussion},
 		by		=> $options->{submission_param}{by}     || $journal_user->{nickname},
 		by_url 		=> $options->{submission_param}{by_url} || $journal_user->{homepage} || $journal_user->{fakeemail}
 	};
@@ -489,7 +489,6 @@ sub createStoryFromJournal {
 		'time'		=> $slashdb->getTime(), 
 		commentstatus	=> 'enabled',
 		journal_id 	=> $src_journal->{id},
-		journal_disc	=> $src_journal->{discussion},
 		by		=> $options->{story_param}{by}     || $journal_user->{nickname},
 		by_url 		=> $options->{story_param}{by_url} || $journal_user->{homepage} || $fakeemail,
 		discussion	=> $src_journal->{discussion},

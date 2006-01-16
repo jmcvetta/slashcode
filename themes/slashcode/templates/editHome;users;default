@@ -36,7 +36,7 @@ __template__
 
 [% admin_block %]
 
-<form action="[% env.script_name %]" method="post">
+<form action="[% env.script_name %]" method="post" name="edithome">
 <fieldset>
 <legend>Homepage settings</legend>
 [% PROCESS formkey_tag %]
@@ -138,4 +138,4 @@ of the UI.
 __seclev__
 500
 __version__
-$Id: editHome;users;default,v 1.24 2005/10/27 15:17:06 tvroom Exp $
+$Id: editHome;users;default,v 1.25 2006/01/16 04:05:27 tvroom Exp $

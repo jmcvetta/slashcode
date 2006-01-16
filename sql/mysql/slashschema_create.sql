@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.212 2006/01/13 17:55:03 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.213 2006/01/16 19:57:25 pudge Exp $
 #
 
 #
@@ -777,7 +777,7 @@ CREATE TABLE sessions (
 	lasttitle varchar(50),
 	last_subid mediumint UNSIGNED,
 	last_sid varchar(16),
-	INDEX (uid),
+	UNIQUE (uid),
 	PRIMARY KEY (session)
 ) TYPE=InnoDB;
 

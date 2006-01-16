@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.135 2006/01/16 04:10:39 tvroom Exp $
+# $Id: index.pl,v 1.136 2006/01/16 20:09:07 pudge Exp $
 
 use strict;
 use Slash;
@@ -664,8 +664,6 @@ sub displayStories {
 
 		$other->{is_future} = 1 if $story->{is_future};
 		my $storytext;
-
-		
 
 		#$other->{dispoptions}{new} = 1 if !$user->{is_anon} && $user->{last_mainpage_view} && $gSkin->{nexus} == $constants->{mainpage_skid} && $user->{last_mainpage_view} lt $story->{time};
 	

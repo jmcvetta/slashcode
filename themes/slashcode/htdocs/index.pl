@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.136 2006/01/16 20:09:07 pudge Exp $
+# $Id: index.pl,v 1.137 2006/01/18 20:44:29 tvroom Exp $
 
 use strict;
 use Slash;
@@ -674,7 +674,7 @@ sub displayStories {
 
 		$other->{thresh_commentcount} = $threshComments[$user->{threshold} + 1];
 
-		# XXXNEWINDEX: perhaps move this to be generated in the brief section of dispStory template instead
+		# XXXNEWINDEX: perhaps move this to being generated in the brief section of dispStory template instead
 		$other->{storylink} = linkStory ({
 				'link' 	=> $story->{title},
 				sid	=> $story->{sid},
@@ -782,8 +782,11 @@ sub displayStories {
 			linkrel		=> $linkrel,
 		}, { Return => 1 });
 	}
+	# limit number of stories leftover for older stories if desired
+	$#$stories = ($gSkin->{older_stories_max} - 1) if $gSkin->{older_stories_max} > 0;
 
 	return $return;
+
 }
 
 #################################################################

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.213 2006/01/16 19:57:25 pudge Exp $
+# $Id: slashschema_create.sql,v 1.214 2006/01/18 20:50:43 tvroom Exp $
 #
 
 #
@@ -805,6 +805,7 @@ CREATE TABLE skins (
 	nexus SMALLINT UNSIGNED NOT NULL,
 	artcount_min MEDIUMINT UNSIGNED DEFAULT '10' NOT NULL,
 	artcount_max MEDIUMINT UNSIGNED DEFAULT '30' NOT NULL,
+	older_stories_max MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL,
 	name VARCHAR(30) NOT NULL,
 	title VARCHAR(64) DEFAULT '' NOT NULL,
 	issue ENUM('no', 'yes') DEFAULT 'no' NOT NULL,

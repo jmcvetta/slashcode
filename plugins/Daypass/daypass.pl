@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daypass.pl,v 1.5 2005/12/21 21:22:06 jamiemccarthy Exp $
+# $Id: daypass.pl,v 1.6 2006/01/18 18:57:19 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -27,7 +27,7 @@ sub main {
 		$dpk = $1 || "";
 	}
 
-	my $adnum = 0;
+	my($adnum, $minduration) = (0, 0);
 
 	if ($dpk) {
 
@@ -74,6 +74,7 @@ print STDERR scalar(localtime) . " daypass.pl $$ cannot show key\n";
 			return ;
 		}
 		$adnum = $dp_hr->{adnum};
+		$minduration = $dp_hr->{minduration} || 0;
 
 	}
 
@@ -84,8 +85,9 @@ print STDERR scalar(localtime) . " daypass.pl $$ cannot show key\n";
 	header(getData('head')) or return;
 
 	slashDisplay('main', {
-		adnum	=> $adnum,
-		dpk	=> $dpk,
+		adnum		=> $adnum,
+		dpk		=> $dpk,
+		minduration	=> $minduration,
 	});
 
 	footer();

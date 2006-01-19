@@ -1,6 +1,7 @@
-# $Id: PLUGIN,v 1.5 2006/01/19 17:44:53 jamiemccarthy Exp $
+# $Id: PLUGIN,v 1.6 2006/01/19 18:40:21 tvroom Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 htdoc=htdocs/ajax.pl
 htdoc=htdocs/prototype.js
+htdoc=htdocs/sectionprefs.js
 template=templates/sectionpref;ajax;default

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.297 2006/01/16 04:10:39 tvroom Exp $
+# $Id: users.pl,v 1.298 2006/01/19 19:57:39 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -312,7 +312,7 @@ sub main {
 	}
 
 	if ($op eq 'userlogin' && ! $user->{is_anon}) {
-		redirect(cleanRedirectUrl($form->{returnto}));
+		redirect(cleanRedirectUrl($form->{returnto} || ''));
 		return;
 
 	# this will only redirect if it is a section-based rootdir with

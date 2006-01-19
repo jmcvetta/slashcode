@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.4 2006/01/19 20:48:09 tvroom Exp $
+# $Id: ajax.pl,v 1.5 2006/01/19 20:51:58 tvroom Exp $
 
 use strict;
 
@@ -208,7 +208,7 @@ sub setSectionNexusPrefs() {
 		}
 	);
 	
-	print "<a href=\"#\" onClick=\"window.location.reload()\">Close</a>";
+	print "<a href=\"#\" onClick=\"window.location.reload()\" style='color:#fff'>Close</a>";
 
 }
 

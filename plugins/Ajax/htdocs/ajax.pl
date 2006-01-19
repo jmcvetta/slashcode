@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.1 2006/01/18 18:58:20 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.1 2006/01/19 16:13:14 jamiemccarthy Exp $
 
 use strict;
 

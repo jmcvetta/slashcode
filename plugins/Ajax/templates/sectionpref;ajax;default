@@ -15,7 +15,7 @@ __name__
 sectionpref
 __template__
 <form name="sectionprefs">
-<div align="right"><a href="#" onClick="window.location.reload()">close</a>
+<div align="right"><a href="#">help</a> <a href="#" onClick="window.location.reload()">close</a>
 <table border="0" cellpadding="1" cellspacing="0">
 	<tr>
 	<td></td>
@@ -67,4 +67,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: sectionpref;ajax;default,v 1.3 2006/01/19 20:48:09 tvroom Exp $
+$Id: sectionpref;ajax;default,v 1.4 2006/01/19 20:56:56 tvroom Exp $

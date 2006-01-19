@@ -134,8 +134,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.50 2006/01/15 21:44:20 tvroom Exp $
-__seclev__
-10000
-__version__
-$Id: dispStory;misc;default,v 1.50 2006/01/15 21:44:20 tvroom Exp $
+$Id: dispStory;misc;default,v 1.51 2006/01/19 01:14:17 pudge Exp $

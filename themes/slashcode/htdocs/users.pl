@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.298 2006/01/19 19:57:39 jamiemccarthy Exp $
+# $Id: users.pl,v 1.299 2006/01/20 04:50:50 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2691,7 +2691,7 @@ sub saveHome {
 	
 	my(@story_always_nexus, @story_full_brief_nexus, @story_brief_always_nexus, @story_full_best_nexus, @story_brief_best_nexus);
 
-	my($story_topic_all,    $story_author_all,    $story_nexus_all);
+	my($story_topic_all,    $story_author_all,    $story_nexus_all) = (0, 0, 0);
 	
 	# Topics are either present (value=2) or absent (value=0).  If absent,
 	# push them onto the never list.  Otherwise, do nothing.  (There's no

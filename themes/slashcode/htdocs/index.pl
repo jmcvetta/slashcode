@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.139 2006/01/20 04:50:50 tvroom Exp $
+# $Id: index.pl,v 1.140 2006/01/20 04:56:37 tvroom Exp $
 
 use strict;
 use Slash;
@@ -616,7 +616,7 @@ sub displayStories {
 	$sec_dispmode_nexus{$_} = "brief" foreach (@story_full_brief_nexus, @story_brief_always_nexus);
 	$sec_dispmode_nexus{$_} = "none" foreach (@story_full_best_nexus, @story_brief_best_nexus);
 
-	my $dispmodelast = "';
+	my $dispmodelast = "";
 	my $story_to_dispmode_hr = {};
 
 	# Filter out any story we're planning on skipping up front

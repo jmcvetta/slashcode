@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.7 2006/01/20 02:35:57 tvroom Exp $
+# $Id: ajax.pl,v 1.8 2006/01/20 05:01:50 tvroom Exp $
 
 use strict;
 
@@ -119,12 +119,15 @@ sub getSectionPrefsHTML {
 		$multiple_values = 1 if $story023_default{nexus}{$tid} != $first_val;
 	}
 
+	my $master_value = !$multiple_values ? $first_val : "";
+
 	print slashDisplay("sectionpref",
 		{
 			nexusref		=> $nexus_hr,
 			nexustid_order		=> \@nexustid_order,
 			story023_default	=> \%story023_default,
 			multiple_values		=> $multiple_values,
+			master_value		=> $master_value,
 		},
 		{ Return => 1 }
 	);

@@ -17,7 +17,6 @@ __template__
 [% style_enabled = "color: #000; background: #fff;" %]
 [% style_disabled = "color: #999; background: #ccc;" %]
 <form name="sectionprefs">
-<div align="right"><a href="#">help</a> <a href="javascript: window.location.reload()">close</a>
 <table border="0" cellpadding="1" cellspacing="0">
 	<tr>
 		<td>&nbsp;</td>
@@ -71,4 +70,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: sectionpref;ajax;default,v 1.13 2006/01/20 21:19:29 tvroom Exp $
+$Id: sectionpref;ajax;default,v 1.14 2006/01/20 21:45:18 tvroom Exp $

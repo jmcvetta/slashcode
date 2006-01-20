@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.123 2006/01/03 18:54:01 pudge Exp $
+# $Id: journal.pl,v 1.124 2006/01/20 16:23:13 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.123 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -556,7 +556,7 @@ sub doSaveArticle {
 	}
 
 	return(getData('submit_must_enable_comments'), 1)
-		if $form->{submit} && (
+		if $form->{submit} && !$form->{id} (
 			!$form->{journal_discuss}
 				||
 			$form->{journal_discuss} eq 'disabled'
@@ -575,6 +575,8 @@ sub doSaveArticle {
 	if ($form->{id}) {
 		my %update;
 		my $article = $journal_reader->get($form->{id});
+		return(getData('submit_must_enable_comments'), 1) if ($form->{submit} && !$article->{discussion} &&  (!$form->{journal_discuss} || $form->{journal_discuss} eq 'disabled'));
+									
 
 		# note: comments_on is a special case where we are
 		# only turning on comments, not saving anything else

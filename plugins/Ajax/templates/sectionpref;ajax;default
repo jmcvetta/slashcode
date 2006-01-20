@@ -20,7 +20,8 @@ __template__
 <div align="right"><a href="#">help</a> <a href="javascript: window.location.reload()">close</a>
 <table border="0" cellpadding="1" cellspacing="0">
 	<tr>
-		<td></td>
+		<td>&nbsp;</td>
+		<td>
 			<img src="[% constants.imagedir %]/article_none.gif" alt="Never"><br>
 		</td>
 		<td valign="top">
@@ -70,4 +71,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: sectionpref;ajax;default,v 1.12 2006/01/20 20:53:15 tvroom Exp $
+$Id: sectionpref;ajax;default,v 1.13 2006/01/20 21:19:29 tvroom Exp $

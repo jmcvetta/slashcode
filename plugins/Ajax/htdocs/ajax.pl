@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.8 2006/01/20 05:01:50 tvroom Exp $
+# $Id: ajax.pl,v 1.9 2006/01/20 18:05:55 jamiemccarthy Exp $
 
 use strict;
 
@@ -115,7 +115,7 @@ sub getSectionPrefsHTML {
 				$story023_default{nexus}{$tid} = 2;
 			}
 		}
-		$first_val = $story023_default{nexus}{$tid} if $first_val == "";
+		$first_val = $story023_default{nexus}{$tid} if $first_val eq "";
 		$multiple_values = 1 if $story023_default{nexus}{$tid} != $first_val;
 	}
 

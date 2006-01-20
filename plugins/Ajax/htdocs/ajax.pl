@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.5 2006/01/19 20:51:58 tvroom Exp $
+# $Id: ajax.pl,v 1.6 2006/01/20 00:20:35 tvroom Exp $
 
 use strict;
 
@@ -143,7 +143,6 @@ sub setSectionNexusPrefs() {
 	my $update = {};
 
 	foreach my $key (keys %$form) {
-		print STDERR "Form: $key\n";
 		my $value = $form->{$key};
 		if ($key =~ /^nexustid(\d+)$/) {
 			my $tid = $1;
@@ -151,7 +150,6 @@ sub setSectionNexusPrefs() {
 				$update->{$tid} = $value;
 			}
 		} elsif ($key eq "nexus_master") {
-			print STDERR "NEXUS MASTER \n";
 			if ($value >= 1 && $value <= 5 && $value =~ /^\d+$/) {
 				foreach my $tid (@$nexus_tids_ar) {
 					$update->{$tid} = $value;
@@ -161,8 +159,6 @@ sub setSectionNexusPrefs() {
 			
 	}
 
-	use Data::Dumper;
-	print STDERR Dumper($update);
 
 	foreach my $tid (keys %$update) {
 		my $value = $update->{$tid};
@@ -208,7 +204,7 @@ sub setSectionNexusPrefs() {
 		}
 	);
 	
-	print "<a href=\"#\" onClick=\"window.location.reload()\" style='color:#fff'>Close</a>";
+	print getData('set_section_prefs_success_msg');
 
 }
 

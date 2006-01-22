@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.140 2006/01/20 04:56:37 tvroom Exp $
+# $Id: index.pl,v 1.141 2006/01/22 17:10:37 tvroom Exp $
 
 use strict;
 use Slash;
@@ -585,7 +585,6 @@ sub displayStories {
 #	$n_for_cache = scalar(@$stories) if $n_for_cache > scalar(@$stories);
 	my @stoids_for_cache =
 		map { $_->{stoid} }
-		grep { !$_->{is_future} }
 		@$stories;
 #	@stoids_for_cache = @stoids_for_cache[0..$n_for_cache-1]
 #		if $#stoids_for_cache > $n_for_cache;

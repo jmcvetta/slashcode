@@ -3,7 +3,7 @@
 <html>
 <head>
         <title>Slashdot FAQ - User Interface</title>
-<!-- $Id: UI.shtml,v 1.8 2006/01/22 02:47:11 tvroom Exp $ -->
+<!-- $Id: UI.shtml,v 1.9 2006/01/23 21:23:36 tvroom Exp $ -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
@@ -79,7 +79,7 @@ stories, and even those only abbreviated.  The break down is as follows:
 </ul>
         <p><em><small>
                 Answered by: <a href="mailto:malda@slashdot.org">CmdrTaco</a><br>
-                Last Modified: 1/21/05 
+                Last Modified: 1/21/06 
         <hr>
         <ul class="menu">
                 

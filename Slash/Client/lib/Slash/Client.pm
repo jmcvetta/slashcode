@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Client.pm,v 1.1 2005/11/21 17:31:46 pudge Exp $
+# $Id: Client.pm,v 1.2 2006/01/23 20:42:58 pudge Exp $
 
 package Slash::Client;
 
@@ -113,7 +113,8 @@ sub literal {
 
 sub fixparam {
 	my($str) = @_;
-	$str =~ s/([^$URI::unreserved])/$URI::Escape::escapes{$1}/og;
+	$str =~ s/([^$URI::unreserved ])/$URI::Escape::escapes{$1}/og;
+	$url =~ s/ /+/g;
 	return $str;
 }
 
@@ -203,4 +204,4 @@ Slash::Client::Journal(3).
 
 =head1 VERSION
 
-$Id: Client.pm,v 1.1 2005/11/21 17:31:46 pudge Exp $
+$Id: Client.pm,v 1.2 2006/01/23 20:42:58 pudge Exp $

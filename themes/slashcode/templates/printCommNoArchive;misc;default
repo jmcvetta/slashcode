@@ -24,7 +24,7 @@ __template__
 	[% ELSE %]
 		[%- d_nickname = Slash.db.getUser(discussion.uid, 'nickname') -%]
 		[%- msg = BLOCK -%]
-This discussion was created by <a href="[% gSkin.rootdir %]/~[% d_nickname | fixparam %]/">[% d_nickname %] ([% discussion.uid %])</a> as
+This discussion was created by <a href="[% gSkin.rootdir %]/~[% d_nickname | strip_paramattr %]/">[% d_nickname %] ([% discussion.uid %])</a> as
 		[%- END -%]
 		[% IF discussion.commentstatus == 'friends_only' %]
 			[% type = "Friends only" %]
@@ -61,4 +61,4 @@ This discussion was created by <a href="[% gSkin.rootdir %]/~[% d_nickname | fix
 __seclev__
 10000
 __version__
-$Id: printCommNoArchive;misc;default,v 1.18 2005/10/25 20:01:45 pudge Exp $
+$Id: printCommNoArchive;misc;default,v 1.19 2006/01/23 20:42:59 pudge Exp $

@@ -39,9 +39,9 @@ __template__
 <input type="hidden" name="type" value="friend">[% END %]
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
 [% FOREACH friend = friends %]
-    <tr><td valign="top"><a href="[% gSkin.rootdir %]/~[% friend.0 | fixparam %]/">[% friend.0 %]</a></td>
+    <tr><td valign="top"><a href="[% gSkin.rootdir %]/~[% friend.0 | strip_paramattr %]/">[% friend.0 %]</a></td>
 [% IF friend.2 %]
-    <td valign="top"><a href="[% gSkin.rootdir %]/~[% friend.0 | fixparam %]/journal/"><b>[% friend.3 %]</b></a></td>
+    <td valign="top"><a href="[% gSkin.rootdir %]/~[% friend.0 | strip_paramattr %]/journal/"><b>[% friend.3 %]</b></a></td>
     <td valign="top"><em>[% Slash.timeCalc(friend.2) %]</em></td>
 [% ELSE %]
     <td valign="top">&nbsp;</td>
@@ -61,4 +61,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journalfriends;journal;default,v 1.14 2005/10/11 20:50:57 pudge Exp $
+$Id: journalfriends;journal;default,v 1.15 2006/01/23 20:42:59 pudge Exp $

@@ -22,7 +22,7 @@ __template__
 	[% nickname = Slash.db.getUser(discussion.uid, 'nickname') %]
 	<li><a href="[% gSkin.rootdir %]/comments.pl?sid=[% discussion.id %]">[%
 IF discussion.title.defined %][% discussion.title %][% ELSE %]untitled[% END %]</a>
-	created by <a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/">[% nickname %]</a> on [% Slash.timeCalc(discussion.ts) %]
+	created by <a href="[% gSkin.rootdir %]/~[% nickname | strip_paramattr %]/">[% nickname %]</a> on [% Slash.timeCalc(discussion.ts) %]
 [% END %]
 </multicol>
 <p>
@@ -39,4 +39,4 @@ END %]
 __seclev__
 100
 __version__
-$Id: udiscuss_list;comments;default,v 1.11 2005/07/27 22:54:48 pudge Exp $
+$Id: udiscuss_list;comments;default,v 1.12 2006/01/23 20:42:59 pudge Exp $

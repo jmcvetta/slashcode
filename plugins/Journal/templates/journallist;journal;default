@@ -38,7 +38,7 @@ __template__
 	</tr>
 [% FOREACH article = articles %]
 	<tr>
-		<td valign="top"><a href="[% gSkin.rootdir %]/~[% nickname | fixparam %]/journal/[% article.0 %]"><b>[% article.2 %]</b></a></td>
+		<td valign="top"><a href="[% gSkin.rootdir %]/~[% nickname | strip_paramattr %]/journal/[% article.0 %]"><b>[% article.2 %]</b></a></td>
 		<td valign="top"><em>[% Slash.timeCalc(article.1) %]</em></td>
 	[%- IF showform %]
 		<td valign="top"><a href="[% gSkin.rootdir %]/journal.pl?op=edit&amp;id=[% article.0 %]">[edit]</a></td>
@@ -60,4 +60,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journallist;journal;default,v 1.15 2005/10/11 20:50:57 pudge Exp $
+$Id: journallist;journal;default,v 1.16 2006/01/23 20:42:59 pudge Exp $

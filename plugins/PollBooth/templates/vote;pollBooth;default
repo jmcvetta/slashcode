@@ -44,7 +44,7 @@ __template__
 		<b class="totalVotes">[% voters %] total votes.</b>
 		<br>
 		[
-			<a href="[% env.script_name %]?qid=[% qid | fixparam %]">Voting Booth</a> |
+			<a href="[% env.script_name %]?qid=[% qid | strip_paramattr %]">Voting Booth</a> |
 			<a href="[% env.script_name %]">Other Polls</a> |
 			<a href="[% gSkin.rootdir %]/">Back Home</a>
 		]
@@ -61,4 +61,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: vote;pollBooth;default,v 1.8 2005/09/21 17:33:14 tvroom Exp $
+$Id: vote;pollBooth;default,v 1.9 2006/01/23 20:42:59 pudge Exp $

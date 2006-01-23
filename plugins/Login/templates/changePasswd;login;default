@@ -25,7 +25,7 @@ END; note %]
 
 [% IF constants.offer_insecure_login_link -%]
 		<p>You can automatically log in by clicking
-		 <a href="[% constants.real_rootdir %]/index.pl?op=userlogin&amp;logtoken=[% user.logtoken | fixparam %]">This Link</a> and Bookmarking the resulting page. 
+		 <a href="[% constants.real_rootdir %]/index.pl?op=userlogin&amp;logtoken=[% user.logtoken | strip_paramattr %]">This Link</a> and Bookmarking the resulting page. 
 		This is totally insecure, but very convenient.
 		</p>
 [%- END %]
@@ -81,4 +81,4 @@ END; note %]
 __seclev__
 500
 __version__
-$Id: changePasswd;login;default,v 1.6 2005/07/27 22:54:10 pudge Exp $
+$Id: changePasswd;login;default,v 1.7 2006/01/23 20:42:59 pudge Exp $

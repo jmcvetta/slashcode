@@ -120,7 +120,7 @@ __template__
 					Proxy Info
 				</label>
 					[% IF proxy_check.available %]
-						<a href="[% gSkin.rootdir %]/users.pl?userfield=[% form.userfield | fixparam %]&amp;check_proxy=1">Test [% form.userfield %] for open proxy</a> 
+						<a href="[% gSkin.rootdir %]/users.pl?userfield=[% form.userfield | strip_paramattr %]&amp;check_proxy=1">Test [% form.userfield %] for open proxy</a> 
 						[% IF proxy_check.results.defined %]
 							<b>
 							Test Results:
@@ -294,4 +294,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.76 2005/09/22 13:12:06 tvroom Exp $
+$Id: getUserAdmin;users;default,v 1.77 2006/01/23 20:42:59 pudge Exp $

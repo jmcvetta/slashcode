@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.184 2006/01/06 19:53:06 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.185 2006/01/23 20:42:59 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.184 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2004,7 +2004,9 @@ Prepares data to be a parameter in a URL.  Such as:
 
 =item DATA
 
-The data to be escaped.
+The data to be escaped.  B<NOTE>: space characters are encoded as C<+>
+instead of C<%20>.  If you must have C<%20>, perform an C<s/\+/%20/g> on
+the result.
 
 =back
 
@@ -2018,7 +2020,8 @@ The escaped data.
 
 sub fixparam {
 	my($url) = @_;
-	$url =~ s/([^$URI::unreserved])/$URI::Escape::escapes{$1}/og;
+	$url =~ s/([^$URI::unreserved ])/$URI::Escape::escapes{$1}/og;
+	$url =~ s/ /+/g;
 	return $url;
 }
 
@@ -4221,4 +4224,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.184 2006/01/06 19:53:06 jamiemccarthy Exp $
+$Id: Data.pm,v 1.185 2006/01/23 20:42:59 pudge Exp $

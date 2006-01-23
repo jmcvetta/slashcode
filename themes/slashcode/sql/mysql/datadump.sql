@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: datadump.sql,v 1.50 2005/12/16 20:41:18 jamiemccarthy Exp $
+# $Id: datadump.sql,v 1.51 2006/01/23 20:42:59 pudge Exp $
 #
 
 
@@ -122,7 +122,7 @@ INSERT INTO discussions (id, stoid, sid, title, url, ts, topic, uid, commentcoun
 INSERT INTO menus (menu, label, sel_label, value, seclev, showanon, menuorder) VALUES ('users','Logout','logout','/my/logout',1,0,10);
 INSERT INTO menus (menu, label, sel_label, value, seclev, showanon, menuorder) VALUES ('users','Preferences','preferences','/users.pl?op=edituser',1,0,20);
 INSERT INTO menus (menu, label, sel_label, value, seclev, showanon, menuorder) VALUES ('users','Password','password','[% constants.real_rootdir %]/my/password',1,0,40);
-INSERT INTO menus (menu, label, sel_label, value, seclev, showanon, menuorder) VALUES ('users','~[% user.nickname | fixparam %] ([% user.uid %])','me','/~[% user.nickname | fixparam %]',1,0,50);
+INSERT INTO menus (menu, label, sel_label, value, seclev, showanon, menuorder) VALUES ('users','~[% user.nickname | strip_literal %] ([% user.uid %])','me','/~[% user.nickname | fixparam %]',1,0,50);
 
 #
 # Dumping data for table 'metamodlog'

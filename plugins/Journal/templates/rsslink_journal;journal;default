@@ -17,22 +17,22 @@ __template__
 	(constants.journal_rdfitemdesc_html > 2 && !user.is_anon)
 ));
    IF rsslink_style == 'journal'
-%][% Slash.root2abs() %]/~[% link.nickname | strip_paramattr %]/journal/rss/[% Slash.getPublicLogToken() | fixparam %][%
+%][% Slash.root2abs() %]/~[% link.nickname | fixparam %]/journal/rss/[% Slash.getPublicLogToken() | fixparam %][%
 
    ELSIF rsslink_style == 'journalfriends'
-%][% Slash.root2abs() %]/~[% link.nickname | strip_paramattr %]/journal/friends/rss/[% Slash.getPublicLogToken() | fixparam %][%
+%][% Slash.root2abs() %]/~[% link.nickname | fixparam %]/journal/friends/rss/[% Slash.getPublicLogToken() | fixparam %][%
 
    END;
 ELSE;
    IF rsslink_style == 'journal'
-%][% Slash.root2abs() %]/~[% link.nickname | strip_paramattr %]/journal/rss[%
+%][% Slash.root2abs() %]/~[% link.nickname | fixparam %]/journal/rss[%
 
    ELSIF rsslink_style == 'journalfriends'
-%][% Slash.root2abs() %]/~[% link.nickname | strip_paramattr %]/journal/friends/rss[%
+%][% Slash.root2abs() %]/~[% link.nickname | fixparam %]/journal/friends/rss[%
 
    END;
 END; rsslink_style = '' -%]
 __seclev__
 10000
 __version__
-$Id: rsslink_journal;journal;default,v 1.2 2005/12/12 23:17:29 pudge Exp $
+$Id: rsslink_journal;journal;default,v 1.3 2006/01/23 20:42:59 pudge Exp $

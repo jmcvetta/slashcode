@@ -17,7 +17,7 @@ __template__
 [% FOREACH item = people %]
     <tr>
 	<td valign="top">
-		<a href="[% gSkin.rootdir %]/~[% item.1 | fixparam %]/">[% item.1 %]</a>
+		<a href="[% gSkin.rootdir %]/~[% item.1 | strip_paramattr %]/">[% item.1 %]</a>
 	</td>
 	<td valign="top">
 		[% PROCESS zoo_icons person=item.0 %]
@@ -29,4 +29,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: alllist;zoo;default,v 1.4 2005/07/27 22:54:13 pudge Exp $
+$Id: alllist;zoo;default,v 1.5 2006/01/23 20:42:59 pudge Exp $

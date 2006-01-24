@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.143 2006/01/24 16:23:28 jamiemccarthy Exp $
+# $Id: User.pm,v 1.144 2006/01/24 23:36:28 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.144 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -569,10 +569,7 @@ sub userdir_handler {
 			$query = $1;
 		}
 
-		my($op, $extra, $more) = split /\//, $string, 4;
-		for ($op, $extra, $more) {
-			s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;
-		}
+		my($op, $extra) = split /\//, $string, 2;
 
 		my $logged_in = $r->header_in('Cookie') =~ $USER_MATCH;
 		my $try_login = !$logged_in && $logtoken;
@@ -762,7 +759,7 @@ sub userdir_handler {
 				$args =~ s/zoo/all/;
 			}
 
-			if ($extra =~ m{^ (rss|atom) $}x) {
+			if ($extra =~ m{^ (rss|atom) /?$}x) {
 				$args .= "&content_type=$1";
 			}
 

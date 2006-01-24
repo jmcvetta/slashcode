@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.35 2006/01/06 19:05:28 jamiemccarthy Exp $
+# $Id: Messages.pm,v 1.36 2006/01/24 05:19:36 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -59,7 +59,7 @@ Will drop a serialized message into message_drop.
 =item TO_ID
 
 The UID of the user the message is sent to.  Must match a valid
-uid in the users table.
+uid in the users table.  Can be an arrayref of UIDs.
 
 =item TYPE
 
@@ -95,7 +95,7 @@ Default is 'now'.
 
 =item Return value
 
-The created message's "id" in the message_drop table.
+The created message's "id" (or multiple ids) in the message_drop table.
 
 =item Dependencies
 
@@ -122,18 +122,29 @@ sub create {
 		return 0;
 	}
 
+	$uid = [$uid] unless ref $uid;
+	my @users;
+
 	if (!$altto) {
 		# check for $uid existence
-		my $slashdb = getCurrentDB();
-		unless ($slashdb->getUser($uid)) {
-			messagedLog(getData("user not found", { uid => $uid }, "messages"));
-			return 0;
+		my $reader = getObject('Slash::Journal', { db_type => 'reader' });
+		for my $u (@$uid) {
+			if ($reader->existsUid($u)) {
+				push @users, $u;
+			} else {
+				messagedLog(getData("user not found", { uid => $u }, "messages"));
+			}
 		}
 	} else {
-		if (!defined($uid) || $uid =~ /\D/) {
-			$uid = 0;
+		for my $u (@$uid) {
+			if (!defined($uid) || $uid =~ /\D/) {
+				$u = 0;
+			}
+			push @users, $u;
 		}
 	}
+
+	return 0 unless @users;
 
 	if (!ref $data) {
 		$message = $data;
@@ -183,9 +194,14 @@ sub create {
 		return 0;
 	}
 
-	my($msg_id) = $self->_create($uid, $code, $message, $fid, $altto, $send);
-	return $msg_id;
+	my @msg_ids;
+	for my $u (@users) {
+		my($msg_id) = $self->_create($u, $code, $message, $fid, $altto, $send);
+		push @msg_ids, $msg_id if $msg_id;
+	}
+	return @msg_ids > 1 ? @msg_ids : $msg_ids[0];
 }
+
 
 #========================================================================
 
@@ -1100,4 +1116,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.35 2006/01/06 19:05:28 jamiemccarthy Exp $
+$Id: Messages.pm,v 1.36 2006/01/24 05:19:36 pudge Exp $

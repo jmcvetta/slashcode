@@ -2,7 +2,7 @@
 ## This code is a part of Slash, and is released under the GPL.
 ## Copyright 1997-2005 by Open Source Technology Group. See README
 ## and COPYING for more information, or see http://slashcode.com/.
-## $Id: report_slashd_errors.pl,v 1.8 2005/08/29 18:32:24 jamiemccarthy Exp $
+## $Id: report_slashd_errors.pl,v 1.9 2006/01/24 05:19:36 pudge Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -32,9 +32,7 @@ $task{$me}{code} = sub {
 		$data{subject} = 'slashd Error Alert';
 		$data{template_page} = 'slashderrnote';
 		my $admins = $messages->getMessageUsers(MSG_CODE_ADMINMAIL);
-		for my $uid (@$admins) {
-			$messages->create($uid, MSG_CODE_ADMINMAIL, \%data);
-		}
+		$messages->create($admins, MSG_CODE_ADMINMAIL, \%data) if @$admins;
 	}
 
 	return $num_errors;

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.241 2006/01/12 21:31:22 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.242 2006/01/24 05:19:36 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1225,11 +1225,14 @@ sub submitComment {
 				reply		=> $reply,
 				discussion	=> $discussion,
 			};
+
+			my @users_send;
 			for my $usera (@$users) {
 				next if $users{$usera};
-				$messages->create($usera, MSG_CODE_NEW_COMMENT, $data);
+				push @users_send, $usera;
 				$users{$usera}++;
 			}
+			$messages->create(\@users_send, MSG_CODE_NEW_COMMENT, $data) if @users_send;
 		}
 
 		if ($constants->{validate_html}) {

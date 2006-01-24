@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.848 2006/01/19 18:45:54 tvroom Exp $
+# $Id: MySQL.pm,v 1.849 2006/01/24 05:19:35 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.848 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.849 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3027,12 +3027,19 @@ sub createContentFilter {
 	return $filter_id;
 }
 
+#################################################################
 sub existsEmail {
 	my($self, $email) = @_;
 
 	# Returns count of users matching $email.
 	return ($self->sqlSelect('uid', 'users',
 		'realemail=' . $self->sqlQuote($email)))[0];
+}
+
+#################################################################
+sub existsUid {
+	my($self, $uid) = @_;
+	return $self->sqlSelect('uid', 'users', 'uid=' . $self->sqlQuote($uid));
 }
 
 #################################################################

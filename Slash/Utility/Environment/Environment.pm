@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.185 2006/01/03 18:54:01 pudge Exp $
+# $Id: Environment.pm,v 1.186 2006/01/24 19:27:20 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2958,6 +2958,17 @@ $slashdb->sqlInsert("al2", { srcid => get_srcid_sql_in($srcid) });
 
 sub get_srcid_sql_in {
 	my($srcid) = @_;
+	if ($srcid !~ /^[0-9a-f]+$/) {
+		my @caller_info = ( );
+		for (my $lvl = 1; $lvl < 99; ++$lvl) {
+			my @c = caller($lvl);
+			last unless @c;
+			next if $c[0] =~ /^Template/;
+			push @caller_info, "$c[0] line $c[2]";
+			last if scalar(@caller_info) >= 3;
+		}
+		warn "Invalid param to get_srcid_sql_in, callers: @caller_info";
+	}
 	my $slashdb = getCurrentDB();
 	my $srcid_q = $slashdb->sqlQuote($srcid);
 	my $type = get_srcid_type($srcid);
@@ -3239,4 +3250,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.185 2006/01/03 18:54:01 pudge Exp $
+$Id: Environment.pm,v 1.186 2006/01/24 19:27:20 jamiemccarthy Exp $

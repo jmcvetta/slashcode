@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.849 2006/01/24 05:19:35 pudge Exp $
+# $Id: MySQL.pm,v 1.850 2006/01/24 19:27:20 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.849 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.850 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5910,13 +5910,28 @@ sub _get_where_and_valuelist_al2 {
 
 	my @values = ( );
 	if (ref($srcids) eq 'HASH') {
-		@values = map { get_srcid_sql_in($_) } values %$srcids;
+		@values = values %$srcids;
 	} elsif (ref($srcids) eq 'ARRAY') {
-		@values = map { get_srcid_sql_in($_) } @$srcids;
+		@values = @$srcids;
 	} else {
 		use Data::Dumper;
 		warn "logic error: arg to _get_where_and_valuelist_al2 was: " . Dumper($srcids);
-		return undef;
+		# We will return an appropriate error value below.
+	}
+
+	# A srcid type that get_srcid_sql_in() does not accept is the
+	# raw IP number.  Eliminate those.
+	@values = grep { !/\./ } @values;
+
+	# Get the SQL that matches those srcids.
+	@values = map { get_srcid_sql_in($_) } @values;
+
+	if (!@values) {
+		# Error.  Return a where clause that matches nothing.
+		return(
+			'1=0',
+			[ ]
+		);
 	}
 
 	return(

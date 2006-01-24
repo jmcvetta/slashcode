@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.233 2006/01/12 21:31:22 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.234 2006/01/24 05:08:06 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.233 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.234 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -573,7 +573,7 @@ sub forgetErrnotes {
 sub forgetRemarks {
 	my($self) = @_;
 	return $self->sqlDelete("remarks",
-		"time < DATE_SUB(NOW(), INTERVAL 365 DAY)");
+		"time < DATE_SUB(NOW(), INTERVAL 90 DAY)");
 }
 
 ########################################################

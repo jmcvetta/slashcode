@@ -3,7 +3,9 @@
 <html>
 <head>
         <title>Slashdot FAQ - Index</title>
-<!-- $Id: index.shtml,v 1.23 2006/01/21 06:33:06 tvroom Exp $ -->
+<!--
+$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.24 2006/01/24 20:59:43 jamiemccarthy Exp $ =~ /(\d+)/g
+-->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 

@@ -87,6 +87,11 @@ ELSIF env.script_name.search('journal\.pl');
 	END;
 
 
+ELSIF env.script_name.search('messages\.pl');
+	IF !user.is_anon; tmp = BLOCK -%]
+<link rel="alternate" title="[% constants.sitename | strip_attribute %] Messages RSS" href="[% gSkin.rootdir %]/my/inbox/rss/[% Slash.getPublicLogToken() | fixparam %]" type="application/rss+xml">
+	[%- END; linkrels.push(tmp); END;
+
 
 ELSE; # default author link, where author is a nickname
 	    IF link.author; tmp = BLOCK -%]
@@ -110,4 +115,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: linkrel;misc;default,v 1.14 2006/01/10 21:28:45 pudge Exp $
+$Id: linkrel;misc;default,v 1.15 2006/01/24 03:39:14 pudge Exp $

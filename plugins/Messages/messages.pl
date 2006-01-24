@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: messages.pl,v 1.27 2005/07/27 22:54:10 pudge Exp $
+# $Id: messages.pl,v 1.28 2006/01/24 03:39:14 pudge Exp $
 
 # this program does some really cool stuff.
 # so i document it here.  yay for me!
@@ -12,10 +12,11 @@ use Slash 2.003;	# require Slash 2.3.x
 use Slash::Constants qw(:web :messages);
 use Slash::Display;
 use Slash::Utility;
+use Slash::XML;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 my $start_time = Time::HiRes::time;
@@ -37,6 +38,8 @@ my $start_time = Time::HiRes::time;
 		display		=> [ !$user->{is_anon},	\&display_message	],
 		delete_message	=> [ $user_ok,		\&delete_message	],
 		deletemsgs	=> [ $user_ok,		\&delete_messages	],
+
+		list_rss	=> [ !$user->{is_anon},	\&list_messages_rss	],
 
 # 		send_message	=> [ $user_ok,		\&send_message		],
 # 		edit_message	=> [ !$user->{is_anon},	\&edit_message		],
@@ -290,9 +293,36 @@ sub list_messages {
 	footer();
 }
 
-sub list_message_rss {
+sub list_messages_rss {
 	my($messages, $constants, $user, $form) = @_;
-	# ...
+
+	my @items;
+	my $message_list = $messages->getWebByUID();
+	for my $message (@$message_list) {
+		my $title = "Message #$message->{id}";
+		$title .= ": $message->{subject}" if $message->{subject};
+
+		push @items, {
+			story	=> {
+				'time'	=> $message->{date}
+			},
+			title		=> $title,
+			description	=> $message->{description} || '',
+			'link'		=> root2abs() . "messages.pl?op=display&id=$message->{id}",
+		};
+	}
+
+	xmlDisplay($form->{content_type} => {
+		channel => {
+			title		=> "$constants->{sitename} Messages",
+			description	=> "$constants->{sitename} Messages",
+			'link'		=> root2abs() . '/my/inbox/',
+		},
+		image	=> 1,
+		items	=> \@items,
+		rdfitemdesc		=> 1,
+		rdfitemdesc_html	=> 1,
+	});
 }
 
 sub display_message {

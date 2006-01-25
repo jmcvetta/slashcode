@@ -79,7 +79,7 @@ END %]
 			[% story.introtext %]
 		</div>
 
-[% IF full && user.is_admin && !preview && env.script_name != '/admin.pl' %]<br><a href="[% gSkin.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</a>[% END %]
+[% IF full && user.is_admin && !preview && env.script_name != '/admin.pl' %]<br><a href="[% gSkin.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</a>&nbsp;[% IF constants.plugin.Ajax %][% PROCESS signoff = story.stoid %][% END %][% END %]
 
 [% IF story.is_future && !user.is_admin %]<p>See any serious problems with this story?
 [% IF constants.ircslash_remarks %]
@@ -110,6 +110,13 @@ END %]
 [% ELSIF dispmode == "brief" %]
 [% IF story.is_future %]<div class="future">[% END %]
 <div class="briefarticle">
+[% storylink = Slash.linkStory ({
+	sid => story.sid,
+	link => story.title,
+	tid  => story.tid
+	skin => story.primaryskid
+ }, 1 );
+%]
 [% IF magic;
 	thisskin = Slash.db.getSkin(story.primaryskid);
 	IF thisskin.rootdir;
@@ -134,4 +141,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.51 2006/01/19 01:14:17 pudge Exp $
+$Id: dispStory;misc;default,v 1.52 2006/01/25 19:32:02 tvroom Exp $

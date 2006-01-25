@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.215 2006/01/25 20:08:24 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.216 2006/01/25 23:28:22 jamiemccarthy Exp $
 #
 
 #
@@ -505,6 +505,31 @@ CREATE TABLE formkeys (
 	KEY ts (ts),
 	KEY last_ts (ts),
 	KEY submit_ts (submit_ts)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'globjs' (global objects)
+#
+
+DROP TABLE IF EXISTS globjs;
+CREATE TABLE globjs (
+	globjid		int UNSIGNED NOT NULL auto_increment,
+	gtid		smallint UNSIGNED NOT NULL,
+	target_id	int UNSIGNED NOT NULL,
+	PRIMARY KEY (globjid),
+	UNIQUE target (gtid, target_id)
+) TYPE=InnoDB;
+
+#
+# Table structure for table 'globj_types'
+#
+
+DROP TABLE IF EXISTS globj_types;
+CREATE TABLE globj_types (
+	gtid		smallint UNSIGNED NOT NULL auto_increment,
+	maintable	VARCHAR(64) NOT NULL,
+	PRIMARY KEY (gtid),
+	UNIQUE maintable (maintable)
 ) TYPE=InnoDB;
 
 #

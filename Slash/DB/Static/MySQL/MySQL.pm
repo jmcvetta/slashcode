@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.234 2006/01/24 05:08:06 pudge Exp $
+# $Id: MySQL.pm,v 1.235 2006/01/25 23:18:58 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.234 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.235 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -405,7 +405,8 @@ sub forgetUsersLastLookTime {
 	my $reader = getObject('Slash::DB', { db_type => "reader" });
 	my $min_lastlooktime = time - ($constants->{lastlookmemory} + 86400*7);
 	my $uids = $reader->sqlSelectColArrayref("uid", "users_param",
-		"name='lastlooktime' AND value < '$min_lastlooktime'");
+		"name='lastlooktime' AND value < '$min_lastlooktime'") || [ ];
+	my $count = scalar @$uids;
 
 	my $splice_count = 2000;
 	while (@$uids) {
@@ -414,6 +415,7 @@ sub forgetUsersLastLookTime {
 		$self->sqlDelete("users_param",
 			"name IN ('lastlooktime', 'lastlookuid') AND uid IN ($uids_in)");
 	}
+	return $count;
 }
 
 ########################################################
@@ -425,7 +427,8 @@ sub forgetUsersMailPass {
 	my $max_hrs = $constants->{mailpass_max_hours} || 48;
 	my $min_mailpass_last_ts = time - ($max_hrs*3600 + 86400*7);
 	my $uids = $reader->sqlSelectColArrayref("uid", "users_param",
-		"name='mailpass_last_ts' AND value < '$min_mailpass_last_ts'");
+		"name='mailpass_last_ts' AND value < '$min_mailpass_last_ts'") || [ ];
+	my $count = scalar @$uids;
 
 	my $splice_count = 2000;
 	while (@$uids) {
@@ -434,6 +437,7 @@ sub forgetUsersMailPass {
 		$self->sqlDelete("users_param",
 			"name IN ('mailpass_last_ts', 'mailpass_num') AND uid IN ($uids_in)");
 	}
+	return $count;
 }
 
 ########################################################
@@ -583,11 +587,10 @@ sub deleteDaily {
 	my $constants = getCurrentStatic();
 
 	$self->sqlDelete('badpasswords', "TO_DAYS(NOW()) - TO_DAYS(ts) > 2");
-
 	$self->sqlDelete('pollvoters');
-
 	$self->sqlDelete('discussions', "type='recycle' AND commentcount=0")
 		unless $constants->{noflush_empty_discussions};
+	return 0;
 }
 
 ########################################################
@@ -644,6 +647,7 @@ sub deleteOldModRows {
 	}
 
 	$self->sqlDo("SET FOREIGN_KEY_CHECKS=1");
+	return 0;
 }
 
 ########################################################

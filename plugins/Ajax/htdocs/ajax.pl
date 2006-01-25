@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.9 2006/01/20 18:05:55 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.10 2006/01/25 19:48:31 tvroom Exp $
 
 use strict;
 
@@ -28,6 +28,10 @@ sub main {
 		setSectionNexusPrefs => {
 			function	=> \&setSectionNexusPrefs,
 			seclev		=> 1
+		},
+		storySignOff => {
+			function	=> \&storySignOff,
+			seclev		=> 100
 		},
 		default => {
 			function	=> \&default
@@ -213,6 +217,24 @@ sub setSectionNexusPrefs() {
 	);
 	print getData('set_section_prefs_success_msg');
 
+}
+
+sub storySignOff {
+	my ($slashdb, $constants, $user, $form) = @_;
+	return unless $user->{is_admin};
+	
+	my $stoid = $form->{stoid};
+	my $uid   = $user->{uid};
+
+	return unless $stoid =~/^\d+$/;
+
+	if ($slashdb->sqlCount("signoff", "stoid = $stoid AND uid = $uid")) {
+		print "Already Signed";
+		return;
+	}
+	
+	$slashdb->createSignoff($stoid, $uid);
+	print "Signed";
 }
 
 sub default {

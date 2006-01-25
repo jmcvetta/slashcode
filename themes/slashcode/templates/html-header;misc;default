@@ -29,7 +29,6 @@ __template__
 [% END -%]
 [% IF !user.is_anon && constants.plugin.Ajax %]
 <script src="[% constants.imagedir %]/prototype.js" type="text/javascript"></script>
-<script src="[% constants.imagedir %]/sectionprefs.js" type="text/javascript"></script>
 [% END %]
 [% IF user.is_admin && constants.plugin.Ajax %]
 <script src="[% constants.imagedir %]/admin.js" type="text/javascript"></script>
@@ -37,4 +36,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.12 2006/01/25 19:04:46 tvroom Exp $
+$Id: html-header;misc;default,v 1.13 2006/01/25 19:51:18 tvroom Exp $

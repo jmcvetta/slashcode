@@ -25,7 +25,7 @@ __template__
 					contents = "<a href=\"$gSkin.rootdir/eventsadmin.pl?op=edit&amp;sid=$sid\">Make Event</a>"
 				%]
 			[% END %]
-
+			[% IF signofftext; signofftext; END %]
 			[% IF attached_files %]
 				[% PROCESS sidebox
 					title = "Attached Files"
@@ -89,7 +89,7 @@ __template__
 					Story Options
 				</legend>
 		
-				[% PROCESS editbuttons %]
+				[% PROCESS editbuttons %]&nbsp;[% IF constants.plugin.Ajax %][% PROCESS signoff checked=user_signoff %][% END %]
 
 				[% IF storyref.sid %]
 					<input type="hidden" name="sid" value="[% storyref.sid %]">
@@ -205,4 +205,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.62 2006/01/23 20:42:59 pudge Exp $
+$Id: editStory;admin;default,v 1.63 2006/01/25 20:01:03 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_gse_min_stoid.pl,v 1.6 2005/12/03 22:37:36 jamiemccarthy Exp $
+# $Id: set_gse_min_stoid.pl,v 1.7 2006/01/25 19:44:56 tvroom Exp $
 
 # Does the most common getStoriesEssentials call, determines the
 # minimum stoid returned, and writes it to a var.
@@ -15,7 +15,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "59 10 * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -28,6 +28,9 @@ $task{$me}{code} = sub {
 	# Since this is the whole point!
 	setCurrentSkin($constants->{mainpage_skid});
 	my $gSkin = getCurrentSkin();
+
+	my $mp_max_days_back = $constants->{gse_mp_max_days_back};
+	my $fallback_min_stoid;
 
 	# Normally gSE will pad the returned value with this much.
 	my $limit_extra = int(($gSkin->{artcount_min} + $gSkin->{artcount_max})/2);
@@ -45,13 +48,18 @@ $task{$me}{code} = sub {
 		limit_extra		=> $limit_extra,
 		future_secs		=> $future_secs,
 	});
-
+	
 	# More safety margin.
 	$min_stoid -= 100;
 
 	# This optimization won't help us if it includes a significant
 	# fraction of the rows in the stories table -- write a zero.
 	$min_stoid = 0 if $min_stoid < 500;
+	
+	if ($mp_max_days_back) {
+		my $gse_fallback_min_stoid = $slashdb->sqlSelect("MIN(stoid)", "stories", "time > DATE_SUB(NOW(), INTERVAL $mp_max_days_back DAY)");
+		$slashdb->setVar("gse_fallback_min_stoid", $gse_fallback_min_stoid);
+	}
 
 	$slashdb->setVar("gse_min_stoid", $min_stoid);
 	return "wrote $min_stoid";

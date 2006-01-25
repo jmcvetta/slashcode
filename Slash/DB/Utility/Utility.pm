@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Utility.pm,v 1.68 2006/01/10 21:24:45 jamiemccarthy Exp $
+# $Id: Utility.pm,v 1.69 2006/01/25 04:53:58 jamiemccarthy Exp $
 
 package Slash::DB::Utility;
 
@@ -12,7 +12,7 @@ use DBIx::Password;
 use Time::HiRes;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Bender, if this is some kind of scam, I don't get it.  You already
 # have my power of attorney.
@@ -735,7 +735,7 @@ sub sqlSelectAllHashrefArray {
 	my $qlid = $self->_querylog_start("SELECT", $from);
 	my $sth = $self->sqlSelectMany($select, $from, $where, $other);
 	return undef unless $sth;
-	my @returnable;
+	my @returnable = ( );
 	while (my $row = $sth->fetchrow_hashref) {
 		push @returnable, $row;
 	}

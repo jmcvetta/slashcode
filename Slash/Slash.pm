@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.256 2006/01/23 20:42:57 pudge Exp $
+# $Id: Slash.pm,v 1.257 2006/01/25 19:45:41 tvroom Exp $
 
 package Slash;
 
@@ -1440,7 +1440,6 @@ sub dispStory {
 		dispmode 	=> $other->{dispmode},
 		dispoptions	=> $other->{dispoptions} || {},
 		thresh_commentcount => $other->{thresh_commentcount},
-		storylink	=> $other->{storylink}
 	);
 #use Data::Dumper; print STDERR scalar(localtime) . " dispStory data: " . Dumper(\%data);
 
@@ -1541,9 +1540,11 @@ sub displayStory {
 				['nickname', 'fakeemail', 'homepage']);
 		my $topic = $reader->getTopic($story->{tid});
 		$story->{atstorytime} = "__TIME_TAG__";
+		
+		if ($options->{dispmode} ne "brief") {
+			$story->{introtext} = parseSlashizedLinks($story->{introtext});
+			$story->{introtext} = processSlashTags($story->{introtext});		}
 
-		$story->{introtext} = parseSlashizedLinks($story->{introtext});
-		$story->{introtext} = processSlashTags($story->{introtext});
 		if ($full) {
 			$story->{bodytext} = parseSlashizedLinks($story->{bodytext});
 			$story->{bodytext} = processSlashTags($story->{bodytext}, { break => 1 });

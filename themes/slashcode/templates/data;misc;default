@@ -182,6 +182,12 @@ Incrementing token-count on [% num_updated %] users...
    pct = "n/a";
  END %]
 [% pct %]
+[% CASE 'briefarticles_begin' %]
+	[% returnme.data_constant = 1 %] 
+<div class="briefarticles">
+[% CASE 'briefarticles_end' %]
+	[% returnme.data_constant = 1 %] 
+</div>
 
 [% CASE DEFAULT %]
 ---- MISSING MISCELLANEOUS DATA SEGMENT --- [[% value %]] block not found.
@@ -191,4 +197,4 @@ Incrementing token-count on [% num_updated %] users...
 __seclev__
 10000
 __version__
-$Id: data;misc;default,v 1.25 2005/08/17 18:00:34 tvroom Exp $
+$Id: data;misc;default,v 1.26 2006/01/25 19:42:38 tvroom Exp $

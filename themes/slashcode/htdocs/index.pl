@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.142 2006/01/24 20:44:25 pudge Exp $
+# $Id: index.pl,v 1.143 2006/01/25 19:24:16 tvroom Exp $
 
 use strict;
 use Slash;
@@ -688,16 +688,7 @@ sub displayStories {
 			if $dispmodelast eq "brief"
 				&& !( $other->{dispmode} && $other->{dispmode} eq "brief" );
 
-		$other->{thresh_commentcount} = $threshComments[$user->{threshold} + 1];
-
-		# XXXNEWINDEX: perhaps move this to being generated in the brief section of dispStory template instead
-		$other->{storylink} = linkStory ({
-				'link' 	=> $story->{title},
-				sid	=> $story->{sid},
-				tid	=> $story->{tid},
-				skin	=> $story->{primaryskid},
-			}, '1', $ls_other
-		);
+		$other->{thresh_commentcount} = $threshComments[$user->{threshold} + 1] if $user->{threshold} > -1;
 
 		$storytext .= displayStory($story->{sid}, '', $other, $stories_data_cache);
 		$tmpreturn .= $storytext;
@@ -772,6 +763,10 @@ sub displayStories {
 	
 			if ($user->{seclev} >= 100) {
 				push @links, [ "$gSkin->{rootdir}/admin.pl?op=edit&sid=$story->{sid}", getData('edit'), '', 'edit' ];
+				if ($constants->{plugin}{Ajax}) {
+					my $signoff =  slashDisplay("signoff", { stoid => $story->{stoid}, storylink => 1 }, { Return => 1 } ); 
+					push @links, $signoff;
+				}
 			}
 
 			# I added sid so that you could set up replies from the front page -Brian

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.145 2006/01/26 03:15:49 pudge Exp $
+# $Id: index.pl,v 1.146 2006/01/26 06:12:59 pudge Exp $
 
 use strict;
 use Slash;
@@ -796,7 +796,10 @@ sub displayStories {
 		}, { Return => 1 });
 	}
 	# limit number of stories leftover for older stories if desired
-	$#$stories = ($gSkin->{older_stories_max} - 1) if $gSkin->{older_stories_max} > 0;
+	$#$stories = ($gSkin->{older_stories_max} - 1) if
+		($gSkin->{older_stories_max} < @$stories)
+			&&
+		($gSkin->{older_stories_max} > 0);
 
 	return $return;
 

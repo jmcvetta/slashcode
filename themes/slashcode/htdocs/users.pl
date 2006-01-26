@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.300 2006/01/20 17:22:40 pudge Exp $
+# $Id: users.pl,v 1.301 2006/01/26 06:12:59 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2659,7 +2659,7 @@ sub saveHome {
 		for my $key (sort grep /^showbox_/, keys %$form) {
 			my($bid) = $key =~ /^showbox_(\w+)$/;
 			next if length($bid) < 1 || length($bid) > 30 || $bid !~ /^\w+$/;
-			if (!$slashboxes{$bid}) {
+			if (! exists $slashboxes{$bid}) {
 				$slashboxes{$bid} = 999; # put it at the end
 			}
 		}

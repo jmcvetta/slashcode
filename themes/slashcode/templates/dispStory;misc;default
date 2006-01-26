@@ -79,7 +79,7 @@ END %]
 			[% story.introtext %]
 		</div>
 
-[% IF full && user.is_admin && !preview && env.script_name != '/admin.pl' %]<br><a href="[% gSkin.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</a>&nbsp;[% IF constants.plugin.Ajax %][% PROCESS signoff = story.stoid %][% END %][% END %]
+[% IF full && user.is_admin && !preview && env.script_name != '/admin.pl' %]<br><a href="[% gSkin.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">[ Edit ]</a>&nbsp;[% IF constants.plugin.Ajax %][% PROCESS signoff stoid = story.stoid %][% END %][% END %]
 
 [% IF story.is_future && !user.is_admin %]<p>See any serious problems with this story?
 [% IF constants.ircslash_remarks %]
@@ -140,4 +140,4 @@ END;
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.55 2006/01/26 00:25:12 pudge Exp $
+$Id: dispStory;misc;default,v 1.56 2006/01/26 03:42:03 pudge Exp $

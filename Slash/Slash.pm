@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.258 2006/01/26 00:17:51 pudge Exp $
+# $Id: Slash.pm,v 1.259 2006/01/26 03:23:12 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1531,7 +1531,7 @@ sub displayStory {
 		&& !$full
 		&& !$options->{is_future}	 # can $story->{is_future} ever matter?
 		&& ($options->{mode} && $options->{mode} ne "full")
-		&& ($options->{dispmode} ne "brief")
+		&& (!$options->{dispmode} || $options->{dispmode} ne "brief")
 	) {
 		$return = $story->{rendered};
 	} else {
@@ -1541,7 +1541,7 @@ sub displayStory {
 		my $topic = $reader->getTopic($story->{tid});
 		$story->{atstorytime} = "__TIME_TAG__";
 
-		if ($options->{dispmode} ne "brief") {
+		if (!$options->{dispmode} || $options->{dispmode} ne "brief") {
 			$story->{introtext} = parseSlashizedLinks($story->{introtext});
 			$story->{introtext} = processSlashTags($story->{introtext});
 		}

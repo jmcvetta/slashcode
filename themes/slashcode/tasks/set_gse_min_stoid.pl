@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_gse_min_stoid.pl,v 1.7 2006/01/25 19:44:56 tvroom Exp $
+# $Id: set_gse_min_stoid.pl,v 1.8 2006/01/26 00:17:54 pudge Exp $
 
 # Does the most common getStoriesEssentials call, determines the
 # minimum stoid returned, and writes it to a var.
@@ -15,7 +15,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = "59 10 * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -48,14 +48,14 @@ $task{$me}{code} = sub {
 		limit_extra		=> $limit_extra,
 		future_secs		=> $future_secs,
 	});
-	
+
 	# More safety margin.
 	$min_stoid -= 100;
 
 	# This optimization won't help us if it includes a significant
 	# fraction of the rows in the stories table -- write a zero.
 	$min_stoid = 0 if $min_stoid < 500;
-	
+
 	if ($mp_max_days_back) {
 		my $gse_fallback_min_stoid = $slashdb->sqlSelect("MIN(stoid)", "stories", "time > DATE_SUB(NOW(), INTERVAL $mp_max_days_back DAY)");
 		$slashdb->setVar("gse_fallback_min_stoid", $gse_fallback_min_stoid);

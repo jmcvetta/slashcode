@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.257 2006/01/25 19:45:41 tvroom Exp $
+# $Id: Slash.pm,v 1.258 2006/01/26 00:17:51 pudge Exp $
 
 package Slash;
 
@@ -1540,10 +1540,11 @@ sub displayStory {
 				['nickname', 'fakeemail', 'homepage']);
 		my $topic = $reader->getTopic($story->{tid});
 		$story->{atstorytime} = "__TIME_TAG__";
-		
+
 		if ($options->{dispmode} ne "brief") {
 			$story->{introtext} = parseSlashizedLinks($story->{introtext});
-			$story->{introtext} = processSlashTags($story->{introtext});		}
+			$story->{introtext} = processSlashTags($story->{introtext});
+		}
 
 		if ($full) {
 			$story->{bodytext} = parseSlashizedLinks($story->{bodytext});

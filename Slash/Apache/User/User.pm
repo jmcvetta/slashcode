@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.145 2006/01/25 19:46:18 tvroom Exp $
+# $Id: User.pm,v 1.146 2006/01/26 00:17:53 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.145 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.146 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -388,9 +388,11 @@ sub handler {
 	$user->{state}{ssl} = $is_ssl;
 	createCurrentUser($user);
 	createCurrentForm($form);
+
 	if ($gSkin->{require_acl} && !$user->{acl}{$gSkin->{require_acl}}) {
 		$r->err_header_out(Location =>
-	       URI->new_abs('/', $constants->{absolutedir}));
+			URI->new_abs('/', $constants->{absolutedir})
+		);
 	       return REDIRECT;
 	}
 

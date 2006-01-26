@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.272 2006/01/25 20:03:02 tvroom Exp $
+# $Id: admin.pl,v 1.273 2006/01/26 00:17:54 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1097,7 +1097,7 @@ sub importText {
 
 ##################################################################
 sub get_signoff_box {
-	my ($stoid) = @_;
+	my($stoid) = @_;
 	my $slashdb = getCurrentDB();
 	print STDERR "TESTING: signoff: $stoid\n";
 	my $signoffs = $slashdb->getSignoffsForStory($stoid);
@@ -1464,11 +1464,12 @@ sub editStory {
 	# <SELECT> into this template and let the template deal with the
 	# HTML, here. Formatting these elements outside of the template
 	# just defeats the purpose!	-- Cliff 2002-08-07
-	
+
 	my $user_signoff = 0;
 	if ($stoid) {
 		$user_signoff = $slashdb->sqlCount("signoff", "uid=$user->{uid} AND stoid=$stoid");
 	}
+
 	slashDisplay('editStory', {
 		stoid			=> $stoid,
 		storyref 		=> $storyref,

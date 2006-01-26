@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.852 2006/01/25 23:28:22 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.853 2006/01/26 00:17:53 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.852 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.853 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8253,7 +8253,7 @@ sub getStoriesEssentials {
 	# ignore the old one.
 	$min_stoid = 0 if $return_min_stoid_only;
 #print STDERR "gSE $$ min_stoid B '$min_stoid' tid '@$tid' overly '$limit_overly_large' rmso '$return_min_stoid_only'\n";
-	
+
 	if ($tid->[0] != $mp_tid) {
 		$min_stoid = 0;
 	} 
@@ -9166,12 +9166,12 @@ sub updateStory {
 
 ########################################################
 sub createSignoff {
-	my ($self, $stoid, $uid) = @_;
+	my($self, $stoid, $uid) = @_;
 	$self->sqlInsert("signoff", { stoid => $stoid, uid => $uid });
 }
 
 sub getSignoffsForStory {
-	my ($self, $stoid) = @_;
+	my($self, $stoid) = @_;
 	return $self->sqlSelectAllHashrefArray(
 		"signoff.*, users.nickname",
 		"signoff, users",
@@ -13030,7 +13030,6 @@ sub sqlShowInnodbStatus {
 }
 
 ########################################################
-
 # Get a global object ID (globjid), creating it if necessary.
 # Takes two arguments, the name of the main table of the object
 # (e.g. 'stories' or 'comments'), and the ID of the object in

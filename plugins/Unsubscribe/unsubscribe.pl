@@ -2,12 +2,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: unsubscribe.pl,v 1.1 2006/01/27 16:29:37 cowboyneal Exp $
+# $Id: unsubscribe.pl,v 1.2 2006/01/27 16:46:58 cowboyneal Exp $
 
 use strict;
 use File::Path;
 use Slash 2.003;        # require Slash 2.3.x
-use Slash::Constants qw(:web);
+use Slash::Constants qw(:messages :web);
 use Slash::Display;
 use Slash::Utility;
 use Time::HiRes qw( usleep );
@@ -38,7 +38,7 @@ sub main {
                 return;
         }
 
-	header('', '' { admin => 1, adminmenu => 'config', tab_selected => 'unsubscribe' }  or return;
+	header('', '', { admin => 1, adminmenu => 'config', tab_selected => 'unsubscribe' })  or return;
 	print createMenu('unsubscribe');
 
 	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form);

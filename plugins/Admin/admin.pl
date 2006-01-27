@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.273 2006/01/26 00:17:54 pudge Exp $
+# $Id: admin.pl,v 1.274 2006/01/27 04:45:27 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1099,9 +1099,7 @@ sub importText {
 sub get_signoff_box {
 	my($stoid) = @_;
 	my $slashdb = getCurrentDB();
-	print STDERR "TESTING: signoff: $stoid\n";
 	my $signoffs = $slashdb->getSignoffsForStory($stoid);
-	print STDERR "TESTING: signoff returned: " . scalar @$signoffs ."\n";
 	my $uids = {};
 	foreach my $so(@$signoffs) {
 		$uids->{$so->{uid}}++;

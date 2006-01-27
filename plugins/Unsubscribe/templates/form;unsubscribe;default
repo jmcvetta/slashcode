@@ -15,11 +15,11 @@ __template__
 
 [% PROCESS titlebar width => "100%", title => "Unsubscribe $constants.sitename User(s)" %]
 
-<textarea name="emails" rows="[% user.textarea_rows || constants.textarea_rows 5]" cols = "[% user.textarea_cols || constants.textarea_cols %]" wrap="VIRTUAL"></textarea>
+<textarea name="emails" rows="[% user.textarea_rows || constants.textarea_rows %]" cols = "[% user.textarea_cols || constants.textarea_cols %]" wrap="VIRTUAL"></textarea>
 
 <input type="submit" value="Unsubscribe">
 </form>
 __seclev__
 1000
 __version__
-$Id: form;unsubscribe;default,v 1.1 2006/01/27 16:29:37 cowboyneal Exp $
+$Id: form;unsubscribe;default,v 1.2 2006/01/27 16:52:01 cowboyneal Exp $

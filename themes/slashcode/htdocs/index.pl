@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.146 2006/01/26 06:12:59 pudge Exp $
+# $Id: index.pl,v 1.147 2006/01/27 13:14:46 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -675,7 +675,6 @@ sub displayStories {
 		my @threshComments = split /,/, $story->{hitparade};  # posts in each threshold
 
 		$other->{is_future} = 1 if $story->{is_future};
-		my $storytext;
 
 		#$other->{dispoptions}{new} = 1 if !$user->{is_anon} && $user->{last_mainpage_view} && $gSkin->{nexus} == $constants->{mainpage_skid} && $user->{last_mainpage_view} lt $story->{time};
 	
@@ -692,10 +691,22 @@ sub displayStories {
 			? $threshComments[$user->{threshold} + 1]
 			: $story->{commentcount};
 
-		$storytext .= displayStory($story->{sid}, '', $other, $stories_data_cache);
-		$tmpreturn .= $storytext;
+		$tmpreturn .= displayStory($story->{sid}, '', $other, $stories_data_cache);
 		
 		if ($other->{dispmode} eq "full") {
+
+			if ($constants->{plugin}{Tags}) {
+				if ($user->{tags_canread_stories}) {
+					my @toptags = split / /, ($story_data->{tags_top} || '');
+					my @exmptags = split / /, $constants->{tags_stories_examples};
+					$tmpreturn .= slashDisplay('tagsstory', {
+						story =>	$story,
+						toptags =>	\@toptags,
+						exmptags =>	\@exmptags,
+					}, { Return => 1 });
+				}
+			}
+
 			push @links, linkStory({
 				'link'		=> $msg->{readmore},
 				sid		=> $story->{sid},

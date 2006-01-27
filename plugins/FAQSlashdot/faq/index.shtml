@@ -4,7 +4,7 @@
 <head>
         <title>Slashdot FAQ - Index</title>
 <!--
-$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.24 2006/01/24 20:59:43 jamiemccarthy Exp $ =~ /(\d+)/g
+$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.25 2006/01/27 13:14:46 jamiemccarthy Exp $ =~ /(\d+)/g
 -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
@@ -242,6 +242,10 @@ $VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.24 2006/01/24 20:59:43 jamie
                 <li><strong><a href="/faq/suggestions.shtml#su1300">I need information about Slashdot for a paper I'm writing!</a></strong></li>
                 <li><strong><a href="/faq/suggestions.shtml#su1400">Can I use Slashdot icons freely on my site?</a></strong></li>
                 <li><strong><a href="/faq/suggestions.shtml#su1500">I have found a bug on Slashdot, Who do I contact?</a></strong></li>
-        </ul>
+        </ul><!-- Tags -->
+        <h2><strong><a href="/faq/tags.shtml">Tags</a></strong></h2>
+        <ul>
+                <li><strong><a href="/faq/tags.shtml#tags100">What is this crazy tags thing?</a></strong></li>
+	</ul>
 
 <!--#include virtual="/slashfoot.inc"-->

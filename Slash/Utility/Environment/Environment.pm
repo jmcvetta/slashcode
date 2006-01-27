@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.186 2006/01/24 19:27:20 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.187 2006/01/27 13:14:46 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.187 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1618,6 +1618,21 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 		# change their password.
 		$user->{seclev} = 1;
 		$user->{state}{lostprivs} = 1;
+	}
+
+	if ($constants->{plugin}{Tags}) {
+		my $read = $constants->{tags_stories_allowread} || 0;
+		$user->{tags_canread_stories} = 0;
+		$user->{tags_canread_stories} ||= 1 if $read >= 4 && !$user->{is_anon};
+		$user->{tags_canread_stories} ||= 1 if $read >= 3 &&  $user->{karma} >= 0;
+		$user->{tags_canread_stories} ||= 1 if $read >= 2 &&  $user->{is_subscriber};
+		$user->{tags_canread_stories} ||= 1 if $read >= 1 &&  $user->{is_admin};
+		my $write = $constants->{tags_stories_allowwrite} || 0;
+		$user->{tags_canwrite_stories} = 0;
+		$user->{tags_canwrite_stories} ||= 1 if $write >= 4 && !$user->{is_anon};
+		$user->{tags_canwrite_stories} ||= 1 if $write >= 3 &&  $user->{karma} >= 0;
+		$user->{tags_canwrite_stories} ||= 1 if $write >= 2 &&  $user->{is_subscriber};
+		$user->{tags_canwrite_stories} ||= 1 if $write >= 1 &&  $user->{is_admin};
 	}
 
 	return $user;
@@ -3250,4 +3265,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.186 2006/01/24 19:27:20 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.187 2006/01/27 13:14:46 jamiemccarthy Exp $

@@ -3,7 +3,7 @@
 <html>
 <head>
         <title>Slashdot FAQ - Suggestions and Requests</title>
-<!-- $Id: suggestions.shtml,v 1.10 2005/10/11 02:32:13 tvroom Exp $ -->
+<!-- $Id: suggestions.shtml,v 1.11 2006/01/27 13:14:46 jamiemccarthy Exp $ -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
@@ -166,6 +166,7 @@
                 
                         <li><a href="advertising.shtml">Previous Section</a></li>
                         <li><a href="index.shtml">Index</a></li>
+                        <li><a href="tags.shtml">Next Section</a></li>
                 </ul>
         
 

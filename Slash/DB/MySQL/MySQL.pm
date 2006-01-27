@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.853 2006/01/26 00:17:53 pudge Exp $
+# $Id: MySQL.pm,v 1.854 2006/01/27 04:47:04 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.853 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.854 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8149,6 +8149,7 @@ sub getStoriesEssentials {
 	my $min_stoid = $self->getVar('gse_min_stoid', 'value', 1) || 0;
 	my $fallback_min_stoid = 0;
 	$fallback_min_stoid = $self->getVar('gse_fallback_min_stoid', 'value', 1) || 0 if $constants->{gse_mp_max_days_back};
+	print STDERR "FMS $fallback_min_stoid\n";
 	my $mp_tid = $constants->{mainpage_nexus_tid};
 	my $memcached_expire = 600; # this is kinda arbitrary, yes
 
@@ -8258,6 +8259,7 @@ sub getStoriesEssentials {
 		$min_stoid = 0;
 	} 
 
+	print STDERR "Min stoid: $min_stoid\n";
 	# Build the WHERE clauses necessary and do the first select(s),
 	# on story_topics_rendered.
 	# There will always be at least one tid, since it defaults
@@ -9172,10 +9174,12 @@ sub createSignoff {
 
 sub getSignoffsForStory {
 	my($self, $stoid) = @_;
+	return [] if $!$stoid;
+	my $stoid_q = $self->sqlQuote($stoid);
 	return $self->sqlSelectAllHashrefArray(
 		"signoff.*, users.nickname",
 		"signoff, users",
-		"signoff.stoid=$stoid AND users.uid=signoff.uid"
+		"signoff.stoid=$stoid_q AND users.uid=signoff.uid"
 	);
 }
 

@@ -4,7 +4,7 @@
 <head>
         <title>Slashdot FAQ - Index</title>
 <!--
-$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.26 2006/01/30 18:19:21 pudge Exp $ =~ /(\d+)/g
+$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.27 2006/01/30 18:59:22 jamiemccarthy Exp $ =~ /(\d+)/g
 -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
@@ -251,6 +251,7 @@ $VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.26 2006/01/30 18:19:21 pudge
         <h2><strong><a href="/faq/tags.shtml">Tags</a></strong></h2>
         <ul>
                 <li><strong><a href="/faq/tags.shtml#tags100">What is this crazy tags thing?</a></strong></li>
+                <li><strong><a href="/faq/tags.shtml#tags110">Are tags objective or subjective? Can I use any tag I want?</a></strong></li>
 	</ul>
 
 <!--#include virtual="/slashfoot.inc"-->

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.185 2006/01/23 20:42:59 pudge Exp $
+# $Id: Data.pm,v 1.186 2006/01/30 23:50:59 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -115,6 +115,7 @@ BEGIN {
 	strip_notags
 	strip_plaintext
 	strip_paramattr
+	strip_paramattrmailto
 	strip_urlattr
 	submitDomainAllowed
 	timeCalc
@@ -1279,15 +1280,21 @@ sub strip_plaintext	{ stripByMode($_[0], PLAINTEXT,	@_[1 .. $#_]) }
 
 =head2 strip_paramattr(STRING [, NO_WHITESPACE_FIX])
 
+=head2 strip_paramattrmailto(STRING [, NO_WHITESPACE_FIX])
+
 =head2 strip_urlattr(STRING [, NO_WHITESPACE_FIX])
 
 Wrappers for strip_attribute(fixparam($param), $no_whitespace_fix) and
-strip_attribute(fudgeurl($url), $no_whitespace_fix).
+strip_attribute(fudgeurl($url), $no_whitespace_fix). The ...mailto
+version is for mailto URIs, in which the HTTP equivalent of the parameter
+attribute is the header: unlike the http scheme, the mailto scheme
+disallows "+" for " ".
 
 =cut
 
-sub strip_paramattr	{ strip_attribute(fixparam($_[0]), $_[1]) }
-sub strip_urlattr	{ strip_attribute(fudgeurl($_[0]), $_[1]) }
+sub strip_paramattr		{ strip_attribute(fixparam($_[0]), $_[1]) }
+sub strip_paramattrmailto	{ my $h = strip_attribute(fixparam($_[0]), $_[1]); $h =~ s/\+/%20/g; $h }
+sub strip_urlattr		{ strip_attribute(fudgeurl($_[0]), $_[1]) }
 
 
 #========================================================================
@@ -4224,4 +4231,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.185 2006/01/23 20:42:59 pudge Exp $
+$Id: Data.pm,v 1.186 2006/01/30 23:50:59 jamiemccarthy Exp $

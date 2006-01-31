@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.301 2006/01/26 06:12:59 pudge Exp $
+# $Id: users.pl,v 1.302 2006/01/31 00:21:32 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2686,11 +2686,8 @@ sub saveHome {
 	my $author_hr = $slashdb->getDescriptions('authors');
 	my $tree = $slashdb->getTopicTree();
 	my(@story_never_topic,  @story_never_author,  @story_never_nexus);
-	
 	my(@story_always_topic, @story_always_author);
-	
 	my(@story_always_nexus, @story_full_brief_nexus, @story_brief_always_nexus, @story_full_best_nexus, @story_brief_best_nexus);
-
 	my($story_topic_all, $story_author_all, $story_nexus_all) = (0, 0, 0);
 	
 	# Topics are either present (value=2) or absent (value=0).  If absent,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.857 2006/01/30 20:40:32 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.858 2006/01/31 00:21:31 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.857 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.858 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9013,8 +9013,23 @@ sub createStory {
 
 		my $id;
 		if ($story->{discussion}) {
+			# updating now for journals tips off users that this will
+			# be a story soon, esp. ts, url, title, kind ... i don't
+			# care personally, does it matter?  if so we can task some
+			# of these changes -- pudge
+
+			# XXX how does this show up in ~user ?
+
+			# XXX url links back to story, or journal?
+			# delete $discussion->{url};
+
+			# XXX what about uid?  does it matter?
+			# delete $discussion->{uid};
+
 			$id = $story->{discussion};
 			$discussion->{kind} = 'journal-story';
+			$discussion->{type} = 'open'; # should be already
+			$discussion->{archivable} = 'yes'; # for good measure
 			if (!$self->setDiscussion($id, $discussion)) {
 				$error = "Failed to set discussion for story";
 			}

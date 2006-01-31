@@ -23,7 +23,7 @@ __template__
 			<li class="author">
 			<a href="[% gSkin.rootdir %]/~[% thisuser.nickname | strip_paramattr %]/">[% thisuser.nickname | strip_literal %]</a> &nbsp;
 			[% IF thisuser.fakeemail %]
-				([% thisuser.uid %]) email: <a href="mailto:[% thisuser.fakeemail | strip_paramattr %]">[% thisuser.fakeemail | strip_literal %]</a>
+				([% thisuser.uid %]) email: <a href="mailto:[% thisuser.fakeemail | strip_paramattrnonhttp %]">[% thisuser.fakeemail | strip_literal %]</a>
 			[% ELSE %]
 				([% thisuser.uid %])
 			[% END %]
@@ -46,4 +46,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: usersearch;search;default,v 1.19 2006/01/23 20:42:59 pudge Exp $
+$Id: usersearch;search;default,v 1.20 2006/01/31 16:12:31 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.302 2006/01/31 00:21:32 pudge Exp $
+# $Id: users.pl,v 1.303 2006/01/31 01:20:22 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -815,7 +815,7 @@ sub showComments {
 			# pollquestions.
 			my $discussion = $reader->getDiscussion($comment->{sid});
 
-			if ($kinds->{ $discussion->{dkid} } eq 'journal') {
+			if ($kinds->{ $discussion->{dkid} } =~ /^journal(?:-story)?$/) {
 				$comment->{type} = 'journal';
 			} elsif ($kinds->{ $discussion->{dkid} } eq 'poll') {
 				$comment->{type} = 'poll';
@@ -1143,7 +1143,7 @@ sub showInfo {
 			# A comment with no accompanying discussion;
 			# basically we pretend it doesn't exist.
 			next;
-		} elsif ($kinds->{ $discussion->{dkid} } eq 'journal') {
+		} elsif ($kinds->{ $discussion->{dkid} } =~ /^journal(?:-story)?$/) {
 			$type = 'journal';
 		} elsif ($kinds->{ $discussion->{dkid} } eq 'poll') {
 			$type = 'poll';

@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.256 2006/01/25 23:28:22 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.257 2006/02/01 22:10:35 tvroom Exp $
 #
 
 #
@@ -1019,6 +1019,8 @@ INSERT INTO vars (name, value, description) VALUES ('search_google','0','Turn on
 INSERT INTO vars (name, value, description) VALUES ("search_ignore_skids", "", "list of skids that you want to not include in search results.  Delimit skids with |");
 INSERT INTO vars (name, value, description) VALUES ('section','index','This is the current setting for section.');
 INSERT INTO vars (name, value, description) VALUES ('send_mail','1','Turn On/Off to allow the system to send email messages.');
+INSERT INTO vars (name, value, description) VALUES ("signoff_notify", "0", "Add remark for bot on each signoff / update / save ?");
+INSERT INTO vars (name, value, description) VALUES ("signoff_use", "0", "Use signoff functionalilty?");
 INSERT INTO vars (name, value, description) VALUES ('siteadmin','admin','The admin for the site');
 INSERT INTO vars (name, value, description) VALUES ('siteadmin_name','Slash Admin','The pretty name for the admin for the site');
 INSERT INTO vars (name, value, description) VALUES ('siteid','www.example.com','The unique ID for this site');

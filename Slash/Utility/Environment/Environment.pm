@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.187 2006/01/27 13:14:46 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.188 2006/02/01 23:16:25 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.187 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.188 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1061,7 +1061,7 @@ sub isAnon {
 	my $slashdb = getCurrentDB();
 	my $skins = $slashdb->getSkins();
 	for my $skid (keys %$skins) {
-		return 1 if $uid == $skins->{$skid}{ac_uid};
+		return 1 if $skins->{$skid}{ac_uid} && $uid == $skins->{$skid}{ac_uid};
 	}
 
 	# Nope, this UID is not anonymous.
@@ -3265,4 +3265,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.187 2006/01/27 13:14:46 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.188 2006/02/01 23:16:25 pudge Exp $

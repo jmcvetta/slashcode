@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.108 2006/01/02 18:39:54 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.109 2006/02/01 20:16:52 tvroom Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -647,7 +647,7 @@ sub currentAdminUsers {
 	my $now = timeCalc($slashdb->getTime(), "%s", 0);
 	my $aids = $slashdb->currentAdmin();
 	for my $data (@$aids) {
-		my($usernick, $usertime, $lasttitle, $uid) = @$data;
+		my($usernick, $usertime, $lasttitle, $last_subid, $last_sid, $uid) = @$data;
 		if ($usernick eq $user->{nickname}) {
 			$usertime = "-";
 		} else {
@@ -661,7 +661,7 @@ sub currentAdminUsers {
 					. int(($usertime%3600)/60+0.5) . "m";
 			}
 		}
-		@$data = ($usernick, $usertime, $lasttitle, $uid);
+		@$data = ($usernick, $usertime, $lasttitle, $last_subid, $last_sid, $uid);
 	}
 
 	my @reader_vus = $slashdb->getDBVUsForType("reader");
@@ -1694,4 +1694,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.108 2006/01/02 18:39:54 jamiemccarthy Exp $
+$Id: Display.pm,v 1.109 2006/02/01 20:16:52 tvroom Exp $

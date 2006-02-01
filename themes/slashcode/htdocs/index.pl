@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.147 2006/01/27 13:14:46 jamiemccarthy Exp $
+# $Id: index.pl,v 1.148 2006/02/01 21:50:12 tvroom Exp $
 
 use strict;
 use Slash;
@@ -686,7 +686,9 @@ sub displayStories {
 		$tmpreturn .= getData("briefarticles_end")
 			if $dispmodelast eq "brief"
 				&& !( $other->{dispmode} && $other->{dispmode} eq "brief" );
-
+		
+		$story->{commentcount} = $threshComments[0] if $story->{commentcount};
+		
 		$other->{thresh_commentcount} = $user->{threshold} > -1
 			? $threshComments[$user->{threshold} + 1]
 			: $story->{commentcount};
@@ -734,16 +736,14 @@ sub displayStories {
 				my @commentcount_link;
 				my $thresh = $threshComments[$user->{threshold} + 1];
 
-				if ($story->{commentcount} = $threshComments[0]) {
-					if ($user->{threshold} > -1 && $story->{commentcount} ne $thresh) {
-						$commentcount_link[0] = linkStory({
-							sid		=> $story->{sid},
-							tid		=> $story->{tid},
-							threshold	=> $user->{threshold},
-							'link'		=> $thresh,
-							skin		=> $story->{primaryskid},
-						}, '', $ls_other);
-					}
+				if ($user->{threshold} > -1 && $story->{commentcount} ne $thresh) {
+					$commentcount_link[0] = linkStory({
+						sid		=> $story->{sid},
+						tid		=> $story->{tid},
+						threshold	=> $user->{threshold},
+						'link'		=> $thresh,
+						skin		=> $story->{primaryskid},
+					}, '', $ls_other);
 				}
 
 				$commentcount_link[1] = linkStory({

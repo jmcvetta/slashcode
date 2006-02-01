@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.45 2006/02/01 18:50:57 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.46 2006/02/01 23:02:57 pudge Exp $
 
 package Slash::Display;
 
@@ -50,7 +50,7 @@ use Template 2.07;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT @EXPORT_OK $CONTEXT %FILTERS $TEMPNAME);
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(slashDisplay slashDisplayName);
 @EXPORT_OK = qw(get_template);
 my(%objects);
@@ -340,23 +340,23 @@ my $strip_mode = sub {
 # for a template and you don't want your tags running
 # up against each other.		- Cliff 8/1/01
 %FILTERS = (
-	decode_entities	=> \&decode_entities,
-	fixparam	=> \&fixparam,
-	fixurl		=> \&fixurl,
-	fudgeurl	=> \&fudgeurl,
-	strip_paramattr	=> \&strip_paramattr,
-	strip_paramattrnonhttp	=> \&strip_paramattrnonhttp,
-	strip_urlattr	=> \&strip_urlattr,
-	strip_anchor	=> \&strip_anchor,
-	strip_attribute	=> \&strip_attribute,
-	strip_code	=> \&strip_code,
-	strip_extrans	=> \&strip_extrans,
-	strip_html	=> \&strip_html,
-	strip_literal	=> \&strip_literal,
-	strip_nohtml	=> \&strip_nohtml,
-	strip_notags	=> \&strip_notags,
-	strip_plaintext	=> \&strip_plaintext,
-	strip_mode	=> [ $strip_mode, 1 ],
+	decode_entities		=> \&decode_entities,
+	fixparam		=> \&fixparam,
+	fixurl			=> \&fixurl,
+	fudgeurl		=> \&fudgeurl,
+	strip_paramattr		=> \&strip_paramattr,
+	strip_paramattr_nonhttp	=> \&strip_paramattr_nonhttp,
+	strip_urlattr		=> \&strip_urlattr,
+	strip_anchor		=> \&strip_anchor,
+	strip_attribute		=> \&strip_attribute,
+	strip_code		=> \&strip_code,
+	strip_extrans		=> \&strip_extrans,
+	strip_html		=> \&strip_html,
+	strip_literal		=> \&strip_literal,
+	strip_nohtml		=> \&strip_nohtml,
+	strip_notags		=> \&strip_notags,
+	strip_plaintext		=> \&strip_plaintext,
+	strip_mode		=> [ $strip_mode, 1 ],
 	%FILTERS
 );
 

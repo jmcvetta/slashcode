@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.218 2006/02/01 22:10:35 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.219 2006/02/01 22:30:59 pudge Exp $
 #
 
 #
@@ -736,7 +736,7 @@ CREATE TABLE querylog (
 	KEY type (type)
 ) TYPE=InnoDB;
 
-DROP TABLE related_stories IF exists;
+DROP TABLE IF EXISTSÊrelated_stories;
 CREATE TABLE related_stories (
 	id mediumint(8) unsigned NOT NULL auto_increment,
 	stoid mediumint(8) unsigned default '0',
@@ -744,8 +744,8 @@ CREATE TABLE related_stories (
 	rel_sid varchar(16) NOT NULL default '',
 	title varchar(255) default '',
 	url varchar(255) default '',
-	PRIMARY KEY  (`id`),
-	KEY `stoid` (`stoid`)
+	PRIMARY KEY (id),
+	KEY stoid (stoid)
 ) TYPE=InnoDB;
 
 #

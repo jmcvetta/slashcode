@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.860 2006/02/01 20:15:11 tvroom Exp $
+# $Id: MySQL.pm,v 1.861 2006/02/01 22:18:03 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.860 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.861 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -13236,17 +13236,23 @@ sub setRelatedStoriesForStory {
 				rel_stoid => $rel_stoid
 		});
 
+		# XXX - hold off on this for now - we don't want to link to
+		# stories before they go live.  checkStoryViewable should
+		# prevent them from showing up, but want to doublecheck that
+		# and a few other things related to reciprocal deleting of
+		# removed links
+		#       
 		# Insert reciprocal link if it doesn't already exist
-		my $rel_stoid_q = $self->sqlQuote($rel_stoid);
-		my $sid_q = $self->sqlQuote($story->{sid});
-		if (!$self->sqlCount("related_stories", "stoid = $rel_stoid_q AND rel_sid = $sid_q")) {
-			$self->sqlInsert(
-				"related_stories", {
-					stoid   => $rel_stoid,
-					rel_sid => $story->{sid},
-					rel_stoid => $stoid,
-			});
-		}
+		# my $rel_stoid_q = $self->sqlQuote($rel_stoid);
+		# my $sid_q = $self->sqlQuote($story->{sid});
+		#if (!$self->sqlCount("related_stories", "stoid = $rel_stoid_q AND rel_sid = $sid_q")) {
+		#	$self->sqlInsert(
+		#		"related_stories", {
+		#			stoid   => $rel_stoid,
+		#			rel_sid => $story->{sid},
+		#			rel_stoid => $stoid,
+		#	});
+		#}
 	}
 	
 	foreach my $rel_url (keys %$rel_url_hr) {

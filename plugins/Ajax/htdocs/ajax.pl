@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.11 2006/01/26 00:17:54 pudge Exp $
+# $Id: ajax.pl,v 1.12 2006/02/01 20:39:00 tvroom Exp $
 
 use strict;
 
@@ -233,7 +233,7 @@ sub storySignOff {
 		return;
 	}
 
-	$slashdb->createSignoff($stoid, $uid);
+	$slashdb->createSignoff($stoid, $uid, "signed");
 	print "Signed";
 }
 

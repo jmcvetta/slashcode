@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.129 2006/01/24 05:19:36 pudge Exp $
+# $Id: submit.pl,v 1.130 2006/02/01 20:37:09 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -216,6 +216,10 @@ sub previewForm {
 	my $email_known = "";
 	$email_known = "mailto" if $sub->{email} eq $user->{fakeemail};
 	$sub->{email} = processSub($sub->{email}, $email_known);
+
+	my $last_admin_text = $slashdb->getLastSessionText($user->{uid});
+	my $lasttime = $slashdb->getTime();
+	$slashdb->setUser($user->{uid}, { adminlaststorychange => $lasttime }) if $last_admin_text ne $sub->{subj};
 
 	$slashdb->setSession(getCurrentUser('uid'), {
 		lasttitle	=> $sub->{subj},

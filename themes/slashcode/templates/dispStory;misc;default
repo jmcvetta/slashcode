@@ -134,10 +134,18 @@ END;
 %]
 	[% title %]  [% IF story.commentcount %][% UNLESS story.commentcount == thresh_commentcount %][% thresh_commentcount %] of [% END %][% story.commentcount %] comment[% IF story.commentcount > 1 %]s[% END %][% END %] 
 	[% IF user.is_admin %]<a href="[% gSkin.rootdir -%]/admin.pl?op=edit&amp;sid=[% story.sid %]">(edit)</a>[% END %]
+	[% IF expandable %]
+	<a href="javascript: toggleIntro('intro-[% story.stoid %]','togglest-[% story.stoid %]');"><span id="togglest-[% story.stoid %]">[+]</span></a>
+	[% END %]
+	[% IF getintro %]
+	<div class="introhide" id="intro-[% story.stoid %]">
+		[% story.introtext %]
+	</div>
+	[% END %]
 </div>
 [% IF story.is_future %]</div>[% END %]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.57 2006/01/31 16:12:31 jamiemccarthy Exp $
+$Id: dispStory;misc;default,v 1.58 2006/02/01 21:44:09 tvroom Exp $

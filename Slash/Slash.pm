@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.260 2006/02/01 20:12:59 tvroom Exp $
+# $Id: Slash.pm,v 1.261 2006/02/01 22:35:15 pudge Exp $
 
 package Slash;
 
@@ -1576,8 +1576,10 @@ sub displayStory {
 	return $return;
 }
 
+#========================================================================
+
 sub displayRelatedStories {
-	my ($stoid) = @_;
+	my($stoid) = @_;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();

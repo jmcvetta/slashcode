@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.148 2006/02/01 21:50:12 tvroom Exp $
+# $Id: index.pl,v 1.149 2006/02/01 23:01:13 pudge Exp $
 
 use strict;
 use Slash;
@@ -686,9 +686,9 @@ sub displayStories {
 		$tmpreturn .= getData("briefarticles_end")
 			if $dispmodelast eq "brief"
 				&& !( $other->{dispmode} && $other->{dispmode} eq "brief" );
-		
+
 		$story->{commentcount} = $threshComments[0] if $story->{commentcount};
-		
+
 		$other->{thresh_commentcount} = $user->{threshold} > -1
 			? $threshComments[$user->{threshold} + 1]
 			: $story->{commentcount};

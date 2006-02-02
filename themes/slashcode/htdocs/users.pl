@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.303 2006/01/31 01:20:22 pudge Exp $
+# $Id: users.pl,v 1.304 2006/02/02 16:48:37 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -3317,7 +3317,8 @@ sub getUserAdmin {
 	}
 	##########
 
-	$user_edit->{author} = ($user_edit->{author} == 1) ? $constants->{markup_checked_attribute} : '';
+	$user_edit->{author} = ($user_edit->{author} && $user_edit->{author} == 1)
+		? $constants->{markup_checked_attribute} : '';
 	if (! $user->{nonuid}) {
 		my $threshcodes = $reader->getDescriptions('threshcode_values','',1);
 		$thresh_select = createSelect('defaultpoints', $threshcodes, $user_edit->{defaultpoints}, 1);

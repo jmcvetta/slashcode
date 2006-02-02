@@ -4,7 +4,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: template-tool,v 1.35 2005/09/26 16:40:02 jamiemccarthy Exp $
+# $Id: template-tool,v 1.36 2006/02/02 22:24:36 jamiemccarthy Exp $
 
 # First version by Brian, brian@tangent.org
 # Updated by Patrick Galbraith, capttofu@slashdot.org
@@ -26,7 +26,7 @@ use Slash::Install;
 use Getopt::Std;
 use Cwd;
 
-(my $VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
@@ -128,7 +128,7 @@ if ($opts{'s'}) {
 		if (defined $temp2 && $temp2->{page} eq $template->{page}
 			&& $temp2->{skin} eq $template->{skin}
 		) {
-			if ($template->{instructions} =~ /placeholder/) {
+			if ($template->{instructions} && $template->{instructions} =~ /placeholder/) {
 				print "\t$filename is placeholder, skipping\n"
 					if !$opts{t};
 				next;

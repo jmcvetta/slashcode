@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.235 2006/01/25 23:18:58 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.236 2006/02/02 15:30:36 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.235 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.236 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2412,6 +2412,13 @@ sub countM2M1Ratios {
 sub countM2 {
 	my($self) = @_;
 	return 0;
+}
+
+########################################################
+# For tasks/topic_tree_draw.pl
+sub countStoriesWithTopic {
+	my($self, $tid) = @_;
+	return $self->sqlCount('story_topics_rendered', "tid=$tid");
 }
 
 ########################################################

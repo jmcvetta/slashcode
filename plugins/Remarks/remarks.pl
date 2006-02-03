@@ -1,10 +1,12 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: remarks.pl,v 1.1 2006/01/27 04:08:26 pudge Exp $
+# $Id: remarks.pl,v 1.2 2006/02/03 23:43:46 pudge Exp $
 
 use strict;
+use warnings;
+
 use Slash 2.003;	# require Slash 2.3.x
 use Slash::Constants qw(:web);
 use Slash::Display;
@@ -12,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -50,10 +52,7 @@ sub main {
 
 sub display {
 	my($slashdb, $constants, $user, $form, $gSkin, $remarks) = @_;
-
-	my $remarks_ref = $remarks->getRemarks;
-
-	slashDisplay('display', { remarks_ref => $remarks_ref });
+	print $remarks->displayRemarksTable({ max => 30, dodiv => 1 });
 }
 
 sub save_prefs {

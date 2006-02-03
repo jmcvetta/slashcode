@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: daily_forget.pl,v 1.15 2005/03/11 19:58:47 pudge Exp $
+# $Id: daily_forget.pl,v 1.16 2006/02/03 23:43:46 pudge Exp $
 
 use strict;
 
@@ -25,7 +25,6 @@ $task{$me}{code} = sub {
 		$slashdb->forgetRemarks,
 		$slashdb->forgetStoryTextRendered,
 		$slashdb->forgetErrnotes,
-		$slashdb->forgetRemarks,
 	);
 	return "forgotten: '@forgotten'";
 };

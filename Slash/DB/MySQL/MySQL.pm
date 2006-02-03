@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.862 2006/02/01 22:37:38 pudge Exp $
+# $Id: MySQL.pm,v 1.863 2006/02/03 23:43:46 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.862 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.863 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9208,7 +9208,8 @@ sub createSignoff {
 		my $s_user = $self->getUser($uid);
 		my $story = $self->getStory($stoid);
 		my $message = "$s_user->{nickname} $signoff_type $story->{title} $constants->{absolutedir_secure}/admin.pl?op=edit&sid=$story->{sid}";
-		$self->createRemark($uid, "", $message, "system");
+		my $remarks = getObject('Slash::Remarks');
+		$remarks->createRemark($uid, "", $message, "system");
 	}
 }
 
@@ -9250,46 +9251,6 @@ sub getSignoffsForStory {
 		"signoff, users",
 		"signoff.stoid=$stoid_q AND users.uid=signoff.uid"
 	);
-}
-
-########################################################
-sub createRemark {
-	my($self, $uid, $stoid, $remark, $type) = @_;
-	$type ||= "user";
-
-	my $remark_t = $self->truncateStringForCharColumn($remark, 'remarks', 'remark');
-
-	$self->sqlInsert('remarks', {
-		uid	=> $uid,
-		stoid	=> $stoid,
-		remark	=> $remark_t,
-		-time	=> 'NOW()',
-		type 	=> $type
-	});
-}
-
-########################################################
-sub getRemarksStarting {
-	my($self, $starting, $options) = @_;
-	return [ ] unless $starting;
-	$starting ||= 0;
-	my $type_clause;
-	$type_clause = " AND type=" . $self->sqlQuote($options->{type}) if $options->{type};
-	my $starting_q = $self->sqlQuote($starting);
-	return $self->sqlSelectAllHashrefArray(
-		"rid, stoid, remarks.uid, remark, karma, remarks.type",
-		"remarks, users_info",
-		"remarks.uid=users_info.uid AND rid >= $starting_q $type_clause");
-}
-
-########################################################
-sub getUserRemarkCount {
-	my($self, $uid, $secs_back) = @_;
-	return 0 unless $uid && $secs_back;
-	return $self->sqlCount(
-		"remarks",
-		"uid = $uid
-		 AND time >= DATE_SUB(NOW(), INTERVAL $secs_back SECOND)");
 }
 
 ########################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.13 2005/10/21 18:22:56 pudge Exp $
+# $Id: Key.pm,v 1.14 2006/02/03 23:43:46 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -117,7 +117,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -153,7 +153,7 @@ sub new {
 
 	# reskey() to set the value is called only here and from dbCreate
 	# this is the only place $form->{reskey} is looked at
-	$self->reskey($reskey || getCurrentForm('reskey'));
+	$self->reskey(defined $reskey ? $reskey : getCurrentForm('reskey'));
 
 
 	$self->_init;
@@ -277,7 +277,7 @@ sub _createAccessor {
 		my($self, $value) = @_;
 		$self->_flow($name);
 		if (defined $value) {
-			if ($name eq 'reskey') {
+			if ($name eq 'reskey' && !$self->opts->{nostate}) {
 				# Setting reskey() is special, it gets
 				# stored in the $user object as well.
 				my $user = getCurrentUser();
@@ -670,7 +670,7 @@ sub check {  # basically same for checkUse, maybe share same code
 	for my $class (@$checks) {
 		# $class implements each of
 		# create, touch, and use methods
-		local $@ = loadClass($class);  # loadClass in Environment.pm
+		loadClass($class);  # loadClass in Environment.pm
 		errorLog("Can't load $class: $@"), next if $@;
 
 		# any data the $check needs will be in $self
@@ -875,4 +875,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.13 2005/10/21 18:22:56 pudge Exp $
+$Id: Key.pm,v 1.14 2006/02/03 23:43:46 pudge Exp $

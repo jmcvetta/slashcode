@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.304 2006/02/02 16:48:37 jamiemccarthy Exp $
+# $Id: users.pl,v 1.305 2006/02/05 16:02:36 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -225,6 +225,13 @@ sub main {
 			seclev		=> 1,
 			formname	=> $formname,
 			checks		=> ['regen_formkey'],
+		},
+		showtags => {
+			function	=> \&showTags,
+			seclev		=> 1,
+			formname	=> $formname,
+			checks		=> [],
+			tab_selected	=> 'tags',
 		},
 #		userclose	=>  {
 #			function	=> \&displayForm,
@@ -1465,6 +1472,22 @@ sub validateUser {
 	}
 
 	slashDisplay('regResult');
+}
+
+#####################################################################
+sub showTags {
+	my($hr) = @_;
+	my $user = getCurrentUser();
+	my $form = getCurrentForm();
+	my $slashdb = getCurrentDB();
+	my $constants = getCurrentStatic();
+
+	print createMenu("users", {
+		style =>	'tabbed',
+		justify =>	'right',
+		color =>	'colored',
+		tab_selected =>	$hr->{tab_selected_1} || "",
+	});
 }
 
 #################################################################

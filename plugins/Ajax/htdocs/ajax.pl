@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.13 2006/02/03 23:43:46 pudge Exp $
+# $Id: ajax.pl,v 1.14 2006/02/05 16:02:35 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -24,6 +24,8 @@ sub main {
 
 =pod
 
+	my $postflag = $user->{state}{post};
+	my $op = $form->{op};
 	my $ops = {
 		getSectionPrefsHTML => {
 			function	=> \&getSectionPrefsHTML,
@@ -37,6 +39,21 @@ sub main {
 			function	=> \&storySignOff,
 			seclev		=> 100
 		},
+		tagsGetUserStory => {
+			function	=> \&tagsGetUserStory,
+			seclev		=> 1,
+		},
+		tagsCreateForStory => {
+			function	=> \&tagsCreateForStory,
+			seclev		=> 1,
+		},
+		adminTagsCommands => {
+			function	=> \&adminTagsCommands,
+			seclev		=> 100,
+		},
+		default => {
+			function	=> \&default
+		}
 	};
 
 =cut
@@ -252,6 +269,83 @@ sub storySignOff {
 
 	$slashdb->createSignoff($stoid, $uid, "signed");
 	return "Signed";
+}
+
+sub tagsGetUserStory {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $stoid = $form->{stoid};
+	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+print STDERR scalar(localtime) . " tagsGetUserStory stoid='$stoid' user-is='$user->{is_anon}' uid='$user->{uid}' tags_reader='$tags_reader'\n";
+	if (!$stoid || $stoid !~ /^\d+$/ || $user->{is_anon} || !$tags_reader) {
+		print getData('error', {}, 'tags');
+		return;
+	}
+	my $uid = $user->{uid};
+
+	my $tags_ar = $tags_reader->getTagsByNameAndIdArrayref('stories', $stoid, { uid => $uid });
+	my @tags = sort map { $_->{tagname} } @$tags_ar;
+use Data::Dumper; print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid tags: '@tags' tags_ar: " . Dumper($tags_ar);
+
+	print getData('tags_user', { tags => \@tags }, 'tags');
+}
+
+sub tagsCreateForStory {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $stoid = $form->{stoid};
+	my $tags = getObject('Slash::Tags');
+print STDERR scalar(localtime) . " tagsCreateForStory stoid='$stoid' user-is='$user->{is_anon}' uid='$user->{uid}' tags='$tags'\n";
+	if (!$stoid || $stoid !~ /^\d+$/ || $user->{is_anon} || !$tags) {
+		print getData('error', {}, 'tags');
+		return;
+	}
+
+	my @tagnames =
+		grep { $tags->tagnameSyntaxOK($_) }
+		split /[\s,]+/,
+		($form->{tags} || '');
+	if (!@tagnames) {
+		print getData('tags_none_given', {}, 'tags');
+		return;
+	}
+
+	my @saved_tagnames = ( );
+	for my $tagname (@tagnames) {
+		push @saved_tagnames, $tagname
+			if $tags->createTag({
+				uid =>		$user->{uid},
+				name =>		$tagname,
+				table =>	'stories',
+				id =>		$stoid
+			});
+	}
+	print getData('tags_saved', {}, 'tags');
+}
+
+sub adminTagsCommands {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $stoid = $form->{stoid};
+	my $tags = getObject('Slash::Tags');
+print STDERR scalar(localtime) . " adminTagsCommands stoid='$stoid' seclev='$user->{seclev}' uid='$user->{uid}' tags='$tags'\n";
+	if (!$stoid || $stoid !~ /^\d+$/ || $user->{seclev} < 100 || !$tags) {
+		print getData('error', {}, 'tags');
+		return;
+	}
+
+	my @tagnames =
+		grep { $tags->adminTagnameSyntaxOK($_) }
+		split /[\s,]+/,
+		($form->{tags} || '');
+	if (!@tagnames) {
+		print getData('tags_none_given', {}, 'tags');
+		return;
+	}
+
+	my @results = ( );
+	for my $pseudotag (@tagnames) {
+		# do it
+	}
+
+	print getData('tags_admin_result', { results => \@results }, 'tags');
 }
 
 ##################################################################

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.1 2006/01/27 13:14:46 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.2 2006/02/05 16:02:35 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -16,12 +16,35 @@ CREATE TABLE tags (
 	KEY created_at (created_at)
 ) TYPE=InnoDB;
 
-DROP TABLE IF EXISTS tag_names;
-CREATE TABLE tag_names (
+DROP TABLE IF EXISTS tagnames;
+CREATE TABLE tagnames (
 	tagnameid	int UNSIGNED NOT NULL AUTO_INCREMENT,
-	name		VARCHAR(64) NOT NULL,
+	tagname		VARCHAR(64) NOT NULL,
 	PRIMARY KEY tagnameid (tagnameid),
-	UNIQUE name (name)
+	UNIQUE tagname (tagname)
 ) TYPE=InnoDB;
 	
+DROP TABLE IF EXISTS tagname_params;
+CREATE TABLE tagname_params (
+	tagnameid	int UNSIGNED NOT NULL,
+	name		VARCHAR(32) DEFAULT '' NOT NULL,
+	value		VARCHAR(64) DEFAULT '' NOT NULL,
+	UNIQUE tagname_name (tagnameid, name)
+) TYPE=InnoDB;
+
+#DROP TABLE IF EXISTS tag_schedule;
+#CREATE TABLE tag_schedule (
+#	tsid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+#	type		ENUM('tagnameid', 'uid', 'globjid') NOT NULL,
+#	id		int UNSIGNED NOT NULL,
+#	importance	float UNSIGNED DEFAULT 1.0 NOT NULL,
+#	created_at	datetime NOT NULL,
+#	done		ENUM('no', 'yes') DEFAULT 'no' NOT NULL,
+#	completed_at	datetime DEFAULT NULL,
+#	duration	float DEFAULT NULL,
+#	PRIMARY KEY tsid (tsid),
+#	KEY need (done, importance)
+#) TYPE=InnoDB;
+
+ALTER TABLE users_info ADD COLUMN tag_clout FLOAT UNSIGNED NOT NULL DEFAULT 1.0 AFTER created_at;
 

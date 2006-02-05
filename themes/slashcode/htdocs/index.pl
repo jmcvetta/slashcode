@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.149 2006/02/01 23:01:13 pudge Exp $
+# $Id: index.pl,v 1.150 2006/02/05 16:02:35 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -699,12 +699,12 @@ sub displayStories {
 
 			if ($constants->{plugin}{Tags}) {
 				if ($user->{tags_canread_stories}) {
-					my @toptags = split / /, ($story_data->{tags_top} || '');
-					my @exmptags = split / /, $constants->{tags_stories_examples};
+					my @tags_top = split / /, ($story_data->{tags_top} || '');
+					my @tags_example = split / /, $constants->{tags_stories_examples};
 					$tmpreturn .= slashDisplay('tagsstory', {
 						story =>	$story,
-						toptags =>	\@toptags,
-						exmptags =>	\@exmptags,
+						tags_top =>	\@tags_top,
+						tags_example =>	\@tags_example,
 					}, { Return => 1 });
 				}
 			}

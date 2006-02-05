@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.1 2006/01/27 13:14:46 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.2 2006/02/05 16:02:35 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,10 +14,10 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
-$minutes_run = 3;
+$minutes_run = 1;
 
 $task{$me}{timespec} = "0-59/$minutes_run * * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -86,14 +86,14 @@ sub getTop5 {
 
 	my %scores = ( );
 	for my $tag (@$tags) {
-#use Data::Dumper; print STDERR "tag $tag->{tagname}: " . Dumper($tag);
 		# Very crude weighting algorithm that will change.
 		my $user = $users->{$tag->{uid}};
-#print STDERR "user $tag->{uid}: " . Dumper($user);
 		my $tagname = $tag->{tagname};
 		$scores{$tagname} ||= 0;
-		$scores{$tagname} += $user->{karma} >= -3 ? log($user->{karma}+10) : 0;
-		$scores{$tagname} += 5 if $user->{seclev} > 1;
+		my $user_clout = $user->{karma} >= -3 ? log($user->{karma}+10) : 0;
+		$user_clout += 5 if $user->{seclev} > 1;
+		$user_clout *= $user->{tag_clout};
+		$scores{$tagname} += $user_clout;
 	}
 
 	my @top = sort {

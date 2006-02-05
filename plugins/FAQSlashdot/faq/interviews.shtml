@@ -3,7 +3,7 @@
 <html>
 <head>
         <title>Slashdot FAQ - Interviews</title>
-<!-- $Id: interviews.shtml,v 1.6 2006/02/05 15:57:39 jamiemccarthy Exp $ -->
+<!-- $Id: interviews.shtml,v 1.7 2006/02/05 16:33:01 jamiemccarthy Exp $ -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
@@ -32,7 +32,7 @@
                 Last Modified: 4/30/03
         </small></em></p>
 
-<h2><a name="int1150">Hey, that Eleventh question wasn't even one of the highly moderated ones!</a></h2>The editor who makes the final selection isn't required to select questions based soley upon their score. We use those scores as a guideline, but not a set-in-stone rule. The editor may want to ask a question of their own, or be curious about an answer, or just think that the question is particularly poignant. Besides, what fun is being an editor if you can't bend the rules to your own will once in awhile?
+<h2><a name="int1150">Hey, that Eleventh question wasn't even one of the highly moderated ones!</a></h2>The editor who makes the final selection isn't required to select questions based solely upon their score. We use those scores as a guideline, but not a set-in-stone rule. The editor may want to ask a question of their own, or be curious about an answer, or just think that the question is particularly poignant. Besides, what fun is being an editor if you can't bend the rules to your own will once in awhile?
         <p><em><small>
                 Answered by: <a href="mailto:malda@slashdot.org">CmdrTaco</a><br>
                 Last Modified: 4/30/03

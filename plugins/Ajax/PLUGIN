@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.12 2006/02/05 16:02:35 jamiemccarthy Exp $
+# $Id: PLUGIN,v 1.13 2006/02/06 23:47:48 jamiemccarthy Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 mysql_dump=mysql_dump.sql
@@ -8,7 +8,6 @@ htdoc=htdocs/images/admin.js
 htdoc=htdocs/images/common.js
 htdoc=htdocs/images/prototype.js
 htdoc=htdocs/images/sectionprefs.js
-htdoc=htdocs/images/tags.js
 template=templates/ajax_reskey_tag;misc;default
 template=templates/data;ajax;default
 template=templates/sectionpref;ajax;default

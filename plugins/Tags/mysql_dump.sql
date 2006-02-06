@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.2 2006/02/05 16:02:35 jamiemccarthy Exp $
+# $Id: mysql_dump.sql,v 1.3 2006/02/06 14:15:57 jamiemccarthy Exp $
 #
 
 INSERT INTO vars (name, value, description) VALUES ('memcached_exptime_tags', '3600', 'Seconds to cache tag data in memcached');
@@ -9,4 +9,7 @@ INSERT INTO vars (name, value, description) VALUES ('tags_stories_allowread', '0
 INSERT INTO vars (name, value, description) VALUES ('tags_stories_allowwrite', '0', 'Who is allowed to tag stories? 0=nobody 1=admins 2=subscribers 3=non-neg. karma 4=all logged in');
 INSERT INTO vars (name, value, description) VALUES ('tags_stories_lastscanned', '0', 'The last tagid scanned to update stories');
 INSERT INTO vars (name, value, description) VALUES ('tags_stories_examples', 'cool dupe', 'Example tags for stories');
+
+INSERT INTO reskey_resources (rkrid, name) VALUES (108, 'ajax_tags');
+INSERT INTO reskey_resource_checks (rkrcid, rkrid, type, class, ordernum) VALUES (NULL, 108, 'all', 'Slash::ResKey::Checks::User', 101);
 

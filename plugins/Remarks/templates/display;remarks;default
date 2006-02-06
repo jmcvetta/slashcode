@@ -17,7 +17,7 @@ __template__
 <!-- reload this div every 30 seconds -->
 <script type="text/javascript">run_timer('remarks_fetch()', 30);</script>
 
-[% PROCESS ajax_reskey_tag reskey_name => 'remarks_reskey' %]
+[% PROCESS ajax_reskey_tag reskey_name => 'remarks_reskey', reskey_resource => 'ajax_admin' %]
 <table class="data">
 	<tr class="data_head">
 		<th colspan="4">Remarks</th>
@@ -42,4 +42,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: display;remarks;default,v 1.2 2006/02/03 23:43:46 pudge Exp $
+$Id: display;remarks;default,v 1.3 2006/02/06 22:54:51 pudge Exp $

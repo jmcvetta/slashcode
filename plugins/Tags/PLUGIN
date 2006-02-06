@@ -1,8 +1,9 @@
-# $Id: PLUGIN,v 1.2 2006/02/05 16:02:35 jamiemccarthy Exp $
+# $Id: PLUGIN,v 1.3 2006/02/06 14:15:22 jamiemccarthy Exp $
 name=Tags
 description="Tags"
 mysql_dump=mysql_dump.sql
 mysql_schema=mysql_schema.sql
+requiresplugin=Ajax
 task=tags_update.pl
 template=templates/data;tags;default
 template=templates/tagsstory;index;default

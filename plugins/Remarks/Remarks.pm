@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Remarks.pm,v 1.2 2006/02/03 23:43:46 pudge Exp $
+# $Id: Remarks.pm,v 1.3 2006/02/06 20:55:18 pudge Exp $
 
 package Slash::Remarks;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 sub new {
@@ -131,12 +131,6 @@ sub displayRemarksTable {
 ########################################################
 sub ajaxFetch {
 	my($slashdb, $constants, $user, $form) = @_;
-
-	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('ajax_remarks', { reskey => '' });
-
-	return unless $rkey->createuse;
-
 	my $self = getObject('Slash::Remarks');	
 
 	if ($form->{op} eq 'remarks_create') {
@@ -159,4 +153,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Remarks.pm,v 1.2 2006/02/03 23:43:46 pudge Exp $
+$Id: Remarks.pm,v 1.3 2006/02/06 20:55:18 pudge Exp $

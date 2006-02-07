@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.31 2006/01/03 18:54:01 pudge Exp $
+# $Id: MySQL.pm,v 1.32 2006/02/07 19:30:20 jamiemccarthy Exp $
 
 package Slash::Messages::DB::MySQL;
 
@@ -31,7 +31,7 @@ use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %descriptions = (
 	'deliverymodes'
@@ -379,7 +379,7 @@ sub _delete_web {
 		my $uid_db = $self->sqlQuote($uid);
 		my $where  = $where1 . " AND user=$uid_db";
 		my($check) = $self->sqlSelect('user', $table1, $where);
-		return 0 unless $check eq $uid;
+		return 0 unless defined($check) && $check eq $uid;
 	}
 
 	$self->sqlDo("DELETE FROM $table1 WHERE $where1");

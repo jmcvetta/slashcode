@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.189 2006/02/01 23:02:57 pudge Exp $
+# $Id: Data.pm,v 1.190 2006/02/07 19:32:53 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.189 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.190 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2518,6 +2518,7 @@ The 'approvedtags' entry in the vars table.
 
 sub balanceTags {
 	my($html, $options) = @_;
+	return '' if !defined($html) || !length($html);
 	my $orightml = $html;
 	my $constants = getCurrentStatic();
 	my $cache = getCurrentCache();
@@ -4239,4 +4240,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.189 2006/02/01 23:02:57 pudge Exp $
+$Id: Data.pm,v 1.190 2006/02/07 19:32:53 jamiemccarthy Exp $

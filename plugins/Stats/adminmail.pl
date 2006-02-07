@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.210 2006/01/24 05:19:36 pudge Exp $
+# $Id: adminmail.pl,v 1.211 2006/02/07 19:31:31 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -1025,11 +1025,11 @@ sub getAdminModsText {
 			$m2_un_percent_mo	|| 0
 		);
 		if ($nickname eq '~Day Total') {
-			$num_mods += $amn->{m1_up};
-			$num_mods += $amn->{m1_down};
+			$num_mods += $amn->{m1_up} || 0;
+			$num_mods += $amn->{m1_down} || 0;
 		} else {
-			$num_admin_mods += $amn->{m1_up};
-			$num_admin_mods += $amn->{m1_down};
+			$num_admin_mods += $amn->{m1_up} || 0;
+			$num_admin_mods += $amn->{m1_down} || 0;
 		}
 	}
 	$text .= sprintf("%d of %d mods (%.2f%%) were performed by admins.\n",

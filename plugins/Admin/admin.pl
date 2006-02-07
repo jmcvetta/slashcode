@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.276 2006/02/01 23:00:50 pudge Exp $
+# $Id: admin.pl,v 1.277 2006/02/07 19:00:57 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1527,6 +1527,7 @@ sub editStory {
 sub extractRelatedStoriesFromForm {
 	my($form) = @_;
 	my $slashdb = getCurrentDB();
+	my $constants = getCurrentStatic();
 
 	my %related_urls;
 
@@ -1543,8 +1544,8 @@ sub extractRelatedStoriesFromForm {
 		foreach (@add_related) {
 			s/^\s+|\s+$//g;
 			next if !$_;
-			if (/^\d\d\/\d\d\/\d\d\/\d+$/) {
-				push @$related, $_;
+			if (/(?:$constants->{basedomain})?\S*(\d\d\/\d\d\/\d\d\/\d+)/) {
+				push @$related, $1;
 			} else {
 				my($title, $url) = $_ =~ /^(.*)\s+(\S+)$/;
 				$related_urls{$url} = $title;

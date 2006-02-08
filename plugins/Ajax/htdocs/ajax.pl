@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.16 2006/02/06 20:55:18 pudge Exp $
+# $Id: ajax.pl,v 1.17 2006/02/08 15:51:51 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -257,7 +257,7 @@ print STDERR scalar(localtime) . " tagsGetUserStory stoid='$stoid' user-is='$use
 	my @tags = sort map { $_->{tagname} } @$tags_ar;
 use Data::Dumper; print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid tags: '@tags' tags_ar: " . Dumper($tags_ar);
 
-	print getData('tags_user', { tags => \@tags }, 'tags');
+	return getData('tags_user', { tags => \@tags }, 'tags');
 }
 
 sub tagsCreateForStory {
@@ -289,7 +289,7 @@ print STDERR scalar(localtime) . " tagsCreateForStory stoid='$stoid' user-is='$u
 				id =>		$stoid
 			});
 	}
-	print getData('tags_saved', {}, 'tags');
+	return getData('tags_saved', {}, 'tags');
 }
 
 sub adminTagsCommands {
@@ -316,7 +316,7 @@ print STDERR scalar(localtime) . " adminTagsCommands stoid='$stoid' seclev='$use
 		# do it
 	}
 
-	print getData('tags_admin_result', { results => \@results }, 'tags');
+	return getData('tags_admin_result', { results => \@results }, 'tags');
 }
 
 ##################################################################

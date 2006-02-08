@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.865 2006/02/08 01:58:51 tvroom Exp $
+# $Id: MySQL.pm,v 1.866 2006/02/08 04:11:35 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.865 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.866 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9205,9 +9205,13 @@ sub createSignoff {
 	if ($send_message) {
 		my $s_user = $self->getUser($uid);
 		my $story = $self->getStory($stoid);
-		my $message = "$s_user->{nickname} $signoff_type $story->{title} $constants->{absolutedir_secure}/admin.pl?op=edit&sid=$story->{sid}";
+		my $message = "$s_user->{nickname} $signoff_type $story->{title}";
 		my $remarks = getObject('Slash::Remarks');
-		$remarks->createRemark($uid, "", $message, "system");
+		$remarks->createRemark($message, {
+			uid	=> $uid,
+			stoid	=> $stoid,
+			type	=> 'system'
+		});
 	}
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.277 2006/02/07 19:00:57 tvroom Exp $
+# $Id: admin.pl,v 1.278 2006/02/08 04:11:35 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1544,6 +1544,7 @@ sub extractRelatedStoriesFromForm {
 		foreach (@add_related) {
 			s/^\s+|\s+$//g;
 			next if !$_;
+			# XXX should use regexSid()
 			if (/(?:$constants->{basedomain})?\S*(\d\d\/\d\d\/\d\d\/\d+)/) {
 				push @$related, $1;
 			} else {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: remarks.pl,v 1.2 2006/02/03 23:43:46 pudge Exp $
+# $Id: remarks.pl,v 1.3 2006/02/08 04:11:35 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -52,7 +52,7 @@ sub main {
 
 sub display {
 	my($slashdb, $constants, $user, $form, $gSkin, $remarks) = @_;
-	print $remarks->displayRemarksTable({ max => 30, dodiv => 1 });
+	print $remarks->displayRemarksTable({ max => 30, print_whole => 1 });
 }
 
 sub save_prefs {

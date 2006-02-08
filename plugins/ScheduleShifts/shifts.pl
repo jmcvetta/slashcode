@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: shifts.pl,v 1.7 2006/01/03 22:41:07 pudge Exp $
+# $Id: shifts.pl,v 1.8 2006/02/08 04:11:36 pudge Exp $
 
 # shifts.pl -- Part of the ScheduleShifts plugin.
 
@@ -17,7 +17,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -77,12 +77,7 @@ sub createRemark {
 	my($slashdb, $constants, $user, $form, $gSkin, $schedule) = @_;
 
 	my($remark) = $form->{remark};
-	$slashdb->createRemark(
-		$constants->{anonymous_coward_uid},
-		0,
-		$remark,
-		'system'
-	);
+	$slashdb->createRemark($remark, { type => 'system' });
 	1;
 }
 

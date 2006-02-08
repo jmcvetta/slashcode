@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.3 2006/02/07 01:26:20 pudge Exp $
+# $Id: mysql_dump.sql,v 1.4 2006/02/08 04:11:35 pudge Exp $
 #
 
 DELETE FROM reskey_resources WHERE rkrid >= 100;
@@ -80,5 +80,5 @@ INSERT INTO reskey_vars VALUES (103, 'user_seclev', 1, 'Minimum seclev to use re
 ##### remarks
 
 INSERT INTO ajax_ops VALUES (NULL, 'remarks_create', 'Slash::Remarks', 'ajaxFetch', 'ajax_admin', 'use');
-INSERT INTO ajax_ops VALUES (NULL, 'remarks_fetch',  'Slash::Remarks', 'ajaxFetch', 'ajax_admin', 'use');
+INSERT INTO ajax_ops VALUES (NULL, 'remarks_fetch',  'Slash::Remarks', 'ajaxFetch', 'ajax_admin', 'createuse');
 

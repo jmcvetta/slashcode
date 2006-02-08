@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Remarks.pm,v 1.3 2006/02/06 20:55:18 pudge Exp $
+# $Id: Remarks.pm,v 1.4 2006/02/08 04:11:35 pudge Exp $
 
 package Slash::Remarks;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 sub new {
@@ -58,7 +58,7 @@ sub getRemarks {
 	my $max = $options->{max} || 100;
 
 	my $remarks = $self->sqlSelectAllHashrefArray(
-		'rid, uid, stoid, time, remark, type',
+		'rid, uid, stoid, time, remark, type, priority',
 		'remarks',
 		'',
 		"ORDER BY rid DESC LIMIT $max"
@@ -69,17 +69,17 @@ sub getRemarks {
 
 ########################################################
 sub createRemark {
-	my($self, $uid, $stoid, $remark, $type) = @_;
-	$type ||= 'user';
+	my($self, $remark, $options) = @_;
 
 	my $remark_t = $self->truncateStringForCharColumn($remark, 'remarks', 'remark');
 
 	$self->sqlInsert('remarks', {
-		uid	=> $uid,
-		stoid	=> $stoid,
-		remark	=> $remark_t,
-		-time	=> 'NOW()',
-		type 	=> $type
+		uid		=> $options->{uid}	|| getCurrentAnonymousCoward('uid'),
+		stoid		=> $options->{stoid}	|| 0,
+		type 		=> $options->{type}	|| 'user',
+		priority	=> $options->{priority}	|| 0,
+		-time		=> 'NOW()',
+		remark		=> $remark_t,
 	});
 }
 
@@ -124,7 +124,8 @@ sub displayRemarksTable {
 	my $remarks_ref = $self->getRemarks($options);
 	return slashDisplay('display', {
 		remarks_ref	=> $remarks_ref,
-		dodiv		=> $options->{dodiv}
+		print_whole	=> $options->{print_whole},
+		print_div	=> $options->{print_div},
 	}, { Page => 'remarks', Return => 1 });
 }
 
@@ -133,13 +134,17 @@ sub ajaxFetch {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $self = getObject('Slash::Remarks');	
 
+	my $options;
+
 	if ($form->{op} eq 'remarks_create') {
-		$self->createRemark(
-			$user->{uid}, 0, $form->{remark}, 'user'
-		);
+		$options->{print_div} = 1;
+		$self->createRemark($form->{remark}, {
+			uid	=> $user->{uid},
+			type	=> 'system',
+		});
 	}
 
-	return $self->displayRemarksTable;
+	return $self->displayRemarksTable($options);
 }
 
 1;
@@ -153,4 +158,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Remarks.pm,v 1.3 2006/02/06 20:55:18 pudge Exp $
+$Id: Remarks.pm,v 1.4 2006/02/08 04:11:35 pudge Exp $

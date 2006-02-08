@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.926 2006/02/07 15:28:24 jamiemccarthy Exp $
+# $Id: upgrades,v 1.927 2006/02/08 04:11:36 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3658,6 +3658,17 @@ ALTER TABLE reskey_resources CHANGE COLUMN rkrid rkrid SMALLINT UNSIGNED NOT NUL
 ALTER TABLE reskey_resource_checks CHANGE COLUMN rkrid rkrid SMALLINT UNSIGNED NOT NULL;
 ALTER TABLE reskey_vars CHANGE COLUMN rkrid rkrid SMALLINT UNSIGNED NOT NULL;
 ALTER TABLE reskeys CHANGE COLUMN rkrid rkrid SMALLINT UNSIGNED NOT NULL;
+
+ALTER TABLE remarks ADD COLUMN priority SMALLINT UNSIGNED NOT NULL DEFAULT 0 AFTER stoid;
+ALTER TABLE remarks ADD INDEX priority (priority);
+
+# only do if you already installed Ajax plugin recently ... if you had it installed
+# from awhile ago, important: go back and install the schema, then the dump, files
+# for the plugin
+UPDATE ajax_ops SET reskey_type = 'createuse' WHERE op = 'remarks_fetch';
+
+# 2006-02-07
+UPDATE vars SET value = 'T_2_5_0_99' WHERE name = 'cvs_tag_currentcode';
 
 # PUDGE LAST UPDATED HERE
 

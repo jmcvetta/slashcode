@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.150 2006/02/05 16:02:35 jamiemccarthy Exp $
+# $Id: index.pl,v 1.151 2006/02/08 04:11:36 pudge Exp $
 
 use strict;
 use Slash;
@@ -236,9 +236,11 @@ my $start_time = Time::HiRes::time;
 		my $targetsid = getSidFromRemark($remark);
 		$remark = $targetsid if $targetsid;
 		if ($story) {
-			$slashdb->createRemark($user->{uid},
-				$story->{stoid},
-				$remark);
+			my $remarks = getObject('Slash::Remarks');
+			$remarks->createRemark($remark, {
+				uid	=> $user->{uid},
+				stoid	=> $story->{stoid}
+			});
 			print getData('remark_thanks');
 		}
 	}

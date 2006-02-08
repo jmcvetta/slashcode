@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.864 2006/02/07 19:01:34 tvroom Exp $
+# $Id: MySQL.pm,v 1.865 2006/02/08 01:58:51 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.864 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.865 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8155,7 +8155,6 @@ sub getStoriesEssentials {
 	my $min_stoid = $self->getVar('gse_min_stoid', 'value', 1) || 0;
 	my $fallback_min_stoid = 0;
 	$fallback_min_stoid = $self->getVar('gse_fallback_min_stoid', 'value', 1) || 0 if $constants->{gse_mp_max_days_back};
-	print STDERR "FMS $fallback_min_stoid\n";
 	my $mp_tid = $constants->{mainpage_nexus_tid};
 
 	# Canonicalize all arguments passed in.  First the scalars.
@@ -8264,7 +8263,6 @@ sub getStoriesEssentials {
 		$min_stoid = 0;
 	} 
 
-	print STDERR "Min stoid: $min_stoid\n";
 	# Build the WHERE clauses necessary and do the first select(s),
 	# on story_topics_rendered.
 	# There will always be at least one tid, since it defaults

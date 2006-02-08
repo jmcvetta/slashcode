@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.927 2006/02/08 04:11:36 pudge Exp $
+# $Id: upgrades,v 1.928 2006/02/08 17:57:55 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3667,7 +3667,7 @@ ALTER TABLE remarks ADD INDEX priority (priority);
 # for the plugin
 UPDATE ajax_ops SET reskey_type = 'createuse' WHERE op = 'remarks_fetch';
 
-# 2006-02-07
+# 2006-02-08
 UPDATE vars SET value = 'T_2_5_0_99' WHERE name = 'cvs_tag_currentcode';
 
 # PUDGE LAST UPDATED HERE

@@ -1,3 +1,5 @@
+// $Id: admin.js,v 1.6 2006/02/08 15:55:37 jamiemccarthy Exp $
+
 function adminStorySignoff(el) {
 	var params = [];
 	params['op'] = 'storySignOff';

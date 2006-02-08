@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.14 2006/02/03 23:43:46 pudge Exp $
+# $Id: Key.pm,v 1.15 2006/02/08 04:11:08 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -117,7 +117,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -578,7 +578,9 @@ sub getUpdateClauses {
 
 	my $srcid = $self->getSrcid;
 
-	my $where_base = "rkid=$reskey_obj->{rkid}";
+	my $rkrid = $self->rkrid;
+
+	my $where_base = "rkid=$reskey_obj->{rkid} AND rkrid=$rkrid";
 	$where_base .= " AND is_alive='yes'" unless $no_is_alive_check;
 	if ($$where) {
 		$$where .= " AND $where_base";
@@ -875,4 +877,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.14 2006/02/03 23:43:46 pudge Exp $
+$Id: Key.pm,v 1.15 2006/02/08 04:11:08 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.236 2006/02/02 15:30:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.237 2006/02/09 17:43:04 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.236 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.237 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1152,16 +1152,27 @@ sub convert_tokens_to_points {
 	# and seclev < 100.  These aren't meaningful limitations, so these
 	# updates should work as well.  - Jamie 2002/08/08
 	# Actually I don't think these are needed at all. - Jamie 2003/09/09
-	$self->sqlUpdate(
-		"users_comments",
-		{ points => $maxpoints },
-		"points > $maxpoints"
-	);
-	$self->sqlUpdate(
-		"users_info",
-		{ tokens => $maxtokens },
-		"tokens > $maxtokens"
-	);
+	#
+	# 2006/02/09:  I still don't think they're needed, and they are
+	# causing lags in replication...
+	#   Searching rows for update:
+	#   The thread is doing a first phase to find all matching
+	#   rows before updating them. This has to be done if the UPDATE
+	#   is changing the index that is used to find the involved rows.
+	# ...so I'm removing these.  I believe wherever the existing code
+	# increases points or tokens, it updates the oldvalue to
+	# LEAST(newvalue, maxvalue), so these adjustments should never
+	# change anything.
+#	$self->sqlUpdate(
+#		"users_comments",
+#		{ points => $maxpoints },
+#		"points > $maxpoints"
+#	);
+#	$self->sqlUpdate(
+#		"users_info",
+#		{ tokens => $maxtokens },
+#		"tokens > $maxtokens"
+#	);
 
 	return \%granted;
 }

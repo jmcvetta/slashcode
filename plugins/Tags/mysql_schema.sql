@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.2 2006/02/05 16:02:35 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.3 2006/02/10 14:51:17 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -11,8 +11,8 @@ CREATE TABLE tags (
 	created_at	datetime NOT NULL,
 	PRIMARY KEY tagid (tagid),
 	KEY tagnameid (tagnameid),
-	KEY globjid (globjid),
-	KEY uid (uid),
+	KEY globjid_tagnameid (globjid, tagnameid),
+	KEY uid_globjid_tagnameid (uid, globjid, tagnameid),
 	KEY created_at (created_at)
 ) TYPE=InnoDB;
 

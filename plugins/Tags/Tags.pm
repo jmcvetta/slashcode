@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.5 2006/02/10 16:15:57 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.6 2006/02/10 18:49:45 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -408,6 +408,12 @@ print STDERR scalar(localtime) . " ajaxGetUserStory stoid='$stoid' user-is_anon=
 	}
 	my $uid = $user->{uid};
 
+	my @newtagspreload =
+		grep { $self->tagnameSyntaxOK($_) }
+		split /[\s,]+/,
+		($form->{newtagspreloadtext} || '');
+	my $newtagspreloadtext = join ' ', @newtagspreload;
+
 	my $tags_ar = $tags_reader->getTagsByNameAndIdArrayref('stories', $stoid, { uid => $uid });
 	my @tags = sort map { $_->{tagname} } @$tags_ar;
 print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid tags: '@tags' tags_ar: " . Dumper($tags_ar);
@@ -416,6 +422,7 @@ print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid ta
 	return slashDisplay('tagsstorydivuser', {
 		stoid =>		$stoid,
 		tags_user_str =>	$tags_user_str,
+		newtagspreloadtext =>	$newtagspreloadtext,
 	}, { Return => 1 });
 }
 

@@ -1,11 +1,6 @@
 #
-# $Id: mysql_dump.sql,v 1.5 2006/02/09 17:52:12 pudge Exp $
+# $Id: mysql_dump.sql,v 1.6 2006/02/10 15:32:16 pudge Exp $
 #
-
-DELETE FROM reskey_resources WHERE rkrid >= 100;
-DELETE FROM reskey_resource_checks WHERE rkrid >= 100;
-DELETE FROM reskey_vars WHERE rkrid >= 100;
-
 
 INSERT INTO reskey_resources VALUES (100, 'ajax_base');
 INSERT INTO reskey_resources VALUES (101, 'ajax_admin');

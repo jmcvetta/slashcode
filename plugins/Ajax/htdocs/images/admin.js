@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.6 2006/02/08 15:55:37 jamiemccarthy Exp $
+// $Id: admin.js,v 1.7 2006/02/10 14:58:31 jamiemccarthy Exp $
 
 function adminStorySignoff(el) {
 	var params = [];
@@ -10,11 +10,14 @@ function adminStorySignoff(el) {
 
 function adminTagsCommands(stoid) {
 	var params = [];
-	params['op'] = 'adminTagsCommands';
+	params['op'] = 'tags_admin_commands';
 	params['stoid'] = stoid;
+	var tags_admin_commands_el = $('tags_admin_commands-' + stoid);
+	params['commands'] = newtagsel.value;
+	var reskeyel = $('admin_commands-reskey-' + stoid);
+	params['reskey'] = reskeyel.value;
 	ajax_update(params, 'toggletags-message-' + stoid);
 }
-
 
 function remarks_create() {
 	var reskey = $('remarks_reskey');

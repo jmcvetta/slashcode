@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.8 2006/02/10 21:26:46 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.9 2006/02/10 21:32:50 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -487,8 +487,8 @@ print STDERR scalar(localtime) . " ajaxCreateForStory 3 for stoid=$stoid tagname
 sub ajaxProcessAdminTags {
 	my($self, $constants, $user, $form) = @_;
 	my $commands = $form->{commands};
-print STDERR scalar(localtime) . " ajaxProcessAdminTags does nothing yet; stoid=$stoid commands='$commands'\n";
 	my $stoid = $form->{stoid};
+print STDERR scalar(localtime) . " ajaxProcessAdminTags does nothing yet; stoid=$stoid commands='$commands'\n";
 	my $tags = getObject('Slash::Tags', { db_type => 'reader' });
 	my @commands =
 		grep { $tags->adminPseudotagnameSyntaxOK($_) }

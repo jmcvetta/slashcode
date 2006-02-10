@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.3 2006/02/10 14:51:17 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.4 2006/02/10 15:23:22 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -453,14 +453,14 @@ print STDERR scalar(localtime) . " ajaxCreateForStory 2 tagnames='@tagnames'\n";
 	}
 print STDERR scalar(localtime) . " ajaxCreateForStory 3 old='@$old_tags_ar' saved='@saved_tagnames'\n";
 
-	my @new_tags = (sort map { $_->{tagname} } @$old_tags_ar), @saved_tagnames;
+	my @new_tags = ( (sort map { $_->{tagname} } @$old_tags_ar), @saved_tagnames );
 	my $tags_user_str = getData('tags_user', { tags => \@new_tags }, 'tags');
 
 	my $retval = slashDisplay('tagsstorydivuser', {
 		stoid =>		$stoid,
 		tags_user_str =>	$tags_user_str,
 	}, { Return => 1 });
-print STDERR scalar(localtime) . " ajaxCreateForStory 3 for stoid=$stoid tagnames='@tagnames' returning: $retval\n";
+print STDERR scalar(localtime) . " ajaxCreateForStory 3 for stoid=$stoid tagnames='@tagnames' new_tags='@new_tags' returning: $retval\n";
 	return $retval;
 }
 

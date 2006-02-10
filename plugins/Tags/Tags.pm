@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.7 2006/02/10 19:02:54 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.8 2006/02/10 21:26:46 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -382,9 +382,10 @@ sub removeTagnameFromIndexTop {
 
 sub tagnameSyntaxOK {
 	my($self, $tagname) = @_;
+	return 0 unless defined($tagname) && length($tagname) > 0;
 	my $constants = getCurrentStatic();
 	my $regex = $constants->{tags_tagname_regex};
-	return (!$regex || $tagname =~ /$regex/);
+	return($tagname =~ /$regex/);
 }
 
 sub adminPseudotagnameSyntaxOK {
@@ -403,8 +404,7 @@ sub ajaxGetUserStory {
 use Data::Dumper;
 print STDERR scalar(localtime) . " ajaxGetUserStory stoid='$stoid' user-is_anon='$user->{is_anon}' uid='$user->{uid}' tags_reader='$tags_reader' form: " . Dumper($form);
 	if (!$stoid || $stoid !~ /^\d+$/ || $user->{is_anon} || !$tags_reader) {
-		print getData('error', {}, 'tags');
-		return;
+		return getData('error', {}, 'tags');
 	}
 	my $uid = $user->{uid};
 
@@ -423,6 +423,19 @@ print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid ta
 		stoid =>		$stoid,
 		tags_user_str =>	$tags_user_str,
 		newtagspreloadtext =>	$newtagspreloadtext,
+	}, { Return => 1 });
+}
+
+sub ajaxGetAdminStory {
+	my($self, $constants, $user, $form) = @_;
+	my $stoid = $form->{stoid};
+	if (!$stoid || $stoid !~ /^\d+$/ || !$user->{is_admin}) {
+		return getData('error', {}, 'tags');
+	}
+
+	return slashDisplay('tagsstorydivadmin', {
+		stoid =>		$stoid,
+		tags_admin_str =>	'',
 	}, { Return => 1 });
 }
 
@@ -474,8 +487,24 @@ print STDERR scalar(localtime) . " ajaxCreateForStory 3 for stoid=$stoid tagname
 sub ajaxProcessAdminTags {
 	my($self, $constants, $user, $form) = @_;
 	my $commands = $form->{commands};
-print STDERR scalar(localtime) . " adminProcessAdminTags does nothing yet; commands='$commands'\n";
-	return '';
+print STDERR scalar(localtime) . " ajaxProcessAdminTags does nothing yet; stoid=$stoid commands='$commands'\n";
+	my $stoid = $form->{stoid};
+	my $tags = getObject('Slash::Tags', { db_type => 'reader' });
+	my @commands =
+		grep { $tags->adminPseudotagnameSyntaxOK($_) }
+		split /[\s,]+/,
+		($commands || '');
+	if (!$stoid || @commands) {
+		# Error, but we really have no way to return it...
+		# return getData('tags_none_given', {}, 'tags');
+	}
+
+	my $tags_admin_str = "Saw commands: '@commands'.";
+
+	return slashDisplay('tagsstorydivadmin', {
+		stoid =>		$stoid,
+		tags_admin_str =>	$tags_admin_str,
+	}, { Return => 1 });
 }
 
 #################################################################

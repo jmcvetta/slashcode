@@ -29,7 +29,7 @@ __template__
 <div class="tagshide" id="toggletags-body-[% story.stoid %]">
 
 [% IF tags_example.size %]
-	<div><i>Examples:</i>
+	<div>Examples:
 	[% FOR t = tags_example %]
 		<span class="tagname">
 		<a href="javascript:tagsOpenAndEnter([% story.stoid %], '[% t %]', '[% user.is_admin %]')">[% t | strip_html %]</a>
@@ -53,4 +53,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsstorydivtagbox;index;default,v 1.5 2006/02/10 21:20:39 tvroom Exp $
+$Id: tagsstorydivtagbox;index;default,v 1.6 2006/02/10 21:26:47 jamiemccarthy Exp $

@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.11 2006/02/10 20:14:00 jamiemccarthy Exp $
+// $Id: common.js,v 1.12 2006/02/10 21:20:03 tvroom Exp $
 
 function toggleIntro(id, toggleid) {
 	var obj = $(id);
@@ -58,7 +58,7 @@ function tagsShowBody(stoid, is_admin, newtagspreloadtext) {
 	// Make the title of the tagbox change to white-on-green
 	var titleid = 'tagbox-title-' + stoid;
         var title = $(titleid);
-	title.className = "title";
+	title.className = "titleopen tags";
 
 	// Make the body of the tagbox visible
 	var tagsbodyid = 'toggletags-body-' + stoid;

@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.9 2006/02/10 19:28:59 jamiemccarthy Exp $
+// $Id: common.js,v 1.10 2006/02/10 19:41:09 jamiemccarthy Exp $
 
 function toggleIntro(id, toggleid) {
 	var obj = $(id);
@@ -16,7 +16,7 @@ function tagsToggleStoryDiv(stoid, is_admin) {
 	var bodyid = 'toggletags-body-' + stoid;
         var tagsbody = $(bodyid);
 	if (tagsbody.className == 'tagshide') {
-		tagsShowBody(stoid, is_admin, newtagspreloadtext);
+		tagsShowBody(stoid, is_admin, '');
 	} else {
 		tagsHideBody(stoid);
 	}

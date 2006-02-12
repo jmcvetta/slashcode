@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.237 2006/02/09 17:43:04 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.238 2006/02/12 17:52:20 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.237 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.238 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1163,6 +1163,9 @@ sub convert_tokens_to_points {
 	# increases points or tokens, it updates the oldvalue to
 	# LEAST(newvalue, maxvalue), so these adjustments should never
 	# change anything.
+	# 2006/02/12:  The lag is due to a MySQL bug in 4.1.16 that is
+	# fixed in 4.1.18.  <http://bugs.mysql.com/bug.php?id=15935>
+	# Still, we shouldn't need these.
 #	$self->sqlUpdate(
 #		"users_comments",
 #		{ points => $maxpoints },

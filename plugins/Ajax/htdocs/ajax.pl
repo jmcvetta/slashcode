@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.18 2006/02/10 14:58:30 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.19 2006/02/13 23:16:48 pudge Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -24,7 +24,11 @@ sub main {
 
 	my $ops = getOps();
 	my $op = $form->{op};
-	$op = 'default' unless $ops->{$op};
+
+	if (!$ops->{$op}) {
+		errorLog("No Ajax op '$op' found");
+		$op = 'default';
+	}
 
 	$op = 'default' unless $ops->{$op}{function} || (
 		$ops->{$op}{class} && $ops->{$op}{subroutine}

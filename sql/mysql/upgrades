@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.929 2006/02/09 17:52:12 pudge Exp $
+# $Id: upgrades,v 1.930 2006/02/13 23:18:29 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3671,4 +3671,7 @@ UPDATE vars SET value = 'T_2_5_0_99' WHERE name = 'cvs_tag_currentcode';
 # PUDGE LAST UPDATED HERE
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+ALTER TABLE journal_transfer ADD COLUMN updated TINYINT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE journal_transfer ADD KEY stoid_updated (stoid, updated);
 

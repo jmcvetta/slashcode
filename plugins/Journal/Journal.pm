@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.54 2006/01/16 20:07:44 pudge Exp $
+# $Id: Journal.pm,v 1.55 2006/02/13 23:18:29 pudge Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -552,7 +552,7 @@ sub logJournalTransfer {
 	$subid ||=0;
 	return if !$id;
 
-	$slashdb->sqlInsert("journal_transfer", { id => $id, subid => $subid, stoid => $stoid });
+	$slashdb->sqlInsert("journal_transfer", { id => $id, subid => $subid, stoid => $stoid, updated => 0 });
 }
 
 sub hasJournalTransferred {
@@ -586,6 +586,41 @@ sub promoteJournal {
 		}
 	}
 	return 1;
+}
+
+
+sub updateTransferredJournalDiscussions {
+	my($self) = @_;
+
+	my $journal_stories = $self->sqlSelectAllHashrefArray(
+		'journal_transfer.id, stories.stoid, discussion, ' .
+			'primaryskid, tid, sid, time, title',
+		'journal_transfer, stories, story_text',
+		'journal_transfer.stoid != 0 AND journal_transfer.updated = 0 AND ' .
+			'journal_transfer.stoid = stories.stoid AND ' .
+			'stories.time <= NOW() AND '.
+			'stories.stoid = story_text.stoid'
+	);
+
+	for my $journal_story (@$journal_stories) {
+		my $url	= $self->getUrlFromSid(
+			$journal_story->{sid},
+			$journal_story->{primaryskid},
+			$journal_story->{tid}
+		);
+
+		my $discussion = {
+			title		=> $journal_story->{title},
+			url		=> $url,
+			ts		=> $journal_story->{'time'}
+		};
+
+		if ($self->setDiscussion($journal_story->{discussion}, $discussion)) {
+			$self->sqlUpdate('journal_transfer', {
+				updated	=> 1,
+			}, 'id=' . $self->sqlQuote($journal_story->{id}));
+		}
+	}
 }
 
 

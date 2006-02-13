@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.12 2004/11/16 20:59:47 pudge Exp $
+# $Id: PLUGIN,v 1.13 2006/02/13 23:18:29 pudge Exp $
 name=Journal
 description="Journal system for users"
 mysql_schema=mysql_schema
@@ -6,6 +6,7 @@ mysql_dump=dump
 mysql_prep=mysql_prep
 htdoc=journal.pl
 requiresplugin=Messages
+task=journal_fix.pl
 topic=images/topics/journaltopic.png
 template=templates/bluebox;journal;default
 template=templates/data;journal;default

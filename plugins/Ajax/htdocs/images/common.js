@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.13 2006/02/13 19:39:00 jamiemccarthy Exp $
+// $Id: common.js,v 1.14 2006/02/13 23:28:58 tvroom Exp $
 
 function toggleIntro(id, toggleid) {
 	var obj = $(id);
@@ -136,6 +136,25 @@ function tagsCreateForStory(stoid) {
 
 	// XXX How to determine failure here?
 	toggletags_message_el.innerHTML = 'Tags saved.';
+}
+
+
+function moveBox(div) {
+	alert(div);
+	thediv = $(div);
+	alert(thediv);
+	alert(thediv.position);
+
+
+	
+	alert("Left: " + thediv.offsetLeft);
+	alert("Top: " + thediv.offsetTop);
+	leftpos = thediv.offsetLeft + "px";
+	toppos = thediv.offseTop + "px";
+	thediv.style.position = "absolute";
+	thediv.style.left = leftpos;
+	thediv.style.top = toppos;
+
 }
 
 

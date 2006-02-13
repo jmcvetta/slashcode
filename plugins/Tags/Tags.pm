@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.9 2006/02/10 21:32:50 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.10 2006/02/13 19:39:00 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -416,7 +416,7 @@ print STDERR scalar(localtime) . " ajaxGetUserStory stoid='$stoid' user-is_anon=
 
 	my $tags_ar = $tags_reader->getTagsByNameAndIdArrayref('stories', $stoid, { uid => $uid });
 	my @tags = sort map { $_->{tagname} } @$tags_ar;
-print STDERR scalar(localtime) . " tagsGetUserStory for stoid=$stoid uid=$uid tags: '@tags' tags_ar: " . Dumper($tags_ar);
+print STDERR scalar(localtime) . " ajaxGetUserStory for stoid=$stoid uid=$uid tags: '@tags' tags_ar: " . Dumper($tags_ar);
 	my $tags_user_str = getData('tags_user', { tags => \@tags }, 'tags');
 
 	return slashDisplay('tagsstorydivuser', {
@@ -443,7 +443,7 @@ sub ajaxCreateForStory {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $stoid = $form->{stoid};
 	my $tags = getObject('Slash::Tags');
-print STDERR scalar(localtime) . " ajaxCreateForStory 1 stoid='$stoid' user-is='$user->{is_anon}' uid='$user->{uid}' tags='$tags'\n";
+print STDERR scalar(localtime) . " ajaxCreateForStory 1 stoid='$stoid' user-is='$user->{is_anon}' uid='$user->{uid}' tagsobj='$tags' tags='$form->{tags}'\n";
 	if (!$stoid || $stoid !~ /^\d+$/ || $user->{is_anon} || !$tags) {
 		return getData('error', {}, 'tags');
 	}
@@ -454,7 +454,7 @@ print STDERR scalar(localtime) . " ajaxCreateForStory 1 stoid='$stoid' user-is='
 		($form->{tags} || '');
 print STDERR scalar(localtime) . " ajaxCreateForStory 2 tagnames='@tagnames'\n";
 	if (!@tagnames) {
-		return getData('tags_none_given', {}, 'tags');
+		# No tags given, but that's OK, output the normal data
 	}
 
 	my $uid = $user->{uid};
@@ -480,7 +480,7 @@ print STDERR scalar(localtime) . " ajaxCreateForStory 3 old='@$old_tags_ar' save
 		stoid =>		$stoid,
 		tags_user_str =>	$tags_user_str,
 	}, { Return => 1 });
-print STDERR scalar(localtime) . " ajaxCreateForStory 3 for stoid=$stoid tagnames='@tagnames' new_tags='@new_tags' returning: $retval\n";
+print STDERR scalar(localtime) . " ajaxCreateForStory 4 for stoid=$stoid tagnames='@tagnames' new_tags='@new_tags' returning: $retval\n";
 	return $retval;
 }
 

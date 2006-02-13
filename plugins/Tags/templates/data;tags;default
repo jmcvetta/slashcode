@@ -28,10 +28,10 @@ __template__
 [% CASE 'tags_user' %]
 	Your tags:
 	[% IF tags.size %]
-		[% FOR t = tags %]
+		[%- FOR t = tags -%]
 			<span class="tagname">[% t | strip_html %]</span>
-			[%- IF !loop.last() %], [% END %]
-		[% END %]
+			[%- IF !loop.last() %], [% END -%]
+		[%- END -%]
 	[% ELSE %]
 		<i>(none)</i>
 	[% END %]
@@ -57,4 +57,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;tags;default,v 1.1 2006/02/05 16:02:35 jamiemccarthy Exp $
+$Id: data;tags;default,v 1.2 2006/02/13 20:14:27 jamiemccarthy Exp $

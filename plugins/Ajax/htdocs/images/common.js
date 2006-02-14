@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.15 2006/02/14 17:41:08 tvroom Exp $
+// $Id: common.js,v 1.16 2006/02/14 19:14:27 tvroom Exp $
 
 function toggleIntro(id, toggleid) {
 	var obj = $(id);
@@ -37,6 +37,8 @@ function tagsHideBody(stoid) {
 	var tagboxid = 'tagbox-' + stoid;
         var tagbox = $(tagboxid);
 	tagbox.className = "tags";
+	tagbox.style.position = "relative";
+	tagbox.style.top = "";
 
 	// Toggle the button back.
 	var tagsbuttonid = 'toggletags-button-' + stoid;
@@ -64,17 +66,10 @@ function tagsShowBody(stoid, is_admin, newtagspreloadtext) {
 	var tagsbodyid = 'toggletags-body-' + stoid;
         var tagsbody = $(tagsbodyid);
 	tagsbody.className = "tagbody";
-
-	// change position to absolute and set its position to its current position
-	// this should make the div a popup floating above the rest of the page, but in
-	// the same position as it was if was placed inline
-	leftpos = tagsbody.offsetLeft + "px";
-	toppos = tagsbody.offsetTop + "px";
-	tagsbody.style.position = "absolute";
-	tagsbody.style.left = leftpos;
-	tagsbody.style.top = toppos;
-	tagsbody.style.width = "100%";
-	tagsbody.style.zIndex = "30";
+	
+	toppos = tagbox.offsetTop + "px";
+	tagbox.style.position = "absolute";
+	tagbox.style.top = toppos;
 
 	// If the tags-user div hasn't been filled, fill it.
 	var tagsuserid = 'tags-user-' + stoid;

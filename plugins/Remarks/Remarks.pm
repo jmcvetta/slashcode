@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Remarks.pm,v 1.4 2006/02/08 04:11:35 pudge Exp $
+# $Id: Remarks.pm,v 1.5 2006/02/14 21:30:36 tvroom Exp $
 
 package Slash::Remarks;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 sub new {
@@ -126,15 +126,17 @@ sub displayRemarksTable {
 		remarks_ref	=> $remarks_ref,
 		print_whole	=> $options->{print_whole},
 		print_div	=> $options->{print_div},
+		remarks_max	=> $options->{max},
 	}, { Page => 'remarks', Return => 1 });
 }
 
 ########################################################
 sub ajaxFetch {
 	my($slashdb, $constants, $user, $form) = @_;
-	my $self = getObject('Slash::Remarks');	
+	my $self = getObject('Slash::Remarks');
+	my $options = {};
 
-	my $options;
+	$options->{max} = $form->{limit} || 30;
 
 	if ($form->{op} eq 'remarks_create') {
 		$options->{print_div} = 1;
@@ -143,7 +145,7 @@ sub ajaxFetch {
 			type	=> 'system',
 		});
 	}
-
+	
 	return $self->displayRemarksTable($options);
 }
 
@@ -158,4 +160,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Remarks.pm,v 1.4 2006/02/08 04:11:35 pudge Exp $
+$Id: Remarks.pm,v 1.5 2006/02/14 21:30:36 tvroom Exp $

@@ -52,6 +52,8 @@ __template__
 							<label>Submit<input type="checkbox" name="submit" [% IF form.submit; constants.markup_checked_attribute; END %]></label>
 							[% submit_note = "<ul>";
 							   submit_note = submit_note _ "<li>Comments must be enabled</li>";
+							   submit_note = submit_note _ "<li>Discussion cannot be deleted (though journal can be)</li>";
+							   submit_note = submit_note _ "<li>If accepted, anyone will be allowed to post comments</li>";
 						 	   submit_note = submit_note _ "</ul>";
 							%]
 							[% PROCESS formNote note => "Allow journal to be submitted as a story? If you do this: $submit_note" %]
@@ -78,4 +80,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.19 2005/12/03 00:41:38 pudge Exp $
+$Id: journaledit;journal;default,v 1.20 2006/02/14 22:15:59 pudge Exp $

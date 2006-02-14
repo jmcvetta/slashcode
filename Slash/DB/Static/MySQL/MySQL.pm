@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.238 2006/02/12 17:52:20 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.239 2006/02/14 22:15:59 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.238 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.239 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2248,7 +2248,17 @@ sub deleteStoryAll {
 		story_topics_chosen story_topics_rendered )) {
 		$rows += $self->sqlDelete($table, "stoid=$stoid");
 	}
-	$self->deleteDiscussion($discussion_id) if $discussion_id;
+
+	if ($discussion_id && $story->{journal_id}) {
+		# journal_fix.pl task will revert discussion data later
+		# (although maybe better to make this happen immediately)
+		$self->sqlUpdate('journal_transfer', {
+			stoid	=> 0,
+		}, 'id=' . $self->sqlQuote($story->{journal_id}));
+	} elsif ($discussion_id) {
+		$self->deleteDiscussion($discussion_id);
+	}
+
 	$self->sqlDo("COMMIT");
 	$self->sqlDo("SET AUTOCOMMIT=1");
 	return $rows;

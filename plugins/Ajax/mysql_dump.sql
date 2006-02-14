@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.6 2006/02/10 15:32:16 pudge Exp $
+# $Id: mysql_dump.sql,v 1.7 2006/02/14 21:18:50 tvroom Exp $
 #
 
 INSERT INTO reskey_resources VALUES (100, 'ajax_base');
@@ -113,4 +113,5 @@ INSERT INTO reskey_vars VALUES (105, 'user_seclev', 1, 'Minimum seclev to use re
 INSERT INTO ajax_ops VALUES (NULL, 'remarks_create', 'Slash::Remarks', 'ajaxFetch', 'ajax_admin', 'use');
 INSERT INTO ajax_ops VALUES (NULL, 'remarks_fetch',  'Slash::Remarks', 'ajaxFetch', 'ajax_admin', 'createuse');
 
-
+# signoff
+INSERT INTO ajax_ops VALUES(NULL, 'storySignOff', 'Slash::Admin', 'ajax_signoff', 'ajax_admin', 'createuse');

@@ -21,7 +21,7 @@ __template__
    IF print_div || print_whole %]
 	<input id="remarks_new" type="text">
 	<input type="button" id="remarks_new_button" value="Say" onclick="remarks_create();">
-	<input type="hidden" id="remarks_max" name="remarks_max" value="[% remarks_max | strip_attribute %]">
+	<input type="hidden" id="remarks_max" name="remarks_max" value="[% remarks_max %]">
 	[% PROCESS ajax_reskey_tag reskey_name => 'remarks_reskey', reskey_resource => 'ajax_admin' %]
 
 <div id="remarks_table">
@@ -53,4 +53,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: display;remarks;default,v 1.5 2006/02/14 21:30:36 tvroom Exp $
+$Id: display;remarks;default,v 1.6 2006/02/14 22:44:59 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.21 2006/02/14 21:24:43 tvroom Exp $
+# $Id: Admin.pm,v 1.22 2006/02/14 22:44:59 pudge Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -236,9 +236,7 @@ sub ajax_signoff {
 	return "Signed";
 }
 
-
 ##################################################################
-
 sub getStorySignoffs {
 	my($self, $stoid) = @_;
 	my $stoid_q = $self->sqlQuote($stoid);
@@ -291,8 +289,9 @@ sub relatedLinks {
 	return $relatedtext;
 }
 
+##################################################################
 sub getSignoffData {
-	my ($self, $days) = @_;
+	my($self, $days) = @_;
 	my $days_q = $self->sqlQuote($days);
 	my $signoff_info = $self->sqlSelectAllHashrefArray(
 		"stories.stoid, users.uid, (unix_timestamp(min(signoff_time)) - unix_timestamp(stories.time)) / 60 AS min_to_sign, users.nickname",

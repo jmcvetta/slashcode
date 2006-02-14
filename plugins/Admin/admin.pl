@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.279 2006/02/14 21:26:16 tvroom Exp $
+# $Id: admin.pl,v 1.280 2006/02/14 22:44:59 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2399,13 +2399,13 @@ sub findTheTime {
 }
 
 sub displaySignoffStats {
-	my ($form, $slashdb, $user, $constants) = @_;
+	my($form, $slashdb, $user, $constants) = @_;
 	my $admin = getObject('Slash::Admin');
 
 	my %stoids_for_days;
 	my $author_info;
 	my $num_days = [7, 30, 90 ];
-	for my $days (7,30,90) {
+	for my $days (7, 30, 90) {
 		my $signoff_info = $admin->getSignoffData($days);
 		foreach (@$signoff_info) {
 			$author_info->{$_->{uid}}{nickname} = $_->{nickname};
@@ -2417,9 +2417,9 @@ sub displaySignoffStats {
 	}
 
 	slashDisplay("signoff_stats", {
-		author_info => $author_info,
-		stoids_for_days => \%stoids_for_days,
-		num_days  => $num_days
+		author_info	=> $author_info,
+		stoids_for_days	=> \%stoids_for_days,
+		num_days	=> $num_days
 	});
 
 }

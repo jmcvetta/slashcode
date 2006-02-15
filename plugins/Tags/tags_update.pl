@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.5 2006/02/15 21:10:39 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.6 2006/02/15 21:45:08 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
@@ -93,7 +93,7 @@ sub getTop5 {
 		my $user_clout = $user->{karma} >= -3 ? log($user->{karma}+10) : 0;
 		$user_clout += 5 if $user->{seclev} > 1;
 		$user_clout *= $user->{tag_clout};
-		my $tag_clout = $tag->{tag_clout} || 1;
+		my $tag_clout = defined($tag->{tag_clout}) ? $tag->{tag_clout} : 1;
 		$user_clout *= $tag_clout;
 		$scores{$tagname} += $user_clout;
 	}

@@ -2,8 +2,6 @@ __section__
 default
 __description__
 stoid = the story's stoid
-tags_user_str = list of user's tags, fed thru tags_user data, e.g. "Your Tags: foo, bar"
-	(this input is no longer used)
 newtagspreloadtext = text to preload the newtags-# field with
 __title__
 
@@ -24,4 +22,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsstorydivuser;misc;default,v 1.5 2006/02/15 15:23:20 jamiemccarthy Exp $
+$Id: tagsstorydivuser;misc;default,v 1.6 2006/02/15 17:06:07 jamiemccarthy Exp $

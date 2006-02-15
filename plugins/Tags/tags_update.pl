@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.3 2006/02/15 15:23:20 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.4 2006/02/15 16:37:56 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
@@ -104,7 +104,9 @@ sub getTop5 {
 		$a cmp $b
 	} keys %scores;
 
-print STDERR scalar(localtime) . " top tags for $stoid: " . join(" ", map { sprintf("%s=%.3f", $_, $scores{$_}) } @top ) . "\n";
+	my $minscore = $constants->{tags_stories_top_minscore} || 2;
+print STDERR scalar(localtime) . " minscore=$minscore top tags for $stoid: " . join(" ", map { sprintf("%s=%.3f", $_, $scores{$_}) } @top ) . "\n";
+	my @top = grep { $scores{$_} >= $minscore } @top;
 
 	$#top = 4 if $#top > 4;
 	return @top;

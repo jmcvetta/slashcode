@@ -27,12 +27,9 @@ __template__
 
 [% IF tags_example.size %]
 	<div>Examples:
-	[% FOR t = tags_example %]
-		<span class="tagname">
-		<a href="javascript:tagsOpenAndEnter([% story.stoid %], '[% t %]', '[% user.is_admin %]')">[% t | strip_html %]</a>
-		</span>
-		[% IF !loop.last() %], [% END %]
-	[% END %]
+	[% FOR t = tags_example -%]
+		<span class="tagname"><a href="javascript:tagsOpenAndEnter([% story.stoid %], '[% t %]', '[% user.is_admin %]')">[% t | strip_html %]</a></span>[% IF !loop.last() %], [% END -%]
+	[%- END %]
 	</div>
 [% END %]
 
@@ -50,4 +47,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsstorydivtagbox;index;default,v 1.8 2006/02/13 20:14:27 jamiemccarthy Exp $
+$Id: tagsstorydivtagbox;index;default,v 1.9 2006/02/15 21:10:39 jamiemccarthy Exp $

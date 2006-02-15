@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.12 2006/02/15 16:37:56 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.13 2006/02/15 21:10:39 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -330,6 +330,11 @@ sub getAllTagsFromUser {
 		'ORDER BY tagid');
 	return [ ] unless $ar && @$ar;
 	$self->addTagnamesToHashrefArray($ar);
+	$self->addGlobjTargetsToHashrefArray($ar);
+	for my $hr (@$ar) {
+		next unless $hr->{globj_type} eq 'stories';
+		$hr->{story} = $self->getStory($hr->{globj_target_id});
+	}
 	return $ar;
 }
 

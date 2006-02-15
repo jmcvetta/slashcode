@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.870 2006/02/15 15:23:20 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.871 2006/02/15 21:10:33 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.870 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.871 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -13187,6 +13187,34 @@ sub getGlobjTypes {
 	$self->{$table_cache} = $hr;
 	$self->{$table_cache_time} = time;
 	return $hr;
+}
+
+# Given a globjid, returns its globj_type and target_id.  Returns
+# undef if the object does not exist.
+# XXX should optimize to work with a list
+# XXX should memcached
+
+sub getGlobjTarget {
+	my($self, $globjid) = @_;
+	my($gtid, $target_id) = $self->sqlSelect(
+		'gtid, target_id',
+		'globjs',
+		"globjid=$globjid");
+	return undef unless $gtid;
+	my $types = $self->getGlobjTypes;
+	return undef unless $types->{$gtid};
+	return ($types->{$gtid}, $target_id);
+}
+
+sub addGlobjTargetsToHashrefArray {
+	my($self, $ar) = @_;
+	for my $hr (@$ar) {
+		next unless $hr->{globjid};
+		my($type, $target_id) = $self->getGlobjTarget($hr->{globjid});
+		next unless $type;
+		$hr->{globj_type} = $type;
+		$hr->{globj_target_id} = $target_id;
+	}
 }
 
 sub getActiveAdminCount {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.57 2006/02/15 16:21:16 jamiemccarthy Exp $
+# $Id: Journal.pm,v 1.58 2006/02/15 16:34:20 jamiemccarthy Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -628,7 +628,7 @@ sub updateTransferredJournalDiscussions {
 		'journal_transfer, journals, users',
 		'journal_transfer.stoid = 0 AND journal_transfer.updated = 1 AND ' .
 			'journal_transfer.id = journals.id AND ' .
-			'user.uid = journals.uid'
+			'users.uid = journals.uid'
 	);
 
 	my $constants = getCurrentStatic();

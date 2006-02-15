@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.13 2006/02/15 21:10:39 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.14 2006/02/15 21:18:27 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -465,6 +465,7 @@ sub ajaxCreateForStory {
 
 	my @tagnames =
 		grep { $tags->tagnameSyntaxOK($_) }
+		map { lc }
 		split /[\s,]+/,
 		($form->{tags} || '');
 #print STDERR scalar(localtime) . " ajaxCreateForStory 2 tagnames='@tagnames'\n";

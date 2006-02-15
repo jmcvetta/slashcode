@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.40 2005/05/24 19:10:24 pudge Exp $
+# $Id: Slash.pm,v 1.41 2006/02/15 22:05:10 pudge Exp $
 #
 
 $Bundle::Slash::VERSION = '2.51';
@@ -117,6 +117,7 @@ Set::IntSpan		- HTML validator
 
 Text::Iconv		- HTML validator
 
+Data::JavaScript::Anon	- perl2js data structures
 
 =head1 DESCRIPTION
 

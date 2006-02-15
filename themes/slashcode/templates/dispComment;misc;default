@@ -47,7 +47,7 @@ __template__
 					[% IF has_journal %]| [% END %]
 					[% END %]
 					[% IF has_journal %]
-						| Last Journal:
+						Last Journal:
 						<a href="[% constants.real_rootdir %]/~[% nickname | strip_paramattr %]/journal/">[%
 						Slash.timeCalc(journal_last_entry_date) %]</a>
 					[% END %]
@@ -80,4 +80,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.35 2006/02/01 23:02:58 pudge Exp $
+$Id: dispComment;misc;default,v 1.36 2006/02/15 18:43:39 pudge Exp $

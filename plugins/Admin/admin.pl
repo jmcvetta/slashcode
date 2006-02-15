@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.280 2006/02/14 22:44:59 pudge Exp $
+# $Id: admin.pl,v 1.281 2006/02/15 15:16:49 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -193,7 +193,7 @@ sub main {
 			function	=> \&displaySignoffStats,
 			seclev		=> 500,
 			adminmenu	=> 'info',
-			tab_selected	=> 'signnoff'
+			tab_selected	=> 'signoff'
 		}
 	};
 

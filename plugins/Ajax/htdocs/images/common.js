@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.18 2006/02/15 19:44:52 tvroom Exp $
+// $Id: common.js,v 1.19 2006/02/15 22:20:11 pudge Exp $
 
 function toggleIntro(id, toggleid) {
 	var obj = $(id);
@@ -75,7 +75,6 @@ function tagsShowBody(stoid, is_admin, newtagspreloadtext) {
 		// specified for this story, and a reskey to allow
 		// the user to enter more tags.
 		tagsuser.innerHTML = "Retrieving...";
-		var url = '/ajax.pl';
 		var params = [];
 		params['op'] = 'tags_get_user_story';
 		params['stoid'] = stoid;
@@ -140,6 +139,26 @@ function tagsCreateForStory(stoid) {
 }
 
 // helper functions
+function ajax_eval(params, onsucc, onfail, url) {
+	var h = $H(params);
+	if (!url) {
+		url = '/ajax.pl';
+	}
+	
+	var ajax = new Ajax.Updater(
+		{
+			success: onsucc,
+			failure: onfail
+		},
+		url,
+		{
+			method:		'post',
+			parameters:	h.toQueryString(),
+			evalScripts:	1
+		}
+	);
+}
+
 
 function ajax_update(params, onsucc, onfail, url) {
 	var h = $H(params);

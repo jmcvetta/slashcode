@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.262 2006/02/15 19:06:00 pudge Exp $
+# $Id: Slash.pm,v 1.263 2006/02/15 22:20:11 pudge Exp $
 
 package Slash;
 
@@ -47,7 +47,6 @@ $VERSION   	= '2.005000';  # v2.5.0
 
 	dispComment displayStory displayRelatedStories displayThread dispStory
 	getOlderStories getOlderDays moderatorCommentLog printComments
-	selectComments
 );
 
 
@@ -212,6 +211,39 @@ sub selectComments {
 
 	reparentComments($comments, $reader, $options);
 	return($comments, $count);
+}
+
+sub ajaxSelectComments {
+	require Data::JavaScript::Anon;
+	my($slashdb, $constants, $user, $form, $options) = @_;
+
+	my $id = $form->{sid};
+	return unless $id;
+
+	my($comments) = selectComments(
+		$slashdb->getDiscussion($id),
+		0,
+		{
+			commentsort	=> 0,
+			threshold	=> -1,
+		}
+	);
+
+	delete $comments->{0}; # non-comment data
+
+	my @roots = grep { !$comments->{$_}{pid} } keys %$comments;
+
+	my $anon_comments = Data::JavaScript::Anon->anon_dump($comments);
+	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);
+
+	return <<EOT;
+<script type="text/javascript">
+	comments = $anon_comments;
+	root_comments = $anon_roots;
+
+	renderRoots('commentlisting');
+</script>
+EOT
 }
 
 sub constrain_score {

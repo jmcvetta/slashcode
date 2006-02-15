@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.20 2006/02/14 21:18:50 tvroom Exp $
+# $Id: ajax.pl,v 1.21 2006/02/15 22:20:11 pudge Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -291,6 +291,12 @@ sub getOps {
 	);
 
 	my %mainops = (
+		# this one will move soon
+		get_comments	=> {
+			function	=> \&Slash::ajaxSelectComments,
+			reskey_name	=> 'ajax_admin',
+			reskey_type	=> 'createuse',
+		},
 		getSectionPrefsHTML => {
 			function	=> \&getSectionPrefsHTML,
 			reskey_name	=> 'ajax_user',

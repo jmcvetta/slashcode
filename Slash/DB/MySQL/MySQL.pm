@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.869 2006/02/14 22:15:57 pudge Exp $
+# $Id: MySQL.pm,v 1.870 2006/02/15 15:23:20 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.869 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.870 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7019,7 +7019,7 @@ sub getStoryByTime {
 	my $section = $options->{section} || '';
 	my $where;
 	my $name  = 'story_by_time';
-	_genericCacheRefresh($self, $name, $constants->{story_expire} || 600); # use same cache time as for stories
+	_genericCacheRefresh($self, $name, $constants->{story_expire} || 600);
 	my $cache = $self->{"_${name}_cache"} ||= {};
 
 	$self->{"_${name}_cache_time"} = time() if !keys %$cache;
@@ -10221,7 +10221,7 @@ sub getStoriesData {
 			# We got this data from the DB, so it's
 			# authoritative enough to write into memcached,
 			# if memcached is available.
-			$mcd->set("$mcdkey$stoid", $story, $constants->{story_expire})
+			$mcd->set("$mcdkey$stoid", $story, $constants->{memcached_exptime_story} || 600)
 				if $mcd;
 		}
 	}
@@ -10355,7 +10355,7 @@ sub getStory {
 		# either it's not in memcached already or we just got a
 		# fresh copy that's worth writing over what's there with.
 		my $mcdkey = "$self->{_mcd_keyprefix}:st:";
-		$mcd->set("$mcdkey$stoid", $hr, $constants->{story_expire});
+		$mcd->set("$mcdkey$stoid", $hr, $constants->{memcached_exptime_story} || 600);
 #print STDERR "getStory $$ set memcached " . scalar(keys %$hr) . " keys for $stoid: '" . join(" ", sort keys %$hr) . "'\n";
 	}
 #print STDERR "getStory $$ got from " . ($got_it_from_db ? "DB" : $got_it_from_memcached ? "MEMCACHED" : "LOCALCACHE") . " returning " . scalar(keys %$hr) . " keys for $stoid\n";
@@ -11084,7 +11084,7 @@ sub getStoryTopicsChosen {
 		"story_topics_chosen",
 		"stoid='$stoid'");
 	if ($mcd) {
-		my $exptime = 3600; # should be a var
+		my $exptime = getCurrentStatic('memcached_exptime_story') || 600;
 		$mcd->set("$mcdkey$stoid", $answer, $exptime);
 	}
 	return $answer;
@@ -11107,7 +11107,7 @@ sub getStoryTopicsRendered {
 		"story_topics_rendered",
 		"stoid='$stoid'");
 	if ($mcd) {
-		my $exptime = 3600; # should be a var
+		my $exptime = getCurrentStatic('memcached_exptime_story') || 600;
 		$mcd->set("$mcdkey$stoid", $answer, $exptime);
 	}
 	return $answer;

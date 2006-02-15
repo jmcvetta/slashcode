@@ -26,15 +26,7 @@ __template__
 	[% returnme.data_constant = 1 %] 
 
 [% CASE 'tags_user' %]
-	Your tags:
-	[% IF tags.size %]
-		[%- FOR t = tags -%]
-			<span class="tagname">[% t | strip_html %]</span>
-			[%- IF !loop.last() %], [% END -%]
-		[%- END -%]
-	[% ELSE %]
-		<i>(none)</i>
-	[% END %]
+	[% returnme.data_constant = 1 %] 
 
 [% CASE 'tags_admin_result' %]
 	Admin results: 
@@ -57,4 +49,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;tags;default,v 1.2 2006/02/13 20:14:27 jamiemccarthy Exp $
+$Id: data;tags;default,v 1.3 2006/02/15 15:23:20 jamiemccarthy Exp $

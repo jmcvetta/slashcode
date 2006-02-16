@@ -17,7 +17,7 @@ en_US
 __name__
 formatSub
 __template__
-[% 	IF submission.storyonly;
+[% 	IF submission.storyonly || submission.journal_id;
 		subtext = submission.story;
 	ELSIF submission.email && submission.name;
 		IF constants.submissions_link_relnofollow; rnf = " rel=\"nofollow\""; ELSE; rnf = ""; END;
@@ -34,4 +34,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: formatSub;submit;default,v 1.3 2006/01/12 01:35:46 jamiemccarthy Exp $
+$Id: formatSub;submit;default,v 1.4 2006/02/16 04:39:48 pudge Exp $

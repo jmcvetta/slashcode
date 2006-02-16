@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.934 2006/02/15 19:06:00 pudge Exp $
+# $Id: upgrades,v 1.935 2006/02/16 04:39:48 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3668,8 +3668,6 @@ UPDATE ajax_ops SET reskey_type = 'createuse' WHERE op = 'remarks_fetch';
 # 2006-02-08
 UPDATE vars SET value = 'T_2_5_0_99' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 ALTER TABLE journal_transfer ADD COLUMN updated TINYINT UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE journal_transfer ADD KEY stoid_updated (stoid, updated);
 
@@ -3683,3 +3681,6 @@ UPDATE vars SET value='60' WHERE name='story_expire';
 UPDATE vars SET value = 'T_2_5_0_100' WHERE name = 'cvs_tag_currentcode';
 
 # PUDGE LAST UPDATED HERE
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
+

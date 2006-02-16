@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.147 2006/01/27 16:55:22 jamiemccarthy Exp $
+# $Id: User.pm,v 1.148 2006/02/16 19:18:15 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -573,6 +573,8 @@ sub userdir_handler {
 	) {
 		my($string, $query) = ($1, '');
 		if ($string =~ s/\?(.+)$//) {
+			# This seems to have no effect, right? since $query
+			# is redeclared in a different scope below -Jamie
 			$query = $1;
 		}
 
@@ -666,6 +668,11 @@ sub userdir_handler {
 					$r->args("op=friendview");
 					$r->uri('/journal.pl');
 					$r->filename($constants->{basedir} . '/journal.pl');
+
+				} elsif ($op eq 'tags') {
+					$r->args("op=showtags");
+					$r->uri('/users.pl');
+					$r->filename($constants->{basedir} . '/users.pl');
 
 				} else {
 					$r->args("op=edituser");

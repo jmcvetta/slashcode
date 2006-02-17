@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.34 2005/11/26 16:41:51 jamiemccarthy Exp $
+# $Id: open_backend.pl,v 1.35 2006/02/17 00:34:49 pudge Exp $
 
 use strict;
 use Slash;
@@ -67,6 +67,16 @@ sub _do_rss {
 	$title = "$title: $skin->{title}"
 		if $skin->{skid} && $skin->{skid} != $constants->{mainpage_skid} && $skin->{title};
 
+	my $description = $constants->{slogan};
+
+	# XXX: temporary, until we can add a skin_param table
+	if ($constants->{sitename} eq 'Slashdot') {
+		if ($skin->{title} && $skin->{title} eq 'AMD') {
+			$title .= ' Sponsored Content';
+			$description = 'Special Advertising Section';
+		}
+	}
+
 	my $ext = $version == 0.9 && $type eq 'rss' ? 'rdf' : $type;
 	my $filename = "$file.$ext";
 
@@ -75,6 +85,7 @@ sub _do_rss {
 			title		=> $title,
 			'link'		=> $link,
 			selflink	=> "$link$filename",
+			description	=> $description,
 		},
 		version		=> $version,
 		textinput	=> 1,

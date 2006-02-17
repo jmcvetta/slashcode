@@ -122,7 +122,7 @@ change your password, or just click pretty widgets to kill time.
 	<p></td></tr></table>
 
 [% CASE 'saveuser_email_msg' %]
-The user account [% nickname %] on [% constants.sitename %] had this email associated
+The user account [% nickname | strip_literal %] on [% constants.sitename %] had this email associated
 with it.  A web user from [% env.remote_addr %] has just changed it to
 [% realemail | strip_literal %].
 
@@ -192,4 +192,4 @@ please contact the site administrator immediately.
 __seclev__
 10000
 __version__
-$Id: messages;users;default,v 1.36 2005/07/27 22:54:48 pudge Exp $
+$Id: messages;users;default,v 1.37 2006/02/17 22:26:04 pudge Exp $

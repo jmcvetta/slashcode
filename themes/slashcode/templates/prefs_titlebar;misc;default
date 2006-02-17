@@ -13,7 +13,8 @@ en_US
 __name__
 prefs_titlebar
 __template__
-[% title = title || "$user.nickname (This is you!)";
+[% thisnickname = user.nickname | strip_literal;
+   title = title || "$thisnickname (This is you!)";
 PROCESS titlebar title=title;
 '<div id="usermenu">'; 
 
@@ -46,4 +47,4 @@ PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selec
 __seclev__
 10000
 __version__
-$Id: prefs_titlebar;misc;default,v 1.10 2006/02/05 16:02:36 jamiemccarthy Exp $
+$Id: prefs_titlebar;misc;default,v 1.11 2006/02/17 22:26:04 pudge Exp $

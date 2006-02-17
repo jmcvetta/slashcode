@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.9 2005/10/18 06:59:40 pudge Exp $
+# $Id: ResKey.pm,v 1.10 2006/02/17 23:34:29 pudge Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -86,9 +86,35 @@ sub key {
 # For tasks/reskey_purge.pl
 sub purge_old {
 	my($self) = @_;
-	my $timeframe = getCurrentStatic('reskey_timeframe') || 14400;
-	$self->sqlDelete('reskeys', "create_ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
 
+	my $count = 0;
+
+	# first, purge all old reskeys
+	my $timeframe = getCurrentStatic('reskey_timeframe') || 14400;
+	$count += $self->sqlDelete('reskeys', "create_ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
+
+
+	# next, purge all reskeys that are used and older than duration_uses
+	my $uses = $self->sqlSelectAll('rkrid, value', 'reskey_vars', 'name="duration_uses"');
+	for (@$uses) {
+		my($rkrid, $seconds) = @$_;
+		$count += $self->sqlDelete('reskeys',
+			"rkrid = $rkrid AND is_alive = 'no' AND " .
+			"submit_ts IS NOT NULL AND " .
+			"submit_ts < DATE_SUB(NOW(), INTERVAL $seconds SECOND)"
+		);
+	}
+
+
+	# then, delete all used reskeys where duration_uses and
+	# duration_max-uses are not in use
+	my $max_uses = $self->sqlSelectAll('rkrid', 'reskey_vars', 'name="duration_max-uses"');
+	my %rkids = map { $_->[0] => 1 } (@$uses, @$max_uses);
+	my $rkid_str = join ', ', keys %rkids;
+	$count += $self->sqlDelete('reskeys', "rkrid NOT IN ($rkid_str) AND is_alive = 'no'");
+
+
+	# finally, delete orphaned reskey_failures entries
 	my $rkids = $self->sqlSelectAll('rkf.rkid',
 		'reskey_failures AS rkf LEFT JOIN reskeys AS rk ON rk.rkid=rkf.rkid',
 		'rk.rkid IS NULL'
@@ -96,8 +122,10 @@ sub purge_old {
 
 	if (@$rkids) {
 		my $rkid_string = join ',', map { $_->[0] } @$rkids;
-		$self->sqlDelete('reskey_failures', "rkid IN ($rkid_string)");
+		$count += $self->sqlDelete('reskey_failures', "rkid IN ($rkid_string)");
 	}
+
+	return $count;
 }
 
 1;
@@ -111,7 +139,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.9 2005/10/18 06:59:40 pudge Exp $
+$Id: ResKey.pm,v 1.10 2006/02/17 23:34:29 pudge Exp $
 
 
 =head1 TODO

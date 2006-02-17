@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.6 2006/02/15 21:45:08 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.7 2006/02/17 05:28:27 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,14 +14,14 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
 
 $task{$me}{timespec} = "0-59/$minutes_run * * * *";
 $task{$me}{timespec_panic_1} = ''; # not that important
-$task{$me}{resource_locks} = { log_slave => 1 };
+$task{$me}{resource_locks} = { };
 $task{$me}{fork} = SLASHD_NOWAIT;
 
 $task{$me}{code} = sub {

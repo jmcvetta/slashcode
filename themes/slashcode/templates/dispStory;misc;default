@@ -52,6 +52,8 @@ END %]
 				thisuser    = Slash.db.getUser(thisjournal.uid); %]
 		Journal written by <a href="[% constants.rootdir %]/~[% thisuser.nickname | strip_paramattr %]/journal/"
 			>[% thisuser.nickname | strip_literal %] ([% thisjournal.uid %])</a> and [%
+			ELSIF story.by %]
+		Written by [% story.by | strip_literal %] and [%
 			END;
 		END %]
 		posted by <a href="[% author.homepage %]">[% author.nickname | strip_literal %]</a>
@@ -161,4 +163,4 @@ END;
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.62 2006/02/15 18:43:39 pudge Exp $
+$Id: dispStory;misc;default,v 1.63 2006/02/17 00:35:20 pudge Exp $

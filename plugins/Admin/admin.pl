@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.282 2006/02/21 21:45:58 tvroom Exp $
+# $Id: admin.pl,v 1.283 2006/02/21 22:36:29 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1498,7 +1498,7 @@ sub extractRelatedStoriesFromForm {
 
 
 	# Extract sids from urls in introtext and bodytext
-	foreach($form->{introtext}, $form->{bodytext}) {
+	foreach ($form->{introtext}, $form->{bodytext}) {
 		push @$related, $1 while /(?:$constants->{basedomain})?\S*$regexsid/g;
 	}
 

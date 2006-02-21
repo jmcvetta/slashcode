@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.23 2006/02/21 21:47:13 tvroom Exp $
+# $Id: Admin.pm,v 1.24 2006/02/21 22:36:29 pudge Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -313,7 +313,6 @@ sub showStoryAdminBox {
 	if (!$storyref) {
 		my $cur_stories = $self->getStoryByTimeAdmin("<", $storyref, 1, { no_story => 1 });
 		$storyref = $cur_stories->[0] if @$cur_stories;
-		
 	}
 	
 	my $future = $self->getStoryByTimeAdmin('>', $storyref, 3);

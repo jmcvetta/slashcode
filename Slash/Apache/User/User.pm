@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.148 2006/02/16 19:18:15 jamiemccarthy Exp $
+# $Id: User.pm,v 1.149 2006/02/21 22:36:29 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -575,6 +575,7 @@ sub userdir_handler {
 		if ($string =~ s/\?(.+)$//) {
 			# This seems to have no effect, right? since $query
 			# is redeclared in a different scope below -Jamie
+			# This is in case something in this scope wants it -- pudge
 			$query = $1;
 		}
 

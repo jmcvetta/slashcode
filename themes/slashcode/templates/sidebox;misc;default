@@ -13,6 +13,7 @@ sidebox
 __seclev__
 10000
 __template__
+[% IF updater; updater; END %]
 <div class="block">
 	<div class="title" [% IF name %]id="[% name | strip_attribute %]-title"[% END %]>
 		<h4>
@@ -24,4 +25,4 @@ __template__
 	</div>
 </div>
 __version__
-$Id: sidebox;misc;default,v 1.3 2005/08/25 14:48:31 tvroom Exp $
+$Id: sidebox;misc;default,v 1.4 2006/02/21 21:48:35 tvroom Exp $

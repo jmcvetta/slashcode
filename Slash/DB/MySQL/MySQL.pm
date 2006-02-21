@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.873 2006/02/17 22:26:03 pudge Exp $
+# $Id: MySQL.pm,v 1.874 2006/02/21 21:40:47 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.873 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.874 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7104,19 +7104,24 @@ sub getStorySidFromDiscussion {
 ##################################################################
 # admin.pl only
 sub getStoryByTimeAdmin {
-	my($self, $sign, $story, $limit) = @_;
+	my($self, $sign, $story, $limit, $options) = @_;
 	my $where = "";
 	my $user = getCurrentUser();
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
 	$limit ||= 1;
 
+	$options ||= {};
+	$story   ||= {};
+
 	# '=' is also sometimes used for $sign; in that case,
 	# order is irrelevant -- pudge
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
 
-	$where .= " AND sid != '$story->{sid}'";
+	$where .= " AND sid != '$story->{sid}'" if !$options->{no_story};
 
 	my $time = $story->{'time'};
+	$time = $self->getTime() if !$story->{time} && $options->{no_story};
+
 	my $returnable = $self->sqlSelectAllHashrefArray(
 		'stories.stoid, title, sid, time',
 		'stories, story_text',
@@ -9286,6 +9291,16 @@ sub getSignoffsForStory {
 		"signoff.*, users.nickname, signoff_type",
 		"signoff, users",
 		"signoff.stoid=$stoid_q AND users.uid=signoff.uid"
+	);
+}
+
+sub getSignoffsInLastMinutes {
+	my ($self, $mins) = @_;
+	$mins ||= getCurrentStatic("admin_timeout");
+	return $self->sqlSelectAllHashrefArray(
+		"*",
+		"signoff",
+		"signoff_time >= DATE_SUB(NOW(), INTERVAL $mins MINUTE)"
 	);
 }
 

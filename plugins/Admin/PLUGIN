@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.30 2006/02/14 21:33:04 tvroom Exp $
+# $Id: PLUGIN,v 1.31 2006/02/21 21:43:16 tvroom Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
@@ -20,6 +20,7 @@ image=images/open_node.png
 image=images/plus.png
 template=templates/aclEdit;admin;default
 template=templates/adminLoginForm;admin;default
+template=templates/author_activity;misc;default
 template=templates/blockEdit;admin;default
 template=templates/colorEdit;admin;default
 template=templates/data;admin;default

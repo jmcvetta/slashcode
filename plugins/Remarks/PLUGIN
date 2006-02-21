@@ -1,6 +1,5 @@
-# $Id: PLUGIN,v 1.1 2006/01/27 04:08:26 pudge Exp $
-name=Remarks
-description="Remarks"
-htdocs=remarks.pl
-template=templates/data;remarks;default
-template=templates/display;remarks;default
+# $Id: PLUGIN,v 1.2 2006/02/21 21:50:36 tvroom Exp $
+name=Console
+description="Console"
+htdocs=console.pl
+template=templates/display;console;default

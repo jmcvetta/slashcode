@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.242 2006/01/24 05:19:36 pudge Exp $
+# $Id: comments.pl,v 1.243 2006/02/22 02:04:38 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1173,7 +1173,7 @@ sub submitComment {
 		my($messages, $reply, %users);
 		my $kinds = $reader->getDescriptions('discussion_kinds');
 		if ($form->{pid}
-			|| $kinds->{ $discussion->{dkid} } eq 'journal'
+			|| $kinds->{ $discussion->{dkid} } =~ /^journal/
 			|| $constants->{commentnew_msg}) {
 			$messages = getObject('Slash::Messages');
 			$reply = $slashdb->getCommentReply($form->{sid}, $maxCid);
@@ -1200,7 +1200,7 @@ sub submitComment {
 		}
 
 		# reply to journal
-		if ($messages && $kinds->{ $discussion->{dkid} } eq 'journal') {
+		if ($messages && $kinds->{ $discussion->{dkid} } =~ /^journal/) {
 			my $users  = $messages->checkMessageCodes(MSG_CODE_JOURNAL_REPLY, [$discussion->{uid}]);
 			if (_send_comment_msg($users->[0], \%users, $pts, $clean_comment)) {
 				my $data  = {

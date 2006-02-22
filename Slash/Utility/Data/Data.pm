@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.191 2006/02/21 21:39:06 tvroom Exp $
+# $Id: Data.pm,v 1.192 2006/02/22 02:06:07 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.191 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.192 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -164,8 +164,10 @@ sub nick2matchname {
 # If you change createSid() for your site, change regexSid() too.
 # If your site will have multiple formats of sids, you'll want this
 # to continue matching the old formats too.
+# NOTE: sid is also used for discussion ID (and maybe stoid too?),
+# such as in comments.pl, so that's what the \d{1,8} is for. -- pudge
 sub regexSid {
-	return qr{\b(\d{2}/\d{2}/\d{2}/\d{3,8})\b};
+	return qr{\b(\d{2}/\d{2}/\d{2}/\d{3,8}|\d{1,8})\b};
 }
 
 #========================================================================
@@ -4240,4 +4242,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.191 2006/02/21 21:39:06 tvroom Exp $
+$Id: Data.pm,v 1.192 2006/02/22 02:06:07 pudge Exp $

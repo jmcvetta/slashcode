@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.33 2005/12/26 21:38:58 jamiemccarthy Exp $
+# $Id: RSS.pm,v 1.34 2006/02/23 21:12:43 pudge Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -388,6 +388,7 @@ sub rss_story {
 	my $reader    = getObject('Slash::DB', { db_type => 'reader' });
 
 	my $topics = $reader->getTopics;
+	my $other_creator;
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
@@ -409,6 +410,15 @@ sub rss_story {
 		if (getCurrentUser('is_admin')) {
 			$story->{introtext} .= qq[\n\n<p><a href="$edit">[ Edit ]</a></p>];
 		}
+
+		if ($story->{journal_id}) {
+			my $journal = getObject('Slash::Journal');
+			if ($journal) {
+				my $journal_uid = $journal->get($story->{journal_id}, "uid");
+				$other_creator = $reader->getUser($journal_uid, 'nickname')
+					if $journal_uid;
+			}
+		}
 	}
 
 	if ($version >= 0.91) {
@@ -421,8 +431,15 @@ sub rss_story {
 			if $story->{'time'};
 		$encoded_item->{dc}{subject} = $self->encode($topics->{$story->{tid}}{keyword})
 			if $story->{tid};
-		$encoded_item->{dc}{creator} = $self->encode($reader->getUser($story->{uid}, 'nickname'))
-			if $story->{uid};
+
+		my $creator;
+		if ($story->{uid}) {
+			$creator = $reader->getUser($story->{uid}, 'nickname');
+			$creator = "$other_creator (posted by $creator)" if $other_creator;
+		} elsif ($other_creator) {
+			$creator = $other_creator;
+		}
+		$encoded_item->{dc}{creator} = $self->encode($creator) if $creator;
 
 		$encoded_item->{slash}{comments}   = $self->encode($story->{commentcount})
 			if $story->{commentcount};
@@ -545,4 +562,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.33 2005/12/26 21:38:58 jamiemccarthy Exp $
+$Id: RSS.pm,v 1.34 2006/02/23 21:12:43 pudge Exp $

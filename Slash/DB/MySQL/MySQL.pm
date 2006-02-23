@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.876 2006/02/23 00:48:41 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.877 2006/02/23 19:12:00 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.876 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.877 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12044,7 +12044,7 @@ sub getUser {
 			# And adjust the users_hits.lastclick value, a timestamp,
 			# to work the same in 4.1 and later as it did in 4.0.
 			# This is vital to make a Slash::Apache::Log::UserLog
-			# test work properly.
+			# test work properly.  See also updateLastaccess.
 			$answer->{lastclick} =~ s/\D+//g if $answer->{lastclick};
 #			for my $duple (@$users_param) {
 #				$answer->{$duple->[0]} = $duple->[1];
@@ -12268,7 +12268,7 @@ sub _getUser_do_selects {
 	# And adjust the users_hits.lastclick value, a timestamp,
 	# to work the same in 4.1 and later as it did in 4.0.
 	# This is vital to make a Slash::Apache::Log::UserLog
-	# test work properly.
+	# test work properly.  See also updateLastaccess.
 	$answer->{lastclick} =~ s/\D+//g if $answer->{lastclick};
 
 	return $answer;

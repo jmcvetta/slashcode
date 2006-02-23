@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.875 2006/02/22 23:58:00 pudge Exp $
+# $Id: MySQL.pm,v 1.876 2006/02/23 00:48:41 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.875 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.876 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12041,6 +12041,11 @@ sub getUser {
 			for my $col (keys %$users_hits) {
 				$answer->{$col} = $users_hits->{$col};
 			}
+			# And adjust the users_hits.lastclick value, a timestamp,
+			# to work the same in 4.1 and later as it did in 4.0.
+			# This is vital to make a Slash::Apache::Log::UserLog
+			# test work properly.
+			$answer->{lastclick} =~ s/\D+//g if $answer->{lastclick};
 #			for my $duple (@$users_param) {
 #				$answer->{$duple->[0]} = $duple->[1];
 #			}

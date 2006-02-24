@@ -27,7 +27,7 @@ __template__
 <div id="remarks_table">
 [% END %]
 
-<table class="data">
+<table class="data" width="100%">
 	<tr class="data_head">
 		<th colspan="5">Remarks (Last Updated [% Slash.timeCalc(Slash.db.getTime, '%Y-%m-%d %H:%M:%S %Z', 0) %])</th>
 	</tr>
@@ -53,4 +53,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: display;remarks;default,v 1.6 2006/02/14 22:44:59 pudge Exp $
+$Id: display;remarks;default,v 1.7 2006/02/24 02:10:51 tvroom Exp $

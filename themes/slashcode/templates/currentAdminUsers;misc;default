@@ -16,7 +16,7 @@ en_US
 __name__
 currentAdminUsers
 __template__
-<table width="100%" border="0" cellpadding="2" cellspacing="0">
+<table width="100%" border="0" cellpadding="2" cellspacing="0" class="data">
 
 [% FOREACH author = ids %]
 	[% id         = author.0;
@@ -59,4 +59,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: currentAdminUsers;misc;default,v 1.16 2006/02/01 23:02:58 pudge Exp $
+$Id: currentAdminUsers;misc;default,v 1.17 2006/02/24 01:46:15 tvroom Exp $

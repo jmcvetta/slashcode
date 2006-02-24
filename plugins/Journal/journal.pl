@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.127 2006/02/24 06:01:34 pudge Exp $
+# $Id: journal.pl,v 1.128 2006/02/24 06:02:18 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -623,6 +623,7 @@ sub doSaveArticle {
 
 	} else {
 		# don't allow submission if user can't submit stories
+		# this will fail silently
 		# note: this may not work properly with SOAP, but submissions
 		# not enabled with SOAP now anyway
 		if ($form->{submit}) {

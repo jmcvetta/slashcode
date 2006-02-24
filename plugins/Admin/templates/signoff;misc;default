@@ -16,10 +16,10 @@ __template__
 [% IF constants.plugin.Ajax && constants.signoff_use %]
 [% checked = Slash.db.hasUserSignedStory(stoid, user.uid); %]
 [% IF storylink %]<li class="signoff">[% END %]
-<input type="checkbox" name="adminsignoff" value="[% stoid %]" onclick="admin_signoff(this);"  [% IF checked; constants.markup_checked_attribute; END %]><span id="signoff_[% stoid %]"><b>Sign</b></span>
+<input type="checkbox" name="adminsignoff" value="[% stoid %]" onclick="admin_signoff(this);"[% IF checked; constants.markup_checked_attribute; END %]><span id="signoff_[% stoid %]"><b>Sign</b></span>
 [% IF storylink %]</li>[% END %]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: signoff;misc;default,v 1.8 2006/02/21 22:36:29 pudge Exp $
+$Id: signoff;misc;default,v 1.9 2006/02/24 06:12:08 pudge Exp $

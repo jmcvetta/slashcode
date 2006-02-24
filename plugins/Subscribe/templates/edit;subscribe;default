@@ -136,10 +136,10 @@ ends. Your day may vary.)
 	<tr>
 	<td valign="top" align="center"><input type="radio"
 		name="buypage_[% page.pagename %]"
-		value="0" [% IF !page.isbought; constants.markup_checked_attribute; END %]></td>
+		value="0"[% IF !page.isbought; constants.markup_checked_attribute; END %]></td>
 	<td valign="top" align="center"><input type="radio"
 		name="buypage_[% page.pagename %]"
-		value="1" [% IF  page.isbought; constants.markup_checked_attribute; END %]></td>
+		value="1"[% IF  page.isbought; constants.markup_checked_attribute; END %]></td>
 	<td valign="top" align="left">&nbsp;[% page.descr %]</td>
 	</tr>
 
@@ -211,4 +211,4 @@ For a list of subscriber-only benefits, see
 __seclev__
 10000
 __version__
-$Id: edit;subscribe;default,v 1.32 2005/08/25 14:33:09 tvroom Exp $
+$Id: edit;subscribe;default,v 1.33 2006/02/24 06:12:09 pudge Exp $

@@ -24,10 +24,10 @@ select
 __template__
 [% IF default.ref == 'HASH'; default_hr = default; ELSE; default_hr = { $default = 1 }; END %]
 <select name="[% label %]"[% IF multiple %] MULTIPLE[% END %]>[% mylist = ordered ? ordered : numeric ? items.keys.nsort : items.keys.sort %]
-[% FOREACH item = mylist %]	[% IF default_hr.$item; selected = ' selected'; ELSE; selected = ''; END %]<option value="[% item %]"[% selected %]>[% items.$item %]</option>
+[% FOREACH item = mylist %]	[% IF default_hr.$item; selected = ' selected'; ELSE; selected = ''; END %]<option value="[% item %]"[% selected %]>[% items.$item | strip_literal %]</option>
 [% END %]</select>
 
 __seclev__
 10000
 __version__
-$Id: select;misc;default,v 1.9 2005/07/27 22:54:48 pudge Exp $
+$Id: select;misc;default,v 1.10 2006/02/24 05:57:59 pudge Exp $

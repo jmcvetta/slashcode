@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.877 2006/02/23 19:12:00 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.878 2006/02/24 06:00:42 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.877 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.878 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9171,6 +9171,7 @@ sub createStory {
 
 			# update later in task
 			delete @{$discussion}{qw(title url ts)};
+			delete $discussion->{uid}; # leave it "owned" by poster
 
 			$id = $story->{discussion};
 			$discussion->{kind} = 'journal-story';

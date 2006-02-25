@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.241 2006/02/23 19:13:16 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.242 2006/02/25 22:50:23 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.241 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.242 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -109,6 +109,11 @@ sub getBackendStories {
 		for my $key (qw( image width height )) {
 			$story->{image}{$key} = $topic_hr->{$key};
 		}
+
+		# so we can assign proper "creator" if story was posted
+		# originally as a journal
+		my $journal_id = $self->getStory($story->{stoid}, 'journal_id');
+		$story->{journal_id} = $journal_id if $journal_id;
 	}
 
 	return $returnable;

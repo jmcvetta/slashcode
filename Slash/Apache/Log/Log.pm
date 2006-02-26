@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.39 2005/09/23 17:20:51 jamiemccarthy Exp $
+# $Id: Log.pm,v 1.40 2006/02/26 20:45:29 jamiemccarthy Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -98,13 +98,15 @@ sub UserLog {
 	# this is an admin who just sent a password in the clear.
 	# There are other less-important things that might get updated
 	# but none of them matters enough to continue processing.
-	if ($op eq 'image' and !$user_update->{admin_clearpass}) {
+	if ($op eq 'image' && !$user_update->{admin_clearpass}) {
 #		print STDERR scalar(gmtime) . " $$ UserLog short-circuit image\n";
 		return ;
 	}
 
 	# For the below logic, note that if we're on an image hit,
 	# page_buying will be false.
+	# Err, and that doesn't matter since if we're on an image,
+	# we already returned.  So I'm not sure why I wrote that.
 	if ($constants->{subscribe}
 		&& ($user->{is_subscriber} || !$constants->{subscribe_hits_only})
 	) {

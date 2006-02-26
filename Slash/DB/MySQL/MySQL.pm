@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.878 2006/02/24 06:00:42 pudge Exp $
+# $Id: MySQL.pm,v 1.879 2006/02/26 00:18:32 cowboyneal Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.878 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.879 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -13454,6 +13454,34 @@ sub setRelatedStoriesForStory {
 				title	=> $rel_url_hr->{$rel_url},
 		})
 	}
+}
+
+sub updateSubMemory {
+	my($self, $submatch, $subnote) = @_;
+
+	my $user = getCurrentUser();
+
+	my $rows = $self->sqlUpdate('submissions_memory', {
+			subnote => $subnote,
+			uid => $user->{uid},
+			'time' => 'now()',
+	}, "submatch='" . $self->sqlQuote($submatch) . "'");
+
+	$self->sqlInsert('submissions_memory', {
+			submatch => $submatch,
+			subnote => $subnote,
+			uid => $user->{uid},
+			'time' => 'now()',
+	}) if !$rows;
+}
+
+sub getSubmissionMemory {
+	my($self) = @_;
+
+	return $self->sqlSelectAllHashrefArray('submatch, subnote, time, uid',
+		'submissions_notes',
+		"subnote is not null AND subnote != ''",
+		'order by time desc');
 }
 
 ########################################################

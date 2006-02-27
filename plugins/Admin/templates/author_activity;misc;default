@@ -19,16 +19,16 @@ __template__
 [% FOREACH act = activity %]
 	[% NEXT IF seen_uids.${act.uid}; %]
 	[% class = num % 2 ? "data_hl1" : "data_hl2"; %]
-	<tr class="[% class %]"><td>
 	[% IF act.title %]
+		<tr class="[% class %]"><td>
 		[% act.nickname | strip_literal %]  [% act.verb %] <a href="[% gSkin.rootdir %]/[% IF act.sid %]admin.pl?op=edit&amp;sid=[% act.sid %][% ELSIF act.subid %]submit.pl?op=viewsub&subid=[% act.subid %][% END %]">[% act.title %]</a> [% act.usertime %]
 		[% seen_uids.${act.uid} = 1 %]
 		[% num = !num %]
+		</td></tr>
 	[% END %]
-	</td></tr>
 [% END %]
 </table>
 __seclev__
 10000
 __version__
-$Id: author_activity;misc;default,v 1.6 2006/02/24 05:59:49 pudge Exp $
+$Id: author_activity;misc;default,v 1.7 2006/02/27 18:44:08 tvroom Exp $

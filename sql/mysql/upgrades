@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.940 2006/02/23 03:21:52 pudge Exp $
+# $Id: upgrades,v 1.941 2006/02/27 22:58:16 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3694,4 +3694,6 @@ UPDATE vars SET value = 'T_2_5_0_101' WHERE name = 'cvs_tag_currentcode';
 # SLASHDOT LAST UPDATED HERE
 
 # PUDGE LAST UPDATED HERE
+
+UPDATE templates SET page='misc' WHERE name='tagsstorydivtagbox' AND page='index' AND skin='default';
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.190 2006/02/05 16:02:34 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.191 2006/02/27 22:58:16 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.190 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.191 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1622,24 +1622,31 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 	}
 
 	if ($constants->{plugin}{Tags}) {
-		my $read = $constants->{tags_stories_allowread} || 0;
-		$user->{tags_canread_stories} = 0;
-		$user->{tags_canread_stories} = 1 if
-			!$user->{is_anon} && (
-				   $read >= 4
-				|| $read >= 3 && $user->{karma} >= 0
-				|| $read >= 2 && $user->{is_subscriber}
-				|| $read >= 1 && $user->{is_admin}
-			);
 		my $write = $constants->{tags_stories_allowwrite} || 0;
 		$user->{tags_canwrite_stories} = 0;
 		$user->{tags_canwrite_stories} = 1 if
 			!$user->{is_anon} && (
 				   $write >= 4
 				|| $write >= 3 && $user->{karma} >= 0
+					|| $write >= 2.5 && $user->{acl}{tags_stories_allowwrite}
 				|| $write >= 2 && $user->{is_subscriber}
 				|| $write >= 1 && $user->{is_admin}
 			);
+		my $read;
+		if ($write) {
+			$user->{tags_canread_stories} = 1;
+		} else {
+			$read = $constants->{tags_stories_allowread} || 0;
+			$user->{tags_canread_stories} = 0;
+			$user->{tags_canread_stories} = 1 if
+				!$user->{is_anon} && (
+					   $read >= 4
+					|| $read >= 3 && $user->{karma} >= 0
+					|| $read >= 2.5 && $user->{acl}{tags_stories_allowread}
+					|| $read >= 2 && $user->{is_subscriber}
+					|| $read >= 1 && $user->{is_admin}
+				);
+		}
 	}
 
 	return $user;
@@ -3320,4 +3327,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.190 2006/02/05 16:02:34 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.191 2006/02/27 22:58:16 jamiemccarthy Exp $

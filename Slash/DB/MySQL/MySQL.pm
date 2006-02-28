@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.881 2006/02/27 22:24:43 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.882 2006/02/28 20:24:35 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.881 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.882 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7118,16 +7118,21 @@ sub getStoryByTimeAdmin {
 	my $order = $sign eq '<' ? 'DESC' : 'ASC';
 
 	$where .= " AND sid != '$story->{sid}'" if !$options->{no_story};
+	my $timebase = $story ? $self->sqlQuote($story->{time}) : "NOW()";
+	$where .= " AND DATE_SUB($timebase, INTERVAL $options->{hours_back} HOUR) " if $options->{hours_back};
+	$where .= " AND DATE_ADD($timebase, INTERVAL $options->{hours_forward} HOUR) " if $options->{hours_forward};
 
 	my $time = $story->{'time'};
 	$time = $self->getTime() if !$story->{time} && $options->{no_story};
 
+	my $limittext = $limit ? " LIMIT $limit" : "";
+
 	my $returnable = $self->sqlSelectAllHashrefArray(
-		'stories.stoid, title, sid, time',
+		'stories.stoid, title, sid, time, primaryskid',
 		'stories, story_text',
 		"stories.stoid=story_text.stoid
 		 AND time $sign '$time' AND in_trash = 'no' $where",
-		"ORDER BY time $order LIMIT $limit"
+		"ORDER BY time $order $limittext"
 	);
 	foreach my $story (@$returnable) {
 		$story->{displaystatus} = $self->_displaystatus($story->{stoid}, { no_time_restrict => 1 });

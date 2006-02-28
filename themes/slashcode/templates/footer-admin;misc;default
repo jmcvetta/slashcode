@@ -11,6 +11,7 @@ en_US
 __name__
 footer-admin
 __template__
+[% UNLESS form.nowrapper %]
 </div>
 <div id="adminfooter">
         <hr>
@@ -65,10 +66,11 @@ __template__
         [% END %]
 </div>
 [% Slash.currentAdminUsers() %]
+[% END %]
 </body>
 </html>
 
 __seclev__
 10000
 __version__
-$Id: footer-admin;misc;default,v 1.7 2006/01/03 19:16:46 pudge Exp $
+$Id: footer-admin;misc;default,v 1.8 2006/02/28 18:07:24 tvroom Exp $

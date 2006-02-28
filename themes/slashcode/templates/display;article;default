@@ -21,7 +21,7 @@ display
 __template__
 <div id="slashboxes">
 [% UNLESS user.lowbandwidth %]
-[% PROCESS userboxes hits => story.hits  %]
+[% PROCESS userboxes hits = story.hits stoid = story.stoid; %]
 [%
 IF show_poll;
 	PROCESS sidebox
@@ -100,4 +100,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: display;article;default,v 1.30 2006/02/01 21:39:24 tvroom Exp $
+$Id: display;article;default,v 1.31 2006/02/28 20:20:46 tvroom Exp $

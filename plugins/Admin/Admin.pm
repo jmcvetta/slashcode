@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.26 2006/02/27 22:07:39 tvroom Exp $
+# $Id: Admin.pm,v 1.27 2006/02/28 20:16:34 tvroom Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -307,6 +307,7 @@ sub getSignoffData {
 sub showStoryAdminBox {
 	my ($self, $storyref, $options) = @_;
 	my $user = getCurrentUser();
+	my $constants = getCurrentStatic();
 	$options ||= {};
 	my $updater;
 	my $extras = [];
@@ -328,18 +329,23 @@ sub showStoryAdminBox {
 	if (@$past < 3 ) {
 		$past = $self->getStoryByTimeAdmin('<', $storyref, "3");
 	}
-	print STDERR "TEST PAST 3 " . scalar(@$past) . "\n";
-
-	if (@$past && @$past < 20 ) {
-		my $basestory = $past->[$#$past];
-		$extras = $self->getStoryByTimeAdmin("<", $basestory, 20 - scalar @$past);
+	
+	my $usersignoffs 	= {};
+	my $storysignoffcnt	= {};
+	if ($constants->{signoff_use}) {
+		if (@$past && @$past < 20 ) {
+			my $basestory = $past->[$#$past];
+			$extras = $self->getStoryByTimeAdmin("<", $basestory, 20 - scalar @$past);
+		}
+		my $stoid_list = [];
+		foreach (@$past, @$future, $storyref, @$extras) {
+			next unless $_ && $_->{stoid};
+			push @$stoid_list, $_->{stoid}; 
+		}
+		$usersignoffs 	= $self->getUserSignoffHashForStoids($user->{uid}, $stoid_list);
+		$storysignoffcnt	= $self->getSignoffCountHashForStoids($stoid_list);
 	}
 
-	my $stoid_list = [];
-	push @$stoid_list, $_->{stoid} foreach @$past, @$future, $storyref, @$extras;
-
-	my $usersignoffs 	= $self->getUserSignoffHashForStoids($user->{uid}, $stoid_list);
-	my $storysignoffcnt	= $self->getSignoffCountHashForStoids($stoid_list);
 
 	my $authortext = slashDisplay('futurestorybox', {
 		pastextras	  => $extras,
@@ -550,15 +556,23 @@ sub ajax_authorbox {
 }
 
 sub showSignoffBox {
-	my ($self, $stoid) = @_;
-	
+	my ($self, $stoid, $options) = @_;
 	my $signoffs = $self->getSignoffsForStory($stoid);
 	my $uids = {};
+	my $header;
+	$options ||= {};
 	foreach my $so(@$signoffs) {
 		$uids->{$so->{uid}}++;
 	}
 	my $uniq_uids = scalar keys %$uids;
-	return slashDisplay("signoff_box", { signoffs => $signoffs, uniq_uids => $uniq_uids }, { Return => 1 });
+	my $title = "Signoffs";
+	if (@$signoffs) {
+		$title .= " ($uniq_uids/". scalar(@$signoffs) . ")"
+	}
+	$header = $title if $options->{use_title_for_header};
+	my $signofftext = slashDisplay("signoff_box", { signoffs => $signoffs, uniq_uids => $uniq_uids, header => $header }, { Return => 1 });
+	return $signofftext if $options->{contents_only};
+	return slashDisplay("sidebox", { title => $title, contents => $signofftext, name => "signoff" }, { Return => 1});
 }
 
 sub DESTROY {

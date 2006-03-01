@@ -48,6 +48,7 @@ __template__
 					Story Preview	
 				</legend>
 				[% storycontent %]
+				[% tagbox_html %]
 			</fieldset>
 				<div class="note">
 					Check words below before submitting or previewing to mark words as common and not for use in determining similar stories.
@@ -243,4 +244,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.67 2006/02/24 06:12:08 pudge Exp $
+$Id: editStory;admin;default,v 1.68 2006/03/01 03:04:33 jamiemccarthy Exp $

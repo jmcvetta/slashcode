@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.285 2006/02/27 22:06:12 tvroom Exp $
+# $Id: admin.pl,v 1.286 2006/03/01 03:04:33 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1421,11 +1421,24 @@ sub editStory {
 		$add_related_text .= "$storyref->{related_urls_hr}{$_} $_\n";
 	}
 
+	my $tagbox_html = '';
+	if ($constants->{plugin}{Tags}) {
+		my @tags_top = split / /, ($story->{tags_top} || '');
+		my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+		my @tags_example = $tags_reader->getExampleTagsForStory($story);
+		$tagbox_html .= slashDisplay('tagsstorydivtagbox', {
+				story =>        $story,
+				tags_top =>     \@tags_top,
+				tags_example => \@tags_example,
+			}, { Return => 1 });
+	}
+
 	slashDisplay('editStory', {
 		stoid			=> $stoid,
 		storyref 		=> $storyref,
 		story			=> $story,
 		storycontent		=> $storycontent,
+		tagbox_html		=> $tagbox_html,
 		sid			=> $sid,
 		subid			=> $subid,
 		authortext 		=> $authortext,

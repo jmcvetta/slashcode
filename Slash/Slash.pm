@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.265 2006/02/27 22:58:15 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.266 2006/03/01 03:04:32 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1525,10 +1525,10 @@ sub displayStory {
 			my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 			my @tags_example = $tags_reader->getExampleTagsForStory($story);
 			$return .= slashDisplay('tagsstorydivtagbox', {
-				story =>        $story,
-				tags_top =>     \@tags_top,
-				tags_example => \@tags_example,
-			}, { Return => 1 });
+					story =>        $story,
+					tags_top =>     \@tags_top,
+					tags_example => \@tags_example,
+				}, { Return => 1 });
 
 		}
 	}

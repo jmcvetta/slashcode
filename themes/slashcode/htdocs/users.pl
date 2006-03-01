@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.307 2006/02/15 21:10:39 jamiemccarthy Exp $
+# $Id: users.pl,v 1.308 2006/03/01 03:04:33 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1495,9 +1495,9 @@ sub showTags {
 	}
 
 	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
-	my $tags_ar = $tags_reader->getAllTagsFromUser($user->{uid});
+	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user->{uid});
 
-	slashDisplay('usertags', { tags_raw => $tags_ar });
+	slashDisplay('usertags', { tags_grouped => $tags_ar });
 }
 
 #################################################################

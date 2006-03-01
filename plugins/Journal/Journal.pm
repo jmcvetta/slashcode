@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.58 2006/02/15 16:34:20 jamiemccarthy Exp $
+# $Id: Journal.pm,v 1.59 2006/03/01 20:33:51 tvroom Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -401,7 +401,7 @@ sub get {
 }
 
 sub updateStoryFromJournal {
-	my($self, $src_journal) = @_;
+	my($self, $src_journal, $options) = @_;
 	my $slashdb = getCurrentDB();
 
 	my $stoid = $slashdb->sqlSelect("stoid", "journal_transfer", "id=$src_journal->{id}");
@@ -412,6 +412,7 @@ sub updateStoryFromJournal {
 	my $text = balanceTags(strip_mode($src_journal->{article}, $src_journal->{posttype}));
 	($data->{introtext}, $data->{bodytext}) = $self->splitJournalTextForStory($text);
 
+	$data->{topics_chosen} = $options->{topics_chosen} if $options->{topics_chosen};
 	$slashdb->updateStory($stoid, $data);
 }
 

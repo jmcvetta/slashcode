@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.191 2006/02/27 22:58:16 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.192 2006/03/01 05:17:59 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.191 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.192 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1628,7 +1628,7 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 			!$user->{is_anon} && (
 				   $write >= 4
 				|| $write >= 3 && $user->{karma} >= 0
-					|| $write >= 2.5 && $user->{acl}{tags_stories_allowwrite}
+				|| $write >= 2.5 && $user->{acl}{tags_stories_allowwrite}
 				|| $write >= 2 && $user->{is_subscriber}
 				|| $write >= 1 && $user->{is_admin}
 			);
@@ -3327,4 +3327,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.191 2006/02/27 22:58:16 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.192 2006/03/01 05:17:59 pudge Exp $

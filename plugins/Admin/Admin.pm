@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.27 2006/02/28 20:16:34 tvroom Exp $
+# $Id: Admin.pm,v 1.28 2006/03/01 05:17:59 pudge Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -318,16 +318,14 @@ sub showStoryAdminBox {
 	}
 	
 	my $future = $self->getStoryByTimeAdmin('>', $storyref, "", { hours_forward => 3 });
-
-	if (@$future < 3 ) {
-		$future = $self->getStoryByTimeAdmin('>', $storyref, "3");
+	if (@$future < 3) {
+		$future = $self->getStoryByTimeAdmin('>', $storyref, 3);
 	}
-	
 	$future = [ reverse @$future ];
-	my $past = $self->getStoryByTimeAdmin('<', $storyref, "", { hours_back => 3 });
 
+	my $past = $self->getStoryByTimeAdmin('<', $storyref, "", { hours_back => 3 });
 	if (@$past < 3 ) {
-		$past = $self->getStoryByTimeAdmin('<', $storyref, "3");
+		$past = $self->getStoryByTimeAdmin('<', $storyref, 3);
 	}
 	
 	my $usersignoffs 	= {};
@@ -556,7 +554,7 @@ sub ajax_authorbox {
 }
 
 sub showSignoffBox {
-	my ($self, $stoid, $options) = @_;
+	my($self, $stoid, $options) = @_;
 	my $signoffs = $self->getSignoffsForStory($stoid);
 	my $uids = {};
 	my $header;

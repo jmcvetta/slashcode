@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Remarks.pm,v 1.6 2006/02/14 22:44:59 pudge Exp $
+# $Id: Remarks.pm,v 1.7 2006/03/02 02:40:35 pudge Exp $
 
 package Slash::Remarks;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 sub new {
@@ -57,10 +57,18 @@ sub getRemarks {
 
 	my $max = $options->{max} || 100;
 
+	my @where;
+	if ($options->{min_priority}) {
+		push @where, 'priority >= ' . $self->sqlQuote($options->{min_priority});
+	}
+	if ($options->{string}) {
+		push @where, 'remark LIKE ' . $self->sqlQuote('%' . $options->{string} . '%');
+	}
+
 	my $remarks = $self->sqlSelectAllHashrefArray(
 		'rid, uid, stoid, time, remark, type, priority',
 		'remarks',
-		'',
+		join(' AND ', @where),
 		"ORDER BY rid DESC LIMIT $max"
 	);
 
@@ -160,4 +168,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Remarks.pm,v 1.6 2006/02/14 22:44:59 pudge Exp $
+$Id: Remarks.pm,v 1.7 2006/03/02 02:40:35 pudge Exp $

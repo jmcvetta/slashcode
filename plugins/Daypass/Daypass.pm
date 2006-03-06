@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.13 2005/12/21 19:56:28 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.14 2006/03/06 16:38:46 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -12,7 +12,7 @@ use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -139,6 +139,9 @@ sub createDaypasskey {
 	# How far in the future before this daypass can be confirmed?
 	# I.e. how much of the ad do we insist the user watch?
 	my $secs_ahead = $dp_hr->{minduration} || 0;
+	# Give the user a break of 1 second, to allow for clock drift
+	# or what-have-you.
+	$secs_ahead -= 1;
 
 	my $key = getAnonId(1, 20);
 	my $rows = $self->sqlInsert('daypass_keys', {

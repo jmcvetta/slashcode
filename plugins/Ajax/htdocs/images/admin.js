@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.11 2006/02/21 21:35:12 tvroom Exp $
+// $Id: admin.js,v 1.12 2006/03/08 20:15:01 tvroom Exp $
 
 function admin_signoff(el) {
 	var params = [];
@@ -23,6 +23,19 @@ function adminTagsCommands(stoid) {
 	ajax_update(params, 'tags-admin-' + stoid);
 
 	toggletags_message_el.innerHTML = 'Commands executed.';
+}
+
+function tagsStoryHistory(sidenc) {
+	var params = [];
+	params['op'] = 'tags_story_history';
+	params['sidenc'] = sidenc;
+	var tagshistid = "taghist-" + sidenc;
+	var popupid    = "taghistory-" + sidenc;
+	var title      = "History ";
+	var buttons    = createPopupButtons("<a href=\"#\">[?]</a></span><span><a href=\"javascript:closePopup('" + popupid + "-popup')\">[X]</a>");
+	title = title + buttons;
+	createPopup(getXYForId(tagshistid), title, popupid);
+	ajax_update(params, "taghistory-" + sidenc + "-contents");
 }
 
 function remarks_create() {
@@ -51,6 +64,39 @@ function remarks_fetch(secs, limit) {
 	params['limit'] = limit;
 	// run it every 30 seconds; don't need to call again
 	ajax_periodic_update(secs, params, 'remarks_table');
+}
+
+function remarks_popup() {
+	var params = [];
+	params['op'] = 'remarks_config';
+	var title = "Remarks Config ";
+	var buttons = createPopupButtons('<a href="javascript:closePopup(\'remarksconfig-popup\', 1)">[X]</a>');
+	title = title + buttons;
+	createPopup(getXYForId('remarks_table'), title + buttons, 'remarksconfig');
+	ajax_update(params, 'remarksconfig-contents');
+	
+}
+
+function remarks_config_save() {
+	var params = [];
+	var min_priority = $('remarks_min_priority');
+	var limit = $('remarks_limit');
+	var filter = $('remarks_filter');
+	params['op'] = 'remarks_config_save';
+	if (min_priority) {
+		params['min_priority'] = min_priority.value;
+	}
+	if (limit) {
+		params['limit'] = limit.value;
+	}
+	if (filter) {
+		params['filter'] = filter.value;
+	}
+	var message = $('remarksconfig-message');
+	if (message) {
+		message.innerHTML = "Saving...";
+	}
+	ajax_update(params, 'remarksconfig-message');
 }
 
 function admin_slashdbox_fetch(secs) {

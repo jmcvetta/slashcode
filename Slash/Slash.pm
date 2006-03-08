@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.267 2006/03/01 05:17:59 pudge Exp $
+# $Id: Slash.pm,v 1.268 2006/03/08 17:36:06 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1518,7 +1518,8 @@ sub displayStory {
 		$return =~ s/\Q__TIME_TAG__\E/$atstorytime/;
 
 		if ($constants->{plugin}{Tags}
-			&& $user->{tags_canread_stories}
+			&&  $user->{tags_canread_stories}
+			&& !$user->{tags_turnedoff}
 			&& (!$options->{dispmode} || $options->{dispmode} ne 'brief')) {
 
 			my @tags_top = split / /, ($story->{tags_top} || '');

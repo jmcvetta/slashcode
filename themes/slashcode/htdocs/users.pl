@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.309 2006/03/08 04:53:13 jamiemccarthy Exp $
+# $Id: users.pl,v 1.310 2006/03/08 17:36:06 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -228,6 +228,20 @@ sub main {
 		},
 		showtags => {
 			function	=> \&showTags,
+			seclev		=> 1,
+			formname	=> $formname,
+			checks		=> [],
+			tab_selected	=> 'tags',
+		},
+		edittags => {
+			function	=> \&editTags,
+			seclev		=> 1,
+			formname	=> $formname,
+			checks		=> [],
+			tab_selected	=> 'tags',
+		},
+		savetags => {
+			function	=> \&saveTags,
 			seclev		=> 1,
 			formname	=> $formname,
 			checks		=> [],
@@ -1475,6 +1489,50 @@ sub validateUser {
 }
 
 #####################################################################
+sub editTags {
+	my($hr) = @_;
+	my $slashdb = getCurrentDB();
+	my $user = getCurrentUser(); 
+	my $constants = getCurrentStatic();
+	my $note = $hr->{note} || "";
+
+	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
+
+	print createMenu("users", {
+		style =>	'tabbed',
+		justify =>	'right',
+		color =>	'colored',
+		tab_selected =>	$hr->{tab_selected_1} || "",
+	});
+
+	my $edit_user = $slashdb->getUser($user->{uid});
+	my $title = getTitle('editTags_title');
+
+	slashDisplay('editTags', {
+		user_edit	=> $user,
+		title		=> $title,
+		note		=> $note,
+	});
+}
+
+sub saveTags {
+	my($hr) = @_;
+	my $slashdb = getCurrentDB();
+	my $user = getCurrentUser();
+	my $form = getCurrentForm();
+	my $constants = getCurrentStatic();
+
+	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
+
+	my $edit_user = $slashdb->getUser($user->{uid});
+
+	$slashdb->setUser($edit_user->{uid}, {
+		tags_turnedoff =>	$form->{showtags} ? '' : 1 });
+
+	editTags({ note => getMessage('savetags_msg') });
+}
+
+#####################################################################
 sub showTags {
 	my($hr) = @_;
 	my $user = getCurrentUser();
@@ -1494,16 +1552,6 @@ sub showTags {
 	}
 	my $nickname = $user_edit->{nickname};
 
-	my $user_submenu = '';
-	if ($user_edit->{uid} == $user->{uid}) {
-		$user_submenu = createMenu("users", {
-			style =>	'tabbed',
-			justify =>	'right',
-			color =>	'colored',
-			tab_selected =>	$hr->{tab_selected_1} || "",
-		});
-	}
-
 	if (!$constants->{plugin}{Tags}) {
 		print getError('bad_op', { op => $form->{op}});
 		return;
@@ -1514,7 +1562,6 @@ sub showTags {
 	slashDisplay('usertags', {
 		useredit	=> $user_edit,
 		tags_grouped	=> $tags_ar,
-		user_submenu	=> $user_submenu,
 	});
 }
 

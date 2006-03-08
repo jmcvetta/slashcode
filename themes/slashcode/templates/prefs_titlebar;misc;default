@@ -39,7 +39,7 @@ tabs.push(
 	{ link = "/my/password",		label = "Password",	sel_label = "password" },
 );
 IF constants.plugin.Tags; tabs.push(
-	{ link = "/users.pl?op=showtags",	label = "Tags",		sel_label = "tags" },
+	{ link = "/users.pl?op=edittags",	label = "Tags",		sel_label = "tags" },
 ); END;
 
 PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selected; '</div>' %]
@@ -47,4 +47,4 @@ PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selec
 __seclev__
 10000
 __version__
-$Id: prefs_titlebar;misc;default,v 1.11 2006/02/17 22:26:04 pudge Exp $
+$Id: prefs_titlebar;misc;default,v 1.12 2006/03/08 17:36:07 jamiemccarthy Exp $

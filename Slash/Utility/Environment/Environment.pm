@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.193 2006/03/02 19:53:25 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.194 2006/03/08 02:34:14 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.193 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.194 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2485,10 +2485,21 @@ sub createLog {
 	my $logdb = getObject('Slash::DB', { virtual_user => $constants->{log_db_user} });
 
 	my($op, $new_dat) = getOpAndDatFromStatusAndURI($status, $uri, $dat);
+	my $user = getCurrentUser();
 
-	$logdb->createAccessLog(	$op, $new_dat, $status);
-	$logdb->createAccessLogAdmin(	$op, $new_dat, $status)
-		if getCurrentUser('is_admin');
+	# Always log this hit to accesslog, unless this is an admin hitting
+	# admin.pl and the log_admin var has been set to false (this will
+	# help small sites keep admin traffic out of that log, which really
+	# is of questionable value since crawlers will be just as bad, but
+	# hey, we offer site admins the option anyway).
+	unless (!$constants->{log_admin} && $user->{is_admin} && $uri =~ /admin\.pl/) {
+		$logdb->createAccessLog($op, $new_dat, $status);
+	}
+
+	# If this is an admin user, all hits go into accesslog_admin.
+	if ($user->{is_admin}) {
+		$logdb->createAccessLogAdmin($op, $new_dat, $status);
+	}
 }
 
 #========================================================================
@@ -3327,4 +3338,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.193 2006/03/02 19:53:25 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.194 2006/03/08 02:34:14 jamiemccarthy Exp $

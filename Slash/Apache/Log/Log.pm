@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.40 2006/02/26 20:45:29 jamiemccarthy Exp $
+# $Id: Log.pm,v 1.41 2006/03/08 02:34:12 jamiemccarthy Exp $
 
 package Slash::Apache::Log;
 
@@ -11,7 +11,7 @@ use Apache::Constants qw(:common);
 use File::Spec::Functions; # for clampe_stats, remove when done
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -34,17 +34,8 @@ sub handler {
 	my $uri = $r->uri;
 	my $dat = $r->err_header_out('SLASH_LOG_DATA');
 
-	# Added this so that small sites would not have admin logins 
-	# recorded in their stats. -Brian
-
-	# so it will still log it if the admin DOES request
-	# to admin.pl?  i thought you wanted it to NOT log
-	# requests to admin.pl?  should the !~ be =~ ?
-	# or am i just not thinking clearly? -- pudge
-
-	if (!$constants->{log_admin} && $uri !~ /admin\.pl/ ) {
-		return OK if getCurrentUser('is_admin');
-	}
+	# There used to be some (broken) logic here involving the
+	# log_admin var, but that's been moved to createLog().
 
 	createLog($uri, $dat, $r->status);
 

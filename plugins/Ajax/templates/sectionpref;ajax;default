@@ -18,7 +18,7 @@ __template__
 [% style_disabled = "color: #999; background: #ccc;" %]
 <form name="sectionprefs">
 <table border="0" cellpadding="1" cellspacing="0"">
-	<tr>
+	<tr style="[% style_enabled %]">
 		<td>&nbsp;</td>
 		<td>
 			<img src="[% constants.imagedir %]/article_none.gif" alt="Never" title="Never"><br>
@@ -65,9 +65,7 @@ __template__
 [%- END -%]
 </table>
 </form>
-<div id="sectionprefs_message">
-</div>
 __seclev__
 500
 __version__
-$Id: sectionpref;ajax;default,v 1.18 2006/02/24 06:12:08 pudge Exp $
+$Id: sectionpref;ajax;default,v 1.19 2006/03/08 20:15:56 tvroom Exp $

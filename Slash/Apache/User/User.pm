@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.149 2006/02/21 22:36:29 pudge Exp $
+# $Id: User.pm,v 1.150 2006/03/08 04:53:12 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.149 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -706,7 +706,9 @@ sub userdir_handler {
 		}
 
 		my $slashdb = getCurrentDB();
-		my $uid = $slashdb->getUserUID($nick);
+		my $reader_user = $slashdb->getDB('reader');
+		my $reader = getObject('Slash::DB', { virtual_user => $reader_user });
+		my $uid = $reader->getUserUID($nick);
 		$nick = fixparam($nick);	# make safe to pass back to script
 
 		# maybe we should refactor this code a bit ...
@@ -786,6 +788,11 @@ sub userdir_handler {
 			$r->args("op=friendview&nick=$nick&uid=$uid");
 			$r->uri('/journal.pl');
 			$r->filename($constants->{basedir} . '/journal.pl');
+
+		} elsif ($op eq 'tags') {
+			$r->args("op=showtags&nick=$nick&uid=$uid");
+			$r->uri('/users.pl');
+			$r->filename($constants->{basedir} . '/users.pl');
 
 		} else {
 			$r->args("nick=$nick&uid=$uid");

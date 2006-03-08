@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.310 2006/03/08 17:36:06 jamiemccarthy Exp $
+# $Id: users.pl,v 1.311 2006/03/08 17:51:37 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1524,11 +1524,9 @@ sub saveTags {
 
 	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
 
-	my $edit_user = $slashdb->getUser($user->{uid});
-
-	$slashdb->setUser($edit_user->{uid}, {
+	$slashdb->setUser($user->{uid}, {
 		tags_turnedoff =>	$form->{showtags} ? '' : 1 });
-
+	my $edit_user = $slashdb->getUser($user->{uid});
 	editTags({ note => getMessage('savetags_msg') });
 }
 

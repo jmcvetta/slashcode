@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.7 2006/02/15 16:37:56 jamiemccarthy Exp $
+# $Id: mysql_dump.sql,v 1.8 2006/03/08 20:21:23 tvroom Exp $
 #
 
 INSERT INTO vars (name, value, description) VALUES ('memcached_exptime_tags', '3600', 'Seconds to cache tag data in memcached');
@@ -17,4 +17,5 @@ INSERT INTO ajax_ops VALUES (NULL, 'tags_get_user_story', 'Slash::Tags', 'ajaxGe
 INSERT INTO ajax_ops VALUES (NULL, 'tags_create_for_story', 'Slash::Tags', 'ajaxCreateForStory', 'ajax_tags_write', 'use');
 INSERT INTO ajax_ops VALUES (NULL, 'tags_get_admin_story', 'Slash::Tags', 'ajaxGetAdminStory', 'ajax_admin', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'tags_admin_commands', 'Slash::Tags', 'ajaxProcessAdminTags', 'ajax_admin', 'use');
+INSERT INTO ajax_ops VALUES (NULL, 'tags_story_history', 'Slash::Tags', 'ajaxTagHistoryStory', 'ajax_admin', 'createuse');
 

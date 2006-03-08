@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.15 2006/03/01 03:04:33 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.16 2006/03/08 20:21:23 tvroom Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -568,6 +568,16 @@ print STDERR scalar(localtime) . " ajaxProcessAdminTags reset to " . ($reset_las
 	}, { Return => 1 });
 }
 
+sub ajaxTagHistoryStory {
+	my($self, $constants, $user, $form) = @_;
+
+	my $sidenc = $form->{sidenc};
+	my $sid = $sidenc; $sid =~ tr{:}{/};
+	my $stoid = $self->getStoidFromSid($sid);
+	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+	my $tags = $tags_reader->getTagsByNameAndIdArrayref('stories', $stoid);
+	slashDisplay('taghistory', { tags => $tags }, { Return => 1 } );
+}
 sub processAdminCommand {
 	my($self, $c) = @_;
 
@@ -600,6 +610,7 @@ print STDERR scalar(localtime) . " get c '$c' type='$type' tagname='$tagname'\n"
 	return (undef, undef) if !$type || !$self->tagnameSyntaxOK($tagname);
 	return($type, $tagname);
 }
+
 
 #################################################################
 sub DESTROY {

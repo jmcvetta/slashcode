@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.946 2006/03/08 04:54:22 jamiemccarthy Exp $
+# $Id: upgrades,v 1.947 2006/03/10 00:14:03 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3712,3 +3712,11 @@ CREATE TABLE `submissions_notes` (
   `time` datetime default NULL,
   PRIMARY KEY  (`noid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+## Changes for Ajax / Remarks plugins
+INSERT INTO ajax_ops VALUES (NULL, 'remarks_config', 'Slash::Remarks', 'ajaxFetchConfigPanel', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'remarks_config_save', 'Slash::Remarks', 'ajaxConfigSave', 'ajax_admin', 'createuse');
+
+## Changes for plugins/Tags
+INSERT INTO ajax_ops VALUES (NULL, 'tags_story_history', 'Slash::Tags', 'ajaxTagHistoryStory', 'ajax_admin', 'createuse');

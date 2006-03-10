@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.3 2006/02/10 14:51:17 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.4 2006/03/10 22:57:54 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -9,11 +9,20 @@ CREATE TABLE tags (
 	globjid		int UNSIGNED NOT NULL,
 	uid		mediumint UNSIGNED NOT NULL,
 	created_at	datetime NOT NULL,
+	inactivated	datetime DEFAULT NULL
 	PRIMARY KEY tagid (tagid),
 	KEY tagnameid (tagnameid),
 	KEY globjid_tagnameid (globjid, tagnameid),
-	KEY uid_globjid_tagnameid (uid, globjid, tagnameid),
+	KEY uid_globjid_tagnameid_inactivated (uid, globjid, tagnameid, inactivated),
 	KEY created_at (created_at)
+) TYPE=InnoDB;
+
+DROP TABLE IF EXISTS tag_params;
+CREATE TABLE tag_params (
+	tagid		int UNSIGNED NOT NULL,
+	name		VARCHAR(32) DEFAULT '' NOT NULL,
+	value		VARCHAR(64) DEFAULT '' NOT NULL,
+	UNIQUE tag_name (tagid, name)
 ) TYPE=InnoDB;
 
 DROP TABLE IF EXISTS tagnames;
@@ -31,6 +40,20 @@ CREATE TABLE tagname_params (
 	value		VARCHAR(64) DEFAULT '' NOT NULL,
 	UNIQUE tagname_name (tagnameid, name)
 ) TYPE=InnoDB;
+
+DROP TABLE IF EXISTS tagcommand_adminlog;
+CREATE TABLE tagcommand_adminlog (
+	id		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	cmdtype		VARCHAR(6) NOT NULL,
+	tagnameid	int UNSIGNED NOT NULL,
+	globjid		int UNSIGNED DEFAULT NULL,
+	adminuid	mediumint UNSIGNED NOT NULL,
+	created_at	datetime NOT NULL,
+	PRIMARY KEY id (id),
+	KEY created_at (created_at),
+	KEY tagnameid_globjid (tagnameid, globjid)
+) TYPE=InnoDB;
+
 
 #DROP TABLE IF EXISTS tag_schedule;
 #CREATE TABLE tag_schedule (

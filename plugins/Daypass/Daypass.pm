@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Daypass.pm,v 1.14 2006/03/06 16:38:46 jamiemccarthy Exp $
+# $Id: Daypass.pm,v 1.15 2006/03/13 22:15:54 jamiemccarthy Exp $
 
 package Slash::Daypass;
 
@@ -12,7 +12,7 @@ use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -167,7 +167,8 @@ sub confirmDaypasskey {
 		"daypass_keys",
 		{ -key_confirmed => "NOW()" },
 		"daypasskey = $key_q
-		 AND earliest_confirmable <= NOW()");
+		 AND earliest_confirmable <= NOW()
+		 AND key_confirmed IS NULL");
 
 	my $confcode = "";
 	if ($rows > 0) {

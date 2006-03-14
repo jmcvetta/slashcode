@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.312 2006/03/14 21:26:59 tvroom Exp $
+# $Id: users.pl,v 1.313 2006/03/14 22:23:39 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1296,7 +1296,7 @@ sub showInfo {
 		my $submissions = $reader->getSubmissionsByUID($uid, $sub_limit, $sub_options);
 		my $metamods;
 		$metamods = $reader->getMetamodlogForUser($uid, 30) if $admin_flag;
-	
+
 		my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 		my $tagshist = [];
 		if ($tags_reader && $user->{is_admin}) {
@@ -3465,8 +3465,6 @@ sub getUserAdmin {
 		$subnet_karma = $reader->getNetIDKarma("subnetid", $subnetid);
 		$ipid_karma = $reader->getNetIDKarma("ipid", $ipid) if $ipid;
 	}
-
-
 
 	return slashDisplay('getUserAdmin', {
 		field			=> $field,

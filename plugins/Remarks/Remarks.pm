@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Remarks.pm,v 1.8 2006/03/08 20:36:53 tvroom Exp $
+# $Id: Remarks.pm,v 1.9 2006/03/14 22:23:38 pudge Exp $
 
 package Slash::Remarks;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ########################################################
 sub new {
@@ -127,9 +127,9 @@ sub displayRemarksTable {
 	my $user = getCurrentUser();
 	$self           ||= getObject('Slash::Remarks');
 	$options        ||= {};
-	$options->{string} = $user->{remarks_filter} if $user->{remarks_filter};
+	$options->{string}       = $user->{remarks_filter}       if $user->{remarks_filter};
 	$options->{min_priority} = $user->{remarks_min_priority} if $user->{min_priority};
-	$options->{max} = $user->{remarks_limit} || 10;
+	$options->{max}          = $user->{remarks_limit} || 10;
 
 	my $remarks_ref = $self->getRemarks($options);
 	return slashDisplay('display', {
@@ -160,12 +160,12 @@ sub ajaxFetch {
 }
 
 sub ajaxFetchConfigPanel {
-	my ($slashdb, $constants, $user, $form) = @_;
+	my($slashdb, $constants, $user, $form) = @_;
 	slashDisplay('config_remarks', {}, { Return => 1 });
 }
 
 sub ajaxConfigSave {
-	my ($slashdb, $constants, $user, $form) = @_;
+	my($slashdb, $constants, $user, $form) = @_;
 	my $data = {};
 	if (defined $form->{limit}) {
 		$data->{remarks_limit} = $form->{limit}
@@ -177,6 +177,7 @@ sub ajaxConfigSave {
 		$data->{remarks_min_priority} = $form->{min_priority};
 	}
 	$slashdb->setUser($user->{uid}, $data) if keys %$data;
+	# this should be in a template -- pudge
 	return "<a href=\"javascript:closePopup('remarksconfig-popup', 1)\">Close</a>";
 }
 
@@ -191,4 +192,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Remarks.pm,v 1.8 2006/03/08 20:36:53 tvroom Exp $
+$Id: Remarks.pm,v 1.9 2006/03/14 22:23:38 pudge Exp $

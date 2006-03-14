@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.311 2006/03/08 17:51:37 jamiemccarthy Exp $
+# $Id: users.pl,v 1.312 2006/03/14 21:26:59 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1296,6 +1296,12 @@ sub showInfo {
 		my $submissions = $reader->getSubmissionsByUID($uid, $sub_limit, $sub_options);
 		my $metamods;
 		$metamods = $reader->getMetamodlogForUser($uid, 30) if $admin_flag;
+	
+		my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+		my $tagshist = [];
+		if ($tags_reader && $user->{is_admin}) {
+			$tagshist = $tags_reader->getAllTagsFromUser($requested_user->{uid}, { orderby => 'created_at', orderdir => 'DESC', limit => 20 });
+		}
 
 		slashDisplay('userInfo', {
 			title			=> $title,
@@ -1317,7 +1323,8 @@ sub showInfo {
 			comment_time		=> $comment_time,
 			submissions		=> $submissions,
 			subcount		=> $subcount,
-			metamods		=> $metamods
+			metamods		=> $metamods,
+			tagshist		=> $tagshist
 		});
 	}
 
@@ -1556,7 +1563,6 @@ sub showTags {
 	}
 
 	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user_edit->{uid});
-
 	slashDisplay('usertags', {
 		useredit	=> $user_edit,
 		tags_grouped	=> $tags_ar,
@@ -3460,10 +3466,11 @@ sub getUserAdmin {
 		$ipid_karma = $reader->getNetIDKarma("ipid", $ipid) if $ipid;
 	}
 
+
+
 	return slashDisplay('getUserAdmin', {
 		field			=> $field,
 		useredit		=> $user_edit,
-
 		srcid			=> $srcid,
 		all_aclam_ar		=> $all_aclam_ar,
 		all_aclam_hr		=> $all_aclam_hr,

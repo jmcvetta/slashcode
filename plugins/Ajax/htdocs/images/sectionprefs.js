@@ -1,9 +1,8 @@
-// $Id: sectionprefs.js,v 1.5 2006/03/08 20:15:01 tvroom Exp $
+// $Id: sectionprefs.js,v 1.6 2006/03/14 21:37:28 tvroom Exp $
 
 function configSectionPopup() { 
 	var title = "<a href=\"javascript:window.location.reload()\" style=\"color:#fff;\">Sectional&nbsp;Display&nbsp;Prefs</a>&nbsp;";
 	var buttons = createPopupButtons("<a href=\"/faq/UI.shtml#ui500\">[?]</a>","<a href=\"javascript:window.location.reload()\">[X]</a>");
-	alert(buttons);
 	title = title + buttons;
 	createPopup(getXYForId('links-sections-title'), title, "sectionprefs", "", "Loading...");
 	

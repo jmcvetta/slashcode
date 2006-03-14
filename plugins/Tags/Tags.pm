@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.17 2006/03/10 22:57:54 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.18 2006/03/14 21:29:36 tvroom Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -419,21 +419,30 @@ sub getTagsByNameAndIdArrayref {
 }
 
 sub getAllTagsFromUser {
-	my($self, $uid) = @_;
+	my($self, $uid, $options) = @_;
+	$options ||= {};
 	return [ ] unless $uid;
+
+	my $orderby = $options->{orderby} || "tagid";
+	my $limit   = $options->{limit} ? " LIMIT $options->{limit} " : "";
+	my $orderdir = uc($options->{orderdir}) eq "DESC" ? "DESC" : "ASC";
 
 	my $uid_q = $self->sqlQuote($uid);
 	my $ar = $self->sqlSelectAllHashrefArray(
 		'*',
 		'tags',
 		"uid = $uid_q AND inactivated IS NULL",
-		'ORDER BY tagid');
+		"ORDER BY $orderby $orderdir $limit");
 	return [ ] unless $ar && @$ar;
 	$self->addTagnamesToHashrefArray($ar);
 	$self->addGlobjTargetsToHashrefArray($ar);
 	for my $hr (@$ar) {
-		next unless $hr->{globj_type} eq 'stories';
-		$hr->{story} = $self->getStory($hr->{globj_target_id});
+		if ($hr->{globj_type} eq 'stories') {
+			$hr->{story} = $self->getStory($hr->{globj_target_id});
+		} 
+		#elsif ($hr->{globj_type} eq 'urls') {
+		#	$hr->{url} = $self->getUrl($hr->{globj_target_id});
+		#}
 	}
 	return $ar;
 }

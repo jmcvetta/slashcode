@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.6 2006/03/08 20:21:23 tvroom Exp $
+# $Id: PLUGIN,v 1.7 2006/03/14 21:33:34 tvroom Exp $
 name=Tags
 description="Tags"
 mysql_dump=mysql_dump.sql
@@ -10,4 +10,5 @@ template=templates/tagsstorydivadmin;misc;default
 template=templates/tagsstorydivtagbox;misc;default
 template=templates/tagsstorydivuser;misc;default
 template=templates/taghistory;misc;default
+template=templates/usertaghistory;users;default
 template=templates/usertags;users;default

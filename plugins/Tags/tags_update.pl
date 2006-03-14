@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.8 2006/03/10 22:57:54 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.9 2006/03/14 20:59:11 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
@@ -132,6 +132,20 @@ use Data::Dumper; print STDERR "tagids='@tagids' tag_params: " . Dumper($tag_par
 		my $tag_story_clout = getTagStoryClout($tagname_admincmds->{$tagnameid}, $globjid, $tag);
 		my $tagname_clout = $tagname_params->{$tagnameid}{tag_clout} || 1;
 		$scores{$tagname} += $user_clout * $tag_global_clout * $tag_story_clout * $tagname_clout;
+	}
+
+	my @opposite_tagnames =
+		map { $tags_reader->getOppositeTagname($_) }
+		grep { $_ !~ /^!/ && $scores{$_} > 0 }
+		keys %scores;
+	for my $opp (@opposite_tagnames) {
+		next unless $scores{$opp};
+		# Both $opp and its opposite exist in %scores.  Subtract
+		# $opp's score from its opposite and vice versa.
+		my $orig = $tags_reader->getOppositeTagname($opp);
+		my $orig_score = $scores{$orig};
+		$scores{$orig} -= $scores{$opp};
+		$scores{$opp} -= $orig_score;
 	}
 
 	my @top = sort {

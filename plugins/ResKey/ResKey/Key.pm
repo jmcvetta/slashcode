@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.16 2006/03/15 20:49:30 pudge Exp $
+# $Id: Key.pm,v 1.17 2006/03/15 22:17:54 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -117,7 +117,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -149,12 +149,15 @@ sub new {
 
 
 	# from filter_param
-	$reskey =~ s|[^a-zA-Z0-9_]+||g if $reskey;
+	if ($reskey) {
+		$reskey =~ s|[^a-zA-Z0-9_]+||g;
+	} elsif (!defined $reskey) {
+		$reskey = $opts->{nostate} ? '' : getCurrentForm('reskey');
+	}
 
 	# reskey() to set the value is called only here and from dbCreate
 	# this is the only place $form->{reskey} is looked at
-	$self->reskey(defined $reskey ? $reskey : getCurrentForm('reskey'));
-
+	$self->reskey($reskey);
 
 	$self->_init;
 
@@ -878,4 +881,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.16 2006/03/15 20:49:30 pudge Exp $
+$Id: Key.pm,v 1.17 2006/03/15 22:17:54 pudge Exp $

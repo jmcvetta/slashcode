@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.15 2006/02/08 04:11:08 pudge Exp $
+# $Id: Key.pm,v 1.16 2006/03/15 20:49:30 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -117,7 +117,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -241,7 +241,7 @@ sub AUTOLOAD {
 	if ($name =~ /^(?:noop|success|failure|death)$/) {
 		$sub = _createStatusAccessor($name, \@_);
 
-	} elsif ($name =~ /^(?:error|reskey|debug|rkrid|resname|type|code|opts)$/) {
+	} elsif ($name =~ /^(?:error|reskey|debug|rkrid|resname|origtype|type|code|opts)$/) {
 		$sub = _createAccessor($name, \@_);
 
 	} elsif ($name =~ /^(?:create|touch|use|createuse)$/) {
@@ -316,6 +316,7 @@ sub _createActionMethod {
 		my($self) = @_;
 		$self->_flow($name);
 		$self->type($name);
+		$self->origtype($name);
 
 		# first create a reskey, skipping the checks.
 		# your job to make sure any check needed for
@@ -877,4 +878,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.15 2006/02/08 04:11:08 pudge Exp $
+$Id: Key.pm,v 1.16 2006/03/15 20:49:30 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.128 2006/02/24 06:02:18 pudge Exp $
+# $Id: journal.pl,v 1.129 2006/03/15 20:49:29 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.128 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -571,6 +571,17 @@ sub doSaveArticle {
 		return($rkey->errstr, $rkey->failure);
 	}
 
+	# don't allow submission if user can't submit stories
+	# note: this may not work properly with SOAP, but submissions
+	# not enabled with SOAP now anyway
+	if ($form->{submit}) {
+		my $reskey = getObject('Slash::ResKey');
+		my $rkey = $reskey->key('submit', { nostate => 1 });
+		unless ($rkey->createuse) {
+			return($rkey->errstr, $rkey->failure);
+		}
+	}
+
 	my $slashdb = getCurrentDB();
 	if ($form->{id}) {
 		my %update;
@@ -580,7 +591,6 @@ sub doSaveArticle {
 				!$form->{journal_discuss} || $form->{journal_discuss} eq 'disabled'
 			)
 		);
-									
 
 		# note: comments_on is a special case where we are
 		# only turning on comments, not saving anything else
@@ -622,16 +632,6 @@ sub doSaveArticle {
 		slashHook('journal_save_success', { id => $form->{id} });
 
 	} else {
-		# don't allow submission if user can't submit stories
-		# this will fail silently
-		# note: this may not work properly with SOAP, but submissions
-		# not enabled with SOAP now anyway
-		if ($form->{submit}) {
-			my $reskey = getObject('Slash::ResKey');
-			my $rkey = $reskey->key('submit', { nostate => 1 });
-			$form->{submit} = $rkey->createuse;
-		}
-
 		my $id = $journal->create($description,
 			$form->{article}, $form->{posttype}, $form->{tid}, $form->{submit});
 

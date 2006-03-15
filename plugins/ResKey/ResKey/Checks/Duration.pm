@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.9 2005/10/21 18:22:56 pudge Exp $
+# $Id: Duration.pm,v 1.10 2006/03/15 20:49:30 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -76,8 +76,10 @@ sub doCheckUse {
 	@return = minDurationBetweenUses($self, $reskey_obj);
 	return @return if @return;
 
-	@return = minDurationBetweenCreateAndUse($self, $reskey_obj);
-	return @return if @return;
+	if ($self->origtype ne 'createuse') {
+		@return = minDurationBetweenCreateAndUse($self, $reskey_obj);
+		return @return if @return;
+	}
 
 	return RESKEY_SUCCESS;
 }

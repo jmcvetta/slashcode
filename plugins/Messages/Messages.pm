@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.37 2006/03/16 23:36:27 pudge Exp $
+# $Id: Messages.pm,v 1.38 2006/03/16 23:39:12 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -518,6 +518,7 @@ sub quicksend {
 	return unless $tuser;
 	$code = -1 unless defined $code;
 	($code, my($type)) = $self->getDescription('messagecodes', $code);
+	$code = -1 unless defined $code;
 
 	my %msg = (
 		id		=> 0,
@@ -1116,4 +1117,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.37 2006/03/16 23:36:27 pudge Exp $
+$Id: Messages.pm,v 1.38 2006/03/16 23:39:12 pudge Exp $

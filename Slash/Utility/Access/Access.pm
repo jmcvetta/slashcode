@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.29 2006/01/06 19:52:27 jamiemccarthy Exp $
+# $Id: Access.pm,v 1.30 2006/03/20 22:57:41 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -30,12 +30,12 @@ use Slash::Display;
 use Slash::Utility::Data;
 use Slash::Utility::Environment;
 use Slash::Utility::System;
-use Slash::Constants qw(:web :people);
+use Slash::Constants qw(:web :people :messages);
 
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -740,8 +740,7 @@ sub setUserExpired {
 
 		my $reg_subj = Slash::getData('rereg_email_subject', '', '');
 
-		# Send the message (message code == -2)
-		doEmail($uid, $reg_subj, $reg_msg, -2);
+		doEmail($uid, $reg_subj, $reg_msg, MSG_CODE_REGISTRATION);
 	} else {
 		# We only need to clear these.
 		$slashdb->setUser($uid, {
@@ -819,4 +818,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.29 2006/01/06 19:52:27 jamiemccarthy Exp $
+$Id: Access.pm,v 1.30 2006/03/20 22:57:41 pudge Exp $

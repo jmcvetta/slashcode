@@ -46,8 +46,7 @@ inconvenience.)</p>
 [% CASE "invalidhcretry" %]
 [% PROCESS titlebar width="100%" title="Wrong image text, try again" %]
 <br><p><b>You failed to confirm you are a human. Please double-check
-the [% constants.hc_q1_numchars %]-letter image and make sure you
-typed in what it says.</b></p>
+the image and make sure you typed in what it says.</b></p>
  
 [% CASE "users_maxreads" %]
 [% PROCESS titlebar width="100%" title="Maximum Users Viewings Exceeded" %]
@@ -198,4 +197,4 @@ If the problem persists, and all other options have been tried, contact the
 __seclev__
 1000
 __version__
-$Id: formkeyErrors;misc;default,v 1.14 2005/07/27 22:54:47 pudge Exp $
+$Id: formkeyErrors;misc;default,v 1.15 2006/03/21 17:04:50 jamiemccarthy Exp $

@@ -54,6 +54,9 @@ IF user.uid == uid;
 	IF constants.plugin.Tags; tabs.push(
 		{ link = "/my/tags/",		label = "Tags",		sel_label = "tags" },
 	); END;
+	IF constants.plugin.Bookmark; tabs.push(
+		{ link = "/my/bookmarks/",	label = "Bookmarks",	sel_label = "bookmarks" },
+	); END;
 ELSIF user.is_anon;
 	tabs = [
 		{ link = "/~$url_nick/",	label = "Info",		sel_label = "info" },
@@ -95,6 +98,9 @@ ELSE;
 	IF constants.plugin.Tags; tabs.push(
 		{ link = "/~$url_nick/tags/",	label = "Tags",		sel_label = "tags" },
 	); END;
+	IF constants.plugin.Bookmark; tabs.push(
+		{ link = "/~$url_nick/bookmarks/", label = "Bookmarks",	sel_label = "bookmarks" },
+	); END;
 END %]
 <div id="usermenu">
 [% PROCESS tabbedmenu tabs=tabs color='white' justify='left' tab_selected=tab_selected %]
@@ -103,4 +109,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: user_titlebar;misc;default,v 1.15 2006/03/08 17:36:07 jamiemccarthy Exp $
+$Id: user_titlebar;misc;default,v 1.16 2006/03/21 20:39:14 tvroom Exp $

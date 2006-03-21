@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.314 2006/03/21 03:12:11 pudge Exp $
+# $Id: users.pl,v 1.315 2006/03/21 20:39:14 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -228,6 +228,13 @@ sub main {
 		},
 		showtags => {
 			function	=> \&showTags,
+			seclev		=> 1,
+			formname	=> $formname,
+			checks		=> [],
+			tab_selected	=> 'tags',
+		},
+		showbookmarks => {
+			function	=> \&showBookmarks,
 			seclev		=> 1,
 			formname	=> $formname,
 			checks		=> [],
@@ -1564,6 +1571,37 @@ sub showTags {
 
 	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user_edit->{uid});
 	slashDisplay('usertags', {
+		useredit	=> $user_edit,
+		tags_grouped	=> $tags_ar,
+	});
+}
+
+sub showBookmarks {
+	my($hr) = @_;
+	my $user = getCurrentUser();
+	my $form = getCurrentForm();
+	my $slashdb = getCurrentDB();
+	my $constants = getCurrentStatic();
+	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+
+	my($uid, $user_edit);
+	if ($form->{uid} || $form->{nick}) {
+		$uid = $form->{uid} || $tags_reader->getUserUID($form->{nick});
+		$user_edit = $tags_reader->getUser($uid);
+	}
+	if (!$user_edit || $user_edit->{is_anon}) {
+		$uid = $user->{uid};
+		$user_edit = $user;
+	}
+	my $nickname = $user_edit->{nickname};
+
+	if (!$constants->{plugin}{Tags}) {
+		print getError('bad_op', { op => $form->{op}});
+		return;
+	}
+
+	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user_edit->{uid}, { type => "urls" });
+	slashDisplay('userbookmarks', {
 		useredit	=> $user_edit,
 		tags_grouped	=> $tags_ar,
 	});

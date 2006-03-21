@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.275 2006/03/14 22:23:38 pudge Exp $
+# $Id: defaults.sql,v 1.276 2006/03/21 21:51:34 tvroom Exp $
 #
 
 #
@@ -210,6 +210,7 @@ INSERT INTO dst (region, selectable, start_hour, start_wnum, start_wday, start_m
 #
 
 INSERT INTO globj_types VALUES (NULL, 'stories');
+INSERT INTO globj_types VALUES (NULL, 'urls');
 
 
 #

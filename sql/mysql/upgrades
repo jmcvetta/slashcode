@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.952 2006/03/20 22:57:41 pudge Exp $
+# $Id: upgrades,v 1.953 2006/03/21 21:51:35 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3747,3 +3747,25 @@ UPDATE vars SET value = 'T_2_5_0_103' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 
+DROP TABLE IF EXISTS urls;
+CREATE TABLE urls (
+  url_id INT(10) UNSIGNED NOT NULL auto_increment,
+  url_digest VARCHAR(32) NOT NULL,
+  url TEXT NOT NULL,
+  is_success TINYINT(4),
+  createtime datetime,
+  last_attempt datetime,
+  last_success datetime,
+  believed_fresh_until datetime,
+  status_code SMALLINT(6),
+  reason_phrase VARCHAR(30),
+  content_type VARCHAR(60),
+  initialtitle VARCHAR(255),
+  validatedtitle VARCHAR(255),
+  PRIMARY KEY (url_id),
+  UNIQUE url_digest (url_digest)
+);
+
+INSERT INTO globj_types VALUES (NULL, 'urls');
+
+INSERT IGNORE INTO reskey_resources VALUES (8, 'bookmark');

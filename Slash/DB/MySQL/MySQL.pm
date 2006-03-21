@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.884 2006/03/08 02:34:12 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.885 2006/03/21 21:48:54 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.884 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.885 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11584,6 +11584,17 @@ sub getSubmission {
 	return $answer;
 }
 
+sub getUrl {
+	my $answer = _genericGet({
+		table		=> 'urls',
+		table_prime 	=> 'url_id',
+		arguments	=> \@_
+	});
+	return $answer;
+}
+
+
+
 ########################################################
 sub setSubmission {
 	_genericSet('submissions', 'subid', 'submission_param', @_);
@@ -13482,6 +13493,32 @@ sub getSubmissionMemory {
 		'submissions_notes',
 		"subnote IS NOT NULL AND subnote != ''",
 		'ORDER BY time DESC');
+}
+
+sub getUrlCreate {
+	my ($self, $data) = @_;
+	$data ||= {};
+	return 0 if !$data->{url};
+	my $id = $self->getUrlIfExists($data->{url});
+	return $id if $id;
+	return $self->createUrl($data);
+}
+
+sub createUrl {
+	my ($self, $data) = @_;
+	$data ||= {};
+	$data->{url_digest} = md5_hex($data->{url});
+	$data->{'-createtime'} = 'NOW()',
+	$self->sqlInsert("urls", $data);
+	my $id = $self->getLastInsertId();
+	return $id;
+}
+
+sub getUrlIfExists {
+	my ($self, $url) = @_;
+	my $md5 = md5_hex($url);
+	my $urlid = $self->sqlSelect("url_id", "urls", "url_digest = '$md5'");
+	return $urlid;
 }
 
 ########################################################

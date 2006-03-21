@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.268 2006/03/08 17:36:06 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.269 2006/03/21 03:12:10 pudge Exp $
 
 package Slash;
 
@@ -213,7 +213,7 @@ sub selectComments {
 	return($comments, $count);
 }
 
-sub ajaxSelectComments {
+sub jsSelectComments {
 	require Data::JavaScript::Anon;
 	my($slashdb, $constants, $user, $form, $options) = @_;
 
@@ -245,12 +245,10 @@ sub ajaxSelectComments {
 	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);
 
 	return <<EOT;
-<script type="text/javascript">
 	comments = $anon_comments;
 	root_comments = $anon_roots;
 
 	renderRoots('commentlisting');
-</script>
 EOT
 }
 
@@ -1526,9 +1524,9 @@ sub displayStory {
 			my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 			my @tags_example = $tags_reader->getExampleTagsForStory($story);
 			$return .= slashDisplay('tagsstorydivtagbox', {
-				story =>        $story,
-				tags_top =>     \@tags_top,
-				tags_example => \@tags_example,
+				story		=>  $story,
+				tags_top	=> \@tags_top,
+				tags_example	=> \@tags_example,
 			}, { Return => 1 });
 
 		}

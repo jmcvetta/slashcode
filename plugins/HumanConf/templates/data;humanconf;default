@@ -20,11 +20,11 @@ __template__
 
 [% CASE 'imgalttext' %]
 	[% returnme.data_constant = 1 %]
-	[% "random letters - if you are visually impaired, please email us at "
+	[% "verification text - if you are visually impaired, please email us at "
 		_ constants.adminmail | strip_attribute %]
 
 [% END %]
 __seclev__
 500
 __version__
-$Id: data;humanconf;default,v 1.5 2005/07/27 22:54:10 pudge Exp $
+$Id: data;humanconf;default,v 1.6 2006/03/21 18:42:27 jamiemccarthy Exp $

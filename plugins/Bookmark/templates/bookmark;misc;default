@@ -13,7 +13,7 @@ bookmark
 __seclev__
 10000
 __template__
-[% title = form.title || "Bookmark page" %]
+[% title = "Bookmark a page" %]
 [% PROCESS titlebar %]
 <form method="post" action="bookmark.pl">
 [% PROCESS reskey_tag %]
@@ -58,4 +58,4 @@ __template__
 </table>
 </form>
 __version__
-$Id: bookmark;misc;default,v 1.1 2006/03/21 20:37:15 tvroom Exp $
+$Id: bookmark;misc;default,v 1.2 2006/03/22 18:18:24 tvroom Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.223 2006/03/21 21:51:35 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.224 2006/03/22 00:21:57 pudge Exp $
 #
 
 #
@@ -1246,21 +1246,21 @@ CREATE TABLE tzcodes (
 
 DROP TABLE IF EXISTS urls;
 CREATE TABLE urls (
-  url_id INT(10) UNSIGNED NOT NULL auto_increment,
-  url_digest VARCHAR(32) NOT NULL,
-  url TEXT NOT NULL,
-  is_success TINYINT(4),
-  createtime datetime,
-  last_attempt datetime,
-  last_success datetime,
-  believed_fresh_until datetime,
-  status_code SMALLINT(6),
-  reason_phrase VARCHAR(30),
-  content_type VARCHAR(60),
-  initialtitle VARCHAR(255),
-  validatedtitle VARCHAR(255),
-  PRIMARY KEY (url_id),
-  UNIQUE url_digest (url_digest)
+	url_id INT(10) UNSIGNED NOT NULL auto_increment,
+	url_digest VARCHAR(32) NOT NULL,
+	url TEXT NOT NULL,
+	is_success TINYINT(4),
+	createtime datetime,
+	last_attempt datetime,
+	last_success datetime,
+	believed_fresh_until datetime,
+	status_code SMALLINT(6),
+	reason_phrase VARCHAR(30),
+	content_type VARCHAR(60),
+	initialtitle VARCHAR(255),
+	validatedtitle VARCHAR(255),
+	PRIMARY KEY (url_id),
+	UNIQUE url_digest (url_digest)
 );
 
 DROP TABLE IF EXISTS users;

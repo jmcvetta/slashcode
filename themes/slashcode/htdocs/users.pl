@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.315 2006/03/21 20:39:14 tvroom Exp $
+# $Id: users.pl,v 1.316 2006/03/22 00:21:57 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1576,6 +1576,7 @@ sub showTags {
 	});
 }
 
+#################################################################
 sub showBookmarks {
 	my($hr) = @_;
 	my $user = getCurrentUser();

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.14 2006/03/21 21:52:53 tvroom Exp $
+# $Id: mysql_dump.sql,v 1.15 2006/03/22 00:21:57 pudge Exp $
 #
 
 ### NOTE: reserved reskey IDs:
@@ -40,7 +40,7 @@ INSERT INTO reskey_resources VALUES (4, 'journal-soap');
 INSERT INTO reskey_resources VALUES (5, 'pollbooth');
 INSERT INTO reskey_resources VALUES (6, 'submit');
 INSERT INTO reskey_resources VALUES (7, 'journal-soap-get');
-INSERT IGNORE INTO reskey_resources VALUES (8, 'bookmark');
+INSERT INTO reskey_resources VALUES (8, 'bookmark');
 
 
 

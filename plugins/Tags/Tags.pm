@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.19 2006/03/21 21:56:26 tvroom Exp $
+# $Id: Tags.pm,v 1.20 2006/03/22 00:21:57 pudge Exp $
 
 package Slash::Tags;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -429,7 +429,7 @@ sub getAllTagsFromUser {
 	my $limit   = $options->{limit} ? " LIMIT $options->{limit} " : "";
 	my $orderdir = uc($options->{orderdir}) eq "DESC" ? "DESC" : "ASC";
 
-	my ($table_extra, $where_extra) = ("","");
+	my($table_extra, $where_extra) = ("","");
 
 	if ($options->{type}) {
 		my $globjtypes = $self->getGlobjTypes;
@@ -621,7 +621,7 @@ sub ajaxGetAdminStory {
 #  XXX based off of ajaxCreateStory.  ajaxCreateStory should be updated to use this or something
 #  similar soon, and after I've had time to test -- vroom 2006/03/21
 sub setTagsForGlobj {
-	my ($self, $id, $table, $tag_string) = @_;
+	my($self, $id, $table, $tag_string) = @_;
 	my $tags = getObject('Slash::Tags');
 	
 	my $user = getCurrentUser();

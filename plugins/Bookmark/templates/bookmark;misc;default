@@ -45,17 +45,18 @@ __template__
 	<td><input name="tags" size="60" type="text" value="[% tags_string | strip_attribute %]"> [% IF form.op == "save" && !form.tags %](required)[% END %]</td>
 </tr>
 <tr class="data_hl1">
-	<td>Redirect To</td>
+	<td valign="top">Next</td>
 	<td>
-		<input type="radio" name="redirect" value="bookmark" [% IF !form.redirect || form.redirect == "bookmark"; constants.markup_checked_attribute; END; %]>Bookmark
-		<input type="radio" name="redirect" value="submit"  [% IF form.redirect == "submit"; constants.markup_checked_attribute; END; %]>Submit
-		<input type="radio" name="redirect" value="journal" [% IF form.redirect == "journal"; constants.markup_checked_attribute; END; %]>Journal</td>
+		<input type="radio" name="redirect" value="bookmark" [% IF !form.redirect || form.redirect == "bookmark"; constants.markup_checked_attribute; END; %]>Return to bookmark
+		<input type="radio" name="redirect" value="journal" [% IF form.redirect == "journal"; constants.markup_checked_attribute; END; %]>Journal about this
+		<input type="radio" name="redirect" value="submit"  [% IF form.redirect == "submit"; constants.markup_checked_attribute; END; %]>Submit to [% constants.sitename %]
+		</td>
 </tr>
 <tr class="data_hl1">
 	<td></td>
-	<td><input type="submit" name="op" value="save"></td>
+	<td><input type="submit" name="op" value="save"> <a href="[% gSkin.rootdir %]/faq/tags.shtml#tags300">[Help]</a></td>
 </tr>
 </table>
 </form>
 __version__
-$Id: bookmark;misc;default,v 1.2 2006/03/22 18:18:24 tvroom Exp $
+$Id: bookmark;misc;default,v 1.3 2006/03/23 00:13:23 tvroom Exp $

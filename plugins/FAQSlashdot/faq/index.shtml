@@ -4,7 +4,7 @@
 <head>
         <title>Slashdot FAQ - Index</title>
 <!--
-$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.27 2006/01/30 18:59:22 jamiemccarthy Exp $ =~ /(\d+)/g
+$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.28 2006/03/23 00:47:47 tvroom Exp $ =~ /(\d+)/g
 -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
@@ -252,6 +252,9 @@ $VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.27 2006/01/30 18:59:22 jamie
         <ul>
                 <li><strong><a href="/faq/tags.shtml#tags100">What is this crazy tags thing?</a></strong></li>
                 <li><strong><a href="/faq/tags.shtml#tags110">Are tags objective or subjective? Can I use any tag I want?</a></strong></li>
+                <li><strong><a href="/faq/tags.shtml#tags300">What are Slashdot Bookmarks?</a></strong></li>
+                <li><strong><a href="/faq/tags.shtml#tags310">How Do I save a Slashdot Bookmark?</a></strong></li>
+                <li><strong><a href="/faq/tags.shtml#tags320">How Do I share my Bookmarks?</a></strong></li>
 	</ul>
 
 <!--#include virtual="/slashfoot.inc"-->

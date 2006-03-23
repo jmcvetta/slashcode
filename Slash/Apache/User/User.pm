@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.151 2006/03/21 21:49:54 tvroom Exp $
+# $Id: User.pm,v 1.152 2006/03/23 14:18:36 tvroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -794,6 +794,10 @@ sub userdir_handler {
 
 		} elsif ($op eq 'tags') {
 			$r->args("op=showtags&nick=$nick&uid=$uid");
+			$r->uri('/users.pl');
+			$r->filename($constants->{basedir} . '/users.pl');
+		} elsif ($op eq 'bookmarks') {
+			$r->args("op=showbookmarks&nick=$nick&uid=$uid");
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');
 

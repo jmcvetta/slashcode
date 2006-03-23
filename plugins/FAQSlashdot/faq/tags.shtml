@@ -6,7 +6,7 @@
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
 <!--
-($VERSION) = '$Id: tags.shtml,v 1.7 2006/03/23 00:47:47 tvroom Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: tags.shtml,v 1.8 2006/03/23 04:09:58 pudge Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <table>
@@ -117,7 +117,7 @@ submit stories.
 
 
 <br><a name="tags310" id="tags310"></a>
-<h2>How Do I Save a Slashdot Bookmark?</h2>
+<h2>How do I save a Slashdot Bookmark?</h2>
 
 <p>You can bookmark a site by directly going to <a
 href="/bookmark.pl">the bookmarks page</a>,

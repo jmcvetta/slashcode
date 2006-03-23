@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.955 2006/03/22 00:22:47 pudge Exp $
+# $Id: upgrades,v 1.956 2006/03/23 04:09:58 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3741,10 +3741,6 @@ CREATE TABLE tagcommand_adminlog (
 # 2006-03-14
 UPDATE vars SET value = 'T_2_5_0_103' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
-# PUDGE LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 DROP TABLE IF EXISTS urls;
@@ -3772,3 +3768,7 @@ INSERT IGNORE INTO reskey_resources VALUES (8, 'bookmark');
 
 # 2006-03-21
 UPDATE vars SET value = 'T_2_5_0_104' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
+
+# PUDGE LAST UPDATED HERE

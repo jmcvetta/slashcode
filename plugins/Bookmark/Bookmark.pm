@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Bookmark.pm,v 1.1 2006/03/21 20:37:15 tvroom Exp $
+# $Id: Bookmark.pm,v 1.2 2006/03/23 04:09:58 pudge Exp $
 
 package Slash::Bookmark;
 
@@ -34,24 +34,24 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createBookmark {
-	my ($self, $data) = @_;
+	my($self, $data) = @_;
 	$self->sqlInsert("bookmarks", $data);
 	my $id = $self->getLastInsertId();
 	return $id;
 }
 
 sub getUserBookmarkByUrlId {
-	my ($self, $uid, $url_id) = @_;
+	my($self, $uid, $url_id) = @_;
 	my $uid_q = $self->sqlQuote($uid);
 	my $url_id_q = $self->sqlQuote($url_id);
 	return $self->sqlSelectHashref("*", "bookmarks", "uid=$uid_q AND url_id=$url_id_q");
 }
 
 sub updateBookmark {
-	my ($self, $bookmark) = @_;
+	my($self, $bookmark) = @_;
 	$self->sqlUpdate("bookmarks", $bookmark, "bookmark_id = $bookmark->{bookmark_id}");
 }
 
@@ -66,4 +66,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Bookmark.pm,v 1.1 2006/03/21 20:37:15 tvroom Exp $
+$Id: Bookmark.pm,v 1.2 2006/03/23 04:09:58 pudge Exp $

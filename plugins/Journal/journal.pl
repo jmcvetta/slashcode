@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.132 2006/03/22 00:21:57 pudge Exp $
+# $Id: journal.pl,v 1.133 2006/03/23 14:40:37 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.132 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.133 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -719,8 +719,10 @@ sub doEditArticle {
 	} else {
 		$rkey->create or return $rkey->errstr;
 		
-		$article->{article}	= $form->{article};
-		$article->{description}	= $form->{description};
+		unless ($article->{id}) {
+			$article->{article}	= $form->{article};
+			$article->{description}	= $form->{description};
+		}
 
 		$posttype = $article->{posttype};
 	}

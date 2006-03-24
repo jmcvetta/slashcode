@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.269 2006/03/21 03:12:10 pudge Exp $
+# $Id: Slash.pm,v 1.270 2006/03/24 20:56:40 pudge Exp $
 
 package Slash;
 
@@ -233,6 +233,9 @@ sub jsSelectComments {
 
 	my @roots = grep { !$comments->{$_}{pid} } keys %$comments;
 
+	my $extra = '';
+	$extra = "prerendered = 1;\n" if $user->{discussion2} && $user->{discussion2} eq 'slashdot';
+
 	my $comment_text = $slashdb->getCommentTextCached(
 		$comments, [ keys %$comments ],
 	);
@@ -245,10 +248,10 @@ sub jsSelectComments {
 	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);
 
 	return <<EOT;
-	comments = $anon_comments;
-	root_comments = $anon_roots;
-
-	renderRoots('commentlisting');
+comments = $anon_comments;
+root_comments = $anon_roots;
+$extra
+renderRoots('commentlisting');
 EOT
 }
 

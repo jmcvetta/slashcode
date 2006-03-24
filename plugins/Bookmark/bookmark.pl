@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.2 2006/03/23 04:09:58 pudge Exp $
+# $Id: bookmark.pl,v 1.3 2006/03/24 20:56:42 pudge Exp $
 
 use strict;
 use Slash;
@@ -100,8 +100,8 @@ sub saveBookmark {
 	}
 
 	my $data = {
-			url => $fudgedurl,
-			initialtitle => $form->{title}
+		url		=> $fudgedurl,
+		initialtitle	=> $form->{title}
 	};
 
 	my $url_id = $slashdb->getUrlCreate($data);

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.5 2006/03/29 19:47:04 tvroom Exp $
+# $Id: bookmark.pl,v 1.6 2006/03/29 22:46:39 pudge Exp $
 
 use strict;
 use Slash;
@@ -148,7 +148,7 @@ sub saveBookmark {
 }
 
 sub showBookmarks {
-	my ($constants, $slashdb, $user, $form) = @_;
+	my($constants, $slashdb, $user, $form) = @_;
 	my $bookmark = getObject("Slash::Bookmark");
 
 	my $days_back = $constants->{bookmark_popular_days} || 7;
@@ -171,8 +171,8 @@ sub showBookmarks {
 	}
 	
 	slashDisplay("recentandpop", {
-		type => $type,
-		bookmarks => $bookmarks,
+		type		=> $type,
+		bookmarks	=> $bookmarks,
 	});
 }
 

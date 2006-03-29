@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.21 2006/03/29 01:34:38 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.22 2006/03/29 22:46:39 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1056,7 +1056,8 @@ sub listTagnamesRecent {
 		 AND created_at >= DATE_SUB(NOW(), INTERVAL $seconds SECOND)
 		 AND (tag_params.value IS NULL OR tag_params.value > 0)
 		 AND (tagname_params.value IS NULL OR tagname_params.value > 0)",
-		'ORDER BY tagnames.tagname');
+		'ORDER BY tagnames.tagname'
+	);
 }
 
 #################################################################

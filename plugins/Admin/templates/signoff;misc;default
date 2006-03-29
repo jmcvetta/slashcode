@@ -17,11 +17,11 @@ __template__
 [% checked = Slash.db.hasUserSignedStory(stoid, user.uid); %]
 [% IF storylink %]
 <li class="signoff">[% END %]
-[% PROCESS ajax_reskey_signoff reskey_name => 'signoff-reskey-' _ stoid, reskey_resource => 'ajax_admin' %]
+[% PROCESS ajax_reskey_signoff reskey_label => 'signoff-reskey-' _ stoid, reskey_name => 'ajax_admin' %]
 <input type="checkbox" name="adminsignoff" value="[% stoid %]" onclick="admin_signoff(this);"[% IF checked; constants.markup_checked_attribute; END %]><span id="signoff_[% stoid %]"><b>Sign</b></span>
 [% IF storylink %]</li>[% END %]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: signoff;misc;default,v 1.10 2006/03/29 18:49:21 tvroom Exp $
+$Id: signoff;misc;default,v 1.11 2006/03/29 22:46:39 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Bookmark.pm,v 1.3 2006/03/29 18:30:57 tvroom Exp $
+# $Id: Bookmark.pm,v 1.4 2006/03/29 22:46:39 pudge Exp $
 
 package Slash::Bookmark;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createBookmark {
 	my($self, $data) = @_;
@@ -56,15 +56,15 @@ sub updateBookmark {
 }
 
 sub getRecentBookmarks {
-	my ($self, $limit) = @_;
+	my($self, $limit) = @_;
 	$limit ||= 50;
 
 	return $self->sqlSelectAllHashrefArray("*", "bookmarks, urls", "bookmarks.url_id = urls.url_id", "ORDER by bookmarks.createdtime DESC LIMIT $limit");
 }
 
 sub getPopularBookmarks {
-	my ($self, $days, $limit) = @_;
-	$days ||= 3;
+	my($self, $days, $limit) = @_;
+	$days  ||= 3;
 	$limit ||= 50;
 
 	my $time_clause = " AND bookmarks.createdtime >= DATE_SUB(NOW(), INTERVAL $days DAY)";
@@ -84,4 +84,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Bookmark.pm,v 1.3 2006/03/29 18:30:57 tvroom Exp $
+$Id: Bookmark.pm,v 1.4 2006/03/29 22:46:39 pudge Exp $

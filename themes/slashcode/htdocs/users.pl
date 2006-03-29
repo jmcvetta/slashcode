@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.316 2006/03/22 00:21:57 pudge Exp $
+# $Id: users.pl,v 1.317 2006/03/29 19:48:19 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -235,10 +235,10 @@ sub main {
 		},
 		showbookmarks => {
 			function	=> \&showBookmarks,
-			seclev		=> 1,
+			seclev		=> 0,
 			formname	=> $formname,
 			checks		=> [],
-			tab_selected	=> 'tags',
+			tab_selected	=> 'bookmarks',
 		},
 		edittags => {
 			function	=> \&editTags,

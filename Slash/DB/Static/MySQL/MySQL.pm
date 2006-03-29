@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.242 2006/02/25 22:50:23 pudge Exp $
+# $Id: MySQL.pm,v 1.243 2006/03/29 18:23:33 tvroom Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.242 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.243 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -2924,6 +2924,24 @@ sub avgDynamicDurationForMinutesBack {
 		 AND static='no'
 		 AND op IN ($op_clause)",
 		"GROUP BY op"
+	);
+}
+
+sub getUrlsNeedingFirstCheck {
+	my ($self) = @_;
+	return $self->sqlSelectAllHashrefArray("*", "urls", "last_attempt is NULL", "order by url_id ASC");
+}
+
+sub getUrlsNeedingRefresh {
+	my ($self, $limit) = @_;
+	$limit ||= 50;
+	return $self->sqlSelectAllHashrefArray(
+		"*", 
+		"urls", 
+		"last_attempt is NOT NULL 
+		 AND believed_fresh_until IS NOT NULL 
+		 AND believed_fresh_until < NOW()", 
+		"order by believed_fresh_until ASC LIMIT $limit"
 	);
 }
 

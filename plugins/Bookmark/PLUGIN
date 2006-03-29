@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.1 2006/03/21 20:37:15 tvroom Exp $
+# $Id: PLUGIN,v 1.2 2006/03/29 19:47:04 tvroom Exp $
 name=Bookmark
 description="Bookmark"
 htdoc=bookmark.pl
@@ -7,4 +7,5 @@ mysql_schema=mysql_schema.sql
 requiresplugin=Tags
 template=templates/bookmark;misc;default
 template=templates/bookmarklink;misc;default
+template=templates/recentandpop;bookmark;default
 template=templates/userbookmarks;users;default

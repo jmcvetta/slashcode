@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.152 2006/03/23 14:18:36 tvroom Exp $
+# $Id: User.pm,v 1.153 2006/03/29 01:34:38 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -564,6 +564,22 @@ sub userdir_handler {
 	if ($gSkin->{rootdir}) {
 		my $path = URI->new($gSkin->{rootdir})->path;
 		$uri =~ s/^\Q$path//;
+	}
+
+	# URIs like /tags and /tags/foo and /tags/foo?type=bar are special cases.
+	if ($uri =~ m[^/tags (?: /([^?]*) | /? ) (?: \?(.*) )? $]x) {
+		my($word, $query) = ($1, $2);
+		my @args = ( );
+		if ($word =~ /^(active|recent|all)$/) {
+			push @args, "type=$word";
+		} else {
+			push @args, "tagname=$word";
+		}
+		push @args, $query if defined $query;
+		$r->args(join('&', @args));
+		$r->uri('/tags.pl');
+		$r->filename($constants->{basedir} . '/tags.pl');
+		return OK;
 	}
 
 	# for self-references (/~/ and /my/)

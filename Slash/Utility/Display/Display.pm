@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.109 2006/02/01 20:16:52 tvroom Exp $
+# $Id: Display.pm,v 1.110 2006/03/29 01:34:38 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -475,6 +475,7 @@ sub linkStory {
 	}
 
 	my $story_ref = $reader->getStory($story_link->{stoid} || $story_link->{sid});
+	$params{sid} ||= $story_ref->{sid};
 
 	if (!defined $story_link->{link} || $story_link->{link} eq '') {
 		$story_link->{link} = $story_ref->{title};
@@ -486,7 +487,7 @@ sub linkStory {
 			$params{tids} = $story_link->{tids};
 		} else {
 			$params{tids} = $reader->getTopiclistForStory(
-				$story_link->{stoid} || $story_link->{sid});
+				$story_link->{stoid} || $story_link->{sid} || $story_ref->{sid});
 		}
 	}
 
@@ -512,7 +513,7 @@ sub linkStory {
 		# but we would need to `mv articles mainpage`, or ln -s, and it just seems better
 		# to me to keep the same URL scheme if possible
 		my $skinname = $skin->{name} eq 'mainpage' ? 'articles' : $skin->{name};
-		$url .= "/$skinname/$story_link->{sid}.shtml";
+		$url .= "/$skinname/" . ($story_link->{sid} || $story_ref->{sid}) . ".shtml";
 		# manually add the tid(s), if wanted
 		if ($constants->{tids_in_urls} && $params{tids}) {
 			$url .= '?';
@@ -1694,4 +1695,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.109 2006/02/01 20:16:52 tvroom Exp $
+$Id: Display.pm,v 1.110 2006/03/29 01:34:38 jamiemccarthy Exp $

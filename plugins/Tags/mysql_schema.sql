@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.4 2006/03/10 22:57:54 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.5 2006/03/29 01:34:38 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -53,7 +53,6 @@ CREATE TABLE tagcommand_adminlog (
 	KEY created_at (created_at),
 	KEY tagnameid_globjid (tagnameid, globjid)
 ) TYPE=InnoDB;
-
 
 #DROP TABLE IF EXISTS tag_schedule;
 #CREATE TABLE tag_schedule (

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.887 2006/03/29 01:34:38 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.888 2006/03/29 18:24:06 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.887 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.888 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -13585,6 +13585,12 @@ sub createUrl {
 	$self->sqlInsert("urls", $data);
 	my $id = $self->getLastInsertId();
 	return $id;
+}
+
+sub setUrl {
+	my ($self, $url_id, $data) = @_;
+	my $url_id_q = $self->sqlQuote($url_id);
+	$self->sqlUpdate("urls", $data, "url_id=$url_id_q");
 }
 
 sub getUrlIfExists {

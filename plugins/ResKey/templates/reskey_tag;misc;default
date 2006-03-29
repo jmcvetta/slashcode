@@ -22,15 +22,15 @@ __template__
    	this_reskey = user.state.reskey;
    END;
 
-   IF !reskey_name;
-	   reskey_name = 'reskey';
+   IF !reskey_label;
+	   reskey_label = 'reskey';
    END;
 
    IF this_reskey %]
-<input type="hidden" id="[% reskey_name %]" name="[% reskey_name %]" value="[% this_reskey %]">
-[% reskey_name = ''; END %]
+<input type="hidden" id="[% reskey_label %]" name="[% reskey_label %]" value="[% this_reskey %]">
+[% reskey_label = ''; END %]
 
 __seclev__
 500
 __version__
-$Id: reskey_tag;misc;default,v 1.4 2006/02/06 20:55:18 pudge Exp $
+$Id: reskey_tag;misc;default,v 1.5 2006/03/29 23:04:55 pudge Exp $

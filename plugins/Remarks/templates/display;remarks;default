@@ -20,7 +20,7 @@ __template__
 
    IF print_div || print_whole %]
 	<input type="hidden" id="remarks_max" name="remarks_max" value="[% remarks_max %]">
-	[% PROCESS ajax_reskey_tag reskey_name => 'remarks_reskey', reskey_resource => 'ajax_admin' %]
+	[% PROCESS ajax_reskey_tag reskey_label => 'remarks_reskey', reskey_name => 'ajax_admin' %]
 
 <div id="remarks_table">
 [% END %]
@@ -51,4 +51,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: display;remarks;default,v 1.8 2006/03/08 20:36:53 tvroom Exp $
+$Id: display;remarks;default,v 1.9 2006/03/29 23:04:55 pudge Exp $

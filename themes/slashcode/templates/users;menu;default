@@ -14,7 +14,7 @@ en_US
 __name__
 users
 __template__
-<div id="usermenu-top">
+<div class="menuoldstyle">
 	<ul>
 	[% needbar = 0; FOR i = items %]
 	[% IF i.label %]
@@ -28,4 +28,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: users;menu;default,v 1.8 2005/07/27 22:54:48 pudge Exp $
+$Id: users;menu;default,v 1.9 2006/03/29 01:35:52 jamiemccarthy Exp $

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.10 2006/03/08 20:15:56 tvroom Exp $
+# $Id: mysql_dump.sql,v 1.11 2006/03/29 19:49:19 tvroom Exp $
 #
 
 INSERT INTO reskey_resources VALUES (100, 'ajax_base');
@@ -116,7 +116,7 @@ INSERT INTO ajax_ops VALUES (NULL, 'remarks_config', 'Slash::Remarks', 'ajaxFetc
 INSERT INTO ajax_ops VALUES (NULL, 'remarks_config_save', 'Slash::Remarks', 'ajaxConfigSave', 'ajax_admin', 'createuse');
 
 # signoff
-INSERT INTO ajax_ops VALUES(NULL, 'admin_signoff', 'Slash::Admin', 'ajax_signoff', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES(NULL, 'admin_signoff', 'Slash::Admin', 'ajax_signoff', 'ajax_admin', 'use');
 
 # slashboxes
 INSERT INTO ajax_ops VALUES(NULL, 'admin_slashdbox', 'Slash::Admin', 'ajax_slashdbox', 'ajax_admin', 'createuse');

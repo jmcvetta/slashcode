@@ -2,8 +2,11 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: url_checker.pl,v 1.1 2006/03/29 18:44:36 tvroom Exp $
-
+# $Id: url_checker.pl,v 1.2 2006/03/29 18:46:05 tvroom Exp $
+#
+# This task checks urls to see if they're still alive, and sets their
+# validated titles
+#
 use Slash::Constants ':slashd';
 use LWP::UserAgent;
 use HTML::HeadParser;

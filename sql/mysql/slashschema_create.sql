@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.224 2006/03/22 00:21:57 pudge Exp $
+# $Id: slashschema_create.sql,v 1.225 2006/04/05 19:39:54 pudge Exp $
 #
 
 #
@@ -262,6 +262,7 @@ CREATE TABLE comments (
 	cid mediumint UNSIGNED NOT NULL auto_increment,
 	pid mediumint UNSIGNED DEFAULT '0' NOT NULL,
 	date datetime DEFAULT '1970-01-01 00:00:00' NOT NULL,
+	last_update TIMESTAMP NOT NULL,
 	ipid char(32) DEFAULT '' NOT NULL,
 	subnetid char(32) DEFAULT '' NOT NULL,
 	subject varchar(50) NOT NULL,

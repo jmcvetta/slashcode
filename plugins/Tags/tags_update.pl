@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.9 2006/03/14 20:59:11 jamiemccarthy Exp $
+# $Id: tags_update.pl,v 1.10 2006/04/05 20:11:10 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
@@ -103,7 +103,7 @@ sub getTop5 {
 	for my $tagnameid (@tagnameids) {
 		$tagname_admincmds->{$tagnameid} ||= $tags_reader->getTagnameAdmincmds($tagnameid);
 	}
-use Data::Dumper; print STDERR "tagname_admincmds: " . Dumper($tagname_admincmds);
+#use Data::Dumper; print STDERR "tagname_admincmds: " . Dumper($tagname_admincmds);
 
 	my %tagids_unique = map { ( $_->{tagid}, 1 ) } @$tag_ar;
 	my @tagids = sort { $a <=> $b } keys %tagids_unique;
@@ -113,7 +113,7 @@ use Data::Dumper; print STDERR "tagname_admincmds: " . Dumper($tagname_admincmds
 		'tagid, name, value',
 		'tag_params',
 		"tagid IN ($tagids_str)");
-use Data::Dumper; print STDERR "tagids='@tagids' tag_params: " . Dumper($tag_params);
+#use Data::Dumper; print STDERR "tagids='@tagids' tag_params: " . Dumper($tag_params);
 
 	my %scores = ( );
 	for my $tag (@$tag_ar) {

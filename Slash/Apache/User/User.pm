@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.155 2006/03/29 22:46:39 pudge Exp $
+# $Id: User.pm,v 1.156 2006/04/05 18:15:25 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.155 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -537,6 +537,10 @@ sub userLogin {
 }
 
 ########################################################
+# XXX May want to rename this, since it's being used for a user's
+# prefs/info pages (/my/foo) and for the global handlers too (/foo).
+# Of course renaming requires editing a .conf file (see
+# bin/install-slashsite PerlTransHandler).
 sub userdir_handler {
 	my($r) = @_;
 

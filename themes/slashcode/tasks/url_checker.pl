@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: url_checker.pl,v 1.2 2006/03/29 18:46:05 tvroom Exp $
+# $Id: url_checker.pl,v 1.3 2006/04/05 16:36:47 tvroom Exp $
 #
 # This task checks urls to see if they're still alive, and sets their
 # validated titles
@@ -34,8 +34,6 @@ $task{$me}{code} = sub {
 	my $refresh_urls = $slashdb->getUrlsNeedingRefresh();
 
 	URL_CHECK: for my $url (@$urls, @$refresh_urls) {
-		
-		sleep 150;
 		
 		# Don't run forever...
 		if (time > $start_time + $timeout) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.28 2006/03/01 05:17:59 pudge Exp $
+# $Id: Admin.pm,v 1.29 2006/04/05 19:05:13 entweichen Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -571,6 +571,16 @@ sub showSignoffBox {
 	my $signofftext = slashDisplay("signoff_box", { signoffs => $signoffs, uniq_uids => $uniq_uids, header => $header }, { Return => 1 });
 	return $signofftext if $options->{contents_only};
 	return slashDisplay("sidebox", { title => $title, contents => $signofftext, name => "signoff" }, { Return => 1});
+}
+
+sub ajax_learnword {
+    my($self) = @_;
+    my $form = getCurrentForm();
+
+    my $template = $self->getTemplateByName("ispellok", { page => "admin" });
+    my $template_text = $self->sqlSelect("template", "templates", "tpid = " . $template->{tpid});
+    $template_text .= $form->{'word'} . ' ';
+    $self->sqlUpdate("templates", { template => $template_text }, "tpid = " . $template->{tpid});
 }
 
 sub DESTROY {

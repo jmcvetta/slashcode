@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Bookmark.pm,v 1.4 2006/03/29 22:46:39 pudge Exp $
+# $Id: Bookmark.pm,v 1.5 2006/04/05 17:55:05 jamiemccarthy Exp $
 
 package Slash::Bookmark;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createBookmark {
 	my($self, $data) = @_;
@@ -59,7 +59,9 @@ sub getRecentBookmarks {
 	my($self, $limit) = @_;
 	$limit ||= 50;
 
-	return $self->sqlSelectAllHashrefArray("*", "bookmarks, urls", "bookmarks.url_id = urls.url_id", "ORDER by bookmarks.createdtime DESC LIMIT $limit");
+	return $self->sqlSelectAllHashrefArray("*", "bookmarks, urls",
+		"bookmarks.url_id = urls.url_id",
+		"ORDER BY bookmarks.createdtime DESC LIMIT $limit");
 }
 
 sub getPopularBookmarks {
@@ -69,7 +71,10 @@ sub getPopularBookmarks {
 
 	my $time_clause = " AND bookmarks.createdtime >= DATE_SUB(NOW(), INTERVAL $days DAY)";
 	
-	return $self->sqlSelectAllHashrefArray("count(*) AS cnt, bookmarks.title, urls.*", "bookmarks, urls", "bookmarks.url_id = urls.url_id $time_clause", "GROUP BY urls.url_id ORDER by 1 DESC, bookmarks.createdtime DESC  LIMIT $limit");
+	return $self->sqlSelectAllHashrefArray("COUNT(*) AS cnt, bookmarks.title, urls.*",
+		"bookmarks, urls",
+		"bookmarks.url_id = urls.url_id $time_clause",
+		"GROUP BY urls.url_id ORDER BY cnt DESC, bookmarks.createdtime DESC LIMIT $limit");
 	
 }
 
@@ -84,4 +89,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Bookmark.pm,v 1.4 2006/03/29 22:46:39 pudge Exp $
+$Id: Bookmark.pm,v 1.5 2006/04/05 17:55:05 jamiemccarthy Exp $

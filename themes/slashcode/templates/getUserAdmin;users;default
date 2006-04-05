@@ -150,11 +150,12 @@ __template__
 					[% END %]
 			[% END %]
 			[% IF useredit.uid %]
-				<label>
-					Tokens
-				</label>
+				<b>Tokens:</b>
 				<input type="text" name="tokens" size="6" value="[% useredit.tokens | strip_attribute %]">&nbsp;&nbsp;
-				<b>Latest M2 Info:</b> <input type="text" name="m2info" value="[% useredit.m2info | strip_attribute %]">
+				<b>Tagclout:</b>
+				<input type="text" name="tag_clout" size="6" value="[% useredit.tag_clout | strip_attribute %]">&nbsp;&nbsp;
+				<b>M2Info:</b>
+				<input type="text" name="m2info" value="[% useredit.m2info | strip_attribute %]">
 			[% END %]
 				<p>
 				<input type="submit" name="saveuseradmin" value="Save [% IF useredit.nickname; useredit.nickname | strip_attribute; END %]" class="button">
@@ -294,4 +295,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: getUserAdmin;users;default,v 1.77 2006/01/23 20:42:59 pudge Exp $
+$Id: getUserAdmin;users;default,v 1.78 2006/04/05 19:57:20 jamiemccarthy Exp $

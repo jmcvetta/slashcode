@@ -17,8 +17,11 @@ data
 __template__
 [% SWITCH value %]
 
-[% CASE 'head' %]
+[% CASE 'head1' %]
 	[% constants.sitename %] Tags
+
+[% CASE 'head2' %]
+	Items Tagged With '[% tagname | strip_notags %]'
 
 [% CASE 'tags_saved' %]
 	Tags saved.
@@ -51,4 +54,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;tags;default,v 1.4 2006/03/29 01:34:38 jamiemccarthy Exp $
+$Id: data;tags;default,v 1.5 2006/04/05 19:57:19 jamiemccarthy Exp $

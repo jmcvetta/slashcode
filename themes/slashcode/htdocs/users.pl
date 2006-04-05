@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.317 2006/03/29 19:48:19 tvroom Exp $
+# $Id: users.pl,v 1.318 2006/04/05 19:57:20 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2330,6 +2330,7 @@ sub saveUserAdmin {
 		$user_edits_table->{author} = $form->{author} ? 1 : 0 ;
 		$user_edits_table->{defaultpoints} = $form->{defaultpoints};
 		$user_edits_table->{tokens} = $form->{tokens};
+		$user_edits_table->{tag_clout} = $form->{tag_clout};
 		$user_edits_table->{m2info} = $form->{m2info};
 		$user_edits_table->{acl} = $acl_change if $acl_change;
 

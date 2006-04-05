@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.23 2006/04/05 19:57:19 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.24 2006/04/05 20:10:52 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -862,9 +862,12 @@ print STDERR "setting $tag->{tagid} to 0\n";
 					"tagnameid=$tagnameid");
 				if (@$uids) {
 					for my $uid (@$uids) {
-						$self->setUser($uid, { tag_clout => $new_user_clout });
+						push @uids_changed, $uid
+							if $self->setUser($uid, {
+								-tag_clout => "LEAST(tag_clout, $new_user_clout)"
+							});
 					}
-					my $uids_str = join(',', @$uids);
+					my $uids_str = join(',', @uids_changed);
 					my $user_min = $self->sqlSelect('MIN(tagid)', 'tags',
 						"uid IN ($uids_str)");
 					$new_min_tagid = $user_min if $user_min < $new_min_tagid;
@@ -886,10 +889,14 @@ print STDERR "setting $tag->{tagid} to 0\n";
 				my $uids = $self->sqlSelectColArrayref('uid', 'tags',
 					"tagnameid=$tagnameid AND globjid=$globjid");
 				if (@$uids) {
+					my @uids_changed = ( );
 					for my $uid (@$uids) {
-						$self->setUser($uid, { tag_clout => $new_user_clout });
+						push @uids_changed, $uid
+							if $self->setUser($uid, {
+								-tag_clout => "LEAST(tag_clout, $new_user_clout)"
+							});
 					}
-					my $uids_str = join(',', @$uids);
+					my $uids_str = join(',', @uids_changed);
 					my $user_min = $self->sqlSelect('MIN(tagid)', 'tags',
 						"uid IN ($uids_str)");
 					$new_min_tagid = $user_min if $user_min < $new_min_tagid;

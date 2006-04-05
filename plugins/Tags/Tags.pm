@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.24 2006/04/05 20:10:52 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.25 2006/04/05 22:54:31 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -553,7 +553,7 @@ sub getExampleTagsForStory {
 	my @examples = split / /,
 		($cur_time lt $story->{time})
 		? $constants->{tags_stories_examples_pre}
-		? $constants->{tags_stories_examples};
+		: $constants->{tags_stories_examples};
 	my $chosen_ar = $self->getTopiclistForStory($story->{stoid});
 	$#$chosen_ar = 3 if $#$chosen_ar > 3;
 	my $tree = $self->getTopicTree();
@@ -861,6 +861,7 @@ print STDERR "setting $tag->{tagid} to 0\n";
 				my $uids = $self->sqlSelectColArrayref('uid', 'tags',
 					"tagnameid=$tagnameid");
 				if (@$uids) {
+					my @uids_changed;
 					for my $uid (@$uids) {
 						push @uids_changed, $uid
 							if $self->setUser($uid, {

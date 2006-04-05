@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.289 2006/03/29 22:46:39 pudge Exp $
+# $Id: admin.pl,v 1.290 2006/04/05 17:17:45 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1740,9 +1740,9 @@ sub get_ispell_comments {
 		# If this is a "&" line, there may be one or more suggestions
 		# separated by commas and terminated by newlines;  they may
 		# contain spaces.
-		$misspelled_suggestion{$1} = $2 if (
-			($line =~ /^\& (.+) \d+ \d+: (.+)/) || ($line =~ /^\# (.+) \d+/)
-		);
+		$misspelled_suggestion{$1} = ($2 || '')
+			if    $line =~ /^\& (.+) \d+ \d+: (.+)/
+			   || $line =~ /^\# (.+) \d+/;
 	}
 	close $ispell_fh;
 	unlink $tmptext, $tmpok;

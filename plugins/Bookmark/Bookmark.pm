@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Bookmark.pm,v 1.5 2006/04/05 17:55:05 jamiemccarthy Exp $
+# $Id: Bookmark.pm,v 1.6 2006/04/05 22:26:32 pudge Exp $
 
 package Slash::Bookmark;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createBookmark {
 	my($self, $data) = @_;
@@ -61,7 +61,8 @@ sub getRecentBookmarks {
 
 	return $self->sqlSelectAllHashrefArray("*", "bookmarks, urls",
 		"bookmarks.url_id = urls.url_id",
-		"ORDER BY bookmarks.createdtime DESC LIMIT $limit");
+		"ORDER BY bookmarks.createdtime DESC LIMIT $limit"
+	);
 }
 
 sub getPopularBookmarks {
@@ -74,7 +75,8 @@ sub getPopularBookmarks {
 	return $self->sqlSelectAllHashrefArray("COUNT(*) AS cnt, bookmarks.title, urls.*",
 		"bookmarks, urls",
 		"bookmarks.url_id = urls.url_id $time_clause",
-		"GROUP BY urls.url_id ORDER BY cnt DESC, bookmarks.createdtime DESC LIMIT $limit");
+		"GROUP BY urls.url_id ORDER BY cnt DESC, bookmarks.createdtime DESC LIMIT $limit"
+	);
 	
 }
 
@@ -89,4 +91,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Bookmark.pm,v 1.5 2006/04/05 17:55:05 jamiemccarthy Exp $
+$Id: Bookmark.pm,v 1.6 2006/04/05 22:26:32 pudge Exp $

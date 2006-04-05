@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.17 2006/04/05 18:52:12 entweichen Exp $
+// $Id: admin.js,v 1.18 2006/04/05 22:26:32 pudge Exp $
 
 function admin_signoff(el) {
 	var params = [];
@@ -153,7 +153,6 @@ function make_spelling_correction(misspelled_word, form_element) {
 			var correction = document.forms.slashstoryform.elements[selected_key].value;
 			document.forms.slashstoryform.elements[form_element].value =
 				document.forms.slashstoryform.elements[form_element].value.replace(re, correction);
-
 		}
 
 		// Remove this row from the table.

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.13 2006/04/05 20:12:53 jamiemccarthy Exp $
+# $Id: mysql_dump.sql,v 1.14 2006/04/05 22:26:32 pudge Exp $
 #
 
 INSERT INTO reskey_resources VALUES (100, 'ajax_base');
@@ -116,12 +116,12 @@ INSERT INTO ajax_ops VALUES (NULL, 'remarks_config', 'Slash::Remarks', 'ajaxFetc
 INSERT INTO ajax_ops VALUES (NULL, 'remarks_config_save', 'Slash::Remarks', 'ajaxConfigSave', 'ajax_admin', 'createuse');
 
 # signoff
-INSERT INTO ajax_ops VALUES(NULL, 'admin_signoff', 'Slash::Admin', 'ajax_signoff', 'ajax_admin', 'use');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_signoff', 'Slash::Admin', 'ajax_signoff', 'ajax_admin', 'use');
 
 # slashboxes
-INSERT INTO ajax_ops VALUES(NULL, 'admin_slashdbox', 'Slash::Admin', 'ajax_slashdbox', 'ajax_admin', 'createuse');
-INSERT INTO ajax_ops VALUES(NULL, 'admin_storyadminbox', 'Slash::Admin', 'ajax_storyadminbox', 'ajax_admin', 'createuse');
-INSERT INTO ajax_ops VALUES(NULL, 'admin_authorbox', 'Slash::Admin', 'ajax_authorbox', 'ajax_admin', 'createuse');
-INSERT INTO ajax_ops VALUES(NULL, 'admin_perfbox', 'Slash::Admin', 'ajax_perfbox', 'ajax_admin', 'createuse');
-INSERT INTO ajax_ops VALUES(NULL, 'admin_learnword', 'Slash::Admin', 'admin_learnword', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_slashdbox', 'Slash::Admin', 'ajax_slashdbox', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_storyadminbox', 'Slash::Admin', 'ajax_storyadminbox', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_authorbox', 'Slash::Admin', 'ajax_authorbox', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_perfbox', 'Slash::Admin', 'ajax_perfbox', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'admin_learnword', 'Slash::Admin', 'admin_learnword', 'ajax_admin', 'createuse');
 

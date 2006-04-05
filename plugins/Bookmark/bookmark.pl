@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.6 2006/03/29 22:46:39 pudge Exp $
+# $Id: bookmark.pl,v 1.7 2006/04/05 16:38:29 tvroom Exp $
 
 use strict;
 use Slash;
@@ -33,7 +33,7 @@ sub main {
 	$op = 'default' if $ops{$op}[2] && !$postflag;
 	redirect("/login.pl") if $user->{seclev} < $ops{$op}[3];
 
-	header() if $op ne "save";
+	header("$constants->{sitename} Bookmarks") if $op ne "save";
 	$ops{$op}[FUNCTION]->($constants, $slashdb, $user, $form);
 	footer() if $op ne "save";
 }

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.5 2006/03/29 01:34:38 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.6 2006/04/06 00:16:34 pudge Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -9,7 +9,7 @@ CREATE TABLE tags (
 	globjid		int UNSIGNED NOT NULL,
 	uid		mediumint UNSIGNED NOT NULL,
 	created_at	datetime NOT NULL,
-	inactivated	datetime DEFAULT NULL
+	inactivated	datetime DEFAULT NULL,
 	PRIMARY KEY tagid (tagid),
 	KEY tagnameid (tagnameid),
 	KEY globjid_tagnameid (globjid, tagnameid),

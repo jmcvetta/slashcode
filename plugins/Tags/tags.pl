@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags.pl,v 1.4 2006/04/05 19:57:19 jamiemccarthy Exp $
+# $Id: tags.pl,v 1.5 2006/04/07 04:01:19 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -45,7 +45,19 @@ sub main {
 
 	} else {
 
-		$index_hr->{objects} = $tags_reader->getAllObjectsTagname($tagname);
+		my $objects = $tags_reader->getAllObjectsTagname($tagname);
+		my %globjids = ( map { ( $_->{globjid}, 1 ) } @$objects );
+		my @objects = ( );
+		for my $globjid (keys %globjids) {
+			my @objs = (grep { $_->{globjid} == $globjid } @$objects);
+			push @objects, {
+				url	=> $objs[0]{url},
+				title	=> $objs[0]{title},
+				count	=> scalar(@objs),
+			};
+		}
+		@objects = sort { $b->{count} <=> $a->{count} || $a->{title} cmp $b->{title} } @objects;
+		$index_hr->{objects} = \@objects;
 
 		$title = getData('head2', { tagname => $tagname });
 

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.31 2006/02/21 21:43:16 tvroom Exp $
+# $Id: PLUGIN,v 1.32 2006/04/07 14:13:50 entweichen Exp $
 description="Admin Interface"
 name=Admin
 mysql_dump=dump
@@ -58,3 +58,4 @@ template=templates/topic_popup_ui;admin;default
 template=templates/topic_popup_ui_topiced;admin;default
 template=templates/varEdit;admin;default
 template=templates/topicEdit;admin;default
+template=templates/spellcheck;admin;default

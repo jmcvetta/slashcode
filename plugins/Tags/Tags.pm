@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.26 2006/04/07 18:23:32 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.27 2006/04/09 20:01:57 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -859,7 +859,7 @@ print STDERR "setting $tag->{tagid} to 0\n";
 				"tagnameid=$tagnameid");
 			if ($new_user_clout < 1) {
 				my $uids = $self->sqlSelectColArrayref('uid', 'tags',
-					"tagnameid=$tagnameid");
+					"tagnameid=$tagnameid AND inactivated IS NOT NULL");
 				if (@$uids) {
 					my @uids_changed;
 					for my $uid (@$uids) {
@@ -888,7 +888,8 @@ print STDERR "setting $tag->{tagid} to 0\n";
 				"tagnameid=$tagnameid AND globjid=$globjid");
 			if ($new_user_clout < 1) {
 				my $uids = $self->sqlSelectColArrayref('uid', 'tags',
-					"tagnameid=$tagnameid AND globjid=$globjid");
+					"tagnameid=$tagnameid AND inactivated IS NOT NULL
+					 AND globjid=$globjid");
 				if (@$uids) {
 					my @uids_changed = ( );
 					for my $uid (@$uids) {

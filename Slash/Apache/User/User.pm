@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.158 2006/04/06 00:16:34 pudge Exp $
+# $Id: User.pm,v 1.159 2006/04/10 19:28:40 pudge Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.159 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -513,6 +513,7 @@ sub add_author_quotes {
 sub userLogin {
 	my($uid_try, $passwd, $logtoken) = @_;
 	my $slashdb = getCurrentDB();
+	my($user) = getCurrentUser();
 
 	# only allow plain text passwords, unless logtoken is passed,
 	# then only allow that
@@ -526,7 +527,10 @@ sub userLogin {
 
 	if (!isAnon($uid)) {
 		setCookie('user', bakeUserCookie($uid, $cookvalue),
-			$slashdb->getUser($uid, 'session_login'));
+			$user->{state}{login_temp} eq 'yes'
+				? 2
+				: $slashdb->getUser($uid, 'session_login')
+		);
 		return($uid, $newpass);
 	} else {
 		my $gSkin = getCurrentSkin();

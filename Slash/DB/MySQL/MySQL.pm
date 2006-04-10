@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.890 2006/04/07 18:22:57 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.891 2006/04/10 19:28:40 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.890 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.891 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -2585,7 +2585,7 @@ sub getLogToken {
 	}
 
 	# reset the temp values
-	$user->{state}{login_temp}   = $login_temp;
+	$user->{state}{login_temp}   = $login_temp unless $value;
 	$user->{state}{login_public} = $login_public;
 
 #print STDERR scalar(gmtime) . " $$ getLogToken returning, value='$value'\n";
@@ -2622,12 +2622,13 @@ sub setLogToken {
 	# prune logtokens table, each user should not have too many
 	my $uid_q = $self->sqlQuote($uid);
 	my $max = getCurrentStatic('logtokens_max') || 2;
-	my $total = $self->sqlCount('users_logtokens', "uid = $uid_q");
+	my $where = "uid = $uid_q AND temp = '$temp_str' AND public = '$public_str'";
+	my $total = $self->sqlCount('users_logtokens', $where);
 	if ($total > $max) {
 		my $limit = $total - $max;
 		my $logtokens = $self->sqlSelectAllHashref(
 			'lid', 'lid, uid, temp, public, locationid',
-			'users_logtokens', "uid = $uid_q",
+			'users_logtokens', $where,
 			"ORDER BY expires LIMIT $limit"
 		);
 		my @lids = sort { $a <=> $b } keys %$logtokens;

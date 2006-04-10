@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.272 2006/04/05 19:41:27 pudge Exp $
+# $Id: Slash.pm,v 1.273 2006/04/10 19:28:24 pudge Exp $
 
 package Slash;
 
@@ -1295,6 +1295,8 @@ EOT
 	# we need a display-friendly fakeemail string
 	$comment->{fakeemail_vis} = ellipsify($comment->{fakeemail});
 	push @{$user->{state}{cids}}, $comment->{cid};
+
+	$options->{class} ||= 'full';
 
 	return _hard_dispComment(
 		$comment, $constants, $user, $form, $comment_shrunk,

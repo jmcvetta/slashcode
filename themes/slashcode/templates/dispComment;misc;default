@@ -22,11 +22,12 @@ en_US
 __name__
 dispComment
 __template__
+[% discussion2 = user.discussion2 && (user.discussion2 == "slashdot" || user.discussion2 == "uofm") %]
 <li id="[% cid %]_tree" class="comment">
-<div id="[% cid %]_comment"[% IF user.discussion2 && (user.discussion2 == "slashdot" || user.discussion2 == "uofm") %] class="[% class %]"[% END %]>
+<div id="[% cid %]_comment"[% IF discussion2 %] class="[% class %]"[% END %]>
 	<div class="commentTop">
 		<div class="title">
-			[% IF user.discussion2 && (user.discussion2 == "slashdot" || user.discussion2 == "uofm") %]
+			[% IF discussion2 %]
 			<script type="text/javascript">
 				displaymode[[% cid %]] = "[% class %]";
 				futuredisplaymode[[% cid %]] = "[% class %]";
@@ -86,11 +87,15 @@ __template__
 	[% PROCESS dispLinkComment %]
 </div>
 
+[% IF discussion2 %]
+<div id="replyto_[% cid %]"></div>
+
 <ul id="[% cid %]_group">
 	<li id="[% cid %]_hiddens" class="hide"></li>
 </ul>
+[% END %]
 
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.40 2006/03/29 23:03:24 pudge Exp $
+$Id: dispComment;misc;default,v 1.41 2006/04/10 19:27:00 pudge Exp $

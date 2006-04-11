@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.273 2006/04/10 19:28:24 pudge Exp $
+# $Id: Slash.pm,v 1.274 2006/04/11 22:14:04 pudge Exp $
 
 package Slash;
 
@@ -250,6 +250,7 @@ sub jsSelectComments {
 	return <<EOT;
 comments = $anon_comments;
 root_comments = $anon_roots;
+user_uid = $user->{uid};
 $extra
 renderRoots('commentlisting');
 EOT
@@ -1932,8 +1933,8 @@ EOT1
 EOT2
 
 	my $return = <<EOT;
-<li id="$comment->{cid}_tree" class="comment">
-<div id="$comment->{cid}_comment"$classattr>
+<li id="tree_$comment->{cid}" class="comment">
+<div id="comment_$comment->{cid}"$classattr>
 	<div class="commentTop">
 		<div class="title">
 $head
@@ -2000,8 +2001,10 @@ EOT
 
 	if ($discussion2) {
 		$return .= <<EOT;
-<ul id="$comment->{cid}_group">
-	<li id="$comment->{cid}_hiddens" class="hide"></li>
+<div id="replyto_$comment->{cid}"></div>
+
+<ul id="group_$comment->{cid}">
+	<li id="hiddens_$comment->{cid}" class="hide"></li>
 </ul>
 
 EOT

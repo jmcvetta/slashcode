@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.225 2006/04/05 19:39:54 pudge Exp $
+# $Id: slashschema_create.sql,v 1.226 2006/04/11 20:18:25 tvroom Exp $
 #
 
 #
@@ -1260,6 +1260,7 @@ CREATE TABLE urls (
 	content_type VARCHAR(60),
 	initialtitle VARCHAR(255),
 	validatedtitle VARCHAR(255),
+	tags_top VARCHAR(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (url_id),
 	UNIQUE url_digest (url_digest)
 );

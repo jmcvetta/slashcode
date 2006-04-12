@@ -19,7 +19,7 @@ en_US
 __name__
 printCommentsMain
 __template__
-<a name="comments"></a>
+<a name="acomments"></a>
 <div class="commentwrap">
 <div class="commentBox">
 [% IF title %]
@@ -105,4 +105,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.26 2006/03/24 20:56:42 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.27 2006/04/12 06:26:14 pudge Exp $

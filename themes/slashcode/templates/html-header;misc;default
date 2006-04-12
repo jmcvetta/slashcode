@@ -25,7 +25,7 @@ __template__
 [% END %]
 [% css = Slash.db.getCSS() %]
 [%- FOREACH file = css -%]
-[% IF file.ie_cond %]<!--[if [% file.ie_cond %]]>[% END %]<link rel="[% file.rel %]" type="[% file.type %]" media="[% file.media %]" href="[% IF constants.css_use_imagedir; constants.imagedir; ELSE; gSkin.rootdir; END %]/[% file.file %]?[% constants.cvs_tag_currentcode %]" [% IF file.title %]title="[% file.title %]"[% END %] >[% IF file.ie_cond %]<![endif]-->[% END %]
+[% IF file.ie_cond %]<!--[if [% file.ie_cond %]]>[% END %]<link rel="[% file.rel %]" type="[% file.type %]" media="[% file.media %]" href="[% IF constants.css_use_imagedir; constants.imagedir; ELSE; gSkin.rootdir; END %]/[% file.file %]?[% constants.cvs_tag_currentcode %]"[% IF file.title %] title="[% file.title %]"[% END %]>[% IF file.ie_cond %]<![endif]-->[% END %]
 [% END -%]
 [%- IF constants.plugin.Ajax %]
 	[%- IF !user.is_anon -%]
@@ -39,4 +39,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.18 2006/04/11 22:12:39 pudge Exp $
+$Id: html-header;misc;default,v 1.19 2006/04/12 22:34:28 pudge Exp $

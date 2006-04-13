@@ -28,10 +28,7 @@ __template__
 	<div class="commentTop">
 		<div class="title">
 			[% IF discussion2 %]
-			<script type="text/javascript">
-				displaymode[[% cid %]] = "[% class %]";
-				futuredisplaymode[[% cid %]] = "[% class %]";
-			</script>
+			<script type="text/javascript">displaymode[[% cid %]] = "[% class %]"</script>
 			<h4><a id="comment_link_[% cid %]" name="comment_link_[% cid %]" href="javascript:setFocusComment([% class == 'full' ? '-' : ''; cid %]);">[% subject %]</a></h4>
 			[% ELSE %]
 			<h4><a name="[% cid %]">[% subject %]</a></h4>
@@ -98,4 +95,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.42 2006/04/11 22:14:04 pudge Exp $
+$Id: dispComment;misc;default,v 1.43 2006/04/13 20:44:31 pudge Exp $

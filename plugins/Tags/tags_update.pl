@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_update.pl,v 1.11 2006/04/11 20:43:08 tvroom Exp $
+# $Id: tags_update.pl,v 1.12 2006/04/17 16:39:48 jamiemccarthy Exp $
 
 # Performs periodic updates for any new tags added.
 
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 1;
@@ -84,7 +84,7 @@ $task{$me}{code} = sub {
 		my $tag_ar = $tags_reader->getTagsByNameAndIdArrayref('stories', $stoid);
 		my @top_5 = getTop5($tag_ar, $stoid, "stories",
 			$userdata_cache, $tagname_param_cache, $tagname_cmds_cache);
-		warn "no top_5 for $stoid" if !@top_5;
+#		warn "no top_5 for $stoid" if !@top_5;
 		$n_stories_updated += $slashdb->setStory($stoid,
 			{ tags_top => join(" ", @top_5) });
 	}

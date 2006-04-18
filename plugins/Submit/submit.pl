@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.132 2006/02/27 21:57:37 jamiemccarthy Exp $
+# $Id: submit.pl,v 1.133 2006/04/18 20:54:13 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -625,10 +625,14 @@ sub saveSub {
 		}
 	}
 
-
-
 	my $messagesub = { %$submission };
 	$messagesub->{subid} = $slashdb->createSubmission($submission);
+	
+	if ($form->{url_id}) {
+		my $url_id = $form->{url_id};
+		my $globjid = $slashdb->getGlobjidCreate("submissions", $messagesub->{subid});
+		$slashdb->addUrlForGlobj($url_id, $globjid);
+	}
 
 	my $messages = getObject('Slash::Messages');
 	if ($messages) {

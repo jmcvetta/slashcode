@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.30 2006/04/18 20:53:26 tvroom Exp $
+# $Id: Tags.pm,v 1.31 2006/04/18 23:34:51 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -409,7 +409,7 @@ sub getTagsByNameAndIdArrayref {
 	my $inactivated_where = $options && $options->{include_inactive}
 		? ''
 		: ' AND inactivated IS NULL';
-	
+
 	my $days_where = $options && $options->{days_back}
 		? " AND created_at >= DATE_SUB(NOW(), INTERVAL $options->{days_back} DAY)"
 		: "";

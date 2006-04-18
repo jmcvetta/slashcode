@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.134 2006/04/18 20:55:21 tvroom Exp $
+# $Id: journal.pl,v 1.135 2006/04/18 23:28:22 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.134 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.135 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -638,9 +638,10 @@ sub doSaveArticle {
 		unless ($id) {
 			return getData('create_failed');
 		}
+
 		if ($form->{url_id}) {
 			my $url_id = $form->{url_id};
-			my $globjid = $slashdb->getGlobjidCreate("journals", $id);
+			my $globjid = $slashdb->getGlobjidCreate('journals', $id);
 			$slashdb->addUrlForGlobj($url_id, $globjid);
 		}
 

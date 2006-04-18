@@ -63,6 +63,9 @@ __template__
 						[% END %]
 					<br>
 					[% END %]
+					[% IF form.url_id %]
+						<input type="hidden" name="url_id" value="[% form.url_id | strip_attribute %]">
+					[% END %]
 					<input type="submit" name="op" value="preview" class="button">
 				[% IF form.preview || article.id %]
 					<input type="submit" name="op" value="save" class="button">
@@ -82,4 +85,4 @@ __template__
 __seclev__
 100
 __version__
-$Id: journaledit;journal;default,v 1.24 2006/03/01 06:02:58 pudge Exp $
+$Id: journaledit;journal;default,v 1.25 2006/04/18 20:55:21 tvroom Exp $

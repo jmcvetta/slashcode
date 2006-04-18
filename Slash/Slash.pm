@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.275 2006/04/13 20:44:31 pudge Exp $
+# $Id: Slash.pm,v 1.276 2006/04/18 17:30:21 pudge Exp $
 
 package Slash;
 
@@ -1982,11 +1982,12 @@ EOT
 			pid	=> $comment->{original_pid},
 			subject	=> 'Parent',
 			subject_only => 1,
-		}, 1) if $comment->{original_pid};
+		}, 1) if $comment->{original_pid} && !($discussion2 &&
+			(!$form->{cid} || $form->{cid} != $comment->{cid})
+		);
 
 		push @link, "<div class=\"modsel\">".createSelect("reason_$comment->{cid}",
 			$reasons, '', 1, 1)."</div>" if $can_mod
-				&& $user->{mode} ne 'archive'
 				&& ( !$user->{state}{discussion_archived}
 					|| $constants->{comments_moddable_archived} );
 

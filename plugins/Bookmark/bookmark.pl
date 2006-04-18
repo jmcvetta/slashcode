@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.7 2006/04/05 16:38:29 tvroom Exp $
+# $Id: bookmark.pl,v 1.8 2006/04/18 20:23:39 tvroom Exp $
 
 use strict;
 use Slash;
@@ -139,9 +139,9 @@ sub saveBookmark {
 	my $strip_url = strip_attribute($form->{url});
 
 	if ($form->{redirect} eq "journal") {
-		redirect("/journal.pl?op=edit&description=$strip_title&article=$strip_url");
+		redirect("/journal.pl?op=edit&description=$strip_title&article=$strip_url&url_id=$url_id");
 	} elsif ($form->{redirect} eq "submit") {
-		redirect("/submit.pl?subj=$strip_title&story=$strip_url");
+		redirect("/submit.pl?subj=$strip_title&story=$strip_url&url_id=$url_id");
 	} else {
 		redirect($form->{url});
 	}

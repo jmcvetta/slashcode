@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.276 2006/04/18 17:30:21 pudge Exp $
+# $Id: Slash.pm,v 1.277 2006/04/18 23:08:09 pudge Exp $
 
 package Slash;
 
@@ -737,7 +737,9 @@ sub printComments {
 		? $comments->{$cidorpid}{totalvisiblekids}
 		: $cc;
 
-	my $lcp = linkCommentPages($discussion->{id}, $pid, $cid, $total);
+	my $lcp = ($user->{discussion2} &&
+		($user->{discussion2} eq 'slashdot' || $user->{discussion2} eq 'uofm')
+	) ? '' : linkCommentPages($discussion->{id}, $pid, $cid, $total);
 
 	# Figure out whether to show the moderation button.  We do, but
 	# only if at least one of the comments is moderatable.
@@ -1254,7 +1256,6 @@ sub dispComment {
 	my $maxcommentsize = $options->{maxcommentsize} || $user->{maxcommentsize};
 
 	my($comment_shrunk, %reasons);
-
 	if ($form->{mode} ne 'archive'
 		&& $comment->{len} > $maxcommentsize
 		&& $form->{cid} ne $comment->{cid})

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.22 2006/03/20 22:57:41 pudge Exp $
+# $Id: ajax.pl,v 1.23 2006/04/18 23:08:09 pudge Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -260,6 +260,13 @@ print STDERR scalar(localtime) . " adminTagsCommands stoid='$stoid' seclev='$use
 	return getData('tags_admin_result', { results => \@results }, 'tags');
 }
 
+sub readRest {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $cid = $form->{cid} or return;
+	return $slashdb->getCommentText($cid);
+}
+
+
 ##################################################################
 sub default { }
 
@@ -291,12 +298,11 @@ sub getOps {
 	);
 
 	my %mainops = (
-		# this one will move soon
-#		get_comments	=> {
-#			function	=> \&Slash::ajaxSelectComments,
-#			reskey_name	=> 'ajax_admin',
-#			reskey_type	=> 'createuse',
-#		},
+		comments_read_rest	=> {
+			function	=> \&readRest,
+			reskey_name	=> 'ajax_base',
+			reskey_type	=> 'createuse',
+		},
 		getSectionPrefsHTML => {
 			function	=> \&getSectionPrefsHTML,
 			reskey_name	=> 'ajax_user',

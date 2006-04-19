@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.30 2006/04/05 22:26:32 pudge Exp $
+# $Id: Admin.pm,v 1.31 2006/04/19 17:52:01 entweichen Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -578,9 +578,22 @@ sub ajax_learnword {
 	my $form = getCurrentForm();
 
 	my $template = $self->getTemplateByName("ispellok", { page => "admin" });
-	my $template_text = $self->sqlSelect("template", "templates", "tpid = " . $template->{tpid});
-	$template_text .= $form->{'word'} . ' ';
-	$self->sqlUpdate("templates", { template => $template_text }, "tpid = " . $template->{tpid});
+    if (!$template) {
+        errorLog("Spellcheck: personal dictionary not found.");
+        return;
+    }
+    
+    my $template_text = $self->sqlSelect("template", "templates", "tpid = " . $template->{tpid});
+	
+    # Somehow we were called even though the word was found in the personal dictionary. Return.
+    return if ($template_text =~ /\s$form->{'word'}\s/);
+    
+    $template_text .= $form->{'word'} . ' ';
+	my $rows = $self->sqlUpdate("templates", { template => $template_text }, "tpid = " . $template->{tpid});
+
+    if (!$rows) {
+        errorLog("Spellcheck: personal dictionary not updated.");
+    }
 }
 
 sub DESTROY {

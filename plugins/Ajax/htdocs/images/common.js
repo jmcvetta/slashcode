@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.22 2006/04/11 20:11:31 tvroom Exp $
+// $Id: common.js,v 1.23 2006/04/19 18:34:59 jamiemccarthy Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -46,6 +46,21 @@ function closePopup(id, refresh) {
 		window.location.reload();
 	}
 }
+
+function handleEnter(ev, func, arg) {
+        if (!ev) {
+                ev = window.event;
+        }
+        var code = ev.which || ev.keyCode;
+        if (code == 13) { // return/enter
+		func(arg);
+                ev.returnValue = true;
+                return true;
+        }
+        ev.returnValue = false;
+        return false;
+}
+
 
 function moveByObjSize(div, addOffsetWidth, addOffsetHeight) {
 	if (addOffsetWidth) {

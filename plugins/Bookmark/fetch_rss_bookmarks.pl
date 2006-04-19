@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.1 2006/04/18 20:38:06 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.2 2006/04/19 16:17:31 tvroom Exp $
 
 use strict;
 use Slash;
@@ -13,7 +13,7 @@ use LWP::UserAgent;
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '0-59/10 * * * *';
+$task{$me}{timespec} = '12 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {

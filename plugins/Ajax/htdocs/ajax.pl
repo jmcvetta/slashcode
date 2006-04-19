@@ -1,6 +1,8 @@
+#!/usr/bin/perl
+# This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.24 2006/04/19 17:43:10 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.25 2006/04/19 17:55:44 pudge Exp $
 
 use strict;
 use warnings;
@@ -10,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {

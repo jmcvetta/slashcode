@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.977 2006/04/19 03:27:14 tvroom Exp $
+# $Id: upgrades,v 1.978 2006/04/19 16:06:05 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3860,4 +3860,5 @@ CREATE TABLE bookmark_feeds (
 	PRIMARY KEY(id)
 ) TYPE=InnoDB;
 
-
+# Update for ajax_ops
+UPDATE ajax_ops SET subroutine="ajax_learnword" where subroutine = "admin_learnword";

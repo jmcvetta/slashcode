@@ -1,11 +1,11 @@
-# $Id: PLUGIN,v 1.3 2006/04/18 20:30:24 tvroom Exp $
+# $Id: PLUGIN,v 1.4 2006/04/19 17:17:37 tvroom Exp $
 name=Bookmark
 description="Bookmark"
 htdoc=bookmark.pl
 mysql_dump=mysql_dump.sql
 mysql_schema=mysql_schema.sql
 requiresplugin=Tags
-#task=bookmark_backend.pl
+task=bookmark_backend.pl
 task=fetch_rss_bookmarks.pl
 template=templates/bookmark;misc;default
 template=templates/bookmarklink;misc;default

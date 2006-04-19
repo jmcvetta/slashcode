@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.226 2006/04/11 20:18:25 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.227 2006/04/19 03:28:33 tvroom Exp $
 #
 
 #
@@ -532,6 +532,21 @@ CREATE TABLE globj_types (
 	PRIMARY KEY (gtid),
 	UNIQUE maintable (maintable)
 ) TYPE=InnoDB;
+
+#
+# Table structure for table 'globj_urls'
+#
+
+DROP TABLE IF EXISTS globj_urls;
+CREATE TABLE globj_urls (
+	id INT(10) UNSIGNED NOT NULL auto_increment,
+        globjid  INT UNSIGNED NOT NULL DEFAULT 0,
+	url_id INT(10) UNSIGNED NOT NULL NOT NULL DEFAULT 0,
+	PRIMARY KEY (id),
+	UNIQUE globjid_url_id (globjid, url_id)
+) TYPE=InnoDB;
+
+
 
 #
 # Table structure for table 'hooks'

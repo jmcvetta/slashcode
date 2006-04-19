@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.981 2006/04/19 19:14:44 pudge Exp $
+# $Id: upgrades,v 1.982 2006/04/19 19:42:43 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3859,4 +3859,7 @@ CREATE TABLE bookmark_feeds (
 UPDATE ajax_ops SET subroutine="ajax_learnword" where subroutine = "admin_learnword";
 
 # PUDGE LAST UPDATED HERE
+
+# 2006-04-19
+UPDATE vars SET value = 'T_2_5_0_109' WHERE name = 'cvs_tag_currentcode';
 

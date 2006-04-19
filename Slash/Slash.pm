@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.278 2006/04/19 19:02:37 pudge Exp $
+# $Id: Slash.pm,v 1.279 2006/04/19 19:14:43 pudge Exp $
 
 package Slash;
 
@@ -1817,7 +1817,7 @@ sub _hard_dispComment {
 
 	$comment_to_display = qq'<div id="comment_body_$comment->{cid}">$comment->{comment}</div>';
 	my $sighide = $comment_shrunk ? ' hide' : '';
-	$comment_to_display .= qq'<div class="sig$sighide">$comment->{sig}</div>' unless $user->{nosigs};
+	$comment_to_display .= qq'<div id="comment_sig_$comment->{cid}" class="sig$sighide">$comment->{sig}</div>' if $comment->{sig} && !$user->{nosigs};
 
 	if ($comment_shrunk) {
 		my $readtext = 'Read the rest of this comment...';

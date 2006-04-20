@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.279 2006/04/19 19:14:43 pudge Exp $
+# $Id: Slash.pm,v 1.280 2006/04/20 01:45:30 pudge Exp $
 
 package Slash;
 
@@ -1833,7 +1833,7 @@ sub _hard_dispComment {
 				subject_only => 1,
 			}, 1);
 		}
-		$comment_to_display .= qq'<div id="comment_shrunk_$comment->{cid}" class="shrunk">$link</div>';
+		$comment_to_display .= qq'<div id="comment_shrunk_$comment->{cid}" class="commentshrunk">$link</div>';
 	}
 
 	$time_to_display = timeCalc($comment->{date});
@@ -1947,6 +1947,7 @@ EOT2
 
 	my $return = <<EOT;
 <li id="tree_$comment->{cid}" class="comment">
+<div id="comment_status_$comment->{cid}" class="commentstatus"></div>
 <div id="comment_$comment->{cid}"$classattr>
 	<div class="commentTop">
 		<div class="title">

@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.23 2006/04/19 18:34:59 jamiemccarthy Exp $
+// $Id: common.js,v 1.24 2006/04/20 01:45:30 pudge Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -266,83 +266,30 @@ function tagsCreateForUrl(id) {
 }
 
 // helper functions
-function ajax_eval(params, onsucc, onfail, url) {
+function ajax_update(params, onsucc, options, url) {
 	var h = $H(params);
-	if (!url) {
+
+	if (!url)
 		url = '/ajax.pl';
-	}
-	
+
+	if (!options)
+		options = {};
+
+	options.method = 'post';
+	options.parameters = h.toQueryString();
+
 	var ajax = new Ajax.Updater(
-		{
-			success: onsucc,
-			failure: onfail
-		},
+		{ success: onsucc },
 		url,
-		{
-			method:		'post',
-			parameters:	h.toQueryString(),
-			evalScripts:	1
-		}
+		options
 	);
 }
 
+function ajax_periodic_update(secs, params, onsucc, options, url) {
+	if (!options)
+		options = {};
 
-function ajax_update(params, onsucc, onfail, url) {
-	var h = $H(params);
-	if (!url) {
-		url = '/ajax.pl';
-	}
-	
-	var ajax = new Ajax.Updater(
-		{
-			success: onsucc,
-			failure: onfail
-		},
-		url,
-		{
-			method:		'post',
-			parameters:	h.toQueryString()
-		}
-	);
+	options.frequency = secs;
+
+	ajax_update(params, onsucc, options, url);
 }
-
-// function ajax_update_sync(params, onsucc, onfail, url) {
-// 	var h = $H(params);
-// 	if (!url) {
-// 		url = '/ajax.pl';
-// 	}
-// 	
-// 	var ajax = new Ajax.Updater(
-// 		{
-// 			success: onsucc,
-// 			failure: onfail
-// 		},
-// 		url,
-// 		{
-// 			method:		'post',
-// 			parameters:	h.toQueryString(),
-// 			asynchronous:	false
-// 		}
-// 	);
-// }
-
-function ajax_periodic_update(secs, params, onsucc, onfail, url) {
-	var h = $H(params);
-	if (!url) {
-		url = '/ajax.pl';
-	}
-	
-	var ajax = new Ajax.PeriodicalUpdater(
-		{
-			success: onsucc,
-			failure: onfail
-		},
-		url,
-		{
-			method:		'post',
-			parameters:	h.toQueryString(),
-			frequency:	secs
-		}
-	);
-}
-

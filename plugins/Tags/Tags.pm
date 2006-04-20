@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.31 2006/04/18 23:34:51 pudge Exp $
+# $Id: Tags.pm,v 1.32 2006/04/20 03:31:28 tvroom Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -710,7 +710,7 @@ sub setTagsForGlobj {
 		($tag_string || $form->{tags} || '');
 	my %new_tagnames_opposites = map { $tags->getOppositeTagname($_), 1 } keys %new_tagnames;
 
-	my $uid = $user->{uid} || $options->{uid};
+	my $uid = $options->{uid} || $user->{uid};
 	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 	my $old_tags_ar = $tags_reader->getTagsByNameAndIdArrayref($table, $id, { uid => $uid });
 	my %old_tagnames = ( map { ($_->{tagname}, 1) } @$old_tags_ar );

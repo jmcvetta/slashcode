@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.318 2006/04/05 19:57:20 jamiemccarthy Exp $
+# $Id: users.pl,v 1.319 2006/04/25 20:35:47 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1601,7 +1601,8 @@ sub showBookmarks {
 		return;
 	}
 
-	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user_edit->{uid}, { type => "urls" });
+	my $tags_ar = $tags_reader->getGroupedTagsFromUser($user_edit->{uid}, { type => "urls", only_bookmarked => 1 });
+	
 	slashDisplay('userbookmarks', {
 		useredit	=> $user_edit,
 		tags_grouped	=> $tags_ar,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: url_checker.pl,v 1.3 2006/04/05 16:36:47 tvroom Exp $
+# $Id: url_checker.pl,v 1.4 2006/04/25 20:37:44 tvroom Exp $
 #
 # This task checks urls to see if they're still alive, and sets their
 # validated titles
@@ -15,7 +15,7 @@ use strict;
 
 use vars qw( %task $me $task_exit_flag );
 
-$task{$me}{timespec} = '0-59/6 * * * *';
+$task{$me}{timespec} = '0-59/2 * * * *';
 $task{$me}{timespec_panic_1} = '1-59/10 * * * *';
 $task{$me}{timespec_panic_2} = '';
 $task{$me}{on_startup} = 1;
@@ -24,9 +24,10 @@ $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;
 
 	my $start_time = time();
-	my $timeout = 120;
+	my $timeout = 60;
 
 	my $ua = LWP::UserAgent->new;
+	$ua->agent($constants->{url_checker_user_agent}) if $constants->{url_checker_user_agent};
 	$ua->timeout(30);
 
 	my $urls = $slashdb->getUrlsNeedingFirstCheck();

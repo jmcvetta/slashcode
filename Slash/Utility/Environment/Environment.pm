@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.196 2006/04/18 20:58:44 tvroom Exp $
+# $Id: Environment.pm,v 1.197 2006/04/25 01:07:43 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.196 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.197 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1750,7 +1750,7 @@ Hashref of cleaned-up data.
 		url_id spider_id miner_id keyword_id
 		st_main_select stc_main_select
 		parent_topic child_topic
-		skid primaryskid url_id
+		skid primaryskid
 	),
 	# Survey
 	qw(
@@ -3339,4 +3339,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.196 2006/04/18 20:58:44 tvroom Exp $
+$Id: Environment.pm,v 1.197 2006/04/25 01:07:43 jamiemccarthy Exp $

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.227 2006/04/19 03:28:33 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.228 2006/04/25 01:07:24 jamiemccarthy Exp $
 #
 
 #
@@ -540,7 +540,7 @@ CREATE TABLE globj_types (
 DROP TABLE IF EXISTS globj_urls;
 CREATE TABLE globj_urls (
 	id INT(10) UNSIGNED NOT NULL auto_increment,
-        globjid  INT UNSIGNED NOT NULL DEFAULT 0,
+	globjid INT UNSIGNED NOT NULL DEFAULT 0,
 	url_id INT(10) UNSIGNED NOT NULL NOT NULL DEFAULT 0,
 	PRIMARY KEY (id),
 	UNIQUE globjid_url_id (globjid, url_id)

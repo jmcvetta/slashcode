@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.26 2006/04/20 01:45:30 pudge Exp $
+# $Id: ajax.pl,v 1.27 2006/04/26 16:58:06 pudge Exp $
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -236,13 +236,17 @@ sub setSectionNexusPrefs() {
 sub readRest {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $cid = $form->{cid} or return;
+	my $sid = $form->{sid} or return;
 
 	my $comment = $slashdb->getComment($cid) or return;
+	return unless $comment->{sid} == $sid;
+
 	my $texts   = $slashdb->getCommentTextCached(
 		{ $cid => $comment },
 		[ $cid ],
 		{ cid => $cid }
 	) or return;
+
 	return $texts->{$cid} || '';
 }
 

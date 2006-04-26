@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.192 2006/02/22 02:06:07 pudge Exp $
+# $Id: Data.pm,v 1.193 2006/04/26 16:52:25 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.192 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.193 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2294,7 +2294,9 @@ sub url2html {
 
 	# we know this can break real URLs, but probably will
 	# preserve real URLs more often than it will break them
-	$text =~  s{(?<!['":=>])((?:$scheme_regex):/{0,2}[$URI::uric#]+)}{
+	# was ['":=>]
+	# should we parse the HTML instead?  problematic ...
+	$text =~  s{(?<!\S)((?:$scheme_regex):/{0,2}[$URI::uric#]+)}{
 		my $url   = fudgeurl($1);
 		my $extra = '';
 		$extra = $1 if $url =~ s/([?!;:.,']+)$//;
@@ -2302,6 +2304,7 @@ sub url2html {
 print STDERR "url2html s/// url='$url' extra='$extra'\n" if !defined($url) || !defined($extra);
 		qq[<a href="$url" rel="url2html-$$">$url</a>$extra];
 	}ogie;
+	# url2html-$$ is so we can remove the whole thing later for ecode
 
 	return $text;
 }
@@ -4242,4 +4245,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.192 2006/02/22 02:06:07 pudge Exp $
+$Id: Data.pm,v 1.193 2006/04/26 16:52:25 pudge Exp $

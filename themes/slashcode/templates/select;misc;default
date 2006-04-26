@@ -12,6 +12,7 @@ Create drop-down HTML list
 * numeric = boolean to sort keys numerically
 * ordered = an already sorted arrayref of the keys in items
 * multiple = boolean, whether MULTIPLE is specified in the <select>
+* onchange = unescaped value for onchange handler
 
 __title__
 
@@ -23,11 +24,11 @@ __name__
 select
 __template__
 [% IF default.ref == 'HASH'; default_hr = default; ELSE; default_hr = { $default = 1 }; END %]
-<select name="[% label %]"[% IF multiple %] MULTIPLE[% END %]>[% mylist = ordered ? ordered : numeric ? items.keys.nsort : items.keys.sort %]
+<select name="[% label %]"[% IF multiple %] MULTIPLE[% END %][% IF onchange %] onchange="[% onchange | strip_attribute %]"[% END %]>[% mylist = ordered ? ordered : numeric ? items.keys.nsort : items.keys.sort %]
 [% FOREACH item = mylist %]	[% IF default_hr.$item; selected = ' selected'; ELSE; selected = ''; END %]<option value="[% item %]"[% selected %]>[% items.$item | strip_literal %]</option>
 [% END %]</select>
 
 __seclev__
 10000
 __version__
-$Id: select;misc;default,v 1.10 2006/02/24 05:57:59 pudge Exp $
+$Id: select;misc;default,v 1.11 2006/04/26 16:55:20 pudge Exp $

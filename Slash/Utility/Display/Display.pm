@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.111 2006/03/29 22:46:39 pudge Exp $
+# $Id: Display.pm,v 1.112 2006/04/26 16:55:20 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -92,6 +92,11 @@ selected in the popup.  If MULTIPLE is set, this should
 be a hashref;  keys which are present and which have
 true values will all start out selected in the popup.
 
+If DEFAULT is a hashref, and no other values follow it,
+then it is an options hashref, containing possible values
+for the keys C<default>, C<return>, C<nsort>, C<ordered>,
+C<multiple>, C<onchange>.
+
 =item RETURN
 
 See "Return value" below.
@@ -119,6 +124,10 @@ If ORDERED is passed in either form, then the NSORT parameter is ignored.
 
 Boolean: do <SELECT MULTIPLE...> instead of <SELECT...>
 
+=item ONCHANGE
+
+Value for the C<onchange=""> attribute.
+
 =back
 
 =item Return value
@@ -139,6 +148,13 @@ The 'select' template block.
 
 sub createSelect {
 	my($label, $hashref, $default, $return, $nsort, $ordered, $multiple) = @_;
+
+	my($onchange);
+
+	if (ref $default eq 'HASH' && @_ == 3) {
+		($default, $return, $nsort, $ordered, $multiple, $onchange) =
+			@{$default}{qw(default return nsort ordered multiple onchange)};
+	}
 
 	if (ref $hashref eq 'ARRAY') {
 ### Pudge: see above. -Jamie
@@ -184,12 +200,13 @@ sub createSelect {
 	}
 
 	my $display = {
-		label	=> $label,
-		items	=> $hashref,
-		default	=> $default,
-		numeric	=> $nsort,
-		ordered	=> $ordered,
-		multiple => $multiple,
+		label		=> $label,
+		items		=> $hashref,
+		default		=> $default,
+		numeric		=> $nsort,
+		ordered		=> $ordered,
+		multiple	=> $multiple,
+		onchange	=> $onchange,
 	};
 
 	if ($return) {
@@ -356,10 +373,10 @@ sub selectMode {
 
 #========================================================================
 
-=head2 selectThreshold(COUNTS)
+=head2 selectThreshold(COUNTS[, OPTIONS])
 
 Creates a drop-down list of thresholds in HTML.  Default is the user's
-preference.  Calls C<createSelect>.
+preference.  Calls C<createSelect()>.
 
 =over 4
 
@@ -370,6 +387,10 @@ preference.  Calls C<createSelect>.
 =item COUNTS
 
 An arrayref of thresholds -E<gt> counts for that threshold.
+
+=item OPTIONS
+
+Options for C<createSelect()>.
 
 =back
 
@@ -386,7 +407,7 @@ The 'selectThreshLabel' template block.
 =cut
 
 sub selectThreshold  {
-	my($counts) = @_;
+	my($counts, $options) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
@@ -394,11 +415,15 @@ sub selectThreshold  {
 	foreach my $c ($constants->{comment_minscore} .. $constants->{comment_maxscore}) {
 		$data{$c} = slashDisplay('selectThreshLabel', {
 			points	=> $c,
-			count	=> $counts->[$c - $constants->{comment_minscore}],
+			count	=> $counts->[$c - $constants->{comment_minscore}] || 0,
 		}, { Return => 1, Nocomm => 1 });
 	}
 
-	createSelect('threshold', \%data, getCurrentUser('threshold'), 1, 1);
+	$options->{default}	= $user->{threshold} unless defined $options->{default};
+	$options->{'return'}	= 1                  unless defined $options->{'return'};
+	$options->{nsort}	= 1                  unless defined $options->{nsort};
+
+	createSelect('threshold', \%data, $options);
 }
 
 #========================================================================
@@ -1696,4 +1721,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.111 2006/03/29 22:46:39 pudge Exp $
+$Id: Display.pm,v 1.112 2006/04/26 16:55:20 pudge Exp $

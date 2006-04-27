@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark_backend.pl,v 1.2 2006/04/25 20:31:41 tvroom Exp $
+# $Id: bookmark_backend.pl,v 1.3 2006/04/27 03:47:57 tvroom Exp $
 
 use strict;
 use Slash;
@@ -94,6 +94,6 @@ sub _do_book_rss {
 }
 
 sub bookrdf  { _do_book_rss(@_, '0.9') } # RSS 0.9
-sub bookss  { _do_book_rss(@_, '1.0') } # RSS 1.0
+sub bookrss  { _do_book_rss(@_, '1.0') } # RSS 1.0
 sub bookatom { _do_book_rss(@_, '1.0', 'atom') } # Atom 1.0
 

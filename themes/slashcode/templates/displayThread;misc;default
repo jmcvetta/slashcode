@@ -13,13 +13,18 @@ en_US
 __name__
 displayThread
 __template__
+[% mystr = "<b>$link beneath your current threshold.</b>" %]
 [% IF discussion2 %]
-	<script>kidHiddens([% cid %], [% hidden %])</script>
+	<li id="hidestring_[% pid %]"><noscript>[% mystr %]</noscript></li>
+	<li class="hide">
+		<script type="text/javascript">kidHiddens([% pid %], [% hidden %])</script>
+	</li>
+
 [% ELSE %]
-	<li><b>[% link %] beneath your current threshold.</b></li>
+	<li>$link</li>
 [% END %]
 
 __seclev__
 10000
 __version__
-$Id: displayThread;misc;default,v 1.7 2006/04/26 16:58:07 pudge Exp $
+$Id: displayThread;misc;default,v 1.8 2006/05/02 22:10:32 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.46 2005/11/16 18:48:52 jamiemccarthy Exp $
+# $Id: portald,v 1.47 2006/05/02 19:13:10 pudge Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -205,10 +205,11 @@ sub getRDF {
 			next unless $link;
 
 			# convert links to sections of our own site
-			# into a non-scheme-specific format
+			# into a non-scheme-specific format ...
+			# unless host begins with "rss." (this could be a separate var ...)
 			my $uri = URI->new($link);
 			if ($uri->can('authority')) {
-				$uri->scheme(undef) if $uri->authority =~ /\b$bd_regex\Z/;
+				$uri->scheme(undef) if $uri->authority =~ /\b$bd_regex\Z/ && $uri->authority !~ /^rss\./;
 			}
 
 			$item->{link} = $uri->as_string or next;

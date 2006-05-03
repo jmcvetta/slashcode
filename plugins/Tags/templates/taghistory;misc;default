@@ -25,6 +25,9 @@ __template__
 			<td>[% tag.tagname %]</td>
 			<td><a href="[% gSkin.rootdir %]/~[% nickname | strip_paramattr %]">[% nickname | strip_literal %]</a></td>
 			<td>[% IF tag.inactivated %]<s>[% END %][% tag.created_at %][% IF tag.inactivated %]</s>[% END %]</td>
+			<td align=left>[% tag.tag_clout %]</td>
+			<td align=left>[% tag.tagname_clout %]</td>
+			<td align=left>[% tag.user_clout %]</td>
 		</tr>
 		[% toggle = 3 - toggle %]
 	[% END %]
@@ -33,4 +36,4 @@ __template__
 [% END %]
 </table>
 __version__
-$Id: taghistory;misc;default,v 1.3 2006/04/05 19:57:19 jamiemccarthy Exp $
+$Id: taghistory;misc;default,v 1.4 2006/05/03 16:42:12 jamiemccarthy Exp $

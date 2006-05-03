@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.6 2006/04/06 00:16:34 pudge Exp $
+# $Id: mysql_schema.sql,v 1.7 2006/05/03 16:42:12 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -69,4 +69,27 @@ CREATE TABLE tagcommand_adminlog (
 #) TYPE=InnoDB;
 
 ALTER TABLE users_info ADD COLUMN tag_clout FLOAT UNSIGNED NOT NULL DEFAULT 1.0 AFTER created_at;
+
+CREATE TABLE tagboxes (
+	tbid			smallint UNSIGNED NOT NULL AUTO_INCREMENT,
+	name			VARCHAR(32) DEFAULT '' NOT NULL,
+	affected_type		ENUM('user', 'globj') NOT NULL,
+	weight			FLOAT UNSIGNED DEFAULT 1.0 NOT NULL,
+	last_tagid_logged	int UNSIGNED NOT NULL,
+	last_run_completed	datetime,
+	PRIMARY KEY tbid (tbid),
+	UNIQUE name (name)
+) TYPE=InnoDB;
+
+CREATE TABLE tagbox_feederlog (
+	tfid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	created_at	datetime NOT NULL,
+	tbid		smallint UNSIGNED NOT NULL,
+	tagid		int UNSIGNED NOT NULL,
+	affected_id	int UNSIGNED NOT NULL,
+	importance	FLOAT UNSIGNED DEFAULT 1.0 NOT NULL,
+	PRIMARY KEY tfid (tfid),
+	KEY tbid_tagid (tbid, tagid),
+	KEY tbid_affectedid (tbid, affected_id)
+) TYPE=InnoDB;
 

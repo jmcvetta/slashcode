@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.991 2006/05/03 17:03:03 pudge Exp $
+# $Id: upgrades,v 1.992 2006/05/03 17:43:25 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3893,3 +3893,5 @@ CREATE TABLE tagbox_feederlog (
 	KEY tbid_tagid (tbid, tagid),
 	KEY tbid_affectedid (tbid, affected_id)
 ) TYPE=InnoDB;
+INSERT INTO tagboxes VALUES (NULL, 'tag_count', 'user', '1.0', 0, NULL);
+

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.989 2006/05/03 05:24:24 pudge Exp $
+# $Id: upgrades,v 1.990 2006/05/03 16:49:39 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3870,4 +3870,27 @@ UPDATE vars SET value = 'T_2_5_0_110' WHERE name = 'cvs_tag_currentcode';
 
 # 2006-05-02
 UPDATE vars SET value = 'T_2_5_0_111' WHERE name = 'cvs_tag_currentcode';
+
+# Update for plugins/Tags
+CREATE TABLE tagboxes (
+	tbid			smallint UNSIGNED NOT NULL AUTO_INCREMENT,
+	name			varchar(32) DEFAULT '' NOT NULL,
+	affected_type		ENUM('user', 'globj') NOT NULL,
+	weight			float UNSIGNED DEFAULT 1.0 NOT NULL,
+	last_tagid_logged	int UNSIGNED NOT NULL,
+	last_run_completed	datetime,
+	PRIMARY KEY tbid (tbid),
+	UNIQUE name (name)
+) TYPE=InnoDB;
+CREATE TABLE tagbox_feederlog (
+	tfid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	created_at	datetime NOT NULL,
+	tbid		smallint UNSIGNED NOT NULL,
+	tagid		int UNSIGNED NOT NULL,
+	affected_id	int UNSIGNED NOT NULL,
+	importance	FLOAT UNSIGNED DEFAULT 1.0 NOT NULL,
+	PRIMARY KEY tfid (tfid),
+	KEY tbid_tagid (tbid, tagid),
+	KEY tbid_affectedid (tbid, affected_id)
+) TYPE=InnoDB;
 

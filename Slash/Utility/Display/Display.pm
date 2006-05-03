@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.112 2006/04/26 16:55:20 pudge Exp $
+# $Id: Display.pm,v 1.113 2006/05/03 05:14:44 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -149,11 +149,11 @@ The 'select' template block.
 sub createSelect {
 	my($label, $hashref, $default, $return, $nsort, $ordered, $multiple) = @_;
 
-	my($onchange);
+	my($onchange, $onclick);
 
 	if (ref $default eq 'HASH' && @_ == 3) {
-		($default, $return, $nsort, $ordered, $multiple, $onchange) =
-			@{$default}{qw(default return nsort ordered multiple onchange)};
+		($default, $return, $nsort, $ordered, $multiple, $onchange, $onclick) =
+			@{$default}{qw(default return nsort ordered multiple onchange onclick)};
 	}
 
 	if (ref $hashref eq 'ARRAY') {
@@ -207,6 +207,7 @@ sub createSelect {
 		ordered		=> $ordered,
 		multiple	=> $multiple,
 		onchange	=> $onchange,
+		onclick		=> $onclick,
 	};
 
 	if ($return) {
@@ -1721,4 +1722,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.112 2006/04/26 16:55:20 pudge Exp $
+$Id: Display.pm,v 1.113 2006/05/03 05:14:44 pudge Exp $

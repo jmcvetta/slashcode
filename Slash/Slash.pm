@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.283 2006/05/03 17:03:03 pudge Exp $
+# $Id: Slash.pm,v 1.284 2006/05/03 23:21:46 pudge Exp $
 
 package Slash;
 
@@ -1135,6 +1135,8 @@ sub displayThread {
 	my $return = '';
 
 	my $discussion2 = $user->{discussion2} && $user->{discussion2} eq 'slashdot';
+	my $highlightthresh = $user->{highlightthresh};
+	$highlightthresh = $user->{threshold} if $highlightthresh < $user->{threshold};
 
 	# FYI: 'archive' means we're to write the story to .shtml at the close
 	# of the discussion without page breaks.  'metamod' means we're doing
@@ -1182,10 +1184,10 @@ sub displayThread {
 			}
 		}
 
-		my $highlightthresh = $user->{highlightthresh};
-		$highlightthresh = $user->{threshold} if $user->{threshold} > $highlightthresh;
 		my $highlight = 1 if $comment->{points} >= $highlightthresh && $class ne 'hidden';
 		$class = 'full' if $highlight;
+
+		$user->{state}{comments}{totals}{$class}++;
 
 		my $finish_list = 0;
 

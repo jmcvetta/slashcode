@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.988 2006/05/02 19:13:35 pudge Exp $
+# $Id: upgrades,v 1.989 2006/05/03 05:24:24 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3867,4 +3867,7 @@ UPDATE vars SET value = 'T_2_5_0_110' WHERE name = 'cvs_tag_currentcode';
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+# 2006-05-02
+UPDATE vars SET value = 'T_2_5_0_111' WHERE name = 'cvs_tag_currentcode';
 

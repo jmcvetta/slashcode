@@ -59,7 +59,7 @@ __template__
 		[% IF user.is_admin || user.acl.discussion2_uofm %]
         	<input type="radio" name="discussion2" value="uofm"[% constants.markup_checked_attribute IF user_edit.discussion2 == "uofm" %]> University of Michigan Testing<br>
 		[% END; IF user.is_admin || user.acl.discussion2_slashdot || user.is_subscriber || !constants.subscribe %]
-        	<input type="radio" name="discussion2" value="slashdot"[% constants.markup_checked_attribute IF user_edit.discussion2 == "slashdot" %]> Discussion2 Testing<br>
+        	<input type="radio" name="discussion2" value="slashdot"[% constants.markup_checked_attribute IF user_edit.discussion2 == "slashdot" %]> Slashdot's New Discussion System Testing<br>
 		[% END %]
 		</div></blockquote>
 		[% END %]
@@ -291,4 +291,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.54 2006/05/03 05:14:45 pudge Exp $
+$Id: editComm;users;default,v 1.55 2006/05/03 17:03:03 pudge Exp $

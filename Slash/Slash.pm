@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.282 2006/05/02 22:10:32 pudge Exp $
+# $Id: Slash.pm,v 1.283 2006/05/03 17:03:03 pudge Exp $
 
 package Slash;
 
@@ -47,6 +47,7 @@ $VERSION   	= '2.005000';  # v2.5.0
 
 	dispComment displayStory displayRelatedStories displayThread dispStory
 	getOlderStories getOlderDays moderatorCommentLog printComments
+	jsSelectComments
 );
 
 
@@ -215,7 +216,11 @@ sub selectComments {
 
 sub jsSelectComments {
 	require Data::JavaScript::Anon;
-	my($slashdb, $constants, $user, $form, $options) = @_;
+	my($slashdb, $constants, $user, $form) = @_;
+	$slashdb   ||= getCurrentDB();
+	$constants ||= getCurrentStatic();
+	$user      ||= getCurrentUser();
+	$form      ||= getCurrentForm();
 
 	$user->{mode} = 'thread';
 	$user->{reparent} = 0;
@@ -280,7 +285,6 @@ user_threshold = $threshold;
 user_highlightthresh = $highlightthresh;
 
 discussion_id = $id;$extra
-finished_loading = 1;
 EOT
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.245 2006/05/03 05:14:45 pudge Exp $
+# $Id: comments.pl,v 1.246 2006/05/03 17:03:03 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -365,7 +365,7 @@ sub main {
 
 sub dynamicDisplay {
 	my($form, $slashdb, $user, $constants) = @_;
-	print Slash::jsSelectComments($slashdb, $constants, $user, $form);
+	print jsSelectComments($slashdb, $constants, $user, $form);
 }
 
 

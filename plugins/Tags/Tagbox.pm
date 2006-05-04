@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tagbox.pm,v 1.1 2006/05/03 16:42:12 jamiemccarthy Exp $
+# $Id: Tagbox.pm,v 1.2 2006/05/04 16:37:47 jamiemccarthy Exp $
 
 package Slash::Tagbox;
 
@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -120,7 +120,7 @@ sub markTagboxLogged {
 
 sub markTagboxRunComplete {
 	my($self, $tbid, $affected_id, $max_tagid) = @_;
-print STDERR "markTagboxRunComplete: tbid=$tbid aff_id=$affected_id max=$max_tagid\n";
+#print STDERR "markTagboxRunComplete: tbid=$tbid aff_id=$affected_id max=$max_tagid\n";
 	$self->sqlDelete('tagbox_feederlog',
 		"tbid=$tbid AND affected_id=$affected_id
 		 AND tagid <= $max_tagid");

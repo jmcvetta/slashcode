@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.284 2006/05/03 23:21:46 pudge Exp $
+# $Id: Slash.pm,v 1.285 2006/05/13 23:46:06 pudge Exp $
 
 package Slash;
 
@@ -1998,8 +1998,9 @@ $head
 		 	<span class="score">$score_to_display</span>
 		</div>
 		<div class="details">
-			by $user_nick_to_display$zoosphere_display$user_email_to_display
+			by $user_nick_to_display$zoosphere_display
 			<span class="otherdetails">
+				$user_email_to_display
 				on $time_to_display$comment_link_to_display
 				<small>$userinfo_to_display $comment->{ipid_display}</small>
 			</span>

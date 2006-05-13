@@ -116,6 +116,7 @@ __template__
 		currents['full']    = [% user.state.comments.totals.full    || 0 %];
 		currents['oneline'] = [% user.state.comments.totals.oneline || 0 %];
 		updateTotals();
+		$('commentControlBox').style.display = 'block';
 //-->
 	</script>
 [% END %]
@@ -123,4 +124,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.35 2006/05/03 23:21:46 pudge Exp $
+$Id: printCommComments;misc;default,v 1.36 2006/05/13 23:46:06 pudge Exp $

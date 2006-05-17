@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.39 2006/02/08 04:11:36 pudge Exp $
+# $Id: ircslash.pl,v 1.40 2006/05/17 20:39:00 jamiemccarthy Exp $
 
 use strict;
 
@@ -907,7 +907,7 @@ sub possible_check_dbs {
 sub handle_remarks {
 	my $slashdb = getCurrentDB();
 	my $remarks = getObject('Slash::Remarks');
-	return if $hushed;
+	return if $hushed || !$remarks;
 
 	my $constants = getCurrentStatic();
 	$next_remark_id ||= $slashdb->getVar('ircslash_nextremarkid', 'value', 1) || 1;

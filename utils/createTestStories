@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestStories,v 1.35 2006/01/19 19:46:02 jamiemccarthy Exp $
+# $Id: createTestStories,v 1.36 2006/05/17 15:15:58 jamiemccarthy Exp $
 # Based on Cliff's createTestComments, bugs are probably his fault :)
 
 BEGIN {
@@ -26,7 +26,7 @@ use Slash::Relocate;
 
 use vars qw( $slashdb $werder $constants );
 
-(my $VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts, %family_tree);
@@ -90,24 +90,7 @@ $constants = getCurrentStatic();
 		my @topics = getRandomTopicList();
 
 		my $topics = { };
-		%$topics = map { $_ => 0 } @topics;
-
-		if (rand(1) < 0.25) {
-			# run in the section for each topic
-			foreach (@topics) {
-				$topics->{$_} = 10;
-			}
-		} elsif (rand(1) < 0.95) {
-			# Pick several topics to be mainpage-worthy.
-			my %m_tid = map { $_ => rand(1) < 0.5 ? (rand(1) < 0.3 ? 40 : 30) : 10 }
-				@topics;
-			# Need at least one.
-			$m_tid{rand(@topics)} = 30;
-			# elevate those to the mainpage
-			foreach (@topics) {
-				$topics->{$_} = $m_tid{$_};
-			}
-		}
+		%$topics = map { $_ => 20 } @topics;
 
 		# If this story will display in multiple nexuses, we might
 		# want to manually remove it from one, just for fun.
@@ -115,6 +98,10 @@ $constants = getCurrentStatic();
 		if (@$nexuses >= 2 && rand(1) < 0.2) {
 			my $n = $nexuses->[ rand(@$nexuses) ];
 			$topics->{$n} = 0;
+		}
+
+		if (rand(1) < 0.80) {
+			promote_to_mainpage($topics);
 		}
 
 		my $commentstatus = rand(1) < .95 ? "enabled" : "disabled";
@@ -157,6 +144,28 @@ $constants = getCurrentStatic();
 }
 
 # subroutines
+
+sub promote_to_mainpage {
+	my($topics_hr) = @_;
+	my @topics = keys %$topics_hr;
+	# Pick several topics to be mainpage-worthy.
+	my %m_tid = map { $_ => rand(1) < 0.5 ? (rand(1) < 0.3 ? 40 : 30) : 10 }
+		@topics;
+	# Need at least one.
+	my $rand_key = $topics[rand(@topics)];
+	$m_tid{$rand_key} = 30;
+	# elevate those to the mainpage
+	foreach (@topics) {
+		$topics_hr->{$_} = $m_tid{$_};
+	}
+	# Did it work?  If not, add mainpage manually.
+	my $mainpage_nexus = $constants->{mainpage_nexus_tid};
+	my $rendered_hr = $slashdb->renderTopics($topics_hr);
+	if (!$rendered_hr->{$mainpage_nexus}) {
+		$topics_hr->{$mainpage_nexus} = 30;
+	}
+}
+
 
 sub get_time {
 	my($direction) = @_;

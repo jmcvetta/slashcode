@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.896 2006/05/17 20:42:05 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.897 2006/05/19 02:17:59 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.896 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.897 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11969,10 +11969,11 @@ sub setUser {
 		}
 	}
 
-	if ($rows) {
+	if ($rows && keys(%old_values)) {
 		my $tagboxdb = getObject('Slash::Tagbox');
 		for my $name (keys %old_values) {
-			$tagboxdb->logUserChange($uid, $name, $old_values{$name}, $new_values{$name});
+			$tagboxdb->logUserChange($uid, $name,
+				$old_values{$name}, $new_values{$name});
 		}
 	}
 

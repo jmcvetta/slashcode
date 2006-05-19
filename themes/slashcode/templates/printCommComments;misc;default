@@ -116,7 +116,7 @@ __template__
 		if (root_comment)
 			currents['full'] += 1;
 		updateTotals();
-		$('commentControlBox').style.display = 'block';
+		enableControls();
 //-->
 	</script>
 [% END %]
@@ -124,4 +124,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.37 2006/05/17 21:09:55 pudge Exp $
+$Id: printCommComments;misc;default,v 1.38 2006/05/19 02:02:48 pudge Exp $

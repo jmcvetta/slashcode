@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.287 2006/05/17 21:09:55 pudge Exp $
+# $Id: Slash.pm,v 1.288 2006/05/19 02:02:48 pudge Exp $
 
 package Slash;
 
@@ -2081,16 +2081,17 @@ sub tempUofmLinkGenerate {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 
-	my $cipher = tempUofmCipherObj();
+	my $cipher = tempUofmCipherObj() or return;
 
 	my $encrypted = $cipher->encrypt($user->{uid} . '|' . $user->{nickname});
 	return sprintf($constants->{uofm_address}, URI::Escape::uri_escape($encrypted));
 }
 
 sub tempUofmCipherObj {
-	require Crypt::CBC;
-
 	my $constants = getCurrentStatic();
+	return unless $constants->{uofm_key} && $constants->{uofm_iv};
+
+	require Crypt::CBC;
 
 	my $cipher = Crypt::CBC->new({
 		key		=> $constants->{uofm_key},

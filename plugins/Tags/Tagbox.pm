@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tagbox.pm,v 1.3 2006/05/17 20:42:05 jamiemccarthy Exp $
+# $Id: Tagbox.pm,v 1.4 2006/05/19 21:02:26 jamiemccarthy Exp $
 
 package Slash::Tagbox;
 
@@ -17,7 +17,7 @@ use base 'Slash::DB::MySQL';
 
 use Data::Dumper;
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -71,9 +71,9 @@ sub getTagboxes {
 
 	# Update the data to current if necessary;  load it all if necessary.
 	if ($tagboxes) {
-		# The data in these two rows is never cached.  Only load it from
-		# the DB if it is requested (i.e. if $field was empty so all
-		# fields are needed, or if $field specifies one or both).
+		# The data in these four columns is never cached.  Only load it
+		# from the DB if it is requested (i.e. if $field was empty so
+		# all fields are needed, or if $field is an array with any).
 		if (!@fields
 			|| $fields{last_run_completed}
 			|| $fields{last_tagid_logged}
@@ -81,7 +81,9 @@ sub getTagboxes {
 			|| $fields{last_tuid_logged}
 		) {
 			my $new_hr = $self->sqlSelectAllHashref('tbid',
-				'tbid, last_tagid_logged, last_run_completed', 'tagboxes');
+				'tbid, last_run_completed,
+				 last_tagid_logged, last_tdid_logged, last_tuid_logged',
+				'tagboxes');
 			for my $hr (@$tagboxes) {
 				$hr->{last_run_completed} = $new_hr->{$hr->{tbid}}{last_run_completed};
 				$hr->{last_tagid_logged}  = $new_hr->{$hr->{tbid}}{last_tagid_logged};
@@ -200,7 +202,7 @@ sub logDeactivatedTags {
 	return 0 if !$deactivated_tagids;
 	my $logged = 0;
 	for my $tagid (@$deactivated_tagids) {
-		$logged += $self->sqlInsert('tagboxlog_deactivated',
+		$logged += $self->sqlInsert('tags_deactivated',
 			{ tagid => $tagid });
 	}
 	return $logged;
@@ -208,7 +210,7 @@ sub logDeactivatedTags {
 
 sub logUserChange {
 	my($self, $uid, $name, $old, $new) = @_;
-	return $self->sqlInsert('tagboxlog_userchange', {
+	return $self->sqlInsert('tags_userchange', {
 		-created_at =>	'NOW()',
 		uid =>		$uid,
 		user_key =>	$name,
@@ -279,10 +281,8 @@ sub addFeederInfo {
 }
 
 sub markTagboxLogged {
-	my($self, $tbid, $last_tagid_logged) = @_;
-	$self->sqlUpdate('tagboxes',
-		{ last_tagid_logged => $last_tagid_logged },
-		"tbid=$tbid");
+	my($self, $tbid, $update_hr) = @_;
+	$self->sqlUpdate('tagboxes', $update_hr, "tbid=$tbid");
 }
 
 sub markTagboxRunComplete {

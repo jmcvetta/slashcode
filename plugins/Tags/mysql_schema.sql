@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.8 2006/05/17 20:42:05 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.9 2006/05/19 21:02:27 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -87,14 +87,14 @@ CREATE TABLE tagboxlog_feeder (
 	KEY tbid_affectedid (tbid, affected_id)
 ) TYPE=InnoDB;
 
-CREATE TABLE tagboxlog_deactivated (
+CREATE TABLE tags_deactivated (
 	tdid		int UNSIGNED NOT NULL AUTO_INCREMENT,
 	tagid		int UNSIGNED NOT NULL,
 	PRIMARY KEY tdid (tdid),
 	KEY tagid (tagid)
 ) TYPE=InnoDB;
 
-CREATE TABLE tagboxlog_userchange (
+CREATE TABLE tags_userchange (
 	tuid		int UNSIGNED NOT NULL AUTO_INCREMENT,
 	created_at	datetime NOT NULL,
 	uid		mediumint UNSIGNED NOT NULL,

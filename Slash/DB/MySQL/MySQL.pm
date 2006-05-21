@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.897 2006/05/19 02:17:59 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.898 2006/05/21 14:50:54 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.897 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.898 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11952,18 +11952,22 @@ sub setUser {
 # of the users_param table could _actually_ deadlock.
 # [Mon Nov 28 22:29:23 2005] [error] /journal.pl:Slash::DB::MySQL:/usr/local/lib/perl5/site_perl/5.8.6/i686-linux/Slash/DB/MySQL.pm:12600:virtuser='slashdot' -- hostinfo='[ip redacted] via TCP/IP' -- Deadlock found when trying to get lock; Try restarting transaction -- REPLACE INTO users_param (uid,value,name) VALUES(\n  '[uid redacted]',\n  '1133216962',\n  'lastlooktime')
 # [Mon Nov 28 22:29:23 2005] [error] Which was called by:Slash::DB::MySQL:/usr/local/lib/perl5/site_perl/5.8.6/i686-linux/Slash/DB/MySQL.pm:11410
-			$old_values{$name} = $self->sqlSelect('value', 'users_param',
-				"uid = $uid AND name = $name_q");
+			if (exists $old_values{$name}) {
+				$old_values{$name} = $self->sqlSelect('value', 'users_param',
+					"uid = $uid AND name = $name_q");
+			}
 			my $this_rows = 0;
 			$this_rows = $self->sqlReplace('users_param', {
 				uid	=> $uid,
 				name	=> $name,
 				value	=> $value,
 			}) if defined $value;
-			if ($this_rows) {
-				$new_values{$name} = $value;
-			} else {
-				delete $old_values{$name};
+			if (exists $old_values{$name}) {
+				if ($this_rows) {
+					$new_values{$name} = $value;
+				} else {
+					delete $old_values{$name};
+				}
 			}
 			$rows += $this_rows;
 		}
@@ -11972,8 +11976,8 @@ sub setUser {
 	if ($rows && keys(%old_values)) {
 		my $tagboxdb = getObject('Slash::Tagbox');
 		for my $name (keys %old_values) {
-			$tagboxdb->logUserChange($uid, $name,
-				$old_values{$name}, $new_values{$name});
+			$tagboxdb->logUserChange($uid, $name, $old_values{$name}, $new_values{$name})
+				if $old_values{$name} ne $new_values{$name};
 		}
 	}
 

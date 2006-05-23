@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.228 2006/04/25 01:07:24 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.229 2006/05/23 00:11:29 jamiemccarthy Exp $
 #
 
 #
@@ -1257,7 +1257,7 @@ CREATE TABLE tzcodes (
 ) TYPE=InnoDB;
 
 #
-# Table structure for table 'users'
+# Table structure for table 'urls'
 #
 
 DROP TABLE IF EXISTS urls;
@@ -1276,9 +1276,14 @@ CREATE TABLE urls (
 	initialtitle VARCHAR(255),
 	validatedtitle VARCHAR(255),
 	tags_top VARCHAR(255) DEFAULT '' NOT NULL,
+	popularity float DEFAULT '0' NOT NULL,
 	PRIMARY KEY (url_id),
 	UNIQUE url_digest (url_digest)
 );
+
+#
+# Table structure for table 'users'
+#
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (

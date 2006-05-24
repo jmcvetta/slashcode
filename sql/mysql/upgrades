@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1000 2006/05/19 21:02:26 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1001 2006/05/24 18:12:59 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3925,4 +3925,7 @@ UPDATE vars SET value = 'T_2_5_0_112' WHERE name = 'cvs_tag_currentcode';
 
 RENAME TABLE tagboxlog_deactivated TO tags_deactivated;
 RENAME TABLE tagboxlog_userchange TO tags_userchange;
+
+# 2006-05-24
+UPDATE vars SET value = 'T_2_5_0_113' WHERE name = 'cvs_tag_currentcode';
 

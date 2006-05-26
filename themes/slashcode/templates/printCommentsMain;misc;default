@@ -140,6 +140,7 @@ __template__
 
 	[% IF discussion2 %]
 		<br>Hidden=<span id="currentHidden">0</span> Displayed=<span id="currentFull">0</span> Abbreviated=<span id="currentOneline">0</span>
+		<div id="commentControlBoxStatus" class="hide"><b>Loading ... Please wait.</b></div>
 	[% END %]
 		</fieldset>
 		</form>
@@ -154,4 +155,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.38 2006/05/24 15:42:44 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.39 2006/05/26 22:51:36 pudge Exp $

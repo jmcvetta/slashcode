@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tagbox.pl,v 1.5 2006/05/23 21:50:28 jamiemccarthy Exp $
+# $Id: tagbox.pl,v 1.6 2006/05/30 18:39:14 jamiemccarthy Exp $
 
 use strict;
 
@@ -43,7 +43,7 @@ $task{$me}{code} = sub {
 
 		# Insert into tagboxlog_feeder
 		my $activity_feeder = update_feederlog();
-		sleep 5;
+		sleep 2;
 		last if $task_exit_flag;
 
 		# Run tagboxes (based on tagboxlog_feeder)

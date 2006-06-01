@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema,v 1.9 2004/06/17 16:11:54 jamiemccarthy Exp $
+# $Id: mysql_schema,v 1.10 2006/06/01 22:09:05 jamiemccarthy Exp $
 #
 
 # 
@@ -24,7 +24,7 @@ CREATE TABLE blobs (
 DROP TABLE IF EXISTS story_files;
 CREATE TABLE story_files (
 	id INT(5) NOT NULL AUTO_INCREMENT,
-	stoid MEDIUMINT UNSIGNED NOT NULL DEFAULT '',
+	stoid MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
 	description VARCHAR(80) NOT NULL DEFAULT '',
 	file_id VARCHAR(32) NOT NULL DEFAULT '',
 	isimage ENUM('no', 'yes') DEFAULT 'no' NOT NULL,

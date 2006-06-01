@@ -109,7 +109,7 @@ __template__
 [% IF discussion2 %]
 	<script type="text/javascript">
 <!--
-		displaymode          = [% js_comments %];
+		displaymode          = [% anon_dump('Data::JavaScript::Anon', user.state.comments.status) %];
 		futuredisplaymode    = new cloneObject(displaymode);
 		prehiddendisplaymode = new cloneObject(displaymode);
 
@@ -129,4 +129,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.39 2006/05/26 22:51:36 pudge Exp $
+$Id: printCommComments;misc;default,v 1.40 2006/06/01 18:31:27 pudge Exp $

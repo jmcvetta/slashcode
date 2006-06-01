@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.48 2006/05/31 20:49:49 entweichen Exp $
+# $Id: Install.pm,v 1.49 2006/06/01 14:25:29 entweichen Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -181,24 +181,23 @@ sub installPlugins {
 }
 
 sub installTagbox {
-    my($self, $answer, $tagboxes, $symlink) = @_;
-    $tagboxes ||= $self->{'_tagboxes'};
+        my($self, $answer, $tagboxes, $symlink) = @_;
+        $tagboxes ||= $self->{'_tagboxes'};
     
-    $self->_install($tagboxes->{$answer}, $symlink, 'tagbox');
+        $self->_install($tagboxes->{$answer}, $symlink, 'tagbox');
 }
 
 sub installTagboxes {
-    my($self, $answers, $tagboxes, $symlink) = @_;
-    $tagboxes ||= $self->{'_tagboxes'};
+        my($self, $answers, $tagboxes, $symlink) = @_;
+        $tagboxes ||= $self->{'_tagboxes'};
 
-    for my $answer (@$answers) {
-        for (keys %$tagboxes) {
-            if ($answer eq $tagboxes->{$_}{order}) {
-                $self->_install($tagboxes->{$_}, $symlink, 'tagbox');
-            }
+        for my $answer (@$answers) {
+                for (keys %$tagboxes) {
+                        if ($answer eq $tagboxes->{$_}{order}) {
+                                $self->_install($tagboxes->{$_}, $symlink, 'tagbox');
+                        }
+                }
         }
-    } 
-        
 }
 
 # Used internally by the _process_fh_into_sql method (which in
@@ -522,10 +521,10 @@ sub getThemeList {
 }
 
 sub getTagboxList {
-    my $tagbox_list = _getList(@_, 'tagboxes', 'TAGBOX');
-    setListOrder($tagbox_list);
-    setListInstallOrder($tagbox_list);
-    return $tagbox_list;
+        my $tagbox_list = _getList(@_, 'tagboxes', 'TAGBOX');
+        setListOrder($tagbox_list);
+        setListInstallOrder($tagbox_list);
+        return $tagbox_list;
 }
 
 sub getSiteTemplates {

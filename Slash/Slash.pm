@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.290 2006/05/26 22:51:36 pudge Exp $
+# $Id: Slash.pm,v 1.291 2006/06/01 17:24:10 pudge Exp $
 
 package Slash;
 
@@ -785,7 +785,7 @@ sub printComments {
 
 	my $js_comments;
 	if ($discussion2) {
-		# module should be required already ...
+		require Data::JavaScript::Anon;
 		$js_comments = Data::JavaScript::Anon->anon_dump($user->{state}{comments}{status});
 	}
 

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1004 2006/06/01 22:10:30 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1005 2006/06/02 04:38:35 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3923,11 +3923,14 @@ RENAME TABLE tagboxlog_userchange TO tags_userchange;
 # 2006-05-24
 UPDATE vars SET value = 'T_2_5_0_113' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 # PUDGE LAST UPDATED HERE
 
 ALTER TABLE tagboxlog_feeder CHANGE COLUMN tagid tagid int UNSIGNED DEFAULT NULL AFTER importance, ADD COLUMN tdid int UNSIGNED DEFAULT NULL, ADD COLUMN tuid int UNSIGNED DEFAULT NULL, ADD KEY tbid_tdid (tbid, tdid), ADD KEY tbid_tuid (tbid, tuid);
+
+# 2006-06-01
+UPDATE vars SET value = 'T_2_5_0_114' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

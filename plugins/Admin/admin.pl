@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.293 2006/06/06 19:16:39 entweichen Exp $
+# $Id: admin.pl,v 1.294 2006/06/07 19:57:32 entweichen Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1735,19 +1735,6 @@ sub get_ispell_comments {
 		return "could not pipe to $ispell from $tmptext, $!";
 	}
 
-	# DEBUG
-	my $ispell_debug = "";
-	$ispell_debug .= "is aspell: ";
-	$ispell_debug .=
-		($constants->{ispell_is_really_aspell_with_lang})
-		? "yes: " . $constants->{ispell_is_really_aspell_with_lang} . "\n"
-		: "no\n";
-	$ispell_debug .= "dict template:\n$ok";
-	$ispell_debug .= "dict flag:$tmpok_flag\n";
-	print STDERR "ISPELL DEBUG:\n$ispell_debug";
-	# DEBUG
-	
-	my %misspelled_count = ( );
 	my %misspelled_suggestion = ( );
 	while (defined(my $line = <$ispell_fh>)) {
 		# Grab all ispell's flagged words and put them in the hash

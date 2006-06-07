@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.292 2006/06/01 18:31:27 pudge Exp $
+# $Id: Slash.pm,v 1.293 2006/06/07 21:19:46 pudge Exp $
 
 package Slash;
 
@@ -1195,7 +1195,6 @@ sub displayThread {
 		$class = 'full' if $highlight;
 
 		$user->{state}{comments}{totals}{$class}++;
-		$user->{state}{comments}{status}{$comment->{cid}} = $class;
 
 		my $finish_list = 0;
 

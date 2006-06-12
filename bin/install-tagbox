@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: install-tagbox,v 1.1 2006/05/31 20:45:14 entweichen Exp $
+# $Id: install-tagbox,v 1.2 2006/06/12 22:25:34 jamiemccarthy Exp $
 
 # This is the tagboxes install script.
 # -Cbrown (cbrown@vasoftware.com)
@@ -14,14 +14,13 @@ use Getopt::Std;
 use File::Copy;
 use Slash::Install;
 
-(my $VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 
 my %opts;
 # Remember to doublecheck these match usage()!
-usage() unless getopts('hvlu:', \%opts);
-usage() if ($opts{'h'} || !keys %opts);
+usage() if $opts{'h'};
 version() if $opts{'v'};
 $opts{'u'} ||= 'slash';
 

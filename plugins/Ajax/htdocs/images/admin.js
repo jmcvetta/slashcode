@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.19 2006/04/11 20:12:41 tvroom Exp $
+// $Id: admin.js,v 1.20 2006/06/13 15:41:22 entweichen Exp $
 
 function admin_signoff(el) {
 	var params = [];
@@ -159,7 +159,9 @@ function make_spelling_correction(misspelled_word, form_element) {
 			ajax_update(params);
 		}
 		else {
-			var re = new RegExp(misspelled_word, "g");
+                        // Try to weed out HREFs and parameters
+                        var pattern = misspelled_word + "(?!(\.\\w{2,3}\?.*)?\"\>)";
+                        var re = new RegExp(pattern, "g");
 			var correction = document.forms.slashstoryform.elements[selected_key].value;
 			document.forms.slashstoryform.elements[form_element].value =
 				document.forms.slashstoryform.elements[form_element].value.replace(re, correction);

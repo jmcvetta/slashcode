@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.296 2006/06/13 15:50:22 entweichen Exp $
+# $Id: admin.pl,v 1.297 2006/06/14 03:04:53 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1727,8 +1727,8 @@ sub get_ispell_comments {
 	my $tmptext = write_to_temp_file($text);
 	my $tmpok = "";
 	$tmpok = write_to_temp_file($ok) if $ok;
-        rename($tmpok, lc($tmpok));
-        $tmpok = lc($tmpok);
+	rename($tmpok, lc($tmpok));
+	$tmpok = lc($tmpok);
 	my $tmpok_flag = "";
 	$tmpok_flag = " -p $tmpok" if $tmpok;
 	
@@ -1752,7 +1752,7 @@ sub get_ispell_comments {
 
 	my %misspelled_words = ();
 	foreach my $mWord (keys %misspelled_suggestion) {
-                # Inititally set reference empty in case there are no suggestions.
+		# Inititally set reference empty in case there are no suggestions.
 		$misspelled_words{$mWord} = [];
 		foreach my $suggestion (split(/,\s?/, $misspelled_suggestion{$mWord})) {
 			push(@{$misspelled_words{$mWord}}, $suggestion);

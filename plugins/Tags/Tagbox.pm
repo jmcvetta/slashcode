@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tagbox.pm,v 1.5 2006/06/01 22:10:30 jamiemccarthy Exp $
+# $Id: Tagbox.pm,v 1.6 2006/06/15 00:36:59 jamiemccarthy Exp $
 
 package Slash::Tagbox;
 
@@ -17,7 +17,7 @@ use base 'Slash::DB::MySQL';
 
 use Data::Dumper;
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -237,9 +237,9 @@ sub getMostImportantTagboxAffectedIDs {
 }
 
 sub getTagboxTags {
-	my($self, $tbid, $affected_id, $extra_levels) = @_;
+	my($self, $tbid, $affected_id, $extra_levels, $options) = @_;
 	$extra_levels ||= 0;
-	my $type = $self->getTagboxes($tbid, 'affected_type')->{affected_type};
+	my $type = $options->{type} || $self->getTagboxes($tbid, 'affected_type')->{affected_type};
 #print STDERR "getTagboxTags($tbid, $affected_id, $extra_levels), type=$type\n";
 	my $hr_ar = [ ];
 	my $colname = ($type eq 'user') ? 'uid' : 'globjid';

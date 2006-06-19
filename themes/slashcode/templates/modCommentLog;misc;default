@@ -240,7 +240,7 @@ END;
 
 IF num_modifiers > 0 %]
 
-<table align="center" border="0" cellpadding="2" cellspacing="0" width="300">
+<table align="center" border="0" cellpadding="2" cellspacing="0" width="300" class="data" id="mod_summary">
 
 	<tr class="data_head">
 		<th align="left">Starting Score:&nbsp;&nbsp;&nbsp;</th>
@@ -362,4 +362,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: modCommentLog;misc;default,v 1.46 2006/02/21 21:48:35 tvroom Exp $
+$Id: modCommentLog;misc;default,v 1.47 2006/06/19 19:47:09 tvroom Exp $

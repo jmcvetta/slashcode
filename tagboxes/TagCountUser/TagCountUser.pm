@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TagCountUser.pm,v 1.3 2006/05/30 18:37:54 jamiemccarthy Exp $
+# $Id: TagCountUser.pm,v 1.4 2006/06/19 23:45:29 jamiemccarthy Exp $
 
 package Slash::Tagbox::TagCountUser;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -60,7 +60,11 @@ sub new {
 
 sub feed_newtags {
 	my($self, $tags_ar) = @_;
-print STDERR "Slash::Tagbox::TagCountUser->feed_newtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) . "'\n";
+if (scalar(@$tags_ar) < 9) {
+print STDERR "Slash::Tagbox::TagCountUser->feed_newtags called for tags '" . join(' ', map { $_->{tagid} } @$tags_ar) . "'\n";
+} else {
+print STDERR "Slash::Tagbox::TagCountUser->feed_newtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tagid} . " ... " . $tags_ar->[-1]{tagid} . "\n";
+}
 	my $ret_ar = [ ];
 	for my $tag_hr (@$tags_ar) {
 		push @$ret_ar, {
@@ -74,13 +78,21 @@ print STDERR "Slash::Tagbox::TagCountUser->feed_newtags called: tags_ar='" . joi
 
 sub feed_deactivatedtags {
 	my($self, $tags_ar) = @_;
-print STDERR "Slash::Tagbox::TagCountUser->feed_deactivatedtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) .  "'\n";
+if (scalar(@$tags_ar) < 9) {
+print STDERR "Slash::Tagbox::TagCountUser->feed_deactivatedtags called for tags '" . join(' ', map { $_->{tdid} } @$tags_ar) . "'\n";
+} else {
+print STDERR "Slash::Tagbox::TagCountUser->feed_deactivatedtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tdid} . " ... " . $tags_ar->[-1]{tdid} . "\n";
+}
 	return $self->feed_newtags($tags_ar);
 }
 
 sub feed_userchanges {
 	my($self, $users_ar) = @_;
-print STDERR "Slash::Tagbox::TagCountUser->feed_userchanges called: users_ar='" . join(' ', map { $_->{tuid} } @$users_ar) .  "'\n";
+if (scalar(@$users_ar) < 9) {
+print STDERR "Slash::Tagbox::TagCountUser->feed_userchanges called for changes '" . join(' ', map { $_->{tuid} } @$users_ar) . "'\n";
+} else {
+print STDERR "Slash::Tagbox::TagCountUser->feed_userchanges called for " . scalar(@$users_ar) . " changes " . $users_ar->[0]{tuid} . " ... " . $users_ar->[-1]{tuid} . "\n";
+}
 	return [ ];
 }
 

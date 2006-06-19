@@ -14,7 +14,7 @@ __template__
 [% IF tagshist.size %]
 	<p></p>
 	[% PROCESS titlebar title=title %]
-	<table class="data">
+	<table class="data" width="100%">
 		<tr class="data_head"><th>Tag</th><th>Object</th><th>Time</th></tr>
 		[% toggle = 0 %]
 		[% FOREACH tag=tagshist %]
@@ -33,4 +33,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: usertaghistory;users;default,v 1.1 2006/03/14 21:31:46 tvroom Exp $
+$Id: usertaghistory;users;default,v 1.2 2006/06/19 19:46:24 tvroom Exp $

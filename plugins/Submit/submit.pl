@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.135 2006/06/20 17:06:30 cowboyneal Exp $
+# $Id: submit.pl,v 1.136 2006/06/20 19:05:29 cowboyneal Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -265,6 +265,18 @@ sub previewForm {
 		}
 	}
 
+        foreach my $memory (@$sub_memory) {
+                my $match = $memory->{submatch};
+
+                if ($sub->{email} =~ m/$match/i ||
+                    $sub->{name}  =~ m/$match/i ||
+                    $sub->{subj}  =~ m/$match/i ||
+                    $sub->{ipid}  =~ m/$match/i ||
+                    $sub->{story} =~ m/$match/i) {
+                        push @$subnotes_ref, $memory;
+                }
+        }
+
 	slashDisplay('previewForm', {
 		submission			=> $sub,
 		submitter			=> $reader->getUser($sub->{uid}),
@@ -281,6 +293,7 @@ sub previewForm {
 		accepted_from_uid 	  	=> $accepted_from_uid,
 		accepted_from_emaildomain 	=> $accepted_from_emaildomain,
 		note_options			=> getSubmissionSelections($constants),
+		subnotes_ref			=> $subnotes_ref,
 	});
 }
 

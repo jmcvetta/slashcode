@@ -14,14 +14,12 @@ en_US
 __name__
 topics
 __template__
-[
+<ul class="menu">
 [% FOR i = items %]
-	<a href="[% i.value %]">[% i.label %]</a>
-	[% " | " UNLESS loop.last %]
+	<li><a href="[% i.value %]">[% i.label %]</a></li>
 [% END %]
-]
-
+</ul>
 __seclev__
 10000
 __version__
-$Id: topics;menu;default,v 1.6 2005/07/27 22:54:48 pudge Exp $
+$Id: topics;menu;default,v 1.7 2006/06/20 18:54:16 tvroom Exp $

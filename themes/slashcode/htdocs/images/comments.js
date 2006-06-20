@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.24 2006/06/14 05:15:34 pudge Exp $
+// $Id: comments.js,v 1.25 2006/06/20 20:17:18 pudge Exp $
 
 var comments;
 var root_comments;
@@ -153,7 +153,7 @@ function findAffected(type, cid, override) {
 function setDefaultDisplayMode(cid) {
 	if (displaymode[cid]) { return }
 
-	var comment = $('comment_' + cid);
+	var comment = fetchEl('comment_' + cid);
 	if (!comment) { return }
 
 	var defmode = comment.className;
@@ -507,4 +507,8 @@ function finishLoading() {
 
 	updateTotals();
 	enableControls();
+}
+
+function floatButtons () {
+	$('gods').className='thor';
 }

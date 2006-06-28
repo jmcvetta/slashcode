@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.229 2006/05/23 00:11:29 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.230 2006/06/28 22:43:15 tvroom Exp $
 #
 
 #
@@ -760,6 +760,8 @@ CREATE TABLE related_stories (
 	rel_sid varchar(16) NOT NULL default '',
 	title varchar(255) default '',
 	url varchar(255) default '',
+	cid mediumint(8) unsigned NOT NULL default '0',
+	ordernum smallint unsigned NOT NULL default '0',
 	PRIMARY KEY (id),
 	KEY stoid (stoid)
 ) TYPE=InnoDB;

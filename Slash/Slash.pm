@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.294 2006/06/20 15:28:44 cowboyneal Exp $
+# $Id: Slash.pm,v 1.295 2006/06/28 22:31:02 tvroom Exp $
 
 package Slash;
 
@@ -1623,6 +1623,12 @@ sub displayRelatedStories {
 			next if !$viewable;
 			my $related_story = $reader->getStory($rel->{rel_sid});
 			$return .= displayStory($related_story->{stoid}, 0, { dispmode => "brief", getintro => 1, expandable => 1 });
+		} elsif ($rel->{cid}) {
+			my $comment = $reader->getComment($rel->{cid});
+			my $discussion = $reader->getDiscussion($comment->{sid});
+			my $comment_user = $reader->getUser($comment->{uid});
+			my $is_anon = isAnon($comment->{uid});
+			$return .= slashDisplay("comment_related", { comment => $comment, comment_user => $comment_user, discussion => $discussion, is_anon => $is_anon }, { Return => 1});
 		} elsif ($rel->{title}) {
 			$return .= slashDisplay("url_related", { title => $rel->{title}, url => $rel->{url} }, { Return => 1 });
 		}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.900 2006/06/19 23:42:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.901 2006/06/28 22:25:51 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.900 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.901 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -13570,17 +13570,19 @@ sub getRelatedStoriesForStoid {
 		"*",
 		"related_stories",
 		"stoid=$stoid_q",
-		"ORDER BY rel_sid desc"
+		"ORDER BY ordernum asc"
 	);
 }
 
 sub setRelatedStoriesForStory {
-	my($self, $sid_or_stoid, $rel_sid_hr, $rel_url_hr) = @_;
+	my($self, $sid_or_stoid, $rel_sid_hr, $rel_url_hr, $rel_cid_hr) = @_;
 	my $stoid = $self->getStoidFromSidOrStoid($sid_or_stoid);
 	my $stoid_q = $self->sqlQuote($stoid);
 	my $story = $self->getStory($stoid);
 
 	my $prev_rel_stories = $self->getRelatedStoriesForStoid($stoid);
+
+	my @unparented_cids;
 
 	foreach my $prev_rel (@$prev_rel_stories) {
 		if ($prev_rel->{rel_stoid}) {
@@ -13590,26 +13592,69 @@ sub setRelatedStoriesForStory {
 	}
 	
 	$self->sqlDelete("related_stories", "stoid = $stoid_q");
+	
+	foreach my $rel_cid (keys %$rel_cid_hr) {
+		my $disc = $self->getDiscussion($rel_cid_hr->{$rel_cid}{sid});
+		if ($disc->{sid} && !$rel_sid_hr->{$disc->{sid}}) {
+			$rel_sid_hr->{$disc->{sid}} = $self->getStory($disc->{sid});
+		}
+		if ($disc->{sid}) {
+			push @{$rel_sid_hr->{$disc->{sid}}{cids}}, $rel_cid;
+		} else {
+			push @unparented_cids, $rel_cid;
+		}
+	}
 
-	foreach my $rel (keys %$rel_sid_hr) {
+	my $i = 1;
+	foreach my $rel (sort keys %$rel_sid_hr) {
 		my $rel_stoid = $self->getStoidFromSidOrStoid($rel);
 		$self->sqlInsert("related_stories", {
 			stoid		=> $stoid,
 			rel_sid		=> $rel,
-			rel_stoid	=> $rel_stoid
+			rel_stoid	=> $rel_stoid,
+			ordernum 	=> $i
 		});
+		
+		$i++;
+
+		if ($rel_sid_hr->{$rel}{cids}) {
+			foreach my $cid (sort {$a <=> $b } @{$rel_sid_hr->{$rel}{cids}}) {
+				$self->sqlInsert("related_stories", {
+					stoid 		=> $stoid,
+					cid		=> $cid,
+					ordernum 	=> $i
+				});
+				$i++;
+			}
+		}
 
 		# Insert reciprocal link if it doesn't already exist
 		my $rel_stoid_q = $self->sqlQuote($rel_stoid);
+		my $ordnum = $self->sqlSelect("MAX(ordernum)", "related_stories", "stoid= $rel_stoid_q AND (url='' or url is null)") || 0;
+		$self->sqlUpdate("related_stories", {
+					-ordernum => "ordernum + 1"
+				}, "(url != '' OR url is not null) AND stoid = $rel_stoid_q"
+		);
+		$ordnum++;
 		my $sid_q = $self->sqlQuote($story->{sid});
 		if (!$self->sqlCount("related_stories", "stoid = $rel_stoid_q AND rel_sid = $sid_q")) {
 			$self->sqlInsert("related_stories", {
 				stoid		=> $rel_stoid,
 				rel_sid		=> $story->{sid},
 				rel_stoid	=> $stoid,
+				ordernum	=> $ordnum
 			});
 			$self->markStoryDirty($rel_stoid);
 		}
+	}
+
+	foreach my $cid (sort {$a <=> $b } @unparented_cids) {
+		$self->sqlInsert("related_stories", {
+			stoid	 => $stoid,
+			cid 	 => $cid,
+			ordernum => $i,
+		});
+		$i++;
 	}
 	
 	foreach my $rel_url (keys %$rel_url_hr) {
@@ -13617,8 +13662,11 @@ sub setRelatedStoriesForStory {
 			stoid   => $stoid,
 			url     => $rel_url,
 			title	=> $rel_url_hr->{$rel_url},
-		})
+			ordernum => $i
+		});
+		$i++;
 	}
+
 }
 
 sub updateSubMemory {

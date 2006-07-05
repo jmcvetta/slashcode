@@ -120,7 +120,7 @@ __template__
 	</form>
 
 	<br>
-        <form action="//[% gSkin.rootdir %]/submit.pl" method="post">
+        <form action="[% gSkin.rootdir %]/submit.pl" method="post">
         <table class="data" width="100%">
         <tr class="data_head">
                 <th colspan="4">Submissions Memory</th>
@@ -219,4 +219,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: previewForm;submit;default,v 1.66 2006/06/29 16:22:32 cowboyneal Exp $
+$Id: previewForm;submit;default,v 1.67 2006/07/05 20:55:06 pudge Exp $

@@ -73,7 +73,7 @@ __template__
 </div>
 </form>
 	<div class="commentBoxForm" id="commentControlBox">
-		<form action="//slashdot.org/comments.pl">
+		<form action="[% gSkin.rootdir %]/comments.pl">
 		<fieldset>
 		<legend>Display Options</legend>
 	
@@ -216,4 +216,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.41 2006/06/20 20:17:18 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.42 2006/07/05 20:55:06 pudge Exp $

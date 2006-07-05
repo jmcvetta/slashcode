@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.156 2006/07/05 17:59:09 tvroom Exp $
+# $Id: index.pl,v 1.157 2006/07/05 20:55:06 pudge Exp $
 
 use strict;
 use Slash;
@@ -699,7 +699,6 @@ sub displayStories {
 		$tmpreturn .= displayStory($story->{sid}, '', $other, $stories_data_cache);
 		
 		if ($other->{dispmode} eq "full") {
-			
 			my $readmore = $msg->{readmore};
 			if ($constants->{index_readmore_with_bytes}) {
 				my $readmore_data = {};
@@ -712,6 +711,7 @@ sub displayStories {
 					$readmore = getData('readmore_with_bytes', $readmore_data );
 				}
 			}
+
 			push @links, linkStory({
 				'link'		=> $readmore,
 				sid		=> $story->{sid},

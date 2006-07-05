@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Provider.pm,v 1.15 2005/03/11 19:57:48 pudge Exp $
+# $Id: Provider.pm,v 1.16 2006/07/05 20:55:06 pudge Exp $
 
 package Slash::Display::Provider;
 
@@ -35,7 +35,7 @@ use base qw(Template::Provider);
 use File::Spec::Functions;
 use Slash::Utility::Environment;
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 $DEBUG     = $Template::Provider::DEBUG || 0 unless defined $DEBUG;
 
 # BENDER: Oh, no room for Bender, huh?  Fine.  I'll go build my own lunar
@@ -218,6 +218,8 @@ sub ident {
 	# env
 	} elsif ($ident->[0] eq q['env'] && @$ident == 4 && $ident->[2] =~ /^'(.+)'$/s) {
 		(my $data = $1) =~ s/'/\\'/;
+		# maybe?
+		# $data =~ s/-/_/g;
 		return qq[\$ENV{"\\U$data"}];
 	# fg/bg
 	} elsif ($ident->[0] eq q['user'] && @$ident == 6 && $ident->[2] =~ /^'(fg|bg)'$/s) {

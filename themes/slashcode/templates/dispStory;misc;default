@@ -10,6 +10,7 @@ Display a story (normally called from within displayStory())
 * topic = topic data structure
 * author = author data structure
 * full = boolean to display full story (incl. bodytext)
+* dispmode = 'full' (default) or 'brief'
 * magic = boolean to put section name in story title
 
 __title__
@@ -163,4 +164,4 @@ END;
 __seclev__
 10000
 __version__
-$Id: dispStory;misc;default,v 1.64 2006/04/25 20:33:58 tvroom Exp $
+$Id: dispStory;misc;default,v 1.65 2006/07/06 22:09:27 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.160 2006/05/17 20:37:49 jamiemccarthy Exp $
+# $Id: User.pm,v 1.161 2006/07/06 21:53:21 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.160 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -927,6 +927,7 @@ Bender:That's not my gold-plated 25-pin connector.
 Bender:I only know enough binary to ask where the bathroom is.
 Bender:Why would God think in binary?
 Bender:You can't count on God for jack! He pretty much told me so himself.
+Bender:Stop doing the right thing, you jerk!
 Fry:There's a lot about my face you don't know.
 Fry:These new hands are great. I'm gonna break them in tonight.
 Fry:I refuse to testify on the grounds that my organs will be chopped up into a patty.
@@ -970,6 +971,7 @@ Fry:My hands! My horrible, human hands!
 Fry:How about me? I'm human, and I've always wanted to see the future!
 Fry:The less fortunate get all the breaks!
 Fry:Please, Mr. Nixon! We're appealing to your sense of decency!
+Fry:I have more important things to do today than laugh and clap my hands.
 Fry:I'll be whatever I wanna do.
 Fry:There's a political debate on. Quick, change the channel!
 Leela:There's a political debate on. Quick, change the channel!

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.901 2006/06/28 22:25:51 tvroom Exp $
+# $Id: MySQL.pm,v 1.902 2006/07/06 21:53:11 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.901 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.902 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9058,7 +9058,7 @@ sub createStory {
 		# Ugly Twisted Criminal, Claims National Enquirer" and
 		# later realizing it had been truncated after 50 chars.
 		my $title_len = $self->sqlGetCharColumnLength('story_text', 'title');
-		if (length($story->{title}) > $title_len) {
+		if ($title_len && length($story->{title}) > $title_len) {
 			$error = "createStory title too long: " . length($story->{title}) . " > $title_len";
 		}
 	}

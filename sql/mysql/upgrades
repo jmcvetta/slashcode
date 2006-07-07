@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1014 2006/07/05 21:26:46 pudge Exp $
+# $Id: upgrades,v 1.1015 2006/07/07 02:52:03 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3941,8 +3941,6 @@ UPDATE vars SET value = 'T_2_5_0_116' WHERE name = 'cvs_tag_currentcode';
 # 2006-06-20
 UPDATE vars SET value = 'T_2_5_0_117' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 ALTER TABLE related_stories ADD COLUMN cid mediumint(8) unsigned NOT NULL default '0', ADD COLUMN ordernum smallint unsigned NOT NULL default '0';
@@ -3952,3 +3950,4 @@ INSERT INTO vars (name, value, description) VALUES ('index_readmore_with_bytes',
 # 2006-07-05
 UPDATE vars SET value = 'T_2_5_0_118' WHERE name = 'cvs_tag_currentcode';
 
+# SLASHCODE/USEPERL LAST UPDATED HERE

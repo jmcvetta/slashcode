@@ -53,6 +53,7 @@ __template__
 [% CASE 'readmore' %]
 	[% returnme.data_constant = 1 %] 
 	<b>Read More...</b>
+
 [% CASE 'readmore_with_bytes' %]
 	[% IF bytes %]
 	<b>Read [% bytes %] More Bytes...</b>
@@ -61,6 +62,7 @@ __template__
 	[% ELSE %]
 	<b>Read More...</b>
 	[% END %]
+
 [% CASE 'bytes' %]
 	[% returnme.data_constant = 1 %] 
 	bytes in body
@@ -96,4 +98,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: data;index;default,v 1.27 2006/07/07 03:33:29 tvroom Exp $
+$Id: data;index;default,v 1.28 2006/07/11 23:26:33 pudge Exp $

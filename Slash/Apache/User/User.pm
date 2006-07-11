@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.161 2006/07/06 21:53:21 jamiemccarthy Exp $
+# $Id: User.pm,v 1.162 2006/07/11 14:29:57 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -928,6 +928,8 @@ Bender:I only know enough binary to ask where the bathroom is.
 Bender:Why would God think in binary?
 Bender:You can't count on God for jack! He pretty much told me so himself.
 Bender:Stop doing the right thing, you jerk!
+Bender:Are you familiar with the old robot saying "does not compute"?
+Bender:The sparks keep me warm.
 Fry:There's a lot about my face you don't know.
 Fry:These new hands are great. I'm gonna break them in tonight.
 Fry:I refuse to testify on the grounds that my organs will be chopped up into a patty.

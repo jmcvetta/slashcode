@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.40 2006/05/17 20:39:00 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.41 2006/07/18 23:08:38 pudge Exp $
 
 use strict;
 
@@ -150,7 +150,13 @@ sub jabberinit {
 	my $tls =	$constants->{jabberslash_tls}
 				|| 0;
 
-	$jabber = new Net::Jabber::Client;
+	$jabber = new Net::Jabber::Client (
+#		debuglevel	=> 2,
+#		debugfile	=> 'stdout',
+#		debugtime	=> 1,
+	);
+#	$jabber->{DEBUG}{HANDLE} = \*STDOUT;
+
 	$jabber->SetCallBacks(
 		onauth		=> \&j_on_auth,
 		message		=> \&j_on_msg,

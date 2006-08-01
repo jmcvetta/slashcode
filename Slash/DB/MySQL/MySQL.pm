@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.903 2006/07/14 12:18:36 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.904 2006/08/01 16:23:37 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.903 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.904 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7857,6 +7857,7 @@ sub getCommentTextCached {
 
 	return {} if ! $cids_needed_ar;
 	$cids_needed_ar = [$cids_needed_ar] if ! ref $cids_needed_ar;
+	$cids_needed_ar = [ grep { $_ } @$cids_needed_ar ];
 	return {} if ! @$cids_needed_ar;
 
 	my $constants = getCurrentStatic();

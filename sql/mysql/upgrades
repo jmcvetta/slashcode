@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1022 2006/07/20 01:56:30 pudge Exp $
+# $Id: upgrades,v 1.1023 2006/08/05 00:19:08 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3970,6 +3970,11 @@ INSERT INTO vars (name, value, description) VALUES ('comments_control_horizontal
 UPDATE vars SET value = 'T_2_5_0_120' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+ALTER TABLE related_stories CHANGE COLUMN cid cid int UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE moderatorlog CHANGE COLUMN cid cid int UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE comment_text CHANGE COLUMN cid cid int UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE comments CHANGE COLUMN cid cid int UNSIGNED NOT NULL AUTO_INCREMENT, ADD COLUMN subject_original ENUM('no', 'yes') DEFAULT 'yes' NOT NULL AFTER subject;
 
 # SLASHDOT LAST UPDATED HERE
 

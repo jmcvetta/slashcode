@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.136 2006/06/20 19:05:29 cowboyneal Exp $
+# $Id: submit.pl,v 1.137 2006/08/07 23:58:47 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -693,6 +693,13 @@ sub fixStory {
 	unless (getCurrentStatic('submit_keep_p')) {
 		$str =~ s|</p>||g;
 		$str =~ s|<p(?: /)?>|<br><br>|g;
+	}
+
+	# smart conversion of em dashes to real ones
+	# leave if - has nonwhitespace on either side, otherwise, convert
+	unless (getCurrentStatic('submit_keep_dashes')) {
+		$str =~ s/(\s+-+\s+)/ &mdash; /g;
+		$str =~ s/(\s*--+\s*)/ &mdash; /g;
 	}
 
 	$str = balanceTags($str, { deep_nesting => 1 });

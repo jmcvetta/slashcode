@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1023 2006/08/05 00:19:08 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1024 2006/08/08 19:24:48 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3978,3 +3978,4 @@ ALTER TABLE comments CHANGE COLUMN cid cid int UNSIGNED NOT NULL AUTO_INCREMENT,
 
 # SLASHDOT LAST UPDATED HERE
 
+ALTER TABLE urls ADD COLUMN anon_bookmarks MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL;

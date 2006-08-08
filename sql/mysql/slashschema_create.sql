@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.231 2006/08/05 00:19:08 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.232 2006/08/08 19:24:48 tvroom Exp $
 #
 
 #
@@ -1277,7 +1277,8 @@ CREATE TABLE urls (
 	tags_top VARCHAR(255) DEFAULT '' NOT NULL,
 	popularity float DEFAULT '0' NOT NULL,
 	PRIMARY KEY (url_id),
-	UNIQUE url_digest (url_digest)
+	UNIQUE url_digest (url_digest),
+	anon_bookmarks MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL
 );
 
 #

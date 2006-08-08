@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: url_checker.pl,v 1.4 2006/04/25 20:37:44 tvroom Exp $
+# $Id: url_checker.pl,v 1.5 2006/08/08 19:13:01 tvroom Exp $
 #
 # This task checks urls to see if they're still alive, and sets their
 # validated titles
@@ -59,7 +59,7 @@ $task{$me}{code} = sub {
 			my $validatedtitle = $hp->header('Title');
 			if (defined $validatedtitle) {
 				#slashdLog("vt $validatedtitle");	
-				$url_update->{validatedtitle} = $validatedtitle;
+				$url_update->{validatedtitle} = strip_literal($validatedtitle);
 				$url_update->{"-last_success"} = "NOW()";
 				$url_update->{is_success} = 1;
 				$url_update->{"-believed_fresh_until"} = "DATE_ADD(NOW(), INTERVAL 2 DAY)";

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.114 2006/05/19 06:20:52 pudge Exp $
+# $Id: Display.pm,v 1.115 2006/08/08 00:00:56 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -62,7 +62,7 @@ use vars qw($VERSION @EXPORT);
 
 #========================================================================
 
-=head2 createSelect(LABEL, DATA [, DEFAULT, RETURN, NSORT, ORDERED, MULTIPLE])
+=head2 createSelect(LABEL, DATA [, DEFAULT, RETURN, NSORT, ORDERED, MULTIPLE, ONCHANGE])
 
 Creates a drop-down list in HTML.  List is sorted by default
 alphabetically according to list values.
@@ -75,7 +75,7 @@ alphabetically according to list values.
 
 =item LABEL
 
-The name for the HTML entity.
+The name/id for the HTML entity.
 
 =item DATA
 
@@ -1723,4 +1723,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.114 2006/05/19 06:20:52 pudge Exp $
+$Id: Display.pm,v 1.115 2006/08/08 00:00:56 pudge Exp $

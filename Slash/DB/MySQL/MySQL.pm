@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.908 2006/08/04 15:50:03 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.909 2006/08/08 00:00:56 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.908 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.909 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -327,9 +327,6 @@ sub createComment {
 	$comment->{sid} = $self->getStoidFromSidOrStoid($comment->{sid})
 		or return -1;
 
-	$comment->{subject} = $self->truncateStringForCharColumn($comment->{subject},
-		'comments', 'subject');
-
 	if ($comment->{pid}) {
 		# If we're being asked to parent this comment to another,
 		# verify that the other comment exists and is in this
@@ -338,7 +335,21 @@ sub createComment {
 		$pid_sid = $self->sqlSelect("sid", "comments",
 			"cid=" . $self->sqlQuote($comment->{pid}));
 		return -1 unless $pid_sid && $pid_sid == $comment->{sid};
+
+		my $pid_subject = '';
+		$pid_subject = $self->sqlSelect("subject", "comments",
+			"cid=" . $self->sqlQuote($comment->{pid}));
+		# see comments.pl:editComment()
+		$pid_subject = decode_entities($pid_subject);
+		$pid_subject =~ s/^Re://i;
+		$pid_subject =~ s/\s\s/ /g;
+		if (length $pid_subject &&
+		    $comment->{subject} =~ /^Re:\Q$pid_subject\E$/) {
+		}
 	}
+
+	$comment->{subject} = $self->truncateStringForCharColumn($comment->{subject},
+		'comments', 'subject');
 
 	$self->sqlDo("SET AUTOCOMMIT=0");
 
@@ -7782,7 +7793,7 @@ sub getCommentsForUser {
 	my $select = " cid, date, date as time, subject, nickname, "
 		. "homepage, fakeemail, users.uid AS uid, sig, "
 		. "comments.points AS points, pointsorig, "
-		. "tweak, tweak_orig, "
+		. "tweak, tweak_orig, subject_original, "
 		. "pid, pid AS original_pid, sid, lastmod, reason, "
 		. "journal_last_entry_date, ipid, subnetid, "
 		. "karma_bonus, "

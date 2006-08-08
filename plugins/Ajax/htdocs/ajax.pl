@@ -2,17 +2,19 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.27 2006/04/26 16:58:06 pudge Exp $
+# $Id: ajax.pl,v 1.28 2006/08/08 00:00:56 pudge Exp $
 
 use strict;
 use warnings;
+
+use Data::JavaScript::Anon;
 
 use Slash 2.003;	# require Slash 2.3.x
 use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -250,6 +252,16 @@ sub readRest {
 	return $texts->{$cid} || '';
 }
 
+sub updateD2prefs {
+	my($slashdb, $constants, $user, $form) = @_;
+	my %save;
+	for my $pref (qw(threshold highlightthresh)) {
+		$save{"d2_$pref"} = $form->{$pref} if defined $form->{$pref};
+	}
+
+	$slashdb->setUser($user->{uid}, \%save);
+}
+
 
 ##################################################################
 sub default { }
@@ -284,6 +296,11 @@ sub getOps {
 	my %mainops = (
 		comments_read_rest	=> {
 			function	=> \&readRest,
+			reskey_name	=> 'ajax_base',
+			reskey_type	=> 'createuse',
+		},
+		comments_set_prefs	=> {
+			function	=> \&updateD2prefs,
 			reskey_name	=> 'ajax_base',
 			reskey_type	=> 'createuse',
 		},

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.28 2006/08/08 00:00:56 pudge Exp $
+# $Id: ajax.pl,v 1.29 2006/08/09 04:40:54 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -301,7 +301,7 @@ sub getOps {
 		},
 		comments_set_prefs	=> {
 			function	=> \&updateD2prefs,
-			reskey_name	=> 'ajax_base',
+			reskey_name	=> 'ajax_user',
 			reskey_type	=> 'createuse',
 		},
 		getSectionPrefsHTML => {

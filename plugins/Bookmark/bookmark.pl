@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.9 2006/08/08 19:09:55 tvroom Exp $
+# $Id: bookmark.pl,v 1.10 2006/08/09 04:22:54 pudge Exp $
 
 use strict;
 use Slash;
@@ -184,7 +184,7 @@ sub anonBookmark {
 	my $bookmark = getObject("Slash::Bookmark");
 	my $fudgedurl = fudgeurl($form->{url});
 	my $errors;
-	if($fudgedurl) {
+	if ($fudgedurl) {
 		my $url_id = $slashdb->getUrlIfExists($fudgedurl);
 		if ($url_id) {
 			$slashdb->setUrl($url_id, { -anon_bookmarks => 'anon_bookmarks + 1' } );

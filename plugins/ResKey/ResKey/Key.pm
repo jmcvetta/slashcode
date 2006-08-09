@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.18 2006/08/08 23:19:21 jamiemccarthy Exp $
+# $Id: Key.pm,v 1.19 2006/08/09 04:33:29 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -117,7 +117,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -526,6 +526,8 @@ sub dbUse {
 		} else {
 			# XXX since is_alive is definitely 'no' here,
 			# why not just delete it now? -Jamie
+			# XXX delete what?  the reskey?  because we (might)
+			# need it for duration checks -- pudge
 			# update the ts again, just to be clean
 			$update{-submit_ts} = 'NOW()';
 		}
@@ -883,4 +885,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.18 2006/08/08 23:19:21 jamiemccarthy Exp $
+$Id: Key.pm,v 1.19 2006/08/09 04:33:29 pudge Exp $

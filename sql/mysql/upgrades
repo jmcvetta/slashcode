@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1025 2006/08/09 04:48:20 pudge Exp $
+# $Id: upgrades,v 1.1026 2006/08/10 03:15:44 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -3982,4 +3982,6 @@ ALTER TABLE urls ADD COLUMN anon_bookmarks MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL
 
 # 2006-08-08
 UPDATE vars SET value = 'T_2_5_0_121' WHERE name = 'cvs_tag_currentcode';
+
+ALTER TABLE comments CHANGE COLUMN subject_original subject_orig ENUM('no', 'yes') DEFAULT 'yes' NOT NULL;
 

@@ -154,7 +154,7 @@ __template__
 						subject_only => 1,
 				}) %]
 				[% END %]
-		<span title="Close this window" onclick="document.getElementById('gods').className='loki';" class="close">x</span>
+		<span title="Close this window" onclick="document.getElementById('gods').style.display='none';" class="close">x</span>
 				</h3>
 			</div>
 		</div>
@@ -208,4 +208,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.49 2006/08/10 02:24:26 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.50 2006/08/14 18:24:33 lancelot Exp $

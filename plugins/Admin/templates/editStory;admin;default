@@ -18,6 +18,9 @@ __template__
 		[% IF form.subid %]
 			<input type="hidden" name="subid" value="[% form.subid | strip_attribute %]">
 		[% END %]
+		[% IF form.fhid %]
+			<input type="hidden" name="fhid" value="[% form.fhid | strip_attribute %]">
+		[% END %]
 		<div id="slashboxes">
 			[% IF constants.plugin.Events && Slash.getObject('Slash::Events') %]
 				[% PROCESS sidebox
@@ -253,4 +256,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: editStory;admin;default,v 1.72 2006/06/28 22:24:50 tvroom Exp $
+$Id: editStory;admin;default,v 1.73 2006/08/15 16:17:11 tvroom Exp $

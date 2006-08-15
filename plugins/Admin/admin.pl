@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.298 2006/06/28 22:23:08 tvroom Exp $
+# $Id: admin.pl,v 1.299 2006/08/15 16:17:11 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1132,7 +1132,7 @@ sub editStory {
 	my($extracolumn_flag) = (0, 0);
 	my($storyref, $story, $author, $storycontent, $locktest,
 		$extracolumns, $commentstatus_select, 
-		$subid, $description);
+		$subid, $fhid, $description);
 	my $extracolref = {};
 	my($fixquotes_check, $autonode_check, $fastforward_check) = ('','','');
 	my $page = 'index';
@@ -1192,6 +1192,7 @@ sub editStory {
 
 		$form->{uid} ||= $user->{uid};
 		$subid = $form->{subid};
+		$fhid = $form->{fhid};
 		$sid = $form->{sid};
 
 		# not normally set here, so we force it to be safe
@@ -1462,6 +1463,7 @@ sub editStory {
 		tagbox_html		=> $tagbox_html,
 		sid			=> $sid,
 		subid			=> $subid,
+		fhid			=> $fhid,
 		authortext 		=> $authortext,
 		slashdtext		=> $slashdtext,
 		newarticle		=> $newarticle,
@@ -1559,7 +1561,7 @@ sub extractChosenFromForm {
 	my $chosenc_hr = { };   # c is for child, in topic editor
 
 	if (defined $form->{topic_source} && $form->{topic_source} eq 'submission'
-		&& $form->{subid}) {
+		&& ($form->{subid} || $form->{fhid})) {
 		my @topics = ($form->{tid});
 		if ($form->{primaryskid}) {
 			my $nexus = $slashdb->getNexusFromSkid($form->{primaryskid});
@@ -2299,6 +2301,7 @@ sub saveStory {
 		introtext	=> $form->{introtext},
 		relatedtext	=> $form->{relatedtext},
 		subid		=> $form->{subid},
+		fhid		=> $form->{fhid},
 		commentstatus	=> $form->{commentstatus},
 		-rendered	=> 'NULL', # freshenup.pl will write this
 	};

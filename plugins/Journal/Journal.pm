@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.59 2006/03/01 20:33:51 tvroom Exp $
+# $Id: Journal.pm,v 1.60 2006/08/15 16:06:54 tvroom Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -178,7 +178,9 @@ sub create {
 	return unless $article;
 	return unless $tid;
 
+
 	$submit = $submit ? "yes" : "no";
+	
 
 	my $uid = getCurrentUser('uid');
 	$self->sqlInsert("journals", {

@@ -1,3 +1,6 @@
+#
+# $Id: mysql_schema.sql,v 1.2 2006/08/15 17:19:03 tvroom Exp $
+#
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
 	id mediumint(8) unsigned NOT NULL auto_increment,

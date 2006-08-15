@@ -19,3 +19,5 @@ __template__
 <p>
 [% item.bodytext %]
 </p>
+__version__
+$Id: view;firehose;default,v 1.2 2006/08/15 16:45:34 tvroom Exp $

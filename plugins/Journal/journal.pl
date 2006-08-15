@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.137 2006/08/15 16:06:54 tvroom Exp $
+# $Id: journal.pl,v 1.138 2006/08/15 20:12:37 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.137 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -630,13 +630,6 @@ sub doSaveArticle {
 
 		$journal->set($form->{id}, \%update);
 		
-		if ($constants->{plugin}{FireHose}) {
-			my $journal_entry = $journal->get($form->{id});
-			if ($journal_entry->{submit} eq "yes") {
-				my $firehose = getObject("Slash::FireHose");
-				$firehose->createUpdateItemFromJournal($form->{id});
-			}
-		}
 		slashHook('journal_save_success', { id => $form->{id} });
 
 	} else {
@@ -666,12 +659,6 @@ sub doSaveArticle {
 		}
 
 		slashHook('journal_save_success', { id => $id });
-		if ($constants->{plugin}{FireHose}) {
-			if ($form->{submit}) {
-				my $firehose = getObject("Slash::FireHose");
-				$firehose->createItemFromJournal($id);
-			}
-		}
 
 		# create messages
 		my $messages = getObject('Slash::Messages');

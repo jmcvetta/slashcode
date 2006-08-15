@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.137 2006/08/07 23:58:47 pudge Exp $
+# $Id: submit.pl,v 1.138 2006/08/15 19:02:13 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -627,6 +627,10 @@ sub saveSub {
 
 	my $messagesub = { %$submission };
 	$messagesub->{subid} = $slashdb->createSubmission($submission);
+	if ($constants->{plugin}{FireHose}) {
+		my $firehose = getObject("Slash::FireHose");
+		$firehose->createItemFromSubmission($messagesub->{subid});
+	}
 
 	if ($form->{url_id}) {
 		my $url_id = $form->{url_id};

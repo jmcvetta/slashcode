@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.10 2006/08/09 04:22:54 pudge Exp $
+# $Id: bookmark.pl,v 1.11 2006/08/15 16:08:22 tvroom Exp $
 
 use strict;
 use Slash;
@@ -132,6 +132,12 @@ sub saveBookmark {
 	} else {
 		$bookmark_data->{"-createdtime"} = 'NOW()';
 		$bookmark_id= $bookmark->createBookmark($bookmark_data);
+		if ($constants->{plugin}{FireHose}) {
+			my $firehose = getObject("Slash::FireHose");
+			my $the_bookmark = $bookmark->getBookmark($bookmark_id);
+			$firehose->createUpdateItemFromBookmark($bookmark_id, { type => "bookmark", popularity => 1 });
+		}
+					
 	}
 
 	my $tags = getObject('Slash::Tags');

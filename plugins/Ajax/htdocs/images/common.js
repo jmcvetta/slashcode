@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.26 2006/08/15 16:11:23 tvroom Exp $
+// $Id: common.js,v 1.27 2006/08/15 17:21:34 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -323,7 +323,6 @@ function firehose_up_down(id, dir) {
 	params['id'] = id;
 	params['dir'] = dir;
 	var updown = $('updown-' + id);
-	updown.innerHTML = "Vote saved";
 	ajax_update(params, 'updown-'+id);
 }
 // firehose functions end

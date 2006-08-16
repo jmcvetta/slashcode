@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.913 2006/08/16 01:43:04 pudge Exp $
+# $Id: MySQL.pm,v 1.914 2006/08/16 01:47:39 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.913 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.914 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -345,6 +345,7 @@ sub createComment {
 		$pid_subject =~ s/\s\s/ /g;
 		if (length $pid_subject &&
 		    $comment->{subject} =~ /^Re:\Q$pid_subject\E$/) {
+			$comment->{subject_orig} = 'no';
 		}
 	}
 

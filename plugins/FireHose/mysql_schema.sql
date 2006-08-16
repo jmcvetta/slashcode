@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.2 2006/08/15 17:19:03 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.3 2006/08/16 01:59:54 pudge Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -21,7 +21,7 @@ CREATE TABLE firehose (
 	note varchar(255) default '',
 	toptags varchar(255) default '',
 	PRIMARY KEY  (id)
-) ENGINE=InnoDB; 
+) TYPE=InnoDB; 
 
 DROP TABLE IF EXISTS firehose_text;
 CREATE TABLE firehose_text(

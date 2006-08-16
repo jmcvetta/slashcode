@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.296 2006/08/08 00:00:56 pudge Exp $
+# $Id: Slash.pm,v 1.297 2006/08/16 14:58:56 jamiemccarthy Exp $
 
 package Slash;
 
@@ -266,7 +266,7 @@ sub jsSelectComments {
 			# we only care about it if it is not original ... we could
 			# in theory guess at what it is and just use a flag, but that
 			# could be complicated, esp. if we are several levels deep -- pudge
-			if ($comments->{$cid}{subject_original} && $comments->{$cid}{subject_original} eq 'no') {
+			if ($comments->{$cid}{subject_orig} && $comments->{$cid}{subject_orig} eq 'no') {
 				$comments_new->{$cid}{subject} = $comments->{$cid}{subject};
 			}
 		}
@@ -1201,7 +1201,7 @@ sub displayThread {
 		my $finish_list = 0;
 
 		if ($full || $highlight || $discussion2) {
-			if ($discussion2 && $class eq 'oneline' && $comment->{subject_original} eq 'no') {
+			if ($discussion2 && $class eq 'oneline' && $comment->{subject_orig} eq 'no') {
 				$comment->{subject} = 'Re:';
 			}
 			if ($lvl && $indent) {

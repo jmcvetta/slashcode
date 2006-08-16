@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.232 2006/08/08 19:24:48 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.233 2006/08/16 14:58:21 jamiemccarthy Exp $
 #
 
 #
@@ -266,7 +266,7 @@ CREATE TABLE comments (
 	ipid char(32) DEFAULT '' NOT NULL,
 	subnetid char(32) DEFAULT '' NOT NULL,
 	subject varchar(50) NOT NULL,
-	subject_original ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
+	subject_orig ENUM('no', 'yes') DEFAULT 'yes' NOT NULL,
 	uid mediumint UNSIGNED NOT NULL,
 	points tinyint DEFAULT '0' NOT NULL,
 	pointsorig tinyint DEFAULT '0' NOT NULL,

@@ -54,7 +54,7 @@ END %]
 
 	   IF user.is_admin;
 	   	reject_checkbox = PROCESS reject id = item.id;
-	   	title = reject_checkbox _ " " _  item.popularity _ " " _ title;
+	   	title = reject_checkbox _ "<span class='score'> " _  item.popularity _ "</span> " _ title;
 	   END;
 	   PROCESS titlebar;
 	%]
@@ -122,4 +122,4 @@ END %]
 </div>
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.3 2006/08/16 18:52:46 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.4 2006/08/16 18:54:30 tvroom Exp $

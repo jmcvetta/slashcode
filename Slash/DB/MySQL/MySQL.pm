@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.915 2006/08/16 14:58:21 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.916 2006/08/17 04:16:39 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.915 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.916 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7881,7 +7881,6 @@ sub getCommentTextCached {
 	my $user = getCurrentUser();
 	$opt ||= {};
 
-
 	# We have to get the comment text we need (later we'll search/replace
 	# them into the text).
 	my $comment_text = {};
@@ -7921,7 +7920,7 @@ sub getCommentTextCached {
 		}
 		my @keys_try =
 			map { "$mcdkey$_" }
-			grep { $_ != $opt->{cid} }
+			grep { !($opt->{cid} && $_ == $opt->{cid}) }
 			@$cids_needed_ar;
 		$comment_text = $mcd->get_multi(@keys_try);
 		my @old_keys = keys %$comment_text;

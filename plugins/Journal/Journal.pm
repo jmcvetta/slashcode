@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.62 2006/08/15 21:16:23 pudge Exp $
+# $Id: Journal.pm,v 1.63 2006/08/17 03:19:56 jamiemccarthy Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -462,7 +462,12 @@ sub createSubmissionFromJournal {
 		journal_id 	=> $src_journal->{id},
 		discussion 	=> $src_journal->{discussion},
 		by		=> $options->{submission_param}{by}     || $journal_user->{nickname},
-		by_url 		=> $options->{submission_param}{by_url} || $journal_user->{homepage} || $journal_user->{fakeemail}
+			# $fakeemail can be undef, but setSubmission can't set a param to NULL
+			# (schema forbids, and setSubmission is too dumb not to try). so the
+			# empty string is a last resort. the better fix would be to fix
+			# setSubmission and/or _genericSet to handle undef values for params
+			# the way setStory does, by deleting the param row if any.
+		by_url 		=> $options->{submission_param}{by_url} || $journal_user->{homepage} || $fakeemail || '',
 	};
 
 	my $sub_param = $options->{submission_param} || {};

@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.41 2006/02/15 22:05:10 pudge Exp $
+# $Id: Slash.pm,v 1.42 2006/08/18 17:44:24 pudge Exp $
 #
 
 $Bundle::Slash::VERSION = '2.51';
@@ -38,6 +38,8 @@ Storable
 MIME::Base64            - why after URI if URI needs it?
 
 Bundle::LWP		- URI,HTML::Parser,MIME::Base64
+
+MIME::Types		- for Blob plugin
 
 HTML::Element           - For doing HTML-to-text
 

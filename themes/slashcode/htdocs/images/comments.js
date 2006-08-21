@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.30 2006/08/09 04:40:54 pudge Exp $
+// $Id: comments.js,v 1.31 2006/08/21 22:34:39 pudge Exp $
 
 var comments;
 var root_comments;
@@ -428,9 +428,10 @@ function readRest(cid) {
 	params['sid'] = discussion_id;
 
 	var handlers = {
-		onLoading: function() {
-			shrunkdiv.innerHTML = 'Loading...';
-		},
+// these sometimes go out of order ... ?
+//		onLoading: function() {
+//			shrunkdiv.innerHTML = 'Loading...';
+//		},
 		onComplete: function() {
 			shrunkdiv.innerHTML = '';
 			var sigdiv = fetchEl('comment_sig_' + cid);
@@ -440,6 +441,7 @@ function readRest(cid) {
 		}
 	};
 
+	shrunkdiv.innerHTML = 'Loading...';
 	ajax_update(params, 'comment_body_' + cid, handlers);
 
 	return false;

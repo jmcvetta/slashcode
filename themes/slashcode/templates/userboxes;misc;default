@@ -63,7 +63,7 @@ IF !useredit.is_anon;
 	contents = BLOCK;
 		'<a href="'; gSkin.rootdir; '/~';
 			useredit.nickname | strip_paramattr; '/">';
-                        useredit.nickname; '</a> ';
+                        useredit.nickname | strip_literal; '</a> ';
 		IF user.uid != useredit.uid;
 			PROCESS zoo_icons person=useredit.uid implied="";
 		END;
@@ -206,4 +206,4 @@ END %]
 __seclev__
 1000
 __version__
-$Id: userboxes;misc;default,v 1.32 2006/03/01 05:18:00 pudge Exp $
+$Id: userboxes;misc;default,v 1.33 2006/08/21 22:34:39 pudge Exp $

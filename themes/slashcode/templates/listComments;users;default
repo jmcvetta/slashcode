@@ -43,7 +43,8 @@ row_class_3 = "data_hl3";
 [% IF commentcount > 0 %]
 	[% commenttitle = ((min_comment == 0) ? "" : "$commentstruct.size of ");
 		IF type=="user";
-			 commenttitle = comment_title _"$useredit.nickname's ";
+			thisnick = useredit.nickname | strip_literal;
+			commenttitle = comment_title _ thisnick _ "'s ";
 		ELSIF type=="netid";
 			 commenttitle = comment_title _ "$netid" _ "'s ";
 		END;
@@ -328,4 +329,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listComments;users;default,v 1.19 2005/08/30 13:28:30 tvroom Exp $
+$Id: listComments;users;default,v 1.20 2006/08/21 22:34:39 pudge Exp $

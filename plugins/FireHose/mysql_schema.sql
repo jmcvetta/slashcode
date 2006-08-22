@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.3 2006/08/16 01:59:54 pudge Exp $
+# $Id: mysql_schema.sql,v 1.4 2006/08/22 19:14:39 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -20,6 +20,12 @@ CREATE TABLE firehose (
 	url_id mediumint(8) unsigned NOT NULL default '0',
 	note varchar(255) default '',
 	toptags varchar(255) default '',
+	`email` varchar(255) NOT NULL default '',
+	`emaildomain` varchar(255) NOT NULL default '',
+	name varchar(50) NOT NULL,
+	`ipid` varchar(32) NOT NULL default '',
+	`subnetid` varchar(32) NOT NULL default '',
+	`category` varchar(30) NOT NULL default '',
 	PRIMARY KEY  (id)
 ) TYPE=InnoDB; 
 

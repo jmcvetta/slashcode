@@ -15,7 +15,7 @@ __seclev__
 __template__
 [% 
 param_str = ""
-	state_params = ["view", "mode", "type", "primaryskid", "popularity"];
+	state_params = ["mode", "type", "primaryskid", "order", "filter", "category"];
 	FOREACH param = state_params;
 		IF form.${param}.defined;
 			param_str = param_str _ "&amp;" _ param _ "=";
@@ -30,4 +30,4 @@ param_str = ""
 <li><a href="[% gSkin.rootdir %]/firehose.pl?page=[% page + 1%][% param_str %]">[% page + 2 %] -&gt;</a></li>
 </ul>
 __version__
-$Id: paginate;firehose;default,v 1.2 2006/08/15 16:45:34 tvroom Exp $
+$Id: paginate;firehose;default,v 1.3 2006/08/22 19:14:15 tvroom Exp $

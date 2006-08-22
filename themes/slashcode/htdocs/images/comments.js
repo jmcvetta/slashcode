@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.31 2006/08/21 22:34:39 pudge Exp $
+// $Id: comments.js,v 1.32 2006/08/22 19:20:59 tvroom Exp $
 
 var comments;
 var root_comments;
@@ -605,14 +605,3 @@ function doModerate(el) {
 	return false;
 }
 
-// this should go in common.js at some point
-function json_handler(transport) {
-	var response;
-
-	try       { eval("response = " + transport.responseText) }
-	catch (e) { alert(e + "\n" + transport.responseText)     }
-
-	for (el in response.html) {
-		$(el).innerHTML = response.html[el];
-	}
-}

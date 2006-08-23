@@ -42,5 +42,6 @@ END;
 				<input type="hidden" name="introtext" value="[% introtext | strip_attribute %]">
 				<input type="hidden" name="op" value="preview">
 				<img src="[% constants.imagedir %]/sic_edit.png" onclick="firehose_get_and_post('[% item.id %]')">
+				[% END %]
 __version__
-$Id: fireHoseForm;misc;default,v 1.1 2006/08/23 15:57:48 tvroom Exp $
+$Id: fireHoseForm;misc;default,v 1.2 2006/08/23 16:24:50 tvroom Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.3 2006/08/22 19:15:45 tvroom Exp $
+# $Id: FireHose.pm,v 1.4 2006/08/23 16:24:50 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -416,15 +416,10 @@ sub ajaxGetFormContents {
 	my($slashdb, $constants, $user, $form) = @_;
 	return unless $user->{is_admin} && $form->{id};
 	my $firehose = getObject("Slash::FireHose");
-	my $tags = getObject("Slash::Tags");
 	my $id = $form->{id};
 	my $item = $firehose->getFireHose($id);
 	return unless $item;
-	if ($item->{type} eq "submission") {
-		my($table, $subid) = $tags->getGlobjTarget($item->{globjid});
-		$item->{subid} = $subid if $subid;
-	}
-	slashDisplay('firehoseFormContents', { item => $item }, { Return => 1});	
+	slashDisplay('fireHoseForm', { item => $item }, { Return => 1});	
 }
 
 sub ajaxGetAdminExtras {
@@ -562,4 +557,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.3 2006/08/22 19:15:45 tvroom Exp $
+$Id: FireHose.pm,v 1.4 2006/08/23 16:24:50 tvroom Exp $

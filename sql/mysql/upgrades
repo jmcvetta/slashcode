@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1033 2006/08/22 19:37:10 tvroom Exp $
+# $Id: upgrades,v 1.1034 2006/08/23 16:27:39 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4006,3 +4006,4 @@ ALTER TABLE firehose ADD COLUMN email varchar(255) NOT NULL default '', ADD COLU
 
 ALTER TABLE firehose ADD COLUMN name varchar(50) NOT NULL AFTER emaildomain;
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_admin_extras', 'Slash::FireHose', 'ajaxGetAdminExtras', 'ajax_admin', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_form', 'Slash::FireHose', 'ajaxGetFormContents', 'ajax_admin', 'createuse');

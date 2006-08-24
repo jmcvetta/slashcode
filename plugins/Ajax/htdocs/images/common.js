@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.30 2006/08/22 19:26:21 tvroom Exp $
+// $Id: common.js,v 1.31 2006/08/24 20:45:08 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -306,7 +306,6 @@ function toggle_firehose_body(id, is_admin) {
 		}
 		fhbody.className = "body";
 		fh.className = "article";
-		firehose_get_admin_extras(id);
 	} else if (fhbody.className == "body") {
 		fhbody.className = "hide";
 		fh.className = "briefarticle";

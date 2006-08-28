@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.3 2006/08/22 19:16:54 tvroom Exp $
+# $Id: firehose.pl,v 1.4 2006/08/28 16:43:48 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -83,15 +83,15 @@ sub getAndSetOptions {
 	my $constants 	= getCurrentStatic();
 	my $form 	= getCurrentForm();
 	my $options 	= {};
-	
+
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1 };
 	my $modes = { full => 1, fulltitle => 1};
 	my $orders = { createtime => 1, popularity => 1};
-	
+
 	my $mode = $form->{mode} || $user->{firehose_mode};
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
 	$options->{mode} = $mode;
-	
+
 	if ($mode eq "full") {
 		$options->{limit} = 25;
 	} else {

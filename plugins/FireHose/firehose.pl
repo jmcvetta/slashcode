@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.4 2006/08/28 16:43:48 pudge Exp $
+# $Id: firehose.pl,v 1.5 2006/08/29 14:40:11 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -52,8 +52,6 @@ sub list {
 	my($slashdb, $constants, $user, $form, $gSkin) = @_;
 	my $firehose = getObject("Slash::FireHose");
 	my $options = getAndSetOptions(); 
-	use Data::Dumper;
-	print STDERR Dumper($options);
 	my $page = $form->{page} || 0;
 	if ($page) {
 		$options->{offset} = $page * $options->{limit};
@@ -98,7 +96,7 @@ sub getAndSetOptions {
 		$options->{limit} = 50;
 	}
 
-	$options->{orderby} = defined $form->{order} ? $form->{order} : $user->{firehose_order};
+	$options->{orderby} = defined $form->{order} ? $form->{order} : $user->{firehose_orderdby};
 
 	$options->{primaryskid} = defined $form->{primaryskid} ? $form->{primaryskid} : $user->{firehose_primaryskid};
 

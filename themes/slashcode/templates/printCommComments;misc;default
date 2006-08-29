@@ -114,7 +114,7 @@ __template__
 		currents['full']     = [% user.state.comments.totals.full    || 0 %];
 		currents['oneline']  = [% user.state.comments.totals.oneline || 0 %];
 		// currents_total = [% (user.state.comments.totals.hidden || 0 ) + (user.state.comments.totals.full || 0) + (user.state.comments.totals.oneline || 0)  %];
-
+		[% IF user.discussion2 == "slashdot" %]d2act();[% END %]
 		finishLoading();
 //-->
 	</script>
@@ -123,4 +123,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.45 2006/08/28 13:14:52 lancelot Exp $
+$Id: printCommComments;misc;default,v 1.46 2006/08/29 03:08:53 tvroom Exp $

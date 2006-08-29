@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.198 2006/05/24 15:42:44 pudge Exp $
+# $Id: Environment.pm,v 1.199 2006/08/29 19:04:23 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.198 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -3336,6 +3336,10 @@ sub getCurrentCache {
 #
 # pass in the regex that contains what a key SHOULD look like (e.g., '^\d+$'),
 # and optionally the original data as a hashref; assign result to variable
+#
+# XXX I am not aware that this has ever been a problem, and I don't
+# know of any sites that use the debughash* vars.  Can we delete
+# this code? - Jamie 2006-08-27
 
 sub debugHash {
 	my($regex, $hash) = @_;
@@ -3383,4 +3387,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.198 2006/05/24 15:42:44 pudge Exp $
+$Id: Environment.pm,v 1.199 2006/08/29 19:04:23 jamiemccarthy Exp $

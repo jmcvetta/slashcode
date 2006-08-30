@@ -13,6 +13,15 @@ admin_extras
 __seclev__
 10000
 __template__
+	[% IF item.type == "submission" %]
+		<br>
+		[% IF item.uid != constants.anonymous_coward_uid %]
+			([% accepted_from_uid %] / [% num_from_uid %]) from user
+		[% END %]
+		[% IF item.emaildomain %]
+			([% accepted_from_emaildomain %] / [% num_with_emaildomain %]) from domain
+		[% END %]
+	[% END %]
         <form action="[% gSkin.rootdir %]/submit.pl" method="post">
         <table class="data" width="100%">
         <tr class="data_head">
@@ -66,4 +75,4 @@ __template__
 	</table>
 [% END %]
 __version__
-$Id: admin_extras;misc;default,v 1.1 2006/08/22 19:27:36 tvroom Exp $
+$Id: admin_extras;misc;default,v 1.2 2006/08/30 14:37:47 tvroom Exp $

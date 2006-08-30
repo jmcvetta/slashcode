@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.5 2006/08/28 16:43:48 pudge Exp $
+# $Id: FireHose.pm,v 1.6 2006/08/30 14:37:47 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -35,7 +35,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -152,10 +152,11 @@ sub createItemFromSubmission {
 
 sub getFireHoseEssentials {
 	my($self, $options) = @_;
+	my $user = getCurrentUser();
 	$options ||= {};
 	$options->{limit} ||= 50;
 	$options->{orderby} ||= "createtime";
-	$options->{orderdir} = $options->{orderdir} eq "ASC" ? "ASC" : "DESC";
+	$options->{orderdir} = $options->{orderdir} eq "ASC" ? "ASC" : ($user->{is_admin} && $options->{orderby} eq "createtime" ? "ASC" :"DESC");
 
 	my @where;
 	my $tables = "firehose";
@@ -181,7 +182,8 @@ sub getFireHoseEssentials {
 		push @where, "primaryskid = " . $self->sqlQuote($options->{primaryskid});
 	}
 
-	if ($options->{category}) {
+	if (defined $options->{category} || $user->{is_admin}) {
+		$options->{category} ||= '';
 		push @where, "category = " . $self->sqlQuote($options->{category});
 	}
 	
@@ -281,7 +283,7 @@ sub ajaxSaveNoteFirehose {
 		my $firehose = getObject("Slash::FireHose");
 		$firehose->setFireHose($id, { note => $note });
 	}
-	return "Note: $note";
+	return "$note";
 }
 
 
@@ -430,9 +432,24 @@ sub ajaxGetAdminExtras {
 	return unless $item;
 	my $subnotes_ref = $firehose->getMemoryForItem($item);
 	my $similar_stories = $firehose->getSimilarForItem($item);
+	my $num_from_uid = 0;
+	my $accepted_from_uid = 0;
+	my $num_with_emaildomain = 0;
+	my $accepted_from_emaildomain = 0;
+	if ($item->{type} eq "submission") {
+		$accepted_from_uid = $slashdb->countSubmissionsFromUID($item->{uid}, { del => 2 });
+		$num_from_uid = $slashdb->countSubmissionsFromUID($item->{uid});
+		$accepted_from_emaildomain = $slashdb->countSubmissionsWithEmaildomain($item->{emaildomain}, { del => 2 });
+		$num_with_emaildomain = $slashdb->countSubmissionsWithEmaildomain($item->{emaildomain});
+	}
 	slashDisplay("admin_extras", { 
-		subnotes_ref	=> $subnotes_ref, 
-		similar_stories	=> $similar_stories 
+		item				=> $item,
+		subnotes_ref			=> $subnotes_ref, 
+		similar_stories			=> $similar_stories,
+		num_from_uid    		=> $num_from_uid,
+		accepted_from_uid 		=> $accepted_from_uid,
+		num_with_emaildomain 		=> $num_with_emaildomain,
+		accepted_from_emaildomain 	=> $accepted_from_emaildomain
 	}, { Return => 1 });
 }
 
@@ -562,4 +579,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.5 2006/08/28 16:43:48 pudge Exp $
+$Id: FireHose.pm,v 1.6 2006/08/30 14:37:47 tvroom Exp $

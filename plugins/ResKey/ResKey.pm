@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.12 2006/08/31 04:08:34 pudge Exp $
+# $Id: ResKey.pm,v 1.13 2006/08/31 12:48:16 jamiemccarthy Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -101,7 +101,7 @@ sub update_salts {
 	my $timeframe = $constants->{reskey_timeframe} || 14400;
 	$self->sqlDelete('reskey_hourlysalt', "ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
 
-	# create news ones, if they don't exist
+	# create new ones, if they don't exist
 	for my $i (0 .. 48) {
 		$self->sqlInsert('reskey_hourlysalt', {
 			-ts	=> "DATE_ADD(DATE_FORMAT(NOW(), '%Y-%m-%d %H:00:00'), INTERVAL $i HOUR)",
@@ -170,7 +170,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.12 2006/08/31 04:08:34 pudge Exp $
+$Id: ResKey.pm,v 1.13 2006/08/31 12:48:16 jamiemccarthy Exp $
 
 
 =head1 TODO

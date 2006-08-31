@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.7 2006/08/31 02:16:19 pudge Exp $
+# $Id: FireHose.pm,v 1.8 2006/08/31 14:06:13 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -29,13 +29,14 @@ use DBIx::Password;
 use Slash;
 use Slash::Display;
 use Slash::Utility;
+use Slash::Tags;
 use Data::JavaScript::Anon;
 
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -345,8 +346,8 @@ sub ajaxUpDownFirehose {
 	my $id = $form->{id};
 	return unless $id;
 
-	my $upvote   = $constants->{tags_upvote_tag} || "nod";
-	my $downvote = $constants->{tags_downvote_tag} || "nix";
+	my $upvote   = $constants->{tags_upvote_tagname} || "nod";
+	my $downvote = $constants->{tags_downvote_tagname} || "nix";
 
 	my $firehose = getObject('Slash::FireHose');
 	my $tags = getObject('Slash::Tags');
@@ -354,7 +355,7 @@ sub ajaxUpDownFirehose {
 
 	my($dir) = $form->{dir};
 	my $tag;
-	if($dir eq "+") {
+	if ($dir eq "+") {
 		$tag = $upvote;
 	} elsif ($dir eq "-") {
 		$tag = $downvote;
@@ -362,7 +363,7 @@ sub ajaxUpDownFirehose {
 	return unless $item && $tag;
 	my($table, $itemid) = $tags->getGlobjTarget($item->{globjid});
 	my $now_tags_ar = $tags->getTagsByNameAndIdArrayref($table, $itemid, { uid => $user->{uid}});
-	my @tags = sort tagnameorder map { $_->{tagname} } @$now_tags_ar;
+	my @tags = sort Slash::Tags::tagnameorder map { $_->{tagname} } @$now_tags_ar;
 	push @tags, $tag;
 	my $tagsstring = join ' ', @tags;
 	my $newtagspreloadtext = $tags->setTagsForGlobj($itemid, $table, $tagsstring);
@@ -485,11 +486,11 @@ sub setSectionTopicsFromTagstring {
 
 }
 
-sub tagnameorder {
-	my($a1, $a2) = $a =~ /(^\!)?(.*)/;
-	my($b1, $b2) = $b =~ /(^\!)?(.*)/;
-	$a2 cmp $b2 || $a1 cmp $b1;
-}
+#sub tagnameorder {
+#	my($a1, $a2) = $a =~ /(^\!)?(.*)/;
+#	my($b1, $b2) = $b =~ /(^\!)?(.*)/;
+#	$a2 cmp $b2 || $a1 cmp $b1;
+#}
 
 sub setFireHose {
 	my($self, $id, $data) = @_;
@@ -579,4 +580,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.7 2006/08/31 02:16:19 pudge Exp $
+$Id: FireHose.pm,v 1.8 2006/08/31 14:06:13 jamiemccarthy Exp $

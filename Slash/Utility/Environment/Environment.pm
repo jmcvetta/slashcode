@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.199 2006/08/29 19:04:23 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.200 2006/08/31 02:16:19 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.200 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -3337,9 +3337,14 @@ sub getCurrentCache {
 # pass in the regex that contains what a key SHOULD look like (e.g., '^\d+$'),
 # and optionally the original data as a hashref; assign result to variable
 #
-# XXX I am not aware that this has ever been a problem, and I don't
+# I am not aware that this has ever been a problem, and I don't
 # know of any sites that use the debughash* vars.  Can we delete
 # this code? - Jamie 2006-08-27
+# 
+# It's been a problem before.  We don't use this regularly; you usually
+# set it only when you are having the problem.  I say we leave it in,
+# in case we need it again.  We have so many hashes like this, and so much
+# potential for misuse of them, I think we really should leave it in. -- pudge
 
 sub debugHash {
 	my($regex, $hash) = @_;
@@ -3387,4 +3392,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.199 2006/08/29 19:04:23 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.200 2006/08/31 02:16:19 pudge Exp $

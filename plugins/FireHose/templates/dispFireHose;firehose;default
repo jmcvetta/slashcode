@@ -17,7 +17,7 @@ __template__
     mode = mode || "fulltitle";
     full = 1;
     bodywrapper = 1;
-    bodycontent = 1; 
+    bodycontent = 1;
     IF mode == "fulltitle";
     	bodycontent = 0;
     ELSIF mode == "bodycontent";
@@ -127,4 +127,4 @@ END %]
 </div>
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.10 2006/08/30 16:13:26 lancelot Exp $
+$Id: dispFireHose;firehose;default,v 1.11 2006/08/31 02:16:19 pudge Exp $

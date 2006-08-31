@@ -28,7 +28,7 @@ __template__
 			<label>Order&nbsp;[% Slash.createSelect('order', { 'createtime' => 'Time', popularity => 'Popularity' }, options.orderby, 1, 0, 1) %]</label> 
 			<label>Mode&nbsp;[% Slash.createSelect('mode', { 'full' => 'Full', fulltitle => 'Abbreviated' }, options.mode, 1, 0, 1) %]
 </label> 
-			<input type="submit" value="Change View"> 
+			<input type="submit" value="Change View">
 		</fieldset>
 	</form>
 </div>
@@ -39,4 +39,4 @@ __template__
 [% PROCESS paginate %]
 </div>
 __version__
-$Id: list;firehose;default,v 1.6 2006/08/30 19:44:09 lancelot Exp $
+$Id: list;firehose;default,v 1.7 2006/08/31 02:16:19 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.32 2006/08/29 19:03:41 jamiemccarthy Exp $
+# $Id: Access.pm,v 1.33 2006/08/31 02:16:19 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -516,7 +516,7 @@ sub filterOk {
 
 #========================================================================
 sub compressOk {
-	# leave it here, it causes problems if used in the
+	# leave it here, it causes problems if use'd in the
 	# apache startup phase
 	require Compress::Zlib;
 	my($formname, $field, $content, $wsfactor) = @_;
@@ -820,4 +820,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.32 2006/08/29 19:03:41 jamiemccarthy Exp $
+$Id: Access.pm,v 1.33 2006/08/31 02:16:19 pudge Exp $

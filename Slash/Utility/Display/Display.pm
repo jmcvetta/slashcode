@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.115 2006/08/08 00:00:56 pudge Exp $
+# $Id: Display.pm,v 1.116 2006/08/31 13:39:58 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -618,29 +618,31 @@ The 'pollbooth' template block.
 
 sub pollbooth {
 	my($qid, $no_table, $center) = @_;
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $pollbooth_reader = getObject('Slash::PollBooth', { db_type => 'reader' });
+	return '' if !$pollbooth_reader;
+
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
 	# This special qid means to use the current (sitewide) poll.
 	if ($qid eq "_currentqid") {
-		$qid = $reader->getCurrentQidForSkid($gSkin->{skid});
+		$qid = $pollbooth_reader->getCurrentQidForSkid($gSkin->{skid});
 	}
 	
 	# If no qid (or no sitewide poll), short-circuit out.
 	return '' if !$qid;
 
-	my $poll = $reader->getPoll($qid);
+	my $poll = $pollbooth_reader->getPoll($qid);
 	return '' unless %$poll;
 
-	my $n_comments = $reader->countCommentsBySid(
+	my $n_comments = $pollbooth_reader->countCommentsBySid(
 		$poll->{pollq}{discussion});
-	my $poll_open = $reader->isPollOpen($qid);
+	my $poll_open = $pollbooth_reader->isPollOpen($qid);
 
 	return slashDisplay('pollbooth', {
 		question	=> $poll->{pollq}{question},
 		answers		=> $poll->{answers},
 		qid		=> $qid,
-		has_activated   => $reader->hasPollActivated($qid),
+		has_activated   => $pollbooth_reader->hasPollActivated($qid),
 		poll_open	=> $poll_open,
 		voters		=> $poll->{pollq}{voters},
 		comments	=> $n_comments,
@@ -1723,4 +1725,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.115 2006/08/08 00:00:56 pudge Exp $
+$Id: Display.pm,v 1.116 2006/08/31 13:39:58 jamiemccarthy Exp $

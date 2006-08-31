@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.246 2006/05/03 17:03:03 pudge Exp $
+# $Id: comments.pl,v 1.247 2006/08/31 13:23:14 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1084,6 +1084,7 @@ sub submitComment {
 			&& $user->{is_subscriber}
 			&& (!$form->{nosubscriberbonus} || $form->{nosubscriberbonus} ne 'on');
 	}
+# XXX this should be in validateComment()
 	# This is here to prevent posting to discussions that don't exist/are nd -Brian
 	unless ($user->{is_admin} || $form->{newdiscussion}) {
 		unless ($slashdb->checkDiscussionPostable($id)) {

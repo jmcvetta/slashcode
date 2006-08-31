@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.40 2006/08/29 20:48:30 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.41 2006/08/31 21:27:01 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -81,7 +81,7 @@ sub _setuptag {
         } else {
                 # Need to determine tagnameid from name.  We
                 # create the new tag name if necessary.
-                $tag->{tagnameid} = $self->getTagidCreate($hr->{name});
+                $tag->{tagnameid} = $self->getTagnameidCreate($hr->{name});
         }
         return 0 if !$tag->{tagnameid};
 
@@ -230,15 +230,15 @@ sub deactivateTag {
 # thus the first action it tries is looking up that tag.
 # If the caller knows that the tag does not exist or is
 # highly unlikely to exist, this method will be less
-# efficient than createTagName.
+# efficient than createTagname.
 
-sub getTagidCreate {
+sub getTagnameidCreate {
 	my($self, $name) = @_;
 	return 0 if !$self->tagnameSyntaxOK($name);
 	my $reader = getObject('Slash::Tags', { db_type => 'reader' });
 	my $id = $reader->getTagnameidFromNameIfExists($name);
 	return $id if $id;
-	return $self->createTagName($name);
+	return $self->createTagname($name);
 }
 
 # Given a tagname, create it if it does not already exist.
@@ -249,9 +249,9 @@ sub getTagidCreate {
 # and thus the first action it tries is creating that tag.
 # If it is likely or even possible that the tag does
 # already exist, this method will be less efficient than
-# getTagidCreate.
+# getTagnameidCreate.
 
-sub createTagName {
+sub createTagname {
         my($self, $name) = @_;
 	return 0 if !$self->tagnameSyntaxOK($name);
         my $rows = $self->sqlInsert('tagnames', {
@@ -705,7 +705,7 @@ sub getExampleTagsForStory {
 
 sub removeTagnameFromIndexTop {
 	my($self, $tagname) = @_;
-	my $tagid = $self->getTagidCreate($tagname);
+	my $tagid = $self->getTagnameidCreate($tagname);
 	return 0 if !$tagid;
 
 	my $changes = $self->setTagname($tagname, { noshow_index => 1 });
@@ -1033,7 +1033,7 @@ sub processAdminCommand {
 	return 0 if !$type;
 
 	my $constants = getCurrentStatic();
-	my $tagnameid = $self->getTagidCreate($tagname);
+	my $tagnameid = $self->getTagnameidCreate($tagname);
 
 	my $systemwide = $type =~ /^\$/ ? 1 : 0;
 	my $globjid = $systemwide ? undef : $self->getGlobjidCreate($table, $id);

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ResKey.pm,v 1.11 2006/08/08 00:00:56 pudge Exp $
+# $Id: ResKey.pm,v 1.12 2006/08/31 04:08:34 pudge Exp $
 
 package Slash::ResKey;
 
@@ -48,7 +48,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 our $DEBUG = 0;
 
@@ -80,6 +80,34 @@ sub key {
 		$opts->{debug},
 		$opts
 	);
+}
+
+#========================================================================
+# For tasks/reskey_salt.pl
+sub update_salts {
+	my($self) = @_;
+	my $constants = getCurrentStatic();
+
+	# fill if empty!
+	if (!$constants->{reskey_static_salt}) {
+		$self->createVar(
+			'reskey_static_salt',
+			getAnonId(1, 20),
+			'sitewide salt for reskeys'
+		);
+	}
+
+	# delete old salts
+	my $timeframe = $constants->{reskey_timeframe} || 14400;
+	$self->sqlDelete('reskey_hourlysalt', "ts < DATE_SUB(NOW(), INTERVAL $timeframe SECOND)");
+
+	# create news ones, if they don't exist
+	for my $i (0 .. 48) {
+		$self->sqlInsert('reskey_hourlysalt', {
+			-ts	=> "DATE_ADD(DATE_FORMAT(NOW(), '%Y-%m-%d %H:00:00'), INTERVAL $i HOUR)",
+			salt	=> getAnonId(1, 20),
+		}, { ignore => 1 });
+	}
 }
 
 #========================================================================
@@ -142,7 +170,7 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: ResKey.pm,v 1.11 2006/08/08 00:00:56 pudge Exp $
+$Id: ResKey.pm,v 1.12 2006/08/31 04:08:34 pudge Exp $
 
 
 =head1 TODO

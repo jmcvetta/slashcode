@@ -91,7 +91,7 @@ END %]
 				ELSIF (item.name == constants.anon_name) && constants.anon_name_alt;
 					introtext = "$constants.anon_name_alt writes <i>\"$introtext\"</i>";
 				ELSIF item.name;
-					introtext = "$submission.name writes <i>\"$introtext\"</i>";
+					introtext = "$item.name writes <i>\"$introtext\"</i>";
 				END;
 			END; %]
 				[% introtext %]
@@ -127,4 +127,4 @@ END %]
 </div>
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.12 2006/08/31 19:30:03 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.13 2006/08/31 19:34:39 tvroom Exp $

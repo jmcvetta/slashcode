@@ -21,8 +21,8 @@ IF item.type == "submission";
 		introtext = "<a href=\"$item.email\"$rnf>$item.name</a> writes <i>\"$introtext\"</i>";
 	ELSIF (item.name == constants.anon_name) && constants.anon_name_alt;
 		introtext = "$constants.anon_name_alt writes <i>\"$introtext\"</i>";
-	ELSIF submission.name;
-		introtext = "$submission.name writes <i>\"$introtext\"</i>";
+	ELSIF item.name;
+		introtext = "$item.name writes <i>\"$introtext\"</i>";
 	END;
 END; 
 %]
@@ -44,4 +44,4 @@ END;
 				<img src="[% constants.imagedir %]/sic_edit.png" onclick="firehose_get_and_post('[% item.id %]')">
 				[% END %]
 __version__
-$Id: fireHoseForm;misc;default,v 1.2 2006/08/23 16:24:50 tvroom Exp $
+$Id: fireHoseForm;misc;default,v 1.3 2006/08/31 19:34:39 tvroom Exp $

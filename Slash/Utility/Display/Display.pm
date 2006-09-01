@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.116 2006/08/31 13:39:58 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.117 2006/09/01 15:27:40 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -618,10 +618,11 @@ The 'pollbooth' template block.
 
 sub pollbooth {
 	my($qid, $no_table, $center) = @_;
+	my $constants = getCurrentStatic();
+	return '' if !$constants->{plugin}{PollBooth};
 	my $pollbooth_reader = getObject('Slash::PollBooth', { db_type => 'reader' });
 	return '' if !$pollbooth_reader;
 
-	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
 	# This special qid means to use the current (sitewide) poll.
 	if ($qid eq "_currentqid") {
@@ -1725,4 +1726,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.116 2006/08/31 13:39:58 jamiemccarthy Exp $
+$Id: Display.pm,v 1.117 2006/09/01 15:27:40 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.919 2006/09/01 15:13:16 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.920 2006/09/01 15:15:40 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.919 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.920 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7033,21 +7033,33 @@ sub createMetaMod {
 ########################################################
 sub countUsers {
 	my($self, $options) = @_;
+	my $count = undef;
+	my $mcd = $self->getMCD();
+	my $mcdkey;
 	my $max = $options && $options->{max};
 	my $actual = $options && $options->{write_actual};
+
 	if ($max) {
 		# Caller wants the maximum uid we've assigned so far.
+		if ($mcd) {
+			$mcdkey = "$self->{_mcd_keyprefix}:ucm";
+			if ($count = $mcd->get($mcdkey)) {
+				return $count;
+			}
+		}
 		# This is extremely fast, InnoDB doesn't even look at
 		# the table.
-		return $self->sqlSelect("MAX(uid)", "users");
+		$count = $self->sqlSelect("MAX(uid)", "users");
+		if ($mcd) {
+			$mcd->set($mcdkey, $count, 1200);
+		}
+		return $count;
 	}
 
 	# Caller wants the actual count of all users (which may be
 	# smaller, due to gaps).  First see if we can pull the data
 	# from memcached.
-	my $count = undef;
-	my $mcd = $self->getMCD();
-	my $mcdkey = "$self->{_mcd_keyprefix}:uc" if $mcd;
+	$mcdkey = "$self->{_mcd_keyprefix}:uc" if $mcd;
 	if (!$actual && $mcd) {
 		if ($count = $mcd->get($mcdkey)) {
 			return $count;
@@ -7066,10 +7078,9 @@ sub countUsers {
 	# overwrite memcached with this.  Also, if we just got the
 	# actual value, write it into the var.
 	if ($mcd) {
-		# Let's pretend this value's going to be accurate
-		# for about an hour.  Since we only really need the
-		# user count approximately, that's about right.
-		$mcd->set($mcdkey, $count, 3600);
+		# We only really need the user count approximately,
+		# so cache it.
+		$mcd->set($mcdkey, $count, 1200);
 	}
 	if ($actual) {
 		$self->setVar('users_count', $count);

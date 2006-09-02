@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.117 2006/09/01 15:27:40 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.118 2006/09/02 02:46:54 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1094,10 +1094,7 @@ sub linkComment {
 		%$comment, # defaults
 		adminflag	=> $adminflag,
 		date		=> $date,
-			# $comment->{threshold}? Hmm. I'm not sure what it
-			# means for a comment to have a threshold. If it's 0,
-			# does the following line do the right thing? - Jamie
-		threshold	=> $comment->{threshold} || $user->{threshold},
+		threshold	=> defined($form->{threshold}) ? $form->{threshold} : $user->{threshold},
 		commentsort	=> $user->{commentsort},
 		mode		=> $user->{mode},
 		comment		=> $printcomment,
@@ -1238,7 +1235,7 @@ sub createMenu {
 			page            => 'menu',
 			ignore_errors   => 1
 		});
-		$menu = "users" unless $nm->{page} eq "menu";
+		$menu = "users" unless $nm->{page} && $nm->{page} eq "menu";
 		if (@$items) {
 			$menu_text .= slashDisplay($menu,
 				{ items =>	$items,
@@ -1319,13 +1316,7 @@ sub _hard_linkComment {
 
 	my $display = qq|<a href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}|;
 	$display .= "&amp;op=$comment->{op}" if $comment->{op};
-# $comment->{threshold}? Hmm. I'm not sure what it
-# means for a comment to have a threshold. If it's 0,
-# does the following line do the right thing? - Jamie
-# You know, I think this is a bug that comes up every so often. But in
-# theory when you go to the comment link "threshhold" should follow
-# with you. -Brian
-	$display .= "&amp;threshold=" . ($comment->{threshold} || $user->{threshold});
+	$display .= "&amp;threshold=" . (defined($form->{threshold}) ? $form->{threshold} : $user->{threshold});
 	$display .= "&amp;commentsort=$user->{commentsort}";
 	$display .= "&amp;tid=$user->{state}{tid}"
 		if $constants->{tids_in_urls} && $user->{state}{tid};
@@ -1726,4 +1717,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.117 2006/09/01 15:27:40 jamiemccarthy Exp $
+$Id: Display.pm,v 1.118 2006/09/02 02:46:54 jamiemccarthy Exp $

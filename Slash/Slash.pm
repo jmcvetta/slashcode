@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.298 2006/09/03 15:41:25 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.299 2006/09/03 16:36:15 jamiemccarthy Exp $
 
 package Slash;
 
@@ -1880,7 +1880,7 @@ sub _hard_dispComment {
 	my($comment_to_display, $score_to_display,
 		$user_nick_to_display, $zoosphere_display, $user_email_to_display,
 		$time_to_display, $comment_link_to_display, $userinfo_to_display)
-		= ("") x 7;
+		= ("") x 8;
 
 	my $discussion2 = $user->{discussion2} && $user->{discussion2} =~ /^(?:slashdot|uofm)$/;
 

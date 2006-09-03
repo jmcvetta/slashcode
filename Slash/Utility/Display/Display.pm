@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.118 2006/09/02 02:46:54 jamiemccarthy Exp $
+# $Id: Display.pm,v 1.119 2006/09/03 21:01:46 jamiemccarthy Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -1077,6 +1077,7 @@ The 'linkComment' template block.
 sub linkComment {
 	my($comment, $printcomment, $date) = @_;
 	my $constants = getCurrentStatic();
+	my $form = getCurrentForm();
 	return _hard_linkComment(@_) if $constants->{comments_hardcoded};
 
 	my $user = getCurrentUser();
@@ -1310,6 +1311,7 @@ sub _hard_linkComment {
 	my($comment, $printcomment, $date) = @_;
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
+	my $form = getCurrentForm();
 	my $gSkin = getCurrentSkin();
 
 	my $subject = $comment->{subject};
@@ -1717,4 +1719,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.118 2006/09/02 02:46:54 jamiemccarthy Exp $
+$Id: Display.pm,v 1.119 2006/09/03 21:01:46 jamiemccarthy Exp $

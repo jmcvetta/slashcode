@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.1 2006/09/03 15:46:00 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.2 2006/09/03 21:01:46 jamiemccarthy Exp $
 
 package Slash::Metamod::Static;
 
@@ -13,15 +13,14 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
 	my $self = {};
 
 	my $constants = getCurrentStatic();
-	my $plugins = $slashdb->getDescriptions('plugins');
-	return unless $plugins->{Metamod} && $constants->{m2};
+	return unless $constants->{plugin}{Metamod} && $constants->{m2};
 
 	bless($self, $class);
 	$self->{virtual_user} = $user;

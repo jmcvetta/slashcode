@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.20 2006/08/31 04:08:34 pudge Exp $
+# $Id: Key.pm,v 1.21 2006/09/03 17:28:17 jamiemccarthy Exp $
 
 package Slash::ResKey::Key;
 
@@ -118,7 +118,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -952,6 +952,11 @@ sub getCurrentSalt {
 
 
 #========================================================================
+# XXX This needs to be optimized to (a) use the reader DB instead
+# of the writer and (b) cache the current values in memcached.
+# Preferably, all possibly-valid hourly salts (all with ts <= NOW)
+# should be in one memcached object;  when set, that object should
+# be set to expire at xx:59:59.
 sub getCurrentSalts {
 	my($self, $num) = @_;
 
@@ -976,4 +981,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.20 2006/08/31 04:08:34 pudge Exp $
+$Id: Key.pm,v 1.21 2006/09/03 17:28:17 jamiemccarthy Exp $

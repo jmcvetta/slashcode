@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.157 2006/07/05 20:55:06 pudge Exp $
+# $Id: index.pl,v 1.158 2006/09/03 15:41:27 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -245,8 +245,13 @@ my $start_time = Time::HiRes::time;
 		}
 	}
 
+	my $metamod_elig = 0;
+	if ($constants->{m2}) {
+		my $metamod_reader = getObject('Slash::Metamod', { db_type => 'reader' });
+		$metamod_elig = $metamod_reader->metamodEligible($user);
+	}
 	slashDisplay('index', {
-		metamod_elig	=> scalar $reader->metamodEligible($user),
+		metamod_elig	=> $metamod_elig,
 		future_plug	=> $future_plug,
 		daypass_plug_text => $daypass_plug_text,
 		stories		=> $Stories,

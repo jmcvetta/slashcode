@@ -75,7 +75,7 @@ cur_time = Slash.db.getTime();
 		[% END %]
 		[% IF admin_flag %]
 		<tr class="data_hl1"><td colspan="5">[% PROCESS horiz_rule %]</td></tr>
-		<tr class="data_hl1"><td colspan="2"><b>Total: [% total %]</td><td colspan="3"><b>Accepted: [% Slash.getData('percentage',{ sum => approved, count=> total},"misc") %]</b></td></tr>
+		<tr class="data_hl1"><td colspan="2"><b>Total: [% total %]</b></td><td colspan="3"><b>Accepted: [% Slash.getData('percentage',{ sum => approved, count=> total},"misc") %]</b></td></tr>
 		[% ELSIF user.uid != sub.uid %]
 		<tr class="data_hl1"><td colspan="5"><i>(Rejected submissions are not listed.)</i></td></tr>
 		[% END %]
@@ -102,4 +102,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: listSubmissions;users;default,v 1.15 2006/06/19 19:47:09 tvroom Exp $
+$Id: listSubmissions;users;default,v 1.16 2006/09/03 15:41:30 jamiemccarthy Exp $

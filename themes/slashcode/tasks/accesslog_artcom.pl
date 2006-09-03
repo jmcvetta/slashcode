@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: accesslog_artcom.pl,v 1.3 2005/11/23 15:28:26 jamiemccarthy Exp $
+# $Id: accesslog_artcom.pl,v 1.4 2006/09/03 15:41:28 jamiemccarthy Exp $
 # 
 # Transfer article and comments hits from accesslog into a new
 # table, accesslog_artcom, for fast processing by run_moderatord.
@@ -12,7 +12,7 @@ use Slash::DB;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Change this var to change how often the task runs.
 $minutes_run = 6;
@@ -26,7 +26,7 @@ $task{$me}{code} = sub {
 
 	my($virtual_user, $constants, $slashdb, $user) = @_;
 
-	if (! $constants->{allow_moderation}) {
+	if (! $constants->{m1}) {
 		slashdLog("$me - moderation inactive") if verbosity() >= 2;
 		return ;
 	}

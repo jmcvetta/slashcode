@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.320 2006/04/26 16:58:06 pudge Exp $
+# $Id: users.pl,v 1.321 2006/09/03 15:41:28 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -905,9 +905,12 @@ sub showInfo {
 		&& (defined($form->{show_m2s}) || defined($form->{show_m1s}) || defined($form->{m2_listing})))
 	 {
 		my $update_hr = {};
-		$update_hr->{m2_with_mod} = $form->{show_m2s} if defined $form->{show_m2s};
-		$update_hr->{mod_with_comm} = $form->{show_m1s} if defined $form->{show_m1s};
-		$update_hr->{show_m2_listing} = $form->{m2_listing} if defined $form->{m2_listing};
+		$update_hr->{mod_with_comm} = $form->{show_m1s}
+			if defined $form->{show_m1s};
+		$update_hr->{m2_with_mod} =	($constants->{m2} ? $form->{show_m2s} : undef)
+			if defined $form->{show_m2s};
+		$update_hr->{show_m2_listing} =	($constants->{m2} ? $form->{m2_listing} : undef)
+			if defined $form->{m2_listing};
 		$slashdb->setUser($user->{uid}, $update_hr);
 	}
 
@@ -1302,7 +1305,10 @@ sub showInfo {
 	
 		my $submissions = $reader->getSubmissionsByUID($uid, $sub_limit, $sub_options);
 		my $metamods;
-		$metamods = $reader->getMetamodlogForUser($uid, 30) if $admin_flag;
+		if ($constants->{m2} && $admin_flag) {
+			my $metamod_reader = getObject('Slash::Metamod', { db_type => 'reader' });
+			$metamods = $metamod_reader->getMetamodlogForUser($uid, 30);
+		}
 
 		my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 		my $tagshist = [];
@@ -3307,7 +3313,9 @@ sub getUserAdmin {
 	my $srcid;
 	my $proxy_check = {};
 	my @accesshits;
-	my $user_editinfo_flag = ($form->{op} eq 'userinfo' || ! $form->{op} || $form->{userinfo} || $form->{saveuseradmin}) ? 1 : 0;
+	my $user_editinfo_flag = (!$form->{op} || $form->{op} eq 'userinfo'
+		|| $form->{userinfo} || $form->{saveuseradmin}
+		) ? 1 : 0;
 	my $authoredit_flag = ($user->{seclev} >= 10000) ? 1 : 0;
 	my $sectionref = $reader->getDescriptions('skins');
 	$sectionref->{''} = getData('all_sections');

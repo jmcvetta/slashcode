@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: process_metamod.pl,v 1.2 2006/09/03 21:01:46 jamiemccarthy Exp $
+# $Id: process_metamod.pl,v 1.3 2006/09/03 22:02:28 jamiemccarthy Exp $
 
 use strict;
 use Slash::Utility;
@@ -10,7 +10,7 @@ use Slash::Constants qw( :messages :slashd );
 
 use vars qw( %task $me $task_exit_flag );
 
-$task{$me}{timespec} = '28 0-23 * * * *';
+$task{$me}{timespec} = '28 0-23 * * *';
 $task{$me}{timespec_panic_1} = '';
 $task{$me}{resource_locks} = { log_slave => 1, moderatorlog => 1 };
 $task{$me}{fork} = SLASHD_NOWAIT;
@@ -565,7 +565,7 @@ sub adjust_m2_freq {
 	$slashdb->setVar('m2_freq', $new_m2_freq);
 }
 
-sub delete_old_mod_rows {
+sub delete_old_m2_rows {
 	my $metamod_db = getObject('Slash::Metamod::Static');
 	$metamod_db->deleteOldM2Rows({ sleep_between => 30 });
 }

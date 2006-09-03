@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PollBooth.pm,v 1.7 2006/08/31 13:39:58 jamiemccarthy Exp $
+# $Id: PollBooth.pm,v 1.8 2006/09/03 22:02:45 jamiemccarthy Exp $
 
 package Slash::PollBooth;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -106,7 +106,7 @@ sub checkPollVoter {
 	my($self, $qid, $uid) = @_;
 	my $qid_q = $self->sqlQuote($qid);
 	my $pollvoter_md5 = getPollVoterHash();
-	return $slashdb->sqlSelect(
+	return $self->sqlSelect(
 		'id',
 		'pollvoters',
 		"qid=$qid_q AND id='$pollvoter_md5' AND uid=$uid"

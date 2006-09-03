@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMetamods,v 1.17 2006/09/03 15:41:26 jamiemccarthy Exp $
+# $Id: createTestMetamods,v 1.18 2006/09/03 22:03:48 jamiemccarthy Exp $
 
 use strict;
 use File::Basename;
@@ -12,9 +12,9 @@ use Slash::Utility;
 use Benchmark;
 use Data::Dumper;
 
-use vars qw( $slashdb $constants );
+use vars qw( $slashdb $constants $metamod_db );
 
-(my $VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -31,8 +31,8 @@ usage('Invalid number of meta-moderations')
 createEnvironment($opts{u});
 setCurrentSkin(determineCurrentSkin());
 $slashdb = getCurrentDB();
-$metamod_db = getObject('Slash::Metamod');
 $constants = getCurrentStatic();
+$metamod_db = getObject('Slash::Metamod');
 if (!$constants->{m2}) {
 	usage('Metamoderation has been disabled with the "m2" var');
 }
@@ -118,7 +118,7 @@ my $reasons = $slashdb->getReasons();
 		}
 
 		# Do the metamod.
-		$metamod_db->setModsSaved($m2user, [( keys %m2s )]);
+		$metamod_db->setM2ModsSaved($m2user, [( keys %m2s )]);
 		$m2user = $slashdb->getUser($m2user->{uid});
 		$metamod_db->createMetaMod($m2user, \%m2s, $multicount);
 

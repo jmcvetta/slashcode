@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: run_moderatord.pl,v 1.65 2006/09/03 15:41:28 jamiemccarthy Exp $
+# $Id: run_moderatord.pl,v 1.66 2006/09/03 22:03:38 jamiemccarthy Exp $
 # 
 # This task is called run_moderatord for historical reasons;  it used
 # to run a separate script called "moderatord" but now is contained
@@ -13,7 +13,7 @@ use Slash::Constants qw(:messages);
 use Slash::DB;
 use Slash::Utility;
 use Slash::Constants ':slashd';
-use Data::Dumper;
+#use Data::Dumper;
 
 use vars qw( %task $me );
 

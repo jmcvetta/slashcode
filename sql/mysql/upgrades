@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1043 2006/09/03 22:03:09 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1044 2006/09/05 22:57:18 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4044,3 +4044,7 @@ UPDATE vars SET name='m1' WHERE name='allow_moderation';
 UPDATE vars SET description='Number of comments for meta-moderation - if more than about 15, doublecheck that users_info.m2_mods_saved is large enough' WHERE name='m2_comments';
 ALTER TABLE users_info CHANGE COLUMN mods_saved m2_mods_saved varchar(120) NOT NULL default '';
 
+
+# Updates for plugins/FireHose
+INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_new', 'Slash::FireHose', 'ajaxFireHoseFetchNew', 'ajax_user', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'firehose_check_removed', 'Slash::FireHose', 'ajaxFireHoseCheckRemoved', 'ajax_user', 'createuse');

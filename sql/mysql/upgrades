@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1044 2006/09/05 22:57:18 tvroom Exp $
+# $Id: upgrades,v 1.1045 2006/09/06 04:51:27 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4048,3 +4048,8 @@ ALTER TABLE users_info CHANGE COLUMN mods_saved m2_mods_saved varchar(120) NOT N
 # Updates for plugins/FireHose
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_new', 'Slash::FireHose', 'ajaxFireHoseFetchNew', 'ajax_user', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_check_removed', 'Slash::FireHose', 'ajaxFireHoseCheckRemoved', 'ajax_user', 'createuse');
+
+
+# 2006-09-06
+UPDATE vars SET value = 'T_2_5_0_125' WHERE name = 'cvs_tag_currentcode';
+

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.1 2006/09/03 15:46:00 jamiemccarthy Exp $
+# $Id: metamod.pl,v 1.2 2006/09/06 20:15:27 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -22,14 +22,16 @@ sub main {
 
 	if (!$constants->{m1}) {
 		print getData('no_moderation');
-	} elsif (!$slashdb->metamodEligible($user)) {
-		print getData('not-eligible');
-	} elsif ($op eq 'MetaModerate') {
-		my $metamod_db = getObject('Slash::Metamod');
-		$metamod_db->metaModerate();
-		print getData('thanks');
 	} else {
-		displayTheComments();
+		my $metamod_db = getObject('Slash::Metamod');
+		if (!$metamod_db->metamodEligible($user)) {
+			print getData('not-eligible');
+		} elsif ($op eq 'MetaModerate') {
+			$metamod_db->metaModerate();
+			print getData('thanks');
+		} else {
+			displayTheComments();
+		}
 	}
 
 	writeLog($op);

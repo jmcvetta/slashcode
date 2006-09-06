@@ -1,11 +1,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Metamod.pm,v 1.2 2006/09/03 22:02:28 jamiemccarthy Exp $
+# $Id: Metamod.pm,v 1.3 2006/09/06 20:15:26 jamiemccarthy Exp $
 
 package Slash::Metamod;
 
 use strict;
+use Date::Format qw(time2str);
 use Slash;
 use Slash::Utility;
 use Slash::DB::Utility;
@@ -15,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;

@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.34 2006/09/06 17:24:29 tvroom Exp $
+// $Id: common.js,v 1.35 2006/09/06 20:43:06 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -184,8 +184,15 @@ function tagsShowBody(id, is_admin, newtagspreloadtext, type) {
 			params['op'] = 'tags_get_user_firehose';
 			params['id'] = id;
 		}
-		params['newtagspreloadtext'] = newtagspreloadtext
-		ajax_update(params, tagsuserid);
+		params['newtagspreloadtext'] = newtagspreloadtext;
+		var handlers = {
+			onComplete: function() { 
+				var textid = 'newtags-' + id;
+				var input = $(textid);
+				input.focus();
+			}
+		}
+		ajax_update(params, tagsuserid, handlers);
 		//alert('after ajax_update ' + tagsuserid);
 
 		// Also fill the admin div.  Note that if the user
@@ -219,6 +226,7 @@ function tagsShowBody(id, is_admin, newtagspreloadtext, type) {
 			var textinputid = 'newtags-' + id;
 			var textinput = $(textinputid);
 			textinput.value = textinput.value + ' ' + newtagspreloadtext;
+			textinput.focus();
 		}
 	}
 }

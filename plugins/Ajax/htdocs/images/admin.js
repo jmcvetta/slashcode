@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.25 2006/09/06 17:24:29 tvroom Exp $
+// $Id: admin.js,v 1.26 2006/09/06 20:43:06 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -219,8 +219,8 @@ function firehose_open_note(id) {
 	var nf = $('note-form-'+id);
 	var nt = $('note-text-'+id);
 	var ni = $('note-input-'+id);
-	ni.focus();
 	nf.className="";
+	ni.focus();
 	nt.className="hide";
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: metamod.pl,v 1.2 2006/09/06 20:15:27 jamiemccarthy Exp $
+# $Id: metamod.pl,v 1.3 2006/09/06 22:35:44 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -44,9 +44,10 @@ sub displayTheComments {
 	my $slashdb = getCurrentDB();
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
+	my $metamod_db = getObject('Slash::Metamod');
 
 	my $reasons = $slashdb->getReasons();
-	my $comments = $slashdb->getMetamodsForUser(
+	my $comments = $metamod_db->getMetamodsForUser(
 		$user, $constants->{m2_comments}
 	);
 

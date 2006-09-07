@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PollBooth.pm,v 1.8 2006/09/03 22:02:45 jamiemccarthy Exp $
+# $Id: PollBooth.pm,v 1.9 2006/09/07 02:38:18 jamiemccarthy Exp $
 
 package Slash::PollBooth;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION @EXPORT);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -33,11 +33,11 @@ sub new {
 }
 
 sub setPollQuestion {
-	_genericSet('pollquestions', 'qid', '', @_);
+	Slash::DB::MySQL::_genericSet('pollquestions', 'qid', '', @_);
 }
 
 sub getPollQuestion {
-	my $answer = _genericGet({
+	my $answer = Slash::DB::MySQL::_genericGet({
 		table           => 'pollquestions',
 		table_prime     => 'qid',
 		arguments       => \@_,
@@ -46,13 +46,13 @@ sub getPollQuestion {
 }
 
 sub createAutoPollFromStory {
-	my ($options) = @_;
-	my $slashdb = getCurrentDB();
+	my($options) = @_;
+	my $metamod_db = getObject('Slash::Metamod');
 	my $story = $options->{story};
-	my $qid = $slashdb->sqlSelect('qid', 'auto_poll', "primaryskid = '$story->{primaryskid}'");
+	my $qid = $metamod_db->sqlSelect('qid', 'auto_poll', "primaryskid = '$story->{primaryskid}'");
 	if ($qid) {
-		my $question = $slashdb->getPollQuestion($qid, 'question');
-		my $answers = $slashdb->getPollAnswers($qid, [ qw| answer | ]);
+		my $question = $metamod_db->getPollQuestion($qid, 'question');
+		my $answers = $metamod_db->getPollAnswers($qid, [ qw| answer | ]);
 		my $newpoll = {
 			primaryskid => $story->{primaryskid},
 			topic => $story->{tid},
@@ -65,8 +65,8 @@ sub createAutoPollFromStory {
 			$newpoll->{'aid' . $x} = $_->[0];
 			$x++;
 		}
-		my $qid = $slashdb->savePollQuestion($newpoll);
-		$slashdb->setStory($story->{sid}, { qid => $qid, writestatus => 'dirty' });
+		my $qid = $metamod_db->savePollQuestion($newpoll);
+		$metamod_db->setStory($story->{sid}, { qid => $qid, writestatus => 'dirty' });
 	}
 
 	return 1;

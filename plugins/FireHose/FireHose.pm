@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.11 2006/09/06 19:28:15 tvroom Exp $
+# $Id: FireHose.pm,v 1.12 2006/09/07 02:59:04 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -159,6 +159,7 @@ sub getFireHoseEssentials {
 	$options->{orderby} ||= "createtime";
 	$options->{orderdir} = uc($options->{orderdir}) eq "ASC" ? "ASC" : "DESC";
 	#($user->{is_admin} && $options->{orderby} eq "createtime" ? "ASC" :"DESC");
+	
 
 	my @where;
 	my $tables = "firehose";
@@ -200,7 +201,8 @@ sub getFireHoseEssentials {
 	}
 
 	if ($options->{ids}) {
-		my $id_str = join ",", @{$options->{ids}};
+		return [] if @{$options->{ids}} < 1;
+		my $id_str = join ",", map { $self->sqlQuote($_) } @{$options->{ids}};
 		push @where, "id IN ($id_str)";
 	}
 
@@ -559,9 +561,10 @@ sub setFireHose {
 	my($self, $id, $data) = @_;
 	return unless $id;
 	my $id_q = $self->sqlQuote($id);
-	
+
 	my $text_updated = 0;
 	my $text_data = {};
+
 
 	$text_data->{title} = delete $data->{title} if defined $data->{title};
 	$text_data->{introtext} = delete $data->{introtext} if defined $data->{introtext};
@@ -702,4 +705,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.11 2006/09/06 19:28:15 tvroom Exp $
+$Id: FireHose.pm,v 1.12 2006/09/07 02:59:04 tvroom Exp $

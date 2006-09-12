@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.301 2006/09/12 21:03:26 pudge Exp $
+# $Id: Slash.pm,v 1.302 2006/09/12 21:54:12 pudge Exp $
 
 package Slash;
 
@@ -2105,7 +2105,7 @@ EOT
 #			(!$form->{cid} || $form->{cid} != $comment->{cid})
 #		);
 
-		push @link, "<div class=\"modsel\">" .
+		push @link, qq'<div id="reasondiv_$comment->{cid}" class="modsel">' .
 			createSelect("reason_$comment->{cid}", $reasons, {
 				'return'	=> 1,
 				nsort		=> 1, 

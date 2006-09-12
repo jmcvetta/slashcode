@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.120 2006/09/07 21:55:46 pudge Exp $
+# $Id: Display.pm,v 1.121 2006/09/12 04:44:07 pudge Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.120 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -128,6 +128,10 @@ Boolean: do <SELECT MULTIPLE...> instead of <SELECT...>
 
 Value for the C<onchange=""> attribute.
 
+=item ONCLICK
+
+Value for the C<onclick=""> attribute.
+
 =back
 
 =item Return value
@@ -155,6 +159,7 @@ sub createSelect {
 		($default, $return, $nsort, $ordered, $multiple, $onchange, $onclick) =
 			@{$default}{qw(default return nsort ordered multiple onchange onclick)};
 	}
+	$default = '' unless defined $default;
 
 	if (ref $hashref eq 'ARRAY') {
 ### Pudge: see above. -Jamie
@@ -1719,4 +1724,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.120 2006/09/07 21:55:46 pudge Exp $
+$Id: Display.pm,v 1.121 2006/09/12 04:44:07 pudge Exp $

@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.32 2006/08/22 19:20:59 tvroom Exp $
+// $Id: comments.js,v 1.33 2006/09/12 04:44:07 pudge Exp $
 
 var comments;
 var root_comments;
@@ -594,7 +594,9 @@ function doModerate(el) {
 	params['op']  = 'comments_moderate_cid';
 	params['cid'] = cid;
 	params['sid'] = discussion_id;
+	params['msgdiv'] = 'reasondiv_' + cid;
 	params['reason'] = el.value;
+	params['reskey'] = comments_moderate_reskey;
 
 	var handlers = {
 		onComplete: json_handler

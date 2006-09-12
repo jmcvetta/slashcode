@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.35 2006/09/06 20:43:06 tvroom Exp $
+// $Id: common.js,v 1.36 2006/09/12 04:44:07 pudge Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -393,7 +393,6 @@ function eval_response(transport) {
 
 function json_handler(transport) {
 	var response = eval_response(transport);
-	 
 
  	if (response.html) {
 		for (el in response.html) {

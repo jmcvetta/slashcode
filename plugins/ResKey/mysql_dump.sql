@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.16 2006/08/31 04:08:34 pudge Exp $
+# $Id: mysql_dump.sql,v 1.17 2006/09/12 04:44:07 pudge Exp $
 #
 
 ### NOTE: reserved reskey IDs:
@@ -200,7 +200,7 @@ INSERT INTO reskey_resource_checks VALUES (NULL, 9, 'all', 'Slash::ResKey::Check
 INSERT INTO reskey_resource_checks VALUES (NULL, 9, 'all', 'Slash::ResKey::Checks::AL2::AnonNoPost',     301);
 INSERT INTO reskey_resource_checks VALUES (NULL, 9, 'all', 'Slash::ResKey::Checks::AL2::NoPostAnon',     401);
 INSERT INTO reskey_resource_checks VALUES (NULL, 9, 'all', 'Slash::ResKey::Checks::AL2::NoPost',         501);
-# count mods?  not for now, but ...
+INSERT INTO reskey_resource_checks VALUES (NULL, 9, 'use', 'Slash::ResKey::Checks::Moderate',            601);
 
 ### vars
 INSERT INTO reskey_vars VALUES (9, 'adminbypass', 1, 'If admin, bypass checks for duration, proxy, and user');

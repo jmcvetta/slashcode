@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.139 2006/08/15 20:13:04 tvroom Exp $
+# $Id: submit.pl,v 1.140 2006/09/12 04:44:07 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -527,6 +527,9 @@ sub displayForm {
 	}
 
 	my $fixedstory = fixStory($form->{story}, { sub_type => $form->{sub_type} });
+	# don't let preview screen be used to pump up pagerank, if anyone
+	# would waste their time doing so -- pudge
+	$fixedstory = noFollow($fixedstory);
 
 	slashDisplay('displayForm', {
 		fixedstory	=> $fixedstory,

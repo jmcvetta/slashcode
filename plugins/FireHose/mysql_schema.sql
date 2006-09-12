@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.6 2006/09/12 16:23:29 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.7 2006/09/12 20:27:37 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -25,6 +25,7 @@ CREATE TABLE firehose (
 	ipid varchar(32) NOT NULL default '',
 	subnetid varchar(32) NOT NULL default '',
 	category varchar(30) NOT NULL default '',
+	last_update TIMESTAMP,
 	PRIMARY KEY  (id)
 ) TYPE=InnoDB; 
 

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1050 2006/09/12 16:23:29 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1051 2006/09/12 20:34:30 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4073,4 +4073,6 @@ CREATE TABLE globj_adminnotes (
 # Updates for plugins/FireHose
 # perl -MSlash::Test=virtusername -le '$hr = $slashdb->sqlSelectAllKeyValue("globjid, note", "firehose", "LENGTH(note) > 0"); for my $k (keys %$hr) { $slashdb->setGlobjAdminnote($k, $hr->{$k}) }'
 ALTER TABLE firehose DROP COLUMN note;
-
+ALTER TABLE firehose ADD last_update timestamp;
+UPDATE firehose set last_update = createtime;
+INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates', 'Slash::FireHose', 'ajaxFireHoseGetUpdates', 'ajax_user', 'createuse');

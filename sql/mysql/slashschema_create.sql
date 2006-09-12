@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.234 2006/09/03 15:41:27 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.235 2006/09/12 16:23:29 jamiemccarthy Exp $
 #
 
 #
@@ -523,6 +523,17 @@ CREATE TABLE globjs (
 ) TYPE=InnoDB;
 
 #
+# Table structure for table 'globj_adminnotes'
+#
+
+DROP TABLE IF EXISTS globj_adminnotes;
+CREATE TABLE globj_adminnotes (
+	globjid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	adminnote	varchar(255) NOT NULL DEFAULT '',
+	PRIMARY KEY (globjid)
+) TYPE=InnoDB;
+
+#
 # Table structure for table 'globj_types'
 #
 
@@ -546,8 +557,6 @@ CREATE TABLE globj_urls (
 	PRIMARY KEY (id),
 	UNIQUE globjid_url_id (globjid, url_id)
 ) TYPE=InnoDB;
-
-
 
 #
 # Table structure for table 'hooks'

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.5 2006/08/28 16:43:48 pudge Exp $
+# $Id: mysql_schema.sql,v 1.6 2006/09/12 16:23:29 jamiemccarthy Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -18,7 +18,6 @@ CREATE TABLE firehose (
 	tid smallint(6) default '0',
 	srcid mediumint(8) unsigned NOT NULL default '0',
 	url_id mediumint(8) unsigned NOT NULL default '0',
-	note varchar(255) default '',
 	toptags varchar(255) default '',
 	email varchar(255) NOT NULL default '',
 	emaildomain varchar(255) NOT NULL default '',

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1052 2006/09/13 04:22:17 pudge Exp $
+# $Id: upgrades,v 1.1053 2006/09/13 04:47:16 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4063,8 +4063,8 @@ INSERT INTO reskey_vars VALUES (9, 'user_seclev', 1, 'Minimum seclev to use reso
 
 DROP TABLE IF EXISTS globj_adminnotes;
 CREATE TABLE globj_adminnotes (
-	globjid		int UNSIGNED NOT NULL AUTO_INCREMENT,
-	adminnote	varchar(255) NOT NULL DEFAULT '',
+	globjid         int UNSIGNED NOT NULL AUTO_INCREMENT,
+	adminnote       varchar(255) NOT NULL DEFAULT '',
 	PRIMARY KEY (globjid)
 ) TYPE=InnoDB;
 

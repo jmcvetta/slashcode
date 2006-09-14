@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.38 2006/09/12 22:45:00 pudge Exp $
+// $Id: common.js,v 1.39 2006/09/14 00:40:03 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -507,6 +507,7 @@ function firehose_get_updates() {
 	};
 	params['op'] = 'firehose_get_updates';
 	params['ids'] = firehose_get_item_idstring();
+	params['updatetime'] = update_time;
 	ajax_update(params, '', handlers);
 	
 }

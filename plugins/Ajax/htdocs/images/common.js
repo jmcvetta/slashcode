@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.39 2006/09/14 00:40:03 tvroom Exp $
+// $Id: common.js,v 1.40 2006/09/19 19:46:52 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -402,7 +402,10 @@ function eval_response(transport) {
 
 function json_handler(transport) {
 	var response = eval_response(transport);
+	json_update(response);
+}
 
+function json_update(response) {
  	if (response.html) {
 		for (el in response.html) {
 			if ($(el))
@@ -472,6 +475,10 @@ function firehose_get_updates_handler(transport) {
 				}
 			}
 		}
+	}
+	if (response.html) {
+		json_update(response);
+		processd = processed + 1;
 	}
 	if (processed) {
 		if (response.update_time) {

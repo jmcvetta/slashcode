@@ -40,7 +40,6 @@ __template__
 		adminmode = 0;
 	END;
     END;
-    adminmode;
 %]
 [% IF item.url_id;
 	url = Slash.db.getUrl(item.url_id);
@@ -103,4 +102,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.17 2006/09/19 20:16:37 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.18 2006/09/19 20:23:23 tvroom Exp $

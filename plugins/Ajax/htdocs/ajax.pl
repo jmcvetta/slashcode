@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.30 2006/09/12 04:44:07 pudge Exp $
+# $Id: ajax.pl,v 1.31 2006/09/20 15:42:56 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -88,7 +88,6 @@ sub getSectionPrefsHTML {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 
-	sleep 3;
 	my %story023_default = (
 		author	=> { },
 		nexus	=> { },

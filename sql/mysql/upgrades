@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1054 2006/09/18 21:56:16 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1055 2006/09/20 00:56:22 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4078,4 +4078,7 @@ INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates', 'Slash::FireHose', 'a
 
 # 2006-09-12
 UPDATE vars SET value = 'T_2_5_0_126' WHERE name = 'cvs_tag_currentcode';
+
+# Updates for plugins/Tags
+ALTER TABLE tags ADD COLUMN private enum('yes', 'no') NOT NULL DEFAULT 'no';
 

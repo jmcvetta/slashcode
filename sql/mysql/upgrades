@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1056 2006/09/20 01:51:58 pudge Exp $
+# $Id: upgrades,v 1.1057 2006/09/20 02:03:23 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4081,4 +4081,7 @@ UPDATE vars SET value = 'T_2_5_0_126' WHERE name = 'cvs_tag_currentcode';
 
 # Updates for plugins/Tags
 ALTER TABLE tags ADD COLUMN private enum('yes', 'no') NOT NULL DEFAULT 'no';
+
+# 2006-09-19
+UPDATE vars SET value = 'T_2_5_0_127' WHERE name = 'cvs_tag_currentcode';
 

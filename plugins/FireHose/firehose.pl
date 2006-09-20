@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.6 2006/09/05 20:45:19 tvroom Exp $
+# $Id: firehose.pl,v 1.7 2006/09/20 16:14:57 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -32,7 +32,8 @@ sub main {
 	my %ops = (
 		list		=> [1,  \&list ],
 		view		=> [1, 	\&view ],
-		default		=> [1,	\&list]
+		default		=> [1,	\&list],
+		setusermode	=> [1,	\&setUserMode ],
 	);
 
 	my $op = $form->{op};
@@ -51,7 +52,7 @@ sub main {
 sub list {
 	my($slashdb, $constants, $user, $form, $gSkin) = @_;
 	my $firehose = getObject("Slash::FireHose");
-	my $options = $firehose->getAndSetOptions(); 
+	my $options = $firehose->getAndSetOptions();
 	my $page = $form->{page} || 0;
 	if ($page) {
 		$options->{offset} = $page * $options->{limit};
@@ -64,7 +65,8 @@ sub list {
 	foreach (@$items) {
 		$maxtime = $_->{createtime} if $_->{createtime} gt $maxtime;
 		my $item =  $firehose->getFireHose($_->{id});
-		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} });
+		my $tags_top = $firehose->getFireHoseTagsTop($item);
+		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });
 	}
 	my $refresh_options;
 	if ($options->{orderby} eq "createtime") {
@@ -91,6 +93,7 @@ sub view {
 	my $item = $firehose->getFireHose($form->{id});
 	slashDisplay("view", { item => $item } );
 }
+
 
 
 createEnvironment();

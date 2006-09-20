@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Moderate.pm,v 1.2 2006/09/14 04:47:57 pudge Exp $
+# $Id: Moderate.pm,v 1.3 2006/09/20 01:51:58 pudge Exp $
 
 # XXX right now we have checks for moderation in many places.
 # we must consolidate as much as possible. -- pudge
@@ -24,7 +24,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub doCheck {
 	my($self) = @_;
@@ -64,9 +64,11 @@ sub doCheck {
 	# OK, the user is an ordinary user, so see if they have mod
 	# points and do some other fairly ordinary tests to try to
 	# rule out whether they can mod.
+	return(RESKEY_FAILURE, ['no points']) if
+		    $user->{points} <= 0;
+
 	return(RESKEY_FAILURE, ['not allowed']) if
-		    $user->{points} <= 0
-		|| !$user->{willing}
+		   !$user->{willing}
 		||  $comment->{uid} == $user->{uid}
 		||  $comment->{lastmod} == $user->{uid}
 		||  $comment->{ipid} eq $user->{ipid};

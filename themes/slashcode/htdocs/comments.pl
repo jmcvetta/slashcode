@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.250 2006/09/14 04:47:57 pudge Exp $
+# $Id: comments.pl,v 1.251 2006/09/20 01:51:58 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1352,7 +1352,7 @@ sub moderate {
 	my($form, $slashdb, $user, $constants, $discussion) = @_;
 
 	my $moderate_check = &Slash::_moderateCheck;
-	if ($moderate_check->{count} || $moderate_check->{msg}) {
+	if (!$moderate_check->{count} && $moderate_check->{msg}) {
 		print $moderate_check->{msg} if $moderate_check->{msg};
 		return;
 	}

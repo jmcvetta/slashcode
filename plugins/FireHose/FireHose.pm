@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.17 2006/09/20 01:51:57 pudge Exp $
+# $Id: FireHose.pm,v 1.18 2006/09/21 19:36:55 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -333,7 +333,6 @@ sub ajaxGetUserFirehose {
 	if ($item) {
 		$globjid = $item->{globjid};
 	}
-	
 #	print STDERR "ajaxGetUserFirehose id: $id globjid: $globjid\n\n";
 #print STDERR scalar(localtime) . " ajaxGetUserFirehose for stoid=$stoid sidenc=$sidenc tr=$tags_reader\n";
 	if (!$globjid || $globjid !~ /^\d+$/ || $user->{is_anon} || !$tags_reader) {
@@ -753,9 +752,10 @@ sub getAndSetOptions {
 
 	if (defined $form->{fhfilter}) {
 		$fhfilter = $form->{fhfilter};
-		$options->{firehose_fhfilter} = $fhfilter;
+		$options->{fhfilter} = $fhfilter;
 	} else {
-		$fhfilter = $options->{firehose_fhfilter};
+		$fhfilter = $user->{firehose_fhfilter};
+		$options->{fhfilter} = $fhfilter;
 	}
 
 	$fhfilter =~ s/^\s+|\s+$//g;
@@ -844,4 +844,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.17 2006/09/20 01:51:57 pudge Exp $
+$Id: FireHose.pm,v 1.18 2006/09/21 19:36:55 tvroom Exp $

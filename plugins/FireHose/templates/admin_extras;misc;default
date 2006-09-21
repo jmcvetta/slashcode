@@ -51,6 +51,7 @@ __template__
 
         </tr>
 </table>
+</form>
 [% IF similar_stories.size > 0 %]
 	<table border="0" cellpadding="2" cellspacing="0">
 		<tr><td colspan="5" align="CENTER"><b>Similar Stories --</b> check words below before submitting or previewing to mark words as common and not for use in determining similar stories</td></tr>
@@ -78,4 +79,4 @@ __template__
 	</table>
 [% END %]
 __version__
-$Id: admin_extras;misc;default,v 1.3 2006/08/31 00:42:27 tvroom Exp $
+$Id: admin_extras;misc;default,v 1.4 2006/09/21 20:04:33 tvroom Exp $

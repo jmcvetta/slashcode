@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Metamod.pm,v 1.3 2006/09/06 20:15:26 jamiemccarthy Exp $
+# $Id: Metamod.pm,v 1.4 2006/09/22 02:22:22 pudge Exp $
 
 package Slash::Metamod;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -42,7 +42,7 @@ sub new {
 # no real other way to do it, I'm putting it here anyway.
 
 sub metaModerate {
-	my($self) = @_;
+	my($self, $is_admin) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
@@ -61,7 +61,7 @@ sub metaModerate {
 		next unless $key =~ /^mm(\d+)$/;
 		my $mmid = $1;
 		# Only the user's given mods can be used.
-		next unless $m2_mods_saved{$mmid};
+		next unless $m2_mods_saved{$mmid} || $is_admin;
 		# This one's valid.  Store its data in %m2s.
 		$m2s{$mmid}{is_fair} = ($form->{$key} eq '+') ? 1 : 0;
 	}

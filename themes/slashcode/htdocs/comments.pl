@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.251 2006/09/20 01:51:58 pudge Exp $
+# $Id: comments.pl,v 1.252 2006/09/22 02:22:24 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1448,7 +1448,7 @@ sub metamod_if_necessary {
 	if ($constants->{m2} && $user->{is_admin}) {
 		my $metamod_db = getObject('Slash::Metamod');
 		my $n_perf = 0;
-		if ($n_perf = $metamod_db->metaModerate()) {
+		if ($n_perf = $metamod_db->metaModerate($user->{is_admin})) {
 			$retstr = getData('metamods_performed', { num => $n_perf });
 		}
 	}

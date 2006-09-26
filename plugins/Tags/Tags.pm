@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.42 2006/09/20 00:56:23 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.43 2006/09/26 22:12:38 tvroom Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -590,6 +590,7 @@ sub getAllTagsFromUser {
 	my $private_clause = $options->{include_private}  ? '' : " AND private='no'";
 
 	my($table_extra, $where_extra) = ("","");
+	my $uid_q = $self->sqlQuote($uid);
 
 	if ($options->{type}) {
 		my $globjtypes = $self->getGlobjTypes;
@@ -602,12 +603,11 @@ sub getAllTagsFromUser {
 
 		if ($options->{type} eq "urls" and $options->{only_bookmarked}) {
 			$table_extra .= ", bookmarks",
-			$where_extra .= " AND bookmarks.url_id = globjs.target_id";
+			$where_extra .= " AND bookmarks.url_id = globjs.target_id AND bookmarks.uid = $uid_q";
 		}
 	}
 
 	my $type_clause = "";
-	my $uid_q = $self->sqlQuote($uid);
 	my $ar = $self->sqlSelectAllHashrefArray(
 		'tags.*',
 		"tags $table_extra",

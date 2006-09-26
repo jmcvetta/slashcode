@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.6 2006/09/20 16:15:54 tvroom Exp $
+# $Id: PLUGIN,v 1.7 2006/09/26 17:56:37 tvroom Exp $
 name=FireHose
 description="FireHose"
 css=firehose.css
@@ -9,6 +9,7 @@ requiresplugin=Tags
 template=templates/list;firehose;default
 template=templates/view;firehose;default
 template=templates/admin_extras;misc;default
+template=templates/data;firehose;default
 template=templates/dispFireHose;firehose;default
 template=templates/fireHoseForm;misc;default
 template=templates/firehose_tags_top;misc;default

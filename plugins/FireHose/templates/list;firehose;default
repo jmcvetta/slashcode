@@ -32,8 +32,8 @@ __template__
 		</fieldset>
 	</form>
 
-	<span id="play"><a href="javascript:firehose_play()">Play |&gt;</a></span>
-	<span id="pause"><a href="javascript:firehose_pause()">Pause ||</a></span>
+	<span id="play"><a href="javascript:firehose_play()">Play</a></span>
+	<span id="pause"><a href="javascript:firehose_pause()">Pause</a></span>
 </div>
 <br>
 <div id="firehoselist">
@@ -58,4 +58,4 @@ __template__
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.15 2006/09/22 02:46:30 tvroom Exp $
+$Id: list;firehose;default,v 1.16 2006/09/26 16:47:21 lancelot Exp $

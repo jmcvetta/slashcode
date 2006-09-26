@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.26 2006/09/06 20:43:06 tvroom Exp $
+// $Id: admin.js,v 1.27 2006/09/26 17:58:27 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -241,7 +241,10 @@ function firehose_get_admin_extras(id) {
 	var params=[];
 	params['id'] = id;
 	params['op'] = 'firehose_get_admin_extras';
-	ajax_update(params, 'admin-extras-'+id);
+	var handlers = {
+		onComplete: json_handler
+	};
+	ajax_update(params, '', handlers);
 }
 
 function firehose_get_and_post(id) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.21 2006/09/27 03:23:07 tvroom Exp $
+# $Id: FireHose.pm,v 1.22 2006/09/27 03:35:26 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -744,9 +744,6 @@ sub getAndSetOptions {
 
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1 };
 	my $modes = { full => 1, fulltitle => 1};
-	my $orders = { createtimeasc => 1, createtimedesc => 1,
-		popularityasc => 1, popularitydesc => 1,
-		activityasc => 1, activitydesc => 1 };
 
 	my $mode = $form->{mode} || $user->{firehose_mode};
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
@@ -762,19 +759,28 @@ sub getAndSetOptions {
 		$options->{limit} = 50;
 	}
 
-	if ($form->{order} && $orders->{$form->{order}}) {
-		($options->{orderby}, $options->{orderdir}) = $form->{order} =~/^(\w+)(desc|asc)$/;
+	if ($form->{orderby}) {
+		if ($form->{orderby} eq "popularity") {
+			$options->{orderby} = "popularity";
+		} else {
+			$options->{orderby} = "createtime";
+		}
+		
 	} else {
-		$options->{orderby}  = $user->{firehose_orderby} || "createtime";
-		$options->{orderdir} = $user->{firehose_orderdir} || "desc";
+		$options->{orderby} = $user->{firehose_orderyby} || "createtime";
 	}
-	$options->{order} = $options->{orderby} . $options->{orderdir}; # this doesn't ever seem to be used - Jamie
-
-	#$options->{primaryskid} = defined $form->{primaryskid} ? $form->{primaryskid} : $user->{firehose_primaryskid};
-	#$options->{type} = defined $form->{type} ? $form->{type} : $user->{firehose_type};
-	#$options->{category} = defined $form->{category} ? $form->{category} : $user->{firehose_category};
-	#$options->{filter} = defined $form->{filter} ? $form->{filter} : $user->{firehose_filter};
 	
+	if ($form->{orderdir}) {
+		if (uc($form->{orderdir}) eq "ASC") {
+			$options->{orderdir} = "ASC";
+		} else {
+			$options->{orderdir} = "DESC";
+		}
+		
+	} else {
+		$options->{orderdir} = $user->{firehose_orderdir} || "DESC";
+	}
+
 	my $fhfilter;
 
 
@@ -885,4 +891,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.21 2006/09/27 03:23:07 tvroom Exp $
+$Id: FireHose.pm,v 1.22 2006/09/27 03:35:26 tvroom Exp $

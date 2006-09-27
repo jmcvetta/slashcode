@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.43 2006/09/26 22:12:38 tvroom Exp $
+# $Id: Tags.pm,v 1.44 2006/09/27 02:13:58 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -495,9 +495,11 @@ sub getTagsByGlobjid {
 		? " AND created_at >= DATE_SUB(NOW(), INTERVAL $options->{days_back} DAY)"
 		: '';
 
-	my $tagnameid_where = $options && $options->{tagnameid}
-		? " AND tagnameid = $options->{tagnameid}"
-		: '';
+	my $tagnameid_where = '';
+	if ($options->{tagnameid}) {
+		my $tagnameid_q = $self->sqlQuote($options->{tagnameid});
+		$tagnameid_where = " AND tagnameid = $tagnameid_q";
+	}
 
 	my $ar = $self->sqlSelectAllHashrefArray(
 		'*, UNIX_TIMESTAMP(created_at) AS created_at_ut',
@@ -1083,7 +1085,7 @@ sub ajaxTagHistory {
 }
 
 { # closure
-my @clout_reduc_map = qw(  0.15  0.50  0.90  0.99  1.00  );
+my @clout_reduc_map = qw(  0.15  0.50  0.90  0.99  1.00  ); # should be a var
 sub processAdminCommand {
 	my($self, $c, $id, $table) = @_;
 

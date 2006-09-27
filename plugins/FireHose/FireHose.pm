@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.19 2006/09/26 17:57:34 tvroom Exp $
+# $Id: FireHose.pm,v 1.20 2006/09/27 02:13:58 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -103,6 +103,7 @@ sub createUpdateItemFromBookmark {
 	my $url_globjid = $self->getGlobjidCreate("urls", $bookmark->{url_id});
 	my($count) = $self->sqlCount("firehose", "globjid=$url_globjid");
 	my $popularity = defined $options->{popularity} ? $options->{popularity} : 1;
+	my $activity   = defined $options->{activity}   ? $options->{activity}   : 1;
 
 	if ($count) {
 		$self->sqlUpdate("firehose", { -popularity => "popularity + 1" }, "globjid=$url_globjid");
@@ -114,6 +115,7 @@ sub createUpdateItemFromBookmark {
 			url_id 		=> $bookmark->{url_id},
 			uid 		=> $bookmark->{uid},
 			popularity 	=> $popularity,
+			activity 	=> $activity,
 			public 		=> "yes",
 			type		=> $type,
 			srcid		=> $id
@@ -636,7 +638,7 @@ sub setFireHose {
 	my $id_q = $self->sqlQuote($id);
 
 	if (!exists($data->{last_update}) && !exists($data->{-last_update})) {
-		my @non_trivial = grep {!/^(popularity|toptags)$/} keys %$data;
+		my @non_trivial = grep {!/^(popularity|activity|toptags)$/} keys %$data;
 		if (@non_trivial > 0) {
 			$data->{-last_update} = 'NOW()'	
 		} else {
@@ -737,7 +739,9 @@ sub getAndSetOptions {
 
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1 };
 	my $modes = { full => 1, fulltitle => 1};
-	my $orders = { createtimeasc => 1, popularityasc => 1, createtimedesc => 1, popularitydesc => 1};
+	my $orders = { createtimeasc => 1, createtimedesc => 1,
+		popularityasc => 1, popularitydesc => 1,
+		activityasc => 1, activitydesc => 1 };
 
 	my $mode = $form->{mode} || $user->{firehose_mode};
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
@@ -759,7 +763,7 @@ sub getAndSetOptions {
 		$options->{orderby}  = $user->{firehose_orderby} || "createtime";
 		$options->{orderdir} = $user->{firehose_orderdir} || "desc";
 	}
-	$options->{order} = $options->{orderby} . $options->{orderdir};
+	$options->{order} = $options->{orderby} . $options->{orderdir}; # this doesn't ever seem to be used - Jamie
 
 	#$options->{primaryskid} = defined $form->{primaryskid} ? $form->{primaryskid} : $user->{firehose_primaryskid};
 	#$options->{type} = defined $form->{type} ? $form->{type} : $user->{firehose_type};
@@ -864,4 +868,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.19 2006/09/26 17:57:34 tvroom Exp $
+$Id: FireHose.pm,v 1.20 2006/09/27 02:13:58 jamiemccarthy Exp $

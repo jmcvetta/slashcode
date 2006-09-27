@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1058 2006/09/22 02:22:22 pudge Exp $
+# $Id: upgrades,v 1.1059 2006/09/27 02:13:58 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4084,4 +4084,7 @@ ALTER TABLE tags ADD COLUMN private enum('yes', 'no') NOT NULL DEFAULT 'no';
 UPDATE vars SET value = 'T_2_5_0_127' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+# Updates for plugins/FireHose
+ALTER TABLE firehose ADD COLUMN activity FLOAT NOT NULL DEFAULT '0' AFTER popularity, ADD UNIQUE globjid (globjid);
 

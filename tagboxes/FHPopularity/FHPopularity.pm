@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.1 2006/09/27 02:07:59 jamiemccarthy Exp $
+# $Id: FHPopularity.pm,v 1.2 2006/09/28 18:24:29 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -162,10 +162,11 @@ sub run {
 
 	# Set the corresponding firehose row to have this popularity.
 	my $affected_id_q = $self->sqlQuote($affected_id);
-print STDERR "Slash::Tagbox::FHPopularity->run setting $affected_id to $popularity\n";
-	$self->sqlUpdate('firehose',
-		{ popularity => $popularity },
-		"globjid = $affected_id_q");
+	my $fhid = $self->sqlSelect('id', 'firehose', "globjid = $affected_id_q");
+	my $firehose_db = getObject('Slash::FireHose');
+	warn "Slash::Tagbox::FHPopularity->run bad data, fhid='$fhid' db='$firehose_db'" if !$fhid || $firehose_db;
+print STDERR "Slash::Tagbox::FHPopularity->run setting $fhid ($affected_id) to $popularity\n";
+	$firehose_db->setFireHose($fhid, { popularity => $popularity });
 }
 
 1;

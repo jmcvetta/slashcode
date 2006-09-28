@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.22 2006/09/27 03:35:26 tvroom Exp $
+# $Id: FireHose.pm,v 1.23 2006/09/28 19:12:52 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -296,7 +296,7 @@ sub rejectItem {
 	return unless $id && $firehose;
 	my $item = $firehose->getFireHose($id);
 	if ($item) {
-		$firehose->sqlUpdate("firehose", { rejected => "yes" }, "id=$id_q");
+		$firehose->setFireHose($id, { rejected => "yes" });
 		if ($item->{type} eq "submission") {
 			if ($item->{srcid}) {
 				my $n_q = $firehose->sqlQuote($item->{srcid});
@@ -767,7 +767,7 @@ sub getAndSetOptions {
 		}
 		
 	} else {
-		$options->{orderby} = $user->{firehose_orderyby} || "createtime";
+		$options->{orderby} = $user->{firehose_orderby} || "createtime";
 	}
 	
 	if ($form->{orderdir}) {
@@ -856,7 +856,6 @@ sub getAndSetOptions {
 		$options->{public} = "yes";
 		$options->{daysback} = 1;
 	}
-
 	return $options;
 }
 
@@ -891,4 +890,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.22 2006/09/27 03:35:26 tvroom Exp $
+$Id: FireHose.pm,v 1.23 2006/09/28 19:12:52 tvroom Exp $

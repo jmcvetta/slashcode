@@ -32,7 +32,7 @@ __template__
 	[% IF tags_example.size %]
 		<div>Examples:
 		[% FOR t = tags_example -%]
-			<span class="tagname"><a href="javascript:tagsOpenAndEnter('[% id %]','[% t %]','[% user.is_admin %]','firehose)">[% t | strip_html %]</a></span>[% IF !loop.last() %], [% END -%]
+			<span class="tagname"><a onClick="attachCompleter(this,'[% id %]','[% user.is_admin %]','firehose)">[% t | strip_html %]</a></span>[% IF !loop.last() %], [% END -%]
 		[%- END %]
 		</div>
 	[% END %]
@@ -53,4 +53,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsfirehosedivtagbox;misc;default,v 1.8 2006/09/27 17:54:37 lancelot Exp $
+$Id: tagsfirehosedivtagbox;misc;default,v 1.9 2006/09/28 20:01:49 scc Exp $

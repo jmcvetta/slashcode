@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.42 2006/09/26 17:58:27 tvroom Exp $
+// $Id: common.js,v 1.43 2006/09/28 04:31:31 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -218,7 +218,7 @@ function tagsShowBody(id, is_admin, newtagspreloadtext, type) {
 				params['op'] = 'tags_get_admin_firehose';
 				params['id'] = id;
 			}
-			//ajax_update(params, tagsadminid);
+			ajax_update(params, tagsadminid);
 		}
 
 	} else {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.201 2006/08/31 21:27:02 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.202 2006/09/28 19:42:46 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.201 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1680,7 +1680,7 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 				   $write >= 4
 				|| $write >= 3 && $user->{karma} >= 0;
 			if ($user->{tags_canwrite_stories} && $constants->{tags_userfrac_write} < 1) {
-				$max_uid = $slashdb->countUser({ max => 1 });
+				$max_uid = $slashdb->countUsers({ max => 1 });
 				if ($user->{uid} > $max_uid*$constants->{tags_userfrac_write}) {
 					$user->{tags_canwrite_stories} = 0;
 				}
@@ -1704,7 +1704,7 @@ print STDERR scalar(localtime) . " Env.pm $$ userHasDaypass uid=$user->{uid} cs=
 					   $read >= 4
 					|| $read >= 3 && $user->{karma} >= 0;
 			if ($user->{tags_canread_stories} && $constants->{tags_userfrac_read} < 1) {
-				$max_uid ||= $slashdb->countUser({ max => 1 });
+				$max_uid ||= $slashdb->countUsers({ max => 1 });
 				if ($user->{uid} > $max_uid*$constants->{tags_userfrac_read}) {
 					$user->{tags_canread_stories} = 0;
 				}
@@ -3411,4 +3411,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.201 2006/08/31 21:27:02 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.202 2006/09/28 19:42:46 tvroom Exp $

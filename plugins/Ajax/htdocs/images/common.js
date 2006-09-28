@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.43 2006/09/28 04:31:31 tvroom Exp $
+// $Id: common.js,v 1.44 2006/09/28 19:51:29 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -238,6 +238,18 @@ function tagsShowBody(id, is_admin, newtagspreloadtext, type) {
 function tagsOpenAndEnter(id, tagname, is_admin, type) {
 	// This does nothing if the body is already shown.
 	tagsShowBody(id, is_admin, tagname, type);
+}
+
+function attachCompleter( obj, id, is_admin, type, tagDomain ) {
+  var callbackParams = new Object();
+  callbackParams._id = id;
+  callbackParams._is_admin = is_admin;
+  callbackParams._type = type;
+  
+  if ( !YAHOO.slashdot.gCompleterWidget )
+    YAHOO.slashdot.gCompleterWidget = new YAHOO.slashdot.AutoCompleteWidget();
+
+  YAHOO.slashdot.gCompleterWidget.attach(obj, callbackParams, tagDomain);
 }
 
 function reportError(request) {

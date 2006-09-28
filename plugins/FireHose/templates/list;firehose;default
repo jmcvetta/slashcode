@@ -14,6 +14,10 @@ __seclev__
 10000
 __template__
 [% PROCESS titlebar title="Firehose Beta" %]
+<div id="ac-select-widget" class="hidden">
+  <input type="text" id="ac-select-input" />
+  <div class="completer-container" id="ac-choices"></div>
+</div>
 <div class="submenu">
 	<form action="[% gSkin.rootdir %]/firehose.pl" method="get">
 		<fieldset>
@@ -78,4 +82,4 @@ __template__
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.19 2006/09/27 17:33:30 lancelot Exp $
+$Id: list;firehose;default,v 1.20 2006/09/28 15:28:54 scc Exp $

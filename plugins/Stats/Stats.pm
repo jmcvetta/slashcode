@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.180 2006/09/03 15:41:26 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.181 2006/09/29 17:48:04 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.180 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -392,6 +392,10 @@ sub getOldestUnm2dMod {
 }
 
 ########################################################
+# This is lame because of course Slash can have more than one
+# backup DB, and the virtual users for those DBs are listed
+# in the 'dbs' table not in $constants->{backup_db_user}.
+# This should be updated...  XXX
 # Note, we have to use $slashdb here instead of $self.
 sub getSlaveDBLagCount {
 	my($self) = @_;
@@ -2071,4 +2075,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.180 2006/09/03 15:41:26 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.181 2006/09/29 17:48:04 jamiemccarthy Exp $

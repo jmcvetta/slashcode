@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.924 2006/10/03 18:02:35 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.925 2006/10/03 18:33:21 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.924 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.925 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12566,10 +12566,11 @@ sub _addGlobjEssentials_submissions {
 		: { };
 	for my $subid (@subids) {
 		my $globjid = $submissions_hr->{$subid};
-		my $skin = $skins->{ $submissiondata_hr->{primaryskid} };
+		my $skin = $skins->{ $submissiondata_hr->{$subid}{primaryskid} };
 		$data_hr->{$globjid}{url} = "$skin->{rootdir}/submit.pl?op=viewsub&subid=$subid";
 		$data_hr->{$globjid}{title} = $submissiondata_hr->{subj};
 		$data_hr->{$globjid}{created_at} = $submissiondata_hr->{time};
+#use Data::Dumper; print STDERR Dumper "submission subid=$subid globjid=$globjid. skin, submission_hr, data_hr: " . Dumper($skin) . Dumper($submissions_hr->{$subid}) . Dumper($data_hr->{$globjid});
 	}
 }
 

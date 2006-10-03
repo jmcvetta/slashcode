@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.3 2006/09/29 17:23:21 jamiemccarthy Exp $
+# $Id: FHPopularity.pm,v 1.4 2006/10/03 17:56:16 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -135,17 +135,23 @@ sub run {
 	# Some target types gain popularity.
 	my($type, $target_id) = $tagsdb->getGlobjTarget($affected_id);
 	my $target_id_q = $self->sqlQuote($target_id);
-	if ($type eq 'journals') {
-		# One user journaled this which basically counts as good as
-		# a bookmark, so that gets it an extra point.
+	if ($type =~ /^(journals|submissions)$/) {
+		# One user either journaled this or submitted it.  Either
+		# basically counts as good as a bookmark, so that gets it
+		# an extra point.
 		$popularity++;
 	} elsif ($type eq 'urls') {
 		# One or more users bookmarked this.  Find out how many and
-		# give it that many extra points.
-		my $count = $self->sqlCount('bookmarks', "url_id=$target_id_q");
-		$popularity += $count;
+		# give it that many extra points.  (The bookmarks table has
+		# a unique key on url_id,uid so this gets us the count of
+		# distinct users and it's not a table scan.)
+		# XXX Does the Tagbox plugin require the Bookmarks plugin?
+		# If not, is there any way this code could be reached
+		# with the bookmarks table not existing?  I don't think so
+		# but should probably doublecheck.
+		$popularity += $self->sqlCount('bookmarks', "url_id=$target_id_q");
 	}
-	# There's also 'feed' and 'submission' which don't get additions.
+	# There's also 'feed' which doesn't get extra points (starts at 1).
 
 	# Add up nods and nixes.
 	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');

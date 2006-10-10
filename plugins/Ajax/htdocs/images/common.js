@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.45 2006/09/28 23:00:53 pudge Exp $
+// $Id: common.js,v 1.46 2006/10/10 15:26:29 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -296,6 +296,15 @@ function tagsCreateForUrl(id) {
 }
 
 //Firehose functions begin
+function setOneTopTagForFirehose(id, newtag) {
+  var params = [];
+  params['op'] = 'firehose_update_one_tag';
+  params['id'] = id;
+  params['tags'] = newtag;
+  params['reskey'] = reskeyel.value;
+  ajax_update(params, '');
+}
+
 function tagsCreateForFirehose(id) {
 	var toggletags_message_id = 'toggletags-message-' + id;
 	var toggletags_message_el = $(toggletags_message_id);

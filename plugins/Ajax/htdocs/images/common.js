@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.46 2006/10/10 15:26:29 scc Exp $
+// $Id: common.js,v 1.47 2006/10/10 18:44:21 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -301,7 +301,7 @@ function setOneTopTagForFirehose(id, newtag) {
   params['op'] = 'firehose_update_one_tag';
   params['id'] = id;
   params['tags'] = newtag;
-  params['reskey'] = reskeyel.value;
+  // params['reskey'] = reskeyel.value;
   ajax_update(params, '');
 }
 

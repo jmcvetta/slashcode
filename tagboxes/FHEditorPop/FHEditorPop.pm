@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.1 2006/10/10 20:37:22 jamiemccarthy Exp $
+# $Id: FHEditorPop.pm,v 1.2 2006/10/10 21:06:27 jamiemccarthy Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -185,7 +185,7 @@ sub run {
 	my $firehose_db = getObject('Slash::FireHose');
 	warn "Slash::Tagbox::FHEditorPop->run bad data, fhid='$fhid' db='$firehose_db'" if !$fhid || !$firehose_db;
 print STDERR "Slash::Tagbox::FHEditorPop->run setting $fhid ($affected_id) to $popularity\n";
-	$firehose_db->setFireHose($fhid, { popularity => $popularity });
+	$firehose_db->setFireHose($fhid, { editorpop => $popularity });
 }
 
 1;

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.8 2006/09/27 02:13:58 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.9 2006/10/10 21:06:45 jamiemccarthy Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -10,6 +10,7 @@ CREATE TABLE firehose (
 	createtime datetime NOT NULL default '0000-00-00 00:00:00',
 	title varchar(80) NOT NULL default '',
 	popularity float NOT NULL default '0',
+	editorpop float NOT NULL default '0',
 	activity float NOT NULL default '0',
 	accepted enum('no','yes') default 'no',
 	rejected enum('no','yes') default 'no',

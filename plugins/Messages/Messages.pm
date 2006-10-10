@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.38 2006/03/16 23:39:12 pudge Exp $
+# $Id: Messages.pm,v 1.39 2006/10/10 21:27:41 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -1089,6 +1089,7 @@ sub send_mod_msg {
 
 		my $data  = {
 			template_name	=> $type,
+			template_page	=> 'comments',
 			subject		=> {
 				template_name => $type . '_subj'
 			},
@@ -1117,4 +1118,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.38 2006/03/16 23:39:12 pudge Exp $
+$Id: Messages.pm,v 1.39 2006/10/10 21:27:41 pudge Exp $

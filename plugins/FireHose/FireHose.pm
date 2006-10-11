@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.27 2006/10/10 15:26:29 scc Exp $
+# $Id: FireHose.pm,v 1.28 2006/10/11 14:11:41 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -322,10 +322,11 @@ sub rejectItem {
 }
 
 sub ajaxSaveOneTopTagFirehose {
-  my($slashdb, $constants, $user, $form, $options) = @_;
+	my($slashdb, $constants, $user, $form, $options) = @_;
 	my $id = $form->{id};
 	my $tagsstring = $form->{tags};
 	if ($user->{is_admin}) {
+		my $firehose = getObject("Slash::FireHose");
 		$firehose->setSectionTopicsFromTagstring($id, $tagsstring);
 	}
 }
@@ -713,13 +714,13 @@ sub getMemoryForItem {
 	foreach my $memory (@$sub_memory) {
 		my $match = $memory->{submatch};
 		
-                if ($item->{email} =~ m/$match/i ||
+		if ($item->{email} =~ m/$match/i ||
 		    $item->{name}  =~ m/$match/i ||
 		    $item->{title}  =~ m/$match/i ||
 		    $item->{ipid}  =~ m/$match/i ||
 		    $item->{introtext} =~ m/$match/i) {
 			push @$subnotes_ref, $memory;
-                }
+		}
 	}
 	return $subnotes_ref;
 }
@@ -916,4 +917,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.27 2006/10/10 15:26:29 scc Exp $
+$Id: FireHose.pm,v 1.28 2006/10/11 14:11:41 jamiemccarthy Exp $

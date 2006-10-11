@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.29 2006/10/11 15:38:16 tvroom Exp $
+# $Id: FireHose.pm,v 1.30 2006/10/11 16:37:41 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -163,13 +163,15 @@ sub createItemFromSubmission {
 
 sub updateItemFromStory {
 	my($self, $id) = @_;
-	my $constant = getCurrentStatic();
+	my $constants = getCurrentStatic();
+	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignored_skids}};
 	my $story = $self->getStory($id);
 	if ($story) {
 		my $globjid = $self->getGlobjidCreate("stories", $story->{stoid});
 		my $id = $self->getFireHoseIdFromGlobjid($globjid);
 		if ($id) {
-			my $public = $story->{neverdisplay} ? "no" : "yes";
+			# If a story is getting its primary skid to an ignored value set its firehose entry to non-public
+			my $public = ($story->{neverdisplay} || $ignore_skids{$story->{primaryskid}}) ? "no" : "yes";
 			my $data = {
 				title 		=> $story->{title},
 				uid		=> $story->{uid},
@@ -187,8 +189,11 @@ sub updateItemFromStory {
 
 sub createItemFromStory {
 	my($self, $id) = @_;
+	my $constants = getCurrentStatic();
+	# If a story is created with an ignored primary skid it'll never be created as a firehose entry currently
+	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignored_skids}};
 	my $story = $self->getStory($id);
-	if ($story) {
+	if ($story && !$ignore_skids{$story->{primaryskid}}) {
 		my $globjid = $self->getGlobjidCreate("stories", $story->{stoid});
 		my $public = $story->{neverdisplay} ? "no" : "yes";
 		my $data = {
@@ -384,7 +389,6 @@ sub rejectItem {
 }
 
 sub ajaxSaveOneTopTagFirehose {
-  my($slashdb, $constants, $user, $form, $options) = @_;
 	my($slashdb, $constants, $user, $form, $options) = @_;
   	my $firehose = getObject("Slash::FireHose");
 	my $id = $form->{id};
@@ -1037,4 +1041,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.29 2006/10/11 15:38:16 tvroom Exp $
+$Id: FireHose.pm,v 1.30 2006/10/11 16:37:41 tvroom Exp $

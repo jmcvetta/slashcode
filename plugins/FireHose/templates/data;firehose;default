@@ -42,10 +42,13 @@ __template__
 		<a href="[% gSkin.rootdir -%]/users.pl?op=userinfo&amp;userfield=[% item.ipid -%]&amp;fieldname=ipid">[% item.ipid_vis -%]</a>
 
 	[% END %]
+	[% IF extras && adminmode && num_with_ipid != '0' %]
+		([% accepted_from_ipid %]/[% num_with_ipid %])
+	[% END %]
 	[% IF !hidediv %]
 	</div>
 	[% END %]
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.4 2006/09/28 18:43:53 tvroom Exp $
+$Id: data;firehose;default,v 1.5 2006/10/11 16:16:43 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.7 2006/09/20 16:14:57 tvroom Exp $
+# $Id: firehose.pl,v 1.8 2006/10/11 16:16:43 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -24,7 +24,7 @@ sub main {
 	my $form      = getCurrentForm();
 	my $gSkin     = getCurrentSkin();
 
-	if (! $user->{is_admin}) {
+	unless ($user->{is_admin} || $user->{is_subscriber} || $user->{acl}{firehose}) {
 		redirect("$gSkin->{rootdir}/");
 		return;
 	}
@@ -69,7 +69,7 @@ sub list {
 		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });
 	}
 	my $refresh_options;
-	if ($options->{orderby} eq "createtime") {
+	if ($options->{orderby} eq "createtime" || $options->{orderby} eq "popularity") {
 		$refresh_options->{maxtime} = $maxtime;
 		if (uc($options->{orderdir}) eq "ASC") {
 			$refresh_options->{insert_new_at} = "bottom";

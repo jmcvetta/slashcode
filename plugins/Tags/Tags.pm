@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.45 2006/09/28 21:08:46 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.46 2006/10/11 20:42:15 tvroom Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -102,14 +102,14 @@ sub _setuptag {
         }
 	return 0 if !$tag->{globjid};
 
-	$tag->{private} = $tag->{private} ? 'yes' : 'no';
+	$tag->{private} = $hr->{private} ? 'yes' : 'no';
 
 	return $tag;
 }
 
 sub createTag {
 	my($self, $hr, $options) = @_;
-
+	
 	my $tag = $self->_setuptag($hr);
 	return 0 if !$tag;
 
@@ -584,6 +584,7 @@ sub getAllTagsFromUser {
 	return [ ] unless $uid;
 
 	my $bookmark = getObject("Slash::Bookmark");
+	my $journal = getObject("Slash::Journal");
 
 	my $orderby = $options->{orderby} || "tagid";
 	my $limit   = $options->{limit} ? " LIMIT $options->{limit} " : "";
@@ -629,6 +630,10 @@ sub getAllTagsFromUser {
 				$hr->{url}{bookmark} = $bookmark->getUserBookmarkByUrlId($uid, $hr->{url}{url_id});
 			}
 		
+		} elsif ($hr->{globj_type} eq 'journals') {
+			$hr->{journal} = $journal->get($hr->{globj_target_id});
+		} elsif ($hr->{globj_type} eq 'submissions') {
+			$hr->{submission} = $journal->getSubmission($hr->{globj_target_id});
 		}
 	}
 	return $ar;
@@ -883,6 +888,8 @@ sub setTagsForGlobj {
 	
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
+
+	my $priv_tagnames = $self->getPrivateTagnames();
 	
 	my %new_tagnames =
 		map { ($_, 1) }
@@ -926,13 +933,15 @@ sub setTagsForGlobj {
 
 	my @created_tagnames = ( );
 	for my $tagname (@create_tagnames) {
+		my $private = 0;
+		$private = 1 if $priv_tagnames->{$tagname};
 		push @created_tagnames, $tagname
 			if $tags->createTag({
 				uid =>		$uid,
 				name =>		$tagname,
 				table =>	$table,
 				id =>		$id,
-				# XXX private => $foo would go here
+				private =>	$private
 			});
 	}
 #print STDERR scalar(localtime) . " setTagsForGlobj $table : $id  3 old='@$old_tags_ar' created='@created_tagnames'\n";
@@ -1413,6 +1422,24 @@ sub listTagnamesByPrefix {
 		$mcd->set("$mcdkey$prefix_str", $ret_str, $mcdexp)
 	}
 	return $ret_str;
+}
+
+sub getPrivateTagnames {
+	my ($self) = @_;
+	my $user = getCurrentUser;
+	my $constants = getCurrentStatic();
+
+	my @private_tags = ();
+	push @private_tags, ($constants->{tags_upvote_tagname} || "nod");
+	push @private_tags, ($constants->{tags_downvote_tagname} || "nix");
+	if ($user->{is_admin}) {
+		push @private_tags, "quik", "hold";
+		if($constants->{submit_categories} && @{$constants->{submit_categories}}) {
+			push @private_tags, @{$constants->{submit_categories}};
+		}
+	}
+	my %private_tagnames = map {lc($_) => 1} @private_tags;
+	return \%private_tagnames;
 }
 
 #################################################################

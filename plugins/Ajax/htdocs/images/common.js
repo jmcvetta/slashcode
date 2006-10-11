@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.48 2006/10/11 15:03:26 tvroom Exp $
+// $Id: common.js,v 1.49 2006/10/11 17:40:50 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -421,7 +421,7 @@ function eval_response(transport) {
 	try {
 		eval("response = " + transport.responseText)
 	} catch (e) {
-		alert(e + "\n" + transport.responseText)
+		//alert(e + "\n" + transport.responseText)
 	}
 	return response;
 }

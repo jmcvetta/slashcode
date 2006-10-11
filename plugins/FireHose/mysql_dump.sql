@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.9 2006/09/12 20:27:37 tvroom Exp $
+# $Id: mysql_dump.sql,v 1.10 2006/10/11 16:11:54 tvroom Exp $
 #
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_text', 'Slash::FireHose', 'fetchItemText', 'ajax_base', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_reject', 'Slash::FireHose', 'rejectItem', 'ajax_admin', 'createuse');
@@ -14,3 +14,4 @@ INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_form', 'Slash::FireHose', 'ajax
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_new', 'Slash::FireHose', 'ajaxFireHoseFetchNew', 'ajax_user', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_check_removed', 'Slash::FireHose', 'ajaxFireHoseCheckRemoved', 'ajax_user', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates', 'Slash::FireHose', 'ajaxFireHoseGetUpdates', 'ajax_user', 'createuse');
+INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates_pop', 'Slash::FireHose', 'ajaxFireHoseGetUpdatesPop', 'ajax_user', 'createuse');

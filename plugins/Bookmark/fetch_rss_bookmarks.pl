@@ -2,12 +2,12 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.3 2006/08/08 19:12:07 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.4 2006/10/11 16:15:04 tvroom Exp $
 
 use strict;
 use Slash;
 use Slash::XML;
-use Slash::Constants ':slashd';
+use Slash::Constants qw(:slashd :strip);
 use XML::RSS;
 use LWP::UserAgent;
 
@@ -38,6 +38,8 @@ $task{$me}{code} = sub {
 				
 				my $title = $item->{title};
 				my $link = fudgeurl($item->{link});
+				my $text = strip_mode($item->{description}, HTML);
+				slashdLog($item->{description});
 				my $taglist = $feed->{tags};
 				
 				my $data = {
@@ -64,7 +66,7 @@ $task{$me}{code} = sub {
 					if ($constants->{plugin}{FireHose}) {
 						my $firehose = getObject("Slash::FireHose");
 						my $the_bookmark = $bookmark->getBookmark($bookmark_id);
-						$firehose->createUpdateItemFromBookmark($bookmark_id, { type => "feed", popularity => 0 });
+						$firehose->createUpdateItemFromBookmark($bookmark_id, { type => "feed", popularity => 0, introtext => $text });
 					}
 					
 					my $tags = getObject('Slash::Tags');

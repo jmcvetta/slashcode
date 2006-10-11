@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.8 2006/10/11 16:16:43 tvroom Exp $
+# $Id: firehose.pl,v 1.9 2006/10/11 20:18:51 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -52,20 +52,21 @@ sub main {
 sub list {
 	my($slashdb, $constants, $user, $form, $gSkin) = @_;
 	my $firehose = getObject("Slash::FireHose");
+	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
 	my $options = $firehose->getAndSetOptions();
 	my $page = $form->{page} || 0;
 	if ($page) {
 		$options->{offset} = $page * $options->{limit};
 	}
 
-	my $items = $firehose->getFireHoseEssentials($options);
+	my $items = $firehose_reader->getFireHoseEssentials($options);
 	my $itemstext;
 	my $maxtime = $firehose->getTime();
 	
 	foreach (@$items) {
 		$maxtime = $_->{createtime} if $_->{createtime} gt $maxtime;
-		my $item =  $firehose->getFireHose($_->{id});
-		my $tags_top = $firehose->getFireHoseTagsTop($item);
+		my $item =  $firehose_reader->getFireHose($_->{id});
+		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
 		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });
 	}
 	my $refresh_options;

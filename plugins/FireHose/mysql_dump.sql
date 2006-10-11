@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.10 2006/10/11 16:11:54 tvroom Exp $
+# $Id: mysql_dump.sql,v 1.11 2006/10/11 16:39:33 tvroom Exp $
 #
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_text', 'Slash::FireHose', 'fetchItemText', 'ajax_base', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_reject', 'Slash::FireHose', 'rejectItem', 'ajax_admin', 'createuse');
@@ -15,3 +15,4 @@ INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_new', 'Slash::FireHose', 'aja
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_check_removed', 'Slash::FireHose', 'ajaxFireHoseCheckRemoved', 'ajax_user', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates', 'Slash::FireHose', 'ajaxFireHoseGetUpdates', 'ajax_user', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_updates_pop', 'Slash::FireHose', 'ajaxFireHoseGetUpdatesPop', 'ajax_user', 'createuse');
+INSERT INTO vars (name, value, description) VALUES ('firehose_story_ignore_skids', '', 'list of skids that you want to not want created or shown as firehose entries.  Delimit skids with |');

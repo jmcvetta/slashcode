@@ -14,10 +14,10 @@ tagsfirehosedivuser
 __template__
 
 [% PROCESS ajax_reskey_tag reskey_label => 'newtags-reskey-' _ id, reskey_name => 'ajax_tags_write' %]
-<input type="text" id="newtags-[% id %]" name="newtags-[% id %]" value="[% newtagspreloadtext | strip_attribute %]" size=50 maxlength=60 onkeyup="handleEnter(event, tagsCreateForFirehose, '[% id %]','firehose')" onClick="attachCompleter(this,'[% id %]','[% user.is_admin %]','firehose', 0)">
+<input type="text" id="newtags-[% id %]" name="newtags-[% id %]" value="[% newtagspreloadtext | strip_attribute %]" size=50 maxlength=60 onkeyup="handleEnter(event, tagsCreateForFirehose, '[% id %]','firehose')" onfocus="attachCompleter(this,'[% id %]','[% user.is_admin %]','firehose', 0)">
 <input type="button" value="Tag" onclick="tagsCreateForFirehose('[% id %]')" class="button">
 
 __seclev__
 10000
 __version__
-$Id: tagsfirehosedivuser;misc;default,v 1.2 2006/10/11 14:05:44 scc Exp $
+$Id: tagsfirehosedivuser;misc;default,v 1.3 2006/10/12 18:15:40 scc Exp $

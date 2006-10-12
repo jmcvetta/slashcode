@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.46 2006/10/11 20:42:15 tvroom Exp $
+# $Id: Tags.pm,v 1.47 2006/10/12 06:30:54 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -109,7 +109,7 @@ sub _setuptag {
 
 sub createTag {
 	my($self, $hr, $options) = @_;
-	
+
 	my $tag = $self->_setuptag($hr);
 	return 0 if !$tag;
 
@@ -629,7 +629,6 @@ sub getAllTagsFromUser {
 			if ($bookmark) {
 				$hr->{url}{bookmark} = $bookmark->getUserBookmarkByUrlId($uid, $hr->{url}{url_id});
 			}
-		
 		} elsif ($hr->{globj_type} eq 'journals') {
 			$hr->{journal} = $journal->get($hr->{globj_target_id});
 		} elsif ($hr->{globj_type} eq 'submissions') {

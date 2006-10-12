@@ -36,7 +36,6 @@ __template__
 		</fieldset>
 	</form>
 <div class="options">
-	
 	<span id="play"><a href="javascript:firehose_play()" title="Currently playing">Play</a></span>
 	<span id="pause"><a href="javascript:firehose_pause()" title="Currently paused">Pause</a></span>
 
@@ -92,4 +91,4 @@ __template__
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.22 2006/10/11 15:47:27 tvroom Exp $
+$Id: list;firehose;default,v 1.23 2006/10/12 06:30:54 pudge Exp $

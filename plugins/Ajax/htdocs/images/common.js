@@ -1,4 +1,4 @@
-// $Id: common.js,v 1.49 2006/10/11 17:40:50 tvroom Exp $
+// $Id: common.js,v 1.50 2006/10/12 06:30:54 pudge Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -297,12 +297,12 @@ function tagsCreateForUrl(id) {
 
 //Firehose functions begin
 function setOneTopTagForFirehose(id, newtag) {
-  var params = [];
-  params['op'] = 'firehose_update_one_tag';
-  params['id'] = id;
-  params['tags'] = newtag;
-  // params['reskey'] = reskeyel.value;
-  ajax_update(params, '');
+	var params = [];
+	params['op'] = 'firehose_update_one_tag';
+	params['id'] = id;
+	params['tags'] = newtag;
+	// params['reskey'] = reskeyel.value;
+	ajax_update(params, '');
 }
 
 function tagsCreateForFirehose(id) {

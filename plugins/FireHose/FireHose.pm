@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.34 2006/10/13 17:19:08 tvroom Exp $
+# $Id: FireHose.pm,v 1.35 2006/10/13 19:48:45 pudge Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -226,6 +226,7 @@ sub getFireHoseEssentials {
 
 	my @where;
 	my $tables = "firehose";
+	my $columns = "firehose.*";
 
 	if ($options->{createtime_no_future}) {
 		push @where, "createtime <= NOW()";
@@ -257,10 +258,17 @@ sub getFireHoseEssentials {
 		push @where, "category = " . $self->sqlQuote($options->{category});
 	}
 
-	if ($options->{filter}) {
+	if ($options->{filter} || $options->{fetch_text}) {
 		$tables .= ",firehose_text";
 		push @where, "firehose.id=firehose_text.id";
-		push @where, "firehose_text.title like '%" . $options->{filter} . "%'";
+
+		if ($options->{filter}) {
+			push @where, "firehose_text.title like '%" . $options->{filter} . "%'";
+		}
+
+		if ($options->{fetch_text}) {
+			$columns .= ",firehose_text.*";
+		}
 	}
 
 	if ($options->{createtime_gte}) {
@@ -282,12 +290,12 @@ sub getFireHoseEssentials {
 
 	my $limit_str = "";
 	my $where = (join ' AND ', @where) || "";
-	my $offset = $options->{offset};
+	my $offset = defined $options->{offset} ? $options->{offset} : '';
 	$offset = "" if $offset !~ /^\d+$/;
 	$offset = "$offset, " if $offset;
 	$limit_str = "LIMIT $offset $options->{limit}" unless $options->{nolimit};
 	my $other = "ORDER BY $options->{orderby} $options->{orderdir} $limit_str";
-	my $hr_ar = $self->sqlSelectAllHashrefArray("firehose.*", $tables, $where, $other);
+	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
 
 	# Add globj admin notes to the firehouse hashrefs.
 	my $globjids = [ map { $_->{globjid} } @$hr_ar ];
@@ -1040,4 +1048,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.34 2006/10/13 17:19:08 tvroom Exp $
+$Id: FireHose.pm,v 1.35 2006/10/13 19:48:45 pudge Exp $

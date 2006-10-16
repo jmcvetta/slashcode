@@ -1,4 +1,5 @@
-// $Id: common.js,v 1.50 2006/10/12 06:30:54 pudge Exp $
+// _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
+// $Id: common.js,v 1.51 2006/10/16 17:58:05 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -250,6 +251,7 @@ function attachCompleter( obj, id, is_admin, type, tagDomain ) {
 		YAHOO.slashdot.gCompleterWidget = new YAHOO.slashdot.AutoCompleteWidget();
 
 	YAHOO.slashdot.gCompleterWidget.attach(obj, callbackParams, tagDomain);
+	return false;
 }
 
 function reportError(request) {

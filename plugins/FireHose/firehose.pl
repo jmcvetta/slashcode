@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.10 2006/10/13 19:48:46 pudge Exp $
+# $Id: firehose.pl,v 1.11 2006/10/16 21:54:31 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -66,7 +66,7 @@ sub list {
 	if ($searchtoo && $searchtoo->handled('firehose')) {
 		$results = $searchtoo->findRecords(firehose => {
 			# filters go here
-			query		=> $options->{filter},
+			query		=> $options->{fhfilter},
 		}, {
 			# sort options go here
 			records_max	=> $options->{limit},

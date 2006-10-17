@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.12 2006/08/15 21:16:23 pudge Exp $
+# $Id: bookmark.pl,v 1.13 2006/10/17 22:09:14 tvroom Exp $
 
 use strict;
 use Slash;
@@ -112,7 +112,7 @@ sub saveBookmark {
 
 	my $data = {
 		url		=> $fudgedurl,
-		initialtitle	=> strip_literal($form->{title})
+		initialtitle	=> strip_notags($form->{title})
 	};
 
 	my $url_id = $slashdb->getUrlCreate($data);
@@ -121,7 +121,7 @@ sub saveBookmark {
 	my $bookmark_data = {
 		url_id 		=> $url_id,
 		uid    		=> $user->{uid},
-		title		=> strip_literal($form->{title}),
+		title		=> strip_notags($form->{title}),
 	};
 
 	my $bookmark_id;
@@ -199,7 +199,7 @@ sub anonBookmark {
 			$slashdb->setUrl($url_id, { -anon_bookmarks => 'anon_bookmarks + 1' } );
 		} else {
 			my $data = {
-				initialtitle => strip_attribute($form->{title}),
+				initialtitle => strip_notags($form->{title}),
 				url    => $fudgedurl,
 				anon_bookmarks => 1,
 			};

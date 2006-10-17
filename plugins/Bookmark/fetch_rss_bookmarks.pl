@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.4 2006/10/11 16:15:04 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.5 2006/10/17 22:07:54 tvroom Exp $
 
 use strict;
 use Slash;
@@ -36,7 +36,7 @@ $task{$me}{code} = sub {
 					$item->{$_} = xmldecode($item->{$_});
 				}
 				
-				my $title = $item->{title};
+				my $title = strip_notags($item->{title});
 				my $link = fudgeurl($item->{link});
 				my $text = strip_mode($item->{description}, HTML);
 				slashdLog($item->{description});
@@ -44,7 +44,7 @@ $task{$me}{code} = sub {
 				
 				my $data = {
 					url		=> $link,
-					initialtitle	=> strip_literal($title)
+					initialtitle	=> $title,
 				};
 				
 				my $url_id = $slashdb->getUrlCreate($data);
@@ -54,7 +54,7 @@ $task{$me}{code} = sub {
 				my $bookmark_data = {
 					url_id 		=> $url_id,
 					uid    		=> $feed->{uid},
-					title		=> strip_literal($title),
+					title		=> $title,
 				};
 				
 				my $user_bookmark = $bookmark->getUserBookmarkByUrlId($feed->{uid}, $url_id);

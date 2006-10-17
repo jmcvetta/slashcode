@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.35 2006/10/13 19:48:45 pudge Exp $
+# $Id: FireHose.pm,v 1.36 2006/10/17 19:42:51 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,7 +36,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -489,10 +489,11 @@ sub ajaxFireHoseFetchNew {
 	$opts->{createtime_gte} = $maxtime;
 
 	my $items = $firehose_reader->getFireHoseEssentials($opts);
+	my $now = $firehose_reader->getTime();
 
 
 	foreach my $i (@$items) {
-		$maxtime = $i->{createtime} if $i->{createtime} gt $maxtime;
+		$maxtime = $i->{createtime} if $i->{createtime} gt $maxtime && $i->{createtime} le $now;
 		my $item = $firehose_reader->getFireHose($i->{id});
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
 		push @$added, [$i->{id}, slashDisplay("dispFireHose", { mode => $opts->{mode}, item => $item, tags_top => $tags_top }, { Return => 1, Page => "firehose" })];
@@ -1048,4 +1049,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.35 2006/10/13 19:48:45 pudge Exp $
+$Id: FireHose.pm,v 1.36 2006/10/17 19:42:51 tvroom Exp $

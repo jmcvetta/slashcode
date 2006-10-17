@@ -70,7 +70,7 @@ __template__
 	var play = 0;
 	var is_timed_out = 0;
 	var updateIntervalType = [% IF user.is_admin %]1[% ELSE %]2[% END %];
-	var inactivity_timeout = [% IF user.is_admin %]3600[% ELSE %]2400[% END %];
+	var inactivity_timeout = [% IF user.is_admin %]10800[% ELSE %]3600[% END %];
 	setFirehoseAction();
 	firehose_pause();
 	var update_time = '[% refresh_options.maxtime %]';
@@ -93,4 +93,4 @@ __template__
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.26 2006/10/12 18:22:30 lancelot Exp $
+$Id: list;firehose;default,v 1.27 2006/10/17 19:42:51 tvroom Exp $

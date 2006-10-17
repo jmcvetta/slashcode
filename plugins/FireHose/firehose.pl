@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.11 2006/10/16 21:54:31 jamiemccarthy Exp $
+# $Id: firehose.pl,v 1.12 2006/10/17 19:42:51 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -108,8 +108,15 @@ sub list {
 sub view {
 	my($slashdb, $constants, $user, $form, $gSkin) = @_;
 	my $firehose = getObject("Slash::FireHose");
-	my $item = $firehose->getFireHose($form->{id});
-	slashDisplay("view", { item => $item } );
+	my $firehose_reader = getObject("Slash::FireHose", { db_type => 'reader' });
+	my $options = $firehose->getAndSetOptions();
+	my $item = $firehose_reader->getFireHose($form->{id});
+	if ($item && $item->{id} && ($item->{public} eq "yes" || $user->{is_admin}) ) {
+		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
+		print $firehose_reader->dispFireHose($item, { mode => "full", tags_top => $tags_top, options => $options });
+	} else {
+		print getData('notavailable');
+	}
 }
 
 

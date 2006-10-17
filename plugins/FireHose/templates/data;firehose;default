@@ -48,7 +48,9 @@ __template__
 	[% IF !hidediv %]
 	</div>
 	[% END %]
+[% CASE 'notavailable' %]
+	The item you're trying to view either does not exist, or is not viewable to you.
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.5 2006/10/11 16:16:43 tvroom Exp $
+$Id: data;firehose;default,v 1.6 2006/10/17 19:42:51 tvroom Exp $

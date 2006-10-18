@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.13 2006/10/17 22:09:14 tvroom Exp $
+# $Id: bookmark.pl,v 1.14 2006/10/18 05:36:00 pudge Exp $
 
 use strict;
 use Slash;
@@ -199,9 +199,9 @@ sub anonBookmark {
 			$slashdb->setUrl($url_id, { -anon_bookmarks => 'anon_bookmarks + 1' } );
 		} else {
 			my $data = {
-				initialtitle => strip_notags($form->{title}),
-				url    => $fudgedurl,
-				anon_bookmarks => 1,
+				initialtitle	=> strip_notags($form->{title}),
+				url		=> $fudgedurl,
+				anon_bookmarks	=> 1,
 			};
 			my @allowed_schemes = split(/\|/,$constants->{bookmark_allowed_schemes});
 			my %allowed_schemes = map { $_ => 1 } @allowed_schemes;

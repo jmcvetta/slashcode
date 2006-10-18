@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.12 2006/10/17 19:42:51 tvroom Exp $
+# $Id: firehose.pl,v 1.13 2006/10/18 21:41:35 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -59,23 +59,7 @@ sub list {
 		$options->{offset} = $page * $options->{limit};
 	}
 
-	my($items, $results);
-	# XXX: for testing!
-	my $searchtootest = 0;
-	my $searchtoo = $searchtootest && getObject('Slash::SearchToo');
-	if ($searchtoo && $searchtoo->handled('firehose')) {
-		$results = $searchtoo->findRecords(firehose => {
-			# filters go here
-			query		=> $options->{fhfilter},
-		}, {
-			# sort options go here
-			records_max	=> $options->{limit},
-			records_start	=> $options->{offset},
-		});
-		$items = $results->{records};
-	} else {
-		$items = $firehose_reader->getFireHoseEssentials($options);
-	}
+	my($items, $results) = $firehose_reader->getFireHoseEssentials($options);
 
 	my $itemstext;
 	my $maxtime = $firehose->getTime();
@@ -97,10 +81,10 @@ sub list {
 	} 
 
 	slashDisplay("list", {
-		itemstext => $itemstext, 
-		page => $page, 
-		options => $options,
-		refresh_options => $refresh_options
+		itemstext	=> $itemstext, 
+		page		=> $page, 
+		options		=> $options,
+		refresh_options	=> $refresh_options
 	});
 
 }

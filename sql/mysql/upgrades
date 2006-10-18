@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1067 2006/10/13 19:48:46 pudge Exp $
+# $Id: upgrades,v 1.1068 2006/10/18 05:38:04 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4125,3 +4125,7 @@ UPDATE vars SET value = 'T_2_5_0_129' WHERE name = 'cvs_tag_currentcode';
 INSERT search_index_dump SELECT NULL, id, 'firehose', 'changed' FROM firehose;
 
 # PUDGE LAST UPDATED HERE
+
+# 2006-10-17
+UPDATE vars SET value = 'T_2_5_0_130' WHERE name = 'cvs_tag_currentcode';
+

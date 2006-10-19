@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search_index.pl,v 1.2 2006/09/29 03:33:05 pudge Exp $
+# $Id: search_index.pl,v 1.3 2006/10/19 02:00:03 pudge Exp $
 
 use strict;
 
@@ -10,7 +10,7 @@ use Slash::Constants ':slashd';
 
 use vars qw( %task $me );
 
-$task{$me}{timespec} = '2-59/5 * * * *';
+$task{$me}{timespec} = '* * * * *';
 $task{$me}{timespec_panic_1} = ''; # if panic, this can wait
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
@@ -19,8 +19,8 @@ $task{$me}{code} = sub {
 	my $searchtoo = getObject('Slash::SearchToo');
 
 	slashdLog("Backing up index");
-	$searchtoo->copyBackup;
-	$searchtoo->backup(1);
+#	$searchtoo->copyBackup;
+#	$searchtoo->backup(1);
 
 	slashdLog("Fetching records to index");
 	my $records = $searchtoo->getStoredRecords;
@@ -68,8 +68,8 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	$searchtoo->backup(0);
-	$searchtoo->moveLive;
+#	$searchtoo->backup(0);
+#	$searchtoo->moveLive;
 
 	slashdLog("Moved new index live");
 };

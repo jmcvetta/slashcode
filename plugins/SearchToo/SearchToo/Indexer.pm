@@ -11,7 +11,7 @@ use vars qw($VERSION);
 use base 'Slash::SearchToo';
 require Slash::SearchToo::Classic;
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -542,12 +542,6 @@ sub _dir {
 	}
 
 	return catdir($dir, $self->_class, $self->_type($type) . "_$num");
-}
-
-#################################################################
-sub _backup_dir {
-	my($self, $type, $dir) = @_;
-	return $self->_dir($type, $dir, 1);
 }
 
 #################################################################

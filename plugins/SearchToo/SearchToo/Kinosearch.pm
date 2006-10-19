@@ -17,7 +17,7 @@ use KinoSearch::InvIndexer;
 use KinoSearch::Search::QueryFilter;
 use KinoSearch::Searcher;
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -267,7 +267,7 @@ sub _searcher {
 	$dir = $self->_dir($type, $dir);
 
 	if ($self->{_searcher}{$type}{$dir}) {
-		if ($self->{_searcher}{$type}{$dir}{'time'} >= time() - 90) {
+		if ($self->{_searcher}{$type}{$dir}{'time'} >= time() - 60) {
 			return $self->{_searcher}{$type}{$dir}{dir};
 		}
 	}
@@ -288,7 +288,7 @@ sub _reader {
 	$dir = $self->_dir($type, $dir);
 
 	if ($self->{_reader}{$type}{$dir}) {
-		if ($self->{_reader}{$type}{$dir}{'time'} >= time() - 90) {
+		if ($self->{_reader}{$type}{$dir}{'time'} >= time() - 60) {
 			return $self->{_reader}{$type}{$dir}{dir};
 		}
 	}

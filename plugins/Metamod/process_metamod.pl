@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: process_metamod.pl,v 1.3 2006/09/03 22:02:28 jamiemccarthy Exp $
+# $Id: process_metamod.pl,v 1.4 2006/10/19 11:20:17 jamiemccarthy Exp $
 
 use strict;
 use Slash::Utility;
@@ -319,7 +319,7 @@ sub rec_sanity_check {
 # sorts before '0605 21' (a mod from May 2006 M2'd 2-1 fair)
 # and the older 
 
-sub _add_m2info {
+sub add_m2info {
 	my($old, $nfair, $nunfair) = @_;
 
 	my @lt = localtime;

@@ -17,7 +17,7 @@ use KinoSearch::InvIndexer;
 use KinoSearch::Search::QueryFilter;
 use KinoSearch::Searcher;
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -84,7 +84,7 @@ slashProf('init search');
 
 	for my $t (keys %$terms) {
 		next if $t eq 'query';
-		next if	!$terms->{$t} || !length($terms->{$t});
+		next if !defined($terms->{$t}) || !length($terms->{$t});
 
 		# OR by default, for now anyway ... chances are this won't
 		# ever need to be an AND
@@ -131,10 +131,10 @@ slashProf('init search');
 slashProf('search', 'init search');
 	my $hits = $searcher->search(query => $query || $fquery, filter => $filter);
 
-	$hits->seek($sopts->{start}, $sopts->{max});
-
 	$sopts->{total}   = $preader->num_docs;
 	$sopts->{matches} = $hits->total_hits;
+
+	$hits->seek($sopts->{start}, $sopts->{max} || $sopts->{matches});
 
 slashProf('fetch results', 'search');
  	while (my $hit = $hits->fetch_hit_hashref) {

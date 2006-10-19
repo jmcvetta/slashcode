@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.37 2006/10/18 21:41:35 pudge Exp $
+# $Id: FireHose.pm,v 1.38 2006/10/19 06:11:35 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 1;
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -229,8 +229,8 @@ sub getFireHoseEssentials {
 		my $searchtoo = getObject('Slash::SearchToo');
 		if ($searchtoo && $searchtoo->handled('firehose')) {
 			my(%opts, %query);
-			$query{query}		= $options->{qfilter}		if defined $options->{qfilter};
-			$query{category}	= $options->{category} || ''	if $options->{category} || $user->{is_admin};
+			$query{query}		= $options->{qfilter}			if defined $options->{qfilter};
+			$query{category}	= $options->{category} || 'none'	if $options->{category} || $user->{is_admin};
 			if ($options->{ids}) {
 				if (ref($options->{ids}) eq 'ARRAY' && @{$options->{ids}} < 1) {
 					return([], {});
@@ -244,7 +244,7 @@ sub getFireHoseEssentials {
 			}
 
 			# still need sorting and filtering by date
-			$opts{records_max}	= $options->{limit};
+			$opts{records_max}	= $options->{limit}		unless $options->{nolimit};
 			$opts{records_start}	= $options->{offset}		if $options->{offset};
 
 			my $results = $searchtoo->findRecords(firehose => \%query, \%opts);
@@ -1092,4 +1092,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.37 2006/10/18 21:41:35 pudge Exp $
+$Id: FireHose.pm,v 1.38 2006/10/19 06:11:35 pudge Exp $

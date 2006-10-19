@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search_index.pl,v 1.3 2006/10/19 02:00:03 pudge Exp $
+# $Id: search_index.pl,v 1.4 2006/10/19 06:11:35 pudge Exp $
 
 use strict;
 
@@ -18,7 +18,7 @@ $task{$me}{code} = sub {
 
 	my $searchtoo = getObject('Slash::SearchToo');
 
-	slashdLog("Backing up index");
+#	slashdLog("Backing up index");
 #	$searchtoo->copyBackup;
 #	$searchtoo->backup(1);
 
@@ -71,7 +71,8 @@ $task{$me}{code} = sub {
 #	$searchtoo->backup(0);
 #	$searchtoo->moveLive;
 
-	slashdLog("Moved new index live");
+#	slashdLog("Moved new index live");
+	slashdLog("Finished");
 };
 
 1;

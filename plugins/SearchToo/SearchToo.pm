@@ -6,7 +6,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Prepare to be thought at!
 
@@ -143,7 +143,10 @@ sub _fudge_data {
 	}
 
 	if ($processed{section}) {
-		$processed{section_name} ||= $reader->getSkin($processed{section})->{name};
+		my $skin = $reader->getSkin($processed{section});
+		if ($skin) {
+			$processed{section_name} ||= $skin->{name};
+		}
 	}
 
 

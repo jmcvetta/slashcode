@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.194 2006/09/02 02:06:33 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.195 2006/10/23 16:42:45 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.194 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -433,7 +433,7 @@ sub urlFromSite {
 	}
 
 	my @site_domain = split m/\./, $gSkin->{basedomain};
-	my $site_domain = join '.', @site_domain[-2, -1];
+	my $site_domain = @site_domain >= 2 ? join '.', @site_domain[-2, -1] : '';
 	$site_domain =~ s/:.+$//;	# strip port, if available
 
 	my @host = split m/\./, ($clean->can('host') ? $clean->host : '');
@@ -4246,4 +4246,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.194 2006/09/02 02:06:33 jamiemccarthy Exp $
+$Id: Data.pm,v 1.195 2006/10/23 16:42:45 jamiemccarthy Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.50 2006/06/02 03:26:03 pudge Exp $
+# $Id: Install.pm,v 1.51 2006/10/23 16:44:58 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -368,7 +368,11 @@ sub _install {
 		}
 	}
 
+	##############################
+
 	my($sql, @sql, @create);
+
+	# First, apply the schema.
 
 	my $mldhr = {	# "mungeline data hashref"
 		hostname	=> $self->getValue("basedomain"),
@@ -386,6 +390,32 @@ sub _install {
 		}
 	}
 
+	for my $statement (@sql) {
+		next unless $statement;
+		$statement =~ s/;\s*$//;
+		my $rows = $self->sqlDo($statement);
+		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
+			print "=== ($type $hash->{name}) Failed on :$statement:\n";
+		}
+	}
+	@sql = ();
+
+	# Second, install any required plugins.  This comes before the dump in
+	# case the theme's dump file writes to any tables/columns that were
+	# added by a plugin.
+
+	if ($hash->{plugin}) {
+		for (sort {
+			$hash->{plugin}{$a}{installorder} <=> $hash->{plugin}{$b}{installorder}
+			||
+			$a cmp $b
+		} keys %{$hash->{plugin}}) {
+			$self->installPlugin($_, 0, $symlink);
+		}
+	}
+
+	# Third, apply the dump.
+
 	if ($hash->{"${driver}_dump"}) {
 		my $dump_file = "$hash->{dir}/" . $hash->{"${driver}_dump"};
 		my $fh = gensym;
@@ -402,20 +432,12 @@ sub _install {
 		$statement =~ s/;\s*$//;
 		my $rows = $self->sqlDo($statement);
 		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
-			print "=== ($hash->{name}) Failed on :$statement:\n";
+			print "=== ($type $hash->{name}) Failed on :$statement:\n";
 		}
 	}
 	@sql = ();
 
-	if ($hash->{plugin}) {
-		for (sort {
-			$hash->{plugin}{$a}{installorder} <=> $hash->{plugin}{$b}{installorder}
-			||
-			$a cmp $b
-		} keys %{$hash->{plugin}}) {
-			$self->installPlugin($_, 0, $symlink);
-		}
-	}
+	##############################
 
 	if ($type eq "theme") {
 		my(%templates, @no_templates);
@@ -475,7 +497,7 @@ sub _install {
 		next unless $_;
 		s/;$//;
 		unless ($self->sqlDo($_)) {
-			print "=== ($hash->{name}) Failed on :$_:\n";
+			print "=== ($type $hash->{name}) Failed on :$_:\n";
 		}
 	}
 	@sql = ();

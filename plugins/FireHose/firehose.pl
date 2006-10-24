@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.13 2006/10/18 21:41:35 pudge Exp $
+# $Id: firehose.pl,v 1.14 2006/10/24 18:21:28 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -63,9 +63,10 @@ sub list {
 
 	my $itemstext;
 	my $maxtime = $firehose->getTime();
+	my $now = $slashdb->getTime();
 	
 	foreach (@$items) {
-		$maxtime = $_->{createtime} if $_->{createtime} gt $maxtime;
+		$maxtime = $_->{createtime} if $_->{createtime} gt $maxtime && $_->{createtime} lt $now;
 		my $item =  $firehose_reader->getFireHose($_->{id});
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
 		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });

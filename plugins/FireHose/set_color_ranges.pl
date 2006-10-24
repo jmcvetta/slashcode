@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_color_ranges.pl,v 1.1 2006/10/24 18:12:50 tvroom Exp $
+# $Id: set_color_ranges.pl,v 1.2 2006/10/24 18:21:28 tvroom Exp $
 
 # For now this just gathers data.  The actual reweighting will come
 # later. - Jamie 2004/11/10
@@ -20,7 +20,7 @@ use vars qw(
 	%task	$me	$task_exit_flag
 );
 
-$task{$me}{timespec} = '18 4 * * *';
+$task{$me}{timespec} = '18 * * * *';
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;

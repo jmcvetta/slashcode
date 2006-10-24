@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.10 2006/10/11 16:16:43 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.11 2006/10/24 22:39:54 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -24,6 +24,7 @@ CREATE TABLE firehose (
 	email varchar(255) NOT NULL default '',
 	emaildomain varchar(255) NOT NULL default '',
 	name varchar(50) NOT NULL,
+	dept VARCHAR(100) NOT NULL DEFAULT '',
 	ipid varchar(32) NOT NULL default '',
 	subnetid varchar(32) NOT NULL default '',
 	category varchar(30) NOT NULL default '',

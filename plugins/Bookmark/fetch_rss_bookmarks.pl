@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.5 2006/10/17 22:07:54 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.6 2006/10/24 19:25:11 tvroom Exp $
 
 use strict;
 use Slash;
@@ -66,7 +66,7 @@ $task{$me}{code} = sub {
 					if ($constants->{plugin}{FireHose}) {
 						my $firehose = getObject("Slash::FireHose");
 						my $the_bookmark = $bookmark->getBookmark($bookmark_id);
-						$firehose->createUpdateItemFromBookmark($bookmark_id, { type => "feed", popularity => 0, introtext => $text });
+						$firehose->createUpdateItemFromBookmark($bookmark_id, { type => "feed", introtext => $text });
 					}
 					
 					my $tags = getObject('Slash::Tags');

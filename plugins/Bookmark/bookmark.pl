@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.14 2006/10/18 05:36:00 pudge Exp $
+# $Id: bookmark.pl,v 1.15 2006/10/24 19:25:11 tvroom Exp $
 
 use strict;
 use Slash;
@@ -137,7 +137,6 @@ sub saveBookmark {
 			my $the_bookmark = $bookmark->getBookmark($bookmark_id);
 			$firehose->createUpdateItemFromBookmark($bookmark_id, {
 				type		=> "bookmark",
-				popularity	=> 1
 			});
 		}
 					

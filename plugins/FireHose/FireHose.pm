@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.40 2006/10/24 18:27:21 tvroom Exp $
+# $Id: FireHose.pm,v 1.41 2006/10/24 22:39:37 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -36,9 +36,9 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION $searchtootest);
 
-$searchtootest = 1;
+$searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -184,7 +184,8 @@ sub updateItemFromStory {
 				bodytext	=> $story->{bodytext},
 				primaryskid	=> $story->{primaryskid},
 				tid 		=> $story->{tid},
-				public		=> $public
+				public		=> $public,
+				dept		=> $story->{dept}
 			};
 			$self->setFireHose($id, $data);
 		}
@@ -220,6 +221,7 @@ sub createItemFromStory {
 			type 		=> "story",
 			public		=> $public,
 			accepted	=> "yes",
+			dept		=> $story->{dept}
 		};
 		$self->createFireHose($data);
 	}
@@ -440,18 +442,16 @@ sub ajaxSaveOneTopTagFirehose {
 	my $tags = getObject("Slash::Tags");
 	my $id = $form->{id};
 	my $tag = $form->{tags};
-	if ($user->{is_admin}) {
-		my $firehose = getObject("Slash::FireHose");
-		my $item = $firehose->getFireHose($id);
-		if ($item) {
-			$firehose->setSectionTopicsFromTagstring($id, $tag);
-			my($table, $itemid) = $tags->getGlobjTarget($item->{globjid});
-			my $now_tags_ar = $tags->getTagsByNameAndIdArrayref($table, $itemid, { uid => $user->{uid}});
-			my @tags = sort Slash::Tags::tagnameorder map { $_->{tagname} } @$now_tags_ar;
-			push @tags, $tag;
-			my $tagsstring = join ' ', @tags;
-			my $newtagspreloadtext = $tags->setTagsForGlobj($itemid, $table, $tagsstring);
-		}
+	my $firehose = getObject("Slash::FireHose");
+	my $item = $firehose->getFireHose($id);
+	if ($item) {
+		$firehose->setSectionTopicsFromTagstring($id, $tag);
+		my($table, $itemid) = $tags->getGlobjTarget($item->{globjid});
+		my $now_tags_ar = $tags->getTagsByNameAndIdArrayref($table, $itemid, { uid => $user->{uid}});
+		my @tags = sort Slash::Tags::tagnameorder map { $_->{tagname} } @$now_tags_ar;
+		push @tags, $tag;
+		my $tagsstring = join ' ', @tags;
+		my $newtagspreloadtext = $tags->setTagsForGlobj($itemid, $table, $tagsstring);
 	}
 }
 
@@ -869,6 +869,11 @@ sub getAndSetOptions {
 	} else {
 		$options->{limit} = 50;
 	}
+	my $page = $form->{page} || 0;
+	$options->{page} = $page;
+	if ($page) {
+		$options->{offset} = $page * $options->{limit};
+	}
 
 	if ($form->{orderby}) {
 		if ($form->{orderby} eq "popularity") {
@@ -1028,4 +1033,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.40 2006/10/24 18:27:21 tvroom Exp $
+$Id: FireHose.pm,v 1.41 2006/10/24 22:39:37 tvroom Exp $

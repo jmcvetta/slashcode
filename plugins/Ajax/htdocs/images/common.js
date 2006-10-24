@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.52 2006/10/24 17:30:33 tvroom Exp $
+// $Id: common.js,v 1.53 2006/10/24 22:41:31 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -527,6 +527,7 @@ function firehose_get_updates() {
 	params['op'] = 'firehose_get_updates';
 	params['ids'] = firehose_get_item_idstring();
 	params['updatetime'] = update_time;
+	params['page'] = page;
 	ajax_update(params, '', handlers);
 }
 

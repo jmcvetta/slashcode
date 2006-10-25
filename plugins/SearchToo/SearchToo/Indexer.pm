@@ -11,7 +11,7 @@ use vars qw($VERSION);
 use base 'Slash::SearchToo';
 require Slash::SearchToo::Classic;
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -150,6 +150,7 @@ sub addRecords {
 	my($self, $type, $data, $opts) = @_;
 
 	return unless $self->handled($type);
+	return unless $data;
 
 slashProfInit();
 slashProf('addRecords setup');
@@ -222,7 +223,7 @@ slashProf('prepare records', 'addRecords setup');
 
 slashProf('add docs', 'prepare records');
 
-	my $count = $self->_addRecords($type, \@documents, $opts);
+	my $count = $self->_addRecords($type, \@documents, $opts) if @documents;
 
 slashProf('', 'add docs');
 

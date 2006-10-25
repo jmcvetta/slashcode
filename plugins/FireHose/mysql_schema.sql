@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.11 2006/10/24 22:39:54 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.12 2006/10/25 21:11:55 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -30,7 +30,9 @@ CREATE TABLE firehose (
 	category varchar(30) NOT NULL default '',
 	last_update TIMESTAMP,
 	PRIMARY KEY (id),
-	UNIQUE globjid (globjid)
+	UNIQUE globjid (globjid),
+	KEY createtime (createtime),
+	KEY popularity (popularity)
 ) TYPE=InnoDB; 
 
 DROP TABLE IF EXISTS firehose_text;

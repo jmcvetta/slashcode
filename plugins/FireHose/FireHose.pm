@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.41 2006/10/24 22:39:37 tvroom Exp $
+# $Id: FireHose.pm,v 1.42 2006/10/25 19:07:55 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -305,6 +305,8 @@ sub getFireHoseEssentials {
 		$tables .= ",firehose_text";
 		push @where, "firehose.id=firehose_text.id";
 
+		# sanitize $options->{filter};
+		$options->{filter} =~ s/[^a-zA-Z0-9_]+//g;
 		if ($options->{filter}) {
 			push @where, "firehose_text.title like '%" . $options->{filter} . "%'";
 		}
@@ -934,8 +936,8 @@ sub getAndSetOptions {
 			$fh_options->{accepted} = "yes";
 		} else {
 			if (!defined $fh_options->{filter}) {
-				# XXX Filter this
 				$fh_options->{filter} = $_;
+				$fh_options->{filter} =~ s/[^a-zA-Z0-9_]+//g;
 			}
 			# Don't filter this
 			$fh_options->{qfilter} .= $_ . ' ';
@@ -1033,4 +1035,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.41 2006/10/24 22:39:37 tvroom Exp $
+$Id: FireHose.pm,v 1.42 2006/10/25 19:07:55 tvroom Exp $

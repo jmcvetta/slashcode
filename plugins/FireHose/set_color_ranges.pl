@@ -2,10 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_color_ranges.pl,v 1.2 2006/10/24 18:21:28 tvroom Exp $
-
-# For now this just gathers data.  The actual reweighting will come
-# later. - Jamie 2004/11/10
+# $Id: set_color_ranges.pl,v 1.3 2006/10/25 16:21:10 jamiemccarthy Exp $
 
 use strict;
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: moderate.pl,v 1.1 2006/10/25 21:48:30 jamiemccarthy Exp $
+# $Id: moderate.pl,v 1.2 2006/10/26 17:28:44 jamiemccarthy Exp $
 
 # This script is not all that useful since moderation is largely
 # done by ajax now.  Users with browsers that don't support it
@@ -25,19 +25,19 @@ sub main {
 
 	header(getData('header')) or return;
 
-	if (!$constants->{m1}) {
-		print getData('no_moderation');
-	} else {
-		my $mod_db = getObject('Slash::Moderation');
-		if (!$mod_db->metamodEligible($user)) {
-			print getData('not-eligible');
-		} elsif ($op eq 'MetaModerate') {
-			$mod_db->metaModerate();
-			print getData('thanks');
-		} else {
-			displayTheComments();
-		}
-	}
+#	if (!$constants->{m1}) {
+#		print getData('no_moderation');
+#	} else {
+#		my $mod_db = getObject("Slash::$constants->{m1_pluginname}");
+#		if (!$mod_db->metamodEligible($user)) {
+#			print getData('not-eligible');
+#		} elsif ($op eq 'MetaModerate') {
+#			$mod_db->metaModerate();
+#			print getData('thanks');
+#		} else {
+#			displayTheComments();
+#		}
+#	}
 
 	writeLog($op);
 	footer();
@@ -46,7 +46,7 @@ sub main {
 ##################################################################
 sub moderate {
         my($form, $slashdb, $user, $constants, $discussion) = @_;
-	my $moddb = getObject('Slash::Moderation');
+	my $moddb = getObject("Slash::$constants->{m1_pluginname}");
 
         my $moderate_check = $moddb->moderateCheck($form, $user, $constants, $discussion);
         if (!$moderate_check->{count} && $moderate_check->{msg}) {

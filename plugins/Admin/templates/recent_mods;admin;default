@@ -21,10 +21,11 @@ __template__
 		   mod_options.meta_mod_only = 1;
 	   END
 	%]
-	[% moddb = Slash.getObject("Slash::" _ constants.m1_pluginname);
+	[% m1_classname = "Slash::" _ constants.m1_pluginname;
+	   moddb = Slash.getObject(m1_classname);
 	   IF moddb; moddb.dispModCommentLog("global", "", mod_options); END %] 
 
 __seclev__
 500
 __version__
-$Id: recent_mods;admin;default,v 1.6 2006/10/26 17:33:02 jamiemccarthy Exp $
+$Id: recent_mods;admin;default,v 1.7 2006/10/26 17:36:52 jamiemccarthy Exp $

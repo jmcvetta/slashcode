@@ -45,7 +45,8 @@ __template__
 	   END;
 	 %]
 	<p>
-	[% moddb = Slash.getObject("Slash::" _ constants.m1_pluginname);
+	[% m1_classname = "Slash::" _ constants.m1_pluginname;
+	   moddb = Slash.getObject(m1_classname);
 	   IF moddb; moddb.dispModCommentLog("b$fieldname", netid, mod_options); END %]
 	[% IF !constants.m1_admin_show_mods_with_comments %]
 		<p>
@@ -66,4 +67,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: netIDInfo;users;default,v 1.23 2006/10/26 17:33:09 jamiemccarthy Exp $
+$Id: netIDInfo;users;default,v 1.24 2006/10/26 17:36:52 jamiemccarthy Exp $

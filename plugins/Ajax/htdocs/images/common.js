@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.53 2006/10/24 22:41:31 tvroom Exp $
+// $Id: common.js,v 1.54 2006/10/26 04:44:26 tvroom Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -573,6 +573,8 @@ function firehose_play() {
 	setFirehoseAction();
 	if ($('message_area'))
 		$('message_area').innerHTML = "";
+	if ($('pauseorplay'))
+		$('pauseorplay').innerHTML = "Updating";
 	var pause = $('pause');
 	var play_div = $('play');
 	play_div.className = "hide";
@@ -586,4 +588,6 @@ function firehose_pause() {
 	var play_div = $('play');
 	pause.className = "hide";
 	play_div.className = "";
+	if ($('pauseorplay'))
+		$('pauseorplay').innerHTML = "Paused";
 }

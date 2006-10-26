@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: portald,v 1.47 2006/05/02 19:13:10 pudge Exp $
+# $Id: portald,v 1.48 2006/10/26 17:33:05 jamiemccarthy Exp $
 
 ###############################################################################
 # portald  - this is the "daemon" responsible for retrieving portal and site
@@ -70,9 +70,11 @@ sub geturl {
 ################################################################################
 
 sub getTop10Comments {
+	my $constants = getCurrentStatic();
 	my $A =	$backupdb->getTop10Comments;
 
-	my $reasons = $slashdb->getReasons;
+	my $moddb = getObject("Slash::$constants->{m1_pluginname}");
+	my $reasons = $moddb->getReasons;
 
 	my $block = '<ul>';
 	foreach (@$A) {

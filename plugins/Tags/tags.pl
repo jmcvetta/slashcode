@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags.pl,v 1.6 2006/09/20 00:56:23 jamiemccarthy Exp $
+# $Id: tags.pl,v 1.7 2006/10/26 17:33:05 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -56,7 +56,7 @@ sub main {
 				count	=> scalar(@objs),
 			};
 		}
-		@objects = sort { $b->{count} <=> $a->{count} || $a->{title} cmp $b->{title} } @objects;
+		@objects = sort { $b->{count} <=> $a->{count} || ($a->{title}||'') cmp ($b->{title}||'') } @objects;
 		$index_hr->{objects} = \@objects;
 
 		$title = getData('head2', { tagname => $tagname });

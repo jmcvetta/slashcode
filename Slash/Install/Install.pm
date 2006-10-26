@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.51 2006/10/23 16:44:58 jamiemccarthy Exp $
+# $Id: Install.pm,v 1.52 2006/10/26 17:33:01 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -395,7 +395,7 @@ sub _install {
 		$statement =~ s/;\s*$//;
 		my $rows = $self->sqlDo($statement);
 		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
-			print "=== ($type $hash->{name}) Failed on :$statement:\n";
+			print "=== ($type $hash->{name}) Failed on: $statement:\n";
 		}
 	}
 	@sql = ();
@@ -405,12 +405,14 @@ sub _install {
 	# added by a plugin.
 
 	if ($hash->{plugin}) {
-		for (sort {
-			$hash->{plugin}{$a}{installorder} <=> $hash->{plugin}{$b}{installorder}
-			||
-			$a cmp $b
-		} keys %{$hash->{plugin}}) {
-			$self->installPlugin($_, 0, $symlink);
+		my @k = sort {
+				$hash->{plugin}{$a}{installorder} <=> $hash->{plugin}{$b}{installorder}
+				||
+				$a cmp $b
+			}
+			keys %{$hash->{plugin}};
+		for my $plugin_name (@k) {
+			$self->installPlugin($plugin_name, 0, $symlink);
 		}
 	}
 
@@ -432,7 +434,7 @@ sub _install {
 		$statement =~ s/;\s*$//;
 		my $rows = $self->sqlDo($statement);
 		if (!$rows && $statement !~ /^INSERT\s+IGNORE\b/i) {
-			print "=== ($type $hash->{name}) Failed on :$statement:\n";
+			print "=== ($type $hash->{name}) Failed on: $statement:\n";
 		}
 	}
 	@sql = ();
@@ -497,7 +499,7 @@ sub _install {
 		next unless $_;
 		s/;$//;
 		unless ($self->sqlDo($_)) {
-			print "=== ($type $hash->{name}) Failed on :$_:\n";
+			print "=== ($type $hash->{name}) Failed on: $_:\n";
 		}
 	}
 	@sql = ();

@@ -4,7 +4,7 @@ __description__
 Display a comment
 
 * comment_shrunk = comment was too long; this is the stripped down version
-* reasons = hashref of moderation "reasons"
+* reasons = hashref of moderation "reasons" (or undef if no moderation plugin)
 * can_mod = boolean for whether or not current user can moderate
 * is_anon = boolean for whether or not comment user is anonymous
 
@@ -33,7 +33,7 @@ __template__
 			[% ELSE %]
 			<h4><a name="[% cid %]">[% subject %]</a></h4>
 			[%- END %]
-			[% UNLESS user.noscores %]<span id="comment_score_[% cid %]" class="score">(Score:[% IF points.length; points; ELSE; "?"; END %][% IF reason %], [% reasons.$reason.name %][% END %])</span>[% END %]
+			[% UNLESS user.noscores %]<span id="comment_score_[% cid %]" class="score">(Score:[% IF points.length; points; ELSE; "?"; END %][% IF reasons && reason %], [% reasons.$reason.name %][% END %])</span>[% END %]
 		</div>
 		<div class="details">
 			by
@@ -101,4 +101,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.50 2006/08/09 04:40:54 pudge Exp $
+$Id: dispComment;misc;default,v 1.51 2006/10/26 17:33:09 jamiemccarthy Exp $

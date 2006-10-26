@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: createTestMods,v 1.20 2006/10/26 17:33:10 jamiemccarthy Exp $
+# $Id: createTestMods,v 1.21 2006/10/26 22:04:21 jamiemccarthy Exp $
 
 use strict;
 use File::Basename;
@@ -14,7 +14,7 @@ use Slash::Utility;
 
 use vars qw( $slashdb $constants );
 
-(my $VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 
 my (%opts);
@@ -152,7 +152,7 @@ my(%comments, %comment_data);
 				$reason);
 			my $user = { uid => $uid };
 			setRandomIPID($user);
-			$slashdb->createModeratorLog(
+			$moddb->createModeratorLog(
 				$comment,
 				$user,
 				$modval,

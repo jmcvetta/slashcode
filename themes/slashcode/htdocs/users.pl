@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.323 2006/10/26 17:33:07 jamiemccarthy Exp $
+# $Id: users.pl,v 1.324 2006/10/26 22:17:04 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1233,8 +1233,9 @@ sub showInfo {
 
 	my $cid_list = [ keys %$cids_seen ];
 	my $cids_to_mods = {};
-	if ($admin_flag && $constants->{show_mods_with_comments}) {
-		my $comment_mods = $reader->getModeratorCommentLog("DESC",
+	if ($constants->{m1} && $admin_flag && $constants->{show_mods_with_comments}) {
+		my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
+		my $comment_mods = $mod_reader->getModeratorCommentLog("DESC",
 			$constants->{mod_limit_with_comments}, "cidin", $cid_list);
 	
 		# Loop through mods and group them by the sid they're attached to
@@ -2099,7 +2100,7 @@ sub editComm {
 	my @reasons = ( );
 	my %reason_select = ( );
 	if ($constants->{m1}) {
-		my $mod_reader = getObject('Slash::Moderation', { db_type => 'reader' });
+		my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
 		my $reasons = $mod_reader->getReasons();
 		for my $id (sort { $a <=> $b } keys %$reasons) {
 			push @reasons, $reasons->{$id}{name};
@@ -2733,7 +2734,7 @@ sub saveComm {
 		mode            => 'thread'
 	};
 
-	my $mod_reader = getObject('Slash::Moderation', { db_type => 'reader' });
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
 	my @reasons = ( );
 	my $reasons = $mod_reader->getReasons();
 	for my $id (sort { $a <=> $b } keys %$reasons) {

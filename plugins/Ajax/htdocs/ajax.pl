@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.33 2006/10/26 20:10:21 pudge Exp $
+# $Id: ajax.pl,v 1.34 2006/10/27 02:10:02 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -50,7 +50,7 @@ sub main {
 		my $reskey = getObject('Slash::ResKey');
 		my $rkey = $reskey->key($reskey_name);
 		if (!$rkey) {
-			print STDERR scalar(localtime) . " ajax.pl main no rkey for '$reskey_name'\n";
+			print STDERR scalar(localtime) . " ajax.pl main no rkey for op='$op' name='$reskey_name'\n";
 			return;
 		}
 		if ($ops->{$op}{reskey_type} eq 'createuse') {

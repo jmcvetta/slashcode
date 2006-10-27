@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.182 2006/10/27 17:22:57 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.183 2006/10/27 17:56:00 jamiemccarthy Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -555,7 +555,11 @@ sub getReverseMods {
 	my $limit =    12  ;	$limit = $options->{limit} if defined $options->{limit};
 	my $min_tokens = -50; # fudge factor: only users who are likely to mod soon
 
-	my $reasons = $self->getReasons();
+	my $constants = getCurrentStatic();
+	return [ ] unless $constants->{m1};
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
+	return [ ] unless $mod_reader;
+	my $reasons = $mod_reader->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
 	my $reasons_m2able = join(",", @reasons_m2able);
 	my $m2able_score_clause = $reasons_m2able
@@ -2093,4 +2097,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.182 2006/10/27 17:22:57 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.183 2006/10/27 17:56:00 jamiemccarthy Exp $

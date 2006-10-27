@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.324 2006/10/26 22:17:04 jamiemccarthy Exp $
+# $Id: users.pl,v 1.325 2006/10/27 02:01:16 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1233,8 +1233,8 @@ sub showInfo {
 
 	my $cid_list = [ keys %$cids_seen ];
 	my $cids_to_mods = {};
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
 	if ($constants->{m1} && $admin_flag && $constants->{show_mods_with_comments}) {
-		my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
 		my $comment_mods = $mod_reader->getModeratorCommentLog("DESC",
 			$constants->{mod_limit_with_comments}, "cidin", $cid_list);
 	
@@ -1259,7 +1259,6 @@ sub showInfo {
         my $ipid_hoursback = $constants->{istroll_ipid_hours} || 72;
 	my $uid_hoursback = $constants->{istroll_uid_hours} || 72;
 
-	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
 	if ($requested_user->{nonuid}) {
 		slashDisplay('netIDInfo', {
 			title			=> $title,

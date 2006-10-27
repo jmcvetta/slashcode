@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Metamod.pm,v 1.5 2006/10/26 17:33:03 jamiemccarthy Exp $
+# $Id: Metamod.pm,v 1.6 2006/10/27 02:35:22 jamiemccarthy Exp $
 
 package Slash::Metamod;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -249,7 +249,9 @@ sub multiMetaMod {
 	return if !@orig_mmids;
 	my $orig_mmid_in = join(",", @orig_mmids);
 	my $uid_q = $self->sqlQuote($m2_user->{uid});
-	my $reasons = $self->getReasons();
+
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
+	my $reasons = $mod_reader->getReasons();
 	my $m2able_reasons = join(",",
 		sort grep { $reasons->{$_}{m2able} }
 		keys %$reasons);
@@ -422,7 +424,9 @@ sub getInheritedM2sForMod {
 sub getModForM2Inherit {
 	my($self, $mod_uid, $cid, $reason, $id) = @_;
 	my $mod_uid_q = $self->sqlQuote($mod_uid);
-	my $reasons = $self->getReasons();
+	my $constants = getCurrentStatic();
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
+	my $reasons = $mod_reader->getReasons();
 	my $m2able_reasons = join(",",
 		sort grep { $reasons->{$_}{m2able} }
 		keys %$reasons);
@@ -674,7 +678,8 @@ sub getMetamodsForUserRaw {
 	my $constants = getCurrentStatic();
 	my $m2_wait_hours = $constants->{m2_wait_hours} || 12;
 
-	my $reasons = $self->getReasons();
+	my $mod_reader = getObject("Slash::$constants->{m1_pluginname}", { db_type => 'reader' });
+	my $reasons = $mod_reader->getReasons();
 	my $m2able_reasons = join(",",
 		sort grep { $reasons->{$_}{m2able} }
 		keys %$reasons);

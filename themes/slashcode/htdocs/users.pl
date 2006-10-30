@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.325 2006/10/27 02:01:16 pudge Exp $
+# $Id: users.pl,v 1.326 2006/10/30 15:07:19 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2335,7 +2335,12 @@ sub saveUserAdmin {
 	if ($user->{is_admin} && ($user_editfield_flag eq 'uid' ||
 		$user_editfield_flag eq 'nickname')) {
 
-		$user_edits_table->{seclev} = $form->{seclev};
+		# This admin user cannot assign a seclev higher than he/she
+		# already has.
+		my $seclev = $form->{seclev};
+		$seclev = $user->{seclev} if $seclev > $user->{seclev};
+		$user_edits_table->{seclev} = $seclev;
+
 		$user_edits_table->{section} = $form->{section};
 		$user_edits_table->{author} = $form->{author} ? 1 : 0 ;
 		$user_edits_table->{defaultpoints} = $form->{defaultpoints};

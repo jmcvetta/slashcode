@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.46 2006/10/27 15:40:39 tvroom Exp $
+# $Id: FireHose.pm,v 1.47 2006/10/30 15:34:43 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.46 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -435,6 +435,8 @@ sub rejectItemBySubid {
 
 sub rejectItem {
 	my $form = getCurrentForm();
+	my $user = getCurrentUser();
+	my $constants = getCurrentStatic();
 	my $firehose = getObject("Slash::FireHose");
 	my $tags = getObject("Slash::Tags");
 	my $id = $form->{id};
@@ -443,6 +445,16 @@ sub rejectItem {
 	my $item = $firehose->getFireHose($id);
 	if ($item) {
 		$firehose->setFireHose($id, { rejected => "yes" });
+		if ($item->{globjid}) {
+			my $downvote = $constants->{tags_downvote_tagname} || 'nix';
+			$tags->createTag({
+				uid	=>	$user->{uid},
+				name	=> 	$downvote,
+				globjid	=>	$item->{globjid},
+				private	=> 	1
+			});
+		}
+		
 		if ($item->{type} eq "submission") {
 			if ($item->{srcid}) {
 				my $n_q = $firehose->sqlQuote($item->{srcid});
@@ -1057,4 +1069,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.46 2006/10/27 15:40:39 tvroom Exp $
+$Id: FireHose.pm,v 1.47 2006/10/30 15:34:43 tvroom Exp $

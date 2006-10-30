@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1077 2006/10/26 20:54:56 pudge Exp $
+# $Id: upgrades,v 1.1078 2006/10/30 20:23:41 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4124,8 +4124,6 @@ REPLACE INTO vars (name, value, description) VALUES ('search_too_index_num', '0'
 # 2006-10-17
 UPDATE vars SET value = 'T_2_5_0_130' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHDOT LAST UPDATED HERE
-
 # for FireHose plugin
 DELETE FROM ajax_ops where op in ('firehose_get_updates_pop','firehose_check_removed','firehose_fetch_new');
 INSERT INTO vars (name, value, description) VALUES ('firehose_color_slices', '30|30|0.2|0.2|0.2|0.2|0.2', 'Number or percent of remaining stories at each color level separated by | 30|0.5|0.5 would mean 30 stories at the level of highest popularity and 50% at each of remainining stories at the next 2 levels');
@@ -4159,4 +4157,6 @@ UPDATE vars SET value = 'T_2_5_0_131' WHERE name = 'cvs_tag_currentcode';
 # PUDGE LAST UPDATED HERE
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+# SLASHDOT LAST UPDATED HERE
 

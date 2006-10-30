@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.326 2006/10/30 15:07:19 jamiemccarthy Exp $
+# $Id: users.pl,v 1.327 2006/10/30 20:23:41 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2370,7 +2370,7 @@ sub saveUserAdmin {
 	}
 
 	if (!$user_edit->{nonuid}) {
-		if ($form->{expired} eq 'on') {
+		if ($form->{expired} && $form->{expired} eq 'on') {
 #			$slashdb->setExpired($user_edit->{uid});
 
 		} else {

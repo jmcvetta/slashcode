@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.928 2006/10/26 17:33:00 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.929 2006/10/31 19:18:36 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.928 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.929 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11673,6 +11673,7 @@ sub addGlobjEssentialsToHashrefArray {
 	$self->_addGlobjEssentials_urls($ar, \%data);
 	$self->_addGlobjEssentials_submissions($ar, \%data);
 	$self->_addGlobjEssentials_journals($ar, \%data);
+	$self->_addGlobjEssentials_comments($ar, \%data);
 
 #use Data::Dumper; print STDERR "data: " . Dumper(\%data);
 
@@ -11681,6 +11682,7 @@ sub addGlobjEssentialsToHashrefArray {
 
 	for my $object (@$ar) {
 		my $globjid = $object->{globjid};
+		next unless exists $data{$globjid};
 		$object->{url} = $data{$globjid}{url};
 		$object->{title} = $data{$globjid}{title};
 		$object->{created_at} = $data{$globjid}{created_at};
@@ -11774,6 +11776,11 @@ sub _addGlobjEssentials_journals {
 		$data_hr->{$globjid}{title} = $journaldata_hr->{subj};
 		$data_hr->{$globjid}{created_at} = $journaldata_hr->{time};
 	}
+}
+
+sub _addGlobjEssentials_comments {
+	my($self, $ar, $data_hr) = @_;
+	# not implemented yet (no need, yet, since all tags on comments are private)
 }
 
 sub getActiveAdminCount {

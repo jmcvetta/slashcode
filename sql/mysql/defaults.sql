@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.311 2006/10/26 17:33:06 jamiemccarthy Exp $
+# $Id: defaults.sql,v 1.312 2006/10/31 19:14:56 jamiemccarthy Exp $
 #
 
 #
@@ -213,6 +213,7 @@ INSERT INTO globj_types VALUES (NULL, 'stories');
 INSERT INTO globj_types VALUES (NULL, 'urls');
 INSERT INTO globj_types VALUES (NULL, 'submissions');
 INSERT INTO globj_types VALUES (NULL, 'journals');
+INSERT INTO globj_types VALUES (NULL, 'comments');
 
 
 #

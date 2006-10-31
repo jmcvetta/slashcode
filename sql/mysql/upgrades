@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1078 2006/10/30 20:23:41 pudge Exp $
+# $Id: upgrades,v 1.1079 2006/10/31 19:14:56 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4159,4 +4159,6 @@ UPDATE vars SET value = 'T_2_5_0_131' WHERE name = 'cvs_tag_currentcode';
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+INSERT INTO globj_types VALUES (NULL, 'comments');
 

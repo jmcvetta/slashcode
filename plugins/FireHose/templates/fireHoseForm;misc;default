@@ -14,7 +14,7 @@ __seclev__
 10000
 __template__
 [% PROCESS formatHoseIntro introtext = item.introtext; %]
-				[% IF user.is_admin %]
+				[% IF user.is_admin && !user.firehose_usermode %]
 				<input type="hidden" name="firstpreview" value="1">
 				[% IF item.type == "submission" && item.srcid %]
 					<input type="hidden" name="subid" value="[% item.srcid %]">
@@ -31,4 +31,4 @@ __template__
 				<img src="[% constants.imagedir %]/sic_edit.png" onclick="firehose_get_and_post('[% item.id %]')">
 				[% END %]
 __version__
-$Id: fireHoseForm;misc;default,v 1.4 2006/09/06 19:28:16 tvroom Exp $
+$Id: fireHoseForm;misc;default,v 1.5 2006/10/31 17:05:38 tvroom Exp $

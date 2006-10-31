@@ -1,9 +1,8 @@
 #
-# $Id: mysql_schema.sql,v 1.1 2006/10/25 21:48:30 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.2 2006/10/31 19:12:44 jamiemccarthy Exp $
 #
 
-DROP TABLE IF EXISTS moderatorlog;
-CREATE TABLE moderatorlog (
+CREATE TABLE IF NOT EXISTS moderatorlog (
 	id int UNSIGNED NOT NULL auto_increment,
 	ipid char(32) DEFAULT '' NOT NULL,
 	subnetid char(32) DEFAULT '' NOT NULL,
@@ -28,8 +27,7 @@ CREATE TABLE moderatorlog (
 	KEY ts_uid_sid (ts,uid,sid)
 ) TYPE=InnoDB;
 
-DROP TABLE IF EXISTS modreasons;
-CREATE TABLE modreasons (
+CREATE TABLE IF NOT EXISTS modreasons (
 	id tinyint UNSIGNED NOT NULL,
 	name char(32) DEFAULT '' NOT NULL,
 	m2able tinyint DEFAULT '1' NOT NULL,

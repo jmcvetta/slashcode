@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.47 2006/10/30 15:34:43 tvroom Exp $
+# $Id: FireHose.pm,v 1.48 2006/10/31 17:42:47 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -913,7 +913,11 @@ sub getAndSetOptions {
 
 	if ($form->{orderby}) {
 		if ($form->{orderby} eq "popularity") {
-			$options->{orderby} = "popularity";
+			if ($user->{is_admin} && !$user->{firehose_usermode}) {
+				$options->{orderby} = "editorpop";
+			} else {
+				$options->{orderby} = "popularity";
+			}
 		} else {
 			$options->{orderby} = "createtime";
 		}
@@ -1069,4 +1073,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.47 2006/10/30 15:34:43 tvroom Exp $
+$Id: FireHose.pm,v 1.48 2006/10/31 17:42:47 tvroom Exp $

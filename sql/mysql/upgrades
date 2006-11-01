@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1079 2006/10/31 19:14:56 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1080 2006/11/01 16:29:22 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4149,6 +4149,7 @@ INSERT IGNORE INTO vars (name, value, description) VALUES ('m1', '1', 'Allows us
 INSERT INTO site_info (name, value, description) VALUES ('plugin', 'Moderation', 'Moderation (Classic)');
 INSERT INTO vars (name, value, description) VALUES ('m1_pluginname', 'Moderation', 'Which moderation plugin to use');
 
+# for Ajax plugin
 INSERT IGNORE INTO ajax_ops VALUES (NULL, 'comments_moderate_cid', 'Slash::Moderation', 'ajaxModerateCid', 'comments-moderation-ajax', 'use');
 
 # 2006-10-25
@@ -4161,4 +4162,7 @@ UPDATE vars SET value = 'T_2_5_0_131' WHERE name = 'cvs_tag_currentcode';
 # SLASHDOT LAST UPDATED HERE
 
 INSERT INTO globj_types VALUES (NULL, 'comments');
+
+# for FireHose plugin
+ALTER TABLE firehose ADD INDEX editorpop (editorpop);
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.49 2006/10/31 19:14:27 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.50 2006/11/02 16:38:43 scc Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -207,6 +207,12 @@ sub createTag {
 	$self->sqlDo('SET AUTOCOMMIT=1');
 
 	return $rows ? $tagid : 0;
+}
+
+sub ajaxCreateTag {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $tags = getObject('Slash::Tags');
+        $tags->createTag($form);
 }
 
 sub deactivateTag {
@@ -743,9 +749,7 @@ sub getExampleTagsForStory {
 	my $constants = getCurrentStatic();
 	my $cur_time = $slashdb->getTime();
 	my @examples = split / /,
-		($cur_time lt $story->{time})
-		? $constants->{tags_stories_examples_pre}
-		: $constants->{tags_stories_examples};
+		       $constants->{tags_stories_examples};
 	my $chosen_ar = $self->getTopiclistForStory($story->{stoid});
 	$#$chosen_ar = 3 if $#$chosen_ar > 3; # XXX should be a var
 	my $tree = $self->getTopicTree();

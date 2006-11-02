@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.55 2006/10/26 18:39:23 tvroom Exp $
+// $Id: common.js,v 1.56 2006/11/02 16:44:58 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -257,6 +257,15 @@ function attachCompleter( obj, id, is_admin, type, tagDomain ) {
 function reportError(request) {
 	// replace with something else
 	alert("error");
+}
+
+function createTag(tag, id, table) {
+	var params = [];
+	params['op'] = 'tags_create_tag';
+	params['name'] = tag;
+	params['id'] = id;
+	params['table'] = table;
+	ajax_update(params, '');
 }
 
 function tagsCreateForStory(id) {

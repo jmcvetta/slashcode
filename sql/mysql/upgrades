@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1080 2006/11/01 16:29:22 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1081 2006/11/02 16:41:29 scc Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4166,3 +4166,5 @@ INSERT INTO globj_types VALUES (NULL, 'comments');
 # for FireHose plugin
 ALTER TABLE firehose ADD INDEX editorpop (editorpop);
 
+# 2006-11-02
+INSERT INTO ajax_ops VALUES (NULL, 'tags_create_tag', 'Slash::Tags', 'ajaxCreateTag', 'ajax_user', 'createuse');

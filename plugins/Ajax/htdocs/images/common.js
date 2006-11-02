@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.56 2006/11/02 16:44:58 scc Exp $
+// $Id: common.js,v 1.57 2006/11/02 17:26:39 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -259,12 +259,12 @@ function reportError(request) {
 	alert("error");
 }
 
-function createTag(tag, id, table) {
+function createTag(tag, id, type) {
 	var params = [];
 	params['op'] = 'tags_create_tag';
 	params['name'] = tag;
 	params['id'] = id;
-	params['table'] = table;
+	params['type'] = type;
 	ajax_update(params, '');
 }
 

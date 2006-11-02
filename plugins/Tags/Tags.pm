@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.50 2006/11/02 16:38:43 scc Exp $
+# $Id: Tags.pm,v 1.51 2006/11/02 17:26:39 scc Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -212,7 +212,20 @@ sub createTag {
 sub ajaxCreateTag {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $tags = getObject('Slash::Tags');
-        $tags->createTag($form);
+
+	my $hr = { uid =>	$user->{uid},
+	 	   name =>	$form->{name} };
+
+	if ( $form->{type} eq 'firehose' ) {
+		my $firehose = getObject("Slash::FireHose");
+		my $item = $firehose->getFireHose($form->{id});
+		$hr['globjid'] = $item->{globjid};
+	} else {
+		$hr['id'] = $form->{id};
+		$hr['table'] = $form->{type};
+	}
+
+        $tags->createTag($hr);
 }
 
 sub deactivateTag {

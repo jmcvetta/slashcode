@@ -24,6 +24,9 @@ hose@cmdrtaco.net and be forgiving of beta code!
 <p>
 [% END %]
 [% PROCESS titlebar title="Firehose Beta <span style='font-size:60%'>(Last Refreshed <span id='local_last_update_time'>$theupdatetime</span> Currently <span id='pauseorplay'></span>)</span>" %]
+<script type="text/javascript">
+[% reskey = Slash.getObject('Slash::ResKey'); key = reskey.key('ajax_user_static', { nostate => 1 }); IF rkey.create; -%]ajax_user_static = '[% rkey.reskey %]';[% END %]
+</script>
 <div id="ac-select-widget" class="hidden">
   <input type="text" id="ac-select-input" />
   <div class="completer-container" id="ac-choices"></div>
@@ -93,4 +96,4 @@ hose@cmdrtaco.net and be forgiving of beta code!
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.33 2006/10/31 17:05:38 tvroom Exp $
+$Id: list;firehose;default,v 1.34 2006/11/02 19:43:47 scc Exp $

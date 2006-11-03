@@ -67,7 +67,7 @@ __template__
 </div>
 </div>
 <p>
-Firehose is a collaberative system designed to allow users to assist
+Firehose is a collaborative system designed to allow users to assist
 the Slashdot editors in the story selection process.  Try tagging and
 voting on the entries below.  The hose can contain submissions, RSS
 Feeds, bookmarks, and journal entries.   Please send your feedback to
@@ -97,4 +97,4 @@ hose@cmdrtaco.net and be forgiving of beta code!
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.35 2006/11/02 22:09:38 tvroom Exp $
+$Id: list;firehose;default,v 1.36 2006/11/03 15:40:58 jamiemccarthy Exp $

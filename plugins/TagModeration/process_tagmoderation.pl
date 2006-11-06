@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: process_tagmoderation.pl,v 1.1 2006/10/31 19:06:06 jamiemccarthy Exp $
+# $Id: process_tagmoderation.pl,v 1.2 2006/11/06 17:04:43 jamiemccarthy Exp $
 
 use strict;
 use Slash::Utility;
@@ -37,7 +37,7 @@ sub moderatordLog {
 
 sub give_out_points {
 	my $constants = getCurrentStatic();
-	my $tagmoddb = getCurrentDB('Slash::TagModeration');
+	my $tagmoddb = getObject('Slash::TagModeration');
 
 	moderatordLog(getData('moderatord_log_header'));
 
@@ -106,7 +106,7 @@ sub get_num_new_comments {
 sub give_out_tokens {
 	my($comments) = @_;
 	my $constants = getCurrentStatic();
-	my $tagmoddb = getCurrentDB('Slash::TagModeration');
+	my $tagmoddb = getObject('Slash::TagModeration');
 	my $mod_reader = getObject('Slash::TagModeration', { db_type => 'reader' });
 	my $log_reader = getObject('Slash::DB', { db_type => 'log_slave' });
 	my $statsSave = getObject('Slash::Stats::Writer', '');

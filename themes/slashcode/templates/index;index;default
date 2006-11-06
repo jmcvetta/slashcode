@@ -20,10 +20,7 @@ en_US
 __name__
 index
 __template__
-<div id="ac-select-widget" class="hidden">
-  <input type="text" id="ac-select-input" />
-  <div class="completer-container" id="ac-choices"></div>
-</div>
+	[% PROCESS autocomplete %]
 	<a name="blocks"></a>
 	<div id="slashboxes">
 	[% UNLESS user.noboxes %]
@@ -40,4 +37,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: index;index;default,v 1.28 2006/11/02 21:31:08 scc Exp $
+$Id: index;index;default,v 1.29 2006/11/06 21:16:17 scc Exp $

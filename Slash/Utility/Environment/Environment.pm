@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.203 2006/10/26 17:33:01 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.204 2006/11/07 19:32:15 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2499,6 +2499,17 @@ sub getOpAndDatFromStatusAndURI {
 		$uri = 'rss';
 	} elsif ($uri =~ /\.pl$/) {
 		$uri =~ s|^/(.*)\.pl$|$1|;
+		if ($uri eq "ajax") {
+			my $form = getCurrentForm();
+			if ($form && $form->{op}) {
+				my $reader = getObject('Slash::DB', { db_type => 'reader' });
+				my $class = $reader->getClassForAjaxOp($form->{op});
+				$class =~s/^Slash:://g;
+				$class =~s/::/_/g;
+				$class =~ tr/A-Z/a-z/;
+				$uri = "ajax_$class" if $class;
+			}
+		}
 	# This is for me, I am getting tired of patching my local copy -Brian
 	} elsif ($uri =~ /\.tar\.gz$/) {
 		$uri =~ s|^/(.*)\.tar\.gz$|$1|;
@@ -2529,7 +2540,7 @@ sub getOpAndDatFromStatusAndURI {
 	# basis.  --vroom 2004/01/27
 	} elsif ($uri =~ m|^/([^/]*)/([^/]*/)+$|) {
 		$uri = $1;
-	}
+	} 
 	($uri, $dat);
 }
 
@@ -3411,4 +3422,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.203 2006/10/26 17:33:01 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.204 2006/11/07 19:32:15 tvroom Exp $

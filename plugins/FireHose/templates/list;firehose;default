@@ -21,7 +21,7 @@ __template__
 	<form action="[% gSkin.rootdir %]/firehose.pl" method="get">
 		<fieldset>
 			<legend>Firehose</legend>
-			<label><input type="text" name="fhfilter" value="[% options.fhfilter | strip_attribute %]" size="40" autocomplete="off" onfocus="attachCompleter(this,'[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose-filter', 0)"></label>
+			<label><input type="text" class="slashdot-tag-completer" name="fhfilter" value="[% options.fhfilter | strip_attribute %]" size="40" autocomplete="off" onfocus="attachCompleter(this,'[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose-filter', 0)"></label>
 			<!-- <br><label>Order&nbsp;[% Slash.createSelect('order', { 'createtimedesc' => 'Time Desc', popularitydesc => 'Popularity Desc', 'createtimeasc' => 'Time Asc', 'popularityasc' => 'Popularity Asc' }, options.order, 1, 0, 1) %]</label> 
 			<label>Mode&nbsp;[% Slash.createSelect('mode', { 'full' => 'Full', fulltitle => 'Abbreviated' }, options.mode, 1, 0, 1) %]
 </label> -->
@@ -91,4 +91,4 @@ hose@cmdrtaco.net and be forgiving of beta code!
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.40 2006/11/06 21:16:16 scc Exp $
+$Id: list;firehose;default,v 1.41 2006/11/07 14:58:33 scc Exp $

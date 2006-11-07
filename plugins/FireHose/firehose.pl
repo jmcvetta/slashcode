@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.15 2006/10/24 22:38:53 tvroom Exp $
+# $Id: firehose.pl,v 1.16 2006/11/07 19:21:30 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -54,6 +54,8 @@ sub list {
 	my $firehose = getObject("Slash::FireHose");
 	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
 	my $options = $firehose->getAndSetOptions();
+	use Data::Dumper;
+	print STDERR Dumper($options);
 
 	my($items, $results) = $firehose_reader->getFireHoseEssentials($options);
 
@@ -67,6 +69,7 @@ sub list {
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
 		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });
 	}
+	print STDERR "FHITEMS " . scalar @$items . "\n";
 	my $refresh_options;
 	if ($options->{orderby} eq "createtime" || $options->{orderby} eq "popularity") {
 		$refresh_options->{maxtime} = $maxtime;

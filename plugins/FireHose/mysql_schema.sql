@@ -1,11 +1,12 @@
 #
-# $Id: mysql_schema.sql,v 1.12 2006/10/25 21:11:55 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.13 2006/11/07 19:21:30 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
 	id mediumint(8) unsigned NOT NULL auto_increment,
 	uid mediumint(8) unsigned NOT NULL default '0',
 	globjid mediumint(8) unsigned NOT NULL default '0',
+	discussion mediumint UNSIGNED NOT NULL default '0',
 	type ENUM("submission","journal","bookmark","feed", "story") default 'submission',
 	createtime datetime NOT NULL default '0000-00-00 00:00:00',
 	title varchar(80) NOT NULL default '',

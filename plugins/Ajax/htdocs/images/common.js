@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.58 2006/11/02 19:43:47 scc Exp $
+// $Id: common.js,v 1.59 2006/11/07 14:55:13 scc Exp $
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -242,6 +242,10 @@ function tagsOpenAndEnter(id, tagname, is_admin, type) {
 }
 
 function attachCompleter( obj, id, is_admin, type, tagDomain ) {
+	var disable = YAHOO.util.Dom.getStyle(obj, '-slashdot-disable-tag-completer');
+	if ( disable == "true" )
+		return false;
+
 	var callbackParams = new Object();
 	callbackParams._id = id;
 	callbackParams._is_admin = is_admin;

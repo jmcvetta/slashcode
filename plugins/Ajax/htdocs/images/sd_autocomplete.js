@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.19 2006/11/07 14:56:36 scc Exp $
+// $Id: sd_autocomplete.js,v 1.20 2006/11/07 17:52:10 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -252,8 +252,6 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._newCompleter = function( tagDomain 
       {
         c = new YAHOO.widget.AutoComplete("ac-select-input", "ac-choices", YAHOO.slashdot.dataSources[tagDomain]);
 
-        c.minQueryLength = 3;
-
           // hack? -- override YUI's private member function so that for top tags auto-complete, right arrow means select
         c._jumpSelection = function() { if ( this._oCurItem ) this._selectItem(this._oCurItem); };
       }
@@ -261,6 +259,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._newCompleter = function( tagDomain 
       {
         c = new YAHOO.widget.AutoComplete(this._sourceEl, "ac-choices", YAHOO.slashdot.dataSources[tagDomain]);
         c.delimChar = " ";
+        c.minQueryLength = 3;
       }
     c.typeAhead = true;
     c.forceSelection = false;

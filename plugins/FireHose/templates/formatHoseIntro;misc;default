@@ -30,8 +30,11 @@ IF item.type == "submission";
 	END;
 
 END;
+IF item.url_id && url.url;
+	introtext = introtext _ "<a href='" _ url.url _ "'>" _ url.initialtitle _ "</a>";
+END;
 
 %]
 
 __version__
-$Id: formatHoseIntro;misc;default,v 1.3 2006/10/26 04:41:34 tvroom Exp $
+$Id: formatHoseIntro;misc;default,v 1.4 2006/11/07 19:16:52 tvroom Exp $

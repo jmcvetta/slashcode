@@ -18,8 +18,8 @@ __template__
 	[% IF !hidediv %]
 	<div class="details" id="details-[% item.id %]">
 	[% END %]
-	[%- IF adminmode && item.type == "submission" %]<a href="[% gSkin.rootdir %]/submit.pl?op=viewsub&amp;subid=[% item.srcid %]">[% END -%]
 	<b>
+	[%- IF adminmode && item.type == "submission" %]<a href="[% gSkin.rootdir %]/submit.pl?op=viewsub&amp;subid=[% item.srcid %]">[% END -%]
 	[% IF item.type == "submission" %]
 		Submitted
 	[% ELSIF item.type == "journal" %]
@@ -74,4 +74,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.9 2006/10/26 16:41:16 pudge Exp $
+$Id: data;firehose;default,v 1.10 2006/11/07 19:16:52 tvroom Exp $

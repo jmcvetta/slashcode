@@ -74,8 +74,6 @@ hose@cmdrtaco.net and be forgiving of beta code!
 [% PROCESS paginate %]
 <script type="text/javascript">
 	var firehose_action_time = 0;
-	var play = 0;
-	var is_timed_out = 0;
 	var page = '[% page %]';
 	var updateIntervalType = [% IF user.is_admin && !user.firehose_usermode %]1[% ELSE %]2[% END %];
 	var inactivity_timeout = [% IF user.is_admin && !user.firehose_usermode %]10800[% ELSE %]3600[% END %];
@@ -86,9 +84,9 @@ hose@cmdrtaco.net and be forgiving of beta code!
 	var maxtime = '[% refresh_options.maxtime %]';
 	var insert_new_at = '[% refresh_options.insert_new_at %]';
 	firehose_play();
-	setTimeout("firehose_get_updates()", 60000);
+	setTimeout("firehose_get_updates()", 15000);
 [% END %]
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.41 2006/11/07 14:58:33 scc Exp $
+$Id: list;firehose;default,v 1.42 2006/11/07 19:16:52 tvroom Exp $

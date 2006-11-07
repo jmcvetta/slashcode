@@ -115,6 +115,12 @@ END %]
 				Coming soon - Read More & Discuss...
 			[% END %]
 			</li>
+			[% IF item.discussion;
+			   disc = Slash.db.getDiscussion(item.discussion); %]
+			<li>
+				<a href="[% gSkin.rootdir %]/comments.pl?sid=[% item.discussion %]">[% disc.commentcount %]</a> comment[% IF disc.commentcount == 1 %]s[% END %]
+			</li>
+			[% END %]
 		</ul>
 	</div>
 </div>
@@ -122,4 +128,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.29 2006/11/06 21:16:16 scc Exp $
+$Id: dispFireHose;firehose;default,v 1.30 2006/11/07 19:16:52 tvroom Exp $

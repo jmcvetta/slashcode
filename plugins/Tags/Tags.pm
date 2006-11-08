@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.53 2006/11/07 18:20:54 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.54 2006/11/08 02:06:32 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1123,12 +1123,12 @@ sub ajaxListTagnames {
 	my @priority =
 		grep { substr($_, 0, $len) eq $prefix }
 		split / /,
-		$constants->{tags_autocomplete_priority};
+		$constants->{tags_prefixlist_priority};
 	for my $priname (@priority) {
 		# Don't reduce a tagname's value if it already exceeds the
 		# hardcoded score value.
-		next if $tnhr->{$priname} && $tnhr->{$priname} > $constants->{tags_autocomplete_priority_score};
-		$tnhr->{$priname} = $constants->{tags_autocomplete_priority_score};
+		next if $tnhr->{$priname} && $tnhr->{$priname} > $constants->{tags_prefixlist_priority_score};
+		$tnhr->{$priname} = $constants->{tags_prefixlist_priority_score};
 	}
 
 	my $ret_str = '';

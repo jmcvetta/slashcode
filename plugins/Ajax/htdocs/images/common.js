@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.60 2006/11/07 19:19:14 tvroom Exp $
+// $Id: common.js,v 1.61 2006/11/08 00:15:37 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -617,7 +617,7 @@ function firehose_play() {
 }
 
 function firehose_pause() {
-	play = 0;
+	fh_play = 0;
 	var pause = $('pause');
 	var play_div = $('play');
 	pause.className = "hide";

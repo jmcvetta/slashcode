@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.930 2006/11/07 19:32:59 tvroom Exp $
+# $Id: MySQL.pm,v 1.931 2006/11/08 20:34:52 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.930 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.931 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11977,7 +11977,7 @@ sub addUrlForGlobj {
 }
 
 sub getClassForAjaxOp {
-	my ($self, $op) = @_;
+	my($self, $op) = @_;
 	my $op_q = $self->sqlQuote($op);
 	return $self->sqlSelect("class", "ajax_ops", "op=$op_q");
 }

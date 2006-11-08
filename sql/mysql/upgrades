@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1087 2006/11/08 00:07:09 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1088 2006/11/08 20:34:52 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4210,4 +4210,7 @@ UPDATE firehose, journals SET firehose.discussion = journals.discussion WHERE fi
 # for Tags plugin
 INSERT INTO vars (name, value, description) VALUES ('tags_prefixlist_priority', 'back bookmark feed hold journal none quik submission story', 'Tagnames to give priority to on autocomplete');
 INSERT INTO vars (name, value, description) VALUES ('tags_prefixlist_priority_score', '999', 'Fake score to give any tagnames from tags_autocomplete_priority which may match a prefix');
+
+# 2006-11-08
+UPDATE vars SET value = 'T_2_5_0_133' WHERE name = 'cvs_tag_currentcode';
 

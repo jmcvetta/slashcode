@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.16 2006/11/07 19:21:30 tvroom Exp $
+# $Id: firehose.pl,v 1.17 2006/11/09 03:40:57 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -71,7 +71,7 @@ sub list {
 	}
 	print STDERR "FHITEMS " . scalar @$items . "\n";
 	my $refresh_options;
-	if ($options->{orderby} eq "createtime" || $options->{orderby} eq "popularity") {
+	if ($options->{orderby} eq "createtime" || $options->{orderby} eq "popularity" || $options->{orderby} eq "editorpop") {
 		$refresh_options->{maxtime} = $maxtime;
 		if (uc($options->{orderdir}) eq "ASC") {
 			$refresh_options->{insert_new_at} = "bottom";

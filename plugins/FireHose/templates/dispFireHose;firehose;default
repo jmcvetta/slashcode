@@ -118,7 +118,7 @@ END %]
 			[% IF item.discussion;
 			   disc = Slash.db.getDiscussion(item.discussion); %]
 			<li>
-				<a href="[% gSkin.rootdir %]/comments.pl?sid=[% item.discussion %]">[% disc.commentcount %]</a> comment[% IF disc.commentcount == 1 %]s[% END %]
+				<a href="[% gSkin.rootdir %]/comments.pl?sid=[% item.discussion %]">[% disc.commentcount %]</a> comment[% IF disc.commentcount != 1 %]s[% END %]
 			</li>
 			[% END %]
 		</ul>
@@ -128,4 +128,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.30 2006/11/07 19:16:52 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.31 2006/11/09 14:52:19 tvroom Exp $

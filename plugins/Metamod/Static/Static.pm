@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Static.pm,v 1.2 2006/09/03 21:01:46 jamiemccarthy Exp $
+# $Id: Static.pm,v 1.3 2006/11/10 16:08:12 jamiemccarthy Exp $
 
 package Slash::Metamod::Static;
 
@@ -13,7 +13,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -79,8 +79,10 @@ sub getModResolutionSummaryForUser {
 	my $limit_str = "";
 	$limit_str = "LIMIT $limit" if $limit;
 	my($fair, $unfair, $fairvotes, $unfairvotes) = (0,0,0,0);
-	
-	my $reasons = $self->getReasons();
+
+	my $constants = getCurrentStatic();
+	my $moddb = getObject("Slash::$constants->{m1_pluginname}");
+	my $reasons = $moddb->getReasons();
 	my @reasons_m2able = grep { $reasons->{$_}{m2able} } keys %$reasons;
 	my $reasons_m2able = join(",", @reasons_m2able);
 	

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.931 2006/11/08 20:34:52 pudge Exp $
+# $Id: MySQL.pm,v 1.932 2006/11/10 17:35:06 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.931 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.932 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3855,7 +3855,7 @@ sub resetFormkey {
 
 	my $update_ref = {
 		-value          => 0,
-		-idcount        => 'idcount-1',
+		-idcount        => 'GREATEST(0, idcount-1)',
 # Since the beginning, ts has been updated here whenever a formkey needs to
 # be reset.  As far as I can tell, this serves no purpose except to reset
 # the 20-second clock before a comment can be posted after a failed attempt
@@ -3869,10 +3869,8 @@ sub resetFormkey {
 	$update_ref->{formname} = $formname if $formname;
 
 	# reset the formkey to 0, and reset the ts
-	my $updated = $self->sqlUpdate("formkeys",
-		$update_ref,
-		"formkey=" . $self->sqlQuote($formkey)
-	);
+	my $formkey_q = $self->sqlQuote($formkey);
+	my $updated = $self->sqlUpdate("formkeys", $update_ref, "formkey=$formkey_q");
 
 	print STDERR "RESET formkey $updated\n" if $constants->{DEBUG};
 	return $updated;

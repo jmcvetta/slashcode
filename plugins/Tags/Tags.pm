@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.54 2006/11/08 02:06:32 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.55 2006/11/11 16:03:29 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1377,12 +1377,9 @@ sub listTagnamesActive {
 			{ ($_, $tagname_clout{$_}/$max_clout - $tagname_mediansqrtsecsago{$_}/$max_sqrtsecs) }
 			@tagnames
 		);
-#use Data::Dumper; print STDERR Dumper(\%tagname_sum);
 	@tagnames = sort { $tagname_sum{$b} <=> $tagname_sum{$a} || $a cmp $b } @tagnames;
 
 	$#tagnames = $max_num-1 if $#tagnames >= $max_num;
-
-#print STDERR "tagnames='@tagnames'\n";
 
 	return \@tagnames;
 }

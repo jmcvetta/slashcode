@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.248 2006/11/11 19:25:20 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.249 2006/11/11 19:30:32 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.248 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.249 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1514,7 +1514,7 @@ sub createRSS {
 		bid			=> $bid,
 	};
 use Data::Dumper; $Data::Dumper::Sortkeys = 1; print STDERR "createRSS $bid: " . Dumper($data_hr);
-	$self->sqlInsert('rss_raw', $data_hr }, { ignore => 1 });
+	$self->sqlInsert('rss_raw', $data_hr, { ignore => 1 });
 }
 
 sub getRSSNotProcessed {

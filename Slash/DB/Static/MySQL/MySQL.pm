@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.247 2006/10/26 17:33:01 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.248 2006/11/11 19:25:20 jamiemccarthy Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -19,7 +19,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.247 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.248 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1503,19 +1503,18 @@ sub createRSS {
 	$item->{'link'} =~ /^(.*)$/;
 	my $link = $1;
 
-	$self->sqlInsert('rss_raw', {
-# 		link_signature		=> md5_hex($item->{'link'}),
-# 		title_signature		=> md5_hex($item->{'title'}),
-# 		description_signature	=> md5_hex($item->{'description'}),
+	my $data_hr = {
 		link_signature		=> md5_hex($link),
 		title_signature		=> md5_hex($title),
 		description_signature	=> md5_hex($description),
 		'link'			=> $item->{'link'},
 		title			=> $item->{'title'},
 		description		=> $item->{'description'},
-		-created		=> 'now()',
-		bid => $bid,
-	}, { ignore => 1});
+		-created		=> 'NOW()',
+		bid			=> $bid,
+	};
+use Data::Dumper; $Data::Dumper::Sortkeys = 1; print STDERR "createRSS $bid: " . Dumper($data_hr);
+	$self->sqlInsert('rss_raw', $data_hr }, { ignore => 1 });
 }
 
 sub getRSSNotProcessed {

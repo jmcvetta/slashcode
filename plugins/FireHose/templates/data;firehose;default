@@ -34,7 +34,7 @@ __template__
 		Submitted
 	[% END %]
 	[%- IF adminmode && item.type == "submission" %]</a>[% END -%]
-	by [% IF adminmode; %]
+	by [% IF adminmode && item.type != "story" %]
 		[% the_user.nickname | strip_literal %]
 		(<a href="[% gSkin.rootdir %]/users.pl?uid=[% the_user.uid %]">[% the_user.uid %]</a>)
 	[% END %]
@@ -74,4 +74,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.10 2006/11/07 19:16:52 tvroom Exp $
+$Id: data;firehose;default,v 1.11 2006/11/14 17:59:52 tvroom Exp $

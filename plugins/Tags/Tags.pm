@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.55 2006/11/11 16:03:29 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.56 2006/11/14 17:38:09 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1115,8 +1115,9 @@ sub ajaxListTagnames {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
 	my $prefix = '';
-	$prefix = lc($1) if $form->{prefix} =~ /([A-Za-z]+)/;
+	$prefix = lc($1) if $form->{prefix} =~ /([A-Za-z0-9]{1,20})/;
 	my $len = length($prefix);
+	my $notize = $form->{prefix} =~ /^!/ ? '!' : '';
 
 	my $tnhr = $tags_reader->listTagnamesByPrefix($prefix);
 
@@ -1133,7 +1134,7 @@ sub ajaxListTagnames {
 
 	my $ret_str = '';
 	for my $tagname (sort { $tnhr->{$b} <=> $tnhr->{$a} } keys %$tnhr) {
-		$ret_str .= sprintf("%s\t%d\n", $tagname, $tnhr->{$tagname});
+		$ret_str .= sprintf("%s%s\t%d\n", $notize, $tagname, $tnhr->{$tagname});
 	}
 #print STDERR scalar(localtime) . " ajaxListTagnames uid=$user->{uid} prefix='$prefix' ret_str: $ret_str";
 	return $ret_str;

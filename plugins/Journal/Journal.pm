@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Journal.pm,v 1.64 2006/08/21 22:34:39 pudge Exp $
+# $Id: Journal.pm,v 1.65 2006/11/14 18:10:27 tvroom Exp $
 
 package Slash::Journal;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -61,10 +61,8 @@ sub set {
 	$self->sqlUpdate('journals_text', \%j2, "id=$id") if $j2{article};
 	if ($constants->{plugin}{FireHose}) {
 		my $journal_item = $self->get($id);
-		if ($journal_item->{submit} eq "yes") {
-			my $firehose = getObject("Slash::FireHose");
-			$firehose->createUpdateItemFromJournal($id);
-		}
+		my $firehose = getObject("Slash::FireHose");
+		$firehose->createUpdateItemFromJournal($id);
 	}
 }
 
@@ -211,10 +209,8 @@ sub create {
 	my $slashdb = getCurrentDB();
 	$slashdb->setUser($uid, { journal_last_entry_date => $date });
 	if ($constants->{plugin}{FireHose}) {
-		if ($submit eq "yes") {
-			my $firehose = getObject("Slash::FireHose");
-			$firehose->createItemFromJournal($id);
-		}
+		my $firehose = getObject("Slash::FireHose");
+		$firehose->createItemFromJournal($id);
 	}
 
 

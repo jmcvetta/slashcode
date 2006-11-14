@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.253 2006/10/26 17:33:07 jamiemccarthy Exp $
+# $Id: comments.pl,v 1.254 2006/11/14 20:24:46 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1127,6 +1127,16 @@ sub submitComment {
 	}
 
 	my $maxCid = $slashdb->createComment($clean_comment);
+	if($constants->{comment_karma_disable_and_log}) {
+		my $post_str = "";
+		$post_str .= "NO_ANON " if $user->{state}{commentkarma_no_anon};
+		$post_str .= "NO_POST " if $user->{state}{commentkarma_no_post};
+		if ($posters_uid == $constants->{anonymous_coward_uid} && $user->{state}{commentkarma_no_anon}) {
+			print STDERR "COMMENTKARMA ANON: $post_str $constants->{real_rootdir}/comments.pl?sid=$clean_comment->{sid}&amp;cid=$maxCid\n";
+		} elsif ($posters_uid != $constants->{anonymous_coward_uid} && $user->{state}{commentkarma_no_post}) {
+			print STDERR "COMMENTKARMA USER: $post_str $constants->{real_rootdir}/comments.pl?sid=$clean_comment->{sid}&amp;cid=$maxCid\n";
+		}
+	}
 
 #print STDERR scalar(localtime) . " $$ G maxCid=$maxCid\n";
 

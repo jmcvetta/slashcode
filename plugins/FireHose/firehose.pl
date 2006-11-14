@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.17 2006/11/09 03:40:57 tvroom Exp $
+# $Id: firehose.pl,v 1.18 2006/11/14 18:04:53 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.17 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -52,41 +52,7 @@ sub main {
 sub list {
 	my($slashdb, $constants, $user, $form, $gSkin) = @_;
 	my $firehose = getObject("Slash::FireHose");
-	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
-	my $options = $firehose->getAndSetOptions();
-	use Data::Dumper;
-	print STDERR Dumper($options);
-
-	my($items, $results) = $firehose_reader->getFireHoseEssentials($options);
-
-	my $itemstext;
-	my $maxtime = $firehose->getTime();
-	my $now = $slashdb->getTime();
-	
-	foreach (@$items) {
-		$maxtime = $_->{createtime} if $_->{createtime} gt $maxtime && $_->{createtime} lt $now;
-		my $item =  $firehose_reader->getFireHose($_->{id});
-		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
-		$itemstext .= $firehose->dispFireHose($item, { mode => $options->{mode} , tags_top => $tags_top, options => $options });
-	}
-	print STDERR "FHITEMS " . scalar @$items . "\n";
-	my $refresh_options;
-	if ($options->{orderby} eq "createtime" || $options->{orderby} eq "popularity" || $options->{orderby} eq "editorpop") {
-		$refresh_options->{maxtime} = $maxtime;
-		if (uc($options->{orderdir}) eq "ASC") {
-			$refresh_options->{insert_new_at} = "bottom";
-		} else {
-			$refresh_options->{insert_new_at} = "top";
-		}
-	} 
-
-	slashDisplay("list", {
-		itemstext	=> $itemstext, 
-		page		=> $options->{page}, 
-		options		=> $options,
-		refresh_options	=> $refresh_options
-	});
-
+	print $firehose->listView();
 }
 
 sub view {
@@ -97,7 +63,10 @@ sub view {
 	my $item = $firehose_reader->getFireHose($form->{id});
 	if ($item && $item->{id} && ($item->{public} eq "yes" || $user->{is_admin}) ) {
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
-		print $firehose_reader->dispFireHose($item, { mode => "full", tags_top => $tags_top, options => $options });
+		my $firehosetext = $firehose_reader->dispFireHose($item, { mode => "full", tags_top => $tags_top, options => $options });
+		slashDisplay("view", {
+			firehosetext => $firehosetext
+		});
 	} else {
 		print getData('notavailable');
 	}

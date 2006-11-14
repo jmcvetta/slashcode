@@ -13,7 +13,6 @@ dispFireHose
 __seclev__
 10000
 __template__
-[% PROCESS autocomplete %]
 [% 
     mode = mode || "fulltitle";
     divwrapper = 1;
@@ -128,4 +127,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.31 2006/11/09 14:52:19 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.32 2006/11/14 17:59:10 tvroom Exp $

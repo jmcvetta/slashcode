@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.241 2006/11/10 16:09:22 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.242 2006/11/15 22:21:25 jamiemccarthy Exp $
 #
 
 #
@@ -489,7 +489,7 @@ CREATE TABLE formkeys (
 	formkey varchar(20) DEFAULT '' NOT NULL,
 	formname varchar(32) DEFAULT '' NOT NULL,
 	id varchar(30) DEFAULT '' NOT NULL,
-	idcount int UNSIGNED DEFAULT 0 NOT NULL,
+	idcount mediumint UNSIGNED DEFAULT 0 NOT NULL,
 	uid mediumint UNSIGNED NOT NULL,
 	ipid	char(32) DEFAULT '' NOT NULL,
 	subnetid	char(32) DEFAULT '' NOT NULL,

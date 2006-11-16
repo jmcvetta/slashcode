@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.28 2006/11/14 17:52:21 tvroom Exp $
+// $Id: admin.js,v 1.29 2006/11/16 17:22:46 pudge Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -231,7 +231,7 @@ function firehose_reject (el) {
 	if (fh) {
 		var attributes = { 
 			 height: { to: 0 },
-			 opacity: { to: 0},
+			 opacity: { to: 0 }
 		};
 		var myAnim = new YAHOO.util.Anim(fh, attributes); 
 		myAnim.duration = 0.5;

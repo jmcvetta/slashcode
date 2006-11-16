@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.62 2006/11/14 17:52:21 tvroom Exp $
+// $Id: common.js,v 1.63 2006/11/16 17:22:46 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -498,7 +498,7 @@ function firehose_handle_update() {
 
 			var attributes = { 
 				 opacity: { from: 0, to: 1 },
-				 height: { from: 0, to: toheight  },
+				 height: { from: 0, to: toheight }
 			};
 			var myAnim = new YAHOO.util.Anim(fh, attributes); 
 			myAnim.duration = 0.7;

@@ -40,7 +40,6 @@ __template__
 				<a href="#" onclick="return setFocusComment([% cid %],0,2)">Two</a>
 				<a href="#" onclick="return setFocusComment([% cid %],0,3)">Three</a>
 				<a href="#" onclick="return setFocusComment([% cid %],0,4)">Four</a>
-				<a href="#" onclick="return setFocusComment([% cid %],0,5)">Five</a>
 			]</span>[% END %]
 		</div>
 		<div class="details">
@@ -109,4 +108,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.54 2006/11/16 21:11:43 pudge Exp $
+$Id: dispComment;misc;default,v 1.55 2006/11/16 23:23:12 pudge Exp $

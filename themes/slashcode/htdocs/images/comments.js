@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.35 2006/11/16 21:11:43 pudge Exp $
+// $Id: comments.js,v 1.36 2006/11/16 23:23:12 pudge Exp $
 
 var comments;
 var root_comments;
@@ -244,18 +244,18 @@ function setFocusComment(cid, alone, mods) {
 //	var statusdiv = $('comment_status_' + abscid);
 //	statusdiv.innerHTML = 'Working ...';
 
-	doModifiers();
+//	doModifiers();
 	if (!user_is_admin) // XXX: for now, admins-only, for testing
 		mods = 1;
 
 	if (!alone && mods) {
-		if (mods == 1 || ((mods == 4) && (abscid == cid)) || ((mods == 5) && (abscid != cid))) {
+		if (mods == 1 || ((mods == 3) && (abscid == cid)) || ((mods == 4) && (abscid != cid))) {
 			shift_down = 0;
 			alt_down   = 0;
-		} else if (mods == 2 || ((mods == 4) && (abscid != cid)) || ((mods == 5) && (abscid == cid))) {
+		} else if (mods == 2 || ((mods == 3) && (abscid != cid)) || ((mods == 4) && (abscid == cid))) {
 			shift_down = 1;
 			alt_down   = 0;
-		} else if (mods == 3) {
+		} else if (mods == 5) {
 			shift_down = 1;
 			alt_down   = 1;
 		}
@@ -273,7 +273,7 @@ function setFocusComment(cid, alone, mods) {
 	updateCommentTree(abscid);
 	updateTotals();
 
-	resetModifiers();
+//	resetModifiers();
 
 //	statusdiv.innerHTML = '';
 

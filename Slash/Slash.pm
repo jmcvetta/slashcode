@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.308 2006/11/16 21:11:43 pudge Exp $
+# $Id: Slash.pm,v 1.309 2006/11/16 23:23:12 pudge Exp $
 
 package Slash;
 
@@ -1682,7 +1682,6 @@ sub _hard_dispComment {
 				<a href="#" onclick="return setFocusComment($comment->{cid},0,2)">Two</a>
 				<a href="#" onclick="return setFocusComment($comment->{cid},0,3)">Three</a>
 				<a href="#" onclick="return setFocusComment($comment->{cid},0,4)">Four</a>
-				<a href="#" onclick="return setFocusComment($comment->{cid},0,5)">Five</a>
 			]</span>
 EOT
 	}
@@ -1791,8 +1790,8 @@ EOT2
 	<div class="commentTop">
 		<div class="title">
 $head
-		 	<span id="comment_score_$comment->{cid}" class="score">$score_to_display</span>
 $comment_links
+		 	<span id="comment_score_$comment->{cid}" class="score">$score_to_display</span>
 		</div>
 		<div class="details">
 			by $user_nick_to_display$zoosphere_display

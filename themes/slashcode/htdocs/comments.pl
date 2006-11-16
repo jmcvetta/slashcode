@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.254 2006/11/14 20:24:46 tvroom Exp $
+# $Id: comments.pl,v 1.255 2006/11/16 00:06:15 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -1127,7 +1127,7 @@ sub submitComment {
 	}
 
 	my $maxCid = $slashdb->createComment($clean_comment);
-	if($constants->{comment_karma_disable_and_log}) {
+	if ($constants->{comment_karma_disable_and_log}) {
 		my $post_str = "";
 		$post_str .= "NO_ANON " if $user->{state}{commentkarma_no_anon};
 		$post_str .= "NO_POST " if $user->{state}{commentkarma_no_post};

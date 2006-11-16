@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.935 2006/11/15 23:02:26 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.936 2006/11/16 00:06:15 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.935 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.936 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -4555,6 +4555,7 @@ sub getNetIDPostingRestrictions {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	my $restrictions = { no_anon => 0, no_post => 0 };
+
 	if ($type eq "subnetid") {
 		my $subnet_karma_comments_needed = $constants->{subnet_comments_posts_needed} || 5;
 		my($subnet_karma, $subnet_post_cnt) = $self->getNetIDKarma("subnetid", $value);
@@ -4568,7 +4569,8 @@ sub getNetIDPostingRestrictions {
 			}
 		}
 	}
-	if($constants->{comment_karma_disable_and_log}) {
+
+	if ($constants->{comment_karma_disable_and_log}) {
 		$user->{state}{commentkarma_no_post} = 1 if $restrictions->{no_post};
 		$user->{state}{commentkarma_no_anon} = 1 if $restrictions->{no_anon};
 		$restrictions = { no_anon => 0, no_post => 0 };

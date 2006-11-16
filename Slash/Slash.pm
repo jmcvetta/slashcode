@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.303 2006/10/26 17:33:00 jamiemccarthy Exp $
+# $Id: Slash.pm,v 1.304 2006/11/16 00:06:15 pudge Exp $
 
 package Slash;
 
@@ -291,6 +291,7 @@ root_comment = $cid;
 
 user_uid = $user->{uid};
 user_is_anon = $user->{is_anon};
+user_is_admin = $user->{is_admin};
 user_threshold = $threshold;
 user_highlightthresh = $highlightthresh;
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.305 2006/11/16 04:58:37 pudge Exp $
+# $Id: Slash.pm,v 1.306 2006/11/16 16:52:37 pudge Exp $
 
 package Slash;
 
@@ -1674,11 +1674,11 @@ sub _hard_dispComment {
 	if ($user->{is_admin}) {
 		$comment_links = <<EOT;
 			<span class="comment_links" style="font-size: smaller">[
-				<a href="javascript:setFocusComment($comment->{cid},0,1)">One</a>
-				<a href="javascript:setFocusComment($comment->{cid},0,2)">Two</a>
-				<a href="javascript:setFocusComment($comment->{cid},0,3)">Three</a>
-				<a href="javascript:selectParent($comment->{cid},1)">Bar</a>
-				<a href="javascript:null()">Help</a>
+				<a href="#" onclick="return setFocusComment($comment->{cid},0,1)">One</a>
+				<a href="#" onclick="return setFocusComment($comment->{cid},0,2)">Two</a>
+				<a href="#" onclick="return setFocusComment($comment->{cid},0,3)">Three</a>
+				<a href="#" onclick="return selectParent($comment->{cid},1)">Bar</a>
+				<a href="#" onclick="return false">Help</a>
 			]</span>
 EOT
 	}

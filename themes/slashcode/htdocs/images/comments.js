@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.34 2006/11/16 00:06:15 pudge Exp $
+// $Id: comments.js,v 1.35 2006/11/16 21:11:43 pudge Exp $
 
 var comments;
 var root_comments;
@@ -78,12 +78,12 @@ function updateCommentTree(cid, threshold, subexpand) {
 		updateDisplayMode(cid, futuredisplaymode[cid], 1);
 	}
 
-	if (subexpand && subexpand == 2) {
-		updateComment(cid, 'hidden');
-		prehiddendisplaymode[cid] = futuredisplaymode[cid];
-	} else if (futuredisplaymode[cid] && futuredisplaymode[cid] != displaymode[cid]) {
+//	if (subexpand && subexpand == 2) {
+//		updateComment(cid, 'hidden');
+//		prehiddendisplaymode[cid] = futuredisplaymode[cid];
+//	} else if (futuredisplaymode[cid] && futuredisplaymode[cid] != displaymode[cid]) {
 		updateComment(cid, futuredisplaymode[cid]);
-	}
+//	}
 
 	var kidhiddens = 0;
 	if (comment['kids'].length) {
@@ -249,10 +249,10 @@ function setFocusComment(cid, alone, mods) {
 		mods = 1;
 
 	if (!alone && mods) {
-		if (mods == 1) {
+		if (mods == 1 || ((mods == 4) && (abscid == cid)) || ((mods == 5) && (abscid != cid))) {
 			shift_down = 0;
 			alt_down   = 0;
-		} else if (mods == 2) {
+		} else if (mods == 2 || ((mods == 4) && (abscid != cid)) || ((mods == 5) && (abscid == cid))) {
 			shift_down = 1;
 			alt_down   = 0;
 		} else if (mods == 3) {

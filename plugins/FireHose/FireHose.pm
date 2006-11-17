@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.52 2006/11/16 00:06:15 pudge Exp $
+# $Id: FireHose.pm,v 1.53 2006/11/17 08:22:39 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,13 +38,11 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
-	if (defined $data->{discussion} && !$data->{discussion}) {
-		$data->{discussion} = 0;
-	}
+	$data->{discussion} = 0 if !defined $data->{discussion} || !$data->{discussion};
 	$data->{-createtime} = "NOW()" if !$data->{createtime} && !$data->{-createtime};
 	$data->{discussion} ||= 0 if defined $data->{discussion};
 
@@ -523,6 +521,12 @@ sub ajaxSaveOneTopTagFirehose {
 		my $tagsstring = join ' ', @tags;
 		my $newtagspreloadtext = $tags->setTagsForGlobj($itemid, $table, $tagsstring);
 	}
+}
+
+sub ajaxFireHoseSetOptions {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $firehose = getObject("Slash::FireHose");
+	$firehose->getAndSetOptions();
 }
 
 sub ajaxSaveNoteFirehose {
@@ -1148,4 +1152,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.52 2006/11/16 00:06:15 pudge Exp $
+$Id: FireHose.pm,v 1.53 2006/11/17 08:22:39 tvroom Exp $

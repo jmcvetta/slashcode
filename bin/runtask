@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.22 2006/01/23 16:42:28 jamiemccarthy Exp $
+# $Id: runtask,v 1.23 2006/11/17 19:46:17 jamiemccarthy Exp $
 
 use sigtrap;
 use strict;
@@ -30,7 +30,7 @@ use vars qw(
 	$task_exit_flag
 );
 
-(my $VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -328,6 +328,7 @@ sub main {
 	my $start_time = Time::HiRes::time;
 	# runtask doesn't fork, there wouldn't be much point
 	my $rc = $subref->($virtual_user, $constants, $slashdb, $user, {}, $gSkin);
+	$rc = '' if !defined $rc;
 	if (verbosity() >= 2) {
 		my $duration = sprintf("%.2f", Time::HiRes::time - $start_time);
 		slashdLog("$task_name end: $rc (ran in ${duration}s)");

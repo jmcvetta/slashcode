@@ -31,7 +31,7 @@ IF item.type == "submission";
 
 END;
 IF item.url_id && url.url;
-	IF introtext; introtext = introtext _ "<br>";
+	IF introtext; introtext = introtext _ "<br>"; END;
 	IF item.type == "bookmark";
 		introtext = introtext _ "<a href='" _ url.url _ "'>" _ Slash.strip_literal(url.url) _ "</a>";
 	ELSE;
@@ -42,4 +42,4 @@ END;
 %]
 
 __version__
-$Id: formatHoseIntro;misc;default,v 1.5 2006/11/17 15:28:27 tvroom Exp $
+$Id: formatHoseIntro;misc;default,v 1.6 2006/11/17 15:31:16 tvroom Exp $

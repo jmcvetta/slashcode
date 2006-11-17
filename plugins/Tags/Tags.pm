@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.57 2006/11/17 07:43:31 tvroom Exp $
+# $Id: Tags.pm,v 1.58 2006/11/17 19:47:38 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.57 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.58 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -722,24 +722,44 @@ sub addTagnameDataToHashrefArray {
 	}
 }
 
+# XXX memcached here would be good
+
 sub getUidsUsingTagname {
-	my($self, $name, $options) = @_; # XXX private
+	my($self, $name, $options) = @_;
+	my $private_clause = $options->{include_private} ? '' : " AND private='no'";
 	my $id = $self->getTagnameidFromNameIfExists($name);
 	return [ ] if !$id;
 	return $self->sqlSelectColArrayref('DISTINCT(uid)', 'tags',
-		"tagnameid=$id AND inactivated IS NULL");
+		"tagnameid=$id AND inactivated IS NULL $private_clause");
 }
 
 sub getAllObjectsTagname {
-	my($self, $name, $options) = @_; # XXX private
+	my($self, $name, $options) = @_;
+#	my $mcd = undef;
+#	my $mcdkey = undef;
+#	if (!$options->{include_private}) {
+#		$mcd = $self->getMCD();
+#	}
+#	if ($mcd) {
+#		$mcdkey = "$self->{_mcd_keyprefix}:taotn:";
+#		my $value = $mcd->get("$mcdkey$name");
+#		return $value if defined $value;
+#	}
+	my $private_clause = $options->{include_private} ? '' : " AND private='no'";
 	my $id = $self->getTagnameidFromNameIfExists($name);
 	return [ ] if !$id;
 	my $hr_ar = $self->sqlSelectAllHashrefArray(
-		'*',
+		'*, UNIX_TIMESTAMP(created_at) AS created_at_ut',
 		'tags',
-		"tagnameid=$id AND inactivated IS NULL",
+		"tagnameid=$id AND inactivated IS NULL $private_clause",
 		'ORDER BY tagid');
 	$self->addGlobjEssentialsToHashrefArray($hr_ar);
+	$self->addCloutsToTagArrayref($hr_ar);
+#	if ($mcd) {
+#		my $constants = getCurrentStatic();
+#		my $secs = $constants->{memcached_exptime_tags_brief} || 300;
+#		$mcd->set("$mcdkey$name", $hr_ar, $secs);
+#	}
 	return $hr_ar;
 }
 
@@ -1142,7 +1162,7 @@ sub ajaxListTagnames {
 	for my $tagname (sort { $tnhr->{$b} <=> $tnhr->{$a} } keys %$tnhr) {
 		$ret_str .= sprintf("%s%s\t%d\n", $notize, $tagname, $tnhr->{$tagname});
 	}
-#print STDERR scalar(localtime) . " ajaxListTagnames uid=$user->{uid} prefix='$prefix' ret_str: $ret_str";
+use Data::Dumper; print STDERR scalar(localtime) . " ajaxListTagnames uid=$user->{uid} prefix='$prefix' tnhr: " . Dumper($tnhr);
 	return $ret_str;
 }
 

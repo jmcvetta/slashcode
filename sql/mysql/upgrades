@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1094 2006/11/16 04:58:37 pudge Exp $
+# $Id: upgrades,v 1.1095 2006/11/17 04:04:00 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4232,3 +4232,13 @@ UPDATE vars SET value = 'T_2_5_0_134' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
+# for FireHose plugin
+UPDATE ajax_ops SET reskey_name="ajax_user_static", reskey_type="use" WHERE op="firehose_up_down";
+UPDATE ajax_ops SET reskey_name="ajax_admin_static", reskey_type="use" WHERE op="firehose_reject";
+
+For Console PLUGIN
+INSERT INTO ajax_ops VALUES (NULL, 'console_update', 'Slash::Console', 'ajaxConsoleUpdate', 'ajax_admin', 'createuse');
+INSERT INTO css (rel, type, media, file, title, skin, page, admin, theme, ctid, ordernum, ie_cond) VALUES ('stylesheet','text/css','screen, projection','firehose.css','','','console','no','',2,0, '');
+
+
+# SLASHDOT LAST UPDATED HERE

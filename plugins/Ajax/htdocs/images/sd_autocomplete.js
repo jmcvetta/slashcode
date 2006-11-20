@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.21 2006/11/14 16:21:02 scc Exp $
+// $Id: sd_autocomplete.js,v 1.22 2006/11/20 19:13:14 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -168,6 +168,7 @@ YAHOO.slashdot.topicTags = ["keyword",
 "xbox",
 "ps2",
 "gamecube",
+"wii",
 "scifi",
 "communications",
 "robotics",

@@ -24,10 +24,14 @@ param_str = ""
 		END;
 	END;
 %]
-<ul class="menu">
+[% IF !contentsonly %]
+<ul class="menu" id="fh-paginate">
+[% END %]
 [% IF page %] <li><a href="[% gSkin.rootdir %]/firehose.pl?page=[% page - 1 %][% param_str %]">&lt;- [% page %]</a></li>[% END %]
 <li><a href="[% gSkin.rootdir %]/firehose.pl?page=[% page %][% param_str %]">[% page + 1 %]</a></li>
 <li><a href="[% gSkin.rootdir %]/firehose.pl?page=[% page + 1%][% param_str %]">[% page + 2 %] -&gt;</a></li>
+[% IF !contentsonly %]
 </ul>
+[% END %]
 __version__
-$Id: paginate;firehose;default,v 1.3 2006/08/22 19:14:15 tvroom Exp $
+$Id: paginate;firehose;default,v 1.4 2006/11/21 20:10:58 tvroom Exp $

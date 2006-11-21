@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.29 2006/11/16 17:22:46 pudge Exp $
+// $Id: admin.js,v 1.30 2006/11/21 20:16:01 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -21,13 +21,13 @@ function um_set_settings(behavior) {
 	ajax_update(params, 'links-vendors-content');
 }
 
-function admin_signoff(el) {
+function admin_signoff(stoid) {
 	var params = [];
-	var reskeyel = $('signoff-reskey-' + el.value);
+	var reskeyel = $('signoff-reskey-' + stoid);
 	params['op'] = 'admin_signoff';
-	params['stoid'] = el.value;
+	params['stoid'] = stoid;
 	params['reskey'] = reskeyel.value;
-	ajax_update(params, 'signoff_' + el.value);
+	ajax_update(params, 'signoff_' + stoid);
 	
 }
 

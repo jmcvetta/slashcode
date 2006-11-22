@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.937 2006/11/21 20:22:23 tvroom Exp $
+# $Id: MySQL.pm,v 1.938 2006/11/22 05:32:57 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.937 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.938 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7541,7 +7541,7 @@ sub createSignoff {
 		my $firehose = getObject("Slash::FireHose");
 		my $stoid_q = $self->sqlQuote($stoid);
 		my ($id) = $self->sqlSelect("id", "firehose", "type='story' and srcid=$stoid_q");
-		if ($id) {
+		if($id) {
 			my $signoff_label = "sign".$uid."ed";
 			my $item = $firehose->getFireHose($id);
 			if ($item->{signoffs} !~ /$signoff_label/) {
@@ -7757,8 +7757,8 @@ sub getSlashConf {
 		anonymous_coward_uids =>	[ $conf{anonymous_coward_uid} ],
 						# See <http://www.iana.org/assignments/uri-schemes>
 		approved_url_schemes =>		[qw( ftp http gopher mailto news nntp telnet wais https )],
-		approvedtags =>			[qw( b i p br a ol ul li dl dt dd em strong tt blockquote div ecode )],
-		approvedtags_break =>		[qw(     p br   ol ul li dl dt dd              blockquote div       img hr )],
+		approvedtags =>			[qw( b i p br a ol ul li dl dt dd em strong tt blockquote div ecode quote)],
+		approvedtags_break =>		[qw(     p br   ol ul li dl dt dd              blockquote div             img hr )],
 		# all known tags, plus table, pre, and slash; this can be overridden
 		# in vars, but since we make this all known tags by default ...
 		# easier to just keep it in here

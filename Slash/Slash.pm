@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.309 2006/11/16 23:23:12 pudge Exp $
+# $Id: Slash.pm,v 1.310 2006/11/22 05:32:57 pudge Exp $
 
 package Slash;
 
@@ -1674,7 +1674,7 @@ sub _hard_dispComment {
 		$score_to_display .= ")";
 	}
 
-	if ($user->{is_admin}) {
+	if ($discussion2) {
 		$comment_links = <<EOT;
 			<span class="comment_links" style="font-size: smaller">[
 				Experimental threading:

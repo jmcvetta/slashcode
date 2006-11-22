@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.65 2006/11/22 05:32:59 pudge Exp $
+// $Id: common.js,v 1.66 2006/11/22 07:26:42 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -446,7 +446,7 @@ function firehose_set_options(name, value) {
 			// set page
 			page = 0;
 			var attributes = { 
-				 opacity: { from: 1, to: 0 },
+				 opacity: { from: 1, to: 0 }
 			};
 			var myAnim = new YAHOO.util.Anim("firehoselist", attributes); 
 			myAnim.duration = 1;

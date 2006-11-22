@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.37 2006/11/22 05:33:00 pudge Exp $
+// $Id: comments.js,v 1.38 2006/11/22 07:26:43 pudge Exp $
 
 var comments;
 var root_comments;
@@ -16,6 +16,7 @@ var viewmodevalue = { full: 3, oneline: 2, hidden: 1};
 var currents = { full: 0, oneline: 0, hidden: 0 };
 var commentelements = {};
 
+var comment_body_reply = [];
 var root_comment = 0;
 var discussion_id = 0;
 var user_is_admin = 0;
@@ -695,3 +696,6 @@ function doModerate(el) {
 	return false;
 }
 
+function quoteReply(pid) {
+	$('postercomment').value = comment_body_reply[pid] + "\n\n" + $('postercomment').value;
+}

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.255 2006/11/16 00:06:15 pudge Exp $
+# $Id: comments.pl,v 1.256 2006/11/22 07:26:42 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -473,11 +473,43 @@ sub editComment {
 	# moderation elements for this instance of the comment.
 	my $pid = $form->{pid} || 0; # this is guaranteed numeric, from filter_params
 	my $reply = $slashdb->getCommentReply($sid, $pid) || { };
+	my $pid_reply = '';
 
 	# An attempt to reply to a comment that doesn't exist is an error.
 	if ($pid && !%$reply) {
 		print getError('no such parent');
 		return;
+	} elsif ($pid) {
+		$pid_reply = $reply->{comment};
+		# XXX: maybe move this elsewhere, like Slash::Utility::Data
+		# this converts back to <quote>
+		while ($pid_reply =~ m|(<div class="quote">)(.+)$|sig) {
+			my($found, $rest) = ($1, $2);
+			my $pos = pos($pid_reply) - (length($found) + length($rest));
+			substr($pid_reply, $pos, length($found)) = '<quote>';
+			pos($pid_reply) = $pos + length('<quote>');
+
+			my $c = 0;
+			while ($pid_reply =~ m|(<(/?)div.*?>)|sig) {
+				my($found, $end) = ($1, $2);
+				if ($end && !$c) {
+					my $len = length($found);
+					substr($pid_reply, pos($pid_reply) - $len, $len) = '</quote>';
+					pos($pid_reply) = 0;
+					last;
+				} elsif ($end) {
+					$c--;
+				} else {
+					$c++;
+				}
+			}
+		}
+		$pid_reply =~ s|\\|\\\\|g;
+		$pid_reply =~ s|'|\\'|g;
+		$pid_reply =~ s|([\r\n])|\\$1|g;
+		#my $nick = strip_literal($reply->{nickname});
+		#$pid_reply = "<div>$nick ($reply->{uid}) wrote: <quote>$pid_reply</quote></div>";
+		$pid_reply = "<quote>$pid_reply</quote>";
 	}
 
 	# calculate proper points value ... maybe this should be a public,
@@ -529,7 +561,9 @@ sub editComment {
 	my $gotmodwarning;
 	$gotmodwarning = 1 if $form->{gotmodwarning}
 		|| $error_message && $error_message eq getError("moderations to be lost");
+
 	slashDisplay('edit_comment', {
+		pid_reply	=> $pid_reply,
 		error_message 	=> $error_message,
 		label		=> $label,
 		discussion	=> $discussion,

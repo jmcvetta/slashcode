@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.66 2006/11/22 07:26:42 pudge Exp $
+// $Id: common.js,v 1.67 2006/11/23 04:43:17 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -407,11 +407,9 @@ function firehose_set_options(name, value) {
 	if (name == "firehose_usermode") {
 		if (value ==  true) {
 			value = 1;
-			alert("true1");
 		}
 		if (value == false) {
 			value = 0;
-			alert("false1");
 		}
 		params['setusermode'] = 1;
 		params[name] = value;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.55 2006/11/23 17:01:41 tvroom Exp $
+# $Id: FireHose.pm,v 1.56 2006/11/27 15:40:22 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -630,7 +630,7 @@ sub ajaxFireHoseGetUpdates {
 				my $url 	= $slashdb->getUrl($item->{url_id});
 				my $the_user  	= $slashdb->getUser($item->{uid});
 				$html->{"title-$_->{id}"} = slashDisplay("formatHoseTitle", { adminmode => $adminmode, item => $item, showtitle => 1, url => $url, the_user => $the_user }, { Return => 1 });
-				$html->{"tags-top-$_->{id}"} = slashDisplay("firehose_tags_top", { tags_top => $tags_top, id => $_->{id} }, { Return => 1 });
+				$html->{"tags-top-$_->{id}"} = slashDisplay("firehose_tags_top", { tags_top => $tags_top, id => $_->{id}, item => $item }, { Return => 1 });
 				# updated
 			}
 		} else {
@@ -1178,4 +1178,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.55 2006/11/23 17:01:41 tvroom Exp $
+$Id: FireHose.pm,v 1.56 2006/11/27 15:40:22 tvroom Exp $

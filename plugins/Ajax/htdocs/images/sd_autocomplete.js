@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.24 2006/11/21 17:42:59 scc Exp $
+// $Id: sd_autocomplete.js,v 1.25 2006/11/28 17:35:23 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -262,7 +262,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._newCompleter = function( tagDomain 
         c.delimChar = " ";
         c.minQueryLength = 3;
       }
-    c.typeAhead = true;
+    c.typeAhead = false;
     c.forceSelection = false;
     c.allowBrowserAutocomplete = false;
     c.maxResultsDisplayed = 25;

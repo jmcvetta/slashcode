@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.5 2006/10/27 16:56:25 tvroom Exp $
+# $Id: FHPopularity.pm,v 1.6 2006/11/28 22:43:15 tvroom Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -136,11 +136,20 @@ sub run {
 	# Some target types gain popularity.
 	my($type, $target_id) = $tagsdb->getGlobjTarget($affected_id);
 	my $target_id_q = $self->sqlQuote($target_id);
-	if ($type =~ /^(journals|submissions)$/) {
-		$popularity = $firehose->getMinPopularityForColorLevel(5);	
+	if ($type eq "submissions") {
+		$popularity = $firehose->getMinPopularityForColorLevel(5);
+	} elsif ($type eq "journals") {
+		my $journal = getObject("Slash::Journal");
+		my $j = $journal->get($target_id);
+		$popularity = $firehose->getMinPopularityForColorLevel(6);
+		$popularity = $firehose->getMinPopularityForColorLevel(5) if $j->{submit} eq "yes";
+
 	} elsif ($type eq 'urls') {
 		my $bookmark_count = $self->sqlCount('bookmarks', "url_id=$target_id_q");
-		$popularity = $firehose->getMinPopularityForColorLevel(7) + $bookmark_count;
+
+		my $pop_level = 7;
+		$pop_level = 6 if ($self->sqlCount("firehose", "type='feed' and url_id=$target_id");
+		$popularity = $firehose->getMinPopularityForColorLevel($pop_level) + $bookmark_count;
 	} elsif ($type eq "stories") {
 		my $story = $self->getStory($target_id);
 		if($story->{story_topics_rendered}{$constants->{mainpage_nexus_tid}}) {

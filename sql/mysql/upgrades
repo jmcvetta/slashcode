@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1102 2006/11/23 03:44:46 tvroom Exp $
+# $Id: upgrades,v 1.1103 2006/11/28 22:44:03 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4252,3 +4252,6 @@ INSERT INTO ajax_ops VALUES (NULL, 'firehose_set_options', 'Slash::FireHose', 'a
 
 # 2006-11-21
 UPDATE vars SET value = 'T_2_5_0_135' WHERE name = 'cvs_tag_currentcode';
+
+
+UPDATES vars SET VALUE='red|orange|yellow|green|blue|indigo|violet' where name='firehose_color_labels';

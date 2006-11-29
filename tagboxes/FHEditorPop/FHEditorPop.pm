@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.4 2006/11/28 22:43:15 tvroom Exp $
+# $Id: FHEditorPop.pm,v 1.5 2006/11/29 19:27:46 jamiemccarthy Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -154,9 +154,8 @@ sub run {
 
 	} elsif ($type eq 'urls') {
 		my $bookmark_count = $self->sqlCount('bookmarks', "url_id=$target_id_q");
-
 		my $pop_level = 7;
-		$pop_level = 6 if ($self->sqlCount("firehose", "type='feed' and url_id=$target_id");
+		$pop_level = 6 if $self->sqlCount("firehose", "type='feed' AND url_id=$target_id");
 		$popularity = $firehose->getMinPopularityForColorLevel($pop_level) + $bookmark_count;
 	} elsif ($type eq "stories") {
 		my $story = $self->getStory($target_id);

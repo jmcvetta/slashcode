@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.310 2006/11/22 05:32:57 pudge Exp $
+# $Id: Slash.pm,v 1.311 2006/11/29 19:32:41 pudge Exp $
 
 package Slash;
 
@@ -1651,7 +1651,7 @@ sub _hard_dispComment {
 		my $readtext = 'Read the rest of this comment...';
 		my $link;
 		if ($discussion2) {
-			$link = qq'<a href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}&amp;cid=$comment->{cid}" onclick="return readRest($comment->{cid})">$readtext</a>';
+			$link = qq'<a class="readrest" href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}&amp;cid=$comment->{cid}" onclick="return readRest($comment->{cid})">$readtext</a>';
 		} else {
 			$link = linkComment({
 				sid	=> $comment->{sid},
@@ -1674,7 +1674,7 @@ sub _hard_dispComment {
 		$score_to_display .= ")";
 	}
 
-	if ($discussion2) {
+	if (0 && $discussion2) {
 		$comment_links = <<EOT;
 			<span class="comment_links" style="font-size: smaller">[
 				Experimental threading:

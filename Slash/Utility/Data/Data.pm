@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.197 2006/11/22 07:26:42 pudge Exp $
+# $Id: Data.pm,v 1.198 2006/11/30 22:29:25 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.197 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.198 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1459,7 +1459,7 @@ sub processCustomTagsPre {
 				# -- pudge
 				$codestr =~ s{<a href="[^"]+" rel="url2html-$$">(.+?)</a>}{$1}g;
 				my $code = strip_code($codestr);
-				my $newstr = "<blockquote>$code</blockquote>";
+				my $newstr = "<p><blockquote>$code</blockquote></p>";
 				substr($str, $pos, $len) = $newstr;
 				pos($str) = $pos + length($newstr);
 			}
@@ -1478,8 +1478,8 @@ sub processCustomTagsPost {
 		my $open    = qr[\n* <\s* $quote \s*> \n*]xsio;
 		my $close   = qr[\n* <\s* /$quote \s*> \n*]xsio;
 
-		$str =~ s/$open/<div class="quote">/g;
-		$str =~ s/$close/<\/div>/g;
+		$str =~ s/$open/<p><div class="quote">/g;
+		$str =~ s/$close/<\/div><\/p>/g;
 	}
 
 	return $str;
@@ -4268,4 +4268,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.197 2006/11/22 07:26:42 pudge Exp $
+$Id: Data.pm,v 1.198 2006/11/30 22:29:25 pudge Exp $

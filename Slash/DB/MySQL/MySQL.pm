@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.939 2006/11/29 19:32:41 pudge Exp $
+# $Id: MySQL.pm,v 1.940 2006/12/01 03:49:22 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.939 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.940 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6079,6 +6079,7 @@ sub getCommentTextCached {
 			# the comment down to size, then massage it to make sure
 			# we still have good HTML after the chop.
 			$more_comment_text->{$cid} =~ s{</a[^>]+>}{</a>}gi;
+			$more_comment_text->{$cid} =~ s{<(a[^>]+) title="[^"]*">}{<$1>}gi;
 			my $text = chopEntity($more_comment_text->{$cid},
 				$user->{maxcommentsize});
 

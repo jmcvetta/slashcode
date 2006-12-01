@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TagModeration.pm,v 1.2 2006/11/01 17:43:30 jamiemccarthy Exp $
+# $Id: TagModeration.pm,v 1.3 2006/12/01 04:25:32 jamiemccarthy Exp $
 
 package Slash::TagModeration;
 
@@ -17,7 +17,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -890,17 +890,17 @@ sub moderateCheck {
 
 	# all of these can be removed in favor of reskeys, later
 	if (!dbAvailable('write_comments')) {
-		return { msg => _comments_getError('comment_db_down') };
+		return { msg => Slash::_comments_getError('comment_db_down') };
 	}
 
 	if (!$constants->{m1}) {
-		return { msg => _comments_getError('no_moderation') };
+		return { msg => Slash::_comments_getError('no_moderation') };
 	}
 
 	if ($discussion->{type} eq 'archived' &&
 	   !$constants->{comments_moddable_archived} &&
 	   !$form->{meta_mod_only}) {
-		return { msg => _comments_getError('archive_error') };
+		return { msg => Slash::_comments_getError('archive_error') };
 	}
 
 	my $return = {};
@@ -909,7 +909,7 @@ sub moderateCheck {
 			&& $user->{seclev} >= $constants->{authors_unlimited}
 		)       || $user->{acl}{modpoints_always};
 	if ($return->{count}) {
-		$return->{msg} = _comments_getError('already posted');
+		$return->{msg} = Slash::_comments_getError('already posted');
 	}
 
 	return $return;

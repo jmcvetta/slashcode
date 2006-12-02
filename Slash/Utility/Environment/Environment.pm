@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.205 2006/11/08 20:32:53 pudge Exp $
+# $Id: Environment.pm,v 1.206 2006/12/02 00:28:05 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -3138,7 +3138,7 @@ sub get_srcid_sql_in {
 	if ($type eq 'uid') {
 		return $srcid_q;
 	}
-	return "CONV($srcid_q, 16, 10)";
+	return "CAST(CONV($srcid_q, 16, 10) AS UNSIGNED)";
 }
 
 #========================================================================
@@ -3422,4 +3422,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.205 2006/11/08 20:32:53 pudge Exp $
+$Id: Environment.pm,v 1.206 2006/12/02 00:28:05 jamiemccarthy Exp $

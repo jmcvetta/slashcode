@@ -11,9 +11,6 @@ en_US
 __name__
 autocomplete
 __template__
-<script type="text/javascript">
-[% reskey = Slash.getObject('Slash::ResKey'); rkey = reskey.key('ajax_user_static', { nostate => 1 }); IF rkey.create; -%]var ajax_user_static = '[% rkey.reskey %]';[% END %]
-</script>
 <div id="ac-select-widget" class="hidden">
   <input type="text" id="ac-select-input" />
   <div class="completer-container" id="ac-choices"></div>
@@ -21,4 +18,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: autocomplete;misc;default,v 1.1 2006/11/06 20:57:11 scc Exp $
+$Id: autocomplete;misc;default,v 1.2 2006/12/05 00:05:00 pudge Exp $

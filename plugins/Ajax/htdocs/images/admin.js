@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.30 2006/11/21 20:16:01 tvroom Exp $
+// $Id: admin.js,v 1.31 2006/12/05 00:04:59 pudge Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -226,7 +226,7 @@ function firehose_reject (el) {
 	var fh = $('firehose-' + el.value);
 	params['op'] = 'firehose_reject';
 	params['id'] = el.value;
-	params['reskey'] = ajax_admin_static;
+	params['reskey'] = reskey_static;
 	ajax_update(params, 'reject_' + el.value);
 	if (fh) {
 		var attributes = { 

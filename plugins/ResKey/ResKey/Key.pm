@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.21 2006/09/03 17:28:17 jamiemccarthy Exp $
+# $Id: Key.pm,v 1.22 2006/12/05 00:04:59 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -118,7 +118,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -914,14 +914,18 @@ sub makeStaticKey {
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
 	$salt ||= $self->getCurrentSalt;
-	$id   ||= '';
+	$id   ||= $self->{id} || '';
 
 	return md5_hex(
 		join($;,
 			$user->{uid},
 			$user->{srcids}{ $constants->{reskey_srcid_masksize} || 24 },
-			$self->resname,
-			$id,
+			# these change so often, i don't think there's a real point
+			# to fixing it to a specific resource (resname) or id,
+			# and making it more general makes it a little simpler to use
+			# -- pudge
+			#$self->resname,
+			#$id,
 			$constants->{reskey_static_salt},
 			$salt
 		)
@@ -981,4 +985,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.21 2006/09/03 17:28:17 jamiemccarthy Exp $
+$Id: Key.pm,v 1.22 2006/12/05 00:04:59 pudge Exp $

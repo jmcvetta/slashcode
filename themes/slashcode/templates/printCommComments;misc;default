@@ -42,11 +42,6 @@ __template__
 <!--
 	$('commentControlBoxStatus').className = '';
 [% Slash.jsSelectComments(Slash.db, constants, user, { sid => sid, cid => cid }) %]
-[% IF moderate_form;
-	reskey = Slash.getObject('Slash::ResKey');
-	rkey = reskey.key('comments-moderation-ajax', { nostate => 1 });
-	IF rkey.create;
--%]comments_moderate_reskey = '[% rkey.reskey %]';[% END; END %]
 //-->
 	</script>
 [% END %]
@@ -139,4 +134,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.49 2006/10/26 17:33:09 jamiemccarthy Exp $
+$Id: printCommComments;misc;default,v 1.50 2006/12/05 00:05:00 pudge Exp $

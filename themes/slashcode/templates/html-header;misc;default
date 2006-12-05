@@ -42,9 +42,10 @@ __template__
 	[%- IF user.is_admin %]
 <script src="[% constants.imagedir %]/admin.js?[% constants.cvs_tag_currentcode %]"             type="text/javascript"></script>
 	[% END %]
+[% PROCESS ajax_reskey_tag reskey_label => 'reskey_static', reskey_name => 'ajax_user_static', reskey_tag_js => 2 %]
 	[% END %]
 [% END %]
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.28 2006/11/06 21:16:16 scc Exp $
+$Id: html-header;misc;default,v 1.29 2006/12/05 00:05:00 pudge Exp $

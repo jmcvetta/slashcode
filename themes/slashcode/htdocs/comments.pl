@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.257 2006/11/30 22:29:25 pudge Exp $
+# $Id: comments.pl,v 1.258 2006/12/05 00:05:00 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -483,19 +483,20 @@ sub editComment {
 		$pid_reply = $reply->{comment} = parseDomainTags($reply->{comment}, 0, 1, 1);
 		# XXX: maybe move this elsewhere, like Slash::Utility::Data
 		# this converts back to <quote>
-		while ($pid_reply =~ m|(<p><div class="quote">)(.+)$|sig) {
-			my($found, $rest) = ($1, $2);
+		while ($pid_reply =~ m|((<p>)?<div class="quote">)(.+)$|sig) {
+			my($found, $p, $rest) = ($1, $2, $3);
 			my $pos = pos($pid_reply) - (length($found) + length($rest));
 			substr($pid_reply, $pos, length($found)) = '<quote>';
 			pos($pid_reply) = $pos + length('<quote>');
 
 			my $c = 0;
-			while ($pid_reply =~ m|(<(/?)div.*?>)|sig) {
-				my($found, $end) = ($1, $2);
+			while ($pid_reply =~ m|(<(/?)div.*?>(</p>)?)|sig) {
+				my($found, $end, $p2) = ($1, $2, $3);
 				if ($end && !$c) {
+					my $len = length($found);
 					# + 4 is for the </p>
-					my $len = length($found) + 4;
-					substr($pid_reply, pos($pid_reply) - $len, $len) = '</quote>';
+					my $pl = $p && $p2 ? 4 : 0;
+					substr($pid_reply, pos($pid_reply) - $len, $len + $pl) = '</quote>';
 					pos($pid_reply) = 0;
 					last;
 				} elsif ($end) {

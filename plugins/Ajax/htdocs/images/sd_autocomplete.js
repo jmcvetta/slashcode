@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.25 2006/11/28 17:35:23 scc Exp $
+// $Id: sd_autocomplete.js,v 1.26 2006/12/05 20:56:00 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -212,7 +212,7 @@ YAHOO.slashdot.topicTags = ["keyword",
     var tagsDS = new YAHOO.widget.DS_XHR("./ajax.pl", ["\n", "\t"]);
     // tagsDS.maxCacheEntries = 0; // turn off local cacheing, because Jamie says the query is fast
     tagsDS.queryMatchSubset = false;
-    tagsDS.responseType = tagsDS.TYPE_FLAT;
+    tagsDS.responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
     tagsDS.scriptQueryParam = "prefix";
     tagsDS.scriptQueryAppend = "op=tags_list_tagnames";
     tagsDS.queryMethod = "POST";

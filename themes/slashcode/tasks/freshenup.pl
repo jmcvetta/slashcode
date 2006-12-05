@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.66 2006/12/05 14:00:56 cowboyneal Exp $
+# $Id: freshenup.pl,v 1.67 2006/12/05 14:16:37 cowboyneal Exp $
 
 use File::Path;
 use File::Temp;
@@ -265,7 +265,7 @@ $task{$me}{code} = sub {
 			# fork a new script to render the audio, and
 			# it will update the story_param table with the correct
 			# pointers to the file
-			system("audio-gen.pl $virtual_user $stoid &");
+			system("$constants->{datadir}/sbin/audio-gen.pl $virtual_user $stoid &");
 		}
 
 		# Now call prog2file().

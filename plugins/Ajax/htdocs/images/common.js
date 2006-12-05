@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.70 2006/12/05 00:04:59 pudge Exp $
+// $Id: common.js,v 1.71 2006/12/05 14:45:23 scc Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -251,6 +251,9 @@ function tagsOpenAndEnter(id, tagname, is_admin, type) {
 }
 
 function attachCompleter( obj, id, is_admin, type, tagDomain ) {
+	if ( YAHOO.util.Dom.isSafari ) 
+		return false;
+
 	var disable = YAHOO.util.Dom.getStyle(obj, '-slashdot-disable-tag-completer');
 	if ( disable == "true" )
 		return false;

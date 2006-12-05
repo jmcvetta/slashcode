@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.941 2006/12/01 04:04:47 pudge Exp $
+# $Id: MySQL.pm,v 1.942 2006/12/05 23:17:46 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.941 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.942 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1171,14 +1171,16 @@ sub createSubmission {
 # and when they last accessed the site
 sub getSessionInstance {
 	my($self, $uid) = @_;
+
+
 	my $admin_timeout = getCurrentStatic('admin_timeout');
 
 	$self->sqlDelete("sessions",
 		"NOW() > DATE_ADD(lasttime, INTERVAL $admin_timeout MINUTE)"
 	);
 
-	my($lasttitle, $last_sid, $last_subid) = $self->sqlSelect(
-		'lasttitle, last_sid, last_subid',
+	my($lasttitle, $last_sid, $last_subid, $last_fhid) = $self->sqlSelect(
+		'lasttitle, last_sid, last_subid, last_fhid',
 		'sessions',
 		"uid=$uid"
 	);
@@ -1188,7 +1190,8 @@ sub getSessionInstance {
 		-lasttime	=> 'NOW()',
 		lasttitle	=> $lasttitle    || '',
 		last_sid	=> $last_sid     || '',
-		last_subid	=> $last_subid   || '0'
+		last_subid	=> $last_subid   || '0',
+		last_fhid	=> $last_fhid	 || '0'
 	});
 }
 
@@ -5333,7 +5336,7 @@ sub checkForm {
 sub currentAdmin {
 	my($self) = @_;
 	my $aids = $self->sqlSelectAll(
-		'nickname,lasttime,lasttitle,last_subid,last_sid,sessions.uid',
+		'nickname,lasttime,lasttitle,last_subid,last_sid,sessions.uid,last_fhid',
 		'sessions,users',
 		'sessions.uid=users.uid GROUP BY sessions.uid'
 	);
@@ -7551,7 +7554,6 @@ sub createSignoff {
 			my $signoff_label = "sign".$uid."ed";
 			my $item = $firehose->getFireHose($id);
 			if ($item->{signoffs} !~ /$signoff_label/) {
-				print STDERR "setting firehose $signoff_label\n";
 				$firehose->setFireHose($id, {
 					-signoffs => "CONCAT(signoffs, ' $signoff_label')"
 				});

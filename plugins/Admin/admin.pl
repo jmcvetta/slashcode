@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.300 2006/10/26 17:33:02 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.301 2006/12/05 23:12:00 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1366,6 +1366,7 @@ sub editStory {
 		lasttitle	=> $storyref->{title},
 		last_sid	=> $sid,
 		last_subid	=> '',
+		last_fhid	=> '',
 	});
 
 	# Run a spellcheck on introtext, bodytext, and title if they're set.

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1110 2006/12/05 00:05:00 pudge Exp $
+# $Id: upgrades,v 1.1111 2006/12/05 23:19:59 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4261,5 +4261,11 @@ UPDATE vars SET value = 'T_2_5_0_136' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 
+# For FireHose Plugn
+UPDATES vars SET VALUE='red|orange|yellow|green|blue|indigo|violet' where name='firehose_color_labels';
+
+
 # for DST change in 2007
 REPLACE INTO dst (region, selectable, start_hour, start_wnum, start_wday, start_month, end_hour, end_wnum, end_wday, end_month) VALUES ('America',     1, 2,  2, 0, 2, 2,  1, 0, 10);
+
+ALTER TABLE sessions ADD last_fhid mediumint UNSIGNED;

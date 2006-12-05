@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.65 2006/01/02 18:49:57 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.66 2006/12/05 14:00:56 cowboyneal Exp $
 
 use File::Path;
 use File::Temp;
@@ -259,6 +259,14 @@ $task{$me}{code} = sub {
 		# write to.  But first it needs us to create the file and
 		# tell it where it will be.
 		my($cchp_file, $cchp_param) = _make_cchp_file();
+
+		# update a story's audio version, if using cepstral audio.
+		if ($constants->{cepstral_audio} {
+			# fork a new script to render the audio, and
+			# it will update the story_param table with the correct
+			# pointers to the file
+			system("audio-gen.pl $virtual_user $stoid &");
+		}
 
 		# Now call prog2file().
 		$args = "$vu ssi=yes sid='$sid'$cchp_param";

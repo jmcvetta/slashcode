@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.18 2006/11/14 18:04:53 tvroom Exp $
+# $Id: firehose.pl,v 1.19 2006/12/05 23:08:53 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -62,6 +62,9 @@ sub view {
 	my $options = $firehose->getAndSetOptions();
 	my $item = $firehose_reader->getFireHose($form->{id});
 	if ($item && $item->{id} && ($item->{public} eq "yes" || $user->{is_admin}) ) {
+		if ($user->{is_admin}) {
+			$firehose->setFireHoseSession($item->{id});
+		}
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
 		my $firehosetext = $firehose_reader->dispFireHose($item, { mode => "full", tags_top => $tags_top, options => $options });
 		slashDisplay("view", {

@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.243 2006/12/05 23:19:59 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.244 2006/12/06 01:04:56 tvroom Exp $
 #
 
 #
@@ -290,6 +290,22 @@ CREATE TABLE comments (
 	KEY uid_date (uid,date),
 	KEY date_sid (date,sid)
 ) TYPE=InnoDB;
+
+#
+# Table structure for table 'comment_log'
+#
+
+DROP TABLE IF EXISTS comment_log;
+
+CREATE TABLE comment_log (
+	id int UNSIGNED NOT NULL auto_increment,
+	cid int UNSIGNED NOT NULL,
+	logtext varchar(255) DEFAULT '' NOT NULL,
+	ts datetime DEFAULT '1970-01-01 00:00:00' NOT NULL,
+	INDEX ts (ts),
+	PRIMARY KEY (id)
+) TYPE=InnoDB;
+
 
 #
 # Table structure for table 'comment_text'

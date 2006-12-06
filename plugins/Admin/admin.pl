@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.301 2006/12/05 23:12:00 tvroom Exp $
+# $Id: admin.pl,v 1.302 2006/12/06 01:02:08 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -86,6 +86,12 @@ sub main {
 			seclev		=> 10000,
 			adminmenu	=> 'config',
 			tab_selected	=> 'colors',
+		},
+		commentlog	=> {
+			function	=> \&commentLog,
+			seclev		=> 100,
+			adminmenu	=> 'security',
+			tab_selected	=> 'commentlog'
 		},
 		listfilters 	=> {
 			function 	=> \&listFilters, # listfilters
@@ -761,6 +767,12 @@ sub colorEdit {
 		colors			=> \@colors,
 		color_select		=> $color_select,
 	});
+}
+
+sub commentLog {
+	my($form, $slashdb, $user, $constants) = @_;
+	my $commentlog = $slashdb->getRecentCommentLog();
+	slashDisplay("commentlog", { commentlog => $commentlog });
 }
 
 ##################################################################

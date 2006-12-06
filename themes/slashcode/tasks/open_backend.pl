@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: open_backend.pl,v 1.35 2006/02/17 00:34:49 pudge Exp $
+# $Id: open_backend.pl,v 1.36 2006/12/06 18:34:12 pudge Exp $
 
 use strict;
 use Slash;
@@ -93,7 +93,8 @@ sub _do_rss {
 		items		=> [ map { { story => $_ } } @$stories ],
 	}, 1);
 
-	save2file("$constants->{basedir}/$filename", $rss, \&fudge);
+	save2file("$constants->{basedir}/$filename", $rss, \&fudge)
+		unless $constants->{rss_no_public_static};
 	save2file("$constants->{basedir}/privaterss/$filename", $rss, \&fudge)
 		if -d "$constants->{basedir}/privaterss/";
 }

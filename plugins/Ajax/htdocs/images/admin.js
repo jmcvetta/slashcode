@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.32 2006/12/05 23:10:08 tvroom Exp $
+// $Id: admin.js,v 1.33 2006/12/06 01:28:04 pudge Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -31,7 +31,6 @@ function admin_signoff(stoid, type, id) {
 	if (type == "firehose") {
 		firehose_collapse_entry(id);
 	}
-	
 }
 
 function adminTagsCommands(id, type) {

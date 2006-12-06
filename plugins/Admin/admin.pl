@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.302 2006/12/06 01:02:08 tvroom Exp $
+# $Id: admin.pl,v 1.303 2006/12/06 01:28:03 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -769,6 +769,7 @@ sub colorEdit {
 	});
 }
 
+##################################################################
 sub commentLog {
 	my($form, $slashdb, $user, $constants) = @_;
 	my $commentlog = $slashdb->getRecentCommentLog();

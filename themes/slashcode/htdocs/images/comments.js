@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.41 2006/12/06 00:36:05 pudge Exp $
+// $Id: comments.js,v 1.42 2006/12/06 17:18:21 pudge Exp $
 
 var comments;
 var root_comments;
@@ -778,11 +778,10 @@ function d2act () {
 	var xy = Position.cumulativeOffset($('commentwrap'));
 	var gd = $('d2act'); 
 	if (gd) {
-		if ($('d2out').className == 'horizontal') {
+		xy[1] = xy[1] - Position.deltaY;
+		if ($('d2out').className == 'horizontal')
 			xy[1] = xy[1] - gd.offsetHeight;
-		} else {
-			xy[1] = xy[1] - Position.deltaY;
-		}
+
 		if (xy[1] < -14) {
 			gd.style.top      = '4px';
 			gd.style.position = 'fixed';

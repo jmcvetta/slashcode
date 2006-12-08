@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.60 2006/12/07 23:24:23 tvroom Exp $
+# $Id: FireHose.pm,v 1.61 2006/12/08 16:06:23 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.61 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -112,6 +112,7 @@ sub createItemFromJournal {
 			introtext 		=> $introtext,
 			type 			=> "journal",
 			popularity		=> $popularity,
+			editorpop		=> $popularity,
 			tid			=> $journal->{tid},
 			srcid			=> $id,
 			discussion		=> $journal->{discussion}
@@ -143,6 +144,7 @@ sub createUpdateItemFromBookmark {
 			url_id 		=> $bookmark->{url_id},
 			uid 		=> $bookmark->{uid},
 			popularity 	=> $popularity,
+			editorpop	=> $popularity,
 			activity 	=> $activity,
 			public 		=> "yes",
 			type		=> $type,
@@ -165,6 +167,7 @@ sub createItemFromSubmission {
 			uid 			=> $submission->{uid},
 			introtext 		=> $submission->{story},
 			popularity 		=> $self->getMinPopularityForColorLevel(5),
+			editorpop 		=> $self->getMinPopularityForColorLevel(5),
 			public 			=> "yes",
 			attention_needed 	=> "yes",
 			type 			=> "submission",
@@ -233,6 +236,7 @@ sub createItemFromStory {
 			introtext	=> parseSlashizedLinks($story->{introtext}),
 			bodytext	=> parseSlashizedLinks($story->{bodytext}),
 			popularity	=> $popularity,
+			editorpop	=> $popularity,
 			primaryskid	=> $story->{primaryskid},
 			tid 		=> $story->{tid},
 			srcid		=> $id,
@@ -253,7 +257,7 @@ sub getFireHoseCount {
 	my $signoff_label = "sign$user->{uid}\ed";
 
 	#XXXFH - add time limit later?
-	return $self->sqlCount("firehose", "editorpop >= $pop_q and rejected='no' and accepted='no' and story!='type'");
+	return $self->sqlCount("firehose", "editorpop >= $pop_q and rejected='no' and accepted='no' and type!='story'");
 }
 
 sub getFireHoseEssentials {
@@ -586,6 +590,7 @@ sub ajaxFireHoseSetOptions {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $firehose = getObject("Slash::FireHose");
 	$firehose->getAndSetOptions();
+	return "";
 }
 
 sub ajaxSaveNoteFirehose {
@@ -1284,4 +1289,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.60 2006/12/07 23:24:23 tvroom Exp $
+$Id: FireHose.pm,v 1.61 2006/12/08 16:06:23 tvroom Exp $

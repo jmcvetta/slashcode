@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.19 2006/12/05 23:08:53 tvroom Exp $
+# $Id: firehose.pl,v 1.20 2006/12/12 18:17:09 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -30,14 +30,14 @@ sub main {
 	}
 
 	my %ops = (
-		list		=> [1,  \&list ],
-		view		=> [1, 	\&view ],
-		default		=> [1,	\&list],
-		setusermode	=> [1,	\&setUserMode ],
+		list		=> [1,  \&list, 1 ],
+		view		=> [1, 	\&view, 1 ],
+		default		=> [1,	\&list, 1 ],
+		edit		=> [1,	\&edit, 100 ]		
 	);
 
 	my $op = $form->{op};
-	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED]) {
+	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED] || $user->{seclev} < $ops{$op}[2] ) {
 		$op = 'default';
 	}
 
@@ -73,6 +73,21 @@ sub view {
 	} else {
 		print getData('notavailable');
 	}
+}
+
+sub edit {
+	my($slashdb, $constants, $user, $form, $gSkin) = @_;
+	my $firehose = getObject("Slash::FireHose");
+	if (!$form->{id}) {
+		list(@_);
+		return;
+	}
+	my $item = $firehose->getFireHose($form->{id});
+	my $url;
+	$url = $slashdb->getUrl($item->{url_id}) if $item->{url_id};
+	my $the_user = $slashdb->getUser($item->{uid});
+	slashDisplay('fireHoseForm', { item => $item, url => $url, the_user => $the_user, needformwrap => 1, needjssubmit => 1 });
+
 }
 
 

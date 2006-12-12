@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.944 2006/12/07 16:45:27 tvroom Exp $
+# $Id: MySQL.pm,v 1.945 2006/12/12 22:50:06 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.944 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.945 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7264,7 +7264,23 @@ sub createStory {
 	my $commentstatus = delete $story->{commentstatus};
 
 	if (!$error) {
-		if ($story->{subid}) {
+		if ($story->{fhid} && $constants->{plugin}{FireHose}) {
+			my $firehose = getObject("Slash::FireHose");
+			my $item = $firehose->getFireHose($story->{fhid});
+			if ($item && $item->{type} eq "journal") {
+				$story->{discussion} = $item->{discussion};
+				$story->{journal_id} = $item->{srcid};
+
+				if ($story->{journal_id}) {
+					if (!$self->sqlCount("journal_transfer", "id = ".$self->sqlQuote($story->{journal_id}))) {
+						$self->sqlInsert("journal_transfer", {
+							id => $story->{journal_id}
+						});
+					}
+				}
+			}
+
+		} elsif ($story->{subid}) {
 			if ($self->sqlSelect('id', 'journal_transfer',
 				'subid=' . $self->sqlQuote($story->{subid})
 			)) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.5 2006/11/29 19:27:46 jamiemccarthy Exp $
+# $Id: FHEditorPop.pm,v 1.6 2006/12/12 22:52:12 tvroom Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -150,7 +150,7 @@ sub run {
 		my $journal = getObject("Slash::Journal");
 		my $j = $journal->get($target_id);
 		$popularity = $firehose->getMinPopularityForColorLevel(6);
-		$popularity = $firehose->getMinPopularityForColorLevel(5) if $j->{submit} eq "yes";
+		$popularity = $firehose->getMinPopularityForColorLevel(5) if $j->{promotetype} eq "publicize";
 
 	} elsif ($type eq 'urls') {
 		my $bookmark_count = $self->sqlCount('bookmarks', "url_id=$target_id_q");

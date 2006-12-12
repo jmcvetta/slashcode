@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.138 2006/08/15 20:12:37 tvroom Exp $
+# $Id: journal.pl,v 1.139 2006/12/12 22:47:46 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.138 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -556,7 +556,7 @@ sub doSaveArticle {
 	}
 
 	return(getData('submit_must_enable_comments'), 1)
-		if $form->{submit} && !$form->{id} && (
+		if ($form->{promotetype} eq "publicize" || $form->{promotetype} eq "publish") && !$form->{id} && (
 			!$form->{journal_discuss}
 				||
 			$form->{journal_discuss} eq 'disabled'
@@ -587,7 +587,7 @@ sub doSaveArticle {
 		my %update;
 		my $article = $journal_reader->get($form->{id});
 		return(getData('submit_must_enable_comments'), 1) if (
-			$form->{submit} && !$article->{discussion} && (
+			($form->{promotetype} eq "publicize" || $form->{promotetype} eq "publish")  && !$article->{discussion} && (
 				!$form->{journal_discuss} || $form->{journal_discuss} eq 'disabled'
 			)
 		);
@@ -622,7 +622,7 @@ sub doSaveArticle {
 		}
 
 		unless ($form->{comments_on}) {
-			for (qw(article tid posttype submit)) {
+			for (qw(article tid posttype submit promotetype)) {
 				$update{$_} = $form->{$_} if defined $form->{$_};
 			}
 			$update{description} = $description;
@@ -634,7 +634,7 @@ sub doSaveArticle {
 
 	} else {
 		my $id = $journal->create($description,
-			$form->{article}, $form->{posttype}, $form->{tid}, $form->{submit});
+			$form->{article}, $form->{posttype}, $form->{tid}, $form->{promotetype});
 
 		unless ($id) {
 			return getData('create_failed');

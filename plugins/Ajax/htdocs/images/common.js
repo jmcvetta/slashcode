@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.72 2006/12/05 23:10:08 tvroom Exp $
+// $Id: common.js,v 1.73 2006/12/12 18:20:54 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -10,6 +10,8 @@ var console_updating = 0;
 var firehose_updates = Array(0);
 var firehose_updates_size = 0;
 var firehose_ordered = Array(0);
+var firehose_before = Array(0);
+var firehose_after = Array(0);
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -443,7 +445,7 @@ function firehose_set_options(name, value) {
 			}
 		}
 	}
-	if (name == "orderby" || name == "mode" || name == "firehose_usermode") {
+	if (name == "mode" || name == "firehose_usermode") {
 		// blur out then remove items
 		if (name == "mode") {
 			fh_view_mode = value;
@@ -584,7 +586,11 @@ function firehose_handle_update() {
 		var fh = 'firehose-' + el[1];
 		var wait_interval = 800;
 		if(el[0] == "add") {
-			if (insert_new_at == "bottom") {
+			if (firehose_before[el[1]] && $('firehose-' + firehose_before[el[1]])) {
+				new Insertion.After('firehose-' + firehose_before[el[1]], el[2]);
+			} else if (firehose_after[el[1]] && $('firehose-' + firehose_after[el[1]])) {
+				new Insertion.Before('firehose-' + firehose_after[el[1]], el[2]);
+			} else if (insert_new_at == "bottom") {
 				new Insertion.Bottom('firehoselist', el[2]);
 			} else {
 				new Insertion.Top('firehoselist', el[2]);
@@ -686,6 +692,16 @@ function firehose_get_updates_handler(transport) {
 	var response = eval_response(transport);
 	var processed = 0;
 	firehose_ordered = response.ordered;
+	firehose_before = Array(0);
+	firehose_after = Array(0);
+	for (i = 0; i < firehose_ordered.length; i++) {
+		if (i > 0) {
+			firehose_before[firehose_ordered[i]] = firehose_ordered[i - 1];
+		}
+		if (i < (firehose_ordered.length - 1)) {
+			firehose_after[firehose_ordered[i]] = firehose_ordered[i + 1];
+		}
+	}
 	if (response.html) {
 		json_update(response);
 		processed = processed + 1;

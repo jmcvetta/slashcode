@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.25 2006/12/13 18:50:50 jamiemccarthy Exp $
+# $Id: login.pl,v 1.26 2006/12/13 18:57:51 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -77,8 +77,8 @@ sub newUser {
 	my $error = 0;
 
 	# check if new nick is OK and if user exists
-	my $matchname = nick2matchname($newnick);
 	my $newnick = nickFix($form->{newusernick});
+	my $matchname = nick2matchname($newnick);
 	if (!$newnick) {
 		push @note, getData('nick_invalid');
 		$error = 1;

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.198 2006/11/30 22:29:25 pudge Exp $
+# $Id: Data.pm,v 1.199 2006/12/13 18:00:03 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.198 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -146,9 +146,11 @@ sub nickFix {
 	return '' if !$nick;
 	my $constants = getCurrentStatic();
 	my $nc = $constants->{nick_chars} || join('', 'a' .. 'z');
+	my $nr = $constants->{nick_regex} || '^[a-z]$';
 	$nick =~ s/\s+/ /g;
 	$nick =~ s/[^$nc]+//g;
 	$nick = substr($nick, 0, $constants->{nick_maxlen});
+	return '' if $nick !~ $nr;
 	return $nick;
 }
 
@@ -4268,4 +4270,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.198 2006/11/30 22:29:25 pudge Exp $
+$Id: Data.pm,v 1.199 2006/12/13 18:00:03 jamiemccarthy Exp $

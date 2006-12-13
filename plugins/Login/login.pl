@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.23 2006/01/06 00:52:18 pudge Exp $
+# $Id: login.pl,v 1.24 2006/12/13 18:00:04 jamiemccarthy Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -73,12 +73,18 @@ sub newUser {
 
 	my $plugins = $slashdb->getDescriptions('plugins');
 
-	# check if user exists
-	$form->{newusernick} = nickFix($form->{newusernick});
-	my $matchname = nick2matchname($form->{newusernick});
-
 	my @note;
 	my $error = 0;
+
+	# check if new nick is OK
+	my $newnick = nickFix($form->{newusernick});
+	if (!$newnick) {
+		push @note, getData('nick_invalid');
+		$error = 1;
+	}
+
+	# check if user exists
+	my $matchname = nick2matchname($newnick);
 
 	if (!$form->{email} || !emailValid($form->{email})) {
 		push @note, getData('email_invalid');
@@ -89,7 +95,7 @@ sub newUser {
 	} elsif ($slashdb->existsEmail($form->{email})) {
 		push @note, getData('email_exists');
 		$error = 1;
-	} elsif ($matchname ne '' && $form->{newusernick} ne '') {
+	} elsif ($matchname ne '' && $newnick ne '') {
 		if ($constants->{newuser_portscan}) {
 			my $is_trusted = $slashdb->checkAL2($user->{srcids}, 'trusted');
 			if (!$is_trusted) {
@@ -105,14 +111,14 @@ sub newUser {
 		}
 	} else {
 		push @note, getData('duplicate_user', { 
-			nick => $form->{newusernick},
+			nick => $newnick,
 		});
 		$error = 1;
 	}
 
 	if (!$error) {
 		my $uid = $slashdb->createUser(
-			$matchname, $form->{email}, $form->{newusernick}
+			$matchname, $form->{email}, $newnick
 		);
 		if ($uid) {
 			my $data = {};
@@ -150,7 +156,7 @@ sub newUser {
 		} else {
 #			$slashdb->resetFormkey($form->{formkey});	
 			push @note, getData('duplicate_user', { 
-				nick => $form->{newusernick},
+				nick => $newnick,
 			});
 			$error = 1;
 		}

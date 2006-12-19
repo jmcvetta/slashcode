@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.312 2006/12/19 00:29:30 pudge Exp $
+# $Id: Slash.pm,v 1.313 2006/12/19 04:56:03 pudge Exp $
 
 package Slash;
 
@@ -1794,10 +1794,14 @@ EOT1
 			<h4><a name="$comment->{cid}">$comment->{subject}</a></h4>
 EOT2
 
-	my $return = <<EOT;
+	my $return = '';
+	$return = <<EOT if !$options->{noshow_show};
 <li id="tree_$comment->{cid}" class="comment">
 <div id="comment_status_$comment->{cid}" class="commentstatus"></div>
 <div id="comment_$comment->{cid}"$classattr>
+EOT
+
+	$return .= <<EOT if !$options->{noshow};
 	<div class="commentTop">
 		<div class="title">
 $head
@@ -1824,7 +1828,8 @@ EOT
 	# archive mode or if we are in metamod. Nicknames are always equal to
 	# '-' in metamod. This logic is extremely old and could probably be
 	# better formulated.
-	if ($user->{mode} ne 'archive'
+	if (!$options->{noshow}
+		&& $user->{mode} ne 'archive'
 		&& $user->{mode} ne 'metamod'
 		&& $comment->{nickname} ne "-") { # this last test probably useless
 		my @link = ( );
@@ -1873,9 +1878,10 @@ EOT
 
 	}
 
-	$return .= "</div></div>\n\n";
+	$return .= "</div>\n" if !$options->{noshow};
+	$return .= "</div>\n\n" if !$options->{noshow_show};
 
-	if ($discussion2) {
+	if ($discussion2 && !$options->{noshow_show}) {
 		$return .= <<EOT;
 <div id="replyto_$comment->{cid}"></div>
 

@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.14 2006/11/21 20:19:24 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.15 2006/12/19 22:20:14 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -9,7 +9,6 @@ CREATE TABLE firehose (
 	discussion mediumint UNSIGNED NOT NULL default '0',
 	type ENUM("submission","journal","bookmark","feed", "story") default 'submission',
 	createtime datetime NOT NULL default '0000-00-00 00:00:00',
-	title varchar(80) NOT NULL default '',
 	popularity float NOT NULL default '0',
 	editorpop float NOT NULL default '0',
 	activity float NOT NULL default '0',
@@ -31,6 +30,7 @@ CREATE TABLE firehose (
 	category varchar(30) NOT NULL default '',
 	last_update TIMESTAMP,
 	signoffs VARCHAR(255) NOT NULL DEFAULT '',
+	stoid MEDIUMINT UNSIGNED DEFAULT '0',
 	PRIMARY KEY (id),
 	UNIQUE globjid (globjid),
 	KEY createtime (createtime),

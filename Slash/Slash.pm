@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.311 2006/11/29 19:32:41 pudge Exp $
+# $Id: Slash.pm,v 1.312 2006/12/19 00:29:30 pudge Exp $
 
 package Slash;
 
@@ -963,13 +963,23 @@ sub displayThread {
 			if ($discussion2 && $class eq 'oneline' && $comment->{subject_orig} eq 'no') {
 				$comment->{subject} = 'Re:';
 			}
+
+			my $noshow = 0;
+			if ($discussion2 && $user->{acl}{d2testing}) {
+				if ($class eq 'hidden') {
+					$noshow = 1;
+					$user->{state}{comments}{noshow} ||= [];
+					push @{$user->{state}{comments}{noshow}}, $cid;
+				}
+			}
+
 			if ($lvl && $indent) {
 				$return .= $const->{tablebegin} .
-					dispComment($comment, { class => $class }) .
+					dispComment($comment, { class => $class, noshow => $noshow }) .
 					$const->{tableend};
 				$cagedkids = 0;
 			} else {
-				$return .= dispComment($comment, { class => $class });
+				$return .= dispComment($comment, { class => $class, noshow => $noshow });
 			}
 			$displayed++;
 		} else {
@@ -1010,6 +1020,7 @@ sub displayThread {
 			subject_only	=> 1,
 		});
 		if ($discussion2) {
+			push @{$user->{state}{comments}{hiddens}}, $pid;
 			$return .= slashDisplay('displayThread', {
 				'link'		=> $link,
 				discussion2	=> $discussion2,
@@ -1141,7 +1152,7 @@ EOT
 		reasons		=> $reasons,
 		can_mod		=> $can_mod,
 		is_anon		=> isAnon($comment->{uid}),
-		class		=> $options->{class}
+		options		=> $options
 	}, { Return => 1, Nocomm => 1 });
 }
 

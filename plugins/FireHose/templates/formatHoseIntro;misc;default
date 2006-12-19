@@ -14,7 +14,7 @@ __seclev__
 10000
 __template__
 [%
-IF item.type == "submission";
+IF item.type == "submission" || item.type == "submission";
 
 	IF item.email && item.name;
 		IF constants.submissions_link_relnofollow; rnf = " rel=\"nofollow\""; ELSE; rnf = ""; END;
@@ -39,7 +39,11 @@ IF item.url_id && url.url;
 	END;
 END;
 
+IF !forform && item.type != "story";
+	introtext = Slash.noFollow(introtext);
+END;
+
 %]
 
 __version__
-$Id: formatHoseIntro;misc;default,v 1.6 2006/11/17 15:31:16 tvroom Exp $
+$Id: formatHoseIntro;misc;default,v 1.7 2006/12/19 22:17:55 tvroom Exp $

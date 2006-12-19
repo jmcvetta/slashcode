@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.33 2006/12/06 01:28:04 pudge Exp $
+// $Id: admin.js,v 1.34 2006/12/19 21:55:23 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -31,6 +31,17 @@ function admin_signoff(stoid, type, id) {
 	if (type == "firehose") {
 		firehose_collapse_entry(id);
 	}
+}
+
+function admin_neverdisplay(stoid) {
+	var params = [];
+	params['op'] = 'admin_neverdisplay';
+	params['reskey'] = reskey_static;
+	params['stoid'] = stoid;
+	if (confirm("Set story to neverdisplay?")) {
+		ajax_update(params, 'nvd-' + stoid);
+	}
+	
 }
 
 function adminTagsCommands(id, type) {

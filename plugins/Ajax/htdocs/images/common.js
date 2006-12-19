@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.74 2006/12/19 21:55:23 tvroom Exp $
+// $Id: common.js,v 1.75 2006/12/19 22:21:00 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -847,5 +847,29 @@ function firehose_collapse_entry(id) {
 		fh.className = "briefarticle";
 	}	
 	tagsHideBody(id)
+
+}
+
+function firehose_remove_entry(id) {
+	var fh = $('firehose-' + id);
+	if (fh) {
+		var attributes = { 
+			 height: { to: 0 },
+			 opacity: { to: 0 }
+		};
+		var myAnim = new YAHOO.util.Anim(fh, attributes); 
+		myAnim.duration = 0.5;
+		myAnim.onComplete.subscribe(function() {
+		    var el = this.getEl();
+		        el.parentNode.removeChild(el);
+		});
+		myAnim.animate();
+	}
+}
+
+function firehose_open_note(id) {
+
+	
+
 
 }

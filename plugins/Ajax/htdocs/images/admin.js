@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.34 2006/12/19 21:55:23 tvroom Exp $
+// $Id: admin.js,v 1.35 2006/12/19 22:21:00 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -33,14 +33,18 @@ function admin_signoff(stoid, type, id) {
 	}
 }
 
-function admin_neverdisplay(stoid) {
+function admin_neverdisplay(stoid, type, fhid) {
 	var params = [];
 	params['op'] = 'admin_neverdisplay';
 	params['reskey'] = reskey_static;
 	params['stoid'] = stoid;
 	if (confirm("Set story to neverdisplay?")) {
 		ajax_update(params, 'nvd-' + stoid);
+		if (type == "firehose") {
+			firehose_remove_entry(fhid);
+		}
 	}
+
 	
 }
 
@@ -241,19 +245,7 @@ function firehose_reject (el) {
 	params['id'] = el.value;
 	params['reskey'] = reskey_static;
 	ajax_update(params, 'reject_' + el.value);
-	if (fh) {
-		var attributes = { 
-			 height: { to: 0 },
-			 opacity: { to: 0 }
-		};
-		var myAnim = new YAHOO.util.Anim(fh, attributes); 
-		myAnim.duration = 0.5;
-		myAnim.onComplete.subscribe(function() {
-		    var el = this.getEl();
-		        el.parentNode.removeChild(el);
-		});
-		myAnim.animate(); 
-	}
+	firehose_remove_entry(el.value);
 }
 
 function firehose_open_note(id) {

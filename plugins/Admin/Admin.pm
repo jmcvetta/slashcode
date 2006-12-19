@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.33 2006/12/05 23:12:00 tvroom Exp $
+# $Id: Admin.pm,v 1.34 2006/12/19 21:24:18 tvroom Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -234,6 +234,22 @@ sub ajax_signoff {
 	
 	$slashdb->createSignoff($stoid, $uid, "signed");
 	return "Signed";
+}
+
+sub ajax_neverdisplay {
+	my $slashdb = getCurrentDB();
+	my $form = getCurrentForm();
+	my $user = getCurrentUser();
+	return unless $user->{is_admin};
+	
+	my $stoid = $form->{stoid};
+	my $uid   = $user->{uid};
+	
+	return unless $stoid =~/^\d+$/;
+
+	$slashdb->setStory($stoid, { neverdisplay => 1 });
+	return "neverdisplay";
+
 }
 
 ##################################################################

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.946 2006/12/13 07:49:13 pudge Exp $
+# $Id: MySQL.pm,v 1.947 2006/12/20 00:15:11 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.946 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.947 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7269,6 +7269,7 @@ sub createStory {
 		if ($story->{fhid} && $constants->{plugin}{FireHose}) {
 			my $firehose = getObject("Slash::FireHose");
 			my $item = $firehose->getFireHose($story->{fhid});
+			$firehose->setFireHose($story->{fhid}, { stoid => $stoid });
 			if ($item && $item->{type} eq "journal") {
 				$story->{discussion} = $item->{discussion};
 				$story->{journal_id} = $item->{srcid};

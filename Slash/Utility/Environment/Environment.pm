@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.206 2006/12/02 00:28:05 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.207 2006/12/20 00:06:57 tvroom Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.207 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2502,12 +2502,17 @@ sub getOpAndDatFromStatusAndURI {
 		if ($uri eq "ajax") {
 			my $form = getCurrentForm();
 			if ($form && $form->{op}) {
-				my $reader = getObject('Slash::DB', { db_type => 'reader' });
-				my $class = $reader->getClassForAjaxOp($form->{op});
-				$class =~s/^Slash:://g;
-				$class =~s/::/_/g;
-				$class =~ tr/A-Z/a-z/;
-				$uri = "ajax_$class" if $class;
+				my $user = getCurrentUser;
+				if ($user->{state}{ajax_accesslog_op}) {
+					$uri = $user->{state}{ajax_accesslog_op};
+				} else {
+					my $reader = getObject('Slash::DB', { db_type => 'reader' });
+					my $class = $reader->getClassForAjaxOp($form->{op});
+					$class =~s/^Slash:://g;
+					$class =~s/::/_/g;
+					$class =~ tr/A-Z/a-z/;
+					$uri = "ajax_$class" if $class;
+				}
 			}
 		}
 	# This is for me, I am getting tired of patching my local copy -Brian
@@ -3422,4 +3427,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.206 2006/12/02 00:28:05 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.207 2006/12/20 00:06:57 tvroom Exp $

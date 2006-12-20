@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.36 2006/12/19 00:29:30 pudge Exp $
+# $Id: ajax.pl,v 1.37 2006/12/20 00:05:46 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -273,6 +273,8 @@ sub fetchComments {
 	my $cids = [ grep /^\d+$/, split /,/, $form->{cids} ];
 	my $id   = $form->{discussion_id} || 0;
 	my $cid  = $form->{cid} || 0; # root id
+
+	$user->{state}{ajax_accesslog_op} = "ajax_comments_fetch";
 
 	# XXX error?
 	return unless @$cids && $id;

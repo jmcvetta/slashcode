@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.314 2006/12/20 01:12:12 pudge Exp $
+# $Id: Slash.pm,v 1.315 2006/12/20 16:12:33 pudge Exp $
 
 package Slash;
 
@@ -223,6 +223,7 @@ sub selectComments {
 }
 
 sub jsSelectComments {
+	# version 0.9 is broken; 0.6 and 1.00 seem to work -- pudge 2006-12-19
 	require Data::JavaScript::Anon;
 	my($slashdb, $constants, $user, $form) = @_;
 	$slashdb   ||= getCurrentDB();

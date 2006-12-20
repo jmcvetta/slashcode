@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.63 2006/12/19 22:18:59 tvroom Exp $
+# $Id: FireHose.pm,v 1.64 2006/12/20 16:09:48 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -740,11 +740,7 @@ sub ajaxFireHoseGetUpdates {
 	my $reskey_dump = "";
 	my $reskey = getObject("Slash::ResKey");
 	my $user_rkey = $reskey->key('ajax_user_static', { no_state => 1 });
-	my $admin_rkey = $reskey->key('ajax_admin_static', { no_state => 1 });
-	$reskey_dump .= "ajax_user_static = '" . $user_rkey->reskey() . "';\n" if $user_rkey->create();
-	if ($user->{is_admin}) {
-		$reskey_dump .= "ajax_admin_static = '" . $admin_rkey->reskey() . "';\n" if $admin_rkey->create();
-	}
+	$reskey_dump .= "reskey_static = '" . $user_rkey->reskey() . "';\n" if $user_rkey->create();
 	return "$data_dump\n$reskey_dump";
 
 }
@@ -1332,4 +1328,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.63 2006/12/19 22:18:59 tvroom Exp $
+$Id: FireHose.pm,v 1.64 2006/12/20 16:09:48 tvroom Exp $

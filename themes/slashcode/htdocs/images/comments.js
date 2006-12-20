@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.49 2006/12/20 22:05:39 pudge Exp $
+// $Id: comments.js,v 1.50 2006/12/20 23:47:25 pudge Exp $
 
 var comments;
 var root_comments;
@@ -153,7 +153,7 @@ function setFocusComment(cid, alone, mods) {
 //	statusdiv.innerHTML = '';
 
 	if (!commentIsInWindow(abscid)) {
-		scrollTo(abscid);
+		scrollWindowTo(abscid);
 	}
 
 	return false;
@@ -803,7 +803,7 @@ function toggleDisplayOptions() {
 
 		params['comments_control'] = 'vertical';
 
-	} else if (d2out.className == 'horizontal') {
+	} else if (1) { // XXX temp fix!!  d2out.className == 'horizontal') {
 		gods.style.display  = 'none';
 		d2opt.style.display = 'inline';
 
@@ -894,7 +894,7 @@ function updateTotals() {
 	$('currentOneline').innerHTML = currents['oneline'];
 }
 
-function scrollTo(cid) {
+function scrollWindowTo(cid) {
 	var comment_y = getOffsetTop(fetchEl('comment_' + cid));
 	if ($('comment_hidden').className == 'horizontal')
 		comment_y -= 60;

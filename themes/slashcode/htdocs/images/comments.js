@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.46 2006/12/20 05:36:25 pudge Exp $
+// $Id: comments.js,v 1.47 2006/12/20 05:59:11 pudge Exp $
 
 var comments;
 var root_comments;
@@ -437,7 +437,7 @@ function calcTotals() {
 	}
 }
 
-function calcSliderTotals(thresh, hthresh) {
+function getSliderTotals(thresh, hthresh) {
 	// we are precalculating, so this code should never be used!
 	// here for testing -- pudge
 /*	if (!thresh_totals[thresh] || !thresh_totals[thresh][hthresh]) {

@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.116 2006/11/06 20:59:14 scc Exp $
+# $Id: THEME,v 1.117 2006/12/20 00:11:55 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -99,6 +99,7 @@ image=htdocs/images/slashlogo.gif
 image=htdocs/images/slashslogan.gif
 image=htdocs/images/slc.gif
 image=htdocs/images/slr.gif
+image=htdocs/images/spinner.gif
 image=htdocs/images/sr.gif
 image=htdocs/images/srs.gif
 image=htdocs/images/tbl_g.gif

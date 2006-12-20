@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.45 2006/12/20 01:12:13 pudge Exp $
+// $Id: comments.js,v 1.46 2006/12/20 05:36:25 pudge Exp $
 
 var comments;
 var root_comments;
@@ -159,6 +159,13 @@ function setFocusComment(cid, alone, mods) {
 	return false;
 }
 
+function changeTHT(t_delta, ht_delta) {
+	if (!t_delta && !ht_delta)
+		return void(0);
+
+	user_threshold       += t_delta;
+	changeHT(ht_delta);
+}
 
 function changeHT(delta) {
 	if (!delta)

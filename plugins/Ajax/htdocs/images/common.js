@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.75 2006/12/19 22:21:00 tvroom Exp $
+// $Id: common.js,v 1.76 2006/12/20 22:16:35 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -671,11 +671,11 @@ function firehose_reorder() {
 					fhlist.appendChild(fhel);
 				}
 				if ( firehose_future[firehose_ordered[i]] ) {
-					if($("ttype-" + firehose_ordered[i])) {
+					if ($("ttype-" + firehose_ordered[i])) {
 						$("ttype-" + firehose_ordered[i]).className = "future";	
 					}
 				} else {
-					if($("ttype-" + firehose_ordered[i]) && $("ttype-" + firehose_ordered[i]).className == "future") {
+					if ($("ttype-" + firehose_ordered[i]) && $("ttype-" + firehose_ordered[i]).className == "future") {
 						$("ttype-" + firehose_ordered[i]).className = "story";	
 					}
 				}

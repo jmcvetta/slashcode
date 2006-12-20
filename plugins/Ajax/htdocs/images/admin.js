@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.35 2006/12/19 22:21:00 tvroom Exp $
+// $Id: admin.js,v 1.36 2006/12/20 22:16:34 pudge Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -44,8 +44,6 @@ function admin_neverdisplay(stoid, type, fhid) {
 			firehose_remove_entry(fhid);
 		}
 	}
-
-	
 }
 
 function adminTagsCommands(id, type) {

@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.48 2006/12/20 20:41:52 scc Exp $
+// $Id: comments.js,v 1.49 2006/12/20 22:05:39 pudge Exp $
 
 var comments;
 var root_comments;
@@ -970,8 +970,6 @@ function isInWindow(obj) {
 }
 
 
-
-
 /* code for the draggable threshold widget */
 
 function partitionedRange( range, partitions ) {
@@ -987,7 +985,6 @@ function boundsToSizes( bounds, scaleFactor ) {
 		sizes[i] = Math.abs(bounds[i+1]-bounds[i]) * scaleFactor;
 	return sizes;
 }
-
 
 SCALE_BAND_HEIGHT = 20;
 
@@ -1047,7 +1044,7 @@ YAHOO.slashdot.ThresholdWidget.prototype.setCounts = function( counts ) {
 
 
 YAHOO.slashdot.ThresholdWidget.prototype._requestCounts = function() {
-	return calcSliderTotals(this.displayedTs[HIDE_BAR], this.displayedTs[ABBR_BAR]);
+	return getSliderTotals(this.displayedTs[HIDE_BAR], this.displayedTs[ABBR_BAR]);
 }
 
 YAHOO.slashdot.ThresholdWidget.prototype._onDragBar = function( whichBar ) {

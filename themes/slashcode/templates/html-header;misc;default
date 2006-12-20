@@ -35,6 +35,7 @@ __template__
 <script src="[% constants.imagedir %]/yui/yahoo.js?[% constants.cvs_tag_currentcode %]"         type="text/javascript"></script>
 <script src="[% constants.imagedir %]/yui/dom.js?[% constants.cvs_tag_currentcode %]"           type="text/javascript"></script>
 <script src="[% constants.imagedir %]/yui/event.js?[% constants.cvs_tag_currentcode %]"         type="text/javascript"></script>
+<script src="[% constants.imagedir %]/yui/dragdrop.js?[% constants.cvs_tag_currentcode %]"      type="text/javascript"></script>
 <script src="[% constants.imagedir %]/yui/connection.js?[% constants.cvs_tag_currentcode %]"    type="text/javascript"></script>
 <script src="[% constants.imagedir %]/yui/autocomplete.js?[% constants.cvs_tag_currentcode %]"  type="text/javascript"></script>
 <script src="[% constants.imagedir %]/sd_autocomplete.js?[% constants.cvs_tag_currentcode %]"   type="text/javascript"></script>
@@ -48,4 +49,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.29 2006/12/05 00:05:00 pudge Exp $
+$Id: html-header;misc;default,v 1.30 2006/12/20 21:26:12 scc Exp $

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1119 2006/12/20 00:16:14 tvroom Exp $
+# $Id: upgrades,v 1.1120 2006/12/21 20:13:57 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4299,3 +4299,7 @@ ALTER TABLE firehose DROP COLUMN title;
 ALTER TABLE firehose ADD COLUMN stoid MEDIUMINT UNSIGNED DEFAULT '0';
 
 INSERT INTO ajax_ops VALUES (NULL, 'admin_neverdisplay', 'Slash::Admin', 'ajax_neverdisplay', 'ajax_admin_static', 'use');
+
+# 2006-12-21
+UPDATE vars SET value = 'T_2_5_0_139' WHERE name = 'cvs_tag_currentcode';
+

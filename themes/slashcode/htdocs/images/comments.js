@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.52 2006/12/21 01:36:24 scc Exp $
+// $Id: comments.js,v 1.53 2006/12/21 02:50:24 scc Exp $
 
 var comments;
 var root_comments;
@@ -1073,9 +1073,9 @@ YAHOO.slashdot.ThresholdWidget.prototype._onDragBar = function( whichBar ) {
 YAHOO.slashdot.ThresholdWidget.prototype._onEndDragBar = function( whichBar ) {
 	YAHOO.util.Dom.removeClass("ccw-control", "ccw-active");
 
-	var deltas = this.preDragTs;
+	var deltas = this.displayedTs.slice();
 	for ( var i=0; i<deltas.length; ++i )
-		deltas[i] -= this.displayedTs[i];
+		deltas[i] -= this.preDragTs[i];
 
 	changeTHT(deltas[HIDE_BAR], deltas[ABBR_BAR]);
 }

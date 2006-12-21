@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.50 2006/12/20 23:47:25 pudge Exp $
+// $Id: comments.js,v 1.51 2006/12/21 00:09:28 pudge Exp $
 
 var comments;
 var root_comments;
@@ -164,7 +164,16 @@ function changeTHT(t_delta, ht_delta) {
 		return void(0);
 
 	user_threshold       += t_delta;
-	changeHT(ht_delta);
+	user_highlightthresh += ht_delta;
+	// limit to between -1 and 5
+	user_threshold       = Math.min(Math.max(user_threshold,       -1), 5);
+	user_highlightthresh = Math.min(Math.max(user_highlightthresh, -1), 5);
+
+	// T cannot be higher than HT; this also modifies delta
+	if (user_threshold > user_highlightthresh)
+		user_threshold = user_highlightthresh;
+
+	changeThreshold(user_threshold + ''); // needs to be a string value
 }
 
 function changeHT(delta) {

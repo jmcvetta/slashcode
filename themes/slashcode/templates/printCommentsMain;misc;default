@@ -203,11 +203,13 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
           </div>
 
           <div id="ccw-control">
-            <div id="ccw-hide-bar-pos">
-              <div id="ccw-hide-bar"><div id="ccw-hide-bar-tab" class="ccw-bar-tab"></div></div>
-            </div>
-            <div id="ccw-abbr-bar-pos">
-              <div id="ccw-abbr-bar"><div id="ccw-abbr-bar-tab" class="ccw-bar-tab"></div></div>
+            <div id="ccw-centering-rail">
+              <div id="ccw-hide-bar-pos">
+                <div id="ccw-hide-bar"><div id="ccw-hide-bar-tab" class="ccw-bar-tab"></div></div>
+              </div>
+              <div id="ccw-abbr-bar-pos">
+                <div id="ccw-abbr-bar"><div id="ccw-abbr-bar-tab" class="ccw-bar-tab"></div></div>
+              </div>
             </div>
           </div>
         </div>
@@ -247,4 +249,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.61 2006/12/20 23:47:25 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.62 2006/12/21 18:43:31 scc Exp $

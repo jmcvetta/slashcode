@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.55 2006/12/21 05:32:08 scc Exp $
+// $Id: comments.js,v 1.56 2006/12/21 18:52:15 pudge Exp $
 
 var comments;
 var root_comments;
@@ -464,7 +464,7 @@ function getSliderTotals(thresh, hthresh) {
 	}
 */
 
-	return[
+	return [
 		thresh_totals[thresh][hthresh][viewmodevalue['hidden']],
 		thresh_totals[thresh][hthresh][viewmodevalue['oneline']],
 		thresh_totals[thresh][hthresh][viewmodevalue['full']]

@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.54 2006/12/21 04:26:22 scc Exp $
+// $Id: comments.js,v 1.55 2006/12/21 05:32:08 scc Exp $
 
 var comments;
 var root_comments;
@@ -1013,7 +1013,7 @@ YAHOO.slashdot.ThresholdWidget = function() {
 
 		var el = YAHOO.util.Dom.get(id+"-pos");
 
-		var dd = new YAHOO.slashdot.ThresholdBar(el);
+		var dd = new YAHOO.slashdot.ThresholdBar(el, "ccw", {scroll:false});
 		dd.setOuterHandleElId(id+"-tab");
 		dd.setHandleElId(id);
 		dd.whichBar = whichBar;

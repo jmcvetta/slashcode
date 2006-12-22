@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.67 2006/12/22 04:01:43 tvroom Exp $
+# $Id: FireHose.pm,v 1.68 2006/12/22 14:52:25 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -391,7 +391,7 @@ sub getFireHoseEssentials {
 
 	if ($options->{color}) {
 		if ($colors->{$options->{color}}) {
-			my $pop = $self->getMidPopularityForColorLevel($colors->{$options->{color}});
+			my $pop = $self->getMinPopularityForColorLevel($colors->{$options->{color}});
 			my $pop_q = $self->sqlQuote($pop);
 			if ($user->{is_admin} && !$user->{firehose_usermode}) {
 				push @where, "editorpop >= $pop_q";
@@ -1234,7 +1234,9 @@ sub getMidPopularityForColorLevel {
 	my $levels = $slashdb->getVar('firehose_slice_points', 'value', 1);
 	my @levels = split(/\|/, $levels);
 	my $min = $levels[$level - 1 ];
-	my $max = defined $levels[$level] ? $levels[$level] : $levels[$level - 1] + 5;
+
+	my $maxindex = $level - 2;
+	my $max = $maxindex >= 0 && defined $levels[$maxindex] ? $levels[$maxindex] : $levels[$level - 1] + 5;
 	return (($min + $max) / 2);
 }
 
@@ -1328,4 +1330,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.67 2006/12/22 04:01:43 tvroom Exp $
+$Id: FireHose.pm,v 1.68 2006/12/22 14:52:25 tvroom Exp $

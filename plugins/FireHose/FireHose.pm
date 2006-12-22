@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.66 2006/12/20 22:16:35 pudge Exp $
+# $Id: FireHose.pm,v 1.67 2006/12/22 04:01:43 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -325,7 +325,7 @@ sub getFireHoseEssentials {
 
 	if ($options->{createtime_subscriber_future}) {
 		my $future_secs = $constants->{subscribe_future_secs};
-		push @where, "createtime <= DATE_ADD(NOW() INTERVAL $future_secs SECOND)";
+		push @where, "createtime <= DATE_ADD(NOW(), INTERVAL $future_secs SECOND)";
 	}
 
 	if ($options->{attention_needed} && !$doublecheck) {
@@ -1328,4 +1328,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.66 2006/12/20 22:16:35 pudge Exp $
+$Id: FireHose.pm,v 1.67 2006/12/22 04:01:43 tvroom Exp $

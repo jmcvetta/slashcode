@@ -19,9 +19,9 @@ __template__
 		<span class="tagname">[%- IF is_menu -%]<span class="tagmenu"><a onClick="attachCompleter(this, '[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose', [% parts.1 %])">[%- ELSIF is_link -%]<a href="/tags/[% parts.0 | strip_html %]">[%- END -%][%- parts.0 | strip_html -%][%- IF is_menu || is_link %]</a>[% END -%][%- IF is_menu %]</span>[% END -%]</span>[% IF !loop.last() %], 
 		[% END -%]
 	[%- END %]
-	[% IF item.type == "story" %][% PROCESS signoff stoid=item.srcid fhid = item.id %] [% PROCESS neverdisplay stoid=item.srcid fhid=item.id %][% END %]
+	[% IF item.type == "story" %][% IF user.is_admin %][% PROCESS signoff stoid=item.srcid fhid = item.id %] [% PROCESS neverdisplay stoid=item.srcid fhid=item.id %][% END %][% END %]
 [%- END %]
 __seclev__
 10000
 __version__
-$Id: firehose_tags_top;misc;default,v 1.14 2006/12/19 22:17:55 tvroom Exp $
+$Id: firehose_tags_top;misc;default,v 1.15 2006/12/22 04:01:43 tvroom Exp $

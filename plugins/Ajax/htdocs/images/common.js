@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.77 2007/01/02 16:21:30 tvroom Exp $
+// $Id: common.js,v 1.78 2007/01/02 23:09:04 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -13,6 +13,9 @@ var firehose_ordered = Array(0);
 var firehose_before = Array(0);
 var firehose_after = Array(0);
 var firehose_future;
+var fh_colorslider; 
+var fh_ticksize;
+var fh_colors = Array(0);
 
 function createPopup(xy, titlebar, name, contents, message) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -871,9 +874,15 @@ function firehose_remove_entry(id) {
 	}
 }
 
-function firehose_open_note(id) {
+function firehose_slider_init() {
+	fh_colorslider = YAHOO.widget.Slider.getHorizSlider("colorsliderbg", "colorsliderthumb", 0, 180, fh_ticksize);
+	fh_colorslider.setValue(fh_ticksize * fh_colors_hash[fh_color] , 1);
+        fh_colorslider.subscribe("slideEnd", firehose_slider_end);
+}	
 
-	
-
-
+function firehose_slider_end(offsetFromStart) {
+	var newVal = fh_colorslider.getValue();
+	var color = fh_colors[ newVal / fh_ticksize ];
+	firehose_set_options("color", color);
 }
+

@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.36 2006/12/20 22:16:34 pudge Exp $
+// $Id: admin.js,v 1.37 2007/01/02 16:21:30 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -38,6 +38,7 @@ function admin_neverdisplay(stoid, type, fhid) {
 	params['op'] = 'admin_neverdisplay';
 	params['reskey'] = reskey_static;
 	params['stoid'] = stoid;
+	params['fhid'] = fhid;
 	if (confirm("Set story to neverdisplay?")) {
 		ajax_update(params, 'nvd-' + stoid);
 		if (type == "firehose") {

@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.19 2006/12/20 21:23:49 scc Exp $
+# $Id: PLUGIN,v 1.20 2007/01/02 16:21:30 tvroom Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 mysql_dump=mysql_dump.sql
@@ -12,6 +12,7 @@ htdoc=htdocs/images/yui/connection.js
 htdoc=htdocs/images/yui/dragdrop.js
 htdoc=htdocs/images/yui/animation.js
 htdoc=htdocs/images/yui/autocomplete.js
+htdoc=htdocs/images/yui/slider.js
 htdoc=htdocs/images/sd_autocomplete.js
 htdoc=htdocs/images/common.js
 htdoc=htdocs/images/prototype.js

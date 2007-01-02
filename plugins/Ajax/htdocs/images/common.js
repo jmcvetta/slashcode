@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.76 2006/12/20 22:16:35 pudge Exp $
+// $Id: common.js,v 1.77 2007/01/02 16:21:30 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -466,6 +466,10 @@ function firehose_set_options(name, value) {
 			// remove elements
 			setTimeout("firehose_remove_all_items()", 600);
 		}
+	}
+
+	if (name == "color") { 
+		params[name] = [value];
 	}
 
 	var handlers = { 

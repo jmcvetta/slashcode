@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.69 2007/01/02 16:33:00 tvroom Exp $
+# $Id: FireHose.pm,v 1.70 2007/01/03 18:37:31 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -738,7 +738,6 @@ sub ajaxFireHoseGetUpdates {
 		$prev = $_;
 		$pos->{$_} = $i;
 		$i++;
-		
 	}
 
 	@$updates  = sort {
@@ -753,8 +752,7 @@ sub ajaxFireHoseGetUpdates {
 	$html->{"fh-paginate"} = slashDisplay("paginate", { contentsonly => 1, page => $form->{page} }, { Return => 1, Page => "firehose"});
 	$html->{local_last_update_time} = timeCalc($slashdb->getTime(), "%H:%M");
 	$html->{gmt_update_time} = " (".timeCalc($slashdb->getTime(), "%H:%M", 0)." GMT) " if $user->{is_admin};
-	
-		
+
 	my $data_dump =  Data::JavaScript::Anon->anon_dump({
 		html		=> $html,
 		updates		=> $updates,
@@ -1074,12 +1072,11 @@ sub getAndSetOptions {
 	$options->{mode} = $mode;
 
 	my $colors = $self->getFireHoseColors();
-	
+
 	if ($form->{color} && $colors->{$form->{color}}) {
 		$options->{color} = $form->{color};
 	}
 	$options->{color} ||= $user->{firehose_color};
-
 
 	if ($user->{is_admin} && $form->{setusermode}) {
 		$self->setUser($user->{uid}, { firehose_usermode => $form->{firehose_usermode} ? 1 : "" });
@@ -1132,7 +1129,7 @@ sub getAndSetOptions {
 		$fhfilter = $user->{firehose_fhfilter};
 		$options->{fhfilter} = $fhfilter;
 	}
-	
+
 	$fhfilter =~ s/^\s+|\s+$//g;
 	my @fh_ops = map { lc($_) } split(/\s+/, $fhfilter);
 
@@ -1175,7 +1172,7 @@ sub getAndSetOptions {
 			$fh_options->{qfilter} .= $_ . ' ';
 		}
 	}
-	
+
 	if ($form->{color} && $colors->{$form->{color}}) {
 		$fh_options->{color} = $form->{color};
 	}
@@ -1374,4 +1371,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.69 2007/01/02 16:33:00 tvroom Exp $
+$Id: FireHose.pm,v 1.70 2007/01/03 18:37:31 pudge Exp $

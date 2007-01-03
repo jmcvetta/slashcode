@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.316 2006/12/22 06:55:44 pudge Exp $
+# $Id: Slash.pm,v 1.317 2007/01/03 18:37:31 pudge Exp $
 
 package Slash;
 
@@ -1030,7 +1030,7 @@ sub displayThread {
 			}
 
 			my $noshow = 0;
-			if ($discussion2 && $user->{acl}{d2testing}) {
+			if ($discussion2) { # && $user->{acl}{d2testing}) {
 				if ($class eq 'hidden') {
 					$noshow = 1;
 					$user->{state}{comments}{noshow} ||= [];

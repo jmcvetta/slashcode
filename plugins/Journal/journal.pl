@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.141 2006/12/19 00:28:38 pudge Exp $
+# $Id: journal.pl,v 1.142 2007/01/03 18:37:31 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -543,7 +543,7 @@ sub displayArticle {
 sub doSaveArticle {
 	my($journal, $constants, $user, $form, $journal_reader, $gSkin, $rkey) = @_;
 
-	$form->{promotetype} ||= 'post';
+	$form->{promotetype} ||= 'publish';
 
 	$form->{description} =~ s/[\r\n].*$//s;  # strip anything after newline
 	my $description = strip_notags($form->{description});

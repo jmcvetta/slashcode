@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Admin.pm,v 1.34 2006/12/19 21:24:18 tvroom Exp $
+# $Id: Admin.pm,v 1.35 2007/01/03 17:52:52 tvroom Exp $
 
 package Slash::Admin;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # On a side note, I am not sure if I liked the way I named the methods either.
 # -Brian
@@ -244,6 +244,13 @@ sub ajax_neverdisplay {
 	
 	my $stoid = $form->{stoid};
 	my $uid   = $user->{uid};
+	my $fhid = $form->{fhid};
+
+	if ($fhid && !$stoid) {
+		my $firehose = getObject("Slash::FireHose");
+		my $item = $firehose->getFireHose($fhid);
+		$stoid = $item->{srcid} if $item && $item->{type} eq "story";
+	}
 	
 	return unless $stoid =~/^\d+$/;
 

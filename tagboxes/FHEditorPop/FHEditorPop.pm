@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.7 2006/12/19 21:45:11 tvroom Exp $
+# $Id: FHEditorPop.pm,v 1.8 2007/01/10 22:05:59 jamiemccarthy Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -76,6 +76,9 @@ print STDERR "Slash::Tagbox::FHEditorPop->feed_newtags called for " . scalar(@$t
 	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');
 	my $downvoteid = $tagsdb->getTagnameidCreate($constants->{tags_downvote_tagname} || 'nix');
 	my $admins = $self->getAdmins();
+	for my $uid (keys %$admins) {
+		$admins->{$uid}{seclev} = $tagsdb->getUser($uid, 'seclev');
+	}
 
 	my $ret_ar = [ ];
 	for my $tag_hr (@$tags_ar) {

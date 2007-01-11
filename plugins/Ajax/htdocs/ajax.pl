@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.37 2006/12/20 00:05:46 tvroom Exp $
+# $Id: ajax.pl,v 1.38 2007/01/11 20:01:57 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -291,8 +291,18 @@ sub fetchComments {
 	# XXX error?
 	return unless $comments && keys %$comments;
 
+	my %pieces = split /[,;]/, $form->{pieces};
+	my(@hidden_cids, @pieces_cids);
+	for my $cid (@$cids) {
+		if ($pieces{$cid}) {
+			push @pieces_cids, $cid;
+		} else {
+			push @hidden_cids, $cid;
+		}
+	}
+
 	my $comment_text = $slashdb->getCommentTextCached(
-		$comments, $cids,
+		$comments, \@hidden_cids,
 	);
 
 	for my $cid (keys %$comment_text) {
@@ -300,11 +310,18 @@ sub fetchComments {
 	}
 
 	my %html;
-	for my $cid (@$cids) {
+	for my $cid (@hidden_cids) {
 		$html{'comment_' . $cid} = Slash::dispComment($comments->{$cid}, {
 			class		=> 'oneline',
 			noshow_show	=> 1
 		});
+	}
+	for my $cid (@pieces_cids) {
+		@html{'comment_otherdetails_' . $cid, 'comment_sub_' . $cid} =
+			Slash::dispComment($comments->{$cid}, {
+				class		=> 'full',
+				show_pieces	=> 1
+			});
 	}
 
 	$options->{content_type} = 'application/json';

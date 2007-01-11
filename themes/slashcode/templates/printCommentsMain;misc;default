@@ -191,9 +191,8 @@ gCommentControlWidget = null;
 YAHOO.slashdot.ThresholdApp = function() {
   return {
     init: function() {
-      gCommentControlWidget = new YAHOO.slashdot.ThresholdWidget();
+      gCommentControlWidget = new YAHOO.slashdot.ThresholdWidget([% "'X'" IF horiz %]);
       gCommentControlWidget.setTHT(user_threshold, user_highlightthresh);
-[% IF horiz %]      gCommentControlWidget.setOrientation('X');[% END -%]
     }
   };
 }();
@@ -278,4 +277,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.66 2007/01/11 22:13:26 scc Exp $
+$Id: printCommentsMain;misc;default,v 1.67 2007/01/11 22:51:39 pudge Exp $

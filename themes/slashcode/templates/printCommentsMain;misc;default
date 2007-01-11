@@ -161,6 +161,26 @@ __template__
 						subject_only => 1,
 				}) %]
 				[% END %]
+		<div class="ccw-header-links">
+		[% IF cid || pid %]
+			[% Slash.linkComment({
+				sid	=> sid,
+				subject	=> 'Top',
+				subject_only => 1,
+			}) %]
+		[% ELSE %]
+			<a href="#topcomment">Top</a> 
+		[% END %]
+			|
+			[% Slash.linkComment({
+				sid => sid,
+				cid => cid,
+				op  => 'reply',
+				subject => 'Reply',
+				subject_only => 1
+				});
+			%]
+		</div>
 		<span title="Close this window" onclick="toggleDisplayOptions()" class="close">x</span>
 				</h4>
 			</div>
@@ -258,4 +278,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.65 2007/01/11 20:01:59 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.66 2007/01/11 22:13:26 scc Exp $

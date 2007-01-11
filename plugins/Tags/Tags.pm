@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.59 2006/12/01 16:48:35 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.60 2007/01/11 00:07:09 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1005,13 +1005,29 @@ sub ajaxCreateForUrl {
 	my $id = $form->{id};
 	my $tagsstring = $form->{tags};
 	my $tags = getObject('Slash::Tags');
+
 	my $newtagspreloadtext = $tags->setTagsForGlobj($id, "urls", $tagsstring);
 
+	# If any of those new tags start with "not", let the user know
+	# they might want to use "!" instead.
+	my $firstnottag_orig = '';
+# Not sure if we want to do this...
+#	if ($newtagspreloadtext) {
+#		my @newtags = split / /, $newtagspreloadtext;
+#		my($firstnot) = grep /^not./, @newtags;
+#		if ($firstnot) {
+#			$firstnottag_orig = $firstnot;
+#			$firstnottag_orig =~ s/^not//;
+#		}
+#	}
+
 	my $retval = slashDisplay('tagsurldivuser', {
-		id => $id,
-		newtagspreloadtext => $newtagspreloadtext,
+		id =>			$id,
+		newtagspreloadtext =>	$newtagspreloadtext,
+		firstnottag_orig =>	$firstnottag_orig,
 	}, { Return => 1}
 	);
+#print STDERR scalar(localtime) . " ajaxCreateForUrl ntplt='$newtagspreloadtext' retval='$retval'\n";
 	return $retval;
 }
 
@@ -1031,11 +1047,24 @@ sub ajaxCreateForStory {
 	
 	my $newtagspreloadtext = $tags->setTagsForGlobj($stoid, "stories", $tagsstring);
 	
+	# If any of those new tags start with "not", let the user know
+	# they might want to use "!" instead.
+	my $firstnottag_orig = '';
+	if ($newtagspreloadtext) {
+		my @newtags = split / /, $newtagspreloadtext;
+		my($firstnot) = grep /^not./, @newtags;
+		if ($firstnot) {
+			$firstnottag_orig = $firstnot;
+			$firstnottag_orig =~ s/^not//;
+		}
+	}
+
 	my $retval = slashDisplay('tagsstorydivuser', {
 		sidenc =>		$sidenc,
 		newtagspreloadtext =>	$newtagspreloadtext,
+		firstnottag_orig =>	$firstnottag_orig,
 	}, { Return => 1 });
-#print STDERR scalar(localtime) . " ajaxCreateForStory 4 for stoid=$stoid tagnames='@tagnames' newtagspreloadtext='$newtagspreloadtext' returning: $retval\n";
+#print STDERR scalar(localtime) . " ajaxCreateForStory 4 for stoid=$stoid newtagspreloadtext='$newtagspreloadtext' returning: $retval\n";
 	return $retval;
 }
 
@@ -1166,7 +1195,7 @@ sub ajaxListTagnames {
 	for my $tagname (sort { $tnhr->{$b} <=> $tnhr->{$a} } keys %$tnhr) {
 		$ret_str .= sprintf("%s%s\t%d\n", $notize, $tagname, $tnhr->{$tagname});
 	}
-use Data::Dumper; print STDERR scalar(localtime) . " ajaxListTagnames uid=$user->{uid} prefix='$prefix' tnhr: " . Dumper($tnhr);
+#use Data::Dumper; print STDERR scalar(localtime) . " ajaxListTagnames uid=$user->{uid} prefix='$prefix' tnhr: " . Dumper($tnhr);
 	return $ret_str;
 }
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.327 2006/10/30 20:23:41 pudge Exp $
+# $Id: users.pl,v 1.328 2007/01/11 19:59:38 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -658,10 +658,10 @@ sub mailPasswd {
 	my $form = getCurrentForm();
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	if (! $uid) {
@@ -765,10 +765,10 @@ sub showSubmissions {
 	my($uid, $nickname);
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	if ($form->{uid} or $form->{nick}) {
@@ -815,10 +815,10 @@ sub showComments {
 	$nickname = $user_edit->{nickname};
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$user_edit->{uid} == $user->{uid} ? 'me' : 'otheruser',
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $user_edit->{uid} == $user->{uid} ? 'me' : 'otheruser',
 	});
 
 	my $min_comment = $form->{min_comment} || 0;
@@ -1036,10 +1036,10 @@ sub showInfo {
 	print getMessage('note', { note => $hr->{note} }) if defined $hr->{note};
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $comments_wanted = $user->{show_comments_num}
@@ -1442,10 +1442,10 @@ sub validateUser {
 	}
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	# Since we are here, if the minimum values for the comment trigger and
@@ -1522,10 +1522,10 @@ sub editTags {
 	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $user_edit = $slashdb->getUser($user->{uid});
@@ -1854,10 +1854,10 @@ sub changePasswd {
 	my $constants = getCurrentStatic();
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $user_edit = {};
@@ -1924,10 +1924,10 @@ sub editUser {
 	my $note = $hr->{note} || '';
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $form = getCurrentForm();
@@ -1992,10 +1992,10 @@ sub editHome {
 	my $constants = getCurrentStatic();
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my($formats, $title, $tzformat_select);
@@ -2070,10 +2070,10 @@ sub editComm {
 	my $fieldkey;
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $admin_flag = $user->{is_admin} ? 1 : 0;
@@ -3046,10 +3046,10 @@ sub editMiscOpts {
 	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $edit_user = $slashdb->getUser($user->{uid});
@@ -3199,10 +3199,10 @@ sub displayForm {
 	my $suadmin_flag = $user->{seclev} >= 10000 ? 1 : 0;
 
 	print createMenu("users", {
-		style =>	'tabbed',
-		justify =>	'right',
-		color =>	'colored',
-		tab_selected =>	$hr->{tab_selected_1} || "",
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $hr->{tab_selected_1} || "",
 	});
 
 	my $op = $hr->{op} || $form->{op} || 'displayform';

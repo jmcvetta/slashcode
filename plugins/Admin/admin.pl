@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.304 2006/12/07 20:40:40 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.305 2007/01/11 23:53:10 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2347,7 +2347,24 @@ sub saveStory {
 		slashHook('admin_save_story_success', { story => $data });
 		titlebar('100%', getTitle('saveStory-title'));
 		my $st = $slashdb->getStory($data->{sid});
-		$slashdb->createSignoff($st->{stoid}, $user->{uid}, "saved");
+		my $stoid = $st->{stoid};
+		$slashdb->createSignoff($stoid, $user->{uid}, "saved");
+		if ($constants->{tags_admin_autoaddstorytopics} && $constants->{plugin}{Tags}) {
+			my $tree = $slashdb->getTopicTree();
+			my $tagsdb = getObject('Slash::Tags');
+			my %tt = ( ); # topic tagnames
+			for my $tid (keys %$chosen_hr) {
+				next unless $chosen_hr->{$tid} > 0;	# must have weight
+				next unless $tree->{$tid}{image};	# must have an image
+				my $kw = $tree->{$tid}{keyword};
+				next unless $tagsdb->tagnameSyntaxOK($kw); # must be a valid tagname
+				$tt{$kw} = 1;
+			}
+			for my $tagname (sort keys %tt) {
+				$tagsdb->createTag({ name => $tagname,
+					table => 'stories', id => $stoid });
+			}
+		}
 
 		listStories(@_);
 	} else {

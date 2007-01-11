@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: login.pl,v 1.26 2006/12/13 18:57:51 jamiemccarthy Exp $
+# $Id: login.pl,v 1.27 2007/01/11 19:58:49 pudge Exp $
 
 use strict;
 use Slash 2.003;
@@ -12,7 +12,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $slashdb   = getCurrentDB();
@@ -331,7 +331,7 @@ sub savePrefs {
 			$error = 1;
 		}
 
-		if ($form->{pass1} && length $form->{pass1} >= 20) {
+		if ($form->{pass1} && length $form->{pass1} > 20) {
 			push @note, getData('passtoolong');
 			$error = 1;
 		}

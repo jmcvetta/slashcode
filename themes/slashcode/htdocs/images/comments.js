@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.62 2007/01/12 03:17:52 pudge Exp $
+// $Id: comments.js,v 1.63 2007/01/12 04:37:13 pudge Exp $
 
 var comments;
 var root_comments;
@@ -722,6 +722,7 @@ function fetchEl(str) {
 
 function finishLoading() {
 	if (is_firefox) {
+		loadAllElements('span');
 		loadAllElements('div');
 		loadAllElements('li');
 		loadAllElements('a');

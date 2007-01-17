@@ -144,7 +144,7 @@ __template__
 	</div>
 	</div>
 	[% IF discussion2 %]
-		[% class_info = horiz ? ' class="horizontal"' : "" %]
+		[% class_info = horiz ? ' class="horizontal"' : ' class="vertical"' %]
 		<div id="d2out"[% class_info %]>
 		<div id="d2act" class="hide">
 		<div class="loki" id="gods">
@@ -267,4 +267,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.68 2007/01/17 21:02:08 scc Exp $
+$Id: printCommentsMain;misc;default,v 1.69 2007/01/17 21:07:35 scc Exp $

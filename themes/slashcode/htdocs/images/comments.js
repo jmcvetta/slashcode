@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.64 2007/01/17 21:02:08 scc Exp $
+// $Id: comments.js,v 1.65 2007/01/17 21:07:35 scc Exp $
 
 var comments;
 var root_comments;
@@ -853,7 +853,7 @@ function toggleDisplayOptions() {
 		gods.style.display  = 'none';
 		d2opt.style.display = 'inline';
 
-		d2out.className = '';
+		d2out.className = 'vertical';
 		gCommentControlWidget.setOrientation('Y');
 
 		params['comments_control'] = '';

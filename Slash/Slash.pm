@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.318 2007/01/11 20:01:57 pudge Exp $
+# $Id: Slash.pm,v 1.319 2007/01/18 00:46:06 pudge Exp $
 
 package Slash;
 
@@ -237,6 +237,10 @@ sub jsSelectComments {
 
 	my $threshold = defined $user->{d2_threshold} ? $user->{d2_threshold} : $user->{threshold};
 	my $highlightthresh = defined $user->{d2_highlightthresh} ? $user->{d2_highlightthresh} : $user->{highlightthresh};
+	for ($threshold, $highlightthresh) {
+		$_ = 6  if $_ > 6;
+		$_ = -1 if $_ < -1;
+	}
 	$highlightthresh = $threshold if $highlightthresh < $threshold;
 
 	my $id = $form->{sid};
@@ -262,9 +266,9 @@ sub jsSelectComments {
 	my %roots_hash = ( map { $_ => 1 } @roots );
 	my %thresh_totals;
 	# init
-	for my $i (-1..5) {
+	for my $i (-1..6) {
 		# T cannot be higher than HT
-		for my $j ($i..5) {
+		for my $j ($i..6) {
 			# 1: hidden, 2: oneline, 3: full
 			for my $m (1..3) {
 				$thresh_totals{$i}{$j}{$m} ||= 0;
@@ -302,7 +306,7 @@ sub jsSelectComments {
 				$T = 5;
 			}
 			if ($cid == $pid) {
-				$HT += 6; # THE root comment is always full
+				$HT += 7; # THE root comment is always full
 			} elsif ($roots_hash{$cid}) {
 				$HT++;
 			}
@@ -311,14 +315,14 @@ sub jsSelectComments {
 				for my $j ($i..$HT) {
 					$thresh_totals{$i}{$j}{3}++;
 				}
-				for my $j (($HT+1)..5) {
+				for my $j (($HT+1)..6) {
 					next if $i > $j;  # T cannot be higher than HT
 					$thresh_totals{$i}{$j}{2}++;
 				}
 			}
 
-			for my $i (($T+1)..5) {
-				for my $j ($i..5) {
+			for my $i (($T+1)..6) {
+				for my $j ($i..6) {
 					$thresh_totals{$i}{$j}{1}++;
 				}
 			}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.948 2006/12/22 06:56:19 pudge Exp $
+# $Id: MySQL.pm,v 1.949 2007/01/18 22:24:58 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.948 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.949 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -11528,9 +11528,14 @@ sub sqlShowInnodbStatus {
 # that table (e.g. a stoid or a cid).
 
 sub getGlobjidCreate {
-	my($self, $name, $target_id) = @_;
-	my $reader = getObject('Slash::DB', { db_type => 'reader' });
-	my $globjid = $reader->getGlobjidFromTargetIfExists($name, $target_id);
+	my($self, $name, $target_id, $options) = @_;
+	my $db;
+	if ($options && $options->{reader_ok}) {
+		$db = getObject('Slash::DB', { db_type => 'reader' });
+	} else {
+		$db = getCurrentDB();
+	}
+	my $globjid = $db->getGlobjidFromTargetIfExists($name, $target_id);
 	return $globjid if $globjid;
 	return $self->createGlobjid($name, $target_id);
 }

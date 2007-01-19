@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.38 2007/01/11 20:01:57 pudge Exp $
+# $Id: ajax.pl,v 1.39 2007/01/19 17:10:58 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -279,8 +279,13 @@ sub fetchComments {
 	# XXX error?
 	return unless @$cids && $id;
 
+	my $discussion = $slashdb->getDiscussion($id);
+	if ($discussion->{type} eq 'archived') {
+		$user->{state}{discussion_archived} = 1;
+	}
+
 	my($comments) = Slash::selectComments(
-		$slashdb->getDiscussion($id),
+		$discussion,
 		$cid,
 		{
 			commentsort	=> 0,

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: set_color_ranges.pl,v 1.5 2007/01/10 21:34:30 tvroom Exp $
+# $Id: set_color_ranges.pl,v 1.6 2007/01/22 16:55:11 tvroom Exp $
 
 use strict;
 
@@ -47,7 +47,7 @@ $task{$me}{code} = sub {
 	# Add large negative number for everything that falls below lowest thresh
 	push @slice_points, "-99999";
 	
-	my $last = 0;
+	my $last = -100000;
 	
 	# ensure there's at least a gap of 3 between each slice point
 	@slice_points = reverse map { $_ = $last + 3 if $_ < ($last + 3); $last = $_; $_ } reverse @slice_points;

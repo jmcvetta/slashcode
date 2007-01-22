@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.15 2006/12/19 22:20:14 tvroom Exp $
+# $Id: mysql_schema.sql,v 1.16 2007/01/22 16:55:11 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -44,4 +44,18 @@ CREATE TABLE firehose_text(
 	introtext text,
 	bodytext text,
 	PRIMARY KEY (id)
+) TYPE=InnoDB;
+
+DROP TABLE IF EXISTS firehose_tab;
+CREATE TABLE firehose_tab(
+	tabid mediumint(8) unsigned NOT NULL auto_increment,
+	uid MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
+	tabname VARCHAR(16) NOT NULL DEFAULT 'unnamed',
+	filter VARCHAR(255) NOT NULL DEFAULT '',
+	orderby ENUM("popularity","createtime", "editorpop", "activity") DEFAULT "createtime",
+	orderdir ENUM("ASC", "DESC") DEFAULT "DESC",
+	color VARCHAR(16) NOT NULL DEFAULT '',
+	mode ENUM("full", "fulltitle") DEFAULT "fulltitle",
+	PRIMARY KEY (tabid),
+	UNIQUE uid_tabname(uid,tabname)
 ) TYPE=InnoDB;

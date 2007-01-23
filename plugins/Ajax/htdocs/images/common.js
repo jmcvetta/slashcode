@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.81 2007/01/23 19:25:30 tvroom Exp $
+// $Id: common.js,v 1.82 2007/01/23 19:31:00 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -482,9 +482,12 @@ function firehose_set_options(name, value) {
 		params[name] = [value];
 	}
 
-	var handlers = { 
-		onComplete: firehose_get_updates 
-	};	
+	var handlers = {
+		onComplete: function(transport) { 
+			firehose_get_updates();
+			json_handler(transport);
+		}
+	};
 	ajax_update(params, '', handlers);
 }
 
@@ -521,7 +524,7 @@ function firehose_remove_tab(tabid) {
 	setFirehoseAction();
 	var params = [];
 	var handlers = {
-		onComplete: firehose_get_updates
+		onComplete:  json_handler
 	};
 	params['op'] = 'firehose_remove_tab';
 	params['tabid'] = tabid;
@@ -945,10 +948,13 @@ function firehose_save_tab(id) {
 	var tt = $('tab-text-'+id);
 	var ti = $('tab-input-'+id);
 	var params = [];
+	var handlers = {
+		onComplete: json_handler 
+	};
 	params['op'] = 'firehose_save_tab';
-	params['tab'] = ni.value;
-	params['id'] = id;
-	ajax_update(params, 'tab-text-'+id);
+	params['tabname'] = ti.value;
+	params['tabid'] = id;
+	ajax_update(params, '',  handlers);
 	tf.className = "hide";
 	tt.className = "";
 }

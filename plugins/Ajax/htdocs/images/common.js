@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.83 2007/01/24 16:16:22 tvroom Exp $
+// $Id: common.js,v 1.84 2007/01/24 17:30:38 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -911,19 +911,20 @@ function firehose_slider_end(offsetFromStart) {
 
 function pausePopVendorStory(id) {
 	vendor_popup_id=id;
-	closePopup('vendorStory-23-popup');
 	closePopup('vendorStory-26-popup');
 	vendor_popup_timerids[id] = setTimeout("vendorStoryPopup()", 500);
 }
+
+function clearVendorPopupTimers() {
+	clearTimeout(vendor_popup_timerids[26]);
+}
+
 function vendorStoryPopup() {
 	id = vendor_popup_id;
 	var title = "Opinion Center - Intel";
 	var buttons = createPopupButtons("<a href=\"javascript:closePopup('vendorStory-" + id + "-popup')\">[X]</a>");
 	title = title + buttons;
 	var closepopup = function () {
-		clearTimeout(vendor_popup_timerids[23]);
-		clearTimeout(vendor_popup_timerids[26]);
-		closePopup("vendorStory-23-popup");
 		closePopup("vendorStory-26-popup");
 	};
 	createPopup(getXYForId('sponsorlinks', 0, 0), title, "vendorStory-" + id, "Loading", "", closepopup );

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.260 2006/12/06 01:28:04 pudge Exp $
+# $Id: comments.pl,v 1.261 2007/01/24 19:10:39 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -481,36 +481,14 @@ sub editComment {
 		return;
 	} elsif ($pid) {
 		$pid_reply = $reply->{comment} = parseDomainTags($reply->{comment}, 0, 1, 1);
-		# XXX: maybe move this elsewhere, like Slash::Utility::Data
-		# this converts back to <quote>
-		while ($pid_reply =~ m|((<p>)?<div class="quote">)(.+)$|sig) {
-			my($found, $p, $rest) = ($1, $2, $3);
-			my $pos = pos($pid_reply) - (length($found) + length($rest));
-			substr($pid_reply, $pos, length($found)) = '<quote>';
-			pos($pid_reply) = $pos + length('<quote>');
+		$pid_reply = revertQuote($pid_reply);
 
-			my $c = 0;
-			while ($pid_reply =~ m|(<(/?)div.*?>(</p>)?)|sig) {
-				my($found, $end, $p2) = ($1, $2, $3);
-				if ($end && !$c) {
-					my $len = length($found);
-					# + 4 is for the </p>
-					my $pl = $p && $p2 ? 4 : 0;
-					substr($pid_reply, pos($pid_reply) - $len, $len + $pl) = '</quote>';
-					pos($pid_reply) = 0;
-					last;
-				} elsif ($end) {
-					$c--;
-				} else {
-					$c++;
-				}
-			}
-		}
+		# prep for JavaScript
 		$pid_reply =~ s|\\|\\\\|g;
 		$pid_reply =~ s|'|\\'|g;
 		$pid_reply =~ s|([\r\n])|\\$1|g;
-		$pid_reply =~ s{<nobr> <wbr></nobr>(\s*)} {$1 || ' '}gie;
 
+		$pid_reply =~ s{<nobr> <wbr></nobr>(\s*)} {$1 || ' '}gie;
 		#my $nick = strip_literal($reply->{nickname});
 		#$pid_reply = "<div>$nick ($reply->{uid}) wrote: <quote>$pid_reply</quote></div>";
 		$pid_reply = "<quote>$pid_reply</quote>";

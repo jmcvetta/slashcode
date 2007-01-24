@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.66 2007/01/18 00:46:06 pudge Exp $
+// $Id: comments.js,v 1.67 2007/01/24 19:10:39 pudge Exp $
 
 var comments;
 var root_comments;
@@ -695,7 +695,21 @@ function replyTo(cid) {
 }
 
 function quoteReply(pid) {
-	$('postercomment').value = comment_body_reply[pid] + "\n\n" + $('postercomment').value;
+	var this_reply = comment_body_reply[pid];
+
+	// tailor whitespace to postmode
+	if ($('posttype').value != 2) {
+		this_reply.replace(/<br>/g, "\n");
+	} else {
+		this_reply.replace(/<br>/g, "<br>\n");
+		this_reply.replace(/<p>/g, "\n\n<p>");
+		this_reply.replace(/<\/p>/g, "</p>\n\n");
+	}
+	// <quote> parse code takes care of whitespace
+	this_reply.replace(/<quote>/g, "\n\n<quote>");
+	this_reply.replace(/<\/quote>/g, "</quote>\n\n");
+
+	$('postercomment').value = this_reply + "\n\n" + $('postercomment').value;
 }
 
 /* utility functions */

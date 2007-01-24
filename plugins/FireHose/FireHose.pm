@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.72 2007/01/23 19:29:03 tvroom Exp $
+# $Id: FireHose.pm,v 1.73 2007/01/24 16:15:00 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -678,6 +678,7 @@ sub ajaxSaveFirehoseTab {
 		
 		$slashdb->sqlDelete("firehose_tab", "uid=$uid_q and tabname=$tabname_q and tabid!=$tabid_q");
 		$slashdb->sqlUpdate( "firehose_tab", { tabname => $tabname }, "tabid=$tabid_q");
+		$slashdb->setUser($user->{uid}, { last_fhtab_set => $slashdb->getTime() });
 		}
 
 	}
@@ -1516,7 +1517,14 @@ sub getUserTabs {
 	my($self) = @_;
 	my $user = getCurrentUser();
 	my $uid_q = $self->sqlQuote($user->{uid});
-	return $self->sqlSelectAllHashrefArray("*", "firehose_tab", "uid=$uid_q")
+	my $tabs = $self->sqlSelectAllHashrefArray("*", "firehose_tab", "uid=$uid_q", "order by tabname asc");
+	@$tabs = sort { 
+			$b->{tabname} eq "untitled" ? -1 : 
+				$a->{tabname} eq "untitled" ? 1 : 0	||
+			$a->{tabname} cmp $b->{tabname} 
+	} @$tabs;
+	return $tabs;
+
 }
 
 sub getSystemDefaultTabs {
@@ -1539,6 +1547,14 @@ sub createOrReplaceUserTab {
 	$self->sqlReplace("firehose_tab", $data);
 }
 
+sub ajaxFirehoseListTabs {
+	my($slashdb, $constants, $user, $form) = @_;
+	my $firehose = getObject("Slash::FireHose");
+	my $tabs = $firehose->getUserTabs();
+	@$tabs = map { $_->{tabname}} grep { $_->{tabname} ne "untitled" } @$tabs;
+	return join "\t", @$tabs;
+}
+
 
 1;
 
@@ -1551,4 +1567,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.72 2007/01/23 19:29:03 tvroom Exp $
+$Id: FireHose.pm,v 1.73 2007/01/24 16:15:00 tvroom Exp $

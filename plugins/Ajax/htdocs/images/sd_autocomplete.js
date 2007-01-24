@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.30 2007/01/24 16:16:22 tvroom Exp $
+// $Id: sd_autocomplete.js,v 1.31 2007/01/24 16:17:51 tvroom Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -477,10 +477,6 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onItemSelectEvent = function( type,
       	if(tagname == "neverdisplay") {
 		admin_neverdisplay("", "firehose", p._id);
 	}
-      }
-
-      if(p._tagDomain == 7) {
-	 //firehose_save_tab(p._id);
       }
   }
 

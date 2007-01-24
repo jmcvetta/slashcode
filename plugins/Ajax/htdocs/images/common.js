@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.82 2007/01/23 19:31:00 tvroom Exp $
+// $Id: common.js,v 1.83 2007/01/24 16:16:22 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -953,6 +953,8 @@ function firehose_save_tab(id) {
 	};
 	params['op'] = 'firehose_save_tab';
 	params['tabname'] = ti.value;
+
+
 	params['tabid'] = id;
 	ajax_update(params, '',  handlers);
 	tf.className = "hide";

@@ -27,7 +27,7 @@ __template__
 			<legend>Firehose</legend>
 			<label><input type="text" class="slashdot-tag-completer" name="fhfilter" value="[% options.fhfilter | strip_attribute %]" size="30" autocomplete="off" onfocus="attachCompleter(this,'[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose-filter', 0)"></label>
 <div id="colorsliderbg">
-	<div id="colorsliderthumb"><img src="[% constants.imagedir %]/slidethumb.gif"></div>
+	<div id="colorsliderthumb"><img src="[% constants.imagedir %]/slidethumb.png"></div>
 </div>
 
 			<input type="submit" value="Filter" onclick="firehose_set_options('fhfilter'); return false;">
@@ -110,4 +110,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.55 2007/01/24 16:15:00 tvroom Exp $
+$Id: list;firehose;default,v 1.56 2007/01/26 21:12:13 lancelot Exp $

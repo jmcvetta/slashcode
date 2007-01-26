@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.85 2007/01/24 19:14:36 pudge Exp $
+// $Id: common.js,v 1.86 2007/01/26 15:04:57 lancelot Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -24,10 +24,7 @@ function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 	var div = document.createElement("div");
 	div.id = name + "-popup";
 	div.style.position = "absolute";
-	if (onmouseout) {
-		div.onmouseout = onmouseout;
-	}
-	
+
 	var leftpos = xy[0] + "px";
 	var toppos  = xy[1] + "px";
 	
@@ -37,7 +34,7 @@ function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 	contents = contents || "";
 	message  = message || "";
 
-	div.innerHTML = '<div id="' + name + '-title" class="popup-title">' + titlebar + '</div>' +
+	div.innerHTML = '<iframe></iframe><div id="' + name + '-title" class="popup-title">' + titlebar + '</div>' +
                         '<div id="' + name + '-contents" class="popup-contents">' + contents + '</div>' +
 			'<div id="' + name + '-message" class="popup-message">' + message + '</div>';
 

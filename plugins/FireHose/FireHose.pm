@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.75 2007/01/24 19:14:36 pudge Exp $
+# $Id: FireHose.pm,v 1.76 2007/01/28 22:15:57 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -199,7 +199,7 @@ sub createItemFromSubmission {
 sub updateItemFromStory {
 	my($self, $id) = @_;
 	my $constants = getCurrentStatic();
-	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignored_skids}};
+	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignore_skids}};
 	my $story = $self->getStory($id, "", 1);
 	if ($story) {
 		my $globjid = $self->getGlobjidCreate("stories", $story->{stoid});
@@ -228,7 +228,7 @@ sub createItemFromStory {
 	my($self, $id) = @_;
 	my $constants = getCurrentStatic();
 	# If a story is created with an ignored primary skid it'll never be created as a firehose entry currently
-	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignored_skids}};
+	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignore_skids}};
 	my $story = $self->getStory($id, '', 1);
 
 	my $popularity = $self->getMidPopularityForColorLevel(2);
@@ -1558,4 +1558,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.75 2007/01/24 19:14:36 pudge Exp $
+$Id: FireHose.pm,v 1.76 2007/01/28 22:15:57 tvroom Exp $

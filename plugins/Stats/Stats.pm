@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Stats.pm,v 1.184 2007/01/30 18:33:41 jamiemccarthy Exp $
+# $Id: Stats.pm,v 1.185 2007/01/30 22:18:29 tvroom Exp $
 
 package Slash::Stats;
 
@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.184 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user, $options) = @_;
@@ -2035,6 +2035,57 @@ sub _do_insert_select {
 	return $self;
 }
 
+sub getTagnameidForTagnames {
+	my($self, $tags) = @_;
+	$tags ||= [];
+	my $tagobj = getObject("Slash::Tags");
+	return [] unless @$tags > 0;
+	my @tagnameids;
+	foreach (@$tags) {
+		push @tagnameids, $tagobj->getTagnameidFromNameIfExists($_);
+	}
+	return \@tagnameids;
+}
+
+sub getTagCountForDay {
+	my($self, $day, $tags, $distinct_uids) = @_;
+	$tags ||= [];
+	my @tag_ids;
+	my @where;
+	if(@$tags >= 1) {
+		my $tagnameids = $self->getTagnameidForTagnames($tags);
+		push @where, 'tagnameid in ('. (join ',', @$tagnameids) . ')';
+	}
+	push @where, "created_at between '$day 00:00:00' AND '$day 23:59:59'";
+	my $where = join ' AND ', @where;
+	if ($distinct_uids) {
+		return $self->sqlSelect("COUNT(DISTINCT uid)", "tags", $where);
+	} else {
+		return $self->sqlCount("tags", $where);
+	}
+}
+
+sub numFireHoseObjectsForDay {
+	my($self, $day) = @_;
+	return $self->sqlCount("firehose", "createtime between '$day 00:00:00' AND '$day 23:59:59'");
+}
+
+sub numFireHoseObjectsForDayByType {
+	my($self, $day) = @_;
+	return $self->sqlSelectAllHashrefArray("COUNT(*) as cnt, type", "firehose", "createtime between '$day 00:00:00' AND '$day 23:59:59'", "group by type");
+}
+
+sub numTagsForDayByType {
+	my($self, $day) = @_;
+	return $self->sqlSelectAllHashrefArray(
+		"COUNT(*) as cnt, maintable as type", 
+		"tags, globjs, globj_types", 
+		"created_at BETWEEN '$day 00:00:00' AND '$day 23:59:59' AND tags.globjid=globjs.globjid AND globjs.gtid=globj_types.gtid", 
+		"GROUP by maintable"
+	);
+
+}
+
 ########################################################
 sub DESTROY {
 	my($self) = @_;
@@ -2053,4 +2104,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Stats.pm,v 1.184 2007/01/30 18:33:41 jamiemccarthy Exp $
+$Id: Stats.pm,v 1.185 2007/01/30 22:18:29 tvroom Exp $

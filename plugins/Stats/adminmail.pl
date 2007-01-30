@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.212 2006/09/03 15:41:26 jamiemccarthy Exp $
+# $Id: adminmail.pl,v 1.213 2007/01/30 18:28:28 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -801,18 +801,7 @@ EOT
 	$data{tailslash} = $logdb->getTailslash();
 
 	slashdLog("Random Stats Begin");
-	$data{backup_lag} = "";
-	for my $slave_name (qw( backup search )) {
-		my $virtuser = $constants->{"${slave_name}_db_user"};
-		next unless $virtuser;
-		my $bytes = $stats->getSlaveDBLagCount($virtuser);
-		if ($bytes > ($constants->{db_slave_lag_ignore} || 10000000)) {
-			$data{backup_lag} .= "\n" . getData('db lagged', {
-				slave_name =>	$slave_name,
-				bytes =>	$bytes,
-			}, 'adminmail') . "\n";
-		}
-	}
+	$data{backup_lag} = ""; # old, no longer used
 
 	$data{sfnet} = { };
 	my $gids = $constants->{stats_sfnet_groupids};

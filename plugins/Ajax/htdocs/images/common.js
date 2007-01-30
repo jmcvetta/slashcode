@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.86 2007/01/26 15:04:57 lancelot Exp $
+// $Id: common.js,v 1.87 2007/01/30 21:24:34 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -895,7 +895,7 @@ function firehose_remove_entry(id) {
 }
 
 function firehose_slider_init() {
-	fh_colorslider = YAHOO.widget.Slider.getHorizSlider("colorsliderbg", "colorsliderthumb", 0, 210, fh_ticksize);
+	fh_colorslider = YAHOO.widget.Slider.getHorizSlider("colorsliderbg", "colorsliderthumb", 0, 105, fh_ticksize);
 	fh_colorslider.setValue(fh_ticksize * fh_colors_hash[fh_color] , 1);
         fh_colorslider.subscribe("slideEnd", firehose_slider_end);
 }	

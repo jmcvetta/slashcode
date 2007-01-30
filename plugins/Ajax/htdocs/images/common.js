@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.87 2007/01/30 21:24:34 tvroom Exp $
+// $Id: common.js,v 1.88 2007/01/30 21:25:55 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -918,7 +918,7 @@ function clearVendorPopupTimers() {
 
 function vendorStoryPopup() {
 	id = vendor_popup_id;
-	var title = "Opinion Center - Intel";
+	var title = "Intel's Opinion Center";
 	var buttons = createPopupButtons("<a href=\"javascript:closePopup('vendorStory-" + id + "-popup')\">[X]</a>");
 	title = title + buttons;
 	var closepopup = function () {

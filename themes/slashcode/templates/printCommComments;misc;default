@@ -127,6 +127,7 @@ __template__
 		currents['oneline']  = [% user.state.comments.totals.oneline || 0 %];
 		// currents_total = [% (user.state.comments.totals.hidden || 0 ) + (user.state.comments.totals.full || 0) + (user.state.comments.totals.oneline || 0)  %];
 
+		abbrev_comments      = {};
 		noshow_comments      = [[% user.state.comments.noshow.join(',') %]];
 		pieces_comments      = [[% user.state.comments.pieces.join(',') %]];
 		init_hiddens         = [[% user.state.comments.hiddens.join(',') %]];
@@ -140,4 +141,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.53 2007/01/11 20:01:59 pudge Exp $
+$Id: printCommComments;misc;default,v 1.54 2007/01/31 20:37:35 pudge Exp $

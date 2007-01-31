@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.91 2007/01/31 20:05:30 tvroom Exp $
+// $Id: common.js,v 1.92 2007/01/31 20:37:35 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -625,14 +625,23 @@ function json_update(response) {
 				$(el).value = response.value[el];
 		}
 	}
- 	
+
 	if (response.html_append) {
 		for (el in response.html_append) {
 			if ($(el))
 				$(el).innerHTML = $(el).innerHTML + response.html_append[el];
 		}
 	}
-		
+
+	if (response.html_append_substr) {
+		for (el in response.html_append_substr) {
+			if ($(el)) {
+				$(el).innerHTML = $(el).innerHTML.substr(
+					0, response.html_append_substr[el][0]
+				) + response.html_append_substr[el][1];
+			}
+		}
+	}		
 }
 
 

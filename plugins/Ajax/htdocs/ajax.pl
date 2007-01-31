@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.39 2007/01/19 17:10:58 pudge Exp $
+# $Id: ajax.pl,v 1.40 2007/01/31 20:37:35 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -261,7 +261,7 @@ sub readRest {
 	my $texts   = $slashdb->getCommentTextCached(
 		{ $cid => $comment },
 		[ $cid ],
-		{ cid => $cid }
+		{ full => 1 }
 	) or return;
 
 	return $texts->{$cid} || '';
@@ -297,17 +297,22 @@ sub fetchComments {
 	return unless $comments && keys %$comments;
 
 	my %pieces = split /[,;]/, $form->{pieces};
-	my(@hidden_cids, @pieces_cids);
+	my %abbrev = split /[,;]/, $form->{abbreviated};
+	my(@hidden_cids, @pieces_cids, @abbrev_cids);
 	for my $cid (@$cids) {
 		if ($pieces{$cid}) {
 			push @pieces_cids, $cid;
+			if ($abbrev{$cid}) {
+				push @abbrev_cids, $cid;
+			}
 		} else {
 			push @hidden_cids, $cid;
 		}
 	}
+#use Data::Dumper; print STDERR Dumper \@hidden_cids, \@pieces_cids, \@abbrev_cids, \%pieces, \%abbrev, $form;
 
 	my $comment_text = $slashdb->getCommentTextCached(
-		$comments, \@hidden_cids,
+		$comments, [@hidden_cids, @abbrev_cids], { full => 1 },
 	);
 
 	for my $cid (keys %$comment_text) {
@@ -329,9 +334,16 @@ sub fetchComments {
 			});
 	}
 
+	my %html_append_substr;
+	for my $cid (@abbrev_cids) {
+		#@html{'comment_body_' . $cid} = $comments->{$cid}{comment};
+		@html_append_substr{'comment_body_' . $cid} = [$abbrev{$cid}, substr($comments->{$cid}{comment}, $abbrev{$cid})];
+	}
+
 	$options->{content_type} = 'application/json';
 	return Data::JavaScript::Anon->anon_dump({
-		html	=> \%html
+		html			=> \%html,
+		html_append_substr	=> \%html_append_substr
 	});
 }
 

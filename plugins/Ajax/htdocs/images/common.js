@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.89 2007/01/30 23:03:48 scc Exp $
+// $Id: common.js,v 1.90 2007/01/31 19:33:35 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -942,7 +942,7 @@ function clearVendorPopupTimers() {
 
 function vendorStoryPopup() {
 	id = vendor_popup_id;
-	var title = "Intel's Opinion Center";
+	var title = "<a href='//intel.vendors.slashdot.org' onclick=\"javascript:urchinTracker('/vendor_intel-popup/intel_popup_title');\">Intel's Opinion Center</a>";
 	var buttons = createPopupButtons("<a href=\"javascript:closePopup('vendorStory-" + id + "-popup')\">[X]</a>");
 	title = title + buttons;
 	var closepopup = function () {
@@ -953,6 +953,13 @@ function vendorStoryPopup() {
 	params['op'] = 'getTopVendorStory';
 	params['skid'] = id;
 	ajax_update(params, "vendorStory-" + id + "-contents");
+}
+
+function logToDiv(id, message) {
+	var div = $(id);
+	if (div) {
+	div.innerHTML = div.innerHTML + message + "<br>";
+	}
 }
 
 

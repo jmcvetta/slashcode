@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.90 2007/01/31 19:33:35 tvroom Exp $
+// $Id: common.js,v 1.91 2007/01/31 20:05:30 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -24,6 +24,10 @@ function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 	var div = document.createElement("div");
 	div.id = name + "-popup";
 	div.style.position = "absolute";
+
+	if (onmouseout) {
+		div.onmouseout = onmouseout;
+	}
 
 	var leftpos = xy[0] + "px";
 	var toppos  = xy[1] + "px";
@@ -945,8 +949,12 @@ function vendorStoryPopup() {
 	var title = "<a href='//intel.vendors.slashdot.org' onclick=\"javascript:urchinTracker('/vendor_intel-popup/intel_popup_title');\">Intel's Opinion Center</a>";
 	var buttons = createPopupButtons("<a href=\"javascript:closePopup('vendorStory-" + id + "-popup')\">[X]</a>");
 	title = title + buttons;
-	var closepopup = function () {
+	var closepopup = function (e) {
+	if (!e) var e = window.event;
+	var relTarg = e.relatedTarget || e.toElement;
+	if (relTarg && relTarg.id == "vendorStory-26-popup") {
 		closePopup("vendorStory-26-popup");
+	}
 	};
 	createPopup(getXYForId('sponsorlinks', 0, 0), title, "vendorStory-" + id, "Loading", "", closepopup );
 	var params = [];

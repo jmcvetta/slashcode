@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.92 2007/01/31 20:37:35 pudge Exp $
+// $Id: common.js,v 1.93 2007/02/01 02:13:52 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -636,9 +636,14 @@ function json_update(response) {
 	if (response.html_append_substr) {
 		for (el in response.html_append_substr) {
 			if ($(el)) {
-				$(el).innerHTML = $(el).innerHTML.substr(
-					0, response.html_append_substr[el][0]
-				) + response.html_append_substr[el][1];
+				var this_html = $(el).innerHTML;
+				var i = $(el).innerHTML.search(/<span class="substr"> <\/span>[\s\S]*$/i);
+				if (i == -1) {
+					$(el).innerHTML += response.html_append_substr[el];
+				} else {
+					$(el).innerHTML = $(el).innerHTML.substr(0, i) +
+						response.html_append_substr[el];
+				}
 			}
 		}
 	}		

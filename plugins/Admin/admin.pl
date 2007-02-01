@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.306 2007/01/30 21:29:13 tvroom Exp $
+# $Id: admin.pl,v 1.307 2007/02/01 02:13:52 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1196,7 +1196,7 @@ sub editStory {
 		$extracolumns = $slashdb->getNexusExtrasForChosen($chosen_hr);
 
 		for my $field (qw( introtext bodytext )) {
-			local $Slash::Utility::Data::approveTag::admin = 1;
+			local $Slash::Utility::Data::approveTag::admin = 2;
 			$storyref->{$field} = $slashdb->autoUrl($form->{section}, $storyref->{$field});
 			$storyref->{$field} = cleanSlashTags($storyref->{$field});
 			$storyref->{$field} = strip_html($storyref->{$field});
@@ -1959,7 +1959,7 @@ sub updateStory {
 	my $time = findTheTime();
 
 	for my $field (qw( introtext bodytext )) {
-		local $Slash::Utility::Data::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 2;
 		$form->{$field} = cleanSlashTags($form->{$field});
 		$form->{$field} = strip_html($form->{$field});
 		$form->{$field} = slashizeLinks($form->{$field});
@@ -1974,7 +1974,7 @@ sub updateStory {
 
 	my $story_text = "$form->{title} $form->{introtext} $form->{bodytext}";
 	{
-		local $Slash::Utility::Data::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 2;
 		$story_text = parseSlashizedLinks($story_text);
 		$story_text = processSlashTags($story_text);
 	}
@@ -2294,7 +2294,7 @@ sub saveStory {
 	my($related_sids_hr, $related_urls_hr) = extractRelatedStoriesFromForm($form);
 
 	for my $field (qw( introtext bodytext )) {
-		local $Slash::Utility::Data::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 2;
 		$form->{$field} = cleanSlashTags($form->{$field});
 		$form->{$field} = strip_html($form->{$field});
 		$form->{$field} = slashizeLinks($form->{$field});
@@ -2303,7 +2303,7 @@ sub saveStory {
 
 	my $story_text = "$form->{title} $form->{introtext} $form->{bodytext}";
 	{
-		local $Slash::Utility::Data::approveTag::admin = 1;
+		local $Slash::Utility::Data::approveTag::admin = 2;
 		$story_text = parseSlashizedLinks($story_text);
 		$story_text = processSlashTags($story_text);
 	}

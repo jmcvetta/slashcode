@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.40 2007/01/31 20:37:35 pudge Exp $
+# $Id: ajax.pl,v 1.41 2007/02/01 02:13:52 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -337,7 +337,7 @@ sub fetchComments {
 	my %html_append_substr;
 	for my $cid (@abbrev_cids) {
 		#@html{'comment_body_' . $cid} = $comments->{$cid}{comment};
-		@html_append_substr{'comment_body_' . $cid} = [$abbrev{$cid}, substr($comments->{$cid}{comment}, $abbrev{$cid})];
+		@html_append_substr{'comment_body_' . $cid} = substr($comments->{$cid}{comment}, $abbrev{$cid});
 	}
 
 	$options->{content_type} = 'application/json';

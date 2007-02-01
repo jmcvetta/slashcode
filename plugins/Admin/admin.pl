@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.308 2007/02/01 03:39:31 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.309 2007/02/01 12:54:31 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2500,6 +2500,7 @@ sub displayPeerWeights {
 				'users_param',
 				q{name='tagpeerval'},
 				"ORDER BY val DESC, uid LIMIT $i0, 1");
+			next unless $uid;
 			$weight_hr->{$uid} = sprintf("%0.4f", $val);
 			$ord_hr->{$uid} = $i0;
 			push @uids, $uid;

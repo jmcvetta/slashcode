@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.41 2007/02/01 02:13:52 pudge Exp $
+# $Id: ajax.pl,v 1.42 2007/02/01 21:16:29 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -300,16 +300,15 @@ sub fetchComments {
 	my %abbrev = split /[,;]/, $form->{abbreviated};
 	my(@hidden_cids, @pieces_cids, @abbrev_cids);
 	for my $cid (@$cids) {
-		if ($pieces{$cid}) {
+		if (exists $pieces{$cid}) {
 			push @pieces_cids, $cid;
-			if ($abbrev{$cid}) {
+			if (exists $abbrev{$cid}) {
 				push @abbrev_cids, $cid;
 			}
 		} else {
 			push @hidden_cids, $cid;
 		}
 	}
-#use Data::Dumper; print STDERR Dumper \@hidden_cids, \@pieces_cids, \@abbrev_cids, \%pieces, \%abbrev, $form;
 
 	my $comment_text = $slashdb->getCommentTextCached(
 		$comments, [@hidden_cids, @abbrev_cids], { full => 1 },
@@ -339,6 +338,7 @@ sub fetchComments {
 		#@html{'comment_body_' . $cid} = $comments->{$cid}{comment};
 		@html_append_substr{'comment_body_' . $cid} = substr($comments->{$cid}{comment}, $abbrev{$cid});
 	}
+#use Data::Dumper; print STDERR Dumper \@hidden_cids, \@pieces_cids, \@abbrev_cids, \%pieces, \%abbrev, \%html, \%html_append_substr, $form;
 
 	$options->{content_type} = 'application/json';
 	return Data::JavaScript::Anon->anon_dump({

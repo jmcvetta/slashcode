@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.11 2006/09/20 00:56:23 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.12 2007/02/01 03:39:31 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -108,5 +108,13 @@ CREATE TABLE tags_userchange (
 	value_new	text,
 	PRIMARY KEY tuid (tuid),
 	KEY uid (uid)
+) TYPE=InnoDB;
+
+CREATE TABLE tags_peerweight (
+	uid		mediumint UNSIGNED NOT NULL DEFAULT '0',
+	gen		smallint UNSIGNED NOT NULL DEFAULT '0',
+	weight		float NOT NULL DEFAULT '0',
+	PRIMARY KEY (uid),
+	KEY gen_uid (gen, uid)
 ) TYPE=InnoDB;
 

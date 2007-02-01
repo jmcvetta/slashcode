@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.34 2007/01/30 23:31:38 scc Exp $
+// $Id: sd_autocomplete.js,v 1.35 2007/02/01 03:18:55 tvroom Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -450,6 +450,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onItemSelectEvent = function( type,
     var p = me._callbackParams;
     if ( p.action0 !== undefined ) p.action0(tagname, p);
     me._hide();
+
     if ( p.action1 !== undefined ) p.action1(tagname, p);
   }
 

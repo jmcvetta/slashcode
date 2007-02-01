@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.76 2007/01/28 22:15:57 tvroom Exp $
+# $Id: FireHose.pm,v 1.77 2007/02/01 06:14:47 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -1506,10 +1506,16 @@ sub setFireHoseSession {
 }
 
 sub getUserTabs {
-	my($self) = @_;
+	my($self, $options) = @_;
+	$options ||= {};
 	my $user = getCurrentUser();
 	my $uid_q = $self->sqlQuote($user->{uid});
-	my $tabs = $self->sqlSelectAllHashrefArray("*", "firehose_tab", "uid=$uid_q", "order by tabname asc");
+	my @where;
+	push @where, "uid=$uid_q";
+	push @where, "tabname like '$options->{prefix}%'";
+	my $where = join ' AND ', @where;
+
+	my $tabs = $self->sqlSelectAllHashrefArray("*", "firehose_tab", $where, "order by tabname asc");
 	@$tabs = sort { 
 			$b->{tabname} eq "untitled" ? -1 : 
 				$a->{tabname} eq "untitled" ? 1 : 0	||
@@ -1541,9 +1547,9 @@ sub createOrReplaceUserTab {
 sub ajaxFirehoseListTabs {
 	my($slashdb, $constants, $user, $form) = @_;
 	my $firehose = getObject("Slash::FireHose");
-	my $tabs = $firehose->getUserTabs();
+	my $tabs = $firehose->getUserTabs({ prefix => $form->{prefix}});
 	@$tabs = map { $_->{tabname}} grep { $_->{tabname} ne "untitled" } @$tabs;
-	return join "\t", @$tabs;
+	return join "\n", @$tabs;
 }
 
 
@@ -1558,4 +1564,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.76 2007/01/28 22:15:57 tvroom Exp $
+$Id: FireHose.pm,v 1.77 2007/02/01 06:14:47 tvroom Exp $

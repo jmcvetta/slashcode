@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.77 2007/02/01 06:14:47 tvroom Exp $
+# $Id: FireHose.pm,v 1.78 2007/02/01 06:23:15 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -653,6 +653,7 @@ sub ajaxSaveFirehoseTab {
 
 	my $tabid = $form->{tabid};
 	my $tabname = $form->{tabname};
+	$tabname =~ s/^\s+|\s+$//g;
 	my $message = "";
 
 	my $user_tabs = $firehose->getUserTabs();
@@ -1564,4 +1565,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.77 2007/02/01 06:14:47 tvroom Exp $
+$Id: FireHose.pm,v 1.78 2007/02/01 06:23:15 tvroom Exp $

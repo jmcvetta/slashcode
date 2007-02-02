@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.202 2007/02/01 02:13:52 pudge Exp $
+# $Id: Data.pm,v 1.203 2007/02/02 15:17:45 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1567,7 +1567,8 @@ The text.
 
 sub breakHtml {
 	my($text, $mwl) = @_;
-	return $text if $Slash::Utility::Data::approveTag::admin > 1;
+	return $text if $Slash::Utility::Data::approveTag::admin
+		     && $Slash::Utility::Data::approveTag::admin > 1;
 
 	my $constants = getCurrentStatic();
 	$mwl = $mwl || $constants->{breakhtml_wordlength} || 50;
@@ -4313,4 +4314,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.202 2007/02/01 02:13:52 pudge Exp $
+$Id: Data.pm,v 1.203 2007/02/02 15:17:45 jamiemccarthy Exp $

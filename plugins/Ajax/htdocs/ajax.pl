@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.42 2007/02/01 21:16:29 pudge Exp $
+# $Id: ajax.pl,v 1.43 2007/02/05 22:28:24 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -261,7 +261,7 @@ sub readRest {
 	my $texts   = $slashdb->getCommentTextCached(
 		{ $cid => $comment },
 		[ $cid ],
-		{ full => 1 }
+		{ cid => $cid, full => 1 }
 	) or return;
 
 	return $texts->{$cid} || '';

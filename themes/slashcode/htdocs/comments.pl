@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.261 2007/01/24 19:10:39 pudge Exp $
+# $Id: comments.pl,v 1.262 2007/02/06 22:35:28 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -486,7 +486,7 @@ sub editComment {
 		# prep for JavaScript
 		$pid_reply =~ s|\\|\\\\|g;
 		$pid_reply =~ s|'|\\'|g;
-		$pid_reply =~ s|([\r\n])|\\$1|g;
+		$pid_reply =~ s|([\r\n])|\$1|g;
 
 		$pid_reply =~ s{<nobr> <wbr></nobr>(\s*)} {$1 || ' '}gie;
 		#my $nick = strip_literal($reply->{nickname});

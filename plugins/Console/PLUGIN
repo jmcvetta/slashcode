@@ -1,6 +1,7 @@
-# $Id: PLUGIN,v 1.2 2006/11/14 18:08:17 tvroom Exp $
+# $Id: PLUGIN,v 1.3 2007/02/06 19:36:04 jamiemccarthy Exp $
 name=Console
 description="Console"
 htdocs=console.pl
 mysql_dump=mysql_dump.sql
+requiresplugin=Ajax
 template=templates/display;console;default

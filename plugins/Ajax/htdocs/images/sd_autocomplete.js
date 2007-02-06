@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.35 2007/02/01 03:18:55 tvroom Exp $
+// $Id: sd_autocomplete.js,v 1.36 2007/02/06 19:25:12 tvroom Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -271,7 +271,9 @@ YAHOO.slashdot.topicTags = ["keyword",
 YAHOO.slashdot.fhitemOpts = [
 "hold",
 "back",
-"quik"
+"quik",
+"typo",
+"dupe"
 ];
 
 YAHOO.slashdot.storyOpts = [

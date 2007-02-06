@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.954 2007/02/01 22:12:28 pudge Exp $
+# $Id: MySQL.pm,v 1.955 2007/02/06 22:41:11 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.954 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.955 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6107,7 +6107,7 @@ sub getCommentTextCached {
 		my $abbreviate = $abbreviate_ok && $comments->{$cid}{class} eq 'oneline';
 		my $original_text = $more_comment_text->{$cid};
 		if (	   $possible_chop
-			&& !($opt->{cid}  && $opt->{cid} eq $cid)
+			&& !($opt->{cid} && $opt->{cid} eq $cid)
 			&& $comments->{$cid}{len} > (
 				$abbreviate ? $abbreviate_len : $max_len
 			)

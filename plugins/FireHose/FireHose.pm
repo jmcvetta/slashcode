@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.79 2007/02/06 19:19:10 tvroom Exp $
+# $Id: FireHose.pm,v 1.80 2007/02/06 19:37:05 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createFireHose {
 	my($self, $data) = @_;
@@ -425,7 +425,7 @@ sub getFireHoseEssentials {
 	my $offset = defined $options->{offset} ? $options->{offset} : '';
 	$offset = "" if $offset !~ /^\d+$/;
 	$offset = "$offset, " if $offset;
-	$limit_str = "LIMIT $offset $options->{limit}" unless $options->{nolimit};
+	$limit_str = "LIMIT $offset, $options->{limit}" unless $options->{nolimit};
 	my $other = "ORDER BY $options->{orderby} $options->{orderdir} $limit_str";
 	$other = '' if $doublecheck;
 	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
@@ -1587,4 +1587,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.79 2007/02/06 19:19:10 tvroom Exp $
+$Id: FireHose.pm,v 1.80 2007/02/06 19:37:05 tvroom Exp $

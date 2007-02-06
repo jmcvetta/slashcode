@@ -13,6 +13,15 @@ list
 __seclev__
 10000
 __template__
+[% IF user.currentPage == "firehose" %]
+<div id="message">
+	<div class="content">
+		<p>
+		[% PROCESS rand_mesg %]
+		</p>
+	</div>
+</div>
+[% END %]
 <div id="messagearea"></div>
 <div class="firemenu">
 [% theupdatetime = Slash.timeCalc(Slash.db.getTime(), "%H:%M"); %]
@@ -110,4 +119,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.57 2007/01/30 18:56:24 tvroom Exp $
+$Id: list;firehose;default,v 1.58 2007/02/06 21:07:48 tvroom Exp $

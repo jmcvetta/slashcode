@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.93 2007/02/01 02:13:52 pudge Exp $
+// $Id: common.js,v 1.94 2007/02/07 20:39:57 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -467,6 +467,7 @@ function firehose_set_options(name, value) {
 			}
 		}
 	}
+	if (name != "color") {
 	for (i=0; i< pairs.length; i++) {
 		var el = pairs[i];
 		if (name == el[0] && value == el[1]) {
@@ -501,6 +502,7 @@ function firehose_set_options(name, value) {
 			// remove elements
 			setTimeout("firehose_remove_all_items()", 600);
 		}
+	}
 	}
 
 	if (name == "color") { 

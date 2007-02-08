@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.328 2007/01/11 19:59:38 pudge Exp $
+# $Id: users.pl,v 1.329 2007/02/08 15:50:25 cowboyneal Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -995,6 +995,13 @@ sub showInfo {
 			$requested_user->{nonuid} = 1;
 			$id ||= $1;
 			$requested_user->{ipid} = md5_hex($1);
+
+		} elsif ($id =~ /^(.*@.*\..*?)$/) {
+			# check for email addy, but make it by uid
+			$fieldkey = 'uid';
+			$id = $uid = $reader->getUserEmail($id);
+			$requested_user = $reader->getUser($uid);
+			$nick = $requested_user->{nickname};
 
 		} else {  # go by nickname, but make it by uid
 			$fieldkey = 'uid';

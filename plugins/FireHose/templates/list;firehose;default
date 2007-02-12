@@ -14,7 +14,11 @@ __seclev__
 10000
 __template__
 <div id="slashboxes">
-[% PROCESS userboxes %]
+[% UNLESS user.noboxes %]
+  [% IF slashboxes;
+    slashboxes %]
+  [% END %]
+[% END %]
 </div>
 [% IF user.currentPage == "firehose" %]
 <div id="message">
@@ -122,4 +126,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.59 2007/02/07 02:13:16 scc Exp $
+$Id: list;firehose;default,v 1.60 2007/02/12 15:13:35 scc Exp $

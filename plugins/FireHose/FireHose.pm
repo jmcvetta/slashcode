@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.82 2007/02/08 14:19:48 tvroom Exp $
+# $Id: FireHose.pm,v 1.83 2007/02/12 15:13:35 scc Exp $
 
 package Slash::FireHose;
 
@@ -29,6 +29,7 @@ use DBIx::Password;
 use Slash;
 use Slash::Display;
 use Slash::Utility;
+use Slash::Slashboxes;
 use Slash::Tags;
 use Data::JavaScript::Anon;
 
@@ -38,7 +39,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1488,6 +1489,7 @@ sub listView {
 			vote		=> $votes->{$item->{globjid}},
 		});
 	}
+	my $Slashboxes = displaySlashboxes();
 	my $refresh_options;
 	$refresh_options->{maxtime} = $maxtime;
 	if (uc($options->{orderdir}) eq "ASC") {
@@ -1503,7 +1505,8 @@ sub listView {
 		votes		=> $votes,
 		colors		=> $colors,
 		colors_hash	=> $colors_hash,
-		tabs		=> $options->{tabs}
+		tabs		=> $options->{tabs},
+		slashboxes => $Slashboxes
 	}, { Page => "firehose", Return => 1});
 
 }
@@ -1586,4 +1589,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.82 2007/02/08 14:19:48 tvroom Exp $
+$Id: FireHose.pm,v 1.83 2007/02/12 15:13:35 scc Exp $

@@ -13,6 +13,7 @@ list
 __seclev__
 10000
 __template__
+[% IF env.script_name == "/firehose.pl" %]
 <div id="slashboxes">
 [% UNLESS user.noboxes %]
   [% IF slashboxes;
@@ -20,7 +21,6 @@ __template__
   [% END %]
 [% END %]
 </div>
-[% IF user.currentPage == "firehose" %]
 <div id="message">
 	<div class="content">
 		<p>
@@ -126,4 +126,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.60 2007/02/12 15:13:35 scc Exp $
+$Id: list;firehose;default,v 1.61 2007/02/12 15:28:34 scc Exp $

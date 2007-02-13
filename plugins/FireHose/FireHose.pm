@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.83 2007/02/12 15:13:35 scc Exp $
+# $Id: FireHose.pm,v 1.84 2007/02/13 21:24:07 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -39,7 +39,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -320,6 +320,19 @@ sub getFireHoseEssentials {
 
 	my @where;
 	my $tables = "firehose";
+	if ($options->{tagged_by_uid}) {
+		my $tag_by_uid_q = $self->sqlQuote($options->{tagged_by_uid});
+		$tables .= ", tags";
+		push @where, "tags.globjid=firehose.globjid";
+		push @where, "tags.uid = $tag_by_uid_q";
+
+		if ($options->{ignore_nix}) {
+			my $downlabel = $constants->{tags_downvote_tagname} || 'nix';
+			my $tags = getObject("Slash::Tags");
+			my $nix_id = $tags->getTagnameidFromNameIfExists($downlabel);
+			push @where, "tags.tagnameid != $nix_id";
+		}
+	}
 	my $columns = "firehose.*";
 
 	if ($options->{createtime_no_future} && !$doublecheck) {
@@ -426,7 +439,9 @@ sub getFireHoseEssentials {
 	$offset = "" if $offset !~ /^\d+$/;
 	$offset = "$offset, " if $offset;
 	$limit_str = "LIMIT $offset $options->{limit}" unless $options->{nolimit};
-	my $other = "ORDER BY $options->{orderby} $options->{orderdir} $limit_str";
+	my $other = "";
+	$other .= " GROUP BY firehose.id " if $options->{tagged_by_uid};
+	$other .= "ORDER BY $options->{orderby} $options->{orderdir} $limit_str";
 	$other = '' if $doublecheck;
 	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
 
@@ -507,7 +522,7 @@ sub getFireHose {
 	# the empty string instead.
 	$answer->{note} = $self->getGlobjAdminnote($answer->{globjid}) || '';
 	
-	if ($mcd) {
+	if ($mcd && $answer->{title}) {
 		my $item = $mcd->set("$mcdkey:$id", $answer);
 	}
 
@@ -628,6 +643,7 @@ sub ajaxRemoveUserTab {
 	my $opts = $firehose->getAndSetOptions();
 	my $html = {};
 	$html->{fhtablist} = slashDisplay("firehose_tabs", { nodiv => 1, tabs => $opts->{tabs} }, { Return => 1});
+
 	return Data::JavaScript::Anon->anon_dump({
 		html	=> $html
 	});
@@ -640,8 +656,19 @@ sub ajaxFireHoseSetOptions {
 	my $opts = $firehose->getAndSetOptions();
 	my $html = {};
 	$html->{fhtablist} = slashDisplay("firehose_tabs", { nodiv => 1, tabs => $opts->{tabs} }, { Return => 1});
+	$html->{fhoptions} = slashDisplay("firehose_options", { nowrapper => 1, options => $opts }, { Return => 1});
+
+	my $values = {};
+	$values->{'firehose-filter'} = $opts->{fhfilter};
+	my $eval_last = "";
+	if ($form->{tab}) {
+		$eval_last = "firehose_slider_set_color('$opts->{color}')";
+	}
+
 	return Data::JavaScript::Anon->anon_dump({
-		html	=> $html
+		html	=> $html,
+		value  => $values,
+		eval_last => $eval_last
 	});
 }
 
@@ -1171,6 +1198,10 @@ sub getAndSetOptions {
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
 	$options->{mode} = $mode;
 
+	if (defined $form->{pause}) {
+		$self->setUser($user->{uid}, { firehose_paused => $form->{pause} ? 1 : 0 });
+	}
+
 	my $colors = $self->getFireHoseColors();
 
 	if ($form->{color} && $colors->{$form->{color}}) {
@@ -1230,8 +1261,6 @@ sub getAndSetOptions {
 		$user_tabs = $self->getUserTabs();
 	}
 	
-#	print STDERR "Mode: $mode, Color = $options->{color}, ORDERDIR = $options->{orderdir}, ORDERBY = $options->{orderby}, Filter: $fhfilter\n";
-
 	my $tab_compare = { mode => "mode", orderdir => "orderdir", color => "color", orderby => "orderby", filter => "fhfilter" };
 
 	my $tab_match = 0;
@@ -1275,6 +1304,8 @@ sub getAndSetOptions {
 			$options->{orderdir} = $curtab->{orderdir};
 			$options->{color} = $curtab->{color};
 			$fhfilter = $options->{fhfilter} = $curtab->{filter};
+
+			$_->{active} = $_->{tabname} eq $form->{tab} ? 1 : 0  foreach @$user_tabs;
 		}
 	}
 
@@ -1305,7 +1336,8 @@ sub getAndSetOptions {
 
 
 	$fhfilter =~ s/^\s+|\s+$//g;
-	my @fh_ops = map { lc($_) } split(/\s+/, $fhfilter);
+	my $fh_ops = splitOpsFromString($fhfilter);
+	
 
 	my $skins = $self->getSkins();
 	my %skin_names = map { $skins->{$_}{name} => $_ } keys %$skins;
@@ -1320,8 +1352,8 @@ sub getAndSetOptions {
 	my $authors = $self->getAuthors();
 	my %author_names = map { lc($authors->{$_}{nickname}) => $_ } keys %$authors;
 	my $fh_options = {};
-	foreach (@fh_ops) {
-		if (1 && $types->{$_} && !defined $fh_options->{type}) {
+	foreach (@$fh_ops) {
+		if ($types->{$_} && !defined $fh_options->{type}) {
 			$fh_options->{type} = $_;
 		} elsif ($user->{is_admin} && $categories{$_} && !defined $fh_options->{category}) {
 			$fh_options->{category} = $_;
@@ -1335,8 +1367,25 @@ sub getAndSetOptions {
 			$fh_options->{signed} = 1;
 		} elsif ($user->{is_admin} && $_ eq "unsigned") {
 			$fh_options->{unsigned} = 1;
-		} elsif ($author_names{lc($_)}) {
-			$fh_options->{uid} = $author_names{lc($_)}
+		} elsif (/^author:/) {
+			my $nick = $_;
+			my $uid;
+			$nick =~ s/author://g;
+			if ($nick) {
+				$uid = $self->getUserUID($nick);
+				$uid ||= $user->{uid};
+			}
+			$fh_options->{uid} = $uid;
+		} elsif (/^user:/) {
+			print STDERR "User $_\n";
+			my $nick = $_;
+			$nick =~ s/user://g;
+			my $uid;
+			if ($nick) {
+				$uid = $self->getUserUID($nick);
+				$uid ||= $user->{uid};
+			}
+			$fh_options->{tagged_by_uid} = $uid;
 		} else {
 			if (!defined $fh_options->{filter}) {
 				$fh_options->{filter} = $_;
@@ -1577,6 +1626,30 @@ sub ajaxFirehoseListTabs {
 	return join "\n", @$tabs;
 }
 
+sub splitOpsFromString {
+	my ($self, $str) = @_;
+	my @fh_ops_orig = map { lc($_) } split((/\s+|"/), $str);
+	my @fh_ops;
+	
+	my $in_quotes = 0;
+	my $cur_op = "";
+	foreach (@fh_ops_orig) {
+		if (!$in_quotes && $_ eq '"') {
+			$in_quotes = 1;
+		} elsif ($in_quotes) {
+			if ($_ eq '"') {
+				push @fh_ops, $cur_op;
+				$cur_op = "";
+				$in_quotes = 0;
+			} else {
+				$cur_op .= $_;
+			}
+		} elsif (/\S+/) {
+			push @fh_ops, $_;
+		}
+	}
+}
+
 
 1;
 
@@ -1589,4 +1662,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.83 2007/02/12 15:13:35 scc Exp $
+$Id: FireHose.pm,v 1.84 2007/02/13 21:24:07 tvroom Exp $

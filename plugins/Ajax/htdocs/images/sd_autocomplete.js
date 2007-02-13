@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.36 2007/02/06 19:25:12 tvroom Exp $
+// $Id: sd_autocomplete.js,v 1.37 2007/02/13 09:46:08 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -369,6 +369,9 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._show = function( obj, callbackParam
         if ( typeof callbackParams.yui == "object" )
           for ( var field in callbackParams.yui )
             this._completer[field] = callbackParams.yui[field];
+
+        if ( callbackParams.delayAutoHighlight )
+          this._completer.autoHighlight = false;
           
 
 	  // widget must be visible to move
@@ -432,8 +435,10 @@ YAHOO.slashdot.AutoCompleteWidget.prototype.attach = function( obj, callbackPara
       {
         callbackParams._sourceEl = newSourceEl;
         this._show(newSourceEl, callbackParams, tagDomain);
-        if ( callbackParams.queryOnAttach )
-          this._completer.sendQuery("");
+
+        var q = callbackParams.queryOnAttach;
+        if ( q )
+          this._completer.sendQuery((typeof q == "string") ? q : "");
       }
   }
 
@@ -465,6 +470,12 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onTextboxBlurEvent = function( type
 
 YAHOO.slashdot.AutoCompleteWidget.prototype._onTextboxKeyUp = function( e, me )
   {
+    if ( me._callbackParams.delayAutoHighlight )
+      {
+        me._callbackParams.delayAutoHighlight = false;
+        me._completer.autoHighlight = true;
+      }
+
     switch ( e.keyCode )
       {
         case 27: // esc

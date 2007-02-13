@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.72 2007/02/13 17:26:11 scc Exp $
+// $Id: comments.js,v 1.73 2007/02/13 20:32:13 scc Exp $
 
 var comments;
 var root_comments;
@@ -826,7 +826,6 @@ function boxStatus(bool) {
 function enableControls() {
 	boxStatus(0);
 	d2act();
-	$('d2act').className = '';
 	loaded = 1;
 }
 
@@ -859,7 +858,6 @@ function d2act () {
 
 function toggleDisplayOptions() {
 	var gods  = $('gods');
-	var d2opt = $('d2opt');
 	var d2out = $('d2out');
 
 	// update user prefs
@@ -877,7 +875,6 @@ function toggleDisplayOptions() {
     d2out.className = 'horizontal rooted';
   } else { // (rooted, none)->vertical
     newMode = d2out.className = 'vertical';
-    d2opt.style.display = 'inline'; // why?
     gCommentControlWidget.setOrientation('Y');
   }
 

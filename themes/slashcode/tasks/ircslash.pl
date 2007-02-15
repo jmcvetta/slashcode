@@ -1,8 +1,8 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.42 2007/02/13 16:14:32 entweichen Exp $
+# $Id: ircslash.pl,v 1.43 2007/02/15 00:45:43 pudge Exp $
 
 use strict;
 

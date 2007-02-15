@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.208 2007/01/11 20:01:57 pudge Exp $
+# $Id: Environment.pm,v 1.209 2007/02/15 00:45:40 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.208 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1827,6 +1827,7 @@ Hashref of cleaned-up data.
 	my %alphas = map {($_ => 1)} qw(
 		fieldname formkey commentstatus filter
 		hcanswer mode op section thisname type reskey
+		comments_control
 	),
 	# Survey
 	qw(
@@ -3427,4 +3428,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.208 2007/01/11 20:01:57 pudge Exp $
+$Id: Environment.pm,v 1.209 2007/02/15 00:45:40 pudge Exp $

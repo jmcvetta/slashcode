@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.95 2007/02/13 21:26:22 tvroom Exp $
+// $Id: common.js,v 1.96 2007/02/15 00:45:43 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -608,7 +608,6 @@ function eval_response(transport) {
 }
 
 function json_handler(transport) {
-
 	var response = eval_response(transport);
 	json_update(response);
 }

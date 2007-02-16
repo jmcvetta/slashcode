@@ -424,8 +424,10 @@ function [% name %]_show(type) {
 		}
 	}
         var objx  = document.getElementById(name + "-inner");
-	objx.style.overflow = "scroll";
-	objx.style.display = "block";
+	if (objx) {
+		objx.style.overflow = "scroll";
+		objx.style.display = "block";
+	}
 	var obj  = document.getElementById(name + "-outer");
 	var obj2 = document.getElementById("[% name %]-display");
 	var ot   = obj2.offsetTop;
@@ -738,4 +740,4 @@ function [% name %]_visit() {
 __seclev__
 10000
 __version__
-$Id: topic_popup_js;admin;default,v 1.22 2007/02/15 20:33:49 lancelot Exp $
+$Id: topic_popup_js;admin;default,v 1.23 2007/02/16 05:14:58 tvroom Exp $

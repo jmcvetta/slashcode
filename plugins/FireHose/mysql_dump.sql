@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.21 2007/02/16 23:03:23 tvroom Exp $
+# $Id: mysql_dump.sql,v 1.22 2007/02/20 21:23:57 tvroom Exp $
 #
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_text', 'Slash::FireHose', 'fetchItemText', 'ajax_base', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_reject', 'Slash::FireHose', 'rejectItem', 'ajax_admin_static', 'use');
@@ -24,4 +24,4 @@ INSERT INTO vars (name, value, description) VALUES ('firehose_color_labels', 're
 INSERT INTO firehose_tab VALUES (1,0,'FireHose','','createtime','DESC','indigo','fulltitle');
 INSERT INTO firehose_tab VALUES (2,0,'Slashdot','story','createtime','DESC','black','full');
 INSERT INTO firehose_tab VALUES (3,0,'Journals','journal','createtime','DESC','blue','full');
-INSERT INTO firehose_tab VALUES (4,0,'User','user:','createtime','DESC','black','full');
+INSERT INTO firehose_tab VALUES (4,0,'User','"user:{nickname}"','createtime','DESC','black','full');

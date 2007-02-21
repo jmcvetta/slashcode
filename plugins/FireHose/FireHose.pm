@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.89 2007/02/21 02:53:30 pudge Exp $
+# $Id: FireHose.pm,v 1.90 2007/02/21 22:23:34 pudge Exp $
 
 package Slash::FireHose;
 
@@ -35,11 +35,9 @@ use Data::JavaScript::Anon;
 
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
-use vars qw($VERSION $searchtootest);
+use vars qw($VERSION);
 
-$searchtootest = 0;
-
-($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -282,7 +280,7 @@ sub getFireHoseEssentials {
 	$options->{limit} ||= 50;
 
 	my($items, $results, $doublecheck) = ([], {}, 0);
-	if (!$options->{no_search} && $Slash::FireHose::searchtootest) {
+	if (!$options->{no_search} && $constants->{firehose_searchtoo}) {
 		my $searchtoo = getObject('Slash::SearchToo');
 		if ($searchtoo && $searchtoo->handled('firehose')) {
 			my(%opts, %query);
@@ -1690,4 +1688,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.89 2007/02/21 02:53:30 pudge Exp $
+$Id: FireHose.pm,v 1.90 2007/02/21 22:23:34 pudge Exp $

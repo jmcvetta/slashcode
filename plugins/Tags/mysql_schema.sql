@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.12 2007/02/01 03:39:31 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.13 2007/02/21 21:34:51 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -116,5 +116,15 @@ CREATE TABLE tags_peerweight (
 	weight		float NOT NULL DEFAULT '0',
 	PRIMARY KEY (uid),
 	KEY gen_uid (gen, uid)
+) TYPE=InnoDB;
+
+CREATE TABLE tagnames_similar (
+	tsid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	type		smallint UNSIGNED NOT NULL DEFAULT '0',
+	src_tnid	int UNSIGNED NOT NULL DEFAULT '0',
+	dest_tnid	int UNSIGNED NOT NULL DEFAULT '0',
+	simil		float NOT NULL DEFAULT '0',
+	PRIMARY KEY (tsid),
+	UNIQUE type_src_dest (type, src_tnid, dest_tnid)
 ) TYPE=InnoDB;
 

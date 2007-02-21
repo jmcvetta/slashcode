@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.88 2007/02/20 21:17:55 tvroom Exp $
+# $Id: FireHose.pm,v 1.89 2007/02/21 02:53:30 pudge Exp $
 
 package Slash::FireHose;
 
@@ -39,7 +39,7 @@ use vars qw($VERSION $searchtootest);
 
 $searchtootest = 0;
 
-($VERSION) = ' $Revision: 1.88 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.89 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -303,8 +303,13 @@ sub getFireHoseEssentials {
 			# still need sorting and filtering by date
 			$opts{records_max}	= $options->{limit}		unless $options->{nolimit};
 			$opts{records_start}	= $options->{offset}		if $options->{offset};
-			$opts{sort}		= $options->{orderby}  || 'createtime';
-			$opts{sortdir}		= $options->{orderdir} || 'DESC';
+			$opts{sort}		= $options->{orderby}  ? 3 : 0;
+			$opts{sortdir}		= $options->{orderdir} eq 'ASC' ? 1 : -1;
+
+			# just a few options to carry over
+			$opts{carryover} = {
+				map { ($_ => $options->{$_}) } qw(tagged_by_uid orderdir orderby ignore_nix)
+			};
 
 			$results = $searchtoo->findRecords(firehose => \%query, \%opts);
 			$items = $results->{records};
@@ -314,6 +319,13 @@ sub getFireHoseEssentials {
 			$options->{ids} = [ map { $_->{id} } @$items ];
 			$doublecheck = 1;
 		}
+	}
+
+	# sometimes we just pass options to searchtoo and get them back later
+	if ($options->{carryover}) {
+		my $co = $options->{carryover};
+		@{$options}{keys %$co} = values %$co;
+		delete $options->{carryover};
 	}
 
 	$options->{orderby} ||= "createtime";
@@ -438,13 +450,14 @@ sub getFireHoseEssentials {
 	my $limit_str = "";
 	my $where = (join ' AND ', @where) || "";
 	my $offset = defined $options->{offset} ? $options->{offset} : '';
-	$offset = "" if $offset !~ /^\d+$/;
+	$offset = '' if $offset !~ /^\d+$/;
 	$offset = "$offset, " if length $offset;
 	$limit_str = "LIMIT $offset $options->{limit}" unless $options->{nolimit};
-	my $other = "";
+
+	my $other = '';
 	$other .= " GROUP BY firehose.id " if $options->{tagged_by_uid};
-	$other .= "ORDER BY $options->{orderby} $options->{orderdir} $limit_str";
-	$other = '' if $doublecheck;
+	$other .= "ORDER BY $options->{orderby} $options->{orderdir} $limit_str" unless $doublecheck;
+
 	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
 
 	# make sure these items (from SearchToo) still match -- pudge
@@ -718,7 +731,7 @@ sub ajaxSaveFirehoseTab {
 			my $tabname_q = $slashdb->sqlQuote($tabname);
 		
 			$slashdb->sqlDelete("firehose_tab", "uid=$uid_q and tabname=$tabname_q and tabid!=$tabid_q");
-			$slashdb->sqlUpdate( "firehose_tab", { tabname => $tabname }, "tabid=$tabid_q");
+			$slashdb->sqlUpdate("firehose_tab", { tabname => $tabname }, "tabid=$tabid_q");
 			$slashdb->setUser($user->{uid}, { last_fhtab_set => $slashdb->getTime() });
 		}
 	}
@@ -1677,4 +1690,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.88 2007/02/20 21:17:55 tvroom Exp $
+$Id: FireHose.pm,v 1.89 2007/02/21 02:53:30 pudge Exp $

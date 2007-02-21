@@ -6,7 +6,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Prepare to be thought at!
 
@@ -158,6 +158,7 @@ sub _fudge_data {
 	if ($data->{date}) {
 		my $format = '%Y%m%d%H%M%S';
 		$processed{date} = timeCalc($data->{date}, '%Y%m%d%H%M%S');
+		$processed{dayssince1970} = int(timeCalc($data->{date}, '%s') / 86400);
 	}
 
 	return \%processed;

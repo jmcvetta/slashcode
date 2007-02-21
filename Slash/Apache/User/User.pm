@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.163 2006/07/18 16:24:36 jamiemccarthy Exp $
+# $Id: User.pm,v 1.164 2007/02/21 19:53:31 tvroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -703,7 +703,12 @@ sub userdir_handler {
 					$r->args("op=showbookmarks");
 					$r->uri('/users.pl');
 					$r->filename($constants->{basedir} . '/users.pl');
-
+				} elsif ($op eq 'firehose') {
+					my $nickname = $user->{nickname};
+					my $filter = fixparam("\"user:$nickname\"");
+					$r->args("fhfilter=$filter");
+					$r->uri('firehose.pl');
+					$r->filename($constants->{basedir} . '/firehose.pl')
 				} else {
 					$r->args("op=edituser");
 					$r->uri('/users.pl');
@@ -744,6 +749,7 @@ sub userdir_handler {
 		my $reader_user = $slashdb->getDB('reader');
 		my $reader = getObject('Slash::DB', { virtual_user => $reader_user });
 		my $uid = $reader->getUserUID($nick);
+		my $nick_orig = $nick;
 		$nick = fixparam($nick);	# make safe to pass back to script
 
 		# maybe we should refactor this code a bit ...
@@ -833,6 +839,12 @@ sub userdir_handler {
 			$r->args("op=showbookmarks&nick=$nick&uid=$uid");
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');
+		
+		} elsif ($op eq 'firehose') {
+			my $filter = fixparam("\"user:$nick_orig\"");
+			$r->args("fhfilter=$filter");
+			$r->uri('/firehose.pl');
+			$r->filename($constants->{basedir} . '/firehose.pl');
 
 		} else {
 			$r->args("nick=$nick&uid=$uid");

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.9 2006/12/19 21:45:11 tvroom Exp $
+# $Id: FHPopularity.pm,v 1.10 2007/02/21 21:35:46 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -60,11 +60,11 @@ sub new {
 sub feed_newtags {
 	my($self, $tags_ar) = @_;
 	my $constants = getCurrentStatic();
-if (scalar(@$tags_ar) < 9) {
-print STDERR "Slash::Tagbox::FHPopularity->feed_newtags called for tags '" . join(' ', map { $_->{tagid} } @$tags_ar) . "'\n";
-} else {
-print STDERR "Slash::Tagbox::FHPopularity->feed_newtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tagid} . " ... " . $tags_ar->[-1]{tagid} . "\n";
-}
+	if (scalar(@$tags_ar) < 9) {
+		tagboxLog("FHPopularity->feed_newtags called for tags '" . join(' ', map { $_->{tagid} } @$tags_ar) . "'");
+	} else {
+		tagboxLog("FHPopularity->feed_newtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tagid} . " ... " . $tags_ar->[-1]{tagid});
+	}
 	my $tagsdb = getObject('Slash::Tags');
 
 	# The algorithm of the importance of tags to this tagbox is simple.
@@ -101,22 +101,22 @@ print STDERR "Slash::Tagbox::FHPopularity->feed_newtags called for " . scalar(@$
 	my %fh_globjs = ( map { $_, 1 } @$fh_globjs_ar );
 	$ret_ar = [ grep { $fh_globjs{ $_->{affected_id} } } @$ret_ar ];
 
-print STDERR "Slash::Tagbox::FHPopularity->feed_newtags returning " . scalar(@$ret_ar) . "\n";
+	tagboxLog("FHPopularity->feed_newtags returning " . scalar(@$ret_ar));
 	return $ret_ar;
 }
 
 sub feed_deactivatedtags {
 	my($self, $tags_ar) = @_;
-print STDERR "Slash::Tagbox::FHPopularity->feed_deactivatedtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) .  "'\n";
+	tagboxLog("FHPopularity->feed_deactivatedtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) .  "'");
 	my $ret_ar = $self->feed_newtags($tags_ar);
-print STDERR "Slash::Tagbox::FHPopularity->feed_deactivatedtags returning " . scalar(@$ret_ar) . "\n";
+	tagboxLog("FHPopularity->feed_deactivatedtags returning " . scalar(@$ret_ar));
 	return $ret_ar;
 }
 
 sub feed_userchanges {
 	my($self, $users_ar) = @_;
 	my $constants = getCurrentStatic();
-print STDERR "Slash::Tagbox::FHPopularity->feed_userchanges called: users_ar='" . join(' ', map { $_->{tuid} } @$users_ar) .  "'\n";
+	tagboxLog("FHPopularity->feed_userchanges called: users_ar='" . join(' ', map { $_->{tuid} } @$users_ar) .  "'");
 
 	# XXX need to fill this in, and check FirstMover feed_userchanges too
 
@@ -178,7 +178,7 @@ sub run {
 	my $fhid = $self->sqlSelect('id', 'firehose', "globjid = $affected_id_q");
 	my $firehose_db = getObject('Slash::FireHose');
 	warn "Slash::Tagbox::FHPopularity->run bad data, fhid='$fhid' db='$firehose_db'" if !$fhid || !$firehose_db;
-print STDERR "Slash::Tagbox::FHPopularity->run setting $fhid ($affected_id) to $popularity\n";
+	tagboxLog("FHPopularity->run setting $fhid ($affected_id) to $popularity");
 	$firehose_db->setFireHose($fhid, { popularity => $popularity });
 }
 

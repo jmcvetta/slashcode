@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.97 2007/02/20 19:48:02 tvroom Exp $
+// $Id: common.js,v 1.98 2007/02/21 02:52:08 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -512,7 +512,7 @@ function firehose_set_options(name, value) {
 	var handlers = {
 		onComplete: function(transport) { 
 			json_handler(transport);
-			firehose_get_updates({ oneupdate: 1});
+			firehose_get_updates({ oneupdate: 1 });
 		}
 	};
 	ajax_update(params, '', handlers);

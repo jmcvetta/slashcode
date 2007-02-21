@@ -63,7 +63,7 @@ END %]
 		Slash.getData('byline', { adminmode => adminmode, item => item, the_user => the_user }, 'firehose');
 	%]
 
-	<div class="[% IF bodycontent %]body[% ELSE %]empty[% END %]" id="fhbody-[% item.id %]">
+	<div class="[% IF bodycontent %]body[% ELSE %]empty[% END %]" id="fhbody-[% item.id %]" [% IF !topic.image %]style="min-height: 100% !important; "[% END %]>
 	[% END %]
 		[% IF item.tid %]
 		<div class="topic">
@@ -130,4 +130,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.37 2006/12/19 22:17:55 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.38 2007/02/21 05:45:35 lancelot Exp $

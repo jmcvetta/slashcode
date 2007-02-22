@@ -17,7 +17,7 @@ use KinoSearch::InvIndexer;
 use KinoSearch::Search::QueryFilter;
 use KinoSearch::Searcher;
 
-($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 
@@ -156,8 +156,13 @@ slashProf('search', 'init search');
 	# 0 and 2 both mean to sort by relevance, the only kind we can do;
 	# any other value, get all results and send them back to MySQL for
 	# sorting
-	if ($sopts->{'sort'} == 0 || $sopts->{'sort'} == 2) { 
+#printf STDERR "\n[[ 1 : %d : %d ]]\n", $sopts->{total}, $sopts->{matches};
+	if ($sopts->{'sort'} == 0 || $sopts->{'sort'} == 2) {
+#printf STDERR "[[ 2a : %s ]]\n", $sopts->{'sort'};
 		$hits->seek($sopts->{start}, $sopts->{max} || $sopts->{matches});
+	} else {
+#printf STDERR "[[ 2b : %s ]]\n", $sopts->{'sort'};
+		$hits->seek(0, $sopts->{matches});
 	}
 
 slashProf('fetch results', 'search');
@@ -168,6 +173,7 @@ slashProf('fetch results', 'search');
 		);
 		push @$records, \%data;
 	}
+#printf STDERR "[[ 3 : %d ]]\n", scalar @$records;
 
 slashProf('', 'fetch results');
 

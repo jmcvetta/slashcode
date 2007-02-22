@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.91 2007/02/22 00:52:08 pudge Exp $
+# $Id: FireHose.pm,v 1.92 2007/02/22 19:52:33 pudge Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -280,7 +280,7 @@ sub getFireHoseEssentials {
 	$options->{limit} ||= 50;
 
 	my($items, $results, $doublecheck) = ([], {}, 0);
-	if (!$options->{no_search} && $constants->{firehose_searchtoo}) {
+	if (!$options->{no_search} && $constants->{firehose_searchtoo}) { # && $options->{qfilter}) {
 		my $searchtoo = getObject('Slash::SearchToo');
 		if ($searchtoo && $searchtoo->handled('firehose')) {
 			my(%opts, %query);
@@ -309,8 +309,11 @@ sub getFireHoseEssentials {
 			};
 
 #use Data::Dumper; print STDERR Dumper \%query, \%opts;
+#print STDERR "[[ 0 ]]\n";
 			$results = $searchtoo->findRecords(firehose => \%query, \%opts);
-			$items = $results->{records};
+			$items = delete $results->{records};
+#printf STDERR "[[ 4 : %d : %d : %d ]]\n\n", $results->{records_matches}, $results->{records_returned}, scalar @$items;
+#print STDERR Dumper $results;
 
 			return($items, $results) if ! @$items;
 
@@ -1691,4 +1694,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.91 2007/02/22 00:52:08 pudge Exp $
+$Id: FireHose.pm,v 1.92 2007/02/22 19:52:33 pudge Exp $

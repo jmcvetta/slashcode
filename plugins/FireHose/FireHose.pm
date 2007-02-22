@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.90 2007/02/21 22:23:34 pudge Exp $
+# $Id: FireHose.pm,v 1.91 2007/02/22 00:52:08 pudge Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -301,14 +301,14 @@ sub getFireHoseEssentials {
 			# still need sorting and filtering by date
 			$opts{records_max}	= $options->{limit}		unless $options->{nolimit};
 			$opts{records_start}	= $options->{offset}		if $options->{offset};
-			$opts{sort}		= $options->{orderby}  ? 3 : 0;
-			$opts{sortdir}		= $options->{orderdir} eq 'ASC' ? 1 : -1;
+			$opts{sort}		= 3;  # sorting handled by caller
 
 			# just a few options to carry over
 			$opts{carryover} = {
 				map { ($_ => $options->{$_}) } qw(tagged_by_uid orderdir orderby ignore_nix)
 			};
 
+#use Data::Dumper; print STDERR Dumper \%query, \%opts;
 			$results = $searchtoo->findRecords(firehose => \%query, \%opts);
 			$items = $results->{records};
 
@@ -325,6 +325,8 @@ sub getFireHoseEssentials {
 		@{$options}{keys %$co} = values %$co;
 		delete $options->{carryover};
 	}
+
+#use Data::Dumper; print STDERR Dumper $options;
 
 	$options->{orderby} ||= "createtime";
 	$options->{orderdir} = uc($options->{orderdir}) eq "ASC" ? "ASC" : "DESC";
@@ -454,8 +456,9 @@ sub getFireHoseEssentials {
 
 	my $other = '';
 	$other .= " GROUP BY firehose.id " if $options->{tagged_by_uid};
-	$other .= "ORDER BY $options->{orderby} $options->{orderdir} $limit_str" unless $doublecheck;
+	$other .= "ORDER BY $options->{orderby} $options->{orderdir} $limit_str"; # unless $doublecheck;
 
+#print STDERR "[\nSELECT $columns\nFROM   $tables\nWHERE  $where\n$other\n]\n";
 	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
 
 	# make sure these items (from SearchToo) still match -- pudge
@@ -1688,4 +1691,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.90 2007/02/21 22:23:34 pudge Exp $
+$Id: FireHose.pm,v 1.91 2007/02/22 00:52:08 pudge Exp $

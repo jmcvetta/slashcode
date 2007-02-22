@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.62 2007/02/21 21:34:51 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.63 2007/02/22 18:40:30 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.62 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1230,7 +1230,7 @@ sub processAdminCommand {
 	my $systemwide = $type =~ /^\$/ ? 1 : 0;
 	my $globjid = $systemwide ? undef : $self->getGlobjidCreate($table, $id);
 	my $hashmark_count = $type =~ s/\#/\#/g;
-	my $user_clout_reduction = $clout_reduc_map[$hashmark_count];
+	my $user_clout_reduction = $clout_reduc_map[$hashmark_count-1];
 	$user_clout_reduction = 1 if $user_clout_reduction > 1;
 	# Eventually we need to define FLOATs for clout and multiply
 	# them together, but for now it's an overwrite.

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: CommentScoreReason.pm,v 1.2 2007/02/21 21:35:46 jamiemccarthy Exp $
+# $Id: CommentScoreReason.pm,v 1.3 2007/02/22 22:45:21 jamiemccarthy Exp $
 
 # Requires TagModeration plugin (not (just) Moderation)
 
@@ -30,7 +30,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -63,9 +63,9 @@ sub feed_newtags {
 	my($self, $tags_ar) = @_;
 	my $constants = getCurrentStatic();
 	if (scalar(@$tags_ar) < 9) {
-		tagboxLog("CommentScoreReason->feed_newtags called for tags '" . join(' ', map { $_->{tagid} } @$tags_ar) . "'");
+		main::tagboxLog("CommentScoreReason->feed_newtags called for tags '" . join(' ', map { $_->{tagid} } @$tags_ar) . "'");
 	} else {
-		tagboxLog("CommentScoreReason->feed_newtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tagid} . " ... " . $tags_ar->[-1]{tagid});
+		main::tagboxLog("CommentScoreReason->feed_newtags called for " . scalar(@$tags_ar) . " tags " . $tags_ar->[0]{tagid} . " ... " . $tags_ar->[-1]{tagid});
 	}
 	my $tagsdb = getObject('Slash::Tags');
 
@@ -97,15 +97,15 @@ sub feed_newtags {
 	}
 	return [ ] if !@$ret_ar;
 
-	tagboxLog("CommentScoreReason->feed_newtags returning " . scalar(@$ret_ar));
+	main::tagboxLog("CommentScoreReason->feed_newtags returning " . scalar(@$ret_ar));
 	return $ret_ar;
 }
 
 sub feed_deactivatedtags {
 	my($self, $tags_ar) = @_;
-	tagboxLog("CommentScoreReason->feed_deactivatedtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) .  "'");
+	main::tagboxLog("CommentScoreReason->feed_deactivatedtags called: tags_ar='" . join(' ', map { $_->{tagid} } @$tags_ar) .  "'");
 	my $ret_ar = $self->feed_newtags($tags_ar);
-	tagboxLog("CommentScoreReason->feed_deactivatedtags returning " . scalar(@$ret_ar));
+	main::tagboxLog("CommentScoreReason->feed_deactivatedtags returning " . scalar(@$ret_ar));
 	return $ret_ar;
 }
 
@@ -167,7 +167,7 @@ sub run {
 	my $new_score = $points_orig + $mod_score_sum;
 	my $new_karma_bonus = ($karma_bonus eq 'yes' && $keep_karma_bonus) ? 1 : 0;
 
-#tagboxLog("CommentScoreReason->run setting cid $cid to score: $new_score, $reasons->{$current_reason_mode}{name} kb '$karma_bonus'->'$new_karma_bonus'");
+#main::tagboxLog("CommentScoreReason->run setting cid $cid to score: $new_score, $reasons->{$current_reason_mode}{name} kb '$karma_bonus'->'$new_karma_bonus'");
 
 	$self->sqlUpdate('comments', {
 			f1 =>	$new_score,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.63 2007/02/22 18:40:30 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.64 2007/02/23 02:44:37 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.63 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.64 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -607,10 +607,20 @@ sub addCloutsToTagArrayref {
 			$uid_clout_hr->{$uid} = $uid_info_hr->{$uid}{paramclout}
 				* $constants->{tags_usecloutfield_mult};
 		} else {
-			# XXX hardcoded formula, this should be parameterized at least with vars
-			$uid_clout_hr->{$uid} = $uid_info_hr->{$uid}{karma} >= -3 ? log($uid_info_hr->{$uid}{karma}+10) : 0;
-			$uid_clout_hr->{$uid} += 5 if $uid_info_hr->{$uid}{seclev} > 1;
-			$uid_clout_hr->{$uid} *= $uid_info_hr->{$uid}{tag_clout};
+			if (length $constants->{tags_usecloutfield_default}) {
+				# There's a default clout for users who don't have
+				# the param field in question.  Use it.
+				$uid_clout_hr->{$uid} = $constants->{tags_usecloutfield_default};
+			} else {
+				# There's no default value.  Use the old formula.
+				# (XXX These hardcoded numbers really should be
+				# parameterized, but I'm not sure how long
+				# this formula is going to stick around...)
+				$uid_clout_hr->{$uid} = $uid_info_hr->{$uid}{karma} >= -3
+					? log($uid_info_hr->{$uid}{karma}+10) : 0;
+				$uid_clout_hr->{$uid} += 5 if $uid_info_hr->{$uid}{seclev} > 1;
+				$uid_clout_hr->{$uid} *= $uid_info_hr->{$uid}{tag_clout};
+			}
 		}
 	}
 

@@ -30,7 +30,6 @@ __template__
 			iframe.src = "[% constants.absolutedir_secure %]/submit.pl?op=list&nowrapper=1";
 		}
 	</script>
-	UCP: [% user.currentPage %]
 	<div id="submitframe">
 	[% IF firehosebox %]
 		<div id="firehose">
@@ -50,4 +49,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: display;console;default,v 1.6 2007/02/28 15:29:58 tvroom Exp $
+$Id: display;console;default,v 1.7 2007/02/28 15:35:08 tvroom Exp $

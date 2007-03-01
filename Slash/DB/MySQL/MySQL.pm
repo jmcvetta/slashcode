@@ -1,13 +1,14 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.956 2007/03/01 15:56:36 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.957 2007/03/01 17:25:27 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
 use Socket;
 use Digest::MD5 'md5_hex';
 use Time::HiRes;
+use Time::Local;
 use Date::Format qw(time2str);
 use Data::Dumper;
 use Slash::Utility;
@@ -19,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.956 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.957 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8302,6 +8303,19 @@ sub getDay {
 	$days_back ||= 0;
 	my $day = timeCalc(scalar(localtime(time-86400*$days_back)), '%Y%m%d'); # epoch time, %Q
 	return $day;
+}
+
+sub getDayFromDay {
+	my($self, $day, $days_back) = @_;
+	$day =~ s/-//g;
+	my ($y, $m, $d) = $day =~ /(\d{4})(\d{2})(\d{2})/;
+	my $return_day;
+	if ($y) {
+		$return_day = timeCalc(scalar localtime(timelocal(0, 0, 0, $d, $m - 1, $y - 1900) - 86400 * $days_back), "%Y%m%d");
+	} else {
+		$return_day = $self->getDay(0) if !$y;
+	}
+	return $return_day;
 }
 
 ##################################################################

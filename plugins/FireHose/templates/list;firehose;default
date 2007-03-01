@@ -67,7 +67,7 @@ __template__
 <div id="message_area">
 </div>
 	[% PROCESS firehose_tabs tabs = options.tabs %]
-	<div align="right"><a href="#" onclick="firehose_toggle_advpref()">Prefs</a></div>
+	<div align="right"><a href="#" id="fh_adv_pref_toggle" onclick="firehose_toggle_advpref(); return false">Prefs</a></div>
 	[% PROCESS adv_pref_firehose options = options %]
 	<form action="[% gSkin.rootdir %]/firehose.pl" method="get" name="firehoseform">
 		<fieldset>
@@ -139,4 +139,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.66 2007/03/01 16:25:00 tvroom Exp $
+$Id: list;firehose;default,v 1.67 2007/03/01 21:15:56 tvroom Exp $

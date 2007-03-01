@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.8 2007/03/01 21:17:07 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.9 2007/03/01 21:45:36 tvroom Exp $
 
 use strict;
 use Slash;
@@ -28,6 +28,7 @@ $task{$me}{code} = sub {
 	my $adds = 0;
 
 	foreach my $feed (@$feeds) {
+		slashdLog("Feed: $feed->{feed}");
 		last if $adds >= $max_adds_per_run;
 		my $content = geturl($feed->{feed});
 		eval { $rss->parse($content); };

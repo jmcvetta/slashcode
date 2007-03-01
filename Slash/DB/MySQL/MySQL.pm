@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.957 2007/03/01 17:25:27 tvroom Exp $
+# $Id: MySQL.pm,v 1.958 2007/03/01 21:14:51 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.957 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.958 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12213,7 +12213,7 @@ sub getMediaFiles {
 sub getMediaFile {
 	my ($self, $data);
 
-	if ($data ~= /\d+/) {
+	if ($data =~ /\d+/) {
 		return $self->sqlSelect("width, height, location", "stories_media", "smid=$data");
 	} else {
 		return $self->sqlSelect("width, height, location", "stories_media", "name=$data");

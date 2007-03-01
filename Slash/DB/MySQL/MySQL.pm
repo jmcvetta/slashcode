@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.955 2007/02/06 22:41:11 pudge Exp $
+# $Id: MySQL.pm,v 1.956 2007/03/01 15:56:36 cowboyneal Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -19,7 +19,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.955 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.956 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12175,6 +12175,35 @@ sub getClassForAjaxOp {
 	my($self, $op) = @_;
 	my $op_q = $self->sqlQuote($op);
 	return $self->sqlSelect("class", "ajax_ops", "op=$op_q");
+}
+
+sub insertMediaFile {
+	my ($self, $stoid, $name);
+	return $self->sqlInsert("stories_media", { stoid => $stoid, name => $name }, { ignore => 1 });
+}
+
+sub updateMediaFile {
+	my ($self, $name, $data);
+	$self->sqlUpdate("stories_media", $data, "name=$name");
+}
+
+sub getMediaFiles {
+	my ($self, $stoid);
+
+	return $self->sqlSelectAllHashrefArray('smid, name',
+                'stories_media',
+                "stoid=$stoid"
+        );
+}
+
+sub getMediaFile {
+	my ($self, $data);
+
+	if ($data ~= /\d+/) {
+		return $self->sqlSelect("width, height, location", "stories_media", "smid=$data");
+	} else {
+		return $self->sqlSelect("width, height, location", "stories_media", "name=$data");
+	}
 }
 
 ########################################################

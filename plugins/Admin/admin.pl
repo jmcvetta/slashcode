@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.309 2007/02/01 12:54:31 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.310 2007/03/01 15:57:56 cowboyneal Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1131,6 +1131,26 @@ sub editStory {
 	if ($form->{op} eq 'edit') {
 		$stoid = $slashdb->getStory($form->{stoid} || $form->{sid},
 			'stoid', 1);
+	}
+
+	# handle any media files that were given
+	if ($form->{media_file}) {
+		my $upload = $form->{query_apache}->upload;
+		if ($upload) {
+			my $fh = $upload->fh;
+			mkpath("/tmp/upload", 0, 0777) unless -e "/tmp/upload";
+			$form->{media_file} =~ s|^.*?([^/:\\]+)$|$1|;
+			my $name = $form->{media_file};
+			my $ofh = gensym();
+			if (!open $ofh, ">/tmp/upload/$name\0") {
+			} else {
+				while (<$fh>) {
+					print $ofh $_;
+				}
+				close $ofh;
+				$slashdb->insertMediaFile($stoid, $name);
+			}
+		}
 	}
 
 	# Basically, we upload the bodytext if we realize a name has been passed in -Brian

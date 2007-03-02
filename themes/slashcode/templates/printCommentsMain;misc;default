@@ -178,7 +178,7 @@ __template__
 				subject_only => 1
 				});
 			%]
-    [% END $]
+    [% END %]
 		</div>
 		<span title="Toggle window location" onclick="toggleDisplayOptions()" class="close">/</span>
 				</h4>
@@ -261,4 +261,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.75 2007/03/02 04:12:33 scc Exp $
+$Id: printCommentsMain;misc;default,v 1.76 2007/03/02 04:24:27 pudge Exp $

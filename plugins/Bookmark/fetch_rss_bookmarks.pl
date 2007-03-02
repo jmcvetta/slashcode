@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: fetch_rss_bookmarks.pl,v 1.9 2007/03/01 21:45:36 tvroom Exp $
+# $Id: fetch_rss_bookmarks.pl,v 1.10 2007/03/02 02:41:49 pudge Exp $
 
 use strict;
 use Slash;
@@ -23,7 +23,7 @@ $task{$me}{code} = sub {
 	my $reader = getObject('Slash::DB', { db_type => 'reader' });
 	my $bookmark_reader = getObject('Slash::Bookmark', { db_type => 'reader' });
 
-	my $feeds = $bookmark_reader->getBookmarkFeeds({ rand_order => 1});
+	my $feeds = $bookmark_reader->getBookmarkFeeds({ rand_order => 1 });
 	my $max_adds_per_run = 10;
 	my $adds = 0;
 

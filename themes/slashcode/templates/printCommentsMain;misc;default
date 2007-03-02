@@ -42,6 +42,9 @@ __template__
 <div class="commentBox" style="font-size: 120%">
 	<form method="GET" action="[% gSkin.rootdir %]/comments.pl">
 	<div>
+[% IF title %]
+<span class="escape-link"><a href="[% link | strip_urlattr %]" title="Back to Article - [% title | strip_attribute %]">[% title %]</a></span>
+[% END %]
 	<input type="hidden" name="op" value="setDiscussion2">
 	<input type="hidden" name="sid" value="[% sid %]">
 	[% IF cid %]<input type="hidden" name="cid" value="[% cid %]">[% END %]
@@ -253,4 +256,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.73 2007/02/22 00:52:08 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.74 2007/03/02 02:19:13 scc Exp $

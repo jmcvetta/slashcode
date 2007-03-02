@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.97 2007/03/01 20:37:24 tvroom Exp $
+# $Id: FireHose.pm,v 1.98 2007/03/02 02:34:23 pudge Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.97 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -419,9 +419,8 @@ sub getFireHoseEssentials {
 		push @where, "firehose.id IN ($id_str)";
 	}
 
-
 	# XXX Update to support timezones eventually
-	if ($options->{startdate}) {
+	if ($options->{startdate} && !$doublecheck) {
 		push @where, "createtime >= '$options->{startdate} 00:00:00'";
 		if ($options->{duration}) {
 			push @where, "createtime <= DATE_ADD('$options->{startdate} 00:00:00', INTERVAL $options->{duration} DAY)";
@@ -1453,7 +1452,7 @@ sub getAndSetOptions {
 		} else {
 			if (!defined $fh_options->{filter}) {
 				$fh_options->{filter} = $_;
-				$fh_options->{filter} =~ s/[^a-zA-Z0-9_]+//g;
+				$fh_options->{filter} =~ s/[^a-zA-Z0-9_-]+//g;
 			}
 			# Don't filter this
 			$fh_options->{qfilter} .= $_ . ' ';
@@ -1729,4 +1728,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.97 2007/03/01 20:37:24 tvroom Exp $
+$Id: FireHose.pm,v 1.98 2007/03/02 02:34:23 pudge Exp $

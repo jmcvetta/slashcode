@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: symlink-tool,v 1.18 2007/03/02 02:36:46 pudge Exp $
+# $Id: symlink-tool,v 1.19 2007/03/02 21:39:02 scc Exp $
 
 # By Jamie McCarthy, jamie@slashdot.org
 # Based on template-tool, by Cliff Wood, Patrick Galbraith, Brian Aker
@@ -20,8 +20,9 @@ use Slash::Utility;
 use Slash::DB;
 use Slash::Install;
 use Getopt::Std;
+# use JavaScript::Minifier qw( jsmin ); # uncomment and add version when Minifier is known to work
 
-(my $VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 my %opts;
 
@@ -78,8 +79,14 @@ for my $glob (keys %{$theme_hr->{'glob'}}) {
 	system("cat $filelist > $destpath");
 	my($name, $path, $suffix) = fileparse($destpath, qr/\.[^.]*/);
 	if ($suffix eq '.js') {
-		# please god, help me... can't seem to formulate a way to do this in-process... I must be an idiot
+		# JavaScript::Minifier is broken, use it this way until it's fixed:
 		system("cat $destpath | perl -MJavaScript::Minifier -e 'my \$f=new JavaScript::Minifier; \$f->minify(*STDIN, *STDOUT);' > ${path}${name}-minified.js");
+		
+		# ...then upgrade to this:
+		# my ($min_src, $min_dest);
+		# open $min_src, '<', $destpath;
+		# open $min_dest, '>', "${path}${name}-minified.js";
+		# jsmin($min_src, $min_dest);
 	}
 }
 

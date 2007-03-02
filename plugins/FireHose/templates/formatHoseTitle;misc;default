@@ -39,11 +39,11 @@ IF adminmode;
         IF item.type != "story"; reject_checkbox = PROCESS reject_firehose id = item.id; END;
         title = reject_checkbox _ "<span class='soda pop" _  pop_val _ "' title='Filter Firehose to entries rated " _ color _ " or better' onclick='firehose_slider_set_color(\"" _ color _ "\")'> " _  pop_disp _ "</span> " _ title;
 ELSE;
-        title = "<span class='soda pop" _  pop_val _ "' title='Filter FireHose to entries rated " _ color _" or better' onclick='firehose_slider_set_color(\"" _ color _ "\")'> &nbsp; </span> " _ title;
+        title = "<span class='soda pop" _  pop_val _ "' title='Filter Firehose to entries rated " _ color _" or better' onclick='firehose_slider_set_color(\"" _ color _ "\")'> &nbsp; </span> " _ title;
 END;
 	%]
 [% IF showtitle; title; END; %]
 __seclev__
 10000
 __version__
-$Id: formatHoseTitle;misc;default,v 1.20 2007/03/01 16:25:00 tvroom Exp $
+$Id: formatHoseTitle;misc;default,v 1.21 2007/03/02 02:42:45 pudge Exp $

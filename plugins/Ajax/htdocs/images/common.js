@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.99 2007/03/01 17:22:41 tvroom Exp $
+// $Id: common.js,v 1.100 2007/03/02 02:42:44 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -125,7 +125,6 @@ function firehose_toggle_advpref() {
 	} else {
 		obj.className = "hide";
 	}
-
 }
 
 function toggleIntro(id, toggleid) {
@@ -789,7 +788,7 @@ function firehose_reorder() {
 			if (console_updating) {
 				document.title = "Console (" + firehose_ordered.length + ")";
 			} else {
-				document.title = "FireHose (" + firehose_ordered.length + ")";
+				document.title = "Firehose (" + firehose_ordered.length + ")";
 			}
 		}
 	}

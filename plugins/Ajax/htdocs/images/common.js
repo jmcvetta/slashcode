@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.100 2007/03/02 02:42:44 pudge Exp $
+// $Id: common.js,v 1.101 2007/03/02 20:37:15 scc Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -302,12 +302,10 @@ function completer_handleNeverDisplay( s, params ) {
 }
 
 function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {
-	if ( YAHOO.util.Dom.isSafari ) 
-		return false;
-
-	var disable = YAHOO.util.Dom.getStyle(obj, '-slashdot-disable-tag-completer');
-	if ( disable == "true" )
-		return false;
+  var vendor = navigator.vendor.toLowerCase();
+  if ( vendor.indexOf("apple") != -1
+       || vendor.indexOf("kde") != -1 )
+    return false;
 
   if ( customize === undefined )
     customize = new Object();

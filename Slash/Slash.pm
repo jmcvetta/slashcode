@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.321 2007/03/01 17:25:26 tvroom Exp $
+# $Id: Slash.pm,v 1.322 2007/03/02 02:27:01 pudge Exp $
 
 package Slash;
 
@@ -1661,11 +1661,11 @@ sub getOlderDays {
 }
 
 sub getOlderDaysFromDay {
-	my ($day, $start, $end, $options) = @_;
+	my($day, $start, $end, $options) = @_;
 	my $slashdb = getCurrentDB();
-	$day ||= $slashdb->getDay(0);
-	$start ||= 0;
-	$end ||= 0;
+	$day     ||= $slashdb->getDay(0);
+	$start   ||= 0;
+	$end     ||= 0;
 	$options ||= {};
 	my $days = [];
 
@@ -1674,7 +1674,7 @@ sub getOlderDaysFromDay {
 	my $weekago = $slashdb->getDay(7);
 	
 	for ($start..$end) {
-		my $the_day =  $slashdb->getDayFromDay($day, $_);
+		my $the_day = $slashdb->getDayFromDay($day, $_);
 		push @$days, $the_day if $the_day < $today;
 	}
 	if ($today > $days->[0]) {
@@ -1685,7 +1685,7 @@ sub getOlderDaysFromDay {
 	my $ret_array = [];
 	foreach (@$days) {
 		my $label;
-		my ($y, $m, $d) = $_ =~ /(\d{4})(\d{2})(\d{2})/;
+		my($y, $m, $d) = $_ =~ /(\d{4})(\d{2})(\d{2})/;
 		if ($_ eq $today) {
 			$label = "Today";
 		} elsif ($_ eq $yesterday) {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.52 2006/10/26 17:33:01 jamiemccarthy Exp $
+# $Id: Install.pm,v 1.53 2007/03/02 01:12:48 scc Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -651,6 +651,14 @@ sub _getList {
 				plugin | requiresplugin
 			)s?$/x) {
 				$hash{$dir}{$1}{$val} = 1;
+			} elsif ($key =~ /^(
+			  glob
+			)s?$/x) {
+			  my($globkey, $globdest) = split(/:/, $val, 2);
+			  $globkey = lc $globkey;
+			  $hash{$dir}{$1}{$globkey} = $globdest;
+			} elsif (exists $hash{$dir}{'glob'}{$key}) {
+			  push @{$hash{$dir}{$key}}, $val;
 			} else {
 				$hash{$dir}{$key} = $val;
 			}

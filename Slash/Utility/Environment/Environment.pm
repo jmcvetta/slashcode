@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.209 2007/02/15 00:45:40 pudge Exp $
+# $Id: Environment.pm,v 1.210 2007/03/06 19:24:37 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.209 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2525,6 +2525,8 @@ sub getOpAndDatFromStatusAndURI {
 		$uri =~ s|^/(.*)\.dmg$|$1|;
 	} elsif ($uri =~ /\.css$/) {
 		$uri = 'css';
+	} elsif ($uri =~ /\.js$/) {
+		$uri = 'js';
 	} elsif ($uri =~ /\.shtml$/) {
 		$uri =~ s|^/(.*)\.shtml$|$1|;
 		$dat = $uri if $uri =~ $page;	
@@ -3428,4 +3430,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.209 2007/02/15 00:45:40 pudge Exp $
+$Id: Environment.pm,v 1.210 2007/03/06 19:24:37 pudge Exp $

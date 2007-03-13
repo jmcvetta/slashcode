@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1149 2007/03/02 02:34:56 pudge Exp $
+# $Id: upgrades,v 1.1150 2007/03/13 16:26:03 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4446,3 +4446,14 @@ UPDATE firehose_tab SET tabname = 'Firehose' WHERE tabname = 'FireHose';
 # 2007-03-01
 UPDATE vars SET value = 'T_2_5_0_149' WHERE name = 'cvs_tag_currentcode';
 
+
+# For badges
+CREATE TABLE badge_ids (
+        badge_id        tinyint UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        badge_text      varchar(32) NOT NULL DEFAULT '',
+        badge_url       varchar(255) NOT NULL DEFAULT '',
+        badge_icon      varchar(32) NOT NULL DEFAULT ''
+) TYPE=InnoDB;
+INSERT INTO badge_ids (badge_text, badge_url, badge_icon) values ('Slashdot', '//slashdot.org/', 'badge_slashdot.gif');
+INSERT INTO badge_ids (badge_text, badge_url, badge_icon) values ('OSTG', 'http://www.ostg.com/', 'badge_ostg.gif');
+INSERT INTO badge_ids (badge_text, badge_url, badge_icon) values ('Intel', '//intel.vendors.slashdot.org/', 'badge_intel.gif');

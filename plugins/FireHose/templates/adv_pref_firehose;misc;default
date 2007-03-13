@@ -41,7 +41,11 @@ Automatic Updates: </td>
 <tr>
 <td>Article View</td>
 <td><span class="advpref" id="advfull"></span>Full Article</td><td><input type="radio" name="mode" value="full"  onclick="firehose_set_options('mode','full')" [% IF options.mode == "full"; constants.markup_checked_attribute; END %]></td>
-<td><span class="advpref" id="advabbrev"></span>Headlines Only</td><td> <input type="radio" name="mode" value="fulltitle"  onclick="firehose_set_options('mode','fulltitle')" [% IF options.mode == "fulltitle" || !options.mode; constants.markup_checked_attribute; END %]></tr>
+<td><span class="advpref" id="advabbrev"></span>Headlines Only</td><td> <input type="radio" name="mode" value="fulltitle"  onclick="firehose_set_options('mode','fulltitle')" [% IF options.mode == "fulltitle" || !options.mode; constants.markup_checked_attribute; END %]></td>
+</tr>
+<tr>
+<td>Hide dates</td><td><input type="checkbox" name="nodates" onchange="firehose_set_options('nodates', this.checked)" [% IF options.nodates; constants.markup_checked_attribute; END %]></td>
+<td>Hide bylines</td><td><input type="checkbox" name="nobylines" onchange="firehose_set_options('nobylines', this.checked)" [% IF options.nobylines; constants.markup_checked_attribute; END %]></td>
 </tr>
 </table>
 
@@ -63,4 +67,4 @@ Automatic Updates: </td>
 </div>
 [% END %]
 __version__
-$Id: adv_pref_firehose;misc;default,v 1.2 2007/03/01 20:37:24 tvroom Exp $
+$Id: adv_pref_firehose;misc;default,v 1.3 2007/03/13 20:42:58 tvroom Exp $

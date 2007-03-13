@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.244 2006/12/06 01:04:56 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.245 2007/03/13 16:37:22 entweichen Exp $
 #
 
 #
@@ -280,6 +280,7 @@ CREATE TABLE comments (
 	karma_abs smallint UNSIGNED DEFAULT '0' NOT NULL,
 	tweak_orig TINYINT NOT NULL DEFAULT 0,
 	tweak TINYINT NOT NULL DEFAULT 0,
+        badge_id tinyint NOT NULL DEFAULT 0,
 	PRIMARY KEY (cid),
 	KEY display (sid,points,uid),
 	KEY byname (uid,points),

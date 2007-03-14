@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.102 2007/03/13 20:46:50 tvroom Exp $
+// $Id: common.js,v 1.103 2007/03/14 20:24:37 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -299,6 +299,10 @@ function completer_setTag( s, params ) {
 function completer_handleNeverDisplay( s, params ) {
   if ( s == "neverdisplay" )
     admin_neverdisplay("", "firehose", params._id);
+}
+
+function completer_save_tab(s, params) {
+	firehose_save_tab(params._id);
 }
 
 function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {

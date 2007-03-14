@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.37 2007/02/13 09:46:08 scc Exp $
+// $Id: sd_autocomplete.js,v 1.38 2007/03/14 20:24:37 tvroom Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -393,6 +393,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._show = function( obj, callbackParam
           YAHOO.util.Dom.addClass(this._spareInput, "hidden");
 
         this._completer.itemSelectEvent.subscribe(this._onItemSelectEvent, this);
+        this._completer.unmatchedItemSelectEvent.subscribe(this._onItemSelectEvent, this);
         this._completer.textboxBlurEvent.subscribe(this._onTextboxBlurEvent, this);
 
         YAHOO.util.Event.addListener(this._textField(), "keyup", this._onTextboxKeyUp, this, true);
@@ -409,6 +410,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._hide = function()
 
         YAHOO.util.Event.removeListener(this._textField(), "keyup", this._onTextboxKeyUp, this, true);
         this._completer.itemSelectEvent.unsubscribe(this._onItemSelectEvent, this);
+        this._completer.unmatchedItemSelectEvent.unsubscribe(this._onItemSelectEvent, this);
         this._completer.textboxBlurEvent.unsubscribe(this._onTextboxBlurEvent, this);
 
         this._sourceEl = null;
@@ -481,5 +483,8 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onTextboxKeyUp = function( e, me )
         case 27: // esc
         // any other keys?...
           me._hide();
+        break;
+	case 13:
+	  me._completer.unmatchedItemSelectEvent.fire(me._completer, me, me._completer._sCurQuery);
       }
   }

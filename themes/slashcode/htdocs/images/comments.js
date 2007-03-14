@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.77 2007/03/02 02:32:54 pudge Exp $
+// $Id: comments.js,v 1.78 2007/03/14 17:03:05 scc Exp $
 
 var comments;
 var root_comments;
@@ -992,6 +992,18 @@ function isInWindow(obj) {
 
 
 /* code for the draggable threshold widget */
+
+function showPrefs( category ) {
+  var panel = document.getElementById("d2prefs");
+  panel.className = category;
+  panel.style.display = "block";
+}
+
+function hidePrefs() {
+  var panel = document.getElementById("d2prefs");
+  panel.className = "";
+  panel.style.display = "none";
+}
 
 function partitionedRange( range, partitions ) {
 	return [].concat(range[0], partitions, range[1]);

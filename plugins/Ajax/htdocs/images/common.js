@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.103 2007/03/14 20:24:37 tvroom Exp $
+// $Id: common.js,v 1.104 2007/03/15 14:57:33 lancelot Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1048,6 +1048,31 @@ function vendorStoryPopup() {
 	params['op'] = 'getTopVendorStory';
 	params['skid'] = id;
 	ajax_update(params, "vendorStory-" + id + "-contents");
+}
+
+function pausePopVendorStory2(id) {
+        vendor_popup_id=id;
+        closePopup('vendorStory-26-popup');
+        vendor_popup_timerids[id] = setTimeout("vendorStoryPopup2()", 500);
+}
+
+function vendorStoryPopup2() {
+        id = vendor_popup_id;
+        var title = "<a href='//intel.vendors.slashdot.org' onclick=\"javascript:urchinTracker('/vendor_intel-popup/intel_popup_title');\">Intel's Opinion Center</a>";
+        var buttons = createPopupButtons("<a href=\"javascript:closePopup('vendorStory-" + id + "-popup')\">[X]</a>");
+        title = title + buttons;
+        var closepopup = function (e) {
+        if (!e) var e = window.event;
+        var relTarg = e.relatedTarget || e.toElement;
+        if (relTarg && relTarg.id == "vendorStory-26-popup") {
+                closePopup("vendorStory-26-popup");
+        }
+        };
+        createPopup(getXYForId('sponsorlinks2', 0, 0), title, "vendorStory-" + id, "Loading", "", closepopup );
+        var params = [];
+        params['op'] = 'getTopVendorStory';
+        params['skid'] = id;
+        ajax_update(params, "vendorStory-" + id + "-contents");
 }
 
 function logToDiv(id, message) {

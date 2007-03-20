@@ -61,10 +61,18 @@ Automatic Updates: </td>
 <input type="submit" value="Reset to Defaults">
 </form>
 </td>
+<td valign="top">
+	<b>Duration:</b><br>
+	A day <input type="radio" name="duration" value="1" onclick="firehose_set_options('duration','1')" [% IF options.duration == 1; constants.markup_checked_attribute; END %]>
+	A week <input type="radio" name="duration" value="7" onclick="firehose_set_options('duration','7')" [% IF options.duration == 7; constants.markup_checked_attribute; END %]>
+	A month<input type="radio" name="duration" value="31" onclick="firehose_set_options('duration','31')" [% IF options.duration == 31; constants.markup_checked_attribute; END %]>
+	All time<input type="radio" name="duration" value="-1" onclick="firehose_set_options('duration','-1')" [% IF options.duration == -1; constants.markup_checked_attribute; END %]>
+	<div id="fhcalendar" align="top"></div>
+</td>
 </tr>
 </table>
 [% IF !nowrapper %]
 </div>
 [% END %]
 __version__
-$Id: adv_pref_firehose;misc;default,v 1.3 2007/03/13 20:42:58 tvroom Exp $
+$Id: adv_pref_firehose;misc;default,v 1.4 2007/03/20 18:48:41 tvroom Exp $

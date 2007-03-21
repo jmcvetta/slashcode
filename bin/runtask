@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: runtask,v 1.23 2006/11/17 19:46:17 jamiemccarthy Exp $
+# $Id: runtask,v 1.24 2007/03/21 20:06:57 jamiemccarthy Exp $
 
 use sigtrap;
 use strict;
@@ -30,7 +30,7 @@ use vars qw(
 	$task_exit_flag
 );
 
-(my $VERSION) = ' $Revision: 1.23 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
 my $PROGNAME = basename($0);
 (my $SLASH_PREFIX = $Bin) =~ s|/[^/]+/?$||;
 $SLASH_PREFIX = "/usr/local/slash"
@@ -69,6 +69,10 @@ exit 0;
 
 sub slashdLog {
 	doLog('slashd', \@_, 1, 'runtask');
+}
+
+sub tagboxLog {
+	doLog('tagbox', \@_, 1, 'runtask');
 }
 
 # A command to log an error to a DB table.  This is only for messages

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.11 2007/02/22 22:45:21 jamiemccarthy Exp $
+# $Id: FHPopularity.pm,v 1.12 2007/03/21 20:08:25 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -124,7 +124,7 @@ sub feed_userchanges {
 }
 
 sub run {
-	my($self, $affected_id) = @_;
+	my($self, $affected_id, $options) = @_;
 	my $constants = getCurrentStatic();
 	my $tagsdb = getObject('Slash::Tags');
 	my $tagboxdb = getObject('Slash::Tagbox');
@@ -163,7 +163,7 @@ sub run {
 	# Add up nods and nixes.
 	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');
 	my $downvoteid = $tagsdb->getTagnameidCreate($constants->{tags_downvote_tagname} || 'nix');
-	my $tags_ar = $tagboxdb->getTagboxTags($self->{tbid}, $affected_id, 0);
+	my $tags_ar = $tagboxdb->getTagboxTags($self->{tbid}, $affected_id, 0, $options);
 	$tagsdb->addCloutsToTagArrayref($tags_ar);
 	for my $tag_hr (@$tags_ar) {
 		my $sign = 0;
@@ -178,6 +178,9 @@ sub run {
 	my $fhid = $self->sqlSelect('id', 'firehose', "globjid = $affected_id_q");
 	my $firehose_db = getObject('Slash::FireHose');
 	warn "Slash::Tagbox::FHPopularity->run bad data, fhid='$fhid' db='$firehose_db'" if !$fhid || !$firehose_db;
+	if ($options->{return_only}) {
+		return $popularity;
+	}
 	main::tagboxLog("FHPopularity->run setting $fhid ($affected_id) to $popularity");
 	$firehose_db->setFireHose($fhid, { popularity => $popularity });
 }

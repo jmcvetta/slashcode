@@ -34,7 +34,7 @@ __template__
 	<div id="fhcalendar"></div>
 </td>
 </tr>
-<tr><td colspan=2">
+<tr><td colspan="2">
 <form method="post">
 <input type="hidden" name="fhfilter" value="">
 <input type="hidden" name="color" value="indigo">
@@ -45,11 +45,11 @@ __template__
 <input type="hidden" name="duration" value="1">
 <input type="submit" value="Reset to Defaults">
 </form>
-</td></tr>
+</td>
 </tr>
 </table>
 [% IF !nowrapper %]
 </div>
 [% END %]
 __version__
-$Id: adv_pref_firehose;misc;default,v 1.5 2007/03/21 22:24:46 tvroom Exp $
+$Id: adv_pref_firehose;misc;default,v 1.6 2007/03/22 04:40:55 tvroom Exp $

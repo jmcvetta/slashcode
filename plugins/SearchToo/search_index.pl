@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search_index.pl,v 1.5 2007/02/21 02:53:34 pudge Exp $
+# $Id: search_index.pl,v 1.6 2007/03/22 02:33:54 pudge Exp $
 
 use strict;
 
@@ -18,9 +18,9 @@ $task{$me}{code} = sub {
 
 	my $searchtoo = getObject('Slash::SearchToo');
 
-#	slashdLog("Backing up index");
-#	$searchtoo->copyBackup;
-#	$searchtoo->backup(1);
+	slashdLog("Backing up index");
+	$searchtoo->copyBackup;
+	$searchtoo->backup(1);
 
 	slashdLog("Fetching records to index");
 	my $records = $searchtoo->getStoredRecords;
@@ -28,7 +28,7 @@ $task{$me}{code} = sub {
 	for my $type (keys %$records) {
 		my $records_type = $records->{$type};
 
-		my(@iids_d, @delete, @iids_a, @add);
+		my(@iids_d, @delete, @iids_a, @add, @change, %add);
 		slashdLog(sprintf( "Starting %d '$type' records", scalar @$records_type ));
 
 		my $max = $#{$records_type};
@@ -38,6 +38,9 @@ $task{$me}{code} = sub {
 				push @delete, $records_type->[$i]{id};
 				push @iids_d, $records_type->[$i]{iid};
 			} else {
+				if ($records_type->[$i]{status} eq 'new') {
+					$add{$records_type->[$i]{id}} = 1;
+				}
 				push @add, {
 					id	=> $records_type->[$i]{id},
 					status	=> $records_type->[$i]{status}
@@ -46,19 +49,34 @@ $task{$me}{code} = sub {
 			}
 		}
 
+		for my $i (reverse(0 .. $#delete)) {
+			if ($add{ $delete[$i] }) {
+				splice(@delete, $i, 1);
+				splice(@iids_d, $i, 1);
+			}
+		}
+
+		for my $i (reverse(0 .. $#add)) {
+			my $id = $add[$i]{id};
+			if ($add[$i]{status} eq 'changed' && $add{ $add[$i]{id} }) {
+				splice(@add,    $i, 1);
+				splice(@iids_a, $i, 1);
+			}
+		}
+
 		slashdLog(sprintf( "Fetching %d '$type' records", scalar @add ));
 		$searchtoo->getRecords($type => \@add);
 
 		my($deleted, $added) = (0, 0);
 
-		slashdLog(sprintf( "Deleting %d '$type' records", scalar @delete ));
-		if (@delete) {
-			$deleted = $searchtoo->deleteRecords($type => \@delete) || 0;
-		}
-
 		slashdLog(sprintf( "Indexing %d '$type' records", scalar @add ));
 		if (@add) {
 			$added = $searchtoo->addRecords($type => \@add) || 0;
+		}
+
+		slashdLog(sprintf( "Deleting %d '$type' records", scalar @delete ));
+		if (@delete) {
+			$deleted = $searchtoo->deleteRecords($type => \@delete) || 0;
 		}
 
 		if (@iids_a && @iids_a != $added) {
@@ -80,12 +98,12 @@ $task{$me}{code} = sub {
 		}
 	}
 
-#	$searchtoo->backup(0);
-#	$searchtoo->moveLive;
+	$searchtoo->backup(0);
+	$searchtoo->moveLive;
 
 	$searchtoo->finish;
 
-#	slashdLog("Moved new index live");
+	slashdLog("Moved new index live");
 	slashdLog("Finished");
 };
 

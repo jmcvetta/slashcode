@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.323 2007/03/13 22:31:39 pudge Exp $
+# $Id: Slash.pm,v 1.324 2007/03/27 21:45:50 tvroom Exp $
 
 package Slash;
 
@@ -1674,10 +1674,12 @@ sub getOlderDaysFromDay {
 	my $weekago = $slashdb->getDay(7);
 	
 	for ($start..$end) {
-		my $the_day = $slashdb->getDayFromDay($day, $_);
-		push @$days, $the_day if $the_day < $today;
+		my $the_day = $slashdb->getDayFromDay($day, $_, $options);
+		if (($the_day < $today) || $options->{show_future_days}) {
+			push @$days, $the_day; 
+		}
 	}
-	if ($today > $days->[0]) {
+	if ($today > $days->[0] && !$options->{skip_add_today}) {
 		unshift @$days, "$today";
 	}
 

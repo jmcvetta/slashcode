@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.962 2007/03/26 20:29:56 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.963 2007/03/27 21:45:50 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.962 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.963 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8327,7 +8327,7 @@ sub getDayFromDay {
 			scalar localtime(
 				timelocal(0, 0, 0, $d, $m - 1, $y - 1900) - 86400 * $days_back
 			), "%Y%m%d"
-		);
+		, 0);
 	} else {
 		$return_day = $self->getDay(0) if !$y;
 	}

@@ -102,9 +102,10 @@ feedback to hose@cmdrtaco.net but be forgiving of beta code!
 [% itemstext %]
 [% page = page || "0" %]
 </div>
-[% PROCESS paginate options = options %]
+[% PROCESS paginate options = options ulid = "fh-paginate" divid = "fh-pag-div" day = last_day %]
 <script type="text/javascript">
 	firehose_startdate = '[% options.startdate.replace('-','') %]';
+	firehose_issue = '[% options.issue %]';
 	firehose_duration = '[% options.duration %]';
 
 	var firehose_action_time = 0;
@@ -142,4 +143,4 @@ firehose_calendar_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.69 2007/03/20 18:48:41 tvroom Exp $
+$Id: list;firehose;default,v 1.70 2007/03/27 21:48:16 tvroom Exp $

@@ -21,4 +21,4 @@ __template__
 	<a href="?issue=[% cur_day %]">[% cur_days.0.1 %]</a><br>
 </div>
 __version__
-$Id:
+$Id: daybreak;firehose;default,v 1.3 2007/03/27 21:49:39 tvroom Exp $

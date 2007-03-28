@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.263 2007/02/08 09:47:40 pudge Exp $
+# $Id: comments.pl,v 1.264 2007/03/28 16:28:39 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -683,10 +683,14 @@ sub validateComment {
 	}
 
 	if (isTroll()) {
-		$$error_message = getError('troll message', {
-			unencoded_ip => $ENV{REMOTE_ADDR}      
-		});
-		return;
+		if ($constants->{comment_is_troll_disable_and_log}) {
+			$user->{state}{is_troll} = 1;
+		} else {
+			$$error_message = getError('troll message', {
+				unencoded_ip => $ENV{REMOTE_ADDR}      
+			});
+			return;
+		}
 	}
 
 	if ($user->{is_anon} || $form->{postanon}) {
@@ -1158,6 +1162,12 @@ sub submitComment {
 				logtext	=> "COMMENTKARMA USER: $post_str"
 			});
 		}
+	}
+	if ($constants->{comment_is_troll_disable_and_log}) {
+			$slashdb->createCommentLog({
+				cid	=> $maxCid,
+				logtext	=> "ISTROLL"
+			});
 	}
 
 #print STDERR scalar(localtime) . " $$ G maxCid=$maxCid\n";

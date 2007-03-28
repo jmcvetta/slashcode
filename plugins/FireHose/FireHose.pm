@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.102 2007/03/27 21:53:24 tvroom Exp $
+# $Id: FireHose.pm,v 1.103 2007/03/28 22:38:11 pudge Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.102 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -279,6 +279,10 @@ sub getFireHoseEssentials {
 	$options ||= {};
 	$options->{limit} ||= 50;
 
+	my $pop;
+	$pop = $self->getMinPopularityForColorLevel($colors->{$options->{color}})
+		if $options->{colors} && $colors->{$options->{color}};
+
 	my($items, $results, $doublecheck) = ([], {}, 0);
 	# for now, only bother to try searchtoo if there is a qfilter value to search on
 	if (!$options->{no_search} && $constants->{firehose_searchtoo} && $options->{qfilter}) {
@@ -434,26 +438,21 @@ sub getFireHoseEssentials {
 		push @where, "createtime >= DATE_SUB(NOW(), INTERVAL $dur_q DAY)";
 	}
 
-	if ($options->{color}) {
-		if ($colors->{$options->{color}}) {
-			my $pop = $self->getMinPopularityForColorLevel($colors->{$options->{color}});
-			my $pop_q = $self->sqlQuote($pop);
-			if ($user->{is_admin} && !$user->{firehose_usermode}) {
-				push @where, "editorpop >= $pop_q";
-			} else {
-				push @where, "popularity >= $pop_q";
-			}
+	if ($pop) {
+		my $pop_q = $self->sqlQuote($pop);
+		if ($user->{is_admin} && !$user->{firehose_usermode}) {
+			push @where, "editorpop >= $pop_q";
+		} else {
+			push @where, "popularity >= $pop_q";
 		}
 	}
 	if ($user->{is_admin}) {
 		my $signoff_label = "sign" . $user->{uid} . "ed";
 
-		if ($options->{unsigned}) {
-			push @where, "signoffs NOT LIKE \"\%$signoff_label\%\"";
-		}
-
 		if ($options->{signed}) {
 			push @where, "signoffs LIKE \"\%$signoff_label\%\"";
+		} elsif ($options->{unsigned}) {
+			push @where, "signoffs NOT LIKE \"\%$signoff_label\%\"";
 		}
 	}
 
@@ -835,7 +834,7 @@ sub ajaxFireHoseGetUpdates {
 	foreach (@$items) {
 		push @$globjs, $_->{globjid} if $_->{globjid} 
 	}
-	
+
 
 	if ($opts->{orderby} eq "createtime") {
 		$items = $firehose->addDayBreaks($items, $user->{off_set});
@@ -1782,7 +1781,7 @@ sub splitOpsFromString {
 }
 
 sub addDayBreaks {
-	my ($self, $items, $offset) = @_;
+	my($self, $items, $offset) = @_;
 	my @retitems;
 	my $last_day = "00000000";
 	my $days_processed = 0;
@@ -1813,4 +1812,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.102 2007/03/27 21:53:24 tvroom Exp $
+$Id: FireHose.pm,v 1.103 2007/03/28 22:38:11 pudge Exp $

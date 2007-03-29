@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.106 2007/03/27 21:44:17 tvroom Exp $
+// $Id: common.js,v 1.107 2007/03/29 12:37:45 scc Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -309,10 +309,12 @@ function completer_save_tab(s, params) {
 }
 
 function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {
-  var vendor = navigator.vendor.toLowerCase();
-  if ( vendor.indexOf("apple") != -1
-       || vendor.indexOf("kde") != -1 )
-    return false;
+  if ( navigator.vendor !== undefined ) {
+    var vendor = navigator.vendor.toLowerCase();
+    if ( vendor.indexOf("apple") != -1
+         || vendor.indexOf("kde") != -1 )
+      return false;
+  }
 
   if ( customize === undefined )
     customize = new Object();

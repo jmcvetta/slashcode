@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.166 2007/02/21 22:23:33 pudge Exp $
+# $Id: User.pm,v 1.167 2007/04/04 19:27:47 tvroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -249,6 +249,8 @@ sub handler {
 				($constants->{rss_allow_index} && $form->{content_type} =~ $constants->{feed_types} && $uri =~ m{^/index\.pl$})
 					||
 				($constants->{plugin}{ScheduleShifts} && $uri =~ m{^/shifts\.pl$})
+					||
+				($constants->{plugin}{FireHose} && $uri =~ m{^/firehose\.pl$})
 					||
 				# hmmm ... journal.pl no work, because can be called as /journal/
 				($constants->{journal_rdfitemdesc_html}

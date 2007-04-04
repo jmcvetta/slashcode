@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.25 2007/03/02 17:49:24 tvroom Exp $
+# $Id: firehose.pl,v 1.26 2007/04/04 19:23:34 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -33,10 +33,21 @@ sub main {
 		list		=> [1,  \&list, 1 ],
 		view		=> [1, 	\&view, 1 ],
 		default		=> [1,	\&list, 1 ],
-		edit		=> [1,	\&edit, 100 ]
+		edit		=> [1,	\&edit, 100 ],
+		rss		=> [1,  \&rss, 1]
 	);
 
+	# XXX Need to define who has access to this
+	my $rss = $form->{op} eq "rss" && $form->{content_type} && $form->{content_type} =~ $constants->{feed_types};
+	
+	
+
 	my $op = $form->{op};
+	
+	if ($form->{logtoken} && !$rss) {
+		$op = 'default';
+	}
+
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED] || $user->{seclev} < $ops{$op}[2] ) {
 		$op = 'default';
 		if ($user->{seclev} < 1) {
@@ -45,11 +56,15 @@ sub main {
 		}
 	}
 
-	header('Firehose', '') or return;
+	if ($op ne "rss") {
+		header('Firehose', '') or return;
+	}
 
 	$ops{$op}[FUNCTION]->($slashdb, $constants, $user, $form, $gSkin);
 
-	footer();
+	if ($op ne "rss") {
+		footer();
+	}
 }
 
 
@@ -92,6 +107,33 @@ sub edit {
 	my $the_user = $slashdb->getUser($item->{uid});
 	slashDisplay('fireHoseForm', { item => $item, url => $url, the_user => $the_user, needformwrap => 1, needjssubmit => 1 });
 
+}
+
+sub rss {
+	my($slashdb, $constants, $user, $form, $gSkin) = @_;
+	my $firehose = getObject("Slash::FireHose");
+	my $options = $firehose->getAndSetOptions({ no_set => 1 });
+	my ($its, $results) = $firehose->getFireHoseEssentials($options);
+	my @items;
+	foreach (@$its) {
+		my $item = $firehose->getFireHose($_->{id});
+		push @items, {
+			title 		=> $item->{title},
+			time 		=> $item->{createtime},
+			creator 	=> $slashdb->getUser($item->{uid}, 'nickname'),
+			'link'		=> "$gSkin->{absolutedir}/firehose.pl?op=view&id=$item->{id}",
+			description	=> $item->{introtext}
+		};
+	}
+	xmlDisplay($form->{content_type} => {
+		channel => {
+			title		=> "$constants->{sitename} Firehose",
+			'link'		=> "$gSkin->{absolutedir}/firehose.pl",
+			descriptions 	=> "$constants->{sitename} Firehose"
+		},
+		image	=> 1,
+		items	=> \@items,
+	});
 }
 
 

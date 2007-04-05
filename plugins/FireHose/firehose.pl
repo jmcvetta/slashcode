@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.26 2007/04/04 19:23:34 tvroom Exp $
+# $Id: firehose.pl,v 1.27 2007/04/05 20:43:32 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -39,13 +39,11 @@ sub main {
 
 	# XXX Need to define who has access to this
 	my $rss = $form->{op} eq "rss" && $form->{content_type} && $form->{content_type} =~ $constants->{feed_types};
-	
-	
 
 	my $op = $form->{op};
 	
 	if ($form->{logtoken} && !$rss) {
-		$op = 'default';
+		redirect($ENV{SCRIPT_NAME});
 	}
 
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED] || $user->{seclev} < $ops{$op}[2] ) {

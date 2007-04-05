@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.65 2007/02/23 02:45:36 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.66 2007/04/05 19:46:09 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.65 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.66 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1168,6 +1168,7 @@ use Data::Dumper; print STDERR scalar(localtime) . " ajaxProcessAdminTags table=
 
 sub ajaxTagHistory {
 	my($slashdb, $constants, $user, $form) = @_;
+	my $globjid;
 	my $id;
 	my $table;
 	if ($form->{type} eq "stories") {
@@ -1181,20 +1182,49 @@ sub ajaxTagHistory {
 		my $itemid = $form->{id};
 		my $firehose = getObject("Slash::FireHose");
 		my $item = $firehose->getFireHose($itemid);
+		$globjid = $item->{globjid};
 		my $tags = getObject("Slash::Tags");
-		($table, $id) = $tags->getGlobjTarget($item->{globjid});
+		($table, $id) = $tags->getGlobjTarget($globjid);
 	}
 	$id ||= $form->{id};
-
 	
 	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });
+	$globjid ||= $tags_reader->getGlobjidFromTargetIfExists($table, $id);
 	my $tags_ar = [];
 	if ($table && $id) {
 		$tags_ar = $tags_reader->getTagsByNameAndIdArrayref($table, $id,
 			{ include_inactive => 1, include_private => 1 });
 	}
 	$tags_reader->addRoundedCloutsToTagArrayref($tags_ar);
-	slashDisplay('taghistory', { tags => $tags_ar }, { Return => 1 } );
+
+	my $summ = { };
+	# XXX right now hard-code the tag summary to FHPopularity tagbox.
+	# If we start using another tagbox, we'll have to change this too.
+	my $tagboxdb = getObject('Slash::Tagbox');
+	if (@$tags_ar && $globjid && $tagboxdb) {
+		my $fhp = getObject('Slash::Tagbox::FHPopularity');
+		if ($fhp) {
+			my $authors = $slashdb->getAuthors();
+			my $starting_score =
+				$fhp->run($globjid, { return_only => 1, starting_only => 1 });
+			$summ->{up_pop}   = sprintf("%+0.2f",
+				$fhp->run($globjid, { return_only => 1, upvote_only => 1 })
+				- $starting_score );
+			$summ->{down_pop} = sprintf("%0.2f",
+				$fhp->run($globjid, { return_only => 1, downvote_only => 1 })
+				- $starting_score );
+			my $upvoteid   = $tags_reader->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');
+			my $downvoteid = $tags_reader->getTagnameidCreate($constants->{tags_downvote_tagname} || 'nix');
+			$summ->{up_count}      = scalar grep { $_->{tagnameid} == $upvoteid   } @$tags_ar;
+			$summ->{down_count}    = scalar grep { $_->{tagnameid} == $downvoteid } @$tags_ar;
+			$summ->{up_count_ed}   = scalar grep { $_->{tagnameid} == $upvoteid
+							    && $authors->{ $_->{uid} }      }  @$tags_ar;
+			$summ->{down_count_ed} = scalar grep { $_->{tagnameid} == $downvoteid
+							    && $authors->{ $_->{uid} }      }  @$tags_ar;
+		}
+	}
+
+	slashDisplay('taghistory', { tags => $tags_ar, summary => $summ }, { Return => 1 } );
 }
 
 sub ajaxListTagnames {

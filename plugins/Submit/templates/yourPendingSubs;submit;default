@@ -33,7 +33,7 @@ and their status within the system:</p>
 		subj    = submission.subj
 		section = skins.${submission.primaryskid}.title
 		topic   = topics.${submission.tid}.textname
-			del     = submission.del
+		del     = submission.del
 	%]
 
 	<li>[% time %] [% subj %] ([% section %],[% topic %])
@@ -81,4 +81,4 @@ don't take it personally.
 __seclev__
 10000
 __version__
-$Id: yourPendingSubs;submit;default,v 1.17 2007/04/04 19:25:35 tvroom Exp $
+$Id: yourPendingSubs;submit;default,v 1.18 2007/04/05 21:46:20 pudge Exp $

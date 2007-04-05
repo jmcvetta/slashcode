@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: journal.pl,v 1.142 2007/01/03 18:37:31 pudge Exp $
+# $Id: journal.pl,v 1.143 2007/04/05 21:44:36 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -13,7 +13,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub main {
 	my $journal   = getObject('Slash::Journal');
@@ -596,7 +596,7 @@ sub doSaveArticle {
 		if ($constants->{journal_comments}
 			&& $form->{journal_discuss}
 			&& $form->{journal_discuss} ne 'disabled'
-			&& $article->{discussion}
+			&& !$article->{discussion}
 		) {
 			my $rootdir = $gSkin->{rootdir};
 			if ($form->{comments_on}) {

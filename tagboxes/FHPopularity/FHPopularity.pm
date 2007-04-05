@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity.pm,v 1.13 2007/03/26 21:01:52 jamiemccarthy Exp $
+# $Id: FHPopularity.pm,v 1.14 2007/04/05 19:45:33 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -165,9 +165,10 @@ sub run {
 	my $tags_ar = $tagboxdb->getTagboxTags($self->{tbid}, $affected_id, 0, $options);
 	$tagsdb->addCloutsToTagArrayref($tags_ar);
 	for my $tag_hr (@$tags_ar) {
+		next if $options->{starting_only};
 		my $sign = 0;
-		$sign =  1 if $tag_hr->{tagnameid} == $upvoteid;
-		$sign = -1 if $tag_hr->{tagnameid} == $downvoteid;
+		$sign =  1 if $tag_hr->{tagnameid} == $upvoteid   && !$options->{downvote_only};
+		$sign = -1 if $tag_hr->{tagnameid} == $downvoteid && !$options->{upvote_only};
 		next unless $sign;
 		$popularity += $tag_hr->{total_clout} * $sign;
 	}

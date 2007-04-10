@@ -1,7 +1,7 @@
 package Bundle::Slash;
 
 #
-# $Id: Slash.pm,v 1.45 2007/03/14 17:08:01 scc Exp $
+# $Id: Slash.pm,v 1.46 2007/04/10 21:58:24 entweichen Exp $
 #
 
 $Bundle::Slash::VERSION = '2.52';
@@ -122,6 +122,8 @@ Text::Iconv		- HTML validator
 Data::JavaScript::Anon	- perl2js data structures
 
 JavaScript::Minifier 0.02
+
+Net::OSCAR              - Needed by the IM bot
 
 =head1 DESCRIPTION
 

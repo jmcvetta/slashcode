@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.13 2007/02/21 21:34:51 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.14 2007/04/11 05:35:24 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -127,4 +127,23 @@ CREATE TABLE tagnames_similar (
 	PRIMARY KEY (tsid),
 	UNIQUE type_src_dest (type, src_tnid, dest_tnid)
 ) TYPE=InnoDB;
+
+CREATE TABLE tags_udc (
+	hourtime	datetime NOT NULL,
+	udc		float NOT NULL DEFAULT '0',
+	PRIMARY KEY (hourtime)
+) TYPE=InnoDB;
+
+CREATE TABLE tags_hourofday (
+	hour		tinyint UNSIGNED NOT NULL DEFAULT '0',
+	proportion	float NOT NULL DEFAULT '0',
+	PRIMARY KEY (hour)
+) TYPE=InnoDB;
+
+CREATE TABLE tags_dayofweek (
+	day		tinyint UNSIGNED NOT NULL DEFAULT '0',
+	proportion	float NOT NULL DEFAULT '0',
+	PRIMARY KEY (day)
+) TYPE=InnoDB;
+
 

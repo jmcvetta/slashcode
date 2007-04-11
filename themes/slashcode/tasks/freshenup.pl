@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.69 2007/04/10 18:59:24 tvroom Exp $
+# $Id: freshenup.pl,v 1.70 2007/04/11 17:29:33 pudge Exp $
 
 use File::Path;
 use File::Temp;
@@ -510,7 +510,7 @@ sub _read_and_unlink_cchp_file {
 }
 
 sub gen_firehose_static {
-	my ($vu, $filename, $section, $skinname, $opts) = @_;
+	my($vu, $filename, $section, $skinname, $opts) = @_;
 	my $constants = getCurrentStatic();
 	my $fargs = "virtual_user=$vu ssi=yes section='$section'";
 	my $basedir = $constants->{basedir};

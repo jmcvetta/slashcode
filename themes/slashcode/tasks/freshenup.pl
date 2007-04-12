@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.71 2007/04/12 04:11:40 tvroom Exp $
+# $Id: freshenup.pl,v 1.72 2007/04/12 04:35:43 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -519,7 +519,7 @@ sub gen_firehose_static {
 	foreach (keys %$opts) {
 		$fargs .= " $_=$opts->{$_}";
 	}
-	$fargs .= " $_=$constants->{firehose_anonval_param}" if $constants->{firehose_anonval_param};
+	$fargs .= " anonval=$constants->{firehose_anonval_param}" if $constants->{firehose_anonval_param};
 	slashdLog("$vu $filename $section $fargs");
 	$filename ||= "firehose.shtml";
 

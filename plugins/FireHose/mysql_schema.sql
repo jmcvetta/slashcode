@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.17 2007/04/03 14:11:10 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.18 2007/04/12 04:09:23 tvroom Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -31,6 +31,8 @@ CREATE TABLE firehose (
 	last_update TIMESTAMP,
 	signoffs VARCHAR(255) NOT NULL DEFAULT '',
 	stoid MEDIUMINT UNSIGNED DEFAULT '0',
+	body_length MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,
+	word_count MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE globjid (globjid),
 	KEY createtime (createtime),

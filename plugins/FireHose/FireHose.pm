@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.107 2007/04/10 18:57:05 tvroom Exp $
+# $Id: FireHose.pm,v 1.108 2007/04/12 04:09:23 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -37,13 +37,15 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
 	$data->{discussion} = 0 if !defined $data->{discussion} || !$data->{discussion};
 	$data->{-createtime} = "NOW()" if !$data->{createtime} && !$data->{-createtime};
 	$data->{discussion} ||= 0 if defined $data->{discussion};
+	$data->{body_length} = length($data->{bodytext});
+	$data->{word_count} = countWords($data->{introtext}) + countWords($data->{bodytext});
 
 	my $text_data = {};
 	$text_data->{title} = delete $data->{title};
@@ -72,7 +74,14 @@ sub createUpdateItemFromJournal {
 		my($itemid) = $self->sqlSelect("*", "firehose", "globjid=$globjid_q");
 		if ($itemid) {
 			my $introtext = balanceTags(strip_mode($journal->{article}, $journal->{posttype}), { deep_nesting => 1 });
-			$self->setFireHose($itemid, { introtext => $introtext, title => $journal->{description}, tid => $journal->{tid}, discussion => $journal->{discussion}});
+			$self->setFireHose($itemid, { 
+				introtext => $introtext, 
+				title => $journal->{description}, 
+				tid => $journal->{tid}, 
+				discussion => $journal->{discussion}, 
+				word_count => countWords($introtext) 
+			});
+
 		} else {
 			$self->createItemFromJournal($id);
 		}
@@ -216,6 +225,9 @@ sub updateItemFromStory {
 				public		=> $public,
 				dept		=> $story->{dept},
 				discussion	=> $story->{discussion},
+				body_length	=> $story->{body_length},
+				word_count	=> $story->{word_count},
+				
 			};
 			$self->setFireHose($id, $data);
 		}
@@ -1829,4 +1841,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.107 2007/04/10 18:57:05 tvroom Exp $
+$Id: FireHose.pm,v 1.108 2007/04/12 04:09:23 tvroom Exp $

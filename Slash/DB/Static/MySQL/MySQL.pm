@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.253 2007/04/13 16:41:18 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.254 2007/04/13 16:46:01 cowboyneal Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -20,7 +20,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.253 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.254 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -118,7 +118,7 @@ sub getBackendStories {
 		my $journal_id = $self->getStory($story->{stoid}, 'journal_id');
 		$story->{journal_id} = $journal_id if $journal_id;
 
-		$story->{introtext} .= "<p><a href=\"$constants->{rootdir}/article.pl?sid=$story->{sid}\&from=rss\">Read more of this story</a> at Slashdot.org.</p>";
+		$story->{introtext} .= "<p><a href=\"$constants->{rootdir}/article.pl?sid=$story->{sid}\&from=rss\">Read more of this story</a> at $constants->{sitename}.</p>";
 	}
 
 	return $returnable;

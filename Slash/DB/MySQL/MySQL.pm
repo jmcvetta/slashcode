@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.963 2007/03/27 21:45:50 tvroom Exp $
+# $Id: MySQL.pm,v 1.964 2007/04/13 17:23:31 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.963 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.964 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6089,6 +6089,13 @@ sub getCommentTextCached {
 		}
 		$mcd_debug->{hits} = scalar @old_keys if $mcd_debug;
 		for my $old_key (@old_keys) {
+			# XXX We've seen a fairly rare (few times a day)
+			# occurrence of "substr outside of string at" the
+			# next line, and I'm not sure why.  Throw a warning
+			# if we see it, to try to debug.
+			if (length($old_key) < $mcdkeylen) {
+				print STDERR scalar(gmtime) . " getCommentTextCached bad get_multi key '$old_key' (of '@old_keys')\n"
+			}
 			my $new_key = substr($old_key, $mcdkeylen);
 
 			# strip out offset for abbrev

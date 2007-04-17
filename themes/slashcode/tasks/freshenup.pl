@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.72 2007/04/12 04:35:43 tvroom Exp $
+# $Id: freshenup.pl,v 1.73 2007/04/17 18:05:48 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -408,8 +408,8 @@ $task{$me}{code} = sub {
 		});
 
 		if ($constants->{plugin}{FireHose}) {
-			gen_firehose_static($virtual_user, "index_firehose.shtml", $gSkin->{name}, "", { skipmenu => 1, skippop => 1, fhfilter=> "story", duration => "-1", mode => 'full'  }); 
-			gen_firehose_static($virtual_user, "firehose.shtml", $gSkin->{name}, "", { skipmenu => 1, duration => "-1", mode => 'blue',  }); 
+			gen_firehose_static($virtual_user, "index_firehose.shtml", $gSkin->{name}, "", { skipmenu => 1, skippop => 1, fhfilter=> "story", duration => "-1", mode => 'full', color => "black"  }); 
+			gen_firehose_static($virtual_user, "firehose.shtml", $gSkin->{name}, "", { skipmenu => 1, duration => "-1", mode => 'fulltitle', color => "blue"  }); 
 		}
 		$slashdb->markSkinClean($mp_skid);
 		delete $dirty_skins{$mp_skid};
@@ -438,8 +438,8 @@ $task{$me}{code} = sub {
 					handle_err =>	0
 			});
 			if ($constants->{plugin}{FireHose}) {
-				gen_firehose_static($virtual_user, "index_firehose.shtml", $skin->{name}, $skinname, { skipmenu => 1, skippop => 1, fhfilter=> "'story $skin->{name}'", duration => "-1", mode => 'full' }); 
-				gen_firehose_static($virtual_user, "firehose.shtml", $gSkin->{name}, "", { skipmenu => 1,  duration => "-1", mode => 'blue',  }); 
+				gen_firehose_static($virtual_user, "index_firehose.shtml", $skin->{name}, $skinname, { skipmenu => 1, skippop => 1, fhfilter=> "'story $skin->{name}'", duration => "-1", mode => 'mixed', color => "black"  }); 
+				gen_firehose_static($virtual_user, "firehose.shtml", $gSkin->{name}, "", { skipmenu => 1,  duration => "-1", mode => 'fulltitle', color => "blue" }); 
 			}
 
 			$slashdb->markSkinClean($key);

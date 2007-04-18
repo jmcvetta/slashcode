@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.36 2007/04/18 15:33:11 cowboyneal Exp $
+# $Id: RSS.pm,v 1.37 2007/04/18 23:10:28 cowboyneal Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -393,12 +393,13 @@ sub rss_story {
 
 	my $topics = $reader->getTopics;
 	my $other_creator;
+	my $action;
 
 	$encoded_item->{title}  = $self->encode($story->{title})
 		if $story->{title};
 	if ($story->{sid}) {
 		my $edit = "admin.pl?op=edit&sid=$story->{sid}";
-		my $action = "article.pl?sid=$story->{sid}\&from=rss";
+		$action = "article.pl?sid=$story->{sid}\&from=rss";
 		if ($story->{primaryskid}) {
 			my $dir = url2abs(
 				$reader->getSkin($story->{primaryskid})->{rootdir},
@@ -413,8 +414,6 @@ sub rss_story {
 			$action = "$channel->{'link'}$action";
 		}
 		$_ = $self->encode($_, 'link') for ($encoded_item->{'link'}, $edit);
-
-		$story->{introtext} .= "<p><a href=\"$action\">Read more of this story</a> at $constants->{sitename}.</p>";
 
 		if (getCurrentUser('is_admin')) {
 			$story->{introtext} .= qq[\n\n<p><a href="$edit">[ Edit ]</a></p>];
@@ -432,7 +431,12 @@ sub rss_story {
 
 	if ($version >= 0.91) {
 		my $desc = $self->rss_item_description($item->{description} || $story->{introtext});
-		$encoded_item->{description} = $desc if $desc;
+		if ($desc) {
+			$encoded_item->{description} = $desc;
+			$encoded_item->{description} .= "<p><a href=\"$action\">Read more of this story</a> at $constants->{sitename}.</p>" if $action;
+			# add poll if any
+			$encoded_item->{description} .= pollbooth($story->{qid}) if $story->{qid};
+		}
 	}
 
 	if ($version >= 1.0) {
@@ -571,4 +575,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.36 2007/04/18 15:33:11 cowboyneal Exp $
+$Id: RSS.pm,v 1.37 2007/04/18 23:10:28 cowboyneal Exp $

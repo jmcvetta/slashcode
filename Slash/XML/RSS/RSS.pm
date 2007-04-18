@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RSS.pm,v 1.37 2007/04/18 23:10:28 cowboyneal Exp $
+# $Id: RSS.pm,v 1.38 2007/04/18 23:28:31 cowboyneal Exp $
 
 package Slash::XML::RSS;
 
@@ -32,7 +32,7 @@ use XML::RSS;
 use base 'Slash::XML';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.37 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.38 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -435,7 +435,7 @@ sub rss_story {
 			$encoded_item->{description} = $desc;
 			$encoded_item->{description} .= "<p><a href=\"$action\">Read more of this story</a> at $constants->{sitename}.</p>" if $action;
 			# add poll if any
-			$encoded_item->{description} .= pollbooth($story->{qid}) if $story->{qid};
+			$encoded_item->{description} .= pollbooth($story->{qid},1, 0, 1) if $story->{qid};
 		}
 	}
 
@@ -575,4 +575,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: RSS.pm,v 1.37 2007/04/18 23:10:28 cowboyneal Exp $
+$Id: RSS.pm,v 1.38 2007/04/18 23:28:31 cowboyneal Exp $

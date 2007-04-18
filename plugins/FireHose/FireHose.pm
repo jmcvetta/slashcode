@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.109 2007/04/18 18:45:54 tvroom Exp $
+# $Id: FireHose.pm,v 1.110 2007/04/18 20:18:11 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.109 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.110 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1214,12 +1214,12 @@ sub dispFireHose {
 	$options ||= {};
 
 	slashDisplay('dispFireHose', {
-		item		=> $item,
-		mode		=> $options->{mode},
-		tags_top	=> $options->{tags_top},
-		options		=> $options->{options},
-		vote		=> $options->{vote},
-		bodycontent	=> $options->{bodycontent}
+		item			=> $item,
+		mode			=> $options->{mode},
+		tags_top		=> $options->{tags_top},
+		options			=> $options->{options},
+		vote			=> $options->{vote},
+		bodycontent_include	=> $options->{bodycontent_include}
 	}, { Page => "firehose",  Return => 1 });
 }
 
@@ -1718,11 +1718,11 @@ sub listView {
 		} else {
 	$last_day = timeCalc($item->{createtime}, "%Y%m%d");
 			$itemstext .= $self->dispFireHose($item, {
-				mode		=> $curmode,
-				tags_top	=> $tags_top,
-				options		=> $options,
-				vote		=> $votes->{$item->{globjid}},
-				bodycontent	=> $user->{is_anon} || $curmode == "full"
+				mode			=> $curmode,
+				tags_top		=> $tags_top,
+				options			=> $options,
+				vote			=> $votes->{$item->{globjid}},
+				bodycontent_include	=> $user->{is_anon} 
 			});
 		}
 		$i++;
@@ -1876,4 +1876,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.109 2007/04/18 18:45:54 tvroom Exp $
+$Id: FireHose.pm,v 1.110 2007/04/18 20:18:11 tvroom Exp $

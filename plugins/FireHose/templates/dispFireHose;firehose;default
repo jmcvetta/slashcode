@@ -26,7 +26,7 @@ __template__
     END;
 
     IF mode == "fulltitle";
-    	IF !bodycontent;
+    	IF !bodycontent_include;
 	    	bodycontent = 0;
 	END;
     ELSIF mode == "bodycontent";
@@ -135,4 +135,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.43 2007/04/18 18:32:16 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.44 2007/04/18 20:18:12 tvroom Exp $

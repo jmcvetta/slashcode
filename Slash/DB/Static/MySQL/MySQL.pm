@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.255 2007/04/18 15:26:59 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.256 2007/04/18 23:13:10 cowboyneal Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -20,7 +20,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.255 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.256 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -86,7 +86,7 @@ sub getBackendStories {
 	my $topic = $options->{topic} || getCurrentStatic('mainpage_nexus_tid');
 
 	my $select = "stories.stoid AS stoid, sid, title, stories.tid AS tid, primaryskid, time,
-		dept, stories.uid AS uid, commentcount, hitparade, introtext, bodytext";
+		dept, stories.uid AS uid, commentcount, hitparade, introtext, bodytext, stories.qid as qid";
 
 	my $from = "stories, story_text, story_topics_rendered";
 

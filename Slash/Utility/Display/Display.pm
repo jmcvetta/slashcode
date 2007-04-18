@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Display.pm,v 1.121 2006/09/12 04:44:07 pudge Exp $
+# $Id: Display.pm,v 1.122 2007/04/18 23:26:55 cowboyneal Exp $
 
 package Slash::Utility::Display;
 
@@ -33,7 +33,7 @@ use Slash::Utility::Environment;
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	cleanSlashTags
 	createMenu
@@ -622,7 +622,7 @@ The 'pollbooth' template block.
 # attention
 
 sub pollbooth {
-	my($qid, $no_table, $center) = @_;
+	my($qid, $no_table, $center, $fromrss) = @_;
 	my $constants = getCurrentStatic();
 	return '' if !$constants->{plugin}{PollBooth};
 	my $pollbooth_reader = getObject('Slash::PollBooth', { db_type => 'reader' });
@@ -652,6 +652,7 @@ sub pollbooth {
 		poll_open	=> $poll_open,
 		voters		=> $poll->{pollq}{voters},
 		comments	=> $n_comments,
+		fromrss		=> $fromrss,
 	}, 1);
 }
 
@@ -1724,4 +1725,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Display.pm,v 1.121 2006/09/12 04:44:07 pudge Exp $
+$Id: Display.pm,v 1.122 2007/04/18 23:26:55 cowboyneal Exp $

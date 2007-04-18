@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.29 2007/04/12 04:09:23 tvroom Exp $
+# $Id: firehose.pl,v 1.30 2007/04/18 18:45:52 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.29 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.30 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -34,10 +34,10 @@ sub main {
 		rss		=> [1,  \&rss, 1, ""]
 	);
 
-	# XXX Need to define who has access to this
-	my $rss = $form->{op} eq "rss" && $form->{content_type} && $form->{content_type} =~ $constants->{feed_types};
+	my $op = $form->{op} || "";
+	
+	my $rss = $op eq "rss" && $form->{content_type} && $form->{content_type} =~ $constants->{feed_types};
 
-	my $op = $form->{op};
 	
 	if ($form->{logtoken} && !$rss) {
 		redirect($ENV{SCRIPT_NAME});
@@ -46,7 +46,7 @@ sub main {
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED] || $user->{seclev} < $ops{$op}[2] ) {
 		$op = 'default';
 		if ($user->{seclev} < 1 && $ops{$op}[3] && $ops{$op}[3] ne $form->{anonval}) {
-			redirect("$gSkin->{rootdir}/");
+			redirect("$gSkin->{rootdir}/login.pl");
 			return;
 		}
 	}

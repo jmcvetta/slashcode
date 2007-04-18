@@ -50,13 +50,13 @@ __template__
 	   [% END %]
 
 		<p><em>[% IF rkey && rkey.errstr %]([% rkey.errstr %])[% ELSIF !poll_open %](Poll is closed.)[% END %]</em><br>
-		[ <a href="[% gSkin.rootdir %]/pollBooth.pl?qid=[% qid %]&amp;aid=-1"><b>Results</b></a> |
-		<a href="[% gSkin.rootdir %]/pollBooth.pl"><b>Polls</b></a> ] <br>
+		[ <a href="[% gSkin.rootdir %]/pollBooth.pl?qid=[% qid %]&amp;aid=-1[% IF fromrss %]&amp;from=rss[% END %]"><b>Results</b></a> |
+		<a href="[% gSkin.rootdir %]/pollBooth.pl[% IF fromrss %]?from=rss[% END %]"><b>Polls</b></a> ] <br>
 		Comments:<b>[% comments %]</b> | Votes:<b>[% voters %]</b>
 
 	[% ELSE %]
 	
-		<form action="[% gSkin.rootdir %]/pollBooth.pl" method="post">
+		<form action="[% gSkin.rootdir %]/pollBooth.pl[% IF fromrss %]?from=rss[% END %]" method="post">
 			<fieldset>
 				<legend>Poll</legend>
 				<input type="hidden" name="qid" value="[% qid | strip_attribute %]">
@@ -71,8 +71,8 @@ __template__
 
 				<br><input type="submit" value="Vote">
 				[% IF env.gateway_interface; PROCESS reskey_tag; END %]
-				[ <a href="[% gSkin.rootdir %]/pollBooth.pl?qid=[% qid %]&amp;aid=-1"><b>Results</b></a> |
-				<a href="[% gSkin.rootdir %]/pollBooth.pl"><b>Polls</b></a> ] <br>
+				[ <a href="[% gSkin.rootdir %]/pollBooth.pl?qid=[% qid %]&amp;aid=-1[% IF fromrss %]&amp;from=rss[% END %]"><b>Results</b></a> |
+				<a href="[% gSkin.rootdir %]/pollBooth.pl[% IF fromrss %]?from=rss[% END %]"><b>Polls</b></a> ] <br>
 				Comments:<b>[% comments %]</b> | Votes:<b>[% voters %]</b>
 			</fieldset>
 		</form>
@@ -81,5 +81,5 @@ __template__
 __seclev__
 10000
 __version__
-$Id: pollbooth;misc;default,v 1.15 2005/10/20 19:53:10 pudge Exp $
+$Id: pollbooth;misc;default,v 1.16 2007/04/18 23:40:22 cowboyneal Exp $
 

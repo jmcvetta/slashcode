@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.5 2006/08/08 19:14:31 tvroom Exp $
+# $Id: PLUGIN,v 1.6 2007/04/19 18:53:42 tvroom Exp $
 name=Bookmark
 description="Bookmark"
 htdoc=bookmark.pl
@@ -10,5 +10,7 @@ task=fetch_rss_bookmarks.pl
 template=templates/anon_bookmark;bookmark;default
 template=templates/bookmark;misc;default
 template=templates/bookmarklink;misc;default
+template=templates/bookmarktext;misc;default
 template=templates/recentandpop;bookmark;default
 template=templates/userbookmarks;users;default
+

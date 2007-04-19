@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tagbox.pm,v 1.7 2007/03/21 20:08:25 jamiemccarthy Exp $
+# $Id: Tagbox.pm,v 1.8 2007/04/19 05:35:00 jamiemccarthy Exp $
 
 package Slash::Tagbox;
 
@@ -17,7 +17,7 @@ use base 'Slash::DB::MySQL';
 
 use Data::Dumper;
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -251,7 +251,7 @@ sub getTagboxTags {
 		$max_time_clause = " AND created_at <= $mtq";
 	}
 	$hr_ar = $self->sqlSelectAllHashrefArray(
-		'*',
+		'*, UNIX_TIMESTAMP(created_at) AS created_at_ut',
 		'tags',
 		"$colname=$affected_id $max_time_clause",
 		'ORDER BY tagid');
@@ -265,7 +265,7 @@ sub getTagboxTags {
 		my $new_ids = join(',', sort { $a <=> $b } keys %new_ids);
 #print STDERR "hr_ar=" . scalar(@$hr_ar) . " with $colname=$affected_id\n";
 		$hr_ar = $self->sqlSelectAllHashrefArray(
-			'*',
+			'*, UNIX_TIMESTAMP(created_at) AS created_at_ut',
 			'tags',
 			"$new_colname IN ($new_ids) $max_time_clause",
 			'ORDER BY tagid');

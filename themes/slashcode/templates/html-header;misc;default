@@ -41,6 +41,7 @@ __template__
 <script src="[% constants.imagedir %]/yui/autocomplete.js?[% constants.cvs_tag_currentcode %]"  type="text/javascript"></script>
 <script src="[% constants.imagedir %]/yui/calendar.js?[% constants.cvs_tag_currentcode %]" type="text/javascript"></script>
 <script src="[% constants.imagedir %]/sd_autocomplete.js?[% constants.cvs_tag_currentcode %]"   type="text/javascript"></script>
+<script src="[% constants.imagedir %]/sd_calendar.js?[% constants.cvs_tag_currentcode %]"   type="text/javascript"></script>
 [%- IF user.currentPage == "firehose" -%]
 <script src="[% constants.imagedir %]/slashbox.js?[% constants.cvs_tag_currentcode %]" type="text/javascript"></script>
 [%- END -%]
@@ -54,4 +55,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: html-header;misc;default,v 1.33 2007/03/22 03:50:36 pudge Exp $
+$Id: html-header;misc;default,v 1.34 2007/04/20 17:12:13 scc Exp $

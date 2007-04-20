@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.109 2007/04/18 19:29:50 tvroom Exp $
+// $Id: common.js,v 1.110 2007/04/20 03:18:50 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -416,7 +416,6 @@ function toggle_firehose_body(id, is_admin) {
 	var params = [];
 	setFirehoseAction();
 	params['op'] = 'firehose_fetch_text';
-	params['reskey'] = reskey_static;
 	params['id'] = id;
 	var fhbody = $('fhbody-'+id);
 	var fh = $('firehose-'+id);
@@ -426,6 +425,7 @@ function toggle_firehose_body(id, is_admin) {
 				firehose_get_admin_extras(id); 
 			}
 		};
+		params['reskey'] = reskey_static;
 		if (is_admin) {
 			ajax_update(params, 'fhbody-'+id, handlers);
 		} else {

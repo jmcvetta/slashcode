@@ -40,8 +40,6 @@ __template__
             }
         };
     } ();
-
-  YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.App.firehose_calendar_init);
 </script>
 <div id="slashboxes">
 [% UNLESS user.noboxes %]
@@ -162,7 +160,6 @@ feedback to hose@cmdrtaco.net but be forgiving of beta code!
 
 fh_ticksize = 15;
 firehose_slider_init();
-firehose_calendar_init();
 
 
 
@@ -170,4 +167,4 @@ firehose_calendar_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.74 2007/04/18 19:26:43 tvroom Exp $
+$Id: list;firehose;default,v 1.75 2007/04/20 18:54:12 scc Exp $

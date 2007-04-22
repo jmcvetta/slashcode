@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: im_messages.pl,v 1.5 2007/04/20 16:41:12 entweichen Exp $
+# $Id: im_messages.pl,v 1.6 2007/04/22 10:09:15 jamiemccarthy Exp $
 
 use strict;
 
@@ -58,7 +58,7 @@ $task{$me}{code} = sub {
 			# connect by then, so exit until we're restarted.
 			if ($retry_counter++ == 20) {
 				slashdLog("Exceeded 20 connect retries. Exiting.");
-				exit;
+				last;
 			}
 			sleep(1);
 			next;
@@ -102,7 +102,7 @@ $task{$me}{code} = sub {
 		}
 	}
 
-	$oscar->signoff();
+	$oscar->signoff() if $online;
 	
 	return;
 

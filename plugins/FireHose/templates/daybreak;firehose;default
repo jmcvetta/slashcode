@@ -18,8 +18,8 @@ __template__
 <div align="center" class="daybreak" id="[% id %]">
 	[% last_days = Slash.getOlderDaysFromDay(last_day, 0, 0, { skip_add_today => 1, show_future_days => 1 }) %]
 	[% cur_days = Slash.getOlderDaysFromDay(cur_day, 0, 0, { skip_add_today => 1, show_future_days => 1 }) %]
-	<a href="[% gSkin.rootdir %]/[% fh_page %]?issue=[% last_day %]">[% last_days.0.1 %]</a><br>
-	<a href="[% gSkin.rootdir %]/[% fh_page %]?issue=[% cur_day %]">[% cur_days.0.1 %]</a><br>
+	<a href="[% gSkin.rootdir %]/[% fh_page %]?issue=[% last_day %]&amp;duration=1">[% last_days.0.1 %]</a><br>
+	<a href="[% gSkin.rootdir %]/[% fh_page %]?issue=[% cur_day %]&amp;duration=1">[% cur_days.0.1 %]</a><br>
 </div>
 __version__
-$Id: daybreak;firehose;default,v 1.4 2007/04/18 17:48:42 tvroom Exp $
+$Id: daybreak;firehose;default,v 1.5 2007/04/25 14:24:00 tvroom Exp $

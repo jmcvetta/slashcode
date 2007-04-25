@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.111 2007/04/19 05:07:43 pudge Exp $
+# $Id: FireHose.pm,v 1.112 2007/04/25 14:24:00 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -37,7 +37,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.111 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.112 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -703,7 +703,7 @@ sub ajaxRemoveUserTab {
 	my $firehose = getObject("Slash::FireHose");
 	my $opts = $firehose->getAndSetOptions();
 	my $html = {};
-	$html->{fhtablist} = slashDisplay("firehose_tabs", { nodiv => 1, tabs => $opts->{tabs} }, { Return => 1});
+	$html->{fhtablist} = slashDisplay("firehose_tabs", { nodiv => 1, tabs => $opts->{tabs}, options => $opts }, { Return => 1});
 
 	return Data::JavaScript::Anon->anon_dump({
 		html	=> $html
@@ -1871,4 +1871,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.111 2007/04/19 05:07:43 pudge Exp $
+$Id: FireHose.pm,v 1.112 2007/04/25 14:24:00 tvroom Exp $

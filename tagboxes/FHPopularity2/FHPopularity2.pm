@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity2.pm,v 1.1 2007/04/19 05:34:38 jamiemccarthy Exp $
+# $Id: FHPopularity2.pm,v 1.2 2007/04/25 18:25:16 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity2;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -157,7 +157,7 @@ sub run {
 			? 1  # mainpage
 			: 2; # sectional
 	}
-	$popularity = $firehose->getMidPopularityForColorLevel($color_level) + $extra_pop;
+	$popularity = $firehose->getEntryPopularityForColorLevel($color_level) + $extra_pop;
 
 	# Add up nods and nixes.
 	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');
@@ -192,7 +192,7 @@ print STDERR "extra_pop for $tag_hr->{tagid}: $extra_pop * $udc_mult\n";
 
 sub get_udc_mult {
 	my($time, $cache) = @_;
-	my $prevhour = ($time/3600)*3600 - 1;
+	my $prevhour = int($time/3600-1)*3600;
 	my $curhour = $prevhour+3600;
 	my $nexthour = $prevhour+3600;
 	my $tagsdb = getObject('Slash::Tags');

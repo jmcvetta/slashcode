@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.19 2007/04/25 14:05:31 tvroom Exp $
+# $Id: PLUGIN,v 1.20 2007/04/25 18:25:16 jamiemccarthy Exp $
 name=FireHose
 description="FireHose"
 css=firehose.css
@@ -6,7 +6,6 @@ htdoc=firehose.pl
 mysql_dump=mysql_dump.sql
 mysql_schema=mysql_schema.sql
 requiresplugin=Tags
-task=set_color_ranges.pl
 template=templates/adv_pref_firehose;misc;default
 template=templates/list;firehose;default
 template=templates/view;firehose;default

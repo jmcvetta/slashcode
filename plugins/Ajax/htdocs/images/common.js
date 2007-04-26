@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.113 2007/04/26 19:27:40 tvroom Exp $
+// $Id: common.js,v 1.114 2007/04/26 20:18:27 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1023,8 +1023,8 @@ function firehose_remove_entry(id) {
 
 var firehose_cal_select_handler = function(type,args,obj) { 
 	var selected = args[0];
-  firehose_set_options('startdate', selected.startdate);
-  firehose_set_options('duration', selected.duration);
+	firehose_set_options('startdate', selected.startdate);
+	firehose_set_options('duration', selected.duration);
 }; 
 
 

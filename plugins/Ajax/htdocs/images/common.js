@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.112 2007/04/26 17:38:43 scc Exp $
+// $Id: common.js,v 1.113 2007/04/26 19:27:40 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -549,6 +549,12 @@ function firehose_set_options(name, value) {
 
 	if (name == "color" || name == "tab" || name == "pause" || name == "startdate" || name == "duration" ) { 
 		params[name] = [value];
+		if (name == "startdate") {
+			firehose_startdate = value;
+		}
+		if (name == "duration" {
+			firehose_duration = value;
+		}
 	}
 
 	var handlers = {
@@ -904,6 +910,7 @@ function firehose_get_updates(options) {
 	params['ids'] = firehose_get_item_idstring();
 	params['updatetime'] = update_time;
 	params['startdate'] = firehose_startdate;
+	params['duration'] = firehose_duration;
 	params['issue'] = firehose_issue;
 	params['page'] = page;
 	params['fh_pageval'] = fh_pageval;

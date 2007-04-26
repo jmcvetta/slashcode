@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.113 2007/04/25 18:25:16 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.114 2007/04/26 15:15:39 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -32,12 +32,13 @@ use Slash::Utility;
 use Slash::Slashboxes;
 use Slash::Tags;
 use Data::JavaScript::Anon;
+use Date::Calc qw(Days_in_Month Add_Delta_YMD);
 
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.113 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1302,12 +1303,18 @@ sub getAndSetOptions {
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
 	$options->{mode} = $mode;
 	$options->{pause} = $user->{firehose_paused};
-	$options->{duration} = defined $form->{duration} ? $form->{duration} : $user->{firehose_duration};
 
 	if (defined $form->{pause}) {
 		$self->setUser($user->{uid}, { firehose_paused => $form->{pause} ? 1 : 0 });
 		$options->{pause} = $form->{pause} ? 1 : 0;
 	}
+
+	if (defined $form->{duration}) {
+		if ($form->{duration} =~ /-?\d+$/) {
+			$options->{duration} = $form->{duration};
+		}
+	}
+	$options->{duration} = "7" if !$options->{duration};
 
 	if (defined $form->{startdate}) {
 		if ($form->{startdate} =~ /^\d{8}$/) {
@@ -1878,6 +1885,39 @@ sub addDayBreaks {
 	return \@retitems;
 }
 
+sub getOlderMonthsFromDay {
+	my($self, $day, $start, $end) = @_;
+	$day =~ s/-//g;
+	$day ||= $self->getDay(0);
+	my $cur_day = $self->getDay(0);
+
+	my($y, $m, $d) = $day =~/(\d{4})(\d{2})(\d{2})/;
+	my($cy, $cm, $cd) = $cur_day =~/(\d{4})(\d{2})(\d{2})/;
+
+	$d = "01";
+
+	my $days = [];
+
+	for ($start..$end) {
+		my ($ny, $nm, $nd) = Add_Delta_YMD($y, $m, $d, 0, $_, 0);
+		$nm = "0$nm" if $nm < 10;
+		$nd = "0$nd" if $nd < 10;
+		my $the_day = "$ny$nm$nd";
+		if ($the_day le $cur_day || $_ == 0) {
+			my $label = "";
+			if ($ny == $cy) {
+				$label = timeCalc($the_day, "%B", 0);
+			} else {
+				$label = timeCalc($the_day, "%B %Y", 0);
+			}
+			my $num_days = Days_in_Month($ny, $nm);
+			my $active = $_ == 0;
+			push @$days, [ $the_day, $label, $num_days, $active ];
+		}
+	}
+	return $days;
+}
+
 
 1;
 
@@ -1890,4 +1930,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.113 2007/04/25 18:25:16 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.114 2007/04/26 15:15:39 tvroom Exp $

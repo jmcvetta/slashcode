@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.114 2007/04/26 15:15:39 tvroom Exp $
+# $Id: FireHose.pm,v 1.115 2007/04/26 17:36:55 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.114 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.115 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -426,13 +426,6 @@ sub getFireHoseEssentials {
 		if ($options->{fetch_text}) {
 			$columns .= ",firehose_text.*";
 		}
-	}
-
-	if ($options->{createtime_gte} && !$doublecheck) {
-		push @where, "createtime >= " . $self->sqlQuote($options->{createtime_gte});
-	}
-	if ($options->{last_update_gte} && !$doublecheck) {
-		push @where, "last_update >= " . $self->sqlQuote($options->{last_update_gte});
 	}
 
 	if ($options->{ids}) {
@@ -1684,7 +1677,7 @@ sub getPopLevelForPopularity {
 }
 
 sub listView {
-	my ($self, $lv_opts) = @_;
+	my($self, $lv_opts) = @_;
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
 	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
@@ -1930,4 +1923,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.114 2007/04/26 15:15:39 tvroom Exp $
+$Id: FireHose.pm,v 1.115 2007/04/26 17:36:55 pudge Exp $

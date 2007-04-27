@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.116 2007/04/26 20:32:37 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.117 2007/04/27 00:14:56 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.116 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -462,7 +462,7 @@ sub getFireHoseEssentials {
 
 	# XXX Update to support timezones eventually
 	my $dur_q = $self->sqlQuote($options->{duration});
-	my $st_q  = $self->sqlQuote(timeCalc($options->{startdate},"%Y-%m-%d %T"));
+	my $st_q  = $self->sqlQuote(timeCalc($options->{startdate},"%Y-%m-%d %T", -$user->{off_set}));
 
 	if ($options->{startdate}) {
 		push @where, "createtime >= $st_q";
@@ -1949,4 +1949,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.116 2007/04/26 20:32:37 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.117 2007/04/27 00:14:56 tvroom Exp $

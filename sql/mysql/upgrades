@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1176 2007/04/26 21:17:26 pudge Exp $
+# $Id: upgrades,v 1.1177 2007/04/27 03:25:39 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4538,8 +4538,6 @@ ALTER TABLE firehose ADD COLUMN popularity2 float NOT NULL default '0' AFTER pop
 # 2007-04-18
 UPDATE vars SET value = 'T_2_5_0_155' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 # For plugins/FireHose
@@ -4551,4 +4549,6 @@ INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_fhpopularity_
 
 # 2007-04-26
 UPDATE vars SET value = 'T_2_5_0_156' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

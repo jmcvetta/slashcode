@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity2.pm,v 1.3 2007/04/26 18:32:15 jamiemccarthy Exp $
+# $Id: FHPopularity2.pm,v 1.4 2007/04/27 03:18:10 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity2;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -173,7 +173,7 @@ sub run {
 		next unless $sign;
 		my $extra_pop = $tag_hr->{total_clout} * $sign;
 		my $udc_mult = get_udc_mult($tag_hr->{created_at_ut}, $udc_cache);
-main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f"), $tag_hr->{tagid}, $extra_pop, $udc_mult);
+main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f", $tag_hr->{tagid}, $extra_pop, $udc_mult));
 		$extra_pop *= $udc_mult;
 		$popularity += $extra_pop;
 	}
@@ -186,7 +186,7 @@ main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f"), $tag_hr->{tagid}, $ext
 	if ($options->{return_only}) {
 		return $popularity;
 	}
-	main::tagboxLog("FHPopularity2->run setting $fhid ($affected_id) to $popularity");
+	main::tagboxLog(sprintf("FHPopularity2->run setting %d (%d) to %.6f", $fhid, $affected_id, $popularity));
 	$firehose_db->setFireHose($fhid, { popularity2 => $popularity });
 }
 

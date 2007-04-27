@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.12 2007/04/26 18:32:15 jamiemccarthy Exp $
+# $Id: FHEditorPop.pm,v 1.13 2007/04/27 03:18:10 jamiemccarthy Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -189,7 +189,7 @@ sub run {
 		my $editor_mult = $seclev >= 100 ? ($constants->{tagbox_fheditorpop_edmult} || 10) : 1;
 		my $extra_pop = $tag_hr->{total_clout} * $editor_mult * $sign;
 		my $udc_mult = get_udc_mult($tag_hr->{created_at_ut}, $udc_cache);
-main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f"), $tag_hr->{tagid}, $extra_pop, $udc_mult);
+main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f", $tag_hr->{tagid}, $extra_pop, $udc_mult));
 		$extra_pop *= $udc_mult;
 		$popularity += $extra_pop;
 	}
@@ -202,7 +202,7 @@ main::tagboxLog(sprintf("extra_pop for %d: %.6f * %.6f"), $tag_hr->{tagid}, $ext
 	if ($options->{return_only}) {
 		return $popularity;
 	}
-	main::tagboxLog("FHEditorPop->run setting $fhid ($affected_id) to $popularity");
+	main::tagboxLog(sprintf("FHEditorPop->run setting %d (%d) to %.6f", $fhid, $affected_id, $popularity));
 	$firehose_db->setFireHose($fhid, { editorpop => $popularity });
 }
 

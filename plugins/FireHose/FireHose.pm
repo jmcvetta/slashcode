@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.117 2007/04/27 00:14:56 tvroom Exp $
+# $Id: FireHose.pm,v 1.118 2007/04/30 20:48:45 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.117 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -990,7 +990,15 @@ sub ajaxFireHoseGetUpdates {
 	}
 
 
-	$html->{"fh-paginate"} = slashDisplay("paginate", { contentsonly => 1, day => $last_day , page => $form->{page}, options => $opts, ulid => "fh-paginate", divid => "fh-pag-div", num_items => $num_items, fh_page => $base_page }, { Return => 1, Page => "firehose"});
+	my $html2split = slashDisplay("paginate", { contentsonly => 1, day => $last_day , page => $form->{page}, options => $opts, ulid => "fh-paginate", divid => "fh-pag-div", num_items => $num_items, fh_page => $base_page, split_refresh => 1 }, { Return => 1, Page => "firehose"});
+
+	my ($beforewidget, $afterwidget) = split('<!-- split -->', $html2split);
+
+	$html->{beforewidget} = $beforewidget;
+	$html->{afterwidget} = $afterwidget;
+	
+	$html->{firehose_pages} = slashDisplay("firehose_pages", { page => $form->{page}, num_items => $num_items, fh_page => $base_page, options => $opts, contentsonly => 1}, { Return => 1});
+
 	$html->{local_last_update_time} = timeCalc($slashdb->getTime(), "%H:%M");
 	$html->{gmt_update_time} = " (".timeCalc($slashdb->getTime(), "%H:%M", 0)." GMT) " if $user->{is_admin};
 
@@ -1949,4 +1957,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.117 2007/04/27 00:14:56 tvroom Exp $
+$Id: FireHose.pm,v 1.118 2007/04/30 20:48:45 tvroom Exp $

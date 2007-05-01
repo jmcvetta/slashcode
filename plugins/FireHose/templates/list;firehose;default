@@ -102,7 +102,6 @@ __template__
 
      IF options.startdate;
      	 startdate = options.startdate.substr(5, 2) _ '/' _ options.startdate.substr(8,2) _ '/' _ options.startdate.substr(0, 4);
-	 startdate;
      END;
   %]
   			[% PROCESS datewidget id='fhcalendar' init='firehose_calendar_init' date=startdate start_mode = start_mode %]
@@ -172,4 +171,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.77 2007/05/01 19:40:30 tvroom Exp $
+$Id: list;firehose;default,v 1.78 2007/05/01 22:03:42 tvroom Exp $

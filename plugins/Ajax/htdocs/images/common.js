@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.116 2007/04/27 04:13:38 tvroom Exp $
+// $Id: common.js,v 1.117 2007/05/02 18:18:23 scc Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1035,7 +1035,7 @@ var firehose_cal_select_handler = function(type,args,obj) {
 
 
 function firehose_calendar_init( widget ) {
-	widget.selectEvent.subscribe(firehose_cal_select_handler, widget, true);
+	widget.changeEvent.subscribe(firehose_cal_select_handler, widget, true);
 }
 
 function firehose_slider_init() {

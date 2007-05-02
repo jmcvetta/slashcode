@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1177 2007/04/27 03:25:39 pudge Exp $
+# $Id: upgrades,v 1.1178 2007/05/02 02:37:19 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4552,3 +4552,5 @@ UPDATE vars SET value = 'T_2_5_0_156' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
+# Turn on System Message IM option
+UPDATE message_codes SET delivery_bvalue = 4 WHERE type = 'System Messages';

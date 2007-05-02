@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.118 2007/04/30 20:48:45 tvroom Exp $
+# $Id: FireHose.pm,v 1.119 2007/05/02 22:22:45 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.118 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.119 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -137,7 +137,7 @@ sub createItemFromJournal {
 			type			=> $type
 		};
 		$self->createFireHose($data);
-		if ($publicize) {
+		if ($publicize && !isAnon($journal->{uid})) {
 			my $constants = getCurrentStatic();
 			my $tags = getObject('Slash::Tags');
 			$tags->createTag({
@@ -187,14 +187,16 @@ sub createUpdateItemFromBookmark {
 		$self->createFireHose($data)
 	}
 
-	my $constants = getCurrentStatic();
-	my $tags = getObject('Slash::Tags');
-	$tags->createTag({
-		uid			=> $bookmark->{uid},
-		name			=> $constants->{tags_upvote_tagname},
-		globjid			=> $url_globjid,
-		private			=> 1,
-	});
+	if (!isAnon($bookmark->{uid})) {
+		my $constants = getCurrentStatic();
+		my $tags = getObject('Slash::Tags');
+		$tags->createTag({
+			uid			=> $bookmark->{uid},
+			name			=> $constants->{tags_upvote_tagname},
+			globjid			=> $url_globjid,
+			private			=> 1,
+		});
+	}
 }
 
 sub createItemFromSubmission {
@@ -224,14 +226,16 @@ sub createItemFromSubmission {
 			name			=> $submission->{name},
 		};
 		$self->createFireHose($data);
-		my $constants = getCurrentStatic();
-		my $tags = getObject('Slash::Tags');
-		$tags->createTag({
-			uid			=> $submission->{uid},
-			name			=> $constants->{tags_upvote_tagname},
-			globjid			=> $globjid,
-			private			=> 1,
-		});
+		if (!isAnon($submission->{uid})) {
+			my $constants = getCurrentStatic();
+			my $tags = getObject('Slash::Tags');
+			$tags->createTag({
+				uid			=> $submission->{uid},
+				name			=> $constants->{tags_upvote_tagname},
+				globjid			=> $globjid,
+				private			=> 1,
+			});
+		}
 	}
 
 }
@@ -677,7 +681,7 @@ sub rejectItem {
 	my $item = $firehose->getFireHose($id);
 	if ($item) {
 		$firehose->setFireHose($id, { rejected => "yes" });
-		if ($item->{globjid}) {
+		if ($item->{globjid} && !isAnon($user->{uid})) {
 			my $downvote = $constants->{tags_downvote_tagname} || 'nix';
 			$tags->createTag({
 				uid	=>	$user->{uid},
@@ -690,7 +694,7 @@ sub rejectItem {
 		if ($item->{type} eq "submission") {
 			if ($item->{srcid}) {
 				my $n_q = $firehose->sqlQuote($item->{srcid});
-				my $uid = getCurrentUser('uid');
+				my $uid = $user->{uid};
 				my $rows = $firehose->sqlUpdate('submissions',
 					{ del => 1 }, "subid=$n_q AND del=0"
 				);
@@ -1957,4 +1961,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.118 2007/04/30 20:48:45 tvroom Exp $
+$Id: FireHose.pm,v 1.119 2007/05/02 22:22:45 jamiemccarthy Exp $

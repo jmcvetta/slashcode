@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.203 2007/02/02 15:17:45 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.204 2007/05/03 06:47:59 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -1503,6 +1503,8 @@ sub processCustomTagsPost {
 # revert div class="quote" back to <quote>, handles nesting
 sub revertQuote {
 	my($str) = @_;
+
+	my $bail = 0;
 	while ($str =~ m|((<p>)?<div class="quote">)(.+)$|sig) {
 		my($found, $p, $rest) = ($1, $2, $3);
 		my $pos = pos($str) - (length($found) + length($rest));
@@ -1510,9 +1512,11 @@ sub revertQuote {
 		pos($str) = $pos + length('<quote>');
 
 		my $c = 0;
+		$bail = 1;
 		while ($str =~ m|(<(/?)div.*?>(</p>)?)|sig) {
 			my($found, $end, $p2) = ($1, $2, $3);
 			if ($end && !$c) {
+				$bail = 0;  # if we don't get here, something is wrong
 				my $len = length($found);
 				# + 4 is for the </p>
 				my $pl = $p && $p2 ? 4 : 0;
@@ -1524,6 +1528,18 @@ sub revertQuote {
 			} else {
 				$c++;
 			}
+		}
+
+		if ($bail) {
+			use Data::Dumper;
+			warn "Stuck in endless loop: " . Dumper({
+				found	=> $found,
+				p	=> $p,
+				rest	=> $rest,
+				'pos'	=> $pos,
+				str	=> $str,
+			});
+			last;
 		}
 	}
 	return($str);
@@ -2870,7 +2886,7 @@ print STDERR "_validateLists logic error, no entry for list '$list'\n" if !$insi
 		my $in    = '';
 
 		# the secondary loop finds either a tag, or text between tags
-		while ($content =~ m!\s*([^<]+|<(.+?)>)!sig) {
+		while ($content =~ m!\s*([^<]+|<([^\s>]+).*?>)!sig) {
 			my($whole, $tag) = ($1, $2);
 			next if $whole !~ /\S/;
 			# we only care here if this is one that can be inside a list
@@ -4314,4 +4330,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.203 2007/02/02 15:17:45 jamiemccarthy Exp $
+$Id: Data.pm,v 1.204 2007/05/03 06:47:59 pudge Exp $

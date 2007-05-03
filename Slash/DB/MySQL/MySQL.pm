@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.964 2007/04/13 17:23:31 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.965 2007/05/03 06:47:59 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.964 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.965 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6143,16 +6143,19 @@ sub getCommentTextCached {
 				my $str = $abbrev_text;
 				# based on revertQuote() ... we replace the unused
 				# content with <<LEN>> and then we know how much we
-				# removed
+				# removed, and discard $str when done
+				my $bail = 0;
 				while ($str =~ m|((<p>)?<div class="quote">)(.+)$|sig) {
 					my($found, $p, $rest) = ($1, $2, $3);
 					my $pos = pos($str) - (length($found) + length($rest));
 					pos($str) = $pos + length($found);
 
 					my $c = 0;
+					$bail = 1;
 					while ($str =~ m|(<(/?)div.*?>(</p>)?)|sig) {
 						my($found, $end, $p2) = ($1, $2, $3);
 						if ($end && !$c) {
+							$bail = 0;  # if we don't get here, something is wrong
 							my $len = length($found);
 							my $thislen = pos($str)-$pos;
 							substr($str, $pos, $thislen) = "<<$thislen>>";
@@ -6164,20 +6167,33 @@ sub getCommentTextCached {
 							$c++;
 						}
 					}
+					if ($bail) {
+						use Data::Dumper;
+						warn "Stuck in endless loop: " . Dumper({
+							found	=> $found,
+							p	=> $p,
+							rest	=> $rest,
+							'pos'	=> $pos,
+							str	=> $str,
+						});
+						last;
+					}
 				}
 
-				$str =~ s/(?<!<)(<[^<>]+>)/'<<'.length($1).'>>'/ge;
+				unless ($bail) {
+					$str =~ s/(?<!<)(<[^<>]+>)/'<<'.length($1).'>>'/ge;
 
-				my $plen = $this_len = 0;
-				while ($str =~ /([^<>]|<<(\d+)>>)/g) {
-					my $len1 = length $1;
-					if ($2) {
-						$this_len += $2;
-					} else {
-						$this_len += $len1;
-						$plen += $len1;
+					my $plen = $this_len = 0;
+					while ($str =~ /([^<>]|<<(\d+)>>)/g) {
+						my $len1 = length $1;
+						if ($2) {
+							$this_len += $2;
+						} else {
+							$this_len += $len1;
+							$plen += $len1;
+						}
+						last if $plen >= $abbreviate_len;
 					}
-					last if $plen >= $abbreviate_len;
 				}
 			}
 			$abbrev_text = chopEntity($abbrev_text, $this_len);

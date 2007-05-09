@@ -44,7 +44,7 @@ __template__
 	</li>
 		[% IF user.is_anon %]
 		<li>
-			<a href="[% gSkin.rootdir %]/my/">Create Account/Log in</a>
+			<a href="[% gSkin.rootdir %]/my/">Create Account/Log In</a>
 		</li>
 		[% ELSE %]
 		<li class="user">
@@ -97,4 +97,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: mainmenu;misc;default,v 1.14 2006/08/30 03:42:55 jamiemccarthy Exp $
+$Id: mainmenu;misc;default,v 1.15 2007/05/09 20:57:04 pudge Exp $

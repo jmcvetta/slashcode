@@ -81,7 +81,7 @@ __template__
 	|
 
 [% IF user.is_anon %]
-	<a href="[% gSkin.rootdir %]/users.pl">Log in/Create an Account</a>
+	<a href="[% gSkin.rootdir %]/users.pl">Log In/Create an Account</a>
 [% ELSE %]
 		<a href="[% gSkin.rootdir %]/my/comments">Preferences</a>
 [% END %]
@@ -269,4 +269,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.77 2007/03/14 17:37:41 scc Exp $
+$Id: printCommentsMain;misc;default,v 1.78 2007/05/09 20:57:04 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.331 2007/05/09 18:26:10 entweichen Exp $
+# $Id: users.pl,v 1.332 2007/05/09 20:56:09 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2587,7 +2587,7 @@ sub saveUser {
 		icq		=> $form->{icq},
 		playing		=> $form->{playing},
 	};
-	
+
 	for (keys %extr) {
 		$user_edits_table->{$_} = $extr{$_} if defined $extr{$_};
 	}

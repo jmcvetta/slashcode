@@ -118,7 +118,7 @@ END %]
 			[% ELSIF item.type == "journal" %]
 				<a href="[% gSkin.rootdir %]/~[% the_user.nickname %]/journal/[% item.srcid %]/">Read More</a>
 			[% ELSE %]
-				Coming soon - Read More & Discuss...
+				Coming soon - Read More &amp; Discuss...
 			[% END %]
 				</b>
 			</li>
@@ -135,4 +135,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.44 2007/04/18 20:18:12 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.45 2007/05/09 21:20:23 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.121 2007/05/09 21:20:23 pudge Exp $
+# $Id: FireHose.pm,v 1.122 2007/05/10 17:49:52 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.121 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1626,10 +1626,12 @@ sub getAndSetOptions {
 
 	my $adminmode = 0;
 	$adminmode = 1 if $user->{is_admin};
-	if (defined $options->{firehose_usermode}) {
+	if ($no_saved) {
+		$adminmode = 0;
+	} elsif (defined $options->{firehose_usermode}) {
 		$adminmode = 0 if $options->{firehose_usermode};
 	} else {
-		$adminmode = 0 if $user->{firehose_usermode} || $no_saved;
+		$adminmode = 0 if $user->{firehose_usermode};
 	}
 
 	$options->{public} = "yes";
@@ -1641,7 +1643,7 @@ sub getAndSetOptions {
 	} else  {
 		$options->{accepted} = "no" if !$options->{accepted};
 		$options->{duration} ||= 1;
-		if ($user->{is_subscriber}) {
+		if ($user->{is_subscriber} && !$no_saved) {
 			$options->{createtime_subscriber_future} = 1;
 		} else {
 			$options->{createtime_no_future} = 1;
@@ -1968,4 +1970,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.121 2007/05/09 21:20:23 pudge Exp $
+$Id: FireHose.pm,v 1.122 2007/05/10 17:49:52 pudge Exp $

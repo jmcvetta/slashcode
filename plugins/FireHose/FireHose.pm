@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.122 2007/05/10 17:49:52 pudge Exp $
+# $Id: FireHose.pm,v 1.123 2007/05/17 05:55:39 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.122 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.123 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -587,8 +587,9 @@ sub getFireHose {
 	my($self, $id) = @_;
 
 	my $mcd = $self->getMCD();
-	my $mcdkey = "$self->{_mcd_keyprefix}:firehose";
+	my $mcdkey;
 	if ($mcd) {
+		$mcdkey = "$self->{_mcd_keyprefix}:firehose";
 		my $item = $mcd->get("$mcdkey:$id");
 		return $item if $item;
 	}
@@ -1203,7 +1204,10 @@ sub setFireHose {
 	my $id_q = $self->sqlQuote($id);
 	
 	my $mcd = $self->getMCD();
-	my $mcdkey = "$self->{_mcd_keyprefix}:firehose";
+	my $mcdkey;
+	if ($mcd) {
+		$mcdkey = "$self->{_mcd_keyprefix}:firehose";
+	}
 
 	if (!exists($data->{last_update}) && !exists($data->{-last_update})) {
 		my @non_trivial = grep {!/^(activity|toptags)$/} keys %$data;
@@ -1970,4 +1974,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.122 2007/05/10 17:49:52 pudge Exp $
+$Id: FireHose.pm,v 1.123 2007/05/17 05:55:39 pudge Exp $

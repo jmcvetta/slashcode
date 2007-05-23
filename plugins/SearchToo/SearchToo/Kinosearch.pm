@@ -1,7 +1,5 @@
 package Slash::SearchToo::Kinosearch;
 
-# STILL IN PROGRESS NOT READY FOR USE
-
 use strict;
 use File::Path;
 use File::Spec::Functions;
@@ -17,7 +15,7 @@ use KinoSearch::InvIndexer;
 use KinoSearch::Search::QueryFilter;
 use KinoSearch::Searcher;
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: I did it!  And it's all thanks to the books at my local library.
 

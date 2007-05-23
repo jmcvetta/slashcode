@@ -6,7 +6,7 @@ use Slash::DB::Utility;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 
-($VERSION) = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Prepare to be thought at!
 
@@ -94,6 +94,12 @@ sub prepResults {
 	$results->{records_matches}  = $sopts->{matches};
 	$results->{records_max}      = $sopts->{max};
 	$results->{records_start}    = $sopts->{start};
+	if ($sopts->{matches}) {
+		$results->{records_page}  = int($sopts->{start}/$sopts->{max}) + 1;
+		$results->{records_pages} = int($sopts->{matches}/$sopts->{max}) + 1;
+	} else {
+		$results->{records_page}  = $results->{records_page} = 0;
+	}
 
 	return $results;
 }

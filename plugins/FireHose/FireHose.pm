@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.124 2007/05/22 20:47:20 tvroom Exp $
+# $Id: FireHose.pm,v 1.125 2007/05/29 20:06:02 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.124 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -46,6 +46,8 @@ sub createFireHose {
 	$data->{-createtime} = "NOW()" if !$data->{createtime} && !$data->{-createtime};
 	$data->{discussion} ||= 0 if defined $data->{discussion};
 	$data->{popularity} ||= 0;
+	$data->{popularity2} ||= 0;
+	$data->{editorpop} ||= 0;
 	$data->{body_length} = length($data->{bodytext});
 	$data->{word_count} = countWords($data->{introtext}) + countWords($data->{bodytext});
 
@@ -202,7 +204,7 @@ sub createUpdateItemFromBookmark {
 
 sub createItemFromSubmission {
 	my($self, $id) = @_;
-	my $submission = $self->getSubmission($id);
+	my $submission = $self->getSubmission($id, "", 1);
 	if ($submission) {
 		my $globjid = $self->getGlobjidCreate("submissions", $submission->{subid});
 		my $midpop = $self->getEntryPopularityForColorLevel(5);
@@ -226,6 +228,7 @@ sub createItemFromSubmission {
 			emaildomain		=> $submission->{emaildomain},
 			name			=> $submission->{name},
 		};
+		$data->{url_id} = $submission->{url_id} if $submission->{url_id};
 		$self->createFireHose($data);
 		if (!isAnon($submission->{uid})) {
 			my $constants = getCurrentStatic();
@@ -578,7 +581,6 @@ sub getFireHoseByTypeSrcid {
 	my $id_q   = $self->sqlQuote($id);
 	my $item = {};
 	my $fid = $self->sqlSelect("id", "firehose", "srcid=$id_q and type=$type_q");
-	print STDERR "Fid: $fid\n";
 	$item = $self->getFireHose($fid) if $fid;
 	return $item;
 }
@@ -621,6 +623,34 @@ sub getFireHoseIdFromGlobjid {
 	my($self, $globjid) = @_;
 	my $globjid_q = $self->sqlQuote($globjid);
 	return $self->sqlSelect("id", "firehose", "globjid=$globjid_q");
+}
+
+sub getFireHoseIdFromUrl {
+	my($self, $url) = @_;
+	if ($url) {
+		my $fudgedurl = fudgeurl($url);
+		if ($fudgedurl) {
+			my $url_id = $self->getUrlIfExists($fudgedurl);
+			if ($url_id) {
+				return $self->getPrimaryFireHoseItemByUrl($url_id);
+			}
+		}
+	}
+	return 0;
+}
+
+sub getPrimaryFireHoseItemByUrl {
+	my($self, $url_id) = @_;
+	my $ret_val = 0;
+	if ($url_id) {
+		my $url_id_q = $self->sqlQuote($url_id);
+		my $count = $self->sqlCount("firehose", "url_id=$url_id_q");
+		if ($count > 0) {
+			($ret_val) = $self->sqlSelect("id", "firehose", "url_id = $url_id_q", "order by id asc");
+		}
+	}
+	return $ret_val
+	;
 }
 
 sub fetchItemText {
@@ -1533,17 +1563,16 @@ sub getAndSetOptions {
 		$self->setUser($user->{uid}, { firehose_usermode => $form->{firehose_usermode} ? 1 : "" });
 	}
 
-	if ($form->{setfield}) {
-		foreach (qw(nodates nobylines)) {
+	foreach (qw(nodates nobylines nothumbs nocolors)) {
+		if ($form->{setfield}) {
 			if ($form->{defined($_)}) {
 				$options->{$_} = $form->{$_} ? 1 : 0;
 			} else {
 				$options->{$_} = $user->{"firehose_$_"};
 			}
 		}
+		$options->{$_} = defined $form->{$_} ? $form->{$_} : $user->{"firehose_$_"};
 	}
-	$options->{nodates}   = defined $form->{nodates}   ? $form->{nodates}   : $user->{firehose_nodates};
-	$options->{nobylines} = defined $form->{nobylines} ? $form->{nobylines} : $user->{firehose_nobylines};
 
 	my $page = $form->{page} || 0;
 	$options->{page} = $page;
@@ -1981,4 +2010,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.124 2007/05/22 20:47:20 tvroom Exp $
+$Id: FireHose.pm,v 1.125 2007/05/29 20:06:02 tvroom Exp $

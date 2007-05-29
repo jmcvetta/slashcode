@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.15 2006/10/24 19:25:11 tvroom Exp $
+# $Id: bookmark.pl,v 1.16 2007/05/29 20:09:37 tvroom Exp $
 
 use strict;
 use Slash;
@@ -152,7 +152,7 @@ sub saveBookmark {
 	if ($form->{redirect} eq "journal") {
 		redirect("/journal.pl?op=edit&description=$strip_title&article=$strip_url&url_id=$url_id");
 	} elsif ($form->{redirect} eq "submit") {
-		redirect("/submit.pl?subj=$strip_title&story=$strip_url&url_id=$url_id");
+		redirect("/submit.pl?subj=$strip_title&story=$strip_url&url_id=$url_id&url=strip_url");
 	} else {
 		redirect($form->{url});
 	}

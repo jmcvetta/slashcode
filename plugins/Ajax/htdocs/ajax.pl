@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.43 2007/02/05 22:28:24 pudge Exp $
+# $Id: ajax.pl,v 1.44 2007/05/29 20:12:53 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -26,25 +26,33 @@ sub main {
 
 	my $ops = getOps();
 	my $op = $form->{op};
+	print STDERR "AJAX1 $op\n";
 
 	if (!$ops->{$op}) {
 		errorLog("No Ajax op '$op' found");
 		$op = 'default';
 	}
+	
+	print STDERR "AJAX2 $op\n";
 
 	$op = 'default' unless $ops->{$op}{function} || (
 		$ops->{$op}{class} && $ops->{$op}{subroutine}
 	);
+	print STDERR "AJAX3 $op\n";
 
 #$Slash::ResKey::DEBUG = 2;
 
 	$ops->{$op}{function} ||= loadCoderef($ops->{$op}{class}, $ops->{$op}{subroutine});
 	$op = 'default' unless $ops->{$op}{function};
+	
+	print STDERR "AJAX4 $op\n";
 
 	$form->{op} = $op;  # save for others to use
 
 	my $reskey_name = $ops->{$op}{reskey_name} || 'ajax_base';
 	$ops->{$op}{reskey_type} ||= 'use';
+	
+	print STDERR "AJAX5 $op\n";
 
 	if ($reskey_name ne 'NA') {
 		my $reskey = getObject('Slash::ResKey');
@@ -69,6 +77,7 @@ sub main {
 			return;
 		}
 	}
+	print STDERR "AJAX6 $op\n";
 
 	my $options = {};
 	my $retval = $ops->{$op}{function}->(

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.118 2007/05/09 21:20:23 pudge Exp $
+// $Id: common.js,v 1.119 2007/05/29 20:12:53 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -486,7 +486,7 @@ function firehose_set_options(name, value) {
 		params[name] = value;
 	}
 
-	if (name == "nodates" || name == "nobylines") {
+	if (name == "nodates" || name == "nobylines" || name == "nothumbs" || name == "nocolors") {
 		value = value == true ? 1 : 0;
 		params[name] = value;
 		params['setfield'] = 1;
@@ -497,13 +497,15 @@ function firehose_set_options(name, value) {
 			classname = "nickname";
 		}
 
-		var els = document.getElementsByClassName(classname, $('firehoselist'));
-		var classval = classname;
-		if (value) {
-			classval = classval + " hide";
-		}
-		for (i = 0; i< els.length; i++) {
-			els[i].className = classval;
+		if (classname) {
+			var els = document.getElementsByClassName(classname, $('firehoselist'));
+			var classval = classname;
+			if (value) {
+				classval = classval + " hide";
+			}
+			for (i = 0; i< els.length; i++) {
+				els[i].className = classval;
+			}
 		}
 	}
 

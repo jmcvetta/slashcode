@@ -99,7 +99,7 @@ END %]
 			[% END %]
 [% IF full %]
 		[% IF (future || item.type=="story") %]<div class="whitewash">[% END %]
-		[% PROCESS tagsfirehosedivtagbox id = item.id  tags_top = tags_top vote = vote %]
+		[% PROCESS tagsfirehosedivtagbox id = item.id  tags_top = tags_top vote = vote options = options %]
 		[% IF (future || item.type=="story") %]</div>[% END %]
 [% IF divwrapper %]
 <div class="storylinks">
@@ -142,4 +142,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.46 2007/05/22 20:47:20 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.47 2007/05/29 20:05:41 tvroom Exp $

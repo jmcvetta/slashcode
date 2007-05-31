@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: im_messages.pl,v 1.13 2007/05/09 20:56:16 pudge Exp $
+# $Id: im_messages.pl,v 1.14 2007/05/31 18:29:54 entweichen Exp $
 
 use strict;
 
@@ -88,6 +88,11 @@ $task{$me}{code} = sub {
 		foreach my $message_type (keys %messages) {
 			foreach my $id (sort keys %{$messages{$message_type}}) {
 				if ($message_type eq "remarks") {
+					if ($messages{$message_type}->{$id}{'stoid'}) {
+						my $story = $slashdb->getStory($messages{$message_type}->{$id}{'stoid'});
+						$messages{$message_type}->{$id}{'remark'} .= " $sidprefix$story->{sid}";
+					}
+
 					foreach my $admin (keys %$admins) {
 						next if getUserMessageDeliveryPref(
 							$admins->{$admin}{'uid'},
@@ -95,11 +100,6 @@ $task{$me}{code} = sub {
 
 						my $nick = $slashdb->getUser($admins->{$admin}{'uid'}, 'aim');
 						next if !$nick;
-
-						if ($messages{$message_type}->{$id}{'stoid'}) {
-							my $story = $slashdb->getStory($messages{$message_type}->{$id}{'stoid'});
-							$messages{$message_type}->{$id}{'remark'} .= " $sidprefix$story->{sid}";
-						}
 
 						$oscar->send_im($nick, $messages{$message_type}->{$id}{'remark'});
 						sleep(2);

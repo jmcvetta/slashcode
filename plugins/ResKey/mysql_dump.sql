@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.17 2006/09/12 04:44:07 pudge Exp $
+# $Id: mysql_dump.sql,v 1.18 2007/06/04 19:57:13 tvroom Exp $
 #
 
 ### NOTE: reserved reskey IDs:
@@ -42,9 +42,6 @@ INSERT INTO reskey_resources VALUES (6, 'submit', 'no');
 INSERT INTO reskey_resources VALUES (7, 'journal-soap-get', 'no');
 INSERT INTO reskey_resources VALUES (8, 'bookmark', 'no');
 INSERT INTO reskey_resources VALUES (9, 'comments-moderation-ajax', 'yes');
-
-
-
 
 ##### comments
 ### checks
@@ -207,3 +204,7 @@ INSERT INTO reskey_vars VALUES (9, 'adminbypass', 1, 'If admin, bypass checks fo
 INSERT INTO reskey_vars VALUES (9, 'acl_no', 'reskey_no_comments-moderation-ajax', 'If this ACL present, can\'t use resource');
 INSERT INTO reskey_vars VALUES (9, 'user_seclev', 1, 'Minimum seclev to use resource');
 
+INSERT INTO reskey_resources VALUES (200, 'badge_vote_static', 'yes');
+INSERT INTO reskey_resource_checks VALUES (NULL, 200, 'all', 'Slash::ResKey::Checks::User',                101);
+INSERT INTO reskey_resource_checks VALUES (NULL, 200, 'use', 'Slash::ResKey::Checks::Post',                151);
+INSERT INTO reskey_vars VALUES (200, 'user_seclev', 1, 'Minimum seclev to use resource');

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.125 2007/05/29 20:06:02 tvroom Exp $
+# $Id: FireHose.pm,v 1.126 2007/06/04 19:49:51 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.125 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -639,6 +639,21 @@ sub getFireHoseIdFromUrl {
 	return 0;
 }
 
+sub allowSubmitForUrl {
+	my($self, $url_id) = @_;
+	my $user = getCurrentUser();
+	my $url_id_q = $self->sqlQuote($url_id);
+
+	if ($user->{is_anon}) {
+		return !$self->sqlCount("firehose", "url_id=$url_id_q");
+	} else {
+		my $uid_q;
+		return !$self->sqlCount("firehose", "url_id=$url_id_q and uid != $uid_q");
+
+	}
+	
+}
+
 sub getPrimaryFireHoseItemByUrl {
 	my($self, $url_id) = @_;
 	my $ret_val = 0;
@@ -646,11 +661,12 @@ sub getPrimaryFireHoseItemByUrl {
 		my $url_id_q = $self->sqlQuote($url_id);
 		my $count = $self->sqlCount("firehose", "url_id=$url_id_q");
 		if ($count > 0) {
-			($ret_val) = $self->sqlSelect("id", "firehose", "url_id = $url_id_q", "order by id asc");
+			my ($uid, $id) = $self->sqlSelect("uid,id", "firehose", "url_id = $url_id_q", "order by id asc");
+			$ret_val = $id;
+			# XXX add more complex logic
 		}
 	}
-	return $ret_val
-	;
+	return $ret_val;
 }
 
 sub fetchItemText {
@@ -1053,21 +1069,18 @@ sub ajaxFireHoseGetUpdates {
 
 }
 
-sub ajaxUpDownFirehose {
-	my($slashdb, $constants, $user, $form, $options) = @_;
-	$options->{content_type} = 'application/json';
-	my $id = $form->{id};
-	return unless $id;
+sub firehose_vote {
+	my ($self, $id, $uid, $dir) = @_;
 
-	my $firehose = getObject('Slash::FireHose');
+	my $tag; 
+	my $constants = getCurrentStatic();
 	my $tags = getObject('Slash::Tags');
-	my $item = $firehose->getFireHose($id);
+	my $item = $self->getFireHose($id);
 	return if !$item;
-
-	my($dir) = $form->{dir};
+	
 	my $upvote   = $constants->{tags_upvote_tagname}   || 'nod';
 	my $downvote = $constants->{tags_downvote_tagname} || 'nix';
-	my $tag;
+	
 	if ($dir eq "+") {
 		$tag = $upvote;
 	} elsif ($dir eq "-") {
@@ -1075,17 +1088,36 @@ sub ajaxUpDownFirehose {
 	}
 	return if !$tag;
 
+	$tags->createTag({
+		uid 		=> $uid,
+		name		=> $tag,
+		globjid		=> $item->{globjid},
+		private		=> 1
+	});
+}
+
+sub ajaxUpDownFirehose {
+	my($slashdb, $constants, $user, $form, $options) = @_;
+	$options->{content_type} = 'application/json';
+	my $id = $form->{id};
+	return unless $id;
+
+	my $firehose = getObject('Slash::FireHose');
+	my $item = $firehose->getFireHose($id);
+	my $tags = getObject('Slash::Tags');
+
 	my($table, $itemid) = $tags->getGlobjTarget($item->{globjid});
-	my $now_tags_ar = $tags->getTagsByNameAndIdArrayref($table, $itemid, { uid => $user->{uid}});
-	my @tags = sort Slash::Tags::tagnameorder map { $_->{tagname} } @$now_tags_ar;
-	push @tags, $tag;
-	my $tagsstring = join ' ', @tags;
-	# XXX Tim, I need you to look this over. - Jamie 2006/09/19
-	my $newtagspreloadtext = $tags->setTagsForGlobj($itemid, $table, $tagsstring);
+
+	$firehose->firehose_vote($id, $user->{uid}, $form->{dir});
+	
+	my $now_tags_ar = $tags->getTagsByNameAndIdArrayref($table, $itemid,
+		{ uid => $user->{uid}, include_private => 1 });
+	my $newtagspreloadtext = join ' ', sort map { $_->{tagname} } @$now_tags_ar;
+
 	my $html  = {};
 	my $value = {};
 
-	my $votetype = $dir eq "+" ? "Up" : $dir eq "-" ? "Down" : "";
+	my $votetype = $form->{dir} eq "+" ? "Up" : $form->{dir} eq "-" ? "Down" : "";
 	$html->{"updown-$id"} = "Voted $votetype";
 	$value->{"newtags-$id"} = $newtagspreloadtext;
 
@@ -1998,6 +2030,12 @@ sub getOlderMonthsFromDay {
 	return $days;
 }
 
+sub getFireHoseItemsByUrl {
+	my($self, $url_id) = @_;
+	my $url_id_q = $self->sqlQuote($url_id);
+	return $self->sqlSelectAllHashrefArray("*", "firehose, firehose_text", "firehose.id=firehose_text.id AND url_id = $url_id_q");
+}
+
 
 1;
 
@@ -2010,4 +2048,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.125 2007/05/29 20:06:02 tvroom Exp $
+$Id: FireHose.pm,v 1.126 2007/06/04 19:49:51 tvroom Exp $

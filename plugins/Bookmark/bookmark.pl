@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.17 2007/05/30 22:07:25 pudge Exp $
+# $Id: bookmark.pl,v 1.18 2007/06/04 19:56:24 tvroom Exp $
 
 use strict;
 use Slash;
@@ -79,23 +79,10 @@ sub saveBookmark {
 
 	my $reskey = getObject('Slash::ResKey');
 	my $rkey = $reskey->key('bookmark');
-
-	my @allowed_schemes = split(/\|/,$constants->{bookmark_allowed_schemes});
-	my %allowed_schemes = map { $_ => 1 } @allowed_schemes;
-
-	my $fudgedurl = fudgeurl($form->{url});
 	my $bookmarkoptions;
 
-	my $scheme;
-	if ($fudgedurl) {
-		my $uri = new URI $fudgedurl;
-		$scheme = $uri->scheme if $uri && $uri->can("scheme");
-	}		
-	
-	$bookmarkoptions->{errors}{invalidurl}    = 1 if (!$fudgedurl && $form->{url}) || ($form->{url} && !$scheme) || ($scheme && !$allowed_schemes{$scheme});
+	$bookmarkoptions->{errors}{invalidurl}    = !$slashdb->validUrl($form->{url});
 	$bookmarkoptions->{errors}{missingfields} = 1 if !$form->{url} || !$form->{title} || !$form->{tags};
-	$bookmarkoptions->{errors}{noscheme}      = 1 if ($form->{url} && !$scheme);
-	$bookmarkoptions->{errors}{badscheme}     = 1 if ($form->{url} && $scheme && !$allowed_schemes{$scheme});
 	
 	if (!$bookmarkoptions->{errors}) {
 		unless ($rkey->use) {
@@ -110,6 +97,7 @@ sub saveBookmark {
 		return;
 	}
 
+	my $fudgedurl = fudgeurl($form->{url});
 	my $data = {
 		url		=> $fudgedurl,
 		initialtitle	=> strip_notags($form->{title})

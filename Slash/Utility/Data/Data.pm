@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.205 2007/06/05 21:04:36 tvroom Exp $
+# $Id: Data.pm,v 1.206 2007/06/05 22:30:56 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -4335,7 +4335,6 @@ sub validUrl {
 		$scheme = $uri->scheme if $uri && $uri->can("scheme");
 	}		
 	return ($fudgedurl && $scheme && $allowed_schemes{$scheme});
-	
 }
 
 
@@ -4350,4 +4349,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.205 2007/06/05 21:04:36 tvroom Exp $
+$Id: Data.pm,v 1.206 2007/06/05 22:30:56 pudge Exp $

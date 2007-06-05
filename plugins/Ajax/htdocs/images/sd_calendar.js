@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_calendar.js,v 1.6 2007/05/16 19:01:42 scc Exp $
+// $Id: sd_calendar.js,v 1.7 2007/06/05 19:04:12 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -91,6 +91,7 @@ YAHOO.slashdot.DateWidget.prototype.init = function( params ) { // id, mode, dat
     params.date = peer._widget.getDate();
 
     this.subscribeToPeer(peer);
+    this._peer = peer;
   }
 
   this._mode = (params.mode !== undefined) ? params.mode : "now";
@@ -148,8 +149,20 @@ YAHOO.slashdot.DateWidget.prototype._reportChanged = function() {
     this._element.changeEvent.fire(this.getDateRange(), this._mode, this.getDate());
 }
 
+YAHOO.slashdot.DateWidget.prototype.severPeer = function() {
+  if ( this._peer !== undefined ) {
+    this._peer._widget.unsubscribeFromPeer(this);
+    this.unsubscribeFromPeer(this._peer);
+    delete this._peer;
+  }
+}
+
 YAHOO.slashdot.DateWidget.prototype.subscribeToPeer = function( peer ) {
   peer.changeEvent.subscribe(this.handlePeerChange, this, true);
+}
+
+YAHOO.slashdot.DateWidget.prototype.unsubscribeFromPeer = function( peer ) {
+  peer.changeEvent.unsubscribe(this.handlePeerChange, this);
 }
 
 YAHOO.slashdot.DateWidget.prototype.setMode = function( newMode ) {

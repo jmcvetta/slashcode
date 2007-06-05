@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.966 2007/06/04 19:55:41 tvroom Exp $
+# $Id: MySQL.pm,v 1.967 2007/06/05 21:04:36 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.966 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.967 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12182,25 +12182,6 @@ sub getSubmissionMemory {
 	);
 }
 
-
-# check whether url is correctly formatted and has a scheme that is allowed for bookmarks and submissions
-sub validUrl {
-	my($self, $url) = @_;
-	my $constants = getCurrentStatic();
-	my $fudgedurl = fudgeurl($url);
-	
-	my @allowed_schemes = split(/\|/, $constants->{bookmark_allowed_schemes} || "http|https");
-	my %allowed_schemes = map { $_ => 1 } @allowed_schemes;
-
-	my $scheme;
-	
-	if ($fudgedurl) {
-		my $uri = new URI $fudgedurl;
-		$scheme = $uri->scheme if $uri && $uri->can("scheme");
-	}		
-	return ($fudgedurl && $scheme && $allowed_schemes{$scheme});
-	
-}
 
 sub getUrlCreate {
 	my($self, $data) = @_;

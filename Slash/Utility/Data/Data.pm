@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.204 2007/05/03 06:47:59 pudge Exp $
+# $Id: Data.pm,v 1.205 2007/06/05 21:04:36 tvroom Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -126,6 +126,7 @@ BEGIN {
 	xmldecode
 	xmlencode
 	xmlencode_plain
+	validUrl
 	vislenify
 );
 
@@ -4318,6 +4319,25 @@ sub createStoryTopicData {
 	return \%tid_ref;
 }
 
+# check whether url is correctly formatted and has a scheme that is allowed for bookmarks and submissions
+sub validUrl {
+	my($url) = @_;
+	my $constants = getCurrentStatic();
+	my $fudgedurl = fudgeurl($url);
+	
+	my @allowed_schemes = split(/\|/, $constants->{bookmark_allowed_schemes} || "http|https");
+	my %allowed_schemes = map { $_ => 1 } @allowed_schemes;
+
+	my $scheme;
+	
+	if ($fudgedurl) {
+		my $uri = new URI $fudgedurl;
+		$scheme = $uri->scheme if $uri && $uri->can("scheme");
+	}		
+	return ($fudgedurl && $scheme && $allowed_schemes{$scheme});
+	
+}
+
 
 1;
 
@@ -4330,4 +4350,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.204 2007/05/03 06:47:59 pudge Exp $
+$Id: Data.pm,v 1.205 2007/06/05 21:04:36 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: im_messages.pl,v 1.14 2007/05/31 18:29:54 entweichen Exp $
+# $Id: im_messages.pl,v 1.15 2007/06/05 16:29:03 entweichen Exp $
 
 use strict;
 
@@ -114,10 +114,12 @@ $task{$me}{code} = sub {
 					my $nick = $slashdb->getUser($messages{$message_type}->{$id}{'user'}, 'aim');
 					next if !$nick;
 
-					#$oscar->send_im($nick, $messages{$message_type}->{$id}{'message'});
+					my $message = $messages_obj->get($messages{$message_type}->{$id}{'id'});
+					
+					$oscar->send_im($nick, $message->{'message'});
 					sleep(2);
 
-					#$slashdb->sqlDelete("message_drop", "id = " . $messages{$message_type}->{$id}{'id'});
+					$slashdb->sqlDelete("message_drop", "id = " . $messages{$message_type}->{$id}{'id'});
 				}
 			}
 		}

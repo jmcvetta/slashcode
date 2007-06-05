@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.126 2007/06/04 19:49:51 tvroom Exp $
+# $Id: FireHose.pm,v 1.127 2007/06/05 19:00:48 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.126 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.127 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -657,13 +657,20 @@ sub allowSubmitForUrl {
 sub getPrimaryFireHoseItemByUrl {
 	my($self, $url_id) = @_;
 	my $ret_val = 0;
+	my $constants = getCurrentUser();
 	if ($url_id) {
 		my $url_id_q = $self->sqlQuote($url_id);
 		my $count = $self->sqlCount("firehose", "url_id=$url_id_q");
 		if ($count > 0) {
 			my ($uid, $id) = $self->sqlSelect("uid,id", "firehose", "url_id = $url_id_q", "order by id asc");
-			$ret_val = $id;
-			# XXX add more complex logic
+			if ($uid == $constants->{anon_coward_uid}) {
+				$ret_val = $id;
+			} else {
+				# Logged in, give precedence to most recent submission
+				my $uid_q = $self->sqlQuote($uid);
+				my ($submitted_id) = $self->sqlSelect("id", "firehose", "url_id = $url_id_q AND uid=$uid_q", "order by id desc");
+				$ret_val = $submitted_id ? $submitted_id : $id;
+			}
 		}
 	}
 	return $ret_val;
@@ -1663,6 +1670,7 @@ sub getAndSetOptions {
 			}
 			$uid ||= $user->{uid};
 			$fh_options->{tagged_by_uid} = $uid;
+			$fh_options->{tagged_non_negative} = 1;
 			$fh_options->{ignore_nix} = 1;
 		} else {
 			if (!defined $fh_options->{filter}) {
@@ -2048,4 +2056,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.126 2007/06/04 19:49:51 tvroom Exp $
+$Id: FireHose.pm,v 1.127 2007/06/05 19:00:48 tvroom Exp $

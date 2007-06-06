@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.129 2007/06/06 17:48:55 pudge Exp $
+# $Id: FireHose.pm,v 1.130 2007/06/06 18:41:34 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.129 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -425,7 +425,7 @@ sub getFireHoseEssentials {
 
 			if ($not) {
 				$filter_globjids = $self->sqlSelectAllHashref(
-					'globjid', 'DISIINCT globjid', 'tags',
+					'globjid', 'globjid', 'tags',
 					"uid = $tag_by_uid_q AND tagnameid IN ($ids)"
 				);
 			}
@@ -554,7 +554,7 @@ sub getFireHoseEssentials {
 		for my $i (0 .. $#{$hr_ar}) {
 			my $el = $hr_ar->[$i] or last;
 			if (exists($filter_globjids->{ $el->{globjid} })) {
-				splice(@$hr_ar, $i, 0);
+				splice(@$hr_ar, $i, 1);
 				$i--;
 			}
 		}
@@ -2092,4 +2092,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.129 2007/06/06 17:48:55 pudge Exp $
+$Id: FireHose.pm,v 1.130 2007/06/06 18:41:34 pudge Exp $

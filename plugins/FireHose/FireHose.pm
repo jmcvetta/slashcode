@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.130 2007/06/06 18:41:34 pudge Exp $
+# $Id: FireHose.pm,v 1.131 2007/06/06 19:47:19 pudge Exp $
 
 package Slash::FireHose;
 
@@ -38,7 +38,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.130 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.131 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -425,7 +425,7 @@ sub getFireHoseEssentials {
 
 			if ($not) {
 				$filter_globjids = $self->sqlSelectAllHashref(
-					'globjid', 'globjid', 'tags',
+					'globjid', 'DISTINCT globjid', 'tags',
 					"uid = $tag_by_uid_q AND tagnameid IN ($ids)"
 				);
 			}
@@ -2092,4 +2092,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.130 2007/06/06 18:41:34 pudge Exp $
+$Id: FireHose.pm,v 1.131 2007/06/06 19:47:19 pudge Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: submit.pl,v 1.142 2007/06/04 19:50:40 tvroom Exp $
+# $Id: submit.pl,v 1.143 2007/06/07 19:45:55 tvroom Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -583,7 +583,7 @@ sub saveSub {
 
 	if ($form->{url}) {
 	
-		if (!$slashdb->validUrl($form->{url})) {
+		if (!validUrl($form->{url})) {
 			displayForm($form->{name}, $form->{email}, $form->{skin}, '', getData("invalidurl"));
 			return(0);
 		} else {

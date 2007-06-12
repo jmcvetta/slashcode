@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity2.pm,v 1.4 2007/04/27 03:18:10 jamiemccarthy Exp $
+# $Id: FHPopularity2.pm,v 1.5 2007/06/12 21:51:46 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity2;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -164,6 +164,17 @@ sub run {
 	my $downvoteid = $tagsdb->getTagnameidCreate($constants->{tags_downvote_tagname} || 'nix');
 	my $tags_ar = $tagboxdb->getTagboxTags($self->{tbid}, $affected_id, 0, $options);
 	$tagsdb->addCloutsToTagArrayref($tags_ar);
+
+	# Admins may get reduced downvote clout.
+	if ($constants->{firehose_admindownclout} && $constants->{firehose_admindownclout} != 1) {
+		my $admins = $tagsdb->getAdmins();
+		for my $tag_hr (@$tags_ar) {
+			$tag_hr->{total_clout} *= $constants->{firehose_admindownclout}
+				if    $tag_hr->{tagnameid} == $downvoteid
+				   && $admins->{ $tag_hr->{uid} };
+		}
+	}
+
 	my $udc_cache = { };
 	for my $tag_hr (@$tags_ar) {
 		next if $options->{starting_only};

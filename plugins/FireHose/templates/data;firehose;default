@@ -78,9 +78,13 @@ __template__
 
 	</div>
 	[% END %]
+[% CASE 'noitems' %]
+	<div class="message error">
+		Sorry no items returned.  You may want to try expanding your color range or date range.
+	</div>
 [% CASE 'notavailable' %]
 	The item you're trying to view either does not exist, or is not viewable to you.
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.17 2006/12/22 17:55:08 tvroom Exp $
+$Id: data;firehose;default,v 1.18 2007/06/12 20:30:49 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: bookmark.pl,v 1.19 2007/06/05 21:00:53 tvroom Exp $
+# $Id: bookmark.pl,v 1.20 2007/06/12 21:18:46 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -21,7 +21,7 @@ sub main {
 	my $postflag = $user->{state}{post};
 
 	my %ops = (
-		bookmark 	=> [!$user->{is_anon}, \&bookmark, 0, 1 ],
+		bookmark 	=> [!$user->{is_anon}, \&bookmark, 1, 0 ],
 		save		=> [!$user->{is_anon}, \&saveBookmark, 1, 1 ],
 		showbookmarks	=> [1, \&showBookmarks, 0, 0 ],
 		anon_bookmark	=> [1, \&anonBookmark, 0, 0 ]
@@ -31,8 +31,8 @@ sub main {
 	$ops{default} = $ops{bookmark};
 	my $op = lc($form->{op} || 'default');
 	$op = 'default' if !$ops{$op} || !$ops{$op}[ALLOWED];
-	$op = 'default' if $ops{$op}[2] && !$postflag;
-	if ($user->{seclev} < $ops{$op}[3]) {
+	$op = 'default' if $ops{$op}[3] && !$postflag;
+	if ($user->{seclev} < $ops{$op}[MINSECLEV]) {
 		$op = 'anon_bookmark';
 	}
 

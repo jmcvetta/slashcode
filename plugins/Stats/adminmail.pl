@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: adminmail.pl,v 1.214 2007/01/30 22:21:40 tvroom Exp $
+# $Id: adminmail.pl,v 1.215 2007/06/12 20:58:26 jamiemccarthy Exp $
 
 use strict;
 use Slash::Constants qw( :messages :slashd );
@@ -843,12 +843,12 @@ EOT
 		}
 		$statsSave->createStatDaily("relocate_all", $total);
 	}
-	
-	my $subscribe = getObject('Slash::Subscribe');
-	my $firehose = getObject('Slash::FireHose');
-	my $tags = getObject('Slash::Tags');
-	
-	if($subscribe){
+
+	my $subscribe = getObject('Slash::Subscribe') if $constants->{plugin}{Subscribe};
+	my $firehose = getObject('Slash::FireHose') if $constants->{plugin}{FireHose};
+	my $tags = getObject('Slash::Tags') if $constants->{plugin}{Tags};
+
+	if ($subscribe) {
 		my $rswh =   $stats->getSubscribersWithRecentHits();
 		my $sub_cr = $logdb->getSubscriberCrawlers($rswh);
 		my $sub_report;

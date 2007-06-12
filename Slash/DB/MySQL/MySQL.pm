@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.967 2007/06/05 21:04:36 tvroom Exp $
+# $Id: MySQL.pm,v 1.968 2007/06/12 21:50:13 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.967 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.968 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -9122,9 +9122,9 @@ sub getAdmins {
 	$self->{$table_cache} = {};
 	my $qlid = $self->_querylog_start("SELECT", "users, users_info");
 	my $sth = $self->sqlSelectMany(
-		'users.uid,nickname,fakeemail,homepage,bio',
+		'users.uid,nickname,fakeemail,homepage,bio,seclev',
 		'users,users_info',
-		'seclev >= 100 and users.uid = users_info.uid'
+		'seclev >= 100 AND users.uid = users_info.uid'
 	);
 	while (my $row = $sth->fetchrow_hashref) {
 		$self->{$table_cache}{ $row->{'uid'} } = $row;
@@ -12028,7 +12028,22 @@ sub _addGlobjEssentials_journals {
 
 sub _addGlobjEssentials_comments {
 	my($self, $ar, $data_hr) = @_;
-	# not implemented yet (no need, yet, since all tags on comments are private)
+	my $constants = getCurrentStatic();
+	my $comments_hr = _addGlobjEssentials_getids($ar, 'comments');
+	my @comment_ids = sort { $a <=> $b } keys %$comments_hr;
+	my $id_str = join(',', @comment_ids);
+	my $commentdata_hr = $id_str
+		? $self->sqlSelectAllHashref('cid',
+			'cid, sid, date, subject',
+			'comments',
+			"cid IN ($id_str)")
+		: { };
+	for my $cid (@comment_ids) {
+		my $globjid = $comments_hr->{$cid};
+		$data_hr->{$globjid}{url} = "$constants->{rootdir}/comments.pl?sid=$commentdata_hr->{$cid}{sid}&cid=$cid";
+		$data_hr->{$globjid}{title} = $commentdata_hr->{$cid}{subject};
+		$data_hr->{$globjid}{created_at} = $commentdata_hr->{$cid}{date};
+	}
 }
 
 sub getActiveAdminCount {

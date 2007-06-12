@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.332 2007/05/09 20:56:09 pudge Exp $
+# $Id: users.pl,v 1.333 2007/06/12 20:33:53 tvroom Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -67,6 +67,16 @@ sub main {
 			tab_selected_1	=> 'me',
 			tab_selected_2	=> 'info',
 		},
+		
+		userfirehose 	=> {
+			function	=> \&showFireHose,
+			seclev		=> 0,
+			formname	=> $formname,
+			checks		=> [],
+			tab_selected_1	=> 'me',
+			tab_selected_2	=> 'firehose'
+		},
+
 		usersubmissions	=>  {
 			function	=> \&showSubmissions,
 			#I made this change, not all sites are going to care. -Brian
@@ -871,6 +881,41 @@ sub showComments {
 
 sub noUser {
 	print getData("no_user");
+}
+
+sub showFireHose {
+	my($hr) = @_;
+	my $user = getCurrentUser();
+	my $form = getCurrentForm();
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+
+	my $uid = $form->{uid} || $user->{uid};
+	my $user_edit = $reader->getUser($uid);
+	
+	$user->{state}{firehose_page} = "user";
+	$user->{state}{firehose_user_uid} = $uid;
+
+	my $firehose = getObject("Slash::FireHose");
+	print createMenu("users", {
+		style		=> 'tabbed',
+		justify		=> 'right',
+		color		=> 'colored',
+		tab_selected	=> $user_edit->{uid} == $user->{uid} ? 'me' : 'otheruser',
+	});
+	
+	$form->{mode} = "full";
+	$form->{color} = "black";
+	$form->{orderby} = "createtime";
+	$form->{orderdidr} = "DESC";
+	$form->{nocolors} = 1;
+	$form->{nothumbs} = 1;
+	$form->{skipmenu} = 1;
+	$form->{duration} = -1;
+	$form->{fhfilter} = "\"user:$user_edit->{nickname}\"";
+	$form->{pause} = 1;
+
+	my $fhbox = $firehose->listView({ fh_page => 'users.pl'});
+	slashDisplay("userFireHose", { firehosebox => $fhbox, uid => $uid, useredit => $user_edit });
 }
 
 #################################################################

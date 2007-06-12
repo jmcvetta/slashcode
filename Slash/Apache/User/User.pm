@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.167 2007/04/04 19:27:47 tvroom Exp $
+# $Id: User.pm,v 1.168 2007/06/12 20:37:08 tvroom Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.168 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -708,9 +708,9 @@ sub userdir_handler {
 
 				} elsif ($op eq 'firehose') {
 					my $filter = fixparam("user:");
-					$r->args("fhfilter=$filter");
-					$r->uri('firehose.pl');
-					$r->filename($constants->{basedir} . '/firehose.pl')
+					$r->args("op=userfirehose");
+					$r->uri('users.pl');
+					$r->filename($constants->{basedir} . '/users.pl')
 
 				} else {
 					$r->args("op=edituser");
@@ -747,6 +747,7 @@ sub userdir_handler {
 		for ($nick, $op, $extra, $more) {
 			s/%([a-fA-F0-9]{2})/pack('C', hex($1))/ge;
 		}
+
 
 		my $slashdb = getCurrentDB();
 		my $reader_user = $slashdb->getDB('reader');
@@ -845,9 +846,9 @@ sub userdir_handler {
 		
 		} elsif ($op eq 'firehose') {
 			my $filter = fixparam("\"user:$nick_orig\"");
-			$r->args("fhfilter=$filter");
-			$r->uri('/firehose.pl');
-			$r->filename($constants->{basedir} . '/firehose.pl');
+			$r->args("op=userfirehose&uid=$uid");
+			$r->uri('/users.pl');
+			$r->filename($constants->{basedir} . '/users.pl');
 
 		} else {
 			$r->args("nick=$nick&uid=$uid");

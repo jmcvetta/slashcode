@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.29 2007/06/12 21:51:46 jamiemccarthy Exp $
+# $Id: mysql_dump.sql,v 1.30 2007/06/13 19:09:21 pudge Exp $
 #
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_fetch_text', 'Slash::FireHose', 'fetchItemText', 'ajax_user_static', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_reject', 'Slash::FireHose', 'rejectItem', 'ajax_admin_static', 'use');
@@ -32,5 +32,3 @@ INSERT INTO firehose_tab VALUES (1,0,'Firehose','','createtime','DESC','indigo',
 INSERT INTO firehose_tab VALUES (2,0,'Slashdot','story','createtime','DESC','black','full');
 INSERT INTO firehose_tab VALUES (3,0,'Journals','journal','createtime','DESC','blue','full');
 INSERT INTO firehose_tab VALUES (4,0,'User','"user:{nickname}"','createtime','DESC','black','full');
-
-

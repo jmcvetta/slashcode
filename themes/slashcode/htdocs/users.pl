@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.333 2007/06/12 20:33:53 tvroom Exp $
+# $Id: users.pl,v 1.334 2007/06/13 19:09:42 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -67,7 +67,6 @@ sub main {
 			tab_selected_1	=> 'me',
 			tab_selected_2	=> 'info',
 		},
-		
 		userfirehose 	=> {
 			function	=> \&showFireHose,
 			seclev		=> 0,
@@ -76,7 +75,6 @@ sub main {
 			tab_selected_1	=> 'me',
 			tab_selected_2	=> 'firehose'
 		},
-
 		usersubmissions	=>  {
 			function	=> \&showSubmissions,
 			#I made this change, not all sites are going to care. -Brian

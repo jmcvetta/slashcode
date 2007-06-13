@@ -81,9 +81,9 @@ __template__
 [% CASE 'noitems' %]
 	<div class="message error">
 		[% IF user.state.firehose_page == "user" %]
-			This user's Firehose page contains no [% IF form.page %]additional [% END %] entries;
+			This user's Firehose page contains no [% IF form.page %]additional [% END %]entries;
 		[% ELSE %]
-		Sorry no items returned.  You may want to try expanding your color range or date range.
+			Sorry no items returned.  You may want to try expanding your color range or date range.
 		[% END %]
 	</div>
 [% CASE 'notavailable' %]
@@ -91,4 +91,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.19 2007/06/12 20:52:20 tvroom Exp $
+$Id: data;firehose;default,v 1.20 2007/06/13 19:09:21 pudge Exp $

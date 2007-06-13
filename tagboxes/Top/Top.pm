@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Top.pm,v 1.7 2007/02/22 22:45:21 jamiemccarthy Exp $
+# $Id: Top.pm,v 1.8 2007/06/13 19:15:31 jamiemccarthy Exp $
 
 package Slash::Tagbox::Top;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -200,22 +200,35 @@ sub run {
 
 	# Eliminate tagnames below the minimum score required, and
 	# those that didn't make it to the top 5
-	# XXX the "5" is hardcoded currently, should be a var
-	my $minscore = $constants->{tagbox_top_minscore_stories};
-	@top = grep { $scores{$_} >= $minscore } @top;
-	$#top = 4 if $#top > 4;
+	# XXX the "4" below (aka "top 5") is hardcoded currently, should be a var
+	my $minscore1 = $constants->{tagbox_top_minscore_urls};
+	my $minscore2 = $constants->{tagbox_top_minscore_stories};
 
 	my $plugin = getCurrentStatic('plugin');
 	if ($plugin->{FireHose}) {
 		my $firehose = getObject('Slash::FireHose');
 		my $fhid = $firehose->getFireHoseIdFromGlobjid($affected_id);
 		if ($fhid) {
+			my @top = grep { $scores{$_} >= $minscore1 }
+				sort {
+					$scores{$b} <=> $scores{$a}
+					||
+					$a cmp $b
+				} keys %scores;
+			$#top = 4 if $#top > 4;
 			$firehose->setFireHose($fhid, { toptags => join(' ', @top) });
 		}
 	}
 
 	if ($type eq 'stories') {
 
+		my @top = grep { $scores{$_} >= $minscore2 }
+			sort {
+				$scores{$b} <=> $scores{$a}
+				||
+				$a cmp $b
+			} keys %scores;
+		$#top = 4 if $#top > 4;
 		$self->setStory($target_id, { tags_top => join(' ', @top) });
 		main::tagboxLog("Top->run $affected_id with " . scalar(@$tag_ar) . " tags, setStory $target_id to '@top'");
 

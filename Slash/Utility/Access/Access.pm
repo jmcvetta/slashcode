@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Access.pm,v 1.33 2006/08/31 02:16:19 pudge Exp $
+# $Id: Access.pm,v 1.34 2007/06/13 19:11:21 pudge Exp $
 
 package Slash::Utility::Access;
 
@@ -35,7 +35,7 @@ use Slash::Constants qw(:web :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.33 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	checkFormPost
 	formkeyError
@@ -801,6 +801,11 @@ sub isDiscussionOpen {
 				)
 			);
 		}
+	} elsif ($discussion->{commentstatus} eq 'logged_in') {
+		# user just has to be logged in, but A.C. posting still allowed
+		if ($user->{is_anon}) {
+			$discussion->{type} = 'archived';
+		}
 	}
 
 	$discussion->{user_nopost} = 1 if $discussion->{type} eq 'archived';
@@ -820,4 +825,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Access.pm,v 1.33 2006/08/31 02:16:19 pudge Exp $
+$Id: Access.pm,v 1.34 2007/06/13 19:11:21 pudge Exp $

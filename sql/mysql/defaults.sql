@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.346 2007/06/05 22:41:44 pudge Exp $
+# $Id: defaults.sql,v 1.347 2007/06/13 19:11:21 pudge Exp $
 #
 
 #
@@ -281,6 +281,7 @@ INSERT INTO string_param (type, code, name) VALUES ('commentcodes_extended','fri
 INSERT INTO string_param (type, code, name) VALUES ('commentcodes_extended','friends_fof_only','Just Friends and their Friends');
 INSERT INTO string_param (type, code, name) VALUES ('commentcodes_extended','no_foe','No Foes');
 INSERT INTO string_param (type, code, name) VALUES ('commentcodes_extended','no_foe_eof','No Foes and No Friend\'s Foes');
+INSERT INTO string_param (type, code, name) VALUES ('commentcodes_extended','logged_in','Only Logged-In Users');
 INSERT INTO string_param (type, code, name) VALUES ('cookie_location','none','Everywhere');
 INSERT INTO string_param (type, code, name) VALUES ('cookie_location','classbid','My Subnet');
 INSERT INTO string_param (type, code, name) VALUES ('cookie_location','ipid','My IP Address');

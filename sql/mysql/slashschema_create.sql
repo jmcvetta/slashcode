@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.245 2007/03/13 16:37:22 entweichen Exp $
+# $Id: slashschema_create.sql,v 1.246 2007/06/13 19:11:21 pudge Exp $
 #
 
 #
@@ -456,7 +456,7 @@ CREATE TABLE discussions (
 	primaryskid SMALLINT UNSIGNED,
 	last_update timestamp NOT NULL,
 	approved tinyint UNSIGNED DEFAULT 0 NOT NULL,
-	commentstatus ENUM('disabled','enabled','friends_only','friends_fof_only','no_foe','no_foe_eof') DEFAULT 'enabled' NOT NULL, /* Default is that we allow anyone to write */
+	commentstatus ENUM('disabled','enabled','friends_only','friends_fof_only','no_foe','no_foe_eof','logged_in') DEFAULT 'enabled' NOT NULL, /* Default is that we allow anyone to write */
 	archivable ENUM("no","yes") DEFAULT "yes" NOT NULL,
 	KEY (stoid),
 	KEY (sid),

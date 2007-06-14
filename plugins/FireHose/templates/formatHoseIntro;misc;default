@@ -32,11 +32,7 @@ IF item.type == "submission" || item.type == "submission";
 END;
 IF item.url_id && url.url;
 	IF introtext; introtext = introtext _ "<br>"; END;
-	IF item.type == "bookmark";
-		introtext = introtext _ "<a href='" _ url.url _ "'>" _ Slash.strip_literal(url.url) _ "</a>";
-	ELSE;
-		introtext = introtext _ "<a href='" _ url.url _ "'>" _ url.initialtitle _ "</a>";
-	END;
+	introtext = introtext _ "<a href='" _ url.url _ "'>" _ Slash.strip_literal(url.url) _ "</a>";
 END;
 
 IF !forform && item.type != "story";
@@ -46,4 +42,4 @@ END;
 %]
 
 __version__
-$Id: formatHoseIntro;misc;default,v 1.7 2006/12/19 22:17:55 tvroom Exp $
+$Id: formatHoseIntro;misc;default,v 1.8 2007/06/14 14:10:07 tvroom Exp $

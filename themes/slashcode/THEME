@@ -1,4 +1,4 @@
-# $Id: THEME,v 1.121 2007/05/02 02:29:31 entweichen Exp $
+# $Id: THEME,v 1.122 2007/06/15 04:31:08 tvroom Exp $
 name=slashcode
 description="Slashcode.com theme"
 topic=htdocs/images/topics/topicbug.jpg
@@ -315,6 +315,7 @@ template=templates/undo_mod;comments;default
 template=templates/url_related;misc;default
 template=templates/userboxes;misc;default
 template=templates/userCom;users;default
+template=templates/userFireHose;users;default
 template=templates/userInfo;users;default
 template=templates/userSub;users;default
 template=templates/user_titlebar;misc;default

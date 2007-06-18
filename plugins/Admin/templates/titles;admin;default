@@ -52,7 +52,6 @@ Filter# [% form.filter_id %] saved.
 
 [% CASE 'updateStory-title' %]
 Article [% form.sid %] Saved
-}[% warn_skid %]|
 [% IF warn_skid; the_skin = Slash.db.getSkin(warn_skid); "<b>Warning Story saved to $warn_skid - $the_skin.name</b>"; END; %]
 
 [% CASE 'saveStory-title' %]
@@ -105,4 +104,4 @@ ACL Editor
 __seclev__
 10000
 __version__
-$Id: titles;admin;default,v 1.13 2007/01/30 21:29:13 tvroom Exp $
+$Id: titles;admin;default,v 1.14 2007/06/18 15:40:14 tvroom Exp $

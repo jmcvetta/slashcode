@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1198 2007/06/19 19:31:50 tvroom Exp $
+# $Id: upgrades,v 1.1199 2007/06/19 21:25:35 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4611,3 +4611,5 @@ ALTER TABLE bookmark_feeds ADD feedname VARCHAR(32) AFTER feed;
 
 # For plugins/FireHose
 ALTER TABLE firehose ADD srcname VARCHAR(32) NOT NULL DEFAULT '';
+INSERT INTO vars (name, value, description) VALUES ('firehose_adminudcclout', '0.5', 'Admin clout for udc purposes (number between 0 and 1, probably');
+

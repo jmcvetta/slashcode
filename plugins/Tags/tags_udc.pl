@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags_udc.pl,v 1.2 2007/04/19 05:35:00 jamiemccarthy Exp $
+# $Id: tags_udc.pl,v 1.3 2007/06/19 21:25:35 jamiemccarthy Exp $
 
 # Tags Upvote/Downvote Count
 #
@@ -21,7 +21,7 @@ use Slash::Display;
 use Slash::Utility;
 use Slash::Constants ':slashd';
 
-(my $VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+(my $VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $task{$me}{timespec} = '2-59/5 * * * *';
 $task{$me}{timespec_panic_1} = ''; # not that important
@@ -83,6 +83,7 @@ $task{$me}{code} = sub {
 
 sub populate_tags_udc {
 	my($cur_hour, $hoursback) = @_;
+	my $constants = getCurrentStatic();
 
 	warn "populate_tags_udc doesn't work for the current hour or later: '$cur_hour' '$hoursback' '" . time() . "'"
 		if $hoursback < 1;
@@ -99,8 +100,13 @@ sub populate_tags_udc {
 	$tags_reader->addCloutsToTagArrayref($tags_ar);
 
 	my $cloutsum = 0;
+	my $admins = $tags_reader->getAdmins();
+	my $admin_mod = defined($constants->{firehose_adminudcclout})
+		? $constants->{firehose_adminudcclout} : 1;
 	for my $tag_hr (@$tags_ar) {
-		$cloutsum += $tag_hr->{total_clout};
+		my $modifier = 1.0;
+		$modifier = $admin_mod if $admins->{ $tag_hr->{uid} }{seclev} >= 100;
+		$cloutsum += $tag_hr->{total_clout} * $modifier;
 	}
 
 	my $slashdb = getCurrentDB();

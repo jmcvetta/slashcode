@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1196 2007/06/15 03:48:17 pudge Exp $
+# $Id: upgrades,v 1.1197 2007/06/19 18:06:21 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4603,3 +4603,5 @@ UPDATE vars SET value = 'T_2_5_0_163' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 
+# Turn on New Story Posted message option (for admin testing).
+INSERT INTO message_codes VALUES (20, 'New Story Posted', 100, 0, 0, 'now', '', 4);

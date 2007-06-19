@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Bookmark.pm,v 1.11 2007/03/01 21:45:36 tvroom Exp $
+# $Id: Bookmark.pm,v 1.12 2007/06/19 19:33:35 tvroom Exp $
 
 package Slash::Bookmark;
 
@@ -34,7 +34,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub createBookmark {
 	my($self, $data) = @_;
@@ -88,6 +88,12 @@ sub getBookmarkFeeds {
 	$self->sqlSelectAllHashrefArray("*,RAND()", "bookmark_feeds", "", $other);
 }
 
+sub getBookmarkFeedByUid {
+	my($self, $uid) = @_;
+	my $uid_q = $self->sqlQuote($uid);
+	$self->sqlSelectHashref("*", "bookmark_feeds", "uid=$uid_q");
+}
+
 sub getBookmark {
 	my($self, $id) = @_;
 	my $id_q = $self->sqlQuote($id);
@@ -105,4 +111,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Bookmark.pm,v 1.11 2007/03/01 21:45:36 tvroom Exp $
+$Id: Bookmark.pm,v 1.12 2007/06/19 19:33:35 tvroom Exp $

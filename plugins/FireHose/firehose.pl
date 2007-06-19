@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.31 2007/06/12 21:18:46 jamiemccarthy Exp $
+# $Id: firehose.pl,v 1.32 2007/06/19 22:24:22 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.31 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.32 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -80,10 +80,22 @@ sub view {
 			$firehose->setFireHoseSession($item->{id});
 		}
 		my $tags_top = $firehose_reader->getFireHoseTagsTop($item);
-		my $firehosetext = $firehose_reader->dispFireHose($item, { mode => "full", tags_top => $tags_top, options => $options });
+		my $discussion = $item->{type} eq 'submission' && $item->{discussion};
+
+		my $firehosetext = $firehose_reader->dispFireHose($item, {
+			mode			=> 'full',
+			tags_top		=> $tags_top,
+			options			=> $options,
+			nostorylinkwrapper	=> $discussion ? 1 : 0
+		});
+
 		slashDisplay("view", {
 			firehosetext => $firehosetext
 		});
+
+		if ($discussion) {
+			printComments( $firehose_reader->getDiscussion($discussion) );
+		}
 	} else {
 		print getData('notavailable');
 	}

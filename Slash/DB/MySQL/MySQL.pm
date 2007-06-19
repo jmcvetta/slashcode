@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.968 2007/06/12 21:50:13 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.969 2007/06/19 22:24:52 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.968 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.969 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1185,7 +1185,24 @@ sub createSubmission {
 
 	if ($constants->{plugin}{FireHose}) {
 		my $firehose = getObject("Slash::FireHose");
-		$firehose->createItemFromSubmission($subid);
+		my $firehose_id = $firehose->createItemFromSubmission($subid);
+
+		if ($firehose_id) {
+			my $discussion_id = $self->createDiscussion({
+				uid		=> 0,
+				kind		=> 'submission',
+				title		=> $data->{subj},
+				topic		=> $data->{tid},
+				primaryskid 	=> $data->{primaryskid},
+				commentstatus	=> 'logged_in',
+				url		=> "$constants->{rootdir}/firehose.pl?op=view&id=$firehose_id"
+			});
+			if ($discussion_id) {
+				$firehose->setFireHose($firehose_id, {
+					discussion	=> $discussion_id,
+				});
+			}
+		}
 	}
 
 	return $subid;
@@ -7340,7 +7357,8 @@ sub createDiscussion {
 	$discussion->{sid} ||= '';
 	$discussion->{stoid} ||= 0;
 	$discussion->{ts} ||= $self->getTime();
-	$discussion->{uid} ||= getCurrentUser('uid');
+	$discussion->{uid} = getCurrentUser('uid')
+		unless defined $discussion->{uid} && length $discussion->{uid};
 	# commentcount and flags set to defaults
 
 	if ($discussion->{section}) {

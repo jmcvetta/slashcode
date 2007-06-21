@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.256 2007/04/18 23:13:10 cowboyneal Exp $
+# $Id: MySQL.pm,v 1.257 2007/06/21 02:35:33 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -20,7 +20,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.256 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.257 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -184,8 +184,8 @@ sub updateArchivedDiscussions {
 	my $days_to_archive = getCurrentStatic('archive_delay');
 	return 0 if !$days_to_archive;
 
-	# Close discussions.
-	return $self->sqlUpdate(
+	# Close old discussions
+	my $count = $self->sqlUpdate(
 		"discussions",
 		{ type => 'archived' },
 		"TO_DAYS(NOW()) - TO_DAYS(ts) > $days_to_archive
@@ -193,6 +193,21 @@ sub updateArchivedDiscussions {
 		 AND flags != 'delete'
 		 AND archivable = 'yes'"
 	);
+
+	# Close expired submission discussions
+	$count += $self->sqlUpdate(
+		"firehose, discussions",
+		{ 'firehose.type' => 'archived' },
+		"firehose.type = 'submission'
+		 AND firehose.accepted = 'yes'
+		 AND firehose.discussion IS NOT NULL
+		 AND discussions.id = firehose.discussion
+		 AND discussions.type = 'open'
+		 AND discussions.flags != 'delete'
+		 AND discussions.archivable = 'yes'"
+	);
+
+	return $count;
 }
 
 

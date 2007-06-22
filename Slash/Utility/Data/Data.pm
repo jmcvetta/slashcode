@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.206 2007/06/05 22:30:56 pudge Exp $
+# $Id: Data.pm,v 1.207 2007/06/22 20:26:32 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -61,7 +61,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.207 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -2276,7 +2276,11 @@ sub fudgeurl {
 			# then make sure the host and port are legit, and
 			# zap the port if it's the default port.
 			my $host = $uri->host;
-			$host =~ tr/A-Za-z0-9.-//cd; # per RFC 1035
+			# Re the below line, see RFC 1035 and maybe 2396.
+			# Underscore is not recommended and Slash has
+			# disallowed it for some time, but allowing it
+			# is really the right thing to do.
+			$host =~ tr/A-Za-z0-9._-//cd;
 			$uri->host($host);
 			if ($uri->can('authority') && $uri->authority) {
 				# We don't allow anything in the authority except
@@ -4349,4 +4353,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.206 2007/06/05 22:30:56 pudge Exp $
+$Id: Data.pm,v 1.207 2007/06/22 20:26:32 jamiemccarthy Exp $

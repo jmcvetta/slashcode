@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.121 2007/06/19 19:48:54 tvroom Exp $
+// $Id: common.js,v 1.122 2007/06/25 15:49:46 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -794,7 +794,6 @@ function firehose_handle_update() {
 					} else {
 						wait_interval = 50;
 					}
-					console.log("Wait interval" + wait_interval);
 				}
 				firehose_removed_first = 1;
 				if (firehose_removals < 10 ) {

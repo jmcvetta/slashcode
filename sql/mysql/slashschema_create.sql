@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.246 2007/06/13 19:11:21 pudge Exp $
+# $Id: slashschema_create.sql,v 1.247 2007/06/26 20:53:06 tvroom Exp $
 #
 
 #
@@ -721,6 +721,8 @@ CREATE TABLE related_stories (
 	url varchar(255) default '',
 	cid int(8) unsigned NOT NULL default '0',
 	ordernum smallint unsigned NOT NULL default '0',
+	fhid mediumint(8) unsigned NOT NULL default '0',
+	upgrades                                                                                       
 	PRIMARY KEY (id),
 	KEY stoid (stoid)
 ) TYPE=InnoDB;

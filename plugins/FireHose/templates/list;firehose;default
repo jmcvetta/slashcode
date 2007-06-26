@@ -43,7 +43,7 @@ __template__
 </script>
 <div id="slashboxes">
 [% UNLESS user.noboxes %]
-  [% IF slashboxes;
+  [% IF slashboxes && !form.smalldevices;
     slashboxes %]
   [% END %]
 [% END %]
@@ -204,4 +204,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.85 2007/06/26 20:19:17 tvroom Exp $
+$Id: list;firehose;default,v 1.86 2007/06/26 21:12:10 tvroom Exp $

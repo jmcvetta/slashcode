@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: search_index.pl,v 1.6 2007/03/22 02:33:54 pudge Exp $
+# $Id: search_index.pl,v 1.7 2007/06/27 03:52:56 pudge Exp $
 
 use strict;
 
@@ -25,7 +25,8 @@ $task{$me}{code} = sub {
 	slashdLog("Fetching records to index");
 	my $records = $searchtoo->getStoredRecords;
 
-	for my $type (keys %$records) {
+	my %seen;
+	for my $type (sort { $a->{iid} <=> $b->{iid} } keys %$records) {
 		my $records_type = $records->{$type};
 
 		my(@iids_d, @delete, @iids_a, @add, @change, %add);
@@ -38,6 +39,7 @@ $task{$me}{code} = sub {
 				push @delete, $records_type->[$i]{id};
 				push @iids_d, $records_type->[$i]{iid};
 			} else {
+				next if $seen{$records_type->[$i]{id}};
 				if ($records_type->[$i]{status} eq 'new') {
 					$add{$records_type->[$i]{id}} = 1;
 				}
@@ -46,6 +48,7 @@ $task{$me}{code} = sub {
 					status	=> $records_type->[$i]{status}
 				};
 				push @iids_a, $records_type->[$i]{iid};
+				$seen{$records_type->[$i]{id}}++;
 			}
 		}
 

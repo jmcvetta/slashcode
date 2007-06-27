@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.139 2007/06/27 03:52:28 pudge Exp $
+# $Id: FireHose.pm,v 1.140 2007/06/27 15:31:57 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -39,7 +39,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.139 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -572,7 +572,7 @@ sub getFireHoseEssentials {
 	my $count = $self->sqlSelect("count(*)", $tables, $where, $count_other);
 	my $page_size = $options->{limit} || 1;
 	$results->{records_pages} ||= ceil($count / $page_size);
-	$results->{records_page}  ||= (int($options->{offset} / $options->{limit}) + 1) || 1;
+	$results->{records_page}  ||= (int(($options->{offset} || 0) / $options->{limit}) + 1) || 1;
 
 
 	if (keys %$filter_globjids) {
@@ -2194,4 +2194,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.139 2007/06/27 03:52:28 pudge Exp $
+$Id: FireHose.pm,v 1.140 2007/06/27 15:31:57 jamiemccarthy Exp $

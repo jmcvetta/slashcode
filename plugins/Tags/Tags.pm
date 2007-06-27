@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.67 2007/06/19 21:05:27 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.68 2007/06/27 00:16:36 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.67 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -542,8 +542,8 @@ sub getTagsByGlobjid {
 # to 1.  "Rounded" means round to 3 decimal places.
 
 sub addRoundedCloutsToTagArrayref {
-	my($self, $ar) = @_;
-	$self->addCloutsToTagArrayref($ar);
+	my($self, $ar, $options) = @_;
+	$self->addCloutsToTagArrayref($ar, $options);
 	for my $tag_hr (@$ar) {
 		$tag_hr->{tag_clout}     = sprintf("%.3g", $tag_hr->{tag_clout});
 		$tag_hr->{tagname_clout} = sprintf("%.3g", $tag_hr->{tagname_clout});
@@ -553,7 +553,7 @@ sub addRoundedCloutsToTagArrayref {
 }
 
 sub addCloutsToTagArrayref {
-	my($self, $ar) = @_;
+	my($self, $ar, $options) = @_;
 
 	return if !$ar || !@$ar;
 	my $constants = getCurrentStatic();
@@ -573,12 +573,12 @@ sub addCloutsToTagArrayref {
 		'tagnameid, value', 'tagname_params',
 		"tagnameid IN ($tagnameids_in_str) AND name='tag_clout'");
 
-	# Pull values from users_info.tag_clout
+	# Pull values from users_param
 	my %uid = map { ($_->{uid}, 1) } @$ar;
 	my @uids = sort { $a <=> $b } keys %uid;
 	my $uids_in_str = join(',', @uids);
 	my $uid_info_hr;
-	my $clout_field = $constants->{tags_usecloutfield} || '';
+	my $clout_field = $options->{cloutfield} || $constants->{tags_usecloutfield} || '';
 	if ($clout_field) {
 		$uid_info_hr = $self->sqlSelectAllHashref(
 			'uid',
@@ -602,7 +602,8 @@ sub addCloutsToTagArrayref {
 			$uid_clout_hr->{$uid} = $uid_info_hr->{$uid}{paramclout}
 				* $constants->{tags_usecloutfield_mult};
 		} else {
-			if (length $constants->{tags_usecloutfield_default}) {
+			if ((!$options->{cloutfield} || $options->{cloutfield} eq $constants->{tags_usecloutfield})
+				&& length $constants->{tags_usecloutfield_default}) {
 				# There's a default clout for users who don't have
 				# the param field in question.  Use it.
 				$uid_clout_hr->{$uid} = $constants->{tags_usecloutfield_default}+0;
@@ -781,7 +782,7 @@ sub getAllObjectsTagname {
 		"tagnameid=$id AND inactivated IS NULL $private_clause",
 		'ORDER BY tagid');
 	$self->addGlobjEssentialsToHashrefArray($hr_ar);
-	$self->addCloutsToTagArrayref($hr_ar);
+	$self->addCloutsToTagArrayref($hr_ar, $options);
 #	if ($mcd) {
 #		my $constants = getCurrentStatic();
 #		my $secs = $constants->{memcached_exptime_tags_brief} || 300;
@@ -1165,7 +1166,7 @@ sub ajaxTagHistory {
 		$tags_ar = $tags_reader->getTagsByNameAndIdArrayref($table, $id,
 			{ include_inactive => 1, include_private => 1 });
 	}
-	$tags_reader->addRoundedCloutsToTagArrayref($tags_ar);
+	$tags_reader->addRoundedCloutsToTagArrayref($tags_ar, { cloutfield => 'tagpeerval' });
 
 	my $summ = { };
 	# XXX right now hard-code the tag summary to FHPopularity tagbox.

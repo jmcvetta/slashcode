@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Top.pm,v 1.8 2007/06/13 19:15:31 jamiemccarthy Exp $
+# $Id: Top.pm,v 1.9 2007/06/27 00:16:36 jamiemccarthy Exp $
 
 package Slash::Tagbox::Top;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -159,7 +159,7 @@ sub run {
 		$options->{days_back} = $days_back;
 	}
 	my $tag_ar = $tagsdb->getTagsByGlobjid($affected_id, $options);
-	$tagsdb->addCloutsToTagArrayref($tag_ar);
+	$tagsdb->addCloutsToTagArrayref($tag_ar, { cloutfield => 'tagpeerval' });
 	main::tagboxLog("Top->run called for $affected_id, " . scalar(@$tag_ar) . " tags");
 
 	# Generate the space-separated list of the top 5 scoring tags.

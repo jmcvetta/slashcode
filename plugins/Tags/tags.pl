@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags.pl,v 1.8 2006/11/17 19:47:38 jamiemccarthy Exp $
+# $Id: tags.pl,v 1.9 2007/06/27 00:16:36 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -61,7 +61,7 @@ sub main {
 			@objects = @$value;
 #print STDERR "tags.pl got '$mcdkey$tagname' as " . scalar(@objects) . " objects\n";
 		} else {
-			my $objects = $tags_reader->getAllObjectsTagname($tagname);
+			my $objects = $tags_reader->getAllObjectsTagname($tagname, { cloutfield => 'tagpeerval' });
 			my %globjids = ( map { ( $_->{globjid}, 1 ) } @$objects );
 			my $mintc = defined($constants->{tags_list_mintc}) ? $constants->{tags_list_mintc} : 4;
 			for my $globjid (keys %globjids) {

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: url_checker.pl,v 1.7 2007/06/05 16:21:38 jamiemccarthy Exp $
+# $Id: url_checker.pl,v 1.8 2007/06/27 21:48:39 jamiemccarthy Exp $
 #
 # This task checks urls to see if they're still alive, and sets their
 # validated titles
@@ -54,11 +54,15 @@ $task{$me}{code} = sub {
 		#slashdLog("getting $url->{url}");	
 		if ($response->is_success) {
 			#slashdLog("success on $url->{url}");	
-#{ local $content = '';
-#local $SIG{__WARN__} = sub { my $c = $content || ''; $c =~ s/\s+/ /g; print STDERR scalar(gmtime) . " url_checker warn on parse for content: $c\n"; };
 			my $content =  $response->content;
 			my $hp = HTML::HeadParser->new;
-			$hp->parse(encode_utf8($content));
+			{
+				local $SIG{__WARN__} = sub {
+					warn @_ unless $_[0] =~
+					/Parsing of undecoded UTF-8 will give garbage when decoding entities/
+				};
+				$hp->parse(encode_utf8($content));
+			}
 			my $validatedtitle = $hp->header('Title');
 			if (defined $validatedtitle) {
 				#slashdLog("vt $validatedtitle");	
@@ -67,7 +71,6 @@ $task{$me}{code} = sub {
 				$url_update->{is_success} = 1;
 				$url_update->{"-believed_fresh_until"} = "DATE_ADD(NOW(), INTERVAL 2 DAY)";
 			}
-#}
 		} else {
 			#slashdLog("failure on $url->{url}");	
 			$url_update->{is_success} = 0;

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1204 2007/06/27 03:53:16 pudge Exp $
+# $Id: upgrades,v 1.1205 2007/06/27 17:03:41 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4619,6 +4619,7 @@ UPDATE vars SET value = 'T_2_5_0_164' WHERE name = 'cvs_tag_currentcode';
 # SLASHDOT LAST UPDATED HERE
 
 ALTER TABLE related_stories ADD COLUMN fhid mediumint(8) unsigned NOT NULL default '0';
+UPDATE message_codes SET seclev = 1 WHERE code = 20;
 
 # 2007-06-26
 UPDATE vars SET value = 'T_2_5_0_165' WHERE name = 'cvs_tag_currentcode';

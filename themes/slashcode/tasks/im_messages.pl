@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: im_messages.pl,v 1.17 2007/06/28 19:13:55 entweichen Exp $
+# $Id: im_messages.pl,v 1.18 2007/06/28 20:20:09 entweichen Exp $
 
 use strict;
 
@@ -75,10 +75,17 @@ $task{$me}{code} = sub {
 			(UNIX_TIMESTAMP(date) > (UNIX_TIMESTAMP(now()) - 600))");
 		
 		foreach my $id (sort keys %{$messages{'message_drop'}}) {
-			my $message = $messages_obj->get($messages{'message_drop'}->{$id}{'id'});
-			$messages{'message_drop'}->{$id}{'message'} = $message->{'message'};
-			$slashdb->sqlDelete("message_drop", "id = " . $messages{'message_drop'}->{$id}{'id'});
-		}
+			my $pref =
+				getUserMessageDeliveryPref($messages{'message_drop'}->{$id}{'user'},
+							   $messages{'message_drop'}->{$id}{'code'});
+			if ($pref != $im_mode) {
+				delete $messages{'message_drop'}->{$id};
+			} else {
+				my $message = $messages_obj->get($messages{'message_drop'}->{$id}{'id'});
+				$messages{'message_drop'}->{$id}{'message'} = $message->{'message'};
+				$slashdb->sqlDelete("message_drop", "id = " . $messages{'message_drop'}->{$id}{'id'});
+			}
+		}	
 		
 		# Pull out remarks and record the last remark seen (if this feature is active).
 		if ($code_in_str =~ /$sysmessage_code/) {
@@ -115,10 +122,6 @@ $task{$me}{code} = sub {
 
 				# User
 				if ($message_type eq "message_drop") {
-					next if getUserMessageDeliveryPref(
-						$messages{$message_type}->{$id}{'user'},
-						$messages{$message_type}->{$id}{'code'}) != $im_mode;
-
 					my $nick = $slashdb->getUser($messages{$message_type}->{$id}{'user'}, 'aim');
 					next if !$nick;
 

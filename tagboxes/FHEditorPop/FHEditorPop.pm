@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHEditorPop.pm,v 1.14 2007/06/19 21:21:22 jamiemccarthy Exp $
+# $Id: FHEditorPop.pm,v 1.15 2007/06/28 15:12:50 jamiemccarthy Exp $
 
 # This goes by seclev right now but perhaps should define "editor"
 # to be more about author than admin seclev.  In which case the
@@ -32,7 +32,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -244,10 +244,10 @@ sub get_udc_mult {
 		main::tagboxLog(sprintf("get_udc_mult punting prev %d %.6f cur %d %.6f next %d %.6f time %d thru %.6f prevw %.6f curw %.6f nextw %.6f",
 			$prevhour, $cache->{$prevhour}, $curhour, $cache->{$curhour}, $nexthour,  $cache->{$nexthour},
 			$time, $thru_frac, $prevweight, $curweight, $nextweight));
-		$udc = 1000;
+		$udc = $constants->{tagbox_fheditorpop_udcbasis};
 	}
-	my $udc_mult = 1000/$udc;
-	my $max_mult = $constants->{tagbox_fhpopularity_maxudcmult} || 5;
+	my $udc_mult = $constants->{tagbox_fheditorpop_udcbasis}/$udc;
+	my $max_mult = $constants->{tagbox_fhpopularity2_maxudcmult} || 5;
 	$udc_mult = $max_mult if $udc_mult > $max_mult;
 	main::tagboxLog(sprintf("get_udc_mult %0.3f time %d p %.3f c %.3f n %.3f th %.3f pw %.3f cw %.3f nw %.3f udc %.3f\n",
 		$udc_mult, $time, $prevudc, $curudc, $nextudc, $thru_frac, $prevweight, $curweight, $nextweight, $udc));

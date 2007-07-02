@@ -45,7 +45,7 @@ __template__
 
 <div id="slashboxes">
 [% UNLESS user.noboxes %]
-  [% IF slashboxes && !(form.smalldevices || ua.match('iPhone'));
+  [% IF slashboxes && !(form.smalldevices || ua.match('iPhone|Windows CE; Smartphone;'));
     slashboxes %]
   [% END %]
 [% END %]
@@ -206,4 +206,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.88 2007/06/30 05:44:20 tvroom Exp $
+$Id: list;firehose;default,v 1.89 2007/07/02 18:14:16 tvroom Exp $

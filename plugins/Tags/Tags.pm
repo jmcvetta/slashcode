@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.69 2007/07/06 00:58:07 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.70 2007/07/10 00:43:51 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1621,6 +1621,22 @@ sub getPrivateTagnames {
 	}
 	my %private_tagnames = map {lc($_) => 1} @private_tags;
 	return \%private_tagnames;
+}
+
+sub logSearch {
+	my($self, $query, $options) = @_;
+	$query =~ s/[^A-Z0-9'. :\/_]/ /gi; # see Search.pm _cleanQuery()
+	my @poss_tagnames = split / /, $query;
+	my $uid = $options->{uid} || getCurrentUser('uid');
+	for my $tagname (@poss_tagnames) {
+		my $tagnameid = $self->getTagnameidFromNameIfExists($tagname);
+		next unless $tagnameid;
+		$self->sqlInsert('tags_searched', {
+			tagnameid =>	$tagnameid,
+			-searched_at =>	'NOW()',
+			uid =>		$uid,
+		}, { delayed => 1 });
+	}
 }
 
 #################################################################

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1207 2007/06/29 02:40:16 pudge Exp $
+# $Id: upgrades,v 1.1208 2007/07/10 00:43:51 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4630,3 +4630,14 @@ UPDATE vars SET value = 'T_2_5_0_165' WHERE name = 'cvs_tag_currentcode';
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+CREATE TABLE tags_searched (
+	tseid           int UNSIGNED NOT NULL AUTO_INCREMENT,
+	tagnameid       int UNSIGNED NOT NULL,
+	searched_at     datetime NOT NULL,
+	uid             mediumint UNSIGNED DEFAULT NULL,
+	PRIMARY KEY (tseid),
+	KEY (tagnameid),
+	KEY (searched_at)
+) TYPE=InnoDB;
+

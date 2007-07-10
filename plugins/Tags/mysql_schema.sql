@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.14 2007/04/11 05:35:24 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.15 2007/07/10 00:43:51 jamiemccarthy Exp $
 #
 
 DROP TABLE IF EXISTS tags;
@@ -146,4 +146,13 @@ CREATE TABLE tags_dayofweek (
 	PRIMARY KEY (day)
 ) TYPE=InnoDB;
 
+CREATE TABLE tags_searched (
+	tseid		int UNSIGNED NOT NULL AUTO_INCREMENT,
+	tagnameid	int UNSIGNED NOT NULL,
+	searched_at	datetime NOT NULL,
+	uid		mediumint UNSIGNED DEFAULT NULL,
+	PRIMARY KEY (tseid),
+	KEY (tagnameid),
+	KEY (searched_at)
+) TYPE=InnoDB;
 

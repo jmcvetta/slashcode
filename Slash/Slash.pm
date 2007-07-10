@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.324 2007/03/27 21:45:50 tvroom Exp $
+# $Id: Slash.pm,v 1.325 2007/07/10 19:02:44 pudge Exp $
 
 package Slash;
 
@@ -1956,7 +1956,7 @@ EOT
 			createSelect("reason_$comment->{cid}", $reasons, {
 				'return'	=> 1,
 				nsort		=> 1, 
-				onchange	=> 'return doModerate(this)'
+				onchange	=> ($discussion2 ? 'return doModerate(this)' : '')
 			}) . "</div>" if $can_mod
 				&& ( !$user->{state}{discussion_archived}
 					|| $constants->{comments_moddable_archived} );

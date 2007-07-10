@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.969 2007/06/19 22:24:52 pudge Exp $
+# $Id: MySQL.pm,v 1.970 2007/07/10 00:47:16 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.969 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.970 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -911,7 +911,11 @@ sub getNexusChildrenTids {
 			# nexuses as grandchildren that must be
 			# walked through on the next pass.
 			for my $gchild (keys %{$tree->{$child}{child}}) {
-				# XXXSECTIONTOPICS skip if min_weight < 0?
+				# skip if the min_weight from this parent to
+				# this child is negative (indicating the
+				# child topic _forbids_ the parent topic)
+				next if $tree->{$child}{child}{$gchild} < 0;
+				# only add nexus topics
 				next unless $tree->{$gchild}{nexus};
 				$grandchildren{$gchild} = 1;
 			}
@@ -6453,8 +6457,8 @@ sub getStoriesBySubmitter {
 
 	my $id_q = $self->sqlQuote($id);
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
-	my $nexuses = $self->getNexusChildrenTids($mp_tid);
-	my $nexus_clause = join ',', @$nexuses, $mp_tid;
+	my @nexuses = $self->getNexusTids();
+	my $nexus_clause = join ',', @nexuses, $mp_tid;
 
 	$limit = 'LIMIT ' . $limit if $limit;
 	my $answer = $self->sqlSelectAllHashrefArray(
@@ -6475,8 +6479,8 @@ sub countStoriesBySubmitter {
 
 	my $id_q = $self->sqlQuote($id);
 	my $mp_tid = getCurrentStatic('mainpage_nexus_tid');
-	my $nexuses = $self->getNexusChildrenTids($mp_tid);
-	my $nexus_clause = join ',', @$nexuses, $mp_tid;
+	my @nexuses = $self->getNexusTids();
+	my $nexus_clause = join ',', @nexuses, $mp_tid;
 
 	my($count) = $self->sqlSelect('count(*)',
 		'stories, story_topics_rendered',
@@ -8585,6 +8589,7 @@ sub getRecentComments {
 # automatically converting them to stoids.
 sub getStoidFromSidOrStoid {
 	my($self, $id) = @_;
+	return undef unless $id;
 	return $id if $id =~ /^\d+$/;
 	return $self->getStoidFromSid($id);
 }
@@ -8600,6 +8605,7 @@ sub getStoidFromSidOrStoid {
 # will it actually put any load on the DB.
 sub getStoidFromSid {
 	my($self, $sid) = @_;
+	return undef if !$sid;
 	return undef if $sid !~ regexSid();
 	if (my $stoid = $self->{_sid_conversion_cache}{$sid}) {
 		return $stoid;

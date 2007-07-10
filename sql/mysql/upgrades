@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1208 2007/07/10 00:43:51 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1209 2007/07/10 17:04:21 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4640,4 +4640,10 @@ CREATE TABLE tags_searched (
 	KEY (tagnameid),
 	KEY (searched_at)
 ) TYPE=InnoDB;
+
+# For plugins/Firehose
+INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_search', '', 'Use Yoogli OAI search');
+INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_query_base', '', 'URL of the Yoogli OAI gateway');
+INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_result_count', '', 'Number of requested OAI results');
+
 

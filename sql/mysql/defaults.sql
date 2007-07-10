@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.350 2007/06/27 03:53:16 pudge Exp $
+# $Id: defaults.sql,v 1.351 2007/07/10 21:39:17 tvroom Exp $
 #
 
 #
@@ -972,6 +972,7 @@ INSERT INTO vars (name, value, description) VALUES ('slashd_errnote_lastrun','',
 INSERT INTO vars (name, value, description) VALUES ('slashd_verbosity','2','How much information slashd (and runtask) should write to slashd.log: 0-3, 3 can be a lot');
 INSERT INTO vars (name, value, description) VALUES ('slashdir','/usr/local/slash','Directory where Slash was installed');
 INSERT INTO vars (name, value, description) VALUES ('slogan','Slash Site','Slogan of the site');
+INSERT INTO vars (name, value, description) VALUES ('smalldevices_ua_regex', 'iPhone', 'regex of user agents for small devices');
 INSERT INTO vars (name, value, description) VALUES ('smtp_server','localhost','The mailserver for the site');
 INSERT INTO vars (name, value, description) VALUES ('stats_reports','admin@example.com','Who to send daily stats reports to');
 INSERT INTO vars (name, value, description) VALUES ('stats_sfnet_groupids','4421','List of sf.net group IDs to keep stats on');

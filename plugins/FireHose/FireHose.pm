@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.143 2007/07/10 19:04:06 pudge Exp $
+# $Id: FireHose.pm,v 1.144 2007/07/10 22:15:01 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.144 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1224,7 +1224,7 @@ sub ajaxUpDownFirehose {
 	my $value = {};
 
 	my $votetype = $form->{dir} eq "+" ? "Up" : $form->{dir} eq "-" ? "Down" : "";
-	$html->{"updown-$id"} = "Voted $votetype";
+	#$html->{"updown-$id"} = "Voted $votetype";
 	$value->{"newtags-$id"} = $newtagspreloadtext;
 
 	return Data::JavaScript::Anon->anon_dump({
@@ -1763,6 +1763,13 @@ sub getAndSetOptions {
 			$options->{limit} = 30;
 		}
 	}
+
+	if ($constants->{smalldevices_ua_regex}) {
+		my $smalldev_re = qr($constants->{smalldevices_ua_regex});
+		if ($ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
+			$options->{limit} = 15;
+		}
+	}
 	if ($user->{is_admin} && $form->{setusermode}) {
 		$self->setUser($user->{uid}, { firehose_usermode => $form->{firehose_usermode} ? 1 : "" });
 	}
@@ -2235,4 +2242,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.143 2007/07/10 19:04:06 pudge Exp $
+$Id: FireHose.pm,v 1.144 2007/07/10 22:15:01 tvroom Exp $

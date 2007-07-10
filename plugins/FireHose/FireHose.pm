@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.142 2007/07/10 16:52:55 entweichen Exp $
+# $Id: FireHose.pm,v 1.143 2007/07/10 19:04:06 pudge Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.143 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1519,13 +1519,13 @@ sub getYoogliSimilarForItem {
         $ua->timeout($constants->{yoogli_oai_result_count} + 1);
         my $req = new HTTP::Request GET => $query;
         my $res = $ua->request($req);
-        if($res->is_success) {
+        if ($res->is_success) {
                 my $content = XMLin($res->content);
 
                 my $sid_regex = regexSid();
                 foreach my $metadata (@{$content->{'GetRecord'}{'record'}}) {
                         my $key = $metadata->{'header'}{'identifier'};
-                        my ($sid) = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'} =~ $sid_regex;
+                        my($sid) = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'} =~ $sid_regex;
                         $yoogli_similar_stories->{$key}{'date'}  = $reader->getStory($sid, 'time');
                         $yoogli_similar_stories->{$key}{'url'}   = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'};
                         $yoogli_similar_stories->{$key}{'title'} = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:title'};
@@ -1533,7 +1533,6 @@ sub getYoogliSimilarForItem {
          }
 
          return $yoogli_similar_stories;
-
 }
 
 sub getAndSetOptions {
@@ -2236,4 +2235,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.142 2007/07/10 16:52:55 entweichen Exp $
+$Id: FireHose.pm,v 1.143 2007/07/10 19:04:06 pudge Exp $

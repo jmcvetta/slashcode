@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.141 2007/07/10 00:38:59 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.142 2007/07/10 16:52:55 entweichen Exp $
 
 package Slash::FireHose;
 
@@ -34,12 +34,15 @@ use Slash::Tags;
 use Data::JavaScript::Anon;
 use Date::Calc qw(Days_in_Month Add_Delta_YMD);
 use POSIX qw(ceil);
+use LWP::UserAgent;
+use URI::URL;
+use XML::Simple;
 
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.142 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1302,6 +1305,9 @@ sub ajaxGetAdminExtras {
 		$accepted_from_ipid = $slashdb->countSubmissionsFromIPID($item->{ipid}, { del => 2});
 	}
 
+        my $yoogli_similar_stories = 0;
+        $yoogli_similar_stories = $firehose->getYoogliSimilarForItem($item) if $constants->{yoogli_oai_search};
+
 	my $the_user = $slashdb->getUser($item->{uid});
 
 	my $byline = getData("byline", {
@@ -1322,6 +1328,7 @@ sub ajaxGetAdminExtras {
 		item				=> $item,
 		subnotes_ref			=> $subnotes_ref,
 		similar_stories			=> $similar_stories,
+                yoogli_similar_stories          => $yoogli_similar_stories,
 	}, { Return => 1 });
 
 	return Data::JavaScript::Anon->anon_dump({
@@ -1495,6 +1502,39 @@ sub getSimilarForItem {
 	return $similar_stories;
 }
 
+sub getYoogliSimilarForItem {
+        my($self, $item) = @_;
+
+        my $user = getCurrentUser();
+        my $constants = getCurrentStatic();
+        my $reader = getObject("Slash::DB", { db_type => "reader" });
+        return 0 unless $user->{is_admin} && $constants->{yoogli_oai_query_base} && $constants->{yoogli_oai_result_count};
+        
+        my $query = $constants->{yoogli_oai_query_base} .= '?verb=GetRecord&metadataPrefix=oai_dc&rescount=';
+        $query .= $constants->{yoogli_oai_result_count} . '&identifier=' . URI::URL->new($item->{introtext});
+        my $yoogli_similar_stories = {};
+
+        my $ua = new LWP::UserAgent;
+        # Timeout is set to the number of responses we're expecting +1 for wiggle room.
+        $ua->timeout($constants->{yoogli_oai_result_count} + 1);
+        my $req = new HTTP::Request GET => $query;
+        my $res = $ua->request($req);
+        if($res->is_success) {
+                my $content = XMLin($res->content);
+
+                my $sid_regex = regexSid();
+                foreach my $metadata (@{$content->{'GetRecord'}{'record'}}) {
+                        my $key = $metadata->{'header'}{'identifier'};
+                        my ($sid) = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'} =~ $sid_regex;
+                        $yoogli_similar_stories->{$key}{'date'}  = $reader->getStory($sid, 'time');
+                        $yoogli_similar_stories->{$key}{'url'}   = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'};
+                        $yoogli_similar_stories->{$key}{'title'} = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:title'};
+                }
+         }
+
+         return $yoogli_similar_stories;
+
+}
 
 sub getAndSetOptions {
 	my($self, $opts) = @_;
@@ -2196,4 +2236,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.141 2007/07/10 00:38:59 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.142 2007/07/10 16:52:55 entweichen Exp $

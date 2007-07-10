@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.140 2007/06/27 15:31:57 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.141 2007/07/10 00:38:59 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -39,7 +39,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.140 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.141 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -664,7 +664,9 @@ sub getFireHose {
 	my $constants = getCurrentStatic();
 	my $popularitycol = $constants->{firehose_userpop_col} || 'popularity';
 	my $id_q = $self->sqlQuote($id);
-	my $answer = $self->sqlSelectHashref("*, firehose.$popularitycol AS userpop", "firehose", "id=$id_q");
+	my $answer = $self->sqlSelectHashref(
+		"*, firehose.$popularitycol AS userpop, UNIX_TIMESTAMP(firehose.createtime) AS createtime_ut",
+		"firehose", "id=$id_q");
 	my $append = $self->sqlSelectHashref("*", "firehose_text", "id=$id_q");
 
 	for my $key (keys %$append) {
@@ -2194,4 +2196,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.140 2007/06/27 15:31:57 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.141 2007/07/10 00:38:59 jamiemccarthy Exp $

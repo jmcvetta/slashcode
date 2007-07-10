@@ -116,7 +116,7 @@ END %]
 				readmore_link = "Read more";
 				
 				IF item.body_length;
-					readmore_link = "Read $item.body_length more bytes...";
+					readmore_link = "Read $item.body_length More Bytes...";
 				END;
 
 				Slash.linkStory({
@@ -147,4 +147,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.49 2007/06/26 20:05:19 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.50 2007/07/10 20:28:43 tvroom Exp $

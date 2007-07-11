@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1212 2007/07/11 16:31:11 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1213 2007/07/11 17:59:08 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4648,4 +4648,7 @@ INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_search', '', 'Us
 INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_query_base', '', 'URL of the Yoogli OAI gateway');
 INSERT INTO vars (name, value, description) VALUES ('yoogli_oai_result_count', '', 'Number of requested OAI results');
 INSERT INTO vars (name, value, description) VALUES ('smalldevices_ua_regex', 'iPhone', 'regex of user agents for small devices');
+
+# 2007-07-11
+UPDATE vars SET value = 'T_2_5_0_166' WHERE name = 'cvs_tag_currentcode';
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: PopupTree.pm,v 1.14 2007/07/10 00:11:18 jamiemccarthy Exp $
+# $Id: PopupTree.pm,v 1.15 2007/07/11 13:06:27 jamiemccarthy Exp $
 
 package Slash::Admin::PopupTree;
 
@@ -33,7 +33,7 @@ use Slash::Utility;
 use base 'HTML::PopupTreeSelect';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 
@@ -91,6 +91,7 @@ sub getPopupTree {
 	my @tids =	map  { $_->[0] }
 			sort { $a->[1] cmp $b->[1] }
 			map  { [ $_, lc $tree->{$_}{textname} ] }
+			grep { $_ }
 			keys %$tree;
 
 	# Set up %topics except for parents and children
@@ -238,4 +239,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: PopupTree.pm,v 1.14 2007/07/10 00:11:18 jamiemccarthy Exp $
+$Id: PopupTree.pm,v 1.15 2007/07/11 13:06:27 jamiemccarthy Exp $

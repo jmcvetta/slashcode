@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Atom.pm,v 1.5 2007/07/11 21:33:23 pudge Exp $
+# $Id: Atom.pm,v 1.6 2007/07/12 04:16:31 pudge Exp $
 
 package Slash::XML::Atom;
 
@@ -33,7 +33,7 @@ use base 'Slash::XML';
 use base 'Slash::XML::RSS';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 my %syn_ok_fields = (
 	'updateBase' => '',
@@ -176,7 +176,7 @@ sub as_atom_1_0 {
 
 	my $lang = '';
 	if ($self->{channel}{dc}{language}) {
-		$val = $self->encode($self->{channel}{dc}{language});
+		$val = $self->{channel}{dc}{language};
 		$lang = qq[ xml:lang="$val"\n];
 	}
 
@@ -186,14 +186,14 @@ sub as_atom_1_0 {
 	$output .= atom_encode($self, 'title', $self->{channel}{title});
 
 	# id/link
-	$val = $self->encode($self->{channel}{'link'});
+	$val = $self->{channel}{'link'};
 	$output .= qq[<id>$val</id>\n];
 	$output .= qq[<link href="$val"/>\n];
 
 	# self link
 	$val = '';
 	if ($self->{channel}{selflink}) {
-		$val = $self->encode($self->{channel}{selflink});
+		$val = $self->{channel}{selflink};
 	} elsif ($ENV{REQUEST_URI}) {
 		(my $host = $ENV{HTTP_HOST}) =~ s/:\d+$//;
 		my $scheme = defined &Slash::Apache::ConnectionIsSSL
@@ -230,7 +230,7 @@ sub as_atom_1_0 {
 
 	# subject
 	if ($self->{channel}{dc}{subject}) {
-		$val = $self->encode($self->{channel}{dc}{subject});
+		$val = $self->{channel}{dc}{subject};
 		$output .= qq[<category term="$val"/>\n];
 	}
 
@@ -262,7 +262,7 @@ sub as_atom_1_0 {
 		if ($item->{title}) {
 			$output .= "<entry>\n";
 
-			$val = $self->encode($item->{'link'});
+			$val = $item->{'link'};
 			$output .= qq[<id>$val</id>\n];
 
 			$output .= atom_encode($self, 'title', $item->{title});
@@ -286,7 +286,7 @@ sub as_atom_1_0 {
 			}
 
 			if ($item->{dc}{subject}) {
-				$val = $self->encode($item->{dc}{subject});
+				$val = $item->{dc}{subject};
 				$output .= qq[<category term="$val"/>\n];
 			}
 
@@ -314,7 +314,7 @@ sub as_atom_1_0 {
 sub atom_encode {
 	my($self, $element, $value) = @_;
 	return '' unless $value;
-	$value = $self->encode($value);
+
 	# XXX make this more robust?
 	my $type = $value =~ /(?:&amp;#?\w+;|&[lg]t;)/ ? 'html' : 'text';
 
@@ -352,4 +352,4 @@ Slash(3), Slash::XML(3).
 
 =head1 VERSION
 
-$Id: Atom.pm,v 1.5 2007/07/11 21:33:23 pudge Exp $
+$Id: Atom.pm,v 1.6 2007/07/12 04:16:31 pudge Exp $

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.125 2007/07/11 17:52:15 pudge Exp $
+// $Id: common.js,v 1.126 2007/07/12 03:14:26 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -617,13 +617,14 @@ function firehose_up_down(id, dir) {
 	params['dir'] = dir;
 	var updown = $('updown-' + id);
 	ajax_update(params, '', handlers);
+	/*
 	if (updown) {
 		if (dir == "+") {
 			updown.className = "votedup";	
 		} else if (dir == "-") {
 			updown.className = "voteddown";	
 		}
-	}
+	}*/
 
 	if (dir == "-" && fh_is_admin) {
 		firehose_collapse_entry(id);

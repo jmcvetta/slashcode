@@ -74,7 +74,7 @@ ELSE;
 	IF !form.skippop && !options.nocolors;
 		pop_str = '<span class="soda pop' _  pop_val _ '"';
 		pop_str = pop_str _ ' title="Filter Firehose to entries rated ' _ color _ ' or better" onclick="firehose_slider_set_color(\'' _ color _ '\')"';
-		pop_str = pop_str _ '> &nbsp; </span> ';
+		pop_str = pop_str _ '><span>&nbsp;</span></span> ';
 	END;
         title = pop_str _ title;
 END;
@@ -83,4 +83,4 @@ END;
 __seclev__
 10000
 __version__
-$Id: formatHoseTitle;misc;default,v 1.32 2007/07/12 16:35:00 lancelot Exp $
+$Id: formatHoseTitle;misc;default,v 1.33 2007/07/13 20:54:24 lancelot Exp $

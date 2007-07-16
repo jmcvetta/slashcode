@@ -44,7 +44,7 @@ __template__
 
 	[% IF user.is_admin %]<div id="tags-admin-[% sidenc %]"></div>[% END %]
 
-	<div id="toggletags-message-[% sidenc %]"></div>
+	<div id="toggletags-message-[% sidenc %]" class="message"></div>
 
 	</div>
 [% END %]
@@ -54,4 +54,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsstorydivtagbox;misc;default,v 1.7 2007/01/30 23:03:48 scc Exp $
+$Id: tagsstorydivtagbox;misc;default,v 1.8 2007/07/16 21:21:08 lancelot Exp $

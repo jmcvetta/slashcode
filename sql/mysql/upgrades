@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1214 2007/07/17 17:55:34 pudge Exp $
+# $Id: upgrades,v 1.1215 2007/07/17 21:55:56 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4651,4 +4651,8 @@ UPDATE vars SET value = 'T_2_5_0_166' WHERE name = 'cvs_tag_currentcode';
 # SLASHDOT LAST UPDATED HERE
 
 # PUDGE LAST UPDATED HERE
+
+# For tagboxes/FHPopularity2
+INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_fhpopularity2_gracetime', '1200', 'Number of initial seconds of a firehose item life let it float higher in the hose');
+INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_fhpopularity2_gracemult', '3', 'Multiplier factor for a firehose item during the grace period');
 

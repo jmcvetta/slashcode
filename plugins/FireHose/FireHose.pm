@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.147 2007/07/17 18:07:20 entweichen Exp $
+# $Id: FireHose.pm,v 1.148 2007/07/17 20:04:58 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.147 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.148 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1224,7 +1224,7 @@ sub ajaxUpDownFirehose {
 	my $value = {};
 
 	my $votetype = $form->{dir} eq "+" ? "Up" : $form->{dir} eq "-" ? "Down" : "";
-	$html->{"updown-$id"} = "Voted $votetype";
+	#$html->{"updown-$id"} = "Voted $votetype";
 	$value->{"newtags-$id"} = $newtagspreloadtext;
 
 	return Data::JavaScript::Anon->anon_dump({
@@ -1548,6 +1548,7 @@ sub getAndSetOptions {
 
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 };
 	my $modes = { full => 1, fulltitle => 1, mixed => 1};
+	my $pagesizes = { "small" => 1, "large" => 1 };
 
 	my $no_saved = $form->{no_saved};
 	$opts->{no_set} ||= $no_saved;
@@ -1560,6 +1561,10 @@ sub getAndSetOptions {
 		}
 	}
 	my $mode = $form->{mode} || $user->{firehose_mode};
+
+	my $pagesize = $pagesizes->{$form->{pagesize}} ? $form->{pagesize} : $user->{firehose_pagesize} || "small";
+	$options->{pagesize} = $pagesize;
+
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
 	$options->{mode} = $mode;
 	$options->{pause} = $user->{firehose_paused};
@@ -1748,29 +1753,32 @@ sub getAndSetOptions {
 	
 	if ($mode eq "full") {
 		if ($user->{is_admin}) {
-			$options->{limit} = 25;
+			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		} else {
-			$options->{limit} = 15;
+			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		}
 	} elsif ($mode eq "mixed") {
 		if ($user->{is_admin}) {
-			$options->{limit} = 40;
+			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		} else {
-			$options->{limit} = 20;
+			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		}
-		
 	} else {
 		if ($user->{is_admin}) {
 			$options->{limit} = 50;
 		} else {
-			$options->{limit} = 30;
+			$options->{limit} = $pagesize eq "large" ? 30 : 25;
 		}
 	}
 
 	if ($constants->{smalldevices_ua_regex}) {
 		my $smalldev_re = qr($constants->{smalldevices_ua_regex});
 		if ($ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
-			$options->{limit} = 15;
+			if ($mode eq "full") {
+				$options->{limit} = $pagesize eq "large" ? 15 : 10;
+			} else {
+				$options->{limit} = $pagesize eq "large" ? 20 : 15;
+			}
 		}
 	}
 
@@ -1878,7 +1886,7 @@ sub getAndSetOptions {
 		my $data_change = {};
 		my @skip_options_save = qw(uid not_uid type not_type primaryskid not_primaryskid);
 		if ($user->{state}{firehose_page} eq "user") {
-			push @skip_options_save, "nothumbs", "nocolors", "pause", "mode", "orderdir", "orderby";
+			push @skip_options_save, "nothumbs", "nocolors", "pause", "mode", "orderdir", "orderby", "fhfilter";
 		}
 		my %skip_options = map { $_ => 1 } @skip_options_save;
 		foreach (keys %$options) {
@@ -2246,4 +2254,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.147 2007/07/17 18:07:20 entweichen Exp $
+$Id: FireHose.pm,v 1.148 2007/07/17 20:04:58 tvroom Exp $

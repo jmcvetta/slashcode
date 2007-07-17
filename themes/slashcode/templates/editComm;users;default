@@ -59,7 +59,6 @@ __template__
         	<input type="radio" name="discussion2" value="uofm"[% constants.markup_checked_attribute IF user_edit.discussion2 == "uofm" %]> University of Michigan Testing<br>
 		[% END %]
         	<input type="radio" name="discussion2" value="slashdot"[% constants.markup_checked_attribute IF user_edit.discussion2 == "slashdot" %]> Slashdot's New Discussion System Testing<br>
-		[% END %]
 		</div></blockquote>
 
         	<p><b>Email Display</b>
@@ -294,4 +293,4 @@ __template__
 __seclev__
 500
 __version__
-$Id: editComm;users;default,v 1.59 2007/07/10 19:03:22 pudge Exp $
+$Id: editComm;users;default,v 1.60 2007/07/17 17:55:34 pudge Exp $

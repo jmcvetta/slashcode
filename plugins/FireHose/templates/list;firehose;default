@@ -96,6 +96,7 @@ END; login_block = BLOCK %]
 %]
 [% PROCESS titlebar title="$constants.sitename Firehose $refresh_text" %]
 [% PROCESS autocomplete %]
+[% PROCESS nodnix_menus %]
 <div class="submenu">
 <div id="message_area">
 </div>
@@ -206,4 +207,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.92 2007/07/16 17:34:18 lancelot Exp $
+$Id: list;firehose;default,v 1.93 2007/07/17 14:45:28 scc Exp $

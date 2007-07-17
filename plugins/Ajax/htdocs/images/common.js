@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.128 2007/07/17 22:11:42 scc Exp $
+// $Id: common.js,v 1.129 2007/07/17 23:46:35 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -669,7 +669,7 @@ var g_pending_hidemenu = null;
 var g_nodnix_item_id = null;
 
 function nodnix_tag( tag ) {
-  createTag(tag, g_nodnix_item_id, "firehose");
+	createTag(tag, g_nodnix_item_id, "firehose");
 }
 
 function hide_nod_menu() {
@@ -685,8 +685,8 @@ function hide_nodnix_menu( delay ) {
 		hide_nod_menu();
 		hide_nix_menu();
 	} else {
-	  if ( g_pending_hidemenu )
-	    clearTimeout(g_pending_hidemenu);
+		if ( g_pending_hidemenu )
+			clearTimeout(g_pending_hidemenu);
 		g_pending_hidemenu = setTimeout("hide_nodnix_menu()", delay);
 	}
 }
@@ -709,7 +709,7 @@ function show_nodnix_menu(elem, id, menu, show_delay, hide_delay) {
 		g_menu_for_pending_showmenu = menu;
 		g_id_for_pending_showmenu = id;
 		if ( g_pending_showmenu )
-		  clearTimeout(g_pending_showmenu);
+			clearTimeout(g_pending_showmenu);
 		g_pending_showmenu = setTimeout("show_nodnix_menu(g_elem_for_pending_showmenu, g_id_for_pending_showmenu, g_menu_for_pending_showmenu)", show_delay);
 	}
 

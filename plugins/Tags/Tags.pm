@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.70 2007/07/10 00:43:51 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.71 2007/07/17 18:08:56 tvroom Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1071,7 +1071,7 @@ sub ajaxProcessAdminTags {
 #print STDERR "ajaxProcessAdminTags\n";
 	my $commands = $form->{commands};
 	my $type = $form->{type} || "stories";
-	my($id, $table, $sid, $sidenc);
+	my($id, $table, $sid, $sidenc, $itemid);
 	if ($type eq "stories") {
 		$sidenc = $form->{sidenc};
 		$sid = $sidenc; $sid =~ tr{:}{/};
@@ -1082,7 +1082,7 @@ sub ajaxProcessAdminTags {
 		$id = $form->{id};
 	} elsif ($type eq "firehose") {
 		if ($constants->{plugin}{FireHose}) {
-			my $itemid = $form->{id};
+			$itemid = $form->{id};
 			my $firehose = getObject("Slash::FireHose");
 			my $item = $firehose->getFireHose($itemid);
 			my $tags = getObject("Slash::Tags");
@@ -1131,7 +1131,7 @@ use Data::Dumper; print STDERR scalar(localtime) . " ajaxProcessAdminTags table=
 		}, { Return => 1 });
 	} elsif ($type eq "firehose") {
 		return slashDisplay('tagsfirehosedivadmin', {
-			id 		=>	$id,
+			id 		=>	$itemid,
 			tags_admin_str  =>	$tags_admin_str,
 		}, { Return => 1 });
 	}

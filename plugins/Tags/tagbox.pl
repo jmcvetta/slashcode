@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tagbox.pl,v 1.13 2007/02/23 20:07:16 jamiemccarthy Exp $
+# $Id: tagbox.pl,v 1.14 2007/07/17 20:29:07 jamiemccarthy Exp $
 
 use strict;
 
@@ -65,8 +65,8 @@ $task{$me}{code} = sub {
 		# matters much, since if nothing's going on both of the
 		# above should be doing reasonably fast SELECTs).
 		if (!$activity_feeder && !$activity_run) {
-			tagboxLog('tagbox.pl sleeping 20');
-			sleep 20;
+			tagboxLog('tagbox.pl sleeping 10');
+			sleep 10;
 		}
 		last if $task_exit_flag;
 

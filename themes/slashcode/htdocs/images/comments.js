@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.81 2007/07/17 17:55:34 pudge Exp $
+// $Id: comments.js,v 1.82 2007/07/18 05:59:14 pudge Exp $
 
 var comments;
 var root_comments;
@@ -665,7 +665,6 @@ function ajaxFetchComments(cids, get_max_cid) {
 			}
 
 			json_update(response);
-			updateHiddens(cids);
 
 			for (var i = 0; i < cids.length; i++) {
 				// this is needed for Firefox
@@ -703,6 +702,7 @@ function ajaxFetchComments(cids, get_max_cid) {
 				updateTotals();
 			}
 
+			updateHiddens(cids);
 			boxStatus(0);
 		}
 	};

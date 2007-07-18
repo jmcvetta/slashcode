@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.83 2007/07/18 15:37:05 pudge Exp $
+// $Id: comments.js,v 1.84 2007/07/18 19:34:39 pudge Exp $
 
 var comments;
 var root_comments;
@@ -685,9 +685,11 @@ function ajaxFetchComments(cids, get_max_cid) {
 					updateDisplayMode(this_cid, 'full', 1);
 					updateComment(this_cid, 'full');
 				}
-				if (!commentIsInWindow(update.new_cids_order[0])) {
-					scrollWindowTo(update.new_cids_order[0]);
-				}
+				// later we may need to find a known point and scroll
+				// to it, but for now we don't want to do this -- pudge
+				//if (!commentIsInWindow(update.new_cids_order[0])) {
+				//	scrollWindowTo(update.new_cids_order[0]);
+				//}
 			}
 
 			if (update && update.new_thresh_totals) {

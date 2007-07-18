@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.131 2007/07/18 18:21:36 scc Exp $
+// $Id: common.js,v 1.132 2007/07/18 19:33:58 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -672,7 +672,7 @@ var g_nodnix_item_id = null;
 function nodnix_tag( tag, up_down ) {
 	createTag(tag, g_nodnix_item_id, "firehose");
 	if ( up_down !== undefined )
-	  firehose_up_down(g_nodnix_item_id, up_down);
+		firehose_up_down(g_nodnix_item_id, up_down);
 }
 
 function hide_nod_menu() {

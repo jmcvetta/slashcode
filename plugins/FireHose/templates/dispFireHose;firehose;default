@@ -130,6 +130,8 @@ END %]
 				<a href="[% gSkin.rootdir %]/~[% the_user.nickname %]/journal/[% item.srcid %]/">Read More</a>
 			[% ELSIF item.type == "submission" %]
 				<a href="[% gSkin.rootdir %]/firehose.pl?op=view&amp;id=[% item.id %]">Read More &amp; Discuss</a>
+			[% ELSE %]
+				%nbsp;
 			[% END %]
 				</b>
 			</li>
@@ -147,4 +149,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.52 2007/07/17 18:09:53 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.53 2007/07/18 18:48:47 lancelot Exp $

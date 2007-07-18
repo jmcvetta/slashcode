@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.71 2007/07/17 18:08:56 tvroom Exp $
+# $Id: Tags.pm,v 1.72 2007/07/18 15:06:29 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -545,10 +545,10 @@ sub addRoundedCloutsToTagArrayref {
 	my($self, $ar, $options) = @_;
 	$self->addCloutsToTagArrayref($ar, $options);
 	for my $tag_hr (@$ar) {
-		$tag_hr->{tag_clout}     = sprintf("%.3g", $tag_hr->{tag_clout});
-		$tag_hr->{tagname_clout} = sprintf("%.3g", $tag_hr->{tagname_clout});
-		$tag_hr->{user_clout}    = sprintf("%.3g", $tag_hr->{user_clout});
-		$tag_hr->{total_clout}   = sprintf("%.3g", $tag_hr->{total_clout});
+		$tag_hr->{tag_clout}     = sprintf("%.3f", $tag_hr->{tag_clout});
+		$tag_hr->{tagname_clout} = sprintf("%.3f", $tag_hr->{tagname_clout});
+		$tag_hr->{user_clout}    = sprintf("%.3f", $tag_hr->{user_clout});
+		$tag_hr->{total_clout}   = sprintf("%.3f", $tag_hr->{total_clout});
 	}
 }
 

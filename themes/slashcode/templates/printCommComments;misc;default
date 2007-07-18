@@ -100,6 +100,10 @@ __template__
 	[% END %]
 	[% lcp %]
 
+[% IF discussion2 && !cid %]
+<div class="prev-next"><a href="javascript:ajaxFetchComments(0,1)">Update</a></div>
+[% END %]
+
 [% IF moderate_form %]
 	[% IF moderate_button %]
 		<div>Have you read the
@@ -141,4 +145,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.54 2007/01/31 20:37:35 pudge Exp $
+$Id: printCommComments;misc;default,v 1.55 2007/07/18 15:40:13 pudge Exp $

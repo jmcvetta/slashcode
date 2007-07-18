@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.38 2007/07/17 18:32:07 tvroom Exp $
+// $Id: admin.js,v 1.39 2007/07/18 05:24:20 pudge Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -48,7 +48,6 @@ function admin_neverdisplay(stoid, type, fhid) {
 }
 
 function adminTagsCommands(id, type) {
-	alert(id + " " + type);
 	var toggletags_message_id = 'toggletags-message-' + id;
 	var toggletags_message_el = $(toggletags_message_id);
 	if (toggletags_message_el) {

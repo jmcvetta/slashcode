@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.82 2007/07/18 05:59:14 pudge Exp $
+// $Id: comments.js,v 1.83 2007/07/18 15:37:05 pudge Exp $
 
 var comments;
 var root_comments;
@@ -738,8 +738,6 @@ function ajaxFetchComments(cids, get_max_cid) {
 		noshow_comments = [];
 		pieces_comments = [];
 	}
-
-	return false;
 }
 
 function savePrefs() {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.72 2007/07/18 15:06:29 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.73 2007/07/19 02:23:52 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -113,6 +113,9 @@ sub createTag {
 	my $tag = $self->_setuptag($hr);
 	return 0 if !$tag;
 
+	# Anonymous users cannot tag.
+	return 0 if isAnon($tag->{uid});
+
 	# I'm not sure why a duplicate or opposite tag would ever be "OK"
 	# in the tags table, but for now let's keep our options open in
 	# case there's some reason we'd want "raw" tag inserting ability.
@@ -140,6 +143,8 @@ sub createTag {
 		# Because of the uid_globjid_tagnameid_inactivated index,
 		# this should, I believe, not even touch table data,
 		# so it should be very fast.
+		# XXX Might want to make it faster by doing this
+		# select before the insert above, esp. with tagViewed().
 		my $count = $self->sqlCount('tags',
 			"uid		= $tag->{uid}
 			 AND globjid	= $tag->{globjid}
@@ -1637,6 +1642,17 @@ sub logSearch {
 			uid =>		$uid,
 		}, { delayed => 1 });
 	}
+}
+
+sub markViewed {
+	my($self, $uid, $globjid) = @_;
+	my $constants = getCurrentStatic();
+        $self->createTag({
+                uid =>		$uid,
+                name =>		$constants->{tags_viewed_tagname} || 'viewed',
+                globjid =>	$globjid,
+                private =>	1,
+        });
 }
 
 #################################################################

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.77 2006/09/03 17:40:20 jamiemccarthy Exp $
+# $Id: article.pl,v 1.78 2007/07/19 02:23:53 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -239,6 +239,13 @@ sub main {
 			$message = getData('no_such_sid');
 		}
 		print $message;
+	}
+
+	my $plugins = $slashdb->getDescriptions('plugins');
+	if (!$user->{is_anon} && $plugins->{Tags}) {
+		my $tagsdb = getObject('Slash::Tags');
+		$tagsdb->markViewed($user->{uid},
+			$reader->getGlobjidCreate('stories', $story->{stoid}));
 	}
 
 	footer();

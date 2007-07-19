@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.29 2007/06/05 22:43:46 pudge Exp $
+# $Id: mysql_dump.sql,v 1.30 2007/07/19 02:23:52 jamiemccarthy Exp $
 #
 
 INSERT INTO vars (name, value, description) VALUES ('memcached_exptime_tags', '3600', 'Seconds to cache tag data in memcached');
@@ -35,6 +35,7 @@ INSERT INTO vars (name, value, description) VALUES ('tags_tagname_regex', '^\!?[
 INSERT INTO vars (name, value, description) VALUES ('tags_upvote_tagname', 'nod', 'Tag for upvote');
 INSERT INTO vars (name, value, description) VALUES ('tags_downvote_tagname', 'nix', 'Tag for downvote');
 INSERT INTO vars (name, value, description) VALUES ('tags_negative_tagnames', 'nix,dupe,whocares', 'Negative tags (comma separated)');
+INSERT INTO vars (name, value, description) VALUES ('tags_viewed_tagname', 'viewed', 'Tagname to assign to stories and other items a user has viewed');
 
 INSERT INTO ajax_ops VALUES (NULL, 'tags_get_user_story', 'Slash::Tags', 'ajaxGetUserStory', 'ajax_tags_write', 'createuse');
 INSERT INTO ajax_ops VALUES (NULL, 'tags_get_user_urls', 'Slash::Tags', 'ajaxGetUserUrls', 'ajax_tags_write', 'createuse');

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FHPopularity2.pm,v 1.8 2007/07/17 21:55:57 jamiemccarthy Exp $
+# $Id: FHPopularity2.pm,v 1.9 2007/07/19 02:23:27 jamiemccarthy Exp $
 
 package Slash::Tagbox::FHPopularity2;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -134,9 +134,6 @@ sub run {
 	warn "Slash::Tagbox::FHPopularity2->run bad data, fhid='$fhid' db='$firehose_db'" if !$fhid || !$firehose_db;
 	my $fhitem = $firehose_db->getFireHose($fhid);
 
-	# All firehose entries start out with popularity 1.
-	my $popularity = 1;
-
 	# Some target types gain popularity.
 	my($type, $target_id) = $tagsdb->getGlobjTarget($affected_id);
 	my $target_id_q = $self->sqlQuote($target_id);
@@ -161,7 +158,8 @@ sub run {
 			? 1  # mainpage
 			: 2; # sectional
 	}
-	$popularity = $self->getEntryPopularityForColorLevel($color_level) + $extra_pop;
+
+	my $popularity = $self->getEntryPopularityForColorLevel($color_level) + $extra_pop;
 
 	# Add up nods and nixes.
 	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');

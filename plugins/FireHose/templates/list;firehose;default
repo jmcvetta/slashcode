@@ -87,6 +87,7 @@ END; login_block = BLOCK %]
 [% IF form.skipmenu || options.skipmenu %]
 	[% IF user.is_anon; login_block; END %]
 [% ELSE %]
+[% PROCESS nodnix_menus %]
 <div class="firemenu">
 [% theupdatetime = Slash.timeCalc(Slash.db.getTime(), "%H:%M"); %]
 [% refresh_text = "";
@@ -96,7 +97,6 @@ END; login_block = BLOCK %]
 %]
 [% PROCESS titlebar title="$constants.sitename Firehose $refresh_text" %]
 [% PROCESS autocomplete %]
-[% PROCESS nodnix_menus %]
 <div class="submenu">
 <div id="message_area">
 </div>
@@ -207,4 +207,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.93 2007/07/17 14:45:28 scc Exp $
+$Id: list;firehose;default,v 1.94 2007/07/19 19:55:56 lancelot Exp $

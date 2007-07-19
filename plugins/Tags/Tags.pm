@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.73 2007/07/19 02:23:52 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.74 2007/07/19 03:15:37 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.73 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.74 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1177,9 +1177,16 @@ sub ajaxTagHistory {
 		$tags_ar = $tags_reader->getTagsByNameAndIdArrayref($table, $id,
 			{ include_inactive => 1, include_private => 1 });
 	}
-	$tags_reader->addRoundedCloutsToTagArrayref($tags_ar, { cloutfield => 'tagpeerval' });
 
 	my $summ = { };
+
+	# Don't list 'viewed' tags, just count them.
+	my $viewed_tagname = $constants->{tags_viewed_tagname} || 'viewed';
+	$summ->{n_viewed} = scalar grep { $_->{tagname} eq $viewed_tagname } @$tags_ar;
+	$tags_ar = [ grep { $_->{tagname} ne $viewed_tagname } @$tags_ar ];
+
+	$tags_reader->addRoundedCloutsToTagArrayref($tags_ar, { cloutfield => 'tagpeerval' });
+
 	# XXX right now hard-code the tag summary to FHPopularity tagbox.
 	# If we start using another tagbox, we'll have to change this too.
 	my $tagboxdb = getObject('Slash::Tagbox');

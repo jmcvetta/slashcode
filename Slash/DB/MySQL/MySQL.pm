@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.971 2007/07/10 19:18:51 pudge Exp $
+# $Id: MySQL.pm,v 1.972 2007/07/20 07:23:20 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.971 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.972 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7490,7 +7490,7 @@ sub createStory {
 			}
 		}
 
-		$story->{body_length} = length($story->{bodytext});
+		$story->{body_length} = defined($story->{bodytext}) ? length($story->{bodytext}) : 0;
 		$story->{word_count} = countWords($story->{introtext}) + countWords($story->{bodytext});
 		$story->{primaryskid} = $primaryskid;
 		$story->{tid} = $tids->[0];

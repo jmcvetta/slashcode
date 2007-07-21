@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.326 2007/07/17 17:55:34 pudge Exp $
+# $Id: Slash.pm,v 1.327 2007/07/21 18:46:34 pudge Exp $
 
 package Slash;
 
@@ -286,13 +286,14 @@ sub jsSelectComments {
 			if ($comments->{$cid}{subject_orig} && $comments->{$cid}{subject_orig} eq 'no') {
 				$comments_new->{$cid}{subject} = $comments->{$cid}{subject};
 			}
-			$thresh_totals = commentCountThreshold($comments, $pid, \%roots_hash);
 		}
 
+		$thresh_totals = commentCountThreshold($comments, $pid, \%roots_hash);
 		$comments = $comments_new;
 	}
 
 	my($max_cid) = sort { $b <=> $a } keys %$comments;
+	$max_cid ||= 0;
 
 	my $anon_comments = Data::JavaScript::Anon->anon_dump($comments);
 	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);

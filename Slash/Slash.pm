@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.327 2007/07/21 18:46:34 pudge Exp $
+# $Id: Slash.pm,v 1.328 2007/07/21 18:47:21 pudge Exp $
 
 package Slash;
 
@@ -298,7 +298,7 @@ sub jsSelectComments {
 	my $anon_comments = Data::JavaScript::Anon->anon_dump($comments);
 	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);
 	my $anon_rootsh   = Data::JavaScript::Anon->anon_dump(\%roots_hash);
-	my $anon_thresh   = Data::JavaScript::Anon->anon_dump($thresh_totals);
+	my $anon_thresh   = Data::JavaScript::Anon->anon_dump($thresh_totals || {});
 	s/\s+//g for ($anon_thresh, $anon_roots, $anon_rootsh);
 
 	$user->{is_anon}  ||= 0;

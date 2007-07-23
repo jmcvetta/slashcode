@@ -129,7 +129,7 @@ END %]
 			[% ELSIF item.type == "journal" %]
 				<a href="[% gSkin.rootdir %]/~[% the_user.nickname %]/journal/[% item.srcid %]/">Read More</a>
 			[% ELSIF item.discussion %]
-				<a href="[% gSkin.rootdir %]/firehose.pl?op=view&amp;id=[% item.id %]">Read Mores</a>
+				<a href="[% gSkin.rootdir %]/firehose.pl?op=view&amp;id=[% item.id %]">Read More</a>
 			[% ELSE %]
 				Nothing More
 			[% END %]
@@ -149,4 +149,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.56 2007/07/19 16:51:05 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.57 2007/07/23 22:07:38 tvroom Exp $

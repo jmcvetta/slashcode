@@ -75,8 +75,8 @@ END; login_block = BLOCK %]
 <div id="login_box" style="display:none">
 [% PROCESS titlebar
 	title => "Please Log In to Continue" _
-		'<a href="javascript:hide_login_box()"><img id="login_box_close" src="' _
-		gSkin.imagedir _ '/images/sic_close.png"></a>'
+		'<a href="javascript:hide_login_box()" class="close" title="Close this box"><img id="login_box_close" src="' _
+		gSkin.imagedir _ '/images/sic_close.png" alt="Close"></a>'
 %]
 <div id="login_box_content">
 [% login_inner_block %]
@@ -207,4 +207,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.94 2007/07/19 19:55:56 lancelot Exp $
+$Id: list;firehose;default,v 1.95 2007/07/24 17:33:14 lancelot Exp $

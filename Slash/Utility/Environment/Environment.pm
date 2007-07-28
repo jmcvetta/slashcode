@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.210 2007/03/06 19:24:37 pudge Exp $
+# $Id: Environment.pm,v 1.211 2007/07/28 17:20:51 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.211 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1419,7 +1419,9 @@ sub getPublicLogToken {
 	$uid ||= getCurrentUser('uid');
 	if ($uid) {
 		my $slashdb = getCurrentDB();
-		my $logtoken = $slashdb->getLogToken($uid, 1, 2);
+		# Don't bump a public logtoken's expiration time if we're
+		# just getting its value to emit.
+		my $logtoken = $slashdb->getLogToken($uid, 1, 2, 0);
 		if ($logtoken) {
 			return bakeUserCookie($uid, $logtoken);
 		}
@@ -1528,7 +1530,10 @@ sub prepareUser {
 	} else {
 		$user = $reader->getUser($uid);
 		$user->{is_anon} = 0;
-		$user->{logtoken} = bakeUserCookie($uid, $slashdb->getLogToken($uid));
+		# If this was a public logtoken, we do want to bump its
+		# expiration time out, because it was used to authenticate.
+		$user->{logtoken} = bakeUserCookie($uid,
+			$slashdb->getLogToken($uid, 0, 0, 1));
 	}
 #print STDERR scalar(localtime) . " $$ prepareUser user->uid=$user->{uid} is_anon=$user->{is_anon}\n";
 
@@ -3430,4 +3435,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.210 2007/03/06 19:24:37 pudge Exp $
+$Id: Environment.pm,v 1.211 2007/07/28 17:20:51 jamiemccarthy Exp $

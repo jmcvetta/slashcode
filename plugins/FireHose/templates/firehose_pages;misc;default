@@ -34,6 +34,7 @@ __template__
      END;
 
      num_page_display = constants.firehose_num_page_display || 10;
+     IF options.smalldevices; num_page_display = 6; END;
      start_page_num = 1;
      end_page_num = page_max;
 
@@ -66,4 +67,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: firehose_pages;misc;default,v 1.10 2007/06/26 20:05:19 tvroom Exp $
+$Id: firehose_pages;misc;default,v 1.11 2007/07/30 18:41:10 tvroom Exp $

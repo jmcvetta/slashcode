@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.132 2007/07/18 19:33:58 pudge Exp $
+// $Id: common.js,v 1.133 2007/07/30 18:44:55 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -25,6 +25,10 @@ var fh_colors = Array(0);
 var vendor_popup_timerids = Array(0);
 var vendor_popup_id = 0;
 var fh_slider_init_set = 0;
+
+// eventually add site specific constants like this to a separate .js
+var sitename = "Slashdot";
+
 
 function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -964,9 +968,9 @@ function firehose_reorder() {
 				}
 			}
 			if (console_updating) {
-				document.title = "Console (" + item_count + ")";
+				document.title = sitename + " - Console (" + item_count + ")";
 			} else {
-				document.title = "Firehose (" + item_count + ")";
+				document.title = sitename + " - Firehose (" + item_count + ")";
 			}
 		}
 	}

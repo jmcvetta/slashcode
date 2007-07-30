@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.159 2007/02/12 15:12:16 scc Exp $
+# $Id: index.pl,v 1.160 2007/07/30 18:54:39 tvroom Exp $
 
 use strict;
 use Slash;
@@ -29,7 +29,7 @@ my $start_time = Time::HiRes::time;
 	) {
 		my $refer = $form->{returnto} || $ENV{SCRIPT_NAME};
 		redirect($refer); return;
-	}
+		}
 
 	my($stories, $Stories); # could this be MORE confusing please? kthx
 

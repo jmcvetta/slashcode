@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.150 2007/07/30 18:42:36 tvroom Exp $
+# $Id: FireHose.pm,v 1.151 2007/07/31 23:20:36 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.150 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.151 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -786,6 +786,13 @@ sub fetchItemText {
 		mode		=> "bodycontent",
 		tags_top	=> $tags_top,
 	};
+
+	my $slashdb = getCurrentDB();
+	my $plugins = $slashdb->getDescriptions('plugins');
+	if (!$user->{is_anon} && $plugins->{Tags}) {
+		my $tagsdb = getObject('Slash::Tags');
+		$tagsdb->markViewed($user->{uid}, $item->{globjid});
+	}
 
 	my $retval = slashDisplay("dispFireHose", $data, { Return => 1, Page => "firehose" });
 	return $retval;
@@ -2273,4 +2280,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.150 2007/07/30 18:42:36 tvroom Exp $
+$Id: FireHose.pm,v 1.151 2007/07/31 23:20:36 jamiemccarthy Exp $

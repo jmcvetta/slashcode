@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.335 2007/06/19 19:51:31 tvroom Exp $
+# $Id: users.pl,v 1.336 2007/07/31 13:56:44 entweichen Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2628,6 +2628,7 @@ sub saveUser {
 		aimdisplay	=> $form->{aimdisplay},
 		icq		=> $form->{icq},
 		playing		=> $form->{playing},
+                mobile_text_address => $form->{mobile_text_address},
 	};
 
 	for (keys %extr) {

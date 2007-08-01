@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.76 2007/08/01 07:40:01 pudge Exp $
+# $Id: Tags.pm,v 1.77 2007/08/01 07:43:37 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -232,7 +232,7 @@ sub ajaxCreateTag {
 	my $priv_tagnames = $tags->getPrivateTagnames();
 	$hr->{private} = 1 if $priv_tagnames->{lc($form->{name})};
 
-        $tags->createTag($hr);
+	$tags->createTag($hr);
 	return 0;
 }
 
@@ -823,7 +823,7 @@ sub getExampleTagsForStory {
 	my $constants = getCurrentStatic();
 	my $cur_time = $slashdb->getTime();
 	my @examples = split / /,
-		       $constants->{tags_stories_examples};
+		$constants->{tags_stories_examples};
 	my $chosen_ar = $self->getTopiclistForStory($story->{stoid});
 	$#$chosen_ar = 3 if $#$chosen_ar > 3; # XXX should be a var
 	my $tree = $self->getTopicTree();
@@ -1667,9 +1667,9 @@ sub markViewed {
 	my($self, $uid, $globjid) = @_;
 	return 0 if isAnon($uid) || !$globjid;
 	$self->sqlInsert('globjs_viewed', {
-                uid =>		$uid,
-                globjid =>	$globjid,
-		-viewed_at =>	'NOW()',
+		uid        => $uid,
+		globjid    => $globjid,
+		-viewed_at => 'NOW()',
 	}, { ignore => 1, delayed => 1 });
 }
 

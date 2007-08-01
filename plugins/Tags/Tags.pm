@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.75 2007/07/31 23:20:36 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.76 2007/08/01 07:40:01 pudge Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.75 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -985,7 +985,7 @@ sub setTagsForGlobj {
 
 	# Deactivate any tags previously specified that were deleted from
 	# the tagbox.
-	my @deactivate_tagnames	= grep { !$new_tagnames{$_} } sort keys %old_tagnames
+	my @deactivate_tagnames	= grep { !$new_tagnames{$_} } sort keys %old_tagnames;
 	for my $tagname (@deactivate_tagnames) {
 		$tags->deactivateTag({
 			uid =>		$uid,
@@ -996,7 +996,7 @@ sub setTagsForGlobj {
 	}
 
 	my @created_tagnames = ( );
-	for my $tagname (@create_tagnames) {
+	for my $tagname (@created_tagnames) {
 		my $private = 0;
 		$private = 1 if $priv_tagnames->{$tagname};
 		push @created_tagnames, $tagname

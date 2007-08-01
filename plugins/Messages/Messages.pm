@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Messages.pm,v 1.41 2007/07/31 18:09:12 entweichen Exp $
+# $Id: Messages.pm,v 1.42 2007/08/01 06:57:15 pudge Exp $
 
 package Slash::Messages;
 
@@ -41,7 +41,7 @@ use Slash::Constants ':messages';
 use Slash::Display;
 use Slash::Utility;
 
-($VERSION) = ' $Revision: 1.41 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.42 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 #========================================================================
@@ -1123,7 +1123,6 @@ sub getMessageDeliveryByName {
         my $code = $slashdb->sqlSelect("code", "message_deliverymodes", "name = $name_q");
 
         return($code);
-
 }
 
 1;
@@ -1137,4 +1136,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Messages.pm,v 1.41 2007/07/31 18:09:12 entweichen Exp $
+$Id: Messages.pm,v 1.42 2007/08/01 06:57:15 pudge Exp $

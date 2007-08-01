@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.314 2007/07/30 19:34:34 tvroom Exp $
+# $Id: admin.pl,v 1.315 2007/08/01 06:57:15 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2100,7 +2100,6 @@ sub updateStory {
 		}
 		titlebar('100%', getTitle('updateStory-title', $data));
 
-
 		$slashdb->setRelatedStoriesForStory($form->{sid}, $related_sids_hr, $related_urls_hr, $related_cids_hr, $related_firehose_hr);
 		$slashdb->createSignoff($st->{stoid}, $user->{uid}, "updated");
 		# make sure you pass it the goods
@@ -2417,7 +2416,6 @@ sub saveStory {
 	my $sid = $slashdb->createStory($data);
 
 	if ($sid) {
-
 		$slashdb->setRelatedStoriesForStory($sid, $related_sids_hr, $related_urls_hr, $related_cids_hr, $related_firehose_hr);
 		slashHook('admin_save_story_success', { story => $data });
 		my $st = $slashdb->getStory($data->{sid});

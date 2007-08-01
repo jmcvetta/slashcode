@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1223 2007/08/01 00:24:44 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1224 2007/08/01 06:55:40 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4681,4 +4681,7 @@ INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_fhpopularity2
 SELECT @v := tagnameid FROM vars, tagnames WHERE vars.name='tags_viewed_tagname' AND tagnames.tagname=IF(value, value, 'viewed');
 INSERT IGNORE INTO globjs_viewed SELECT NULL, globjid, uid, created_at FROM tags WHERE tagnameid=@v AND private='yes' ORDER BY tagid;
 DELETE FROM tags WHERE tagnameid=@v AND private='yes';
+
+# 2007-07-31
+UPDATE vars SET value = 'T_2_5_0_168' WHERE name = 'cvs_tag_currentcode';
 

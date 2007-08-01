@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.328 2007/07/21 18:47:21 pudge Exp $
+# $Id: Slash.pm,v 1.329 2007/08/01 06:56:53 pudge Exp $
 
 package Slash;
 
@@ -1052,7 +1052,7 @@ sub displayThread {
 			}
 		}
 
-		my $highlight = 1 if $comment->{points} >= $highlightthresh && $class ne 'hidden';
+		my $highlight = ($comment->{points} >= $highlightthresh && $class ne 'hidden') ? 1 : 0;
 		$class = 'full' if $highlight;
 		$comment->{class} = $class;
 

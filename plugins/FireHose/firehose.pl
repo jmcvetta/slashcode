@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.34 2007/07/19 02:23:52 jamiemccarthy Exp $
+# $Id: firehose.pl,v 1.35 2007/08/02 17:16:45 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -28,7 +28,7 @@ sub main {
 
 	my %ops = (
 		list		=> [1,  \&list, 0, $anonval],
-		view		=> [1, 	\&view, 1,  ""],
+		view		=> [1, 	\&view, 0,  ""],
 		default		=> [1,	\&list, 0,  $anonval],
 		edit		=> [1,	\&edit, 100,  ""],
 		rss		=> [1,  \&rss, 1, ""]

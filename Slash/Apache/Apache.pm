@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Apache.pm,v 1.70 2005/12/19 15:25:35 jamiemccarthy Exp $
+# $Id: Apache.pm,v 1.71 2007/08/02 15:53:29 jamiemccarthy Exp $
 
 package Slash::Apache;
 
@@ -22,7 +22,7 @@ use vars qw($REVISION $VERSION @ISA $USER_MATCH $DAYPASS_MATCH);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 $USER_MATCH = qr{ \buser=(?!	# must have user, but NOT ...
 	(?: nobody | %[20]0 )?	# nobody or space or null or nothing ...
@@ -400,6 +400,11 @@ sub IndexHandler {
 		if (!$dbon) {
 			$r->uri('/index.shtml');
 			return DECLINED;
+		}
+
+		if ($key eq 'firehose') {
+			$r->uri($is_user ? '/firehose.pl' : '/firehose.shtml');
+			return OK;
 		}
 
 		my $slashdb = getCurrentDB();

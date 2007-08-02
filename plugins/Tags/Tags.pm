@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.77 2007/08/01 07:43:37 pudge Exp $
+# $Id: Tags.pm,v 1.78 2007/08/02 12:20:45 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1497,7 +1497,7 @@ sub listTagnamesActive {
 		 AND IF(tag_params.value     IS NULL, 1, tag_params.value)     > 0
 		 AND IF(tagname_params.value IS NULL, 1, tagname_params.value) > 0");
 	return [ ] unless $ar && @$ar;
-	$ar = $self->addCloutsToTagArrayref($ar);
+	$self->addCloutsToTagArrayref($ar);
 
 	# Sum up the clout for each tagname, and the median time it
 	# was seen within the interval in question.

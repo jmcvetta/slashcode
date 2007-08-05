@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.85 2007/07/20 07:24:34 pudge Exp $
+// $Id: comments.js,v 1.86 2007/08/05 16:21:14 scc Exp $
 
 var comments;
 var root_comments;
@@ -1229,6 +1229,12 @@ YAHOO.slashdot.ThresholdWidget.prototype.setTHT = function( T, HT ) {
 
 YAHOO.slashdot.ThresholdWidget.prototype.getTHT = function() {
 	return this.displayedTs.slice().reverse();
+}
+
+YAHOO.slashdot.ThresholdWidget.prototype.stepTHT = function( threshold, step ) {
+  var ts = this.displayedTs.slice();
+  ts[threshold] += step;
+  this._setTs(pinToRange(this.constraintRange, ts));
 }
 
 YAHOO.slashdot.ThresholdWidget.prototype.setCounts = function( counts ) {

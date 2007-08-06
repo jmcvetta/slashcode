@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.973 2007/07/28 17:20:51 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.974 2007/08/06 20:11:17 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.973 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.974 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6741,7 +6741,8 @@ sub getStoriesEssentials {
 	# Nope, memcached is not going to help us.  Keep going.
 
 	# Now, if sectioncollapse is set, expand the tid to include all of
-	# its nexus children.
+	# its nexus children.  (Note that $tid may have included duplicate
+	# values;  after this function call, it no longer will.)
 	$tid = $self->_gse_sectioncollapse($tid, $tid_x) if $sectioncollapse;
 
 	# Figure out whether min_stoid is usable.
@@ -7027,7 +7028,10 @@ sub _gse_canonicalize {
 sub _gse_sectioncollapse {
 	my($self, $opt_ar, $tid_x_ar) = @_;
 	my %nexuses = map { ($_, 1) } @$opt_ar;
-	for my $tid (@$opt_ar) {
+	for my $tid (keys %nexuses) {
+		# XXX Should optimize this by writing a version of
+		# getNexusChildrenTids() which takes multiple inputs
+		# and chases them all down together.
 		for my $new (@{ $self->getNexusChildrenTids($tid) }) {
 			$nexuses{$new} = 1;
 		}

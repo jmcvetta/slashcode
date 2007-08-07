@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.152 2007/08/02 17:16:45 tvroom Exp $
+# $Id: FireHose.pm,v 1.153 2007/08/07 21:00:22 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.152 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1081,7 +1081,7 @@ sub ajaxFireHoseGetUpdates {
 	my $popularitycol = $constants->{firehose_userpop_col} || 'popularity';
 
 	foreach (@$items) {
-		if ($mode eq "mixed") {
+		if ($opts->{mixedmode}) {
 			$curmode = "full";
 			$curmode = "fulltitle" if $_->{$popularitycol} < $mixed_abbrev_pop;
 
@@ -1570,20 +1570,19 @@ sub getAndSetOptions {
 	my $options 	= {};
 
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 };
-	my $modes = { full => 1, fulltitle => 1, mixed => 1};
+	my $modes = { full => 1, fulltitle => 1};
 	my $pagesizes = { "small" => 1, "large" => 1 };
 
 	my $no_saved = $form->{no_saved};
 	$opts->{no_set} ||= $no_saved;
 
 	if (defined $form->{mixedmode} && $form->{setfield}) {
-		if ($form->{mixedmode}) {
-			$form->{mode} = "mixed";
-		} else {
-			$form->{mode} = "fulltitle";
-		}
+		$options->{mixedmode} = $form->{mixedmode} ? 1 : 0;
+	} else {
+		$options->{mixedmode} = $user->{firehose_mixedmode};
 	}
 	my $mode = $form->{mode} || $user->{firehose_mode};
+	$mode = "fulltitle" if $mode eq "mixed";
 
 	my $pagesize = $pagesizes->{$form->{pagesize}} ? $form->{pagesize} : $user->{firehose_pagesize} || "small";
 	$options->{pagesize} = $pagesize;
@@ -1777,12 +1776,6 @@ sub getAndSetOptions {
 	if ($mode eq "full") {
 		if ($user->{is_admin}) {
 			$options->{limit} = $pagesize eq "large" ? 50 : 25;
-		} else {
-			$options->{limit} = $pagesize eq "large" ? 25 : 15;
-		}
-	} elsif ($mode eq "mixed") {
-		if ($user->{is_admin}) {
-			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		} else {
 			$options->{limit} = $pagesize eq "large" ? 25 : 15;
 		}
@@ -2068,7 +2061,7 @@ sub listView {
 	my $popularitycol = $constants->{firehose_userpop_col} || 'popularity';
 	
 	foreach (@$items) {
-		if ($mode eq "mixed") {
+		if ($options->{mixedmode}) {
 			$curmode = "full";
 			$curmode = "fulltitle" if $_->{$popularitycol} < $mixed_abbrev_pop;
 
@@ -2280,4 +2273,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.152 2007/08/02 17:16:45 tvroom Exp $
+$Id: FireHose.pm,v 1.153 2007/08/07 21:00:22 tvroom Exp $

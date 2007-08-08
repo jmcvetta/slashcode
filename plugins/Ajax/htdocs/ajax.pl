@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.47 2007/07/20 07:24:34 pudge Exp $
+# $Id: ajax.pl,v 1.48 2007/08/08 19:01:06 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.47 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.48 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -293,7 +293,7 @@ sub fetchComments {
 	$user->{state}{ajax_accesslog_op} = "ajax_comments_fetch";
 #use Data::Dumper; print STDERR Dumper [ $cids, $id, $cid, $max_cid ];
 	# XXX error?
-	return unless $id && ($max_cid || @$cids);
+	return unless $id && (defined($max_cid) || @$cids);
 
 	my $discussion = $slashdb->getDiscussion($id);
 	if ($discussion->{type} eq 'archived') {
@@ -316,7 +316,7 @@ sub fetchComments {
 	return unless $comments && keys %$comments;
 
 	my %data;
-	if ($max_cid) {
+	if (defined($max_cid)) {
 		$cids = [ map { $_->[0] }
 			@{$slashdb->sqlSelectAll(
 				'cid', 'comments',

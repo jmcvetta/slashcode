@@ -89,9 +89,9 @@ __template__
 	[% IF lvl %]
 	[% END %]
 	[% thread = Slash.displayThread(sid, pid, lvl, comments) %]
-	[% IF thread %]
+	[% IF thread || discussion2 %]
 		[% UNLESS cid %]<ul id="commentlisting">[% END %]
-			[% thread %]
+			[% thread || '' %]
 			<li id="roothiddens" class="hide"></li>
 		[% UNLESS cid %]</ul>[% END %]
 	[% END %]
@@ -145,4 +145,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.55 2007/07/18 15:40:13 pudge Exp $
+$Id: printCommComments;misc;default,v 1.56 2007/08/08 16:30:44 pudge Exp $

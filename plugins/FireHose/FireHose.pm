@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.153 2007/08/07 21:00:22 tvroom Exp $
+# $Id: FireHose.pm,v 1.154 2007/08/08 16:31:15 pudge Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.153 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.154 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -384,7 +384,13 @@ sub getFireHoseEssentials {
 				$query{$_}	= $options->{$_}		if $options->{$_};
 			}
 
-			# still need sorting and filtering by date
+			if ($options->{startdate}) {
+				$opts{daystart} = $options->{startdate};
+			}
+			if ($options->{duration} && $options->{duration} >= 0) {
+				$opts{dayduration} = $options->{duration};
+			}
+
 			$opts{records_max}	= $options->{limit}		unless $options->{nolimit};
 			$opts{records_start}	= $options->{offset}		if $options->{offset};
 			$opts{sort}		= 3;  # sorting handled by caller
@@ -1570,7 +1576,7 @@ sub getAndSetOptions {
 	my $options 	= {};
 
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 };
-	my $modes = { full => 1, fulltitle => 1};
+	my $modes = { full => 1, fulltitle => 1 };
 	my $pagesizes = { "small" => 1, "large" => 1 };
 
 	my $no_saved = $form->{no_saved};
@@ -2273,4 +2279,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.153 2007/08/07 21:00:22 tvroom Exp $
+$Id: FireHose.pm,v 1.154 2007/08/08 16:31:15 pudge Exp $

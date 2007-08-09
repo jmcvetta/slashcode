@@ -55,7 +55,7 @@ __template__
        END;
      END;
 
-     IF search_results.records_pages.defined && search_results.records_pages > 1;
+     IF end_page_num > 1;
      FOR i_page IN [ start_page_num .. end_page_num ] %]
 <a href="[% gSkin.rootdir %]/[% fh_page %]?page=[% (i_page - 1) %][% param_str %][% page_extras %]" [% IF i_page == page_cur %]class="fh_cur_page"[% END %]>[%
        IF i_page == start_page_num %]<b>&lsaquo;</b> [% END;
@@ -71,4 +71,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: firehose_pages;misc;default,v 1.12 2007/08/07 21:00:22 tvroom Exp $
+$Id: firehose_pages;misc;default,v 1.13 2007/08/09 14:07:51 tvroom Exp $

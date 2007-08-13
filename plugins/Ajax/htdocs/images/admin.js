@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.39 2007/07/18 05:24:20 pudge Exp $
+// $Id: admin.js,v 1.40 2007/08/13 18:30:19 tvroom Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -198,6 +198,14 @@ function console_update(use_fh_interval, require_fh_timeout) {
 		interval = getFirehoseUpdateInterval(); 
 	}
 	setTimeout("console_update(" + use_fh_interval + "," + fh_is_timed_out +")", interval);
+}
+
+function firehose_usage() {
+	var params = [];
+	params['op'] = 'firehose_usage'
+	var interval = 300000;
+	ajax_update(params, 'firehose_usage-content');
+	setTimeout("firehose_usage()", interval);
 }
 
 function make_spelling_correction(misspelled_word, form_element) {

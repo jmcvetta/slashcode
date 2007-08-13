@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.35 2007/08/02 17:16:45 tvroom Exp $
+# $Id: firehose.pl,v 1.36 2007/08/13 18:23:06 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.36 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -27,9 +27,9 @@ sub main {
 	my $anonval = $constants->{firehose_anonval_param} || "";
 
 	my %ops = (
-		list		=> [1,  \&list, 0, $anonval],
+		list		=> [1,  \&list, 1, $anonval, { issue => 1, page => 1}],
 		view		=> [1, 	\&view, 0,  ""],
-		default		=> [1,	\&list, 0,  $anonval],
+		default		=> [1,	\&list, 1,  $anonval, { issue => 1, page => 1}],
 		edit		=> [1,	\&edit, 100,  ""],
 		rss		=> [1,  \&rss, 1, ""]
 	);
@@ -45,8 +45,18 @@ sub main {
 
 	if (!$op || !exists $ops{$op} || !$ops{$op}[ALLOWED] || $user->{seclev} < $ops{$op}[MINSECLEV] ) {
 		$op = 'default';
+		my $redirect = 0;
 		if ($user->{seclev} < 1 && $ops{$op}[3] && $ops{$op}[3] ne $form->{anonval}) {
-			redirect("$gSkin->{rootdir}/login.pl");
+			$redirect = 1;
+		}
+		if ($ops{$op}[4] && ref($ops{$op}[4]) eq "HASH") {
+			$redirect = 0;
+			foreach (keys %$form) {
+				$redirect = 1 if !$ops{$op}[4]{$_}; 
+			}
+		}
+		if ($redirect) {
+			redirect("$gSkin->{rootdir}/firehose.shtml");
 			return;
 		}
 	}

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.156 2007/08/13 18:39:10 tvroom Exp $
+# $Id: FireHose.pm,v 1.157 2007/08/14 19:12:25 entweichen Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.156 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1563,12 +1563,13 @@ sub getYoogliSimilarForItem {
 			my $reader = getObject("Slash::DB", { db_type => "reader" });
 			my $sid_regex = regexSid();
 			foreach my $metadata (@{$content->{'GetRecord'}{'record'}}) {
+                                next if $metadata->{'metadata'}{'title'} eq $item->{title};
 				my $key = $metadata->{'header'}{'identifier'};
-				my($sid) = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'} =~ $sid_regex;
+				my($sid) = $metadata->{'metadata'}{'identifier'} =~ $sid_regex;
 				$yoogli_similar_stories->{$key}{'date'}  = $reader->getStory($sid, 'time');
-				$yoogli_similar_stories->{$key}{'url'}   = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:identifier'};
-				$yoogli_similar_stories->{$key}{'title'} = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:title'};
-				$yoogli_similar_stories->{$key}{'relevance'} = $metadata->{'metadata'}{'oai_dc:dc'}{'dc:relevance'};
+				$yoogli_similar_stories->{$key}{'url'}   = $metadata->{'metadata'}{'identifier'};
+				$yoogli_similar_stories->{$key}{'title'} = $metadata->{'metadata'}{'title'};
+				$yoogli_similar_stories->{$key}{'relevance'} = $metadata->{'metadata'}{'relevance'};
 			}
 		}
 	}
@@ -2317,4 +2318,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.156 2007/08/13 18:39:10 tvroom Exp $
+$Id: FireHose.pm,v 1.157 2007/08/14 19:12:25 entweichen Exp $

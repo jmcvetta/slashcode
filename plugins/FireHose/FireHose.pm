@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.157 2007/08/14 19:12:25 entweichen Exp $
+# $Id: FireHose.pm,v 1.158 2007/08/15 03:10:51 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.157 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.158 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -837,7 +837,7 @@ sub reject {
 	my $user = getCurrentUser();
 	my $tags = getObject("Slash::Tags");
 	my $item = $self->getFireHose($id);
-	return unless $id && $user->{is_admin};
+	return unless $id;
 	if ($item) {
 		$self->setFireHose($id, { rejected => "yes" });
 		if ($item->{globjid} && !isAnon($user->{uid})) {
@@ -1605,7 +1605,7 @@ sub getAndSetOptions {
 
 	$mode = $modes->{$mode} ? $mode : "fulltitle";
 	$options->{mode} = $mode;
-	$options->{pause} = $user->{firehose_paused};
+	$options->{pause} = defined $user->{firehose_pause} ? $user->{firehose_pause} : 1;
 	$form->{pause} = 1 if $no_saved;
 
 	if (defined $form->{pause}) {
@@ -2318,4 +2318,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.157 2007/08/14 19:12:25 entweichen Exp $
+$Id: FireHose.pm,v 1.158 2007/08/15 03:10:51 tvroom Exp $

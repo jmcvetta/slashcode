@@ -22,7 +22,7 @@ __template__
 	IF form.pause.defined;
 		paused = form.pause;
 	ELSE;
-		paused = user.firehose_paused;
+		paused = user.firehose_pause;
 	END;
 %]
 	<span id="play"[% IF !paused %] class="hide"[% END %]><a href="javascript:firehose_play()" title="Currently paused">Play</a></span>
@@ -49,4 +49,4 @@ __template__
 [% END %]
 
 __version__
-$Id: firehose_options;misc;default,v 1.4 2007/08/06 02:23:04 tvroom Exp $
+$Id: firehose_options;misc;default,v 1.5 2007/08/15 03:08:50 tvroom Exp $

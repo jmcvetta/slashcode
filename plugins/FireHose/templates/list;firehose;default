@@ -196,7 +196,7 @@ cmdrtaco dot net but be forgiving of beta code!
 [% IF refresh_options && refresh_options.maxtime %]
 	var maxtime = '[% refresh_options.maxtime %]';
 	var insert_new_at = '[% refresh_options.insert_new_at %]';
-	[% UNLESS user.firehose_paused || !user.firehose_paused.defined %]
+	[% IF !options.pause %]
 		firehose_play();
 	[% END %]
 
@@ -209,4 +209,4 @@ firehose_slider_init();
 </script>
 
 __version__
-$Id: list;firehose;default,v 1.98 2007/08/06 15:09:24 scc Exp $
+$Id: list;firehose;default,v 1.99 2007/08/15 03:08:50 tvroom Exp $

@@ -20,7 +20,7 @@ __template__
 	   	IF form.pause.defined;
 			paused = form.pause;
 		ELSE;
-			paused = user.firehose_paused;
+			paused = user.firehose_pause;
 		END;
 		%]
 		[% IF paused %]
@@ -90,4 +90,4 @@ Page size: [% Slash.createSelect('pagesize', { 'small' => 'Small', 'large' => 'L
 
 </table>
 __version__
-$Id: fhadvprefpane;misc;default,v 1.15 2007/08/06 02:23:04 tvroom Exp $
+$Id: fhadvprefpane;misc;default,v 1.16 2007/08/15 03:08:50 tvroom Exp $

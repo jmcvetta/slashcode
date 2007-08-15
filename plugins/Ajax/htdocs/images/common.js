@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.134 2007/08/01 06:57:15 pudge Exp $
+// $Id: common.js,v 1.135 2007/08/15 14:24:09 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -491,7 +491,7 @@ function firehose_set_options(name, value) {
 		params[name] = value;
 	}
 
-	if (name == "nodates" || name == "nobylines" || name == "nothumbs" || name == "nocolors" || name == "mixedmode") {
+	if (name == "nodates" || name == "nobylines" || name == "nothumbs" || name == "nocolors" || name == "mixedmode" || name == "nocommentcnt") {
 		value = value == true ? 1 : 0;
 		params[name] = value;
 		params['setfield'] = 1;

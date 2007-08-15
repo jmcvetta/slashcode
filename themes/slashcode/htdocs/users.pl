@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.336 2007/07/31 13:56:44 entweichen Exp $
+# $Id: users.pl,v 1.337 2007/08/15 21:11:06 pudge Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -2738,6 +2738,7 @@ sub saveComm {
 
 	my $user_edits_table = {
 		discussion2		=> $form->{discussion2} || undef,
+		d2_comment_q		=> $form->{d2_comment_q} || undef,
 		clsmall			=> $form->{clsmall},
 		clsmall_bonus		=> ($clsmall_bonus || undef),
 		clbig			=> $form->{clbig},

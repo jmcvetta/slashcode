@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.976 2007/08/08 16:31:15 pudge Exp $
+# $Id: MySQL.pm,v 1.977 2007/08/15 21:11:03 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.976 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.977 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -238,6 +238,15 @@ my %descriptions = (
 
 	'discussion_kinds'
 		=> sub { $_[0]->sqlSelectMany('dkid, name', 'discussion_kinds') },
+
+	'd2_comment_q'
+		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='d2_comment_q'") },
+
+	'd2_comment_limits'
+		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='d2_comment_limits'") },
+
+	'd2_comment_order'
+		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='d2_comment_order'") },
 
 );
 

@@ -101,7 +101,7 @@ __template__
 	[% lcp %]
 
 [% IF discussion2 && !cid %]
-<div class="prev-next"><a href="javascript:ajaxFetchComments(0,1)"><span id="more_comments_num_a"></span> More</a></div>
+<div class="prev-next"><a href="javascript:ajaxFetchComments(0,1)"><span id="more_comments_num_a">More</span> comments</a></div>
 [% END %]
 
 [% IF moderate_form %]
@@ -145,4 +145,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.57 2007/08/15 21:11:09 pudge Exp $
+$Id: printCommComments;misc;default,v 1.58 2007/08/17 02:50:39 pudge Exp $

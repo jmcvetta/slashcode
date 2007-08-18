@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.49 2007/08/15 21:11:04 pudge Exp $
+# $Id: ajax.pl,v 1.50 2007/08/18 02:19:12 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.49 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.50 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -123,7 +123,7 @@ sub getSectionPrefsHTML {
 	}
 
 	my $topic_tree = $reader->getTopicTree();
-	my $nexus_tids_ar = $reader->getStorypickableNexusChildren($constants->{mainpage_nexus_tid});
+	my $nexus_tids_ar = $reader->getMainpageDisplayableNexuses();
 	my $nexus_hr = { };
 	my $skins = $reader->getSkins();
 
@@ -182,9 +182,9 @@ sub getSectionPrefsHTML {
 }
 
 sub setSectionNexusPrefs() {
-	my ($slashdb, $constants, $user, $form) = @_;
-	
-	my $nexus_tids_ar = $slashdb->getStorypickableNexusChildren($constants->{mainpage_nexus_tid}, 1);
+	my($slashdb, $constants, $user, $form) = @_;
+
+	my $nexus_tids_ar = getMainpageDisplayableNexuses();
 
 	my @story_always_nexus 		= split ",", $user->{story_always_nexus} || "";
 	my @story_full_brief_nexus 	= split ",", $user->{story_full_brief_nexus} || "";

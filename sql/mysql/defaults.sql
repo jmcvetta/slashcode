@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.358 2007/08/15 21:11:05 pudge Exp $
+# $Id: defaults.sql,v 1.359 2007/08/18 02:19:13 jamiemccarthy Exp $
 #
 
 #
@@ -874,6 +874,7 @@ INSERT INTO vars (name, value, description) VALUES ('mailfrom','admin@example.co
 INSERT INTO vars (name, value, description) VALUES ('mailpass_max_hours','48','Mailing a password only allowed mailpass_max_num times per account per this many hours');
 INSERT INTO vars (name, value, description) VALUES ('mailpass_max_num','2','Mailing a password only allowed this many times per account per mainpass_max_hours hours');
 INSERT INTO vars (name, value, description) VALUES ('mainfontface','verdana,helvetica,arial','Fonts');
+INSERT INTO vars (name, value, description) VALUES ('mainpage_displayable_nexuses', '', 'List of nexuses that can appear on the mainpage depending on settings; if empty, getStorypickableNexusChildren is used instead');
 INSERT INTO vars (name, value, description) VALUES ('mainpage_skid','1','ID of the skin considered "mainpage", the front page, what used to be meant by "always display"');
 INSERT INTO vars (name, value, description) VALUES ('mainpage_nexus_tid','1','Topic ID of the nexus considered "mainpage", the front page, what used to be meant by "always display" -- this should be determinable from mainpage_skid but for now it is a separate var');
 INSERT INTO vars (name, value, description) VALUES ('markup_checked_attribute',' CHECKED','The checked attribute that is used on the "input" HTML element, CHECKED for HTML 3.2 and checked="checked" for HTML 4.0 and beyond. Must include leading space!');

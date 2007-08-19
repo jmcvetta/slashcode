@@ -1,5 +1,5 @@
 #
-# $Id: mysql_schema.sql,v 1.20 2007/07/07 19:07:58 jamiemccarthy Exp $
+# $Id: mysql_schema.sql,v 1.21 2007/08/19 17:46:22 jamiemccarthy Exp $
 #
 DROP TABLE IF EXISTS firehose;
 CREATE TABLE firehose (
@@ -40,7 +40,14 @@ CREATE TABLE firehose (
 	KEY createtime (createtime),
 	KEY popularity (popularity),
 	KEY popularity2 (popularity2)
-) TYPE=InnoDB; 
+) TYPE=InnoDB;
+
+# The table giving an Object's Generally Accepted Story Publication Time
+CREATE TABLE firehose_ogaspt (
+	globjid		int(10) unsigned NOT NULL default '0',
+	pubtime		datetime NOT NULL default '0000-00-00 00:00:00',
+	PRIMARY KEY	(globjid)
+) TYPE=InnoDB;
 
 DROP TABLE IF EXISTS firehose_text;
 CREATE TABLE firehose_text(

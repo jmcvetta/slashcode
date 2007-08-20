@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.161 2007/08/19 20:25:11 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.162 2007/08/20 20:15:58 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.161 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.162 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1826,7 +1826,7 @@ sub getAndSetOptions {
 
 	foreach (qw(nodates nobylines nothumbs nocolors)) {
 		if ($form->{setfield}) {
-			if ($form->{defined($_)}) {
+			if (defined $form->{$_}) {
 				$options->{$_} = $form->{$_} ? 1 : 0;
 			} else {
 				$options->{$_} = $user->{"firehose_$_"};
@@ -2055,6 +2055,7 @@ sub listView {
 	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
 	my $options = $lv_opts->{options} || $self->getAndSetOptions();
 	my $base_page = $lv_opts->{fh_page} || "firehose.pl";
+
 
 	my($items, $results) = $firehose_reader->getFireHoseEssentials($options);
 
@@ -2329,4 +2330,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.161 2007/08/19 20:25:11 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.162 2007/08/20 20:15:58 tvroom Exp $

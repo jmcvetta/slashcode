@@ -6,7 +6,7 @@
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
 <!--
-($VERSION) = '$Id: tags.shtml,v 1.12 2006/11/10 16:07:45 jamiemccarthy Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: tags.shtml,v 1.13 2007/08/21 15:14:08 scuttlemonkey Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <table>
@@ -239,7 +239,7 @@ nicer formatting -- a little while down the road.</p>
 <table>
 <tr>
 <td><a href="suggestions.shtml">Previous section</a></td>
-
+<td><a href="firehose.shtml">Next section</a></td>
 <td><a href="index.shtml">Index</a></td>
 </tr>
 </table>

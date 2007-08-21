@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.7 2006/01/31 00:21:32 pudge Exp $
+# $Id: PLUGIN,v 1.8 2007/08/21 20:08:32 tvroom Exp $
 name=FAQSlashdot
 description="Slashdot FAQ"
 htdoc_faq=faq/UI.shtml
@@ -8,6 +8,7 @@ htdoc_faq=faq/com-mod.shtml
 htdoc_faq=faq/editorial.shtml
 htdoc_faq=faq/faq-meta.shtml
 htdoc_faq=faq/feeds.shtml
+htdoc_faq=faq/firehose.shtml
 htdoc_faq=faq/friends.shtml
 htdoc_faq=faq/index.shtml
 htdoc_faq=faq/interviews.shtml

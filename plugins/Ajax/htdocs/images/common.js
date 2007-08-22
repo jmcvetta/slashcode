@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.135 2007/08/15 14:24:09 tvroom Exp $
+// $Id: common.js,v 1.136 2007/08/22 20:26:14 scc Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -317,7 +317,11 @@ function completer_save_tab(s, params) {
 	firehose_save_tab(params._id);
 }
 
-function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {
+function clickCompleter( obj, id, is_admin, type, tagDomain, customize ) {
+  return attachCompleter(obj, id, is_admin, type, tagDomain, customize);
+}
+
+function focusCompleter( obj, id, is_admin, type, tagDomain, customize ) {
   if ( navigator.vendor !== undefined ) {
     var vendor = navigator.vendor.toLowerCase();
     if ( vendor.indexOf("apple") != -1
@@ -325,6 +329,10 @@ function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {
       return false;
   }
 
+  return attachCompleter(obj, id, is_admin, type, tagDomain, customize);
+}
+
+function attachCompleter( obj, id, is_admin, type, tagDomain, customize ) {
   if ( customize === undefined )
     customize = new Object();
 	customize._id = id;

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.136 2007/08/22 20:26:14 scc Exp $
+// $Id: common.js,v 1.137 2007/08/22 20:58:24 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1120,7 +1120,7 @@ function firehose_play() {
 	if ($('message_area'))
 		$('message_area').innerHTML = "";
 	if ($('pauseorplay'))
-		$('pauseorplay').innerHTML = "Updating";
+		$('pauseorplay').innerHTML = "Updated";
 	var pause = $('pause');
 	
 	var play_div = $('play');

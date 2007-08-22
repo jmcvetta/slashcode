@@ -26,7 +26,7 @@ __template__
 	<div id="tagbox-title-[% id %]" class="tagtitleclosed">
 		&nbsp;[% IF user.tags_canwrite_stories %]<a href="javascript:tagsToggleStoryDiv('[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose');">[% ELSIF user.is_anon %]<a href="javascript:show_login_box()">[% ELSE %]<a href="[% gSkin.rootdir %]/subscribe.pl">[% END %]<span class="tagsheader" id="toggletags-button-[% id %]">[+]</span></a>
 		<span id="tags-top-[% id %]">
-			[% PROCESS firehose_tags_top id = id tags_top = tags_top -%]
+			[% PROCESS firehose_tags_top id = id tags_top = tags_top item = item -%]
 		</span>
 		[%- IF user.tags_canwrite_stories && (user.firehose_usermode || !user.is_admin) %]
 			<span class="tagname"><span class="tagmenu">, <a onClick="clickCompleter(this,'[% id %]','[% user.is_admin && !user.firehose_usermode %]','firehose', 4, {action1:completer_setTag})">feedback</a></span></span>
@@ -59,4 +59,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: tagsfirehosedivtagbox;misc;default,v 1.34 2007/08/22 20:26:14 scc Exp $
+$Id: tagsfirehosedivtagbox;misc;default,v 1.35 2007/08/22 20:57:09 tvroom Exp $

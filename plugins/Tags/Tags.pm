@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.79 2007/08/03 20:49:48 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.80 2007/08/22 20:43:15 scc Exp $
 
 package Slash::Tags;
 
@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1234,7 +1234,7 @@ sub ajaxListTagnames {
 	my $prefix = '';
 	$prefix = lc($1) if $form->{prefix} =~ /([A-Za-z0-9]{1,20})/;
 	my $len = length($prefix);
-	my $notize = $form->{prefix} =~ /^!/ ? '!' : '';
+	my $notize = $form->{prefix} =~ /^([-!])/ ? $1 : '';
 
 	my $tnhr = $tags_reader->listTagnamesByPrefix($prefix);
 

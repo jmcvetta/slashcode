@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.43 2007/08/17 16:56:43 jamiemccarthy Exp $
+# $Id: Log.pm,v 1.44 2007/08/23 18:37:15 pudge Exp $
 
 package Slash::Apache::Log;
 
@@ -10,7 +10,7 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.43 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
@@ -136,7 +136,7 @@ sub UserLog {
 			$statsSave->addStatDaily("subscribe_runout", 1);
 		}
 	}
-	if ($user_update && %$user_update) {
+	if ($user_update && keys(%$user_update)) {
 		if ($constants->{memcached_debug}) {
 			print STDERR scalar(gmtime) . " $$ mcd UserLog id=$user->{uid} setUser: upd '$user_update' keys '" . join(" ", sort keys %$user_update) . "'\n";
 		}

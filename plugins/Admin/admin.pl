@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.317 2007/08/17 16:57:15 jamiemccarthy Exp $
+# $Id: admin.pl,v 1.318 2007/08/23 19:05:30 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1651,9 +1651,6 @@ sub extractChosenFromForm {
 				$tid == $constants->{mainpage_nexus_tid}
 				? 30
 				: $constants->{topic_popup_defaultweight} || 10;
-			my $chosen_topic = $slashdb->getTopic($tid);
-			# XXX the above variable is not used. was there supposed
-			# to be more code here or something?
 		}
 	} else {
 		my(%chosen);

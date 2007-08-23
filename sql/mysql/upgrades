@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1233 2007/08/23 20:19:01 pudge Exp $
+# $Id: upgrades,v 1.1234 2007/08/23 21:25:31 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4707,8 +4707,6 @@ INSERT INTO code_param VALUES (NULL, 'd2_comment_limits', 9, 50);
 # 2007-08-15
 UPDATE vars SET value = 'T_2_5_0_170' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 INSERT INTO code_param VALUES (NULL, 'd2_comment_order', 0, 'Score');
@@ -4720,4 +4718,6 @@ INSERT INTO vars (name, value, description) VALUES ('mainpage_displayable_nexuse
 
 # 2007-08-22
 UPDATE vars SET value = 'T_2_5_0_171' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

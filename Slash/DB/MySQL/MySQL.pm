@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.978 2007/08/18 02:19:12 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.979 2007/08/23 18:40:42 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.978 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.979 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -224,14 +224,14 @@ my %descriptions = (
 	'bytelimit_sub'
 		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='bytelimit' OR type='bytelimit_sub'") },
 
-	countries => sub {
-		$_[0]->sqlSelectMany(
-			'code,CONCAT(code," (",name,")") as name',
-			'string_param',
-			'type="iso_countries"',
-			'ORDER BY name'
-		);
-	},
+	'countries'
+		=> sub { $_[0]->sqlSelectMany(
+				'code,CONCAT(code," (",name,")") as name',
+				'string_param',
+				'type="iso_countries"',
+				'ORDER BY name'
+			);
+		},
 
 	'forums'
 		=> sub { $_[0]->sqlSelectMany('subsections.id, subsections.title', 'section_subsections, subsections', "section_subsections.subsection=subsections.id AND section_subsections.section='forums'") },

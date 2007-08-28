@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose.pl,v 1.39 2007/08/22 20:57:09 tvroom Exp $
+# $Id: firehose.pl,v 1.40 2007/08/28 20:56:33 tvroom Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Utility;
 use Slash::XML;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.39 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.40 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub main {
@@ -98,6 +98,10 @@ sub view {
 	my $firehose_reader = getObject("Slash::FireHose", { db_type => 'reader' });
 	my $options = $firehose->getAndSetOptions();
 	my $item = $firehose_reader->getFireHose($form->{id});
+    	my $vote = '';
+	if ($item) {
+		$vote = $firehose->getUserFireHoseVotesForGlobjs($user->{uid}, [$item->{globjid}])->{$item->{globjid}};
+	}
 	if ($item && $item->{id} && ($item->{public} eq "yes" || $user->{is_admin}) ) {
 		if ($user->{is_admin}) {
 			$firehose->setFireHoseSession($item->{id});
@@ -109,7 +113,8 @@ sub view {
 			mode			=> 'full',
 			tags_top		=> $tags_top,
 			options			=> $options,
-			nostorylinkwrapper	=> $discussion ? 1 : 0
+			nostorylinkwrapper	=> $discussion ? 1 : 0,
+			vote			=> $vote
 		});
 
 		slashDisplay("view", {

@@ -71,7 +71,7 @@ SYNOPSIS
 
     The version of this file that you are currently reading is:
 
-    $Id: INSTALL,v 1.52 2007/02/06 22:47:34 jamiemccarthy Exp $
+    $Id: INSTALL,v 1.53 2007/08/29 15:58:58 jamiemccarthy Exp $
 
     If there are more recent versions of this file, you can find a list of
     those changes at:
@@ -120,10 +120,8 @@ INSTALLATION
         might:
 
                 GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES, CREATE, DROP,
-                INDEX, ALTER ON slash.* TO 'slash'@'localhost' IDENTIFIED BY
-                (quoted password);
-
-        (XXX is Create_temp_table_priv required? don't think so)
+                INDEX, ALTER, PROCESS ON slash.* TO 'slash'@'localhost'
+                IDENTIFIED BY (quoted password);
 
         In this case, 'slash' would also be the name of your MySQL user as
         described in "Types of Users" below. You'll have to give your MySQL
@@ -1464,5 +1462,5 @@ SECURITY NOTES
                 https://lists.sourceforge.net/lists/listinfo/slashcode-announce
 
 VERSION
-    $Id: INSTALL,v 1.52 2007/02/06 22:47:34 jamiemccarthy Exp $
+    $Id: INSTALL,v 1.53 2007/08/29 15:58:58 jamiemccarthy Exp $
 

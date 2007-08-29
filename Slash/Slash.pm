@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.332 2007/08/23 20:28:04 pudge Exp $
+# $Id: Slash.pm,v 1.333 2007/08/29 06:23:38 pudge Exp $
 
 package Slash;
 
@@ -1974,18 +1974,6 @@ sub _hard_dispComment {
 			$score_to_display .= ", $reasons->{$comment->{reason}}{name}";
 		}
 		$score_to_display .= ")";
-	}
-
-	if (0 && $discussion2) {
-		$comment_links = <<EOT;
-			<span class="comment_links" style="font-size: smaller">[
-				Experimental threading:
-				<a href="#" onclick="return setFocusComment($comment->{cid},0,1)">One</a>
-				<a href="#" onclick="return setFocusComment($comment->{cid},0,2)">Two</a>
-				<a href="#" onclick="return setFocusComment($comment->{cid},0,3)">Three</a>
-				<a href="#" onclick="return setFocusComment($comment->{cid},0,4)">Four</a>
-			]</span>
-EOT
 	}
 
 	if ($comment->{sid} && $comment->{cid}) {

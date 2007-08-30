@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.211 2007/07/28 17:20:51 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.212 2007/08/30 21:31:02 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.211 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2199,7 +2199,7 @@ option.
 
 String.  There are types of DBs (reader, writer, search, log), and there may be more
 than one DB of each type.  By passing a db_type instead of a virtual_user, you
-request any DB of that ype, instead of a specific DB.
+request any DB of that type, instead of a specific DB.
 
 If neither "virtual_user" or "db_type" is passed, then the function will do a
 lookup of the class for what type of DB handle it wants, and then pick one
@@ -3435,4 +3435,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.211 2007/07/28 17:20:51 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.212 2007/08/30 21:31:02 jamiemccarthy Exp $

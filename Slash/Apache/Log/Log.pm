@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Log.pm,v 1.44 2007/08/23 18:37:15 pudge Exp $
+# $Id: Log.pm,v 1.45 2007/08/30 21:28:48 jamiemccarthy Exp $
 
 package Slash::Apache::Log;
 
@@ -10,10 +10,21 @@ use Slash::Utility;
 use Apache::Constants qw(:common);
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.44 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.45 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # AMY: Leela's gonna kill me.
 # BENDER: Naw, she'll probably have me do it.
+
+# Note regarding Apache::DBI:
+# Slash does not use Apache::DBI (it's just an extra, unnecessary,
+# layer of dbh caching).  However, some sites may use it, perhaps for
+# other database-backed projects on the same web server.  Apache::DBI
+# pushes a PerlCleanupHandler with every created dbh, to roll back
+# any open transactions.  The docs for Apache.pm say a handler added
+# with push_handlers will be called "before any configured handlers,"
+# i.e. before Slash's PerlCleanupHandler, i.e. before the functions below.
+# Since createLog and setUser don't leave any transactions open, this
+# should not be a problem.
 
 #
 # This is the first PerlCleanupHandler in each site's .conf file

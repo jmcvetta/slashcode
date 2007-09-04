@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.163 2007/09/04 07:16:37 pudge Exp $
+# $Id: FireHose.pm,v 1.164 2007/09/04 20:53:21 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.163 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.164 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1792,7 +1792,9 @@ sub getAndSetOptions {
 		}
 	}
 
-
+	if ($form->{index}) {
+		$mode = "fulltitle";
+	}
 	
 	if ($mode eq "full") {
 		if ($user->{is_admin}) {
@@ -1843,6 +1845,13 @@ sub getAndSetOptions {
 
 
 	$fhfilter =~ s/^\s+|\s+$//g;
+	if ($form->{index}) {
+		$fhfilter = "story";
+		my $gSkin = getCurrentSkin();
+		if ($gSkin->{nexus} != $constants->{mainpage_nexus_tid}) {
+			$fhfilter .= " $gSkin->{name}";
+		}
+	}
 	my $fh_ops = $self->splitOpsFromString($fhfilter);
 	
 
@@ -1916,13 +1925,26 @@ sub getAndSetOptions {
 	if ($form->{color} && $colors->{$form->{color}}) {
 		$fh_options->{color} = $form->{color};
 	}
+
+	if ($form->{index}) {
+		$options->{skipmenu} = 1;
+		$options->{skippop} = 1;
+		if (!$form->{issue}) {
+			$options->{duration} = 7;
+			$options->{startdate} = '';
+		}
+		$options->{mode} = 'fulltitle';
+		$options->{color} = 'black';
+		$options->{nocolors} = 1;
+		$options->{mixedmode} = 1;
+	}
 	
 
 	foreach (keys %$fh_options) {
 		$options->{$_} = $fh_options->{$_};
 	}
 
-	if (!$user->{is_anon} && !$opts->{no_set}) {
+	if (!$user->{is_anon} && !$opts->{no_set} && !$form->{index}) {
 		my $data_change = {};
 		my @skip_options_save = qw(uid not_uid type not_type primaryskid not_primaryskid smalldevices);
 		if ($user->{state}{firehose_page} eq "user") {
@@ -2006,8 +2028,19 @@ sub getFireHoseTagsTop {
 	my %seen_tags = map { $_ => 1 } @$tags_top;
 	
 	# 0 = is a link, not a menu
-	push @$tags_top, map { "$_:0" } grep {!$seen_tags{$_}} split (/\s+/, $item->{toptags});
+	my $user_tags_top = [];
+	push @$user_tags_top, map { "$_:0" } grep {!$seen_tags{$_}} split (/\s+/, $item->{toptags});
 
+	if ($constants->{smalldevices_ua_regex}) {
+		my $smalldev_re = qr($constants->{smalldevices_ua_regex});
+		if ($ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
+			$#{@$user_tags_top} = 2;
+		}
+	}
+
+	push @$tags_top, @$user_tags_top;
+
+	
 	return $tags_top;
 }
 
@@ -2330,4 +2363,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.163 2007/09/04 07:16:37 pudge Exp $
+$Id: FireHose.pm,v 1.164 2007/09/04 20:53:21 tvroom Exp $

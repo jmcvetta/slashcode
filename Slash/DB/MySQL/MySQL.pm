@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.980 2007/08/30 20:48:13 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.981 2007/09/04 07:16:37 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.980 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.981 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -229,6 +229,33 @@ my %descriptions = (
 				'code,CONCAT(code," (",name,")") as name',
 				'string_param',
 				'type="iso_countries"',
+				'ORDER BY name'
+			);
+		},
+
+	'us_states'
+		=> sub { $_[0]->sqlSelectMany(
+				'code,CONCAT(code," (",name,")") as name',
+				'string_param',
+				'type="us_states"',
+				'ORDER BY name'
+			);
+		},
+
+	'ca_provinces'
+		=> sub { $_[0]->sqlSelectMany(
+				'code,CONCAT(code," (",name,")") as name',
+				'string_param',
+				'type="ca_provinces"',
+				'ORDER BY name'
+			);
+		},
+
+	'states_and_provinces'
+		=> sub { $_[0]->sqlSelectMany(
+				'code,CONCAT(code," (",name,")") as name',
+				'string_param',
+				'type="ca_provinces" OR type="us_states"',
 				'ORDER BY name'
 			);
 		},

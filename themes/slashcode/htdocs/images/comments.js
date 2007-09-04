@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.90 2007/08/29 06:26:44 pudge Exp $
+// $Id: comments.js,v 1.91 2007/09/04 07:16:38 pudge Exp $
 
 var comments;
 var root_comments;
@@ -685,6 +685,11 @@ function ajaxFetchComments(cids, option, thresh) {
 	var handlers = {
 		onComplete: function (transport) {
 			var response = eval_response(transport);
+
+			if (!response) {
+				boxStatus(0);
+				return;
+			}
 
 			var update = response.update_data;
 			if (update && update.new_cids_order) {

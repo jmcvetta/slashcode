@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.981 2007/09/04 07:16:37 pudge Exp $
+# $Id: MySQL.pm,v 1.982 2007/09/04 21:23:47 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.981 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.982 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -8669,7 +8669,9 @@ sub getStoidFromSid {
 	my($mcd, $mcdkey);
 	if ($mcd = $self->getMCD()) {
 		$mcdkey = "$self->{_mcd_keyprefix}:sid:";
-		if (my $answer = $mcd->get("$mcdkey$sid")) {
+		my $answer = $mcd->get("$mcdkey$sid");
+		if (defined $answer) {
+			$answer = undef if $answer eq '0';
 			$self->{_sid_conversion_cache}{$sid} = $answer;
 			return $answer;
 		}
@@ -8678,7 +8680,7 @@ sub getStoidFromSid {
 	my $stoid = $self->sqlSelect("stoid", "stories", "sid=$sid_q");
 	$self->{_sid_conversion_cache}{$sid} = $stoid;
 	my $exptime = 86400;
-	$mcd->set("$mcdkey$sid", $stoid, $exptime) if $mcd;
+	$mcd->set("$mcdkey$sid", $stoid || 0, $exptime) if $mcd;
 	return $stoid;
 }
 

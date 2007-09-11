@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.165 2007/09/06 16:29:47 tvroom Exp $
+# $Id: FireHose.pm,v 1.166 2007/09/11 19:59:54 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.165 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1584,7 +1584,7 @@ sub getAndSetOptions {
 	$opts 	        ||= {};
 	my $options 	= {};
 
-	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 }; # , misc => 1 ? -- pudge
+	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 , misc => 1 }; 
 	my $modes = { full => 1, fulltitle => 1 };
 	my $pagesizes = { "small" => 1, "large" => 1 };
 
@@ -1694,7 +1694,7 @@ sub getAndSetOptions {
 		$fhfilter = $user->{firehose_fhfilter} unless $no_saved;
 		$options->{fhfilter} = $fhfilter;
 	}
-	
+
 	# XXX
 	my $user_tabs = $self->getUserTabs();
 	my %user_tab_names = map { $_->{tabname} => 1 } @$user_tabs;
@@ -1794,6 +1794,10 @@ sub getAndSetOptions {
 
 	if ($form->{index}) {
 		$mode = "fulltitle";
+		if ($gSkin->{nexus} != $constants->{mainpage_nexus_tid}) {
+			$mode = "full";
+		}
+
 	}
 	
 	if ($mode eq "full") {
@@ -1930,13 +1934,15 @@ sub getAndSetOptions {
 		$options->{skipmenu} = 1;
 		$options->{skippop} = 1;
 		if (!$form->{issue}) {
-			$options->{duration} = 7;
+			$options->{duration} = -1;
 			$options->{startdate} = '';
 		}
 		$options->{mode} = 'fulltitle';
 		$options->{color} = 'black';
 		$options->{nocolors} = 1;
-		$options->{mixedmode} = 1;
+		if ($gSkin->{nexus} == $constants->{mainpage_nexus_tid}) {
+			$options->{mixedmode} = 1;
+		}
 	}
 	
 
@@ -2363,4 +2369,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.165 2007/09/06 16:29:47 tvroom Exp $
+$Id: FireHose.pm,v 1.166 2007/09/11 19:59:54 tvroom Exp $

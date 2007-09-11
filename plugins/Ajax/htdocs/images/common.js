@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.138 2007/08/23 20:16:26 pudge Exp $
+// $Id: common.js,v 1.139 2007/09/11 20:01:13 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -360,6 +360,9 @@ function createTag(tag, id, type) {
 	params['name'] = tag;
 	params['id'] = id;
 	params['type'] = type;
+	if (tag == "hold" && fh_is_admin) {
+		firehose_collapse_entry(id);
+	}
 	ajax_update(params, '');
 }
 

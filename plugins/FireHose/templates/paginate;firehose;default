@@ -76,7 +76,7 @@ __template__
 			[% IF split_refresh %]<!-- split -->[% END %]
 			[% IF !split_refresh %]<span id="afterwidget">[% END %]
 		[% ELSE %]
-			<span>
+			<span class="inactive">
 			[% IF cur_day.2 %]
 				<a href="[% gSkin.rootdir %]/[% day_page %]">[% cur_day.1 | strip_literal %]</a>
 			[% ELSE %]
@@ -153,4 +153,4 @@ __template__
 </div>
 [% END %]
 __version__
-$Id: paginate;firehose;default,v 1.25 2007/09/11 19:57:36 tvroom Exp $
+$Id: paginate;firehose;default,v 1.26 2007/09/11 20:12:35 tvroom Exp $

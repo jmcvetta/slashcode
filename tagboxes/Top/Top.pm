@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Top.pm,v 1.10 2007/08/20 12:24:19 jamiemccarthy Exp $
+# $Id: Top.pm,v 1.11 2007/09/12 19:30:34 jamiemccarthy Exp $
 
 package Slash::Tagbox::Top;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.10 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -146,8 +146,6 @@ sub run {
 	my $tagboxdb = getObject('Slash::Tagbox');
 
 	my($type, $target_id) = $tagsdb->getGlobjTarget($affected_id);
-	if (!$type) { warn "Tagbox::Top::run finds no type for '$affected_id'" } # debug assertion, can prob remove
-	return unless $type && ($type eq 'stories' || $type eq 'urls');
 
 	# Get the list of tags applied to this object.  If we're doing
 	# URL popularity, that's only the tags within the past few days.

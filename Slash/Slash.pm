@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.333 2007/08/29 06:23:38 pudge Exp $
+# $Id: Slash.pm,v 1.334 2007/09/12 22:46:46 pudge Exp $
 
 package Slash;
 
@@ -369,7 +369,7 @@ sub jsSelectComments {
 	}
 
 	my($max_cid) = sort { $b <=> $a } keys %$comments;
-	$max_cid ||= 0;
+	$max_cid ||= -1;
 
 	my $anon_comments = Data::JavaScript::Anon->anon_dump($comments);
 	my $anon_roots    = Data::JavaScript::Anon->anon_dump(\@roots);

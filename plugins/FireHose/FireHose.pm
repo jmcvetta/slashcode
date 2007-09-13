@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.166 2007/09/11 19:59:54 tvroom Exp $
+# $Id: FireHose.pm,v 1.167 2007/09/13 18:44:11 pudge Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.166 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.167 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -380,7 +380,7 @@ sub getFireHoseEssentials {
 			}
 
 			# attention_needed not indexed right now
-			for (qw(attention_needed public accepted rejected type primaryskid)) {
+			for (qw(attention_needed public accepted rejected type primaryskid uid)) {
 				$query{$_}	= $options->{$_}		if $options->{$_};
 			}
 
@@ -466,7 +466,6 @@ sub getFireHoseEssentials {
 	}
 	my $columns = "firehose.*, firehose.$popularitycol AS userpop";
 
-	if (!$doublecheck) {
 		if ($options->{createtime_no_future}) {
 			push @where, 'createtime <= NOW()';
 		}
@@ -475,6 +474,8 @@ sub getFireHoseEssentials {
 			my $future_secs = $constants->{subscribe_future_secs};
 			push @where, "createtime <= DATE_ADD(NOW(), INTERVAL $future_secs SECOND)";
 		}
+
+	if (!$doublecheck) {
 
 		if ($options->{public}) {
 			push @where, 'public = ' . $self->sqlQuote($options->{public});
@@ -508,23 +509,6 @@ sub getFireHoseEssentials {
 			push @where, "createtime >= DATE_SUB(NOW(), INTERVAL $dur_q DAY)";
 		}
 
-		if ($pop) {
-			my $pop_q = $self->sqlQuote($pop);
-			if ($user->{is_admin} && !$user->{firehose_usermode}) {
-				push @where, "editorpop >= $pop_q";
-			} else {
-				push @where, "$popularitycol >= $pop_q";
-			}
-		}
-		if ($user->{is_admin}) {
-			my $signoff_label = 'sign' . $user->{uid} . 'ed';
-
-			if ($options->{unsigned}) {
-				push @where, "signoffs NOT LIKE '%$signoff_label%'";
-			} elsif ($options->{signed}) {
-				push @where, "signoffs LIKE '%$signoff_label%'";
-			}
-		}
 
 		foreach my $prefix ("","not_") {
 			foreach my $base qw(primaryskid uid type) {
@@ -549,6 +533,24 @@ sub getFireHoseEssentials {
 		}
 
 	}
+
+		if ($pop) {
+			my $pop_q = $self->sqlQuote($pop);
+			if ($user->{is_admin} && !$user->{firehose_usermode}) {
+				push @where, "editorpop >= $pop_q";
+			} else {
+				push @where, "$popularitycol >= $pop_q";
+			}
+		}
+		if ($user->{is_admin}) {
+			my $signoff_label = 'sign' . $user->{uid} . 'ed';
+
+			if ($options->{unsigned}) {
+				push @where, "signoffs NOT LIKE '%$signoff_label%'";
+			} elsif ($options->{signed}) {
+				push @where, "signoffs LIKE '%$signoff_label%'";
+			}
+		}
 
 	# check these again, just in case, as they are more time-sensitive
 	# and don't take much effort to check
@@ -1584,7 +1586,7 @@ sub getAndSetOptions {
 	$opts 	        ||= {};
 	my $options 	= {};
 
-	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1 , misc => 1 }; 
+	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1, misc => 1 }; 
 	my $modes = { full => 1, fulltitle => 1 };
 	my $pagesizes = { "small" => 1, "large" => 1 };
 
@@ -1794,10 +1796,9 @@ sub getAndSetOptions {
 
 	if ($form->{index}) {
 		$mode = "fulltitle";
-		if ($gSkin->{nexus} != $constants->{mainpage_nexus_tid}) {
+		if (getCurrentSkin()->{nexus} != $constants->{mainpage_nexus_tid}) {
 			$mode = "full";
 		}
-
 	}
 	
 	if ($mode eq "full") {
@@ -1940,7 +1941,7 @@ sub getAndSetOptions {
 		$options->{mode} = 'fulltitle';
 		$options->{color} = 'black';
 		$options->{nocolors} = 1;
-		if ($gSkin->{nexus} == $constants->{mainpage_nexus_tid}) {
+		if (getCurrentSkin()->{nexus} == $constants->{mainpage_nexus_tid}) {
 			$options->{mixedmode} = 1;
 		}
 	}
@@ -2369,4 +2370,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.166 2007/09/11 19:59:54 tvroom Exp $
+$Id: FireHose.pm,v 1.167 2007/09/13 18:44:11 pudge Exp $

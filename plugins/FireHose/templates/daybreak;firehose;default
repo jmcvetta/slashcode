@@ -17,7 +17,7 @@ __template__
 [% fh_page = fh_page || "firehose.pl" %]
 [% day_page = fh_page %]
 [% IF fh_page == "users.pl"; day_page = "firehose.pl"; END %]
-[% index_extra = form.issue ? "&amp;index=1" : "" %]
+[% index_extra = form.index ? "&amp;index=1" : "" %]
 <div align="center" class="daybreak" id="[% id %]">
 	[% last_days = Slash.getOlderDaysFromDay(last_day, 0, 0, { skip_add_today => 1, show_future_days => 1 }) %]
 	[% cur_days = Slash.getOlderDaysFromDay(cur_day, 0, 0, { skip_add_today => 1, show_future_days => 1 }) %]
@@ -25,4 +25,4 @@ __template__
 	<a onclick="firehose_set_options('issue', '[% cur_day %]'); return false;"  href="[% gSkin.rootdir %]/[% day_page %]?issue=[% cur_day %]&amp;duration=1[% index_extra %]">[% cur_days.0.1 %]</a><br>
 </div>
 __version__
-$Id: daybreak;firehose;default,v 1.8 2007/09/11 19:57:36 tvroom Exp $
+$Id: daybreak;firehose;default,v 1.9 2007/09/14 23:43:27 tvroom Exp $

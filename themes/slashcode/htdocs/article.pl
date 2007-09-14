@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: article.pl,v 1.78 2007/07/19 02:23:53 jamiemccarthy Exp $
+# $Id: article.pl,v 1.79 2007/09/14 21:56:51 pudge Exp $
 
 use strict;
 use Slash;
@@ -242,7 +242,7 @@ sub main {
 	}
 
 	my $plugins = $slashdb->getDescriptions('plugins');
-	if (!$user->{is_anon} && $plugins->{Tags}) {
+	if (!$user->{is_anon} && $plugins->{Tags} && $story) {
 		my $tagsdb = getObject('Slash::Tags');
 		$tagsdb->markViewed($user->{uid},
 			$reader->getGlobjidCreate('stories', $story->{stoid}));

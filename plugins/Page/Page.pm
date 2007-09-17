@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Page.pm,v 1.34 2007/09/17 09:02:34 scc Exp $
+# $Id: Page.pm,v 1.35 2007/09/17 21:29:17 pudge Exp $
 
 package Slash::Page;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.34 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.35 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #################################################################
 # Ok, so we want a nice module to do the front page and utilise 
@@ -367,6 +367,7 @@ sub saveUserBoxes {
 		{ slashboxes => $user->{slashboxes} });
 }
 
+#################################################################
 sub ajaxSaveUserBoxes {
 	my($slashdb, $constants, $user, $form) = @_;
 	return if $user->{is_anon};
@@ -374,7 +375,6 @@ sub ajaxSaveUserBoxes {
 	$slashdb->setUser($user->{uid},
 		{ slashboxes => $user->{slashboxes} });
 }
-
 
 #################################################################
 sub getUserBoxes {

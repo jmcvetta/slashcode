@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.43 2007/02/15 00:45:43 pudge Exp $
+# $Id: ircslash.pl,v 1.44 2007/09/18 01:26:50 pudge Exp $
 
 use strict;
 
@@ -346,6 +346,7 @@ my %cmds = (
 	lcr		=> \&cmd_lcr,
 	lcrset		=> \&cmd_lcrset,
 	re		=> \&cmd_re,
+	d		=> \&cmd_roll,
 );
 sub handle_cmd {
 	my($service, $cmd, $event) = @_;
@@ -487,6 +488,16 @@ sub cmd_re {
 	my($service, $info) = @_;
 	send_msg(getIRCData('re', {
 		nickname	=> $info->{text} || $info->{event}{nick},
+	}), { $service => 1 });
+}
+
+sub cmd_roll {
+	my($service, $info) = @_;
+	my($n) = $info->{text} =~ /(\d+)/;
+	my @n = (1 .. $n);
+	send_msg(getIRCData('roll', {
+		num       => $n[rand @n],
+		nickname  => $info->{event}{nick},
 	}), { $service => 1 });
 }
 

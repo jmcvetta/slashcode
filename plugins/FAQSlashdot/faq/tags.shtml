@@ -6,7 +6,7 @@
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
 <!--
-($VERSION) = '$Id: tags.shtml,v 1.13 2007/08/21 15:14:08 scuttlemonkey Exp $' =~ /^\$Id: \S+ (\S+)/
+($VERSION) = '$Id: tags.shtml,v 1.14 2007/09/20 17:34:33 scuttlemonkey Exp $' =~ /^\$Id: \S+ (\S+)/
 -->
 
 <table>
@@ -36,7 +36,7 @@ depends on you.  If you choose to add your own tags, be aware:</p>
 
 <ul>
 <li>Your tags are <b>public</b>. Everyone will be able to see them!</li>
-<li>Tags are space-separated. Use "bigbrother", not "big brother".
+<li>Tags are not space-separated. Use "bigbrother", not "big brother".
 <li>For the <b>opposite</b> of a tag, prefix it with "!", e.g.  "!funny"
 means "not funny."</li>
 <li>Keep your tags brief.</li>

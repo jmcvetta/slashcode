@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.44 2007/09/18 01:26:50 pudge Exp $
+# $Id: ircslash.pl,v 1.45 2007/09/21 15:21:14 jamiemccarthy Exp $
 
 use strict;
 
@@ -494,9 +494,9 @@ sub cmd_re {
 sub cmd_roll {
 	my($service, $info) = @_;
 	my($n) = $info->{text} =~ /(\d+)/;
-	my @n = (1 .. $n);
+	$n ||= 100;
 	send_msg(getIRCData('roll', {
-		num       => $n[rand @n],
+		num       => int(rand $n)+1,
 		nickname  => $info->{event}{nick},
 	}), { $service => 1 });
 }

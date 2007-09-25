@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.171 2007/09/15 00:11:17 tvroom Exp $
+# $Id: FireHose.pm,v 1.172 2007/09/25 16:25:48 scc Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1827,6 +1827,15 @@ sub getAndSetOptions {
 		}
 	}
 
+	if ($form->{gadget}) {
+			$options->{smalldevices} = 1;
+			if ($mode eq "full") {
+				$options->{limit} = $pagesize eq "large" ? 15 : 10;
+			} else {
+				$options->{limit} = $pagesize eq "large" ? 20 : 15;
+			}
+	}
+
 	if ($user->{is_admin} && $form->{setusermode}) {
 		$self->setUser($user->{uid}, { firehose_usermode => $form->{firehose_usermode} ? 1 : "" });
 	}
@@ -2012,6 +2021,7 @@ sub getFireHoseTagsTop {
 	my($self, $item) = @_;
 	my $user 	= getCurrentUser();
 	my $constants 	= getCurrentStatic();
+	my $form = getCurrentForm();
 	my $tags_top	 = [];
 
 	# The meaning of the number after the colon is referenced in
@@ -2047,6 +2057,10 @@ sub getFireHoseTagsTop {
 		if ($ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
 			$#{@$user_tags_top} = 2;
 		}
+	}
+
+	if ($form->{gadget}) {
+		$#{@$user_tags_top} = 2;
 	}
 
 	push @$tags_top, @$user_tags_top;
@@ -2374,4 +2388,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.171 2007/09/15 00:11:17 tvroom Exp $
+$Id: FireHose.pm,v 1.172 2007/09/25 16:25:48 scc Exp $

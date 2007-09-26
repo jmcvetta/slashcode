@@ -104,7 +104,7 @@ L<http:E<sol>E<sol>slashcode.cvs.sourceforge.netE<sol>*checkout*E<sol>slashcodeE
 
 The version of this file that you are currently reading is:
 
-$Id: INSTALL.pod,v 1.62 2007/08/29 15:58:58 jamiemccarthy Exp $
+$Id: INSTALL.pod,v 1.63 2007/09/26 21:20:30 jamiemccarthy Exp $
 
 If there are more recent versions of this file, you can find a list of
 those changes at:
@@ -228,6 +228,8 @@ instead of bash, which apparently breaks the above step (because dash's
 into it, but for now apparently (temporarily) linking /bin/sh to /bin/bash
 during this step is a workaround.
 L<https:E<sol>E<sol>launchpad.netE<sol>ubuntuE<sol>+spec/dash-as-bin-sh>
+(Update: this appears to no longer be a problem, but if you encounter
+problems on Ubuntu, check where your /bin/sh points.)
 
 =item 4.
 
@@ -1745,5 +1747,5 @@ send out any notices.  You can subscribe here:
 
 =head1 VERSION
 
-$Id: INSTALL.pod,v 1.62 2007/08/29 15:58:58 jamiemccarthy Exp $
+$Id: INSTALL.pod,v 1.63 2007/09/26 21:20:30 jamiemccarthy Exp $
 

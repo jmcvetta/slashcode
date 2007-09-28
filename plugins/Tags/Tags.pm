@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.81 2007/09/26 21:25:50 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.82 2007/09/28 02:08:03 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -11,12 +11,13 @@ use Slash;
 use Slash::Display;
 use Slash::Utility;
 use Slash::DB::Utility;
+use Slash::Clout;
 use Apache::Cookie;
 use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -579,12 +580,14 @@ if (!$clout_type) { use Carp; Carp::cluck("no clout_type for addCloutsToTagArray
 		'tagnameid, value', 'tagname_params',
 		"tagnameid IN ($tagnameids_in_str) AND name='tag_clout'");
 
-	# Pull values from users_param
+	# Pull values from users_clout
 	my %uid = map { ($_->{uid}, 1) } @$ar;
 	my @uids = sort { $a <=> $b } keys %uid;
 	my $uids_in_str = join(',', @uids);
 	my $clid = $self->getCloutTypes()->{$clout_type};
 if (!$clid) { use Carp; Carp::cluck("no clid for addCloutsToTagArrayref '$clout_type'"); }
+	my $clout_info = $self->getCloutInfo()->{$clid};
+if (!$clout_info) { use Carp; Carp::cluck("getCloutInfo returned false for clid=$clid") }
 	my $uid_info_hr = $self->sqlSelectAllHashref(
 		'uid',
 		'users.uid AS uid, seclev, karma, tag_clout,
@@ -596,7 +599,6 @@ if (!$clid) { use Carp; Carp::cluck("no clid for addCloutsToTagArrayref '$clout_
 		"users.uid=users_info.uid AND users.uid IN ($uids_in_str)");
 #print STDERR "uids_in_str='$uids_in_str'\n";
 
-	my $clout_info = $self->getCloutInfo($clid);
 	my $uid_clout_hr = { };
 	for my $uid (keys %$uid_info_hr) {
 		if (defined $uid_info_hr->{$uid}{clout}) {

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.139 2007/09/11 20:01:13 tvroom Exp $
+// $Id: common.js,v 1.140 2007/10/03 21:08:04 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -531,6 +531,7 @@ function firehose_set_options(name, value) {
 				params['fhfilter'] = theForm.elements[i].value;
 			}
 		}
+		page = 0;
 	}
 	if (name != "color") {
 	for (i=0; i< pairs.length; i++) {

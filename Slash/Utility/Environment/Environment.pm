@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.212 2007/08/30 21:31:02 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.213 2007/10/03 20:54:07 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1336,9 +1336,6 @@ sub setCookie {
 	my $constants = getCurrentStatic();
 	my $gSkin = getCurrentSkin();
 
-	# We need to actually determine domain from preferences,
-	# not from the server, so the site admin can specify
-	# special preferences if they want to. -- pudge
 	my $cookiedomain = $gSkin->{cookiedomain} || $constants->{cookiedomain};
 	my $cookiepath   = $constants->{cookiepath};
 
@@ -3435,4 +3432,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.212 2007/08/30 21:31:02 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.213 2007/10/03 20:54:07 jamiemccarthy Exp $

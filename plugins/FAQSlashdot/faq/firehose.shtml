@@ -2,14 +2,14 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-        <title>Slashdot FAQ - Feeds</title>
-<!-- $Id: firehose.shtml,v 1.1 2007/08/21 15:12:43 scuttlemonkey Exp $ -->
+        <title>Slashdot FAQ - Firehose</title>
+<!-- $Id: firehose.shtml,v 1.2 2007/10/04 16:42:37 scc Exp $ -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
 
         <ul class="menu">
 		<li><a href="subscriptions.shtml">Previous Section</a></li>
-		<li><a href="slashmeta.shtml">Next section</a></li>
+		<li><a href="badges.shtml">Next section</a></li>
 		<li><a href="index.shtml">Index</a></li>
 	</ul>
         
@@ -142,7 +142,7 @@ will work for everyone.  Your feedback can only improve the system for everyone.
         <hr>
         <ul class="menu">
 		<li><a href="tags.shtml">Previous Section</a></li>
-	
+		<li><a href="badges.shtml">Next section</a></li>
 		<li><a href="index.shtml">Index</a></li>
 	</ul>
 

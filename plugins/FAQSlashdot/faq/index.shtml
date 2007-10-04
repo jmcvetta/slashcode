@@ -4,7 +4,7 @@
 <head>
         <title>Slashdot FAQ - Index</title>
 <!--
-$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.32 2007/10/03 20:55:44 scc Exp $ =~ /(\d+)/g
+$VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.33 2007/10/04 16:42:37 scc Exp $ =~ /(\d+)/g
 -->
 <!--#include virtual="/slashcssbase.inc"-->
 <!--#include virtual="/slashhead-gen-full.inc"-->
@@ -268,5 +268,7 @@ $VERSION = sprintf "%d.%03d", q$Id: index.shtml,v 1.32 2007/10/03 20:55:44 scc E
                 <li><strong><a href="/faq/firehose.shtml#fh700">Why didn't you post a submission that made it to red?</a></strong></li>
                 <li><strong><a href="/faq/firehose.shtml#fh800">Doesn't this make you just like...</a></strong></li>
 	</ul>
+	</ul><!-- Badges -->
+        <h2><strong><a href="/faq/badges.shtml">Badges How-To</a></strong></h2>
 
 <!--#include virtual="/slashfoot.inc"-->

@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1247 2007/10/04 19:40:50 pudge Exp $
+# $Id: upgrades,v 1.1248 2007/10/04 20:01:41 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4883,6 +4883,7 @@ UPDATE vars SET value = 'T_2_5_0_176' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 
+# For plugins/Tags
 UPDATE tagboxes SET clid=2 WHERE name='FirstMover';
 
 # 2007-10-04

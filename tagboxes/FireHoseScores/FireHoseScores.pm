@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHoseScores.pm,v 1.1 2007/09/28 03:33:20 jamiemccarthy Exp $
+# $Id: FireHoseScores.pm,v 1.2 2007/10/04 16:34:25 jamiemccarthy Exp $
 
 package Slash::Tagbox::FireHoseScores;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -248,6 +248,7 @@ sub getStartingColorLevel {
 			$color_level = $this_color_level if $this_color_level < $color_level;
 		}
 	}
+	return($color_level, $extra_pop);
 }
 
 { # closure

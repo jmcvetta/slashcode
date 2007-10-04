@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.51 2007/08/23 20:28:04 pudge Exp $
+# $Id: ajax.pl,v 1.52 2007/10/04 19:41:22 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.51 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -290,15 +290,14 @@ sub fetchComments {
 	my $cids         = [ grep /^\d+$/, split /,/, ($form->{cids} || '') ];
 	my $id           = $form->{discussion_id} || 0;
 	my $cid          = $form->{cid} || 0; # root id
-	my $max_cid      = $form->{max_cid};
 	my $d2_seen      = $form->{d2_seen};
 	my $placeholders = $form->{placeholders};
 	my @placeholders;
 
 	$user->{state}{ajax_accesslog_op} = "ajax_comments_fetch";
-#use Data::Dumper; print STDERR Dumper [ $cids, $id, $cid, $max_cid, $d2_seen ];
+#use Data::Dumper; print STDERR Dumper [ $cids, $id, $cid, $d2_seen ];
 	# XXX error?
-	return unless $id && ($max_cid || @$cids || $d2_seen);
+	return unless $id && (@$cids || $d2_seen);
 
 	my $discussion = $slashdb->getDiscussion($id);
 	if ($discussion->{type} eq 'archived') {
@@ -341,18 +340,9 @@ sub fetchComments {
 	#delete $comments->{0}; # non-comment data
 
 	my %data;
-	if ($max_cid || $d2_seen || $placeholders) {
+	if ($d2_seen || $placeholders) {
 		my $special_cids;
-		if ($max_cid) {
-			$special_cids = $cids = [ map { $_->[0] }
-				@{$slashdb->sqlSelectAll(
-					'cid', 'comments',
-					'sid = ' . $slashdb->sqlQuote($id) . ' AND ' .
-					'cid > ' . $slashdb->sqlQuote($max_cid),
-					'ORDER BY date ASC'
-				)}
-			];
-		} elsif ($d2_seen) {
+		if ($d2_seen) {
 			$special_cids = $cids = [ sort { $a <=> $b } grep { $_ && !$seen{$_} } keys %$comments ];
 		} elsif ($placeholders) {
 			@placeholders = split /[,;]/, $placeholders;
@@ -552,7 +542,7 @@ sub getOps {
 		},
 		comments_fetch		=> {
 			function	=> \&fetchComments,
-			reskey_name	=> 'ajax_user_static',
+			reskey_name	=> 'ajax_base',
 			reskey_type	=> 'createuse',
 		},
 		comments_set_prefs	=> {

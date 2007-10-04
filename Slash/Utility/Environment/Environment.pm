@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.213 2007/10/03 20:54:07 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.214 2007/10/04 19:41:22 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.214 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1565,7 +1565,34 @@ sub prepareUser {
 			$user->{$param} ||= $default || 0;
 		}
 	}
-	$user->{karma_bonus} = '+1' unless defined($user->{karma_bonus});
+	$user->{karma_bonus}  = '+1' unless defined($user->{karma_bonus});
+	# see Slash::discussion2()
+	$user->{state}{no_d2} = $form->{no_d2} ? 1 : 0;
+
+	# pct of anon users get this
+	if ($user->{is_anon} && !$user->{state}{no_d2}) {
+		$user->{discussion2} = 'none';
+
+#		my $i = hex(substr($user->{srcids}{16}, -2));
+		$hostip =~ /^(\d+).(\d+).(\d+).(\d+)$/;
+		my $i = $2;
+
+#		# for (0..255) { $x = ((($_-1)/256) < .01); last if !$x; printf "%d:%d\n", $_, $x; }
+		if ($ENV{GATEWAY_INTERFACE} && (($i-1)/256) < .01 ) {  # 1 percent, x.(0..3).y.z
+			my $d2 = 'slashdot';
+
+			# get user-agent (ENV not populated yet)
+			my %headers = $r->headers_in;
+			# just in case:
+			@headers{map lc, keys %headers} = values %headers;
+			my $ua = $r->headers_in->{'user-agent'};
+			if ($ua =~ /MSIE (\d+)/) {
+				$d2 = 'none' if $1 < 7;
+			}
+
+			$user->{discussion2} = $d2;
+		}
+	}
 
 	# All sorts of checks on user data.  The story_{never,always} checks
 	# are important because that data is fed directly into SQL queries
@@ -3432,4 +3459,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.213 2007/10/03 20:54:07 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.214 2007/10/04 19:41:22 pudge Exp $

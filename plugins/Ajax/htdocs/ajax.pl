@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.52 2007/10/04 19:41:22 pudge Exp $
+# $Id: ajax.pl,v 1.53 2007/10/05 18:56:34 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.52 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.53 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -186,7 +186,8 @@ sub getSectionPrefsHTML {
 sub setSectionNexusPrefs() {
 	my($slashdb, $constants, $user, $form) = @_;
 
-	my $nexus_tids_ar = getMainpageDisplayableNexuses();
+	my $reader = getObject('Slash::DB', { db_type => 'reader' });
+	my $nexus_tids_ar = $reader->getMainpageDisplayableNexuses();
 
 	my @story_always_nexus 		= split ",", $user->{story_always_nexus} || "";
 	my @story_full_brief_nexus 	= split ",", $user->{story_full_brief_nexus} || "";

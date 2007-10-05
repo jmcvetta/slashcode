@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.215 2007/10/05 04:56:49 pudge Exp $
+# $Id: Environment.pm,v 1.216 2007/10/05 18:30:38 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.215 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.216 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1568,17 +1568,16 @@ sub prepareUser {
 	$user->{karma_bonus}  = '+1' unless defined($user->{karma_bonus});
 	# see Slash::discussion2()
 	$user->{state}{no_d2} = $form->{no_d2} ? 1 : 0;
+	$user->{discussion2} ||= 'none';
 
 	# pct of anon users get this
 	if ($user->{is_anon} && !$user->{state}{no_d2}) {
-		$user->{discussion2} = 'none';
-
 #		my $i = hex(substr($user->{srcids}{16}, -2));
 		$hostip =~ /^(\d+).(\d+).(\d+).(\d+)$/;
 		my $i = $2;
 
-#		# for (0..255) { $x = ((($_-1)/256) < .01); last if !$x; printf "%d:%d\n", $_, $x; }
-		if (0 && $ENV{GATEWAY_INTERFACE} && (($i-1)/256) < .01 ) {  # 1 percent, x.(0..3).y.z
+#		# for (0..255) { $x = ((($_-1)/256) < .1); last if !$x; printf "%d:%d\n", $_, $x; }
+		if ($ENV{GATEWAY_INTERFACE} && ( $i == 144 || $i == 113 || ((($i-1)/256) < .1) ) ) {  # 10 percent, x.(0..3).y.z
 			my $d2 = 'slashdot';
 
 			# get user-agent (ENV not populated yet)
@@ -3459,4 +3458,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.215 2007/10/05 04:56:49 pudge Exp $
+$Id: Environment.pm,v 1.216 2007/10/05 18:30:38 pudge Exp $

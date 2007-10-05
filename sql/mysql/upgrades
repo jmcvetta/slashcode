@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1248 2007/10/04 20:01:41 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1249 2007/10/05 04:56:49 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4877,8 +4877,6 @@ DELETE FROM users_param WHERE name IN ('tagpeerval', 'tagpeerval2');
 # 2007-09-26
 UPDATE vars SET value = 'T_2_5_0_176' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # PUDGE LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
@@ -4888,4 +4886,6 @@ UPDATE tagboxes SET clid=2 WHERE name='FirstMover';
 
 # 2007-10-04
 UPDATE vars SET value = 'T_2_5_0_177' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

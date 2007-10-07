@@ -2,12 +2,15 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.318 2007/08/23 19:05:30 pudge Exp $
+# $Id: admin.pl,v 1.319 2007/10/07 14:09:15 jamiemccarthy Exp $
 
 use strict;
 use File::Temp 'tempfile';
 use Image::Size;
 use Time::HiRes;
+use LWP::UserAgent;
+use URI::URL;
+use XML::Simple;
 
 use Slash;
 use Slash::Display;

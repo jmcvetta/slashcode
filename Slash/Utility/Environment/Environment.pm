@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.218 2007/10/09 18:57:09 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.219 2007/10/09 20:01:08 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.218 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.219 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1589,7 +1589,7 @@ sub prepareUser {
 			@headers{map lc, keys %headers} = values %headers;
 			my $ua = $r->headers_in->{'user-agent'};
 			if ($ua =~ /MSIE (\d+)/) {
-				$d2 = 'none' if $1 < 7;
+				$d2 = 'none';# if $1 < 7;
 			}
 
 			$user->{discussion2} = $d2;
@@ -3486,4 +3486,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.218 2007/10/09 18:57:09 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.219 2007/10/09 20:01:08 pudge Exp $

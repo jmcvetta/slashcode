@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.54 2007/10/09 18:21:27 entweichen Exp $
+# $Id: ajax.pl,v 1.55 2007/10/09 20:01:08 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -502,7 +502,6 @@ sub updateD2prefs {
 }
 
 sub getModalPrefs {
-
         my($slashdb, $constants, $user, $form) = @_;
 
         return slashDisplay('prefs_' . $form->{'section'},
@@ -511,11 +510,9 @@ sub getModalPrefs {
                 },
                 { Return => 1 }
         );
-
 }
 
 sub saveModalPrefs {
-
         my($slashdb, $constants, $user, $form) = @_;
 
         # Ajax returns our form as key=value, so trick URI into decoding for us.
@@ -533,7 +530,6 @@ sub saveModalPrefs {
         };
 
         $slashdb->setUser($params{uid}, $user_edits_table);
-
 }
 
 # comments
@@ -571,51 +567,51 @@ sub getOps {
 	);
 
 	my %mainops = (
-		comments_read_rest	=> {
-			function	=> \&readRest,
-			reskey_name	=> 'ajax_base',
-			reskey_type	=> 'createuse',
+		comments_read_rest      => {
+			function        => \&readRest,
+			reskey_name     => 'ajax_base',
+			reskey_type     => 'createuse',
 		},
-		comments_fetch		=> {
-			function	=> \&fetchComments,
-			reskey_name	=> 'ajax_base',
-			reskey_type	=> 'createuse',
+		comments_fetch          => {
+			function        => \&fetchComments,
+			reskey_name     => 'ajax_base',
+			reskey_type     => 'createuse',
 		},
-		comments_set_prefs	=> {
-			function	=> \&updateD2prefs,
-			reskey_name	=> 'ajax_user_static',
-			reskey_type	=> 'createuse',
+		comments_set_prefs      => {
+			function        => \&updateD2prefs,
+			reskey_name     => 'ajax_user_static',
+			reskey_type     => 'createuse',
 		},
-		getSectionPrefsHTML => {
-			function	=> \&getSectionPrefsHTML,
-			reskey_name	=> 'ajax_user',
-			reskey_type	=> 'createuse',
+		getSectionPrefsHTML     => {
+			function        => \&getSectionPrefsHTML,
+			reskey_name     => 'ajax_user',
+			reskey_type     => 'createuse',
 		},
-		setSectionNexusPrefs => {
-			function	=> \&setSectionNexusPrefs,
-			reskey_name	=> 'ajax_user',
-			reskey_type	=> 'createuse',
+		setSectionNexusPrefs    => {
+			function        => \&setSectionNexusPrefs,
+			reskey_name     => 'ajax_user',
+			reskey_type     => 'createuse',
 		},
-#		tagsGetUserStory => {
-#			function	=> \&tagsGetUserStory,
-#			reskey_type	=> 'createuse',
+#		tagsGetUserStory        => {
+#			function        => \&tagsGetUserStory,
+#			reskey_type     => 'createuse',
 #		},
-#		tagsCreateForStory => {
-#			function	=> \&tagsCreateForStory,
-#			reskey_type	=> 'createuse',
+#		tagsCreateForStory      => {
+#			function        => \&tagsCreateForStory,
+#			reskey_type     => 'createuse',
 #		},
-                getModalPrefs  => {
-                        function => \&getModalPrefs,
+                getModalPrefs           => {
+                        function        => \&getModalPrefs,
                         reskey_name     => 'ajax_user',
                         reskey_type     => 'createuse',
                 },
-                saveModalPrefs => {
-                        function => \&saveModalPrefs,
+                saveModalPrefs          => {
+                        function        => \&saveModalPrefs,
                         reskey_name     => 'ajax_user',
                         reskey_type     => 'createuse',
                 },
 		default	=> {
-			function	=> \&default,		
+			function        => \&default,		
 		},
 	);
 

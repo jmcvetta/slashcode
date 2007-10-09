@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1251 2007/10/09 18:22:49 entweichen Exp $
+# $Id: upgrades,v 1.1252 2007/10/09 20:01:09 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4886,6 +4886,9 @@ UPDATE tagboxes SET clid=2 WHERE name='FirstMover';
 UPDATE vars SET value = 'T_2_5_0_177' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHCODE/USEPERL LAST UPDATED HERE
+
+# 2007-10-05
+UPDATE vars SET value = 'T_2_5_0_178' WHERE name = 'cvs_tag_currentcode';
 
 # SLASHDOT LAST UPDATED HERE
 

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.142 2007/10/09 20:01:08 pudge Exp $
+// $Id: common.js,v 1.143 2007/10/09 23:03:34 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1385,9 +1385,9 @@ function install_modal() {
 	modal_cover.parentNode.removeChild(modal_cover);
 	modal_box.parentNode.removeChild(modal_box);
 
-	var top_parent = $('top_parent');
-	top_parent.parentNode.insertBefore(modal_cover, top_parent);
-	top_parent.parentNode.insertBefore(modal_box, top_parent);
+	var modal_parent = $('modal_parent');
+	modal_parent.parentNode.insertBefore(modal_cover, modal_parent);
+	modal_parent.parentNode.insertBefore(modal_box, modal_parent);
 	modal_inst = 1;
 }
 
@@ -1419,6 +1419,7 @@ function getModalPrefs(section) {
 	var params = [];
 	params['op'] = 'getModalPrefs';
 	params['section'] = section;
+	params['reskey'] = reskey_static;
 	var handlers = {onComplete:show_modal_box};
 	ajax_update(params, 'modal_box_content', handlers);
 }
@@ -1427,6 +1428,7 @@ function saveModalPrefs() {
 	var params = [];
 	params['op'] = 'saveModalPrefs';
 	params['data'] = Form.serialize(document.forms['modal_prefs']);
+	params['reskey'] = reskey_static;
 	var handlers = {onComplete:hide_modal_box};
 	ajax_update(params, '', handlers);
 }

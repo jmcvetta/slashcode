@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.55 2007/10/09 20:01:08 pudge Exp $
+# $Id: ajax.pl,v 1.56 2007/10/09 23:03:34 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.56 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -602,12 +602,12 @@ sub getOps {
 #		},
                 getModalPrefs           => {
                         function        => \&getModalPrefs,
-                        reskey_name     => 'ajax_user',
+                        reskey_name     => 'ajax_user_static',
                         reskey_type     => 'createuse',
                 },
                 saveModalPrefs          => {
                         function        => \&saveModalPrefs,
-                        reskey_name     => 'ajax_user',
+                        reskey_name     => 'ajax_user_static',
                         reskey_type     => 'createuse',
                 },
 		default	=> {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.83 2007/10/04 16:51:22 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.84 2007/10/09 20:04:42 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1109,26 +1109,15 @@ sub ajaxProcessAdminTags {
 		grep { $tags->adminPseudotagnameSyntaxOK($_) }
 		split /[\s,]+/,
 		($commands || '');
-use Data::Dumper; print STDERR scalar(localtime) . " ajaxProcessAdminTags table=$table id=$id sid=$sid commands='$commands' commands='@commands' tags='$tags' form: " . Dumper($form);
+#use Data::Dumper; print STDERR scalar(localtime) . " ajaxProcessAdminTags table=$table id=$id sid=$sid commands='$commands' commands='@commands' tags='$tags' form: " . Dumper($form);
 	if (!$id || !$table || !@commands) {
 		# Error, but we really have no way to return it...
 		# return getData('tags_none_given', {}, 'tags');
 	}
 
-	my @tagnameids_affected = ( );
+	@commands = $tags->normalizeAndOppositeAdminCommands(@commands);
 	for my $c (@commands) {
-		my $tagnameid = $tags->processAdminCommand($c, $id, $table);
-		push @tagnameids_affected, $tagnameid if $tagnameid;
-	}
-	if (@tagnameids_affected) {
-		my $affected_str = join(',', @tagnameids_affected);
-		my $reset_lastscanned = $tags->sqlSelect(
-			'MIN(tagid)',
-			'tags',
-			"tagnameid IN ($affected_str)");
-		# XXX this part isn't gonna work since tagboxes
-		$tags->setLastscanned($reset_lastscanned);
-#print STDERR scalar(localtime) . " ajaxProcessAdminTags reset to " . ($reset_lastscanned-1) . " for '$affected_str'\n";
+		$tags->processAdminCommand($c, $id, $table);
 	}
 
 	my $tags_admin_str = "Performed commands: '@commands'.";
@@ -1148,6 +1137,29 @@ use Data::Dumper; print STDERR scalar(localtime) . " ajaxProcessAdminTags table=
 			tags_admin_str  =>	$tags_admin_str,
 		}, { Return => 1 });
 	}
+}
+
+{
+my %_adcmd_prefix = ( );
+sub normalizeAndOppositeAdminCommands {
+	my($self, @commands) = @_;
+	if (!%_adcmd_prefix) {
+		$_adcmd_prefix{0} = '_';
+		for my $i (1..5) { $_adcmd_prefix{$i} = '#' x $i }
+	}
+	my %count = ( );
+	for my $c (@commands) {
+		my($type, $tagname) = $self->getTypeAndTagnameFromAdminCommand($c);
+		next unless $type;
+		my $count = $type =~ tr/#/#/;
+		$count{$tagname} ||= 0;
+		$count{$tagname} = $count if $count{$tagname} < $count;
+		my $opp = $self->getOppositeTagname($tagname);
+		$count{$opp} ||= 0;
+	}
+	my @new = ( map { $_adcmd_prefix{$count{$_}} . $_ } sort keys %count );
+	return @new;
+}
 }
 
 sub ajaxTagHistory {

@@ -288,7 +288,16 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 </div>
 <a name="topcomment"></a>
 
+<div id="top_parent"></div>
+<div id="modal_cover" style="display:none" onclick="hide_modal_box()"></div>
+<div id="modal_box" style="display:none">
+        <div class="generaltitle" >
+                <div class="title"><h3>Modify Your Preferences <a href="javascript:hide_modal_box()"><img src="[% gSkin.imagedir %]/images/sic_close.png" alt="Close"></h3></div>
+        </div>
+        <div id="modal_box_content">Content here</div>
+</div>
+
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.86 2007/10/05 18:30:38 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.87 2007/10/09 18:20:46 entweichen Exp $

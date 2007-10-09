@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.983 2007/09/26 21:25:50 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.984 2007/10/09 18:57:09 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.983 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.984 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -301,6 +301,7 @@ sub _whereFormkey {
 # XXX I don't think this method is used anywhere.  Also, I'm
 # really sure these "Notes" are about five years out of date.
 # Can we delete this code? - Jamie, August 2006
+# (It's used in Slash::DB::Utility::new)
 
 ########################################################
 # Notes:

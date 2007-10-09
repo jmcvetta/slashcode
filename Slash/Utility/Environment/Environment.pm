@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.217 2007/10/06 01:52:18 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.218 2007/10/09 18:57:09 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.217 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.218 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2320,16 +2320,18 @@ sub getObject {
 	# We either haven't tried loading this class before, or were
 	# asked not to use the cache.
 	if (loadClass($class)) { # 'require' the class
-		my $object = $class->new($vuser, @args);
-		if ($object) {
-			$objects->{$class, $vuser} = $object if !$data->{nocache};
-			return $object;
+		if ($class->isInstalled($vuser) && $class->can('new')) {
+			my $object = $class->new($vuser, @args);
+			if ($object) {
+				$objects->{$class, $vuser} = $object if !$data->{nocache};
+				return $object;
+			}
+			errorLog("Class $class is installed for '$vuser' but returned false for new()");
 		}
-		errorLog("Class $class returned false for new()");
 	} else {
 		if ($@) {
 			errorLog("Class $class could not be loaded: '$@'");
-		} elsif (!$class->can("new")) {
+		} elsif (!$class->can('new')) {
 			errorLog("Class $class is not returning an object, or"
 				. " at least not one that has a new() method.  Try"
 				. "`perl -M$class -le '$class->new'` to see why");
@@ -3484,4 +3486,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.217 2007/10/06 01:52:18 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.218 2007/10/09 18:57:09 jamiemccarthy Exp $

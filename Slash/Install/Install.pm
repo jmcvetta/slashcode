@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Install.pm,v 1.54 2007/03/02 02:40:25 pudge Exp $
+# $Id: Install.pm,v 1.55 2007/10/09 18:54:06 jamiemccarthy Exp $
 
 package Slash::Install;
 use strict;
@@ -17,7 +17,7 @@ use base 'Slash::DB::Utility';
 
 # BENDER: Like most of life's problems, this one can be solved with bending.
 
-($VERSION) = ' $Revision: 1.54 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.55 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -25,6 +25,9 @@ sub new {
 	bless($self, $class);
 	$self->{virtual_user} = $user;
 	$self->sqlConnect;
+	# XXX Anyone know why this is called directly?  We use $self->{slashdb}
+	# at a number of places below and I can't figure out why we don't just
+	# use getCurrentDB().
 	$self->{slashdb} = Slash::DB->new($user);
 
 	return $self;

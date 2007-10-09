@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.80 2007/08/20 20:18:39 tvroom Exp $
+# $Id: freshenup.pl,v 1.81 2007/10/09 20:44:48 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -18,6 +18,7 @@ my $total_freshens = 0;
 $task{$me}{timespec} = '0-59 * * * *';
 $task{$me}{timespec_panic_1} = '1-59/10 * * * *';
 $task{$me}{timespec_panic_2} = '';
+$task{$me}{resource_locks} = getCurrentStatic('cepstral_audio') ? { cepstral => 1 } : { };
 $task{$me}{on_startup} = 1;
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {

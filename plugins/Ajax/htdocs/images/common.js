@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.143 2007/10/09 23:03:34 pudge Exp $
+// $Id: common.js,v 1.144 2007/10/10 17:33:31 entweichen Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1385,7 +1385,7 @@ function install_modal() {
 	modal_cover.parentNode.removeChild(modal_cover);
 	modal_box.parentNode.removeChild(modal_box);
 
-	var modal_parent = $('modal_parent');
+	var modal_parent = $('top_parent');
 	modal_parent.parentNode.insertBefore(modal_cover, modal_parent);
 	modal_parent.parentNode.insertBefore(modal_box, modal_parent);
 	modal_inst = 1;

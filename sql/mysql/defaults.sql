@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.369 2007/10/09 20:01:08 pudge Exp $
+# $Id: defaults.sql,v 1.370 2007/10/10 20:45:07 jamiemccarthy Exp $
 #
 
 #
@@ -159,7 +159,7 @@ INSERT INTO css_type (ctid, name, ordernum) VALUES (7,'handheld',7);
 # Dumping data for table 'dateformats'
 #
 
-INSERT INTO dateformats (id, format, description) VALUES (0,'%A %B %d, @%I:%M%p','Sunday March 21, @10:00AM');
+INSERT INTO dateformats (id, format, description) VALUES (0,'%A %B %d, @%I:%M%p IF_OLD %A %B %d %Y, @%I:%M%p','Sunday March 21, @10:00AM');
 INSERT INTO dateformats (id, format, description) VALUES (1,'%A %B %d, @%H:%M','Sunday March 21, @23:00');
 INSERT INTO dateformats (id, format, description) VALUES (2,'%k:%M %d %B %Y','23:00 21 March 1999');
 INSERT INTO dateformats (id, format, description) VALUES (3,'%k:%M %A %d %B %Y','23:00 Sunday 21 March 1999');

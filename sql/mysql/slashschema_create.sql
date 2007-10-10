@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.249 2007/09/26 21:25:51 jamiemccarthy Exp $
+# $Id: slashschema_create.sql,v 1.250 2007/10/10 20:45:08 jamiemccarthy Exp $
 #
 
 #
@@ -396,7 +396,7 @@ CREATE TABLE css (
 DROP TABLE IF EXISTS dateformats;
 CREATE TABLE dateformats (
 	id tinyint UNSIGNED DEFAULT '0' NOT NULL,
-	format varchar(32),
+	format varchar(64),
 	description varchar(64),
 	PRIMARY KEY (id)
 ) TYPE=InnoDB;

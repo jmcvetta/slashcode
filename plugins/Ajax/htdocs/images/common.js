@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.144 2007/10/10 17:33:31 entweichen Exp $
+// $Id: common.js,v 1.145 2007/10/11 22:14:06 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1422,6 +1422,8 @@ function getModalPrefs(section) {
 	params['reskey'] = reskey_static;
 	var handlers = {onComplete:show_modal_box};
 	ajax_update(params, 'modal_box_content', handlers);
+
+	return;
 }
 
 function saveModalPrefs() {

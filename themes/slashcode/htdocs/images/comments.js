@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.92 2007/10/04 19:41:22 pudge Exp $
+// $Id: comments.js,v 1.93 2007/10/11 22:14:06 pudge Exp $
 
 var comments;
 var root_comments;
@@ -823,9 +823,9 @@ function ajaxFetchComments(cids, option, thresh) {
 function savePrefs() {
 	if (!user_is_anon
 		&&
-	    (user_threshold_orig != user_threshold)
+	    ((user_threshold_orig != user_threshold)
 		||
-	    (user_highlightthresh_orig != user_highlightthresh)
+	    (user_highlightthresh_orig != user_highlightthresh))
 	) {
 		var params = [];
 		params['op'] = 'comments_set_prefs';

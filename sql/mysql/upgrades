@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1255 2007/10/11 22:17:00 pudge Exp $
+# $Id: upgrades,v 1.1256 2007/10/12 07:23:03 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4906,4 +4906,7 @@ UPDATE dateformats SET format='%A %B %d, @%I:%M%p IF_OLD %A %B %d %Y, @%I:%M%p' 
 
 # 2007-10-11
 UPDATE vars SET value = 'T_2_5_0_179' WHERE name = 'cvs_tag_currentcode';
+
+# For plugins/HumanConf
+ALTER TABLE humanconf_pool MODIFY html TEXT NOT NULL;
 

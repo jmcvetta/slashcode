@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1256 2007/10/12 07:23:03 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1257 2007/10/13 11:52:32 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4909,4 +4909,10 @@ UPDATE vars SET value = 'T_2_5_0_179' WHERE name = 'cvs_tag_currentcode';
 
 # For plugins/HumanConf
 ALTER TABLE humanconf_pool MODIFY html TEXT NOT NULL;
+
+# For tagboxes/FireHoseScores
+INSERT INTO tagbox_userkeyregexes VALUES ('FireHoseScores', '^tag_clout$');
+
+# For tagboxes/Top
+INSERT INTO tagbox_userkeyregexes VALUES ('Top', '^tag_clout$');
 

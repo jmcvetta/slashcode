@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.984 2007/10/09 18:57:09 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.985 2007/10/13 11:52:32 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.984 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.985 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10279,7 +10279,7 @@ sub setUser {
 	my %old_values = ( );
 	my %new_values = ( );
 	if ($constants->{plugin}{Tags}) {
-		my @update_keys = sort keys %$hashref;
+		my @update_keys = sort map { s/^-//; $_ } keys %$hashref;
 		my $tagboxdb = getObject('Slash::Tagbox');
 		my @log_keys = $tagboxdb->userKeysNeedTagLog(\@update_keys);
 		%old_values = ( map { ($_, undef) } @log_keys );
@@ -10308,7 +10308,7 @@ sub setUser {
 		}
 		# If a tagbox needs copies of before-and-after data, first
 		# get a copy of the old data.
-		my @columns_needed = grep { exists $old_values{$_} } keys %minihash;
+		my @columns_needed = sort grep { exists $old_values{$_} } map { s/^-//; $_ } keys %minihash;
 		if (@columns_needed) {
 			my $old_hr = $self->sqlSelectHashref(
 				join(',', @columns_needed), $table, $where);

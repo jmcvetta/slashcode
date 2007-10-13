@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHoseScores.pm,v 1.2 2007/10/04 16:34:25 jamiemccarthy Exp $
+# $Id: FireHoseScores.pm,v 1.3 2007/10/13 11:52:33 jamiemccarthy Exp $
 
 package Slash::Tagbox::FireHoseScores;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -116,11 +116,44 @@ sub feed_deactivatedtags {
 sub feed_userchanges {
 	my($self, $users_ar) = @_;
 	my $constants = getCurrentStatic();
+	my $tagsdb = getObject('Slash::Tags');
 	main::tagboxLog("FireHoseScores->feed_userchanges called: users_ar='" . join(' ', map { $_->{tuid} } @$users_ar) .  "'");
 
-	# XXX need to fill this in, and check FirstMover feed_userchanges too
+	my %max_tuid = ( );
+	my %uid_change_sum = ( );
+	my %globj_change = ( );
+	for my $hr (@$users_ar) {
+		next unless $hr->{user_key} eq 'tag_clout';
+		$max_tuid{$hr->{uid}} ||= $hr->{tuid};
+		$max_tuid{$hr->{uid}}   = $hr->{tuid}
+			if $max_tuid{$hr->{uid}} < $hr->{tuid};
+		$uid_change_sum{$hr->{uid}} ||= 0; 
+		$uid_change_sum{$hr->{uid}} += abs(($hr->{value_old} || 1) - $hr->{value_new});
+	}
+	my $upvoteid   = $tagsdb->getTagnameidCreate($constants->{tags_upvote_tagname}   || 'nod');
+	my $downvoteid = $tagsdb->getTagnameidCreate($constants->{tags_downvote_tagname} || 'nix');
+	for my $uid (keys %uid_change_sum) {
+		my $tags_ar = $tagsdb->getAllTagsFromUser($uid);
+		for my $tag_hr (@$tags_ar) {
+			next unless $tag_hr->{tagnameid} == $upvoteid || $tag_hr->{tagnameid} == $downvoteid;
+			$globj_change{$tag_hr->{globjid}}{max_tuid} ||= $max_tuid{$uid};
+			$globj_change{$tag_hr->{globjid}}{max_tuid}   = $max_tuid{$uid}
+				if $globj_change{$tag_hr->{globjid}}{max_tuid} < $max_tuid{$uid};
+			$globj_change{$tag_hr->{globjid}}{sum} ||= 0;
+			$globj_change{$tag_hr->{globjid}}{sum} += $uid_change_sum{$uid};
+		}       
+	} 
+	my $ret_ar = [ ];
+	for my $globjid (sort { $a <=> $b } keys %globj_change) {
+		push @$ret_ar, {
+			tuid =>         $globj_change{$globjid}{max_tuid},
+			affected_id =>  $globjid,
+			importance =>   $globj_change{$globjid}{sum},
+		};      
+	}
 
-	return [ ];
+	main::tagboxLog("FireHoseScores->feed_userchanges returning " . scalar(@$ret_ar));
+	return $ret_ar;
 }
 
 sub run {

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.220 2007/10/15 21:44:42 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.221 2007/10/16 22:31:22 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.220 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.221 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1580,7 +1580,7 @@ sub prepareUser {
 		my $i = $2;
 
 #		# for (0..255) { $x = ((($_-1)/256) < .1); last if !$x; printf "%d:%d\n", $_, $x; }
-		if ($ENV{GATEWAY_INTERFACE} && ( $i == 144 || $i == 113 || ((($i-1)/256) < .1) ) ) {  # 10 percent, x.(0..3).y.z
+		if ($ENV{GATEWAY_INTERFACE} && ( $i == 144 || ((($i-1)/256) < .5) ) ) {  # 10 percent, x.(0..3).y.z
 			my $d2 = 'slashdot';
 
 			# get user-agent (ENV not populated yet)
@@ -1844,7 +1844,7 @@ Hashref of cleaned-up data.
 		url_id spider_id miner_id keyword_id
 		st_main_select stc_main_select
 		parent_topic child_topic
-		skid primaryskid
+		skid primaryskid d2_comment_q d2_comment_order
 	),
 	# Survey
 	qw(
@@ -3500,4 +3500,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.220 2007/10/15 21:44:42 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.221 2007/10/16 22:31:22 pudge Exp $

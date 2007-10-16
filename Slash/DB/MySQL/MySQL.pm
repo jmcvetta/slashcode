@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.986 2007/10/16 22:31:22 pudge Exp $
+# $Id: MySQL.pm,v 1.987 2007/10/16 23:04:51 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.986 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.987 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -277,7 +277,6 @@ my %descriptions = (
 
 	'd2_comment_order'
 		=> sub { $_[0]->sqlSelectMany('code, name', 'code_param', "type='d2_comment_order'") },
-
 );
 
 ########################################################
@@ -12446,6 +12445,37 @@ sub getMediaFile {
 	} else {
 		return $self->sqlSelect("width, height, location", "stories_media", "name=$data");
 	}
+}
+
+sub addFileToQueue {
+	my($self, $file) = @_;
+	$self->sqlInsert("file_queue", $file);
+}
+
+sub numPendingFilesForStory {
+	my($self, $stoid) = @_;
+	my $stoid_q = $self->sqlQuote($stoid);
+	$self->sqlCount("file_queue", "stoid=$stoid_q");
+}
+
+sub addStoryStaticFile {
+	my($self, $data) = @_;
+	$data ||= "";
+	
+	# Guess at file type if it isn't set
+	if ($data->{name} =~ /\.(jpg|gif|png)$/) {
+		$data->{filetype} ||= "image";
+	} elsif ($data->{name} =~ /\.(jpg|gif|png)$/) {
+		$data->{filetype} ||= "audio";
+	}
+
+	$self->sqlInsert("story_static_files", $data);
+}
+
+sub getStaticFilesForStory {
+	my($self, $stoid) = @_;
+	my $stoid_q = $self->sqlQuote($stoid);
+	return $self->sqlSelectAllHashrefArray("*", "story_static_files", "stoid=$stoid_q");
 }
 
 ########################################################

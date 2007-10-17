@@ -4,7 +4,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta
 #
-# $Id: slashschema_create.sql,v 1.251 2007/10/16 23:10:12 tvroom Exp $
+# $Id: slashschema_create.sql,v 1.252 2007/10/17 06:13:44 pudge Exp $
 #
 
 #
@@ -514,13 +514,13 @@ CREATE TABLE dst (
 # Table structure for table 'file_queue'
 #
 
-CREATE TABLE `file_queue` (
-	`fqid` int(10) unsigned NOT NULL auto_increment,
-	`stoid` mediumint(8) unsigned default NULL,
-	`fhid` mediumint(8) unsigned default NULL,
-	`file` varchar(255) default NULL,
-	`action` enum('upload','thumbnails') default NULL,
-	PRIMARY KEY  (`fqid`)
+CREATE TABLE file_queue (
+	fqid int(10) unsigned NOT NULL auto_increment,
+	stoid mediumint(8) unsigned default NULL,
+	fhid mediumint(8) unsigned default NULL,
+	file varchar(255) default NULL,
+	action enum('upload','thumbnails') default NULL,
+	PRIMARY KEY  (fqid)
 ) ENGINE=InnoDB;
 
 #

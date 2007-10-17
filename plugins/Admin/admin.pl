@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.320 2007/10/16 22:59:06 tvroom Exp $
+# $Id: admin.pl,v 1.321 2007/10/17 06:13:44 pudge Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2110,7 +2110,7 @@ sub updateStory {
 
 ##################################################################
 sub handleMediaFileForStory {
-	my ($stoid) = @_;
+	my($stoid) = @_;
 	my $form    = getCurrentForm();
 	my $slashdb = getCurrentDB();
 	if ($form->{media_file}) {

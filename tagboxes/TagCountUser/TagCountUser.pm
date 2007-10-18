@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: TagCountUser.pm,v 1.8 2007/10/18 03:01:38 jamiemccarthy Exp $
+# $Id: TagCountUser.pm,v 1.9 2007/10/18 03:07:52 jamiemccarthy Exp $
 
 package Slash::Tagbox::TagCountUser;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -37,7 +37,7 @@ use base 'Slash::DB::MySQL';
 sub new {
 	my($class, $user) = @_;
 
-	return unless if !$class->isInstalled();
+	return if !$class->isInstalled();
 
 	# Note that getTagboxes() would call back to this new() function
 	# if the tagbox objects have not yet been created -- but the

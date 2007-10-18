@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1260 2007/10/17 06:13:44 pudge Exp $
+# $Id: upgrades,v 1.1261 2007/10/18 03:01:38 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4903,8 +4903,6 @@ UPDATE dateformats SET format='%A %B %d, @%I:%M%p IF_OLD %A %B %d %Y, @%I:%M%p' 
 # 2007-10-11
 UPDATE vars SET value = 'T_2_5_0_179' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 
@@ -4944,4 +4942,6 @@ CREATE TABLE story_static_files(
 
 # 2007-10-16
 UPDATE vars SET value = 'T_2_5_0_180' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
 

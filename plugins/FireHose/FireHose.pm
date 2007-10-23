@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.176 2007/10/04 15:47:38 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.177 2007/10/23 20:52:53 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.176 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -53,6 +53,7 @@ sub createFireHose {
 	$data->{editorpop} ||= 0;
 	$data->{body_length} = $data->{bodytext} ? length($data->{bodytext}) : 0;
 	$data->{word_count} = countWords($data->{introtext}) + countWords($data->{bodytext});
+	$data->{mediatype} ||= "none";
 
 	my $text_data = {};
 	$text_data->{title} = delete $data->{title};
@@ -265,6 +266,7 @@ sub createItemFromSubmission {
 			email			=> $submission->{email},
 			emaildomain		=> $submission->{emaildomain},
 			name			=> $submission->{name},
+			mediatype		=> $submission->{mediatype}
 		};
 		$data->{url_id} = $submission->{url_id} if $submission->{url_id};
 		my $firehose_id = $self->createFireHose($data);
@@ -2392,4 +2394,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.176 2007/10/04 15:47:38 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.177 2007/10/23 20:52:53 tvroom Exp $

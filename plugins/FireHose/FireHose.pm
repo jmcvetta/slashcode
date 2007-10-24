@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.177 2007/10/23 20:52:53 tvroom Exp $
+# $Id: FireHose.pm,v 1.178 2007/10/24 00:30:08 scc Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.177 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1807,7 +1807,8 @@ sub getAndSetOptions {
 			$mode = "full";
 		}
 	}
-	
+
+    # number of firehose items per page in the normal case
 	if ($mode eq "full") {
 		if ($user->{is_admin}) {
 			$options->{limit} = $pagesize eq "large" ? 50 : 25;
@@ -1822,19 +1823,17 @@ sub getAndSetOptions {
 		}
 	}
 
-	if ($constants->{smalldevices_ua_regex}) {
+    # the non-normal cases: a small device (e.g., iPhone) or an embedded use (e.g., Google Gadget)
+  my $force_smaller = $form->{embed};
+	if (!$force_smaller && $constants->{smalldevices_ua_regex}) {
 		my $smalldev_re = qr($constants->{smalldevices_ua_regex});
 		if ($ENV{HTTP_USER_AGENT} && $ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
-			$options->{smalldevices} = 1;
-			if ($mode eq "full") {
-				$options->{limit} = $pagesize eq "large" ? 15 : 10;
-			} else {
-				$options->{limit} = $pagesize eq "large" ? 20 : 15;
-			}
+		  $force_smaller = 1;
 		}
 	}
 
-	if ($form->{gadget}) {
+    # ...for which we'll have fewer items per page
+	if ($force_smaller) {
 			$options->{smalldevices} = 1;
 			if ($mode eq "full") {
 				$options->{limit} = $pagesize eq "large" ? 15 : 10;
@@ -2066,7 +2065,7 @@ sub getFireHoseTagsTop {
 		}
 	}
 
-	if ($form->{gadget}) {
+	if ($form->{embed}) {
 		$#{@$user_tags_top} = 2;
 	}
 
@@ -2394,4 +2393,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.177 2007/10/23 20:52:53 tvroom Exp $
+$Id: FireHose.pm,v 1.178 2007/10/24 00:30:08 scc Exp $

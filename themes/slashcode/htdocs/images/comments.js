@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.94 2007/10/23 23:20:19 pudge Exp $
+// $Id: comments.js,v 1.95 2007/10/24 00:30:08 scc Exp $
 
 var comments;
 var root_comments;
@@ -276,7 +276,7 @@ function kidHiddens(cid, kidhiddens) {
 		else
 			return kidhiddens + 1;
 	} else if (kidhiddens) {
-		var kidstring = '<a href="javascript:revealKids(' + cid + ')">' + kidhiddens;
+		var kidstring = '<a href="#" onclick="revealKids(' + cid + '); return false">' + kidhiddens;
 		if (kidhiddens == 1) {
 			kidstring += ' hidden comment</a>';
 		} else {

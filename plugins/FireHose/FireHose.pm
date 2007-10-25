@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.178 2007/10/24 00:30:08 scc Exp $
+# $Id: FireHose.pm,v 1.179 2007/10/25 02:12:17 pudge Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.178 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.179 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1808,7 +1808,7 @@ sub getAndSetOptions {
 		}
 	}
 
-    # number of firehose items per page in the normal case
+	# number of firehose items per page in the normal case
 	if ($mode eq "full") {
 		if ($user->{is_admin}) {
 			$options->{limit} = $pagesize eq "large" ? 50 : 25;
@@ -1823,23 +1823,23 @@ sub getAndSetOptions {
 		}
 	}
 
-    # the non-normal cases: a small device (e.g., iPhone) or an embedded use (e.g., Google Gadget)
-  my $force_smaller = $form->{embed};
+	# the non-normal cases: a small device (e.g., iPhone) or an embedded use (e.g., Google Gadget)
+	my $force_smaller = $form->{embed};
 	if (!$force_smaller && $constants->{smalldevices_ua_regex}) {
 		my $smalldev_re = qr($constants->{smalldevices_ua_regex});
 		if ($ENV{HTTP_USER_AGENT} && $ENV{HTTP_USER_AGENT} =~ $smalldev_re) {
-		  $force_smaller = 1;
+			$force_smaller = 1;
 		}
 	}
 
-    # ...for which we'll have fewer items per page
+	# ...for which we'll have fewer items per page
 	if ($force_smaller) {
-			$options->{smalldevices} = 1;
-			if ($mode eq "full") {
-				$options->{limit} = $pagesize eq "large" ? 15 : 10;
-			} else {
-				$options->{limit} = $pagesize eq "large" ? 20 : 15;
-			}
+		$options->{smalldevices} = 1;
+		if ($mode eq "full") {
+			$options->{limit} = $pagesize eq "large" ? 15 : 10;
+		} else {
+			$options->{limit} = $pagesize eq "large" ? 20 : 15;
+		}
 	}
 
 	if ($user->{is_admin} && $form->{setusermode}) {
@@ -2393,4 +2393,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.178 2007/10/24 00:30:08 scc Exp $
+$Id: FireHose.pm,v 1.179 2007/10/25 02:12:17 pudge Exp $

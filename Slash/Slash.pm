@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.338 2007/10/23 23:20:14 pudge Exp $
+# $Id: Slash.pm,v 1.339 2007/10/25 02:12:17 pudge Exp $
 
 package Slash;
 
@@ -2176,7 +2176,7 @@ EOT2
 EOT
 
 	$return .= <<EOT if !$options->{noshow};
-	<div id="comment_top_$comment->{cid}" class="commentTop">
+	<div id="comment_top_$comment->{cid}" class="commentTop newcomment">
 		<div class="title">
 $head
 $comment_links

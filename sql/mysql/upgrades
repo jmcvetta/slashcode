@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1266 2007/10/26 03:05:27 pudge Exp $
+# $Id: upgrades,v 1.1267 2007/10/30 20:30:08 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4968,3 +4968,10 @@ UPDATE vars SET value = 'T_2_5_0_181' WHERE name = 'cvs_tag_currentcode';
 
 # PUDGE LAST UPDATED HERE
 
+# For plugins/FireHose
+# Install File::Types for plugins/FireHose 
+ALTER TABLE firehose_text ADD COLUMN media TEXT;
+ALTER TABLE firehose ADD thumb MEDIUMINT UNSIGNED;
+
+RENAME TABLES story_static_files to static_files;
+ALTER TABLE static_files ADD COLUMN fhid mediumint unsigned NOT NULL;

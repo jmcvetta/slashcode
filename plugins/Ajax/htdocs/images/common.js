@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.147 2007/10/24 00:30:07 scc Exp $
+// $Id: common.js,v 1.148 2007/10/30 20:33:48 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -137,6 +137,17 @@ function firehose_toggle_advpref() {
 function firehose_open_prefs() {
 	var obj = $('fh_advprefs');
 	obj.className = "";
+}
+
+function toggleId(id, first, second) {
+	var obj =$(id);
+	if (obj.className == first) {
+		obj.className = second;
+	} else if (obj.className == second) {
+		obj.className = first;
+	} else {
+		obj.className = first;
+	}
 }
 
 function toggleIntro(id, toggleid) {

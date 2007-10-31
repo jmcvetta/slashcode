@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.148 2007/10/30 20:33:48 tvroom Exp $
+// $Id: common.js,v 1.149 2007/10/31 19:55:14 entweichen Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1443,6 +1443,12 @@ function saveModalPrefs() {
 	params['op'] = 'saveModalPrefs';
 	params['data'] = Form.serialize(document.forms['modal_prefs']);
 	params['reskey'] = reskey_static;
-	var handlers = {onComplete:hide_modal_box};
+	var handlers = {
+		onComplete: function() {
+			hide_modal_box();
+			if (document.forms['modal_prefs'].refreshable.value)
+				document.location=document.forms['modal_prefs'].refreshable.value;
+		}
+	};
 	ajax_update(params, '', handlers);
 }

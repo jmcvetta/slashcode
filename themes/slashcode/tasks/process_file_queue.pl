@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: process_file_queue.pl,v 1.4 2007/10/30 20:25:44 tvroom Exp $
+# $Id: process_file_queue.pl,v 1.5 2007/10/31 19:56:56 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -58,7 +58,7 @@ sub handleFileCmd {
 			my $thumb = $namebase . "-thumb." . $suffix;
 			my $thumbsm = $namebase . "-thumbsm." . $suffix;
 			slashdLog("About to create thumb $path$thumb");
-			system("/usr/bin/convert -size 260x194  $path$name  -resize '130x97>'  -bordercolor black 48 -gravity center -crop 130x97+0+0 -page +0+0 $path$thumb");
+			system("/usr/bin/convert -size 260x194  $path$name  -resize '130x97>'  -bordercolor transparent  -border 48 -gravity center -crop 130x97+0+0 -page +0+0 $path$thumb");
 			my $data = {
 				stoid => $cmd->{stoid} || 0,
 				fhid  => $cmd->{fhid} || 0 ,
@@ -74,7 +74,7 @@ sub handleFileCmd {
 			}
 
 			slashdLog("About to create thumbsms $path$thumbsm");
-			system("/usr/bin/convert -size 100x74 $path$name  -resize '50x37>'  -bordercolor black 18 -gravity center -crop 50x37+0+0 -page +0+0 $path$thumbsm");
+			system("/usr/bin/convert -size 100x74 $path$name  -resize '50x37>'  -bordercolor transparent -border 18 -gravity center -crop 50x37+0+0 -page +0+0 $path$thumbsm");
 			$data = {
 				stoid => $cmd->{stoid} || 0,
 				fhid  => $cmd->{fhid} || 0,

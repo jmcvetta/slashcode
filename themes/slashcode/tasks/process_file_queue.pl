@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: process_file_queue.pl,v 1.5 2007/10/31 19:56:56 tvroom Exp $
+# $Id: process_file_queue.pl,v 1.6 2007/10/31 20:27:40 tvroom Exp $
 
 use File::Path;
 use File::Temp;
@@ -29,13 +29,13 @@ $task{$me}{code} = sub {
 			$file_queue_cmds = $slashdb->getNextFileQueueCmds();
 		}
 		$cmd = shift @$file_queue_cmds;
-		if ($cmd->{blobid}) {
-			$cmd->{file} = blobToFile($cmd->{blobid});
-		}
-		if ($cmd->{action} eq 'upload' && $cmd->{file} =~ /\.(jpg|gif|png)/i) {
-			$cmd->{action} = "thumbnails";
-		}
-		if($cmd) {
+		if ($cmd) {
+			if ($cmd->{blobid}) {
+				$cmd->{file} = blobToFile($cmd->{blobid});
+			}
+			if ($cmd->{action} eq 'upload' && $cmd->{file} =~ /\.(jpg|gif|png)/i) {
+				$cmd->{action} = "thumbnails";
+			}
 			handleFileCmd($cmd);
 		}
 		last if $task_exit_flag;

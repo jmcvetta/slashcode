@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: firehose_get_thumbnails.pl,v 1.1 2007/10/30 20:13:58 tvroom Exp $
+# $Id: firehose_get_thumbnails.pl,v 1.2 2007/10/31 19:36:02 tvroom Exp $
 
 use strict;
 
@@ -21,7 +21,7 @@ use vars qw(
 	%task	$me	$task_exit_flag
 );
 
-$task{$me}{timespec} = '0-59 * * * *';
+$task{$me}{timespec} = '0-59/2 * * * *';
 $task{$me}{fork} = SLASHD_NOWAIT;
 $task{$me}{code} = sub {
 	my($virtual_user, $constants, $slashdb, $user, $info, $gSkin) = @_;

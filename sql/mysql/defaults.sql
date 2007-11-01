@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 # Server version	3.23.26-beta-log
 #
-# $Id: defaults.sql,v 1.374 2007/10/25 07:13:04 pudge Exp $
+# $Id: defaults.sql,v 1.375 2007/11/01 20:35:19 jamiemccarthy Exp $
 #
 
 #
@@ -25,6 +25,7 @@ INSERT INTO al2_types VALUES (7, 5, 'nosubmit', 'No Story Submit');
 INSERT INTO al2_types VALUES (8, 6, 'trusted', 'Trusted');
 INSERT INTO al2_types VALUES (9, 7, 'proxy', 'Valid Proxy');
 INSERT INTO al2_types VALUES (10, 8, 'nopostanon', 'No Comment Post Anon');
+INSERT INTO al2_types VALUES (11, 9, 'binspam', 'Binspammer');
 
 
 #

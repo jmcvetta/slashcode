@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.990 2007/10/30 20:23:26 tvroom Exp $
+# $Id: MySQL.pm,v 1.991 2007/11/01 20:35:18 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.990 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.991 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5334,18 +5334,26 @@ sub getAL2Comments {
 
 sub checkAL2 {
 	my($self, $srcids, $type) = @_;
+	my $type_ar = ref($type) ? $type : [ $type ];
 
 	# If the caller is querying about a type that does not
 	# exist for this site, that's OK, it just means that no
-	# srcid can have it.  So we can return without querying
-	# the DB.
+	# srcid can have it.  If none of the types given exist,
+	# we can return without querying the DB.
 	my $types = $self->getAL2Types();
-	return 0 if !exists $types->{$type};
+	my $any_exist = 0;
+	for my $t (@$type_ar) {
+		$any_exist = 1, last if exists $types->{$t};
+	}
+	return 0 unless $any_exist;
 
-	# It's at least possible that the srcids have this type,
-	# so run the check.
+	# It's at least possible that the srcids have one or more
+	# of these types, so run the check.
 	my $data = $self->getAL2($srcids);
-	return $data->{$type} ? 1 : 0;
+	for my $t (@$type_ar) {
+		return 1 if exists $types->{$t} && $data->{$type};
+	}
+	return 0;
 }
 
 sub getAL2List {

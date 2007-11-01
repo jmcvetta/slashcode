@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.181 2007/10/31 19:36:01 tvroom Exp $
+# $Id: FireHose.pm,v 1.182 2007/11/01 20:42:19 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.181 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.182 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -157,7 +157,9 @@ sub createItemFromJournal {
 			tid			=> $journal->{tid},
 			srcid			=> $id,
 			discussion		=> $journal->{discussion},
-			type			=> $type
+			type			=> $type,
+			ipid			=> $user->{ipid},
+			subnetid		=> $user->{subnetid},
 		};
 		$self->createFireHose($data);
 		if ($publicize && !isAnon($journal->{uid})) {
@@ -2407,4 +2409,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.181 2007/10/31 19:36:01 tvroom Exp $
+$Id: FireHose.pm,v 1.182 2007/11/01 20:42:19 tvroom Exp $

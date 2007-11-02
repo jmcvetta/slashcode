@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.97 2007/11/01 18:43:38 pudge Exp $
+// $Id: comments.js,v 1.98 2007/11/02 01:08:59 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1712,7 +1712,7 @@ function keyHandler(e) {
 							i = i - 1;
 					} else if (key == 'K' || key == 'W') {
 						if (i >= l) {
-							if (ajaxCommentsWait)
+							if (ajaxCommentsWait())
 								return;
 							update = 2;
 							ajaxFetchComments(0, 1, '', 1);

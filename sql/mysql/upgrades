@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1270 2007/11/02 00:30:01 pudge Exp $
+# $Id: upgrades,v 1.1271 2007/11/02 03:35:13 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4960,11 +4960,7 @@ UPDATE string_param SET name = '9' WHERE type = 'otherusersparam' AND code = 'd2
 # 2007-10-25
 UPDATE vars SET value = 'T_2_5_0_181' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # PUDGE LAST UPDATED HERE
-
-# SLASHDOT LAST UPDATED HERE
 
 # For plugins/FireHose
 # Install CPAN module File::Type for plugins/FireHose 
@@ -5001,4 +4997,8 @@ INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_top_excludeta
 
 # 2007-11-01
 UPDATE vars SET value = 'T_2_5_0_182' WHERE name = 'cvs_tag_currentcode';
+
+# SLASHCODE/USEPERL LAST UPDATED HERE
+
+# SLASHDOT LAST UPDATED HERE
 

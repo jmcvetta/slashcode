@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1269 2007/11/01 20:35:19 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1270 2007/11/02 00:30:01 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -4997,4 +4997,8 @@ INSERT INTO reskey_resource_checks VALUES (NULL,10, 'all', 'Slash::ResKey::Check
 
 # For tagboxes/Top
 INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_top_excludetagnames', 'yes no binspam dupe notthebest offtopic stupid slownewsday interesting funny insightful', 'Minimum score a tag must have to make it into the top tags for a story or firehose item');
+
+
+# 2007-11-01
+UPDATE vars SET value = 'T_2_5_0_182' WHERE name = 'cvs_tag_currentcode';
 

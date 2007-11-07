@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.59 2007/10/31 19:54:17 entweichen Exp $
+# $Id: ajax.pl,v 1.60 2007/11/07 18:35:07 entweichen Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.59 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.60 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -504,12 +504,45 @@ sub updateD2prefs {
 sub getModalPrefs {
         my($slashdb, $constants, $user, $form) = @_;
 
-        return slashDisplay('prefs_' . $form->{'section'},
-                {
-                user => $user,
-                },
-                { Return => 1 }
-        );
+        if ($form->{'section'} eq 'messages') {
+                my $messages  = getObject('Slash::Messages');
+                my $deliverymodes   = $messages->getDescriptions('deliverymodes');
+                my $messagecodes    = $messages->getDescriptions('messagecodes');
+                my $bvdeliverymodes = $messages->getDescriptions('bvdeliverymodes');
+                my $bvmessagecodes  = $messages->getDescriptions('bvmessagecodes_slev');
+
+                foreach my $bvmessagecode (keys %$bvmessagecodes) {
+                        $bvmessagecodes->{$bvmessagecode}->{'valid_bvdeliverymodes'} = [];
+                        foreach my $bvdeliverymode (keys %$bvdeliverymodes) {
+                                # skip if we have no valid delivery modes (i.e. off)
+                                if (!$bvmessagecodes->{$bvmessagecode}->{'delivery_bvalue'}) {
+                                        delete $bvmessagecodes->{$bvmessagecode};
+                                        last;
+                                }
+                        }
+                }
+
+                my $prefs = $messages->getPrefs($user->{'uid'});
+                return
+                        slashDisplay('prefs_messages', {
+                                userm           => $user,
+                                prefs           => $prefs,
+                                messagecodes    => $messagecodes,
+                                deliverymodes   => $deliverymodes,
+                                bvmessagecodes  => $bvmessagecodes,
+                                bvdeliverymodes => $bvdeliverymodes
+                        },
+                        { Return => 1 }
+                );
+        }
+        else {
+                return
+                        slashDisplay('prefs_' . $form->{'section'}, {
+                                user => $user,
+                        },
+                        { Return => 1 }
+                );
+        }
 }
 
 sub saveModalPrefs {
@@ -531,11 +564,13 @@ sub saveModalPrefs {
 			noscores          => ($params{'noscores'}            ? 1 : 0),
 			domaintags        => ($params{'domaintags'} != 2     ? $params{'domaintags'} : undef),
 			m2_with_comm_mod  => ($params{'m2_with_mod_on_comm'} ? 1 : undef),
-		}
+		};
 	}
-	else {
+
+        if ($params{'formname'} eq 'd2_posting') {
 		my $karma_bonus      = ($params{'karma_bonus'}      !~ /^[\-+]?\d+$/) ? "+1" : $params{'karma_bonus'};
 		my $subscriber_bonus = ($params{'subscriber_bonus'} !~ /^[\-+]?\d+$/) ? "+1" : $params{'subscriber_bonus'};
+                
 		$user_edits_table = {
 			emaildisplay      => $params{'emaildisplay'} || undef,
 			karma_bonus       => ($karma_bonus ne '+1' ? $karma_bonus : undef),
@@ -552,6 +587,29 @@ sub saveModalPrefs {
 		};
 	}
 	
+        if ($params{'formname'} eq 'messages') {
+                my $messages  = getObject('Slash::Messages');
+                my $messagecodes = $messages->getDescriptions('messagecodes');
+                my %message_prefs;
+
+                for my $code (keys %$messagecodes) {
+                        my $coderef = $messages->getMessageCode($code);
+                        if ((!exists($params{"deliverymodes_$code"})) ||
+                            (!$messages->checkMessageUser($code, $slashdb->getUser($params{uid})))) {
+                                    $message_prefs{$code} = -1;
+                        }
+                        else {
+                                $message_prefs{$code} = fixint($params{"deliverymodes_$code"});
+                        }
+                }
+        
+                $messages->setPrefs($params{uid}, \%message_prefs);
+
+                $user_edits_table = {
+                        message_threshold => $params{'message_threshold'},
+                };
+        }
+        
         $slashdb->setUser($params{uid}, $user_edits_table);
 }
 

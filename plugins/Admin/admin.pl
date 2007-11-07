@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.324 2007/10/30 20:21:09 tvroom Exp $
+# $Id: admin.pl,v 1.325 2007/11/07 16:37:13 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -1240,6 +1240,11 @@ sub editStory {
 		} else {
 			$display_check = $form->{display} ? $constants->{markup_checked_attribute} : '';
 		}
+		
+		$stoid = $slashdb->getStory($form->{stoid} || $form->{sid}, 'stoid', 1);
+		if ($stoid) {
+			handleMediaFileForStory($stoid);
+		}
 
 	} elsif ($stoid) { # Loading an existing SID
 
@@ -1517,7 +1522,9 @@ sub editStory {
 	if ($stoid || $form->{sid}) {
 		my $story = $slashdb->getStory($form->{sid});
 		$stoid ||= $story->{stoid};
-		$pending_file_count = $slashdb->numPendingFilesForStory($stoid); 		$story_static_files = $slashdb->getStaticFilesForStory($stoid);
+		my $fhid = $form->{fhid} || $story->{fhid};
+		$pending_file_count = $slashdb->numPendingFilesForStory($stoid); 
+		$story_static_files = $slashdb->getStaticFiles($stoid, $fhid);
 	}
 	slashDisplay('editStory', {
 		stoid			=> $stoid,

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.991 2007/11/01 20:35:18 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.992 2007/11/07 16:34:28 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.991 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.992 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -12491,6 +12491,20 @@ sub getStaticFilesForStory {
 	my $stoid_q = $self->sqlQuote($stoid);
 	return $self->sqlSelectAllHashrefArray("*", "static_files", "stoid=$stoid_q");
 }
+
+sub getStaticFiles {
+	my($self, $stoid, $fhid) = @_;
+	my $stoid_q = $self->sqlQuote($stoid);
+	my $fhid_q = $self->sqlQuote($fhid);
+	my @where;
+	push @where, "stoid=$stoid_q";
+	push @where, "fhid=$fhid_q";
+	my $where = join ' OR ', @where;
+	print STDERR " $where \n";
+	return $self->sqlSelectAllHashrefArray("*", "static_files", $where);
+}
+
+
 
 sub getStaticFile {
 	my $answer = _genericGetCache({

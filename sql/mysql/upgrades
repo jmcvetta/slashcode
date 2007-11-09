@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1273 2007/11/08 22:05:20 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1274 2007/11/09 03:48:26 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5000,8 +5000,6 @@ INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_top_excludeta
 # 2007-11-01
 UPDATE vars SET value = 'T_2_5_0_182' WHERE name = 'cvs_tag_currentcode';
 
-# SLASHCODE/USEPERL LAST UPDATED HERE
-
 # SLASHDOT LAST UPDATED HERE
 
 # for plugins/Falk
@@ -5011,8 +5009,7 @@ ALTER TABLE ad_settings ADD COLUMN always TINYINT UNSIGNED NOT NULL DEFAULT 0;
 # 18 = "Invalid HTML Input" (see the Messages dump to add back)
 DELETE FROM message_codes WHERE code = 18;
 
-# 2007-11-08
-UPDATE vars SET value = 'T_2_5_0_183' WHERE name = 'cvs_tag_currentcode';
+# SLASHCODE/USEPERL LAST UPDATED HERE
 
 # Redundant for many sites, but this is here because an earlier error
 # in the upgrades file may have left your site without them if you
@@ -5038,4 +5035,6 @@ ALTER TABLE firehose DROP COLUMN popularity2;
 INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_despam_binspamsallowed_ip', '3', 'Number of binspam tags allowed before action is taken for an IP');
 INSERT IGNORE INTO vars (name, value, description) VALUES ('tagbox_despam_decloutdaysback', '7', 'Number of days to look back to declout upvoters');
 
+# 2007-11-08
+UPDATE vars SET value = 'T_2_5_0_183' WHERE name = 'cvs_tag_currentcode';
 

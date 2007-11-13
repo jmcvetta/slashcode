@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: freshenup.pl,v 1.81 2007/10/09 20:44:48 jamiemccarthy Exp $
+# $Id: freshenup.pl,v 1.82 2007/11/13 17:22:16 jamiemccarthy Exp $
 
 use File::Path;
 use File::Temp;
@@ -45,7 +45,7 @@ $task{$me}{code} = sub {
 	# runtask -u slashusername -o run_all=1,timeout_shtml=300 freshenup
 	$do_all = 1 
 		if $constants->{task_options}{run_all};
-	my $timeout_render = 30;
+	my $timeout_render = $constants->{task_options}{timeout_render} || 30;
 	my $timeout_shtml = $constants->{task_options}{timeout_shtml} || 90;
 
 	my $max_stories = defined($constants->{freshenup_max_stories})

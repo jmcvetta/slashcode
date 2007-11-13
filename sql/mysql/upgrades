@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1275 2007/11/13 17:25:04 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1276 2007/11/13 19:59:48 entweichen Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5040,3 +5040,9 @@ UPDATE vars SET value = 'T_2_5_0_183' WHERE name = 'cvs_tag_currentcode';
 
 INSERT INTO blocks (bid, block, seclev, type, description, skin, ordernum, title, portal, url, rdf, retrieve) VALUES ('spamurlregexes','',100,'static','Whitespace-delimited list of regexes which indicate a spammer URL.','mainpage',5,'Spam URL Regexes',0,NULL,NULL,0);
 
+# For D2 preferences
+UPDATE code_param SET name = 'Few' WHERE type = 'd2_comment_q' AND name = 'Tiny';
+UPDATE code_param SET name = 'More' WHERE type = 'd2_comment_q' AND name = 'Medium';
+UPDATE code_param SET name = 'Many' WHERE type = 'd2_comment_q' AND name = 'Large';
+UPDATE code_param SET name = 'Oldest' WHERE type = 'd2_comment_order' AND name = 'Date';
+UPDATE code_param SET name = 'Highest Rated' WHERE type = 'd2_comment_order' AND name = 'Score';

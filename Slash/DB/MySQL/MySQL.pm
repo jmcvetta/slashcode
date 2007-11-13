@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.995 2007/11/13 18:29:23 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.996 2007/11/13 23:50:31 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.995 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.996 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -5044,6 +5044,28 @@ sub getAL2Types {
 } # end closure
 
 { # closure
+my $_al2_type_aliases = undef;
+sub _load_al2_type_aliases {
+	my($self) = @_;
+	my $alias_text = getCurrentStatic('al2_type_aliases') || '';
+	$_al2_type_aliases = { };
+	return if !$alias_text;
+	my @aliases = grep { $_ } split /\s+/, $alias_text;
+	for my $alias (@aliases) {
+		my($src, $implied) = $alias =~ /^(\w+)->(\w+)$/;
+		$_al2_type_aliases->{$src} = $implied if $src && $implied;
+	}
+}
+sub getAL2TypeAliases {
+	my($self) = @_;
+	$self->_load_al2_type_aliases if !defined($_al2_type_aliases);
+	# Return a copy of the cache, just in case anyone munges it up.
+	my $aliases = {( %$_al2_type_aliases )};
+	return $aliases;
+}
+} # end closure
+
+{ # closure
 my %_al2_types_by_id = ( );
 sub getAL2TypeById {
 	my($self, $al2tid) = @_;
@@ -5249,6 +5271,17 @@ sub getAL2 {
 			$retval->{$name} = $al2types->{$name};
 		}
 	}
+
+	# If there are any al2 type aliases, return dummy hashref fields
+	# for them too.
+	my $aliases = $self->getAL2TypeAliases();
+	for my $src (keys %$aliases) {
+		if ($retval->{$src}) {
+			my $implied = $aliases->{$src};
+			$retval->{$implied} = { implied_by => $src };
+		}
+	}
+
 	return $retval;
 }
 

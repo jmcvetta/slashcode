@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.183 2007/11/13 17:25:04 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.184 2007/11/19 16:53:17 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.183 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.184 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -782,7 +782,7 @@ sub getURLsForItem {
 
 sub itemHasSpamURL {
 	my($self, $item) = @_;
-	my @spamurlregexes = grep { $_ } split /\s+/, ($self->getBlock('spamurlregexes') || '');
+	my @spamurlregexes = grep { $_ } split /\s+/, ($self->getBlock('spamurlregexes', 'block') || '');
 	return 0 unless @spamurlregexes;
 	my @urls = $self->getURLsForItem($item);
 	for my $url (@urls) {
@@ -2441,4 +2441,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.183 2007/11/13 17:25:04 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.184 2007/11/19 16:53:17 jamiemccarthy Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: admin.pl,v 1.328 2007/11/29 16:50:24 entweichen Exp $
+# $Id: admin.pl,v 1.329 2007/11/29 22:15:20 tvroom Exp $
 
 use strict;
 use File::Temp 'tempfile';
@@ -2061,6 +2061,12 @@ sub updateStory {
 	$data->{neverdisplay} = $form->{display} ? '' : 1;
 
 #print STDERR "admin.pl before updateStory data: " . Dumper($data);
+	if ($data->{neverdisplay}) {
+		print STDERR "Setting sid: $form->{sid} to neverdisplay\n";
+		use Data::Dumper;
+		print STDERR Dumper($form);
+		print STDERR Dumper($data);
+	}
 	if (!$slashdb->updateStory($form->{sid}, $data)) {
 		titlebar('100%', getTitle('story_update_failed'));
 		editStory(@_);

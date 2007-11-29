@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.185 2007/11/29 16:45:10 entweichen Exp $
+# $Id: FireHose.pm,v 1.186 2007/11/29 20:30:55 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.185 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -612,7 +612,15 @@ sub getFireHoseEssentials {
 
 #print STDERR "[\nSELECT $columns\nFROM   $tables\nWHERE  $where\n$other\n]\n";
 	my $hr_ar = $self->sqlSelectAllHashrefArray($columns, $tables, $where, $other);
-	my $count = $self->sqlSelect("count(*)", $tables, $where, $count_other);
+	my $count;
+	if ($options->{tagged_by_uid}) {
+		my $rows = $self->sqlSelectAllHashrefArray("count(*)", $tables, $where, $count_other);
+		$count = @$rows;
+	} else {
+		$count = $self->sqlSelect("count(*)", $tables, $where, $count_other);
+	}
+
+
 	my $page_size = $options->{limit} || 1;
 	$results->{records_pages} ||= ceil($count / $page_size);
 	$results->{records_page}  ||= (int(($options->{offset} || 0) / $options->{limit}) + 1) || 1;
@@ -647,7 +655,6 @@ sub getFireHoseEssentials {
 
 		$items = $hr_ar;
 	}
-
 	return($items, $results, $count);
 }
 
@@ -1628,7 +1635,6 @@ sub getAndSetOptions {
 			$self->setUser($user->{uid}, { firehose_paused => $options->{pause} });
 		}
 	}
-
 	if (defined $form->{duration}) {
 		if ($form->{duration} =~ /^-?\d+$/) {
 			$options->{duration} = $form->{duration};
@@ -1658,7 +1664,6 @@ sub getAndSetOptions {
 	
 
 	my $colors = $self->getFireHoseColors();
-
 	if ($form->{color} && $colors->{$form->{color}}) {
 		$options->{color} = $form->{color};
 	}
@@ -2017,7 +2022,6 @@ sub getAndSetOptions {
 	if ($options->{issue}) {
 		$options->{duration} = 1;
 	}
-
 
 	return $options;
 }
@@ -2399,4 +2403,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.185 2007/11/29 16:45:10 entweichen Exp $
+$Id: FireHose.pm,v 1.186 2007/11/29 20:30:55 tvroom Exp $

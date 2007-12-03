@@ -282,6 +282,8 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 				subject_only => 1
 			}) %]
 		[% END %]
+			<div id="bindings-legend">
+			</div>
 		</div>
 		<div id="commentControlBoxStatus" class="hide"><b>Loading ... Please wait.</b></div>
 	</div>
@@ -294,4 +296,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.96 2007/11/07 17:59:36 entweichen Exp $
+$Id: printCommentsMain;misc;default,v 1.97 2007/12/03 20:59:38 scc Exp $

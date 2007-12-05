@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.186 2007/11/29 20:30:55 tvroom Exp $
+# $Id: FireHose.pm,v 1.187 2007/12/05 18:53:27 scc Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.186 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.187 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1839,11 +1839,7 @@ sub getAndSetOptions {
 	# ...for which we'll have fewer items per page
 	if ($force_smaller) {
 		$options->{smalldevices} = 1;
-		if ($mode eq "full") {
-			$options->{limit} = $pagesize eq "large" ? 15 : 10;
-		} else {
-			$options->{limit} = $pagesize eq "large" ? 20 : 15;
-		}
+		$options->{limit} = 10;
 	}
 
 	if ($user->{is_admin} && $form->{setusermode}) {
@@ -2403,4 +2399,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.186 2007/11/29 20:30:55 tvroom Exp $
+$Id: FireHose.pm,v 1.187 2007/12/05 18:53:27 scc Exp $

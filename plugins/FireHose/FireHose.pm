@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.189 2007/12/06 04:25:21 tvroom Exp $
+# $Id: FireHose.pm,v 1.190 2007/12/06 20:02:26 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.189 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.190 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -771,8 +771,9 @@ sub allowSubmitForUrl {
 sub getURLsForItem {
 	my($self, $item) = @_;
 	my $url_id = $item->{url_id};
-	my $url =         $url_id ? $self->getUrl($url_id)->{url} : undef;
-	my $url_prepend =    $url ? qq{<a href="$url">$url</a>}   : '';
+	my $url = $url_id ? $self->getUrl($url_id) : undef;
+	$url = $url->{url} if $url;
+	my $url_prepend = $url ? qq{<a href="$url">$url</a>}   : '';
 	my $text = qq{$url_prepend $item->introtext $item->{bodytext}};
 
 	my %urls = ( );
@@ -2404,4 +2405,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.189 2007/12/06 04:25:21 tvroom Exp $
+$Id: FireHose.pm,v 1.190 2007/12/06 20:02:26 jamiemccarthy Exp $

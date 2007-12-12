@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.190 2007/12/06 20:02:26 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.191 2007/12/12 22:14:05 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.190 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.191 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -592,6 +592,10 @@ sub getFireHoseEssentials {
 		return($items, $results) if @{$options->{ids}} < 1;
 		my $id_str = join ',', map { $self->sqlQuote($_) } @{$options->{ids}};
 		push @where, "firehose.id IN ($id_str)";
+	}
+
+	if ($options->{not_id}) {
+		push @where, "firehose.id != " . $self->sqlQuote($options->{not_id});
 	}
 
 	my $limit_str = '';
@@ -2021,9 +2025,10 @@ sub getAndSetOptions {
 		$options->{duration} = 1;
 	}
 
-	if ($user->{state}{firehose_page} eq "user") {
-		print STDERR "Users UID $user->{state}{firehose_uid} firehose duration $options->{duration}\n" if $options->{duration} != -1;
+	if ($form->{not_id} && $form->{not_id} =~ /^\d+$/) {
+		$options->{not_id} = $form->{not_id};
 	}
+
 
 	return $options;
 }
@@ -2121,11 +2126,22 @@ sub listView {
 	$lv_opts ||= {};
 	my $slashdb = getCurrentDB();
 	my $user = getCurrentUser();
+	my $gSkin = getCurrentSkin();
 	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
+	my $featured;
+
+	if ($gSkin->{name} eq "idle") {
+		my ($res) = $firehose_reader->getFireHoseEssentials({ primaryskid => $gSkin->{skid}, type => "story", limit => 1, orderby => 'createtime', orderdir => 'DESC'});
+		if ($res && $res->[0]) {
+			$featured = $firehose_reader->getFireHose($res->[0]->{id});
+		}
+	}
 	my $options = $lv_opts->{options} || $self->getAndSetOptions();
 	my $base_page = $lv_opts->{fh_page} || "firehose.pl";
 
-
+	if ($featured && $featured->{id}) {
+		$options->{no_id} = $featured->{id};
+	}
 	my($items, $results) = $firehose_reader->getFireHoseEssentials($options);
 
 	my $itemnum = scalar @$items;
@@ -2202,7 +2218,8 @@ sub listView {
 		slashboxes	=> $Slashboxes,
 		last_day	=> $last_day,
 		fh_page		=> $base_page,
-		search_results	=> $results
+		search_results	=> $results,
+		featured	=> $featured,
 	}, { Page => "firehose", Return => 1 });
 }
 
@@ -2405,4 +2422,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.190 2007/12/06 20:02:26 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.191 2007/12/12 22:14:05 tvroom Exp $

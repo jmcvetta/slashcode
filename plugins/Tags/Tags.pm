@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.90 2007/12/11 22:38:40 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.91 2007/12/12 22:02:30 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.90 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1737,6 +1737,7 @@ sub markViewed {
 
 sub getRecentTagnamesOfInterest {
 	my($self, $options) = @_;
+	my $constants = getCurrentStatic();
 	my $max_num = $options->{max_num} || 10;
 	my $min_weight = $options->{min_weight} || 1;
 

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.153 2007/12/12 22:17:57 tvroom Exp $
+// $Id: common.js,v 1.154 2007/12/13 20:54:55 pudge Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1045,18 +1045,18 @@ function firehose_get_item_idstring() {
 	var fhl = $('firehoselist');
 	var str = "";
 	var children;
-	if(fhl) {
+	if (fhl) {
 		var id;
 		children = fhl.childNodes;
 		if (children) {
-		for (var i = 0; i < children.length; i++) {
-			if (children[i].id) {
-				id = children[i].id;
-				id = id.replace(/^firehose-/g, "");
-				id = id.replace(/^\s+|\s+$/g, "");
-				str = str + id + ",";
+			for (var i = 0; i < children.length; i++) {
+				if (children[i].id) {
+					id = children[i].id;
+					id = id.replace(/^firehose-/g, "");
+					id = id.replace(/^\s+|\s+$/g, "");
+					str = str + id + ",";
+				}
 			}
-		}
 		}
 	}
 	return str;

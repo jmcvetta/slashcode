@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.192 2007/12/12 22:15:57 tvroom Exp $
+# $Id: FireHose.pm,v 1.193 2007/12/13 20:54:55 pudge Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.192 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.193 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -2136,7 +2136,7 @@ sub listView {
 	my $featured;
 
 	if ($gSkin->{name} eq "idle") {
-		my ($res) = $firehose_reader->getFireHoseEssentials({ primaryskid => $gSkin->{skid}, type => "story", limit => 1, orderby => 'createtime', orderdir => 'DESC'});
+		my($res) = $firehose_reader->getFireHoseEssentials({ primaryskid => $gSkin->{skid}, type => "story", limit => 1, orderby => 'createtime', orderdir => 'DESC'});
 		if ($res && $res->[0]) {
 			$featured = $firehose_reader->getFireHose($res->[0]->{id});
 		}
@@ -2427,4 +2427,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.192 2007/12/12 22:15:57 tvroom Exp $
+$Id: FireHose.pm,v 1.193 2007/12/13 20:54:55 pudge Exp $

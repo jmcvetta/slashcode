@@ -14,7 +14,11 @@ en_US
 __name__
 pollplug
 __template__
-[% pb = Slash.getObject("Slash::PollBooth");
+[% pb = Slash.getObject("Slash::PollBooth") %]
+[% IF !qid && skid %]
+	qid = pb.getCurrentQidForSkid(skid);
+[% END %]
+[%
    poll =  pb.getPollQuestion(qid);
    answers  = pb.getPollAnswers(qid, ['answer', 'votes']);
    totalvotes = poll.voters;
@@ -34,4 +38,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: pollplug;misc;default,v 1.1 2007/12/14 21:57:24 tvroom Exp $
+$Id: pollplug;misc;default,v 1.2 2007/12/14 21:59:19 tvroom Exp $

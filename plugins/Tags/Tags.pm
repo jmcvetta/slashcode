@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.91 2007/12/12 22:02:30 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.92 2007/12/18 23:40:03 pudge Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.91 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1907,6 +1907,66 @@ sub showRecentTagnamesBox {
 sub ajax_recenttagnamesbox {
 	my $tagsdb = getObject("Slash::Tags");
 	$tagsdb->showRecentTagnamesBox({ contents_only => 1});
+}
+
+sub getTagnameParamsByNameValue {
+	my($self, $name, $value) = @_;
+	return $self->sqlSelectAll('tagnameid', 'tagname_params',
+		'name=' . $self->sqlQuote($name),
+		'AND value=' . $self->sqlQuote($value)
+	);
+}
+
+sub getTagnamesByParam {
+	my($self, $name, $value) = @_;
+	my $tagnameids = $self->getTagnameParamsByNameValue($name, $value);
+	return [ map { $self->getTagnameDataFromId($_->[0])->{tagname} } @$tagnameids ];
+}
+
+sub getPopupTags {
+	my($self) = @_;
+	return $self->getTagnamesByParam('popup', '1');
+}
+
+sub limitToPopupTags {
+	my($self, $tags) = @_;
+	my $pop = $self->getPopupTags;
+
+	my %tags = map { $_ => 0 } @$tags;
+	for (@$pop) {
+		$tags{$_} = 1 if exists $tags{$_};
+	}
+	$tags{$_} or delete $tags{$_} for keys %tags;
+	@$tags = keys %tags;
+}
+
+sub getNegativePopupTags {
+	my($self) = @_;
+	my $neg = $self->getNegativeTags;
+	$self->limitToPopupTags($neg);
+	return $neg;
+}
+
+sub getPositivePopupTags {
+	my($self) = @_;
+	my $pos = $self->getPositiveTags;
+	$self->limitToPopupTags($pos);
+	return $pos;
+}
+
+sub getExcludedTags {
+	my($self) = @_;
+	return $self->getTagnamesByParam('excluded', '1');
+}
+
+sub getNegativeTags {
+	my($self) = @_;
+	return $self->getTagnamesByParam('posneg', '-');
+}
+
+sub getPositiveTags {
+	my($self) = @_;
+	return $self->getTagnamesByParam('posneg', '+');
 }
 
 #################################################################

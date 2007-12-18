@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.194 2007/12/14 17:15:31 tvroom Exp $
+# $Id: FireHose.pm,v 1.195 2007/12/18 23:40:03 pudge Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.194 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -460,18 +460,21 @@ sub getFireHoseEssentials {
 		} elsif ($options->{tagged_positive} || $options->{tagged_negative} || $options->{tagged_non_negative}) {
 			my $labels;
 			my $not = '';
+			my $tags = getObject('Slash::Tags');
+
 			if ($options->{tagged_positive}) {
-				$labels = $constants->{tags_positive_tagnames} || 'nod';
+				$labels = $tags->getPositiveTags;
+				$labels = ['nod'] unless @$labels;
 			} else { # tagged_non_negative || tagged_negative
-				$labels = $constants->{tags_negative_tagnames} || 'nix';
+				$labels = $tags->getNegativeTags;
+				$labels = ['nix'] unless @$labels;
 				$not = 'NOT' if $options->{tagged_non_negative};
 			}
 
-			my $tags = getObject('Slash::Tags');
 			my $ids = join ',', grep $_, map {
 				s/\s+//g;
 				$tags->getTagnameidFromNameIfExists($_)
-			} split /,/, $labels;
+			} @$labels;
 			push @where, "tags.tagnameid $not IN ($ids)";
 
 			if ($not) {
@@ -2427,4 +2430,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.194 2007/12/14 17:15:31 tvroom Exp $
+$Id: FireHose.pm,v 1.195 2007/12/18 23:40:03 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.92 2007/12/18 23:40:03 pudge Exp $
+# $Id: Tags.pm,v 1.93 2007/12/20 19:59:30 pudge Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.92 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1909,9 +1909,9 @@ sub ajax_recenttagnamesbox {
 	$tagsdb->showRecentTagnamesBox({ contents_only => 1});
 }
 
-sub getTagnameParamsByNameValue {
+sub getTagnameidsByParam {
 	my($self, $name, $value) = @_;
-	return $self->sqlSelectAll('tagnameid', 'tagname_params',
+	return $self->sqlSelectColArrayref('tagnameid', 'tagname_params',
 		'name=' . $self->sqlQuote($name),
 		'AND value=' . $self->sqlQuote($value)
 	);
@@ -1919,8 +1919,8 @@ sub getTagnameParamsByNameValue {
 
 sub getTagnamesByParam {
 	my($self, $name, $value) = @_;
-	my $tagnameids = $self->getTagnameParamsByNameValue($name, $value);
-	return [ map { $self->getTagnameDataFromId($_->[0])->{tagname} } @$tagnameids ];
+	my $tagnameids = $self->getTagnameidsByParam($name, $value);
+	return [ map { $self->getTagnameDataFromId($_)->{tagname} } @$tagnameids ];
 }
 
 sub getPopupTags {

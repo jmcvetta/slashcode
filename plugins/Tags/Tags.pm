@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.93 2007/12/20 19:59:30 pudge Exp $
+# $Id: Tags.pm,v 1.94 2007/12/20 20:37:48 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.93 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -422,7 +422,7 @@ sub setTag {
 
 sub setTagname {
 	my($self, $id, $params) = @_;
-	return 0 if !$id || !$params || !%$params;
+	return 0 if !$id || $id !~ /^\d+$/ || !$params || !%$params;
 
 	my $changed = 0;
 	for my $key (sort keys %$params) {

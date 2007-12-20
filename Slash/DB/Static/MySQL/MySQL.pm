@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.261 2007/12/19 16:44:26 tvroom Exp $
+# $Id: MySQL.pm,v 1.262 2007/12/20 22:07:32 pudge Exp $
 
 package Slash::DB::Static::MySQL;
 
@@ -20,7 +20,7 @@ use URI ();
 use vars qw($VERSION);
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.261 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.262 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: Hey, thinking hurts 'em! Maybe I can think of a way to use that.
 
@@ -1929,7 +1929,7 @@ sub deleteFileQueueCmd {
 }
 
 sub getRecentThumbAndMediaStories {
-	my ($self, $skid, $limit) = @_;
+	my($self, $skid, $limit) = @_;
 	$limit ||= 20;
 
 	my $skid_clause = "";

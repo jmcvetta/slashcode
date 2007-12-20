@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.195 2007/12/18 23:40:03 pudge Exp $
+# $Id: FireHose.pm,v 1.196 2007/12/20 18:50:18 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.195 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.196 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1855,7 +1855,7 @@ sub getAndSetOptions {
 		$self->setUser($user->{uid}, { firehose_usermode => $form->{firehose_usermode} ? 1 : "" });
 	}
 
-	foreach (qw(nodates nobylines nothumbs nocolors)) {
+	foreach (qw(nodates nobylines nothumbs nocolors noslashboxes nomarquee)) {
 		if ($form->{setfield}) {
 			if (defined $form->{$_}) {
 				$options->{$_} = $form->{$_} ? 1 : 0;
@@ -2138,7 +2138,7 @@ sub listView {
 	my $firehose_reader = getObject('Slash::FireHose', {db_type => 'reader'});
 	my $featured;
 
-	if ($gSkin->{name} eq "idle") {
+	if ($gSkin->{name} eq "idle" && !$user->{firehose_nomarquee}) {
 		my($res) = $firehose_reader->getFireHoseEssentials({ primaryskid => $gSkin->{skid}, type => "story", limit => 1, orderby => 'createtime', orderdir => 'DESC'});
 		if ($res && $res->[0]) {
 			$featured = $firehose_reader->getFireHose($res->[0]->{id});
@@ -2430,4 +2430,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.195 2007/12/18 23:40:03 pudge Exp $
+$Id: FireHose.pm,v 1.196 2007/12/20 18:50:18 tvroom Exp $

@@ -32,11 +32,11 @@ __template__
   <div class="menu" onmouseover="dont_hide_nodnix_menu()" onmouseout="hide_nodnix_menu(750)" onmousedown="hide_nodnix_menu()">
     <ul>
     [%- FOR negtag IN negtags %]
-      <li title="Tag this item '[% negtag %]', voting it down" onmousedown="nodnix_tag('[% negtag %]', '+')">[% negtag %]</li>
+      <li title="Tag this item '[% negtag %]', voting it down" onmousedown="nodnix_tag('[% negtag %]', '-')">[% negtag %]</li>
     [%- END %]
     </ul>
   </div>
 </div>
 [% END %]
 __version__
-$Id: nodnix_menus;firehose;default,v 1.7 2007/12/18 23:40:03 pudge Exp $
+$Id: nodnix_menus;firehose;default,v 1.8 2007/12/21 04:17:37 pudge Exp $

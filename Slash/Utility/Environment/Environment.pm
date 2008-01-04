@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.223 2007/10/24 21:19:34 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.224 2008/01/04 19:14:07 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.223 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.224 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -1823,7 +1823,7 @@ Hashref of cleaned-up data.
 
 	# fields that are numeric only
 	my %nums = map {($_ => 1)} qw(
-		approved artcount art_offset bseclev
+		approved artcount art_offset bseclev id
 		buymore cid clbig clsmall cm_offset
 		commentlimit commentsort commentspill
 		del displaystatus limit
@@ -3500,4 +3500,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.223 2007/10/24 21:19:34 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.224 2008/01/04 19:14:07 pudge Exp $

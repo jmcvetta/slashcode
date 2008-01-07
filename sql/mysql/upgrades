@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1293 2007/12/20 22:05:51 pudge Exp $
+# $Id: upgrades,v 1.1294 2008/01/07 16:16:52 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5087,4 +5087,6 @@ DELETE FROM vars WHERE name IN ('tagbox_top_excludetagnames', 'tags_negative_tag
 
 # 2007-12-20
 UPDATE vars SET value = 'T_2_5_0_188' WHERE name = 'cvs_tag_currentcode';
+
+ALTER TABLE accesslog CHANGE query_string query_string VARCHAR(254) DEFAULT NULL;
 

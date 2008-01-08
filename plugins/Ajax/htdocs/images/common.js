@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.155 2007/12/20 18:46:54 tvroom Exp $
+// $Id: common.js,v 1.156 2008/01/08 21:58:26 tvroom Exp $
 
 var fh_play = 0;
 var fh_is_timed_out = 0;
@@ -1183,10 +1183,12 @@ function firehose_add_update_timerid(timerid) {
 function firehose_collapse_entry(id) {
 	var fhbody = $('fhbody-'+id);
 	var fh = $('firehose-'+id);
-	if (fhbody.className == "body") {
+	if (fhbody && fhbody.className == "body") {
 		fhbody.className = "hide";
+	}
+	if (fh) {	
 		fh.className = "briefarticle";
-	}	
+	}
 	tagsHideBody(id)
 
 }

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.94 2007/12/20 20:37:48 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.95 2008/01/09 16:10:18 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.94 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.95 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1956,7 +1956,7 @@ sub getPositivePopupTags {
 
 sub getExcludedTags {
 	my($self) = @_;
-	return $self->getTagnamesByParam('excluded', '1');
+	return $self->getTagnamesByParam('exclude', '1');
 }
 
 sub getNegativeTags {

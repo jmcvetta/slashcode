@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.46 2008/01/09 21:00:06 pudge Exp $
+# $Id: ircslash.pl,v 1.47 2008/01/18 21:26:28 jamiemccarthy Exp $
 
 use strict;
 
@@ -861,8 +861,8 @@ sub possible_check_dbs {
 			$ok = 0 if !$dbs_data->{$dbid}{was_alive}
 				|| !$dbs_data->{$dbid}{was_reachable}
 				|| !$dbs_data->{$dbid}{was_running};
-			$ok = 0 if $dbs_data->{$dbid}{lag} > ($constants->{ircslash_dbalert_lagthresh} || 30);
-			$ok = 0 if $dbs_data->{$dbid}{bog} > ($constants->{ircslash_dbalert_bogthresh} || 30);
+			$ok = 0 if $ok && $dbs_data->{$dbid}{lag} > ($constants->{ircslash_dbalert_lagthresh} || 30);
+			$ok = 0 if $ok && $dbs_data->{$dbid}{bog} > ($constants->{ircslash_dbalert_bogthresh} || 30);
 		}
 		# "Great" means good enough to clear out a previously
 		# reported alert.
@@ -871,8 +871,8 @@ sub possible_check_dbs {
 			$great = 0 if !$dbs_data->{$dbid}{was_alive}
 				|| !$dbs_data->{$dbid}{was_reachable}
 				|| !$dbs_data->{$dbid}{was_running};
-			$great = 0 if $dbs_data->{$dbid}{lag} > ($constants->{ircslash_dbalert_lagthresh} || 30)/2;
-			$great = 0 if $dbs_data->{$dbid}{bog} > ($constants->{ircslash_dbalert_bogthresh} || 30)/2;
+			$great = 0 if $great && $dbs_data->{$dbid}{lag} > ($constants->{ircslash_dbalert_lagthresh} || 30)/2;
+			$great = 0 if $great && $dbs_data->{$dbid}{bog} > ($constants->{ircslash_dbalert_bogthresh} || 30)/2;
 		}
 		if (!$ok) {
 			# There's something about the DBs that we

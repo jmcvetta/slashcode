@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ircslash.pl,v 1.47 2008/01/18 21:26:28 jamiemccarthy Exp $
+# $Id: ircslash.pl,v 1.48 2008/01/18 22:36:51 pudge Exp $
 
 use strict;
 
@@ -254,13 +254,13 @@ sub j_on_auth {
 	# we want to msg ourselves to catch the current time from the
 	# Jabber server, so we can skip messages from the channel log
 	# when we enter the channel
-	my $to = "$jchannel\@$jchanserver/$jnick";
-	slashdLog("sending to: $to");
-	$jabber->MessageSend(
-		to		=> $to,
-		type		=> 'chat',
-		body		=> 'timestamp',
-	);
+# 	my $to = "$jchannel\@$jchanserver/$jnick";
+# 	slashdLog("sending to: $to");
+# 	$jabber->MessageSend(
+# 		to		=> $to,
+# 		type		=> 'chat',
+# 		body		=> 'timestamp',
+# 	);
 
 	# XXX: this will silently fail on a nick collision ...
 	$jabber->MUCJoin(

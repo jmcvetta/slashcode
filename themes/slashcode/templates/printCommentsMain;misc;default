@@ -115,6 +115,7 @@ __template__
 	<div class="commentBoxForm" id="commentControlBox">
 [% UNLESS discussion2 %]
 		<form action="[% gSkin.rootdir %]/comments.pl">
+		[% IF user.state.no_d2 %]<input type="hidden" name="no_d2" value="1">[% END %]
 		<fieldset>
 		<legend>Display Options</legend>
 		[% UNLESS discussion2 %]
@@ -304,4 +305,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.99 2008/01/07 16:25:17 scc Exp $
+$Id: printCommentsMain;misc;default,v 1.100 2008/01/18 22:36:51 pudge Exp $

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.43 2008/01/16 18:38:30 scc Exp $
+// $Id: sd_autocomplete.js,v 1.44 2008/01/18 22:36:50 pudge Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -508,9 +508,9 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onTextboxKeyUp = function( e, me )
           me._hide();
           break;
         case 13:
-        		// I'm sorry to say we have to test first, something somehow somewhere can still leave
-        		//	leave this listener dangling; want to look deeper into this, as this would _still_
-        		//	leave the listener dangling
+        	// I'm sorry to say we have to test first, something somehow somewhere can still leave
+        	//	leave this listener dangling; want to look deeper into this, as this would _still_
+        	//	leave the listener dangling
         	if ( me._completer )
           	me._completer.unmatchedItemSelectEvent.fire(me._completer, me, me._completer._sCurQuery);
           break;

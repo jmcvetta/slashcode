@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.199 2008/01/18 21:18:20 tvroom Exp $
+# $Id: FireHose.pm,v 1.200 2008/01/22 04:23:14 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.199 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.200 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1833,7 +1833,9 @@ sub getAndSetOptions {
 				$data->{mode}  	  = $options->{mode};
 				$data->{filter}	  = $options->{fhfilter};
 				$data->{color}	  = $options->{color};
-				$self->createOrReplaceUserTab($user->{uid}, $tab->{tabname}, $data);
+				if (!$user->{is_anon}) {
+					$self->createOrReplaceUserTab($user->{uid}, $tab->{tabname}, $data) ;
+				}
 			}
 		}
 	}
@@ -1843,7 +1845,9 @@ sub getAndSetOptions {
 		foreach (keys %$tab_compare) {
 			$data->{$_} = $options->{$tab_compare->{$_}} || '';
 		}
-		$self->createOrReplaceUserTab($user->{uid}, "untitled", $data);
+		if (!$user->{is_anon}) {
+			$self->createOrReplaceUserTab($user->{uid}, "untitled", $data);
+		}
 		$user_tabs = $self->getUserTabs();
 		foreach (@$user_tabs) {
 			$_->{active} = 1 if $_->{tabname} eq "untitled" 
@@ -2523,4 +2527,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.199 2008/01/18 21:18:20 tvroom Exp $
+$Id: FireHose.pm,v 1.200 2008/01/22 04:23:14 tvroom Exp $

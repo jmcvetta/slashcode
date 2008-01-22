@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1000 2008/01/15 00:17:38 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.1001 2008/01/22 04:53:29 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1000 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1001 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10004,7 +10004,7 @@ sub getStoryTopics {
 
 	my $tree = $self->getTopicTree();
 	my $answer = { };
-	for my $tid (keys %$tree) {
+	for my $tid (@$topics) {
 		$answer->{$tid} = $field ? $tree->{$tid}{$field} : 1;
 	}
 	return $answer;

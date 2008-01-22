@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.201 2008/01/22 04:54:23 tvroom Exp $
+# $Id: FireHose.pm,v 1.202 2008/01/22 14:32:33 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.201 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -2205,7 +2205,7 @@ sub listView {
 			$featured = $firehose_reader->getFireHose($res->[0]->{id});
 		}
 	}
-	my $initial = ($form->{tab} || $form->{tabtype} || $form->{fhfilter}) ? 0 : 1;
+	my $initial = ($form->{tab} || $form->{tabtype} || $form->{fhfilter} || $form->{page}) ? 0 : 1;
 	my $options = $lv_opts->{options} || $self->getAndSetOptions({ initial => $initial });
 	my $base_page = $lv_opts->{fh_page} || "firehose.pl";
 
@@ -2527,4 +2527,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.201 2008/01/22 04:54:23 tvroom Exp $
+$Id: FireHose.pm,v 1.202 2008/01/22 14:32:33 tvroom Exp $

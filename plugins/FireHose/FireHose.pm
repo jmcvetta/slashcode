@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.202 2008/01/22 14:32:33 tvroom Exp $
+# $Id: FireHose.pm,v 1.203 2008/01/23 22:10:11 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.202 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -2267,7 +2267,7 @@ sub listView {
 		}
 		$i++;
 	}
-	my $Slashboxes = displaySlashboxes();
+	my $Slashboxes = displaySlashboxes($gSkin);
 	my $refresh_options;
 	$refresh_options->{maxtime} = $maxtime;
 	if (uc($options->{orderdir}) eq "ASC") {
@@ -2365,7 +2365,7 @@ sub ajaxFirehoseListTabs {
 	my $firehose = getObject("Slash::FireHose");
 	my $tabs = $firehose->getUserTabs({ prefix => $form->{prefix}});
 	@$tabs = map { $_->{tabname}} grep { $_->{tabname} ne "untitled" } @$tabs;
-	return join "\n", @$tabs;
+	return join "\n", @$tabs, "untit";
 }
 
 sub splitOpsFromString {
@@ -2527,4 +2527,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.202 2008/01/22 14:32:33 tvroom Exp $
+$Id: FireHose.pm,v 1.203 2008/01/23 22:10:11 tvroom Exp $

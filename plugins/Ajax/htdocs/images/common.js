@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.160 2008/01/21 18:42:37 tvroom Exp $
+// $Id: common.js,v 1.161 2008/01/24 19:56:46 tvroom Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -29,6 +29,7 @@ var fh_colorslider;
 var fh_ticksize;
 var fh_pageval = 0;
 var fh_colors = Array(0);
+var fh_use_jquery = 0;
 var vendor_popup_timerids = Array(0);
 var vendor_popup_id = 0;
 var fh_slider_init_set = 0;
@@ -898,6 +899,8 @@ function firehose_handle_update() {
 		if(el[0] == "add") {
 			if (firehose_settings.before[el[1]] && $('firehose-' + firehose_settings.before[el[1]])) {
 				new Insertion.After('firehose-' + firehose_settings.before[el[1]], el[2]);
+
+
 			} else if (firehose_settings.after[el[1]] && $('firehose-' + firehose_settings.after[el[1]])) {
 				new Insertion.Before('firehose-' + firehose_settings.after[el[1]], el[2]);
 			} else if (insert_new_at == "bottom") {
@@ -935,6 +938,15 @@ function firehose_handle_update() {
 			myAnim.onComplete.subscribe(function() {
 				if ($(fh)) {
 					$(fh).style.height = "";
+					if (fh_use_jquery) {
+						jQuery("#" + fh + " h3 a[class!='skin']").click(
+				                	function(){
+                	        				jQuery(this).parent('h3').next('div.hide').toggle("fast");
+				                        	jQuery(this).parent('h3').find('a img').toggle("fast");
+                        			        	return false;
+                        				}
+                				);
+					}
 				}
 			});
 			myAnim.animate();

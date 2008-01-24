@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.203 2008/01/23 22:10:11 tvroom Exp $
+# $Id: FireHose.pm,v 1.204 2008/01/24 15:40:04 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.203 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.204 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1735,9 +1735,13 @@ sub getAndSetOptions {
 
 	my $fhfilter;
 
-	if ($opts->{initial} && !$tabtype) {
-		$tabtype = 'tabsection';
-		$form->{section} = $gSkin->{skid} == $constants->{mainpage_skid} ? 0 : $gSkin->{skid};
+	if ($opts->{initial}) {
+		if (!defined $form->{section}) {
+			$form->{section} = $gSkin->{skid} == $constants->{mainpage_skid} ? 0 : $gSkin->{skid};
+		}
+		if (!$tabtype) {
+			$tabtype = 'tabsection';
+		}
 	}
 
 	my $the_skin = $self->getSkin($form->{section});
@@ -2511,7 +2515,7 @@ sub createSectionSelect {
 	}
 
 	@$ordered = sort {$a == 0 ? -1 : $b == 0 ? 1 : 0 || $menu->{$a} cmp $menu->{$b} } keys %$menu;
-	return createSelect("fh_section", $menu, { default => $default, return => 1, nsort => 0, ordered => $ordered, multiple => 0, onchange =>"firehose_set_options('tabsection', this.options[this.selectedIndex].value)"});
+	return createSelect("section", $menu, { default => $default, return => 1, nsort => 0, ordered => $ordered, multiple => 0, onchange =>"firehose_set_options('tabsection', this.options[this.selectedIndex].value)"});
 
 	
 }
@@ -2527,4 +2531,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.203 2008/01/23 22:10:11 tvroom Exp $
+$Id: FireHose.pm,v 1.204 2008/01/24 15:40:04 tvroom Exp $

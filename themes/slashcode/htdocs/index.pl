@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: index.pl,v 1.163 2007/08/18 02:19:12 jamiemccarthy Exp $
+# $Id: index.pl,v 1.164 2008/01/24 19:32:01 pudge Exp $
 
 use strict;
 use Slash;
@@ -657,22 +657,12 @@ sub displayStories {
 				}
 
 				my @commentcount_link;
-				my $thresh = $threshComments[$user->{threshold} + 1];
-
-				if ($user->{threshold} > -1 && $story->{commentcount} ne $thresh) {
-					$commentcount_link[0] = linkStory({
-						sid		=> $story->{sid},
-						tid		=> $story->{tid},
-						threshold	=> $user->{threshold},
-						'link'		=> $thresh,
-						skin		=> $story->{primaryskid},
-					}, '', $ls_other);
-				}
+				my $thresh = $threshComments[1];  # threshold == 0
 
 				$commentcount_link[1] = linkStory({
 					sid		=> $story->{sid},
 					tid		=> $story->{tid},
-					threshold	=> -1,
+					threshold	=> 0,
 					'link'		=> $story->{commentcount} || 0,
 					skin		=> $story->{primaryskid}
 				}, '', $ls_other);

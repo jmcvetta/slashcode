@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.205 2008/01/24 18:17:59 tvroom Exp $
+# $Id: FireHose.pm,v 1.206 2008/01/24 18:32:07 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.205 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -292,8 +292,6 @@ sub updateItemFromStory {
 	my $constants = getCurrentStatic();
 	my %ignore_skids = map {$_ => 1 } @{$constants->{firehose_story_ignore_skids}};
 	my $story = $self->getStory($id, "", 1);
-	use Data::Dumper;
-	print STDERR Dumper($story);
 	if ($story) {
 		my $globjid = $self->getGlobjidCreate("stories", $story->{stoid});
 		my $id = $self->getFireHoseIdFromGlobjid($globjid);
@@ -2209,9 +2207,9 @@ sub listView {
 		my $featured_ops ={ primaryskid => $gSkin->{skid}, type => "story", limit => 1, orderby => 'createtime', orderdir => 'DESC'};
 
 		if ($user->{is_subscriber}) {
-			$options->{createtime_subscriber_future} = 1;
+			$featured_ops->{createtime_subscriber_future} = 1;
 		} else {
-			$options->{createtime_no_future} = 1;
+			$featured_ops->{createtime_no_future} = 1;
 		}
 
 		my($res) = $firehose_reader->getFireHoseEssentials($featured_ops);
@@ -2541,4 +2539,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.205 2008/01/24 18:17:59 tvroom Exp $
+$Id: FireHose.pm,v 1.206 2008/01/24 18:32:07 tvroom Exp $

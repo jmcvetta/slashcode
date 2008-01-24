@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.106 2008/01/18 22:36:50 pudge Exp $
+// $Id: comments.js,v 1.107 2008/01/24 19:50:17 pudge Exp $
 
 var comments;
 var root_comments;
@@ -375,6 +375,12 @@ function selectParent(cid, collapse) {
 		return true; // follow link
 	}
 	return false;
+}
+
+function vertBarClick (pid) {
+	comments_started = 1;
+	setCurrentComment(pid);
+	return selectParent(pid, 2);
 }
 
 function setShortSubject(cid, mode, cl) {
@@ -1860,7 +1866,7 @@ function keyHandler(e, k) {
 	}
 }
 
-// at first comment, comment is not in window OR comment is not full
+// at first comment, and comment is not in window OR comment is not full
 function noSeeFirstComment (cid) {
 	setDefaultDisplayMode(cid);
 	if (!comments_started && (!commentIsInWindow(cid) || (viewmodevalue[displaymode[cid]] < viewmodevalue['full']))) {

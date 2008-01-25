@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.206 2008/01/24 18:32:07 tvroom Exp $
+# $Id: FireHose.pm,v 1.207 2008/01/25 04:57:46 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.206 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.207 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1526,10 +1526,10 @@ sub setFireHose {
 
 	my $text_data = {};
 
-	$text_data->{title} = delete $data->{title} if defined $data->{title};
-	$text_data->{introtext} = delete $data->{introtext} if defined $data->{introtext};
-	$text_data->{bodytext} = delete $data->{bodytext} if defined $data->{bodytext};
-	$text_data->{media} = delete $data->{media} if defined $data->{media};
+	$text_data->{title} = delete $data->{title} if exists $data->{title};
+	$text_data->{introtext} = delete $data->{introtext} if exists $data->{introtext};
+	$text_data->{bodytext} = delete $data->{bodytext} if exists $data->{bodytext};
+	$text_data->{media} = delete $data->{media} if exists $data->{media};
 
 	$self->sqlUpdate('firehose', $data, "id=$id_q");
 	$self->sqlUpdate('firehose_text', $text_data, "id=$id_q") if keys %$text_data;
@@ -2539,4 +2539,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.206 2008/01/24 18:32:07 tvroom Exp $
+$Id: FireHose.pm,v 1.207 2008/01/25 04:57:46 tvroom Exp $

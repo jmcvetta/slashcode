@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.107 2008/01/24 19:50:17 pudge Exp $
+// $Id: comments.js,v 1.108 2008/01/25 21:55:38 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1789,9 +1789,9 @@ function keyHandler(e, k) {
 			if (!k)
 				doModifiers(e);
 			var collapseCurrent = shift_down;
-			var getNextUnread   = ctrl_down;
+			var getNextUnread   = ctrl_down; // not working right, and interfering anyway -- pudge
 			var skipit = 0;
-			if (meta_down || alt_down)
+			if (meta_down || alt_down || ctrl_down)
 				skipit = 1;
 			if (!k)
 				resetModifiers();

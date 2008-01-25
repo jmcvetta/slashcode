@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.343 2008/01/18 22:36:50 pudge Exp $
+# $Id: Slash.pm,v 1.344 2008/01/25 21:55:37 pudge Exp $
 
 package Slash;
 
@@ -2275,12 +2275,8 @@ sub tempUofmCipherObj {
 # is discussion2 active?
 sub discussion2 {
 	my $user = $_[0] || getCurrentUser();
-	if ($user->{discussion2}) {
-		return $user->{discussion2} =~ /^(?:slashdot|uofm)$/
-			? $user->{discussion2} : 0;
-	} else {
-		return $user->{state}{no_d2} ? 0 : 'slashdot';
-	}
+	return $user->{discussion2} =~ /^(?:slashdot|uofm)$/
+		? $user->{discussion2} : 0;
 }
 
 1;

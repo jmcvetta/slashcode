@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: new_headfoot.pl,v 1.20 2008/01/25 05:56:27 tvroom Exp $
+# $Id: new_headfoot.pl,v 1.21 2008/01/25 06:04:33 tvroom Exp $
 
 use strict;
 use Slash;
@@ -89,7 +89,7 @@ sub skinHeaders {
 		}
 
 		open my $fh, ">$file" or die "Can't open $file : $!";
-		my $footer = footer({ Return => 1 });
+		my $footer = footer({ Return => 1, Page=> $_->[0] });
 		print $fh $footer;
 		close $fh;
 	}

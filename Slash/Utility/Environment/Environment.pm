@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.228 2008/01/25 21:55:37 pudge Exp $
+# $Id: Environment.pm,v 1.229 2008/01/28 14:45:31 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.228 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.229 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -2519,6 +2519,7 @@ sub getOpAndDatFromStatusAndURI {
 	my($status, $uri, $dat) = @_;
 	$dat ||= "";
 
+	# XXX check regexSid()
 	my $page = qr|\d{2}/\d{2}/\d{2}/\d{4,7}|;
 
 	if ($status == 302) {
@@ -2605,6 +2606,7 @@ sub getOpAndDatFromStatusAndURI {
 	} elsif ($uri =~ m|^/([^/]*)/([^/]*/)+$|) {
 		$uri = $1;
 	}
+	$uri = 'image' if $uri eq 'images';
 	($uri, $dat);
 }
 
@@ -3502,4 +3504,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.228 2008/01/25 21:55:37 pudge Exp $
+$Id: Environment.pm,v 1.229 2008/01/28 14:45:31 jamiemccarthy Exp $

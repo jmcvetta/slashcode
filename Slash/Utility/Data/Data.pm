@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.210 2008/01/18 21:28:41 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.211 2008/01/28 14:45:31 jamiemccarthy Exp $
 
 package Slash::Utility::Data;
 
@@ -62,7 +62,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.211 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -169,6 +169,7 @@ sub nick2matchname {
 
 #========================================================================
 # If you change createSid() for your site, change regexSid() too.
+# Check getOpAndDatFromStatusAndURI also.
 # If your site will have multiple formats of sids, you'll want this
 # to continue matching the old formats too.
 # NOTE: sid is also used for discussion ID (and maybe stoid too?),
@@ -4441,4 +4442,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.210 2008/01/18 21:28:41 jamiemccarthy Exp $
+$Id: Data.pm,v 1.211 2008/01/28 14:45:31 jamiemccarthy Exp $

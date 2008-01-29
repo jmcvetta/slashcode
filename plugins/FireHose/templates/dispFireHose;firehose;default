@@ -90,6 +90,11 @@ END %]
 			   PROCESS formatHoseIntro; 
 			END %]
 			[% introtext %]
+			[% IF view_mode && item.media %]
+				<div class="media">
+					[% item.media %]
+				</div>
+			[% END %]
 			[% END %]
 		</div>
 	[% IF bodywrapper %]
@@ -150,4 +155,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.68 2008/01/29 17:35:37 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.69 2008/01/29 21:12:10 tvroom Exp $

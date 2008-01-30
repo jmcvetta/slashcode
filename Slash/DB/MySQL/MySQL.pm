@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1002 2008/01/23 21:48:41 tvroom Exp $
+# $Id: MySQL.pm,v 1.1003 2008/01/30 22:38:59 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1002 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1003 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -6701,9 +6701,9 @@ sub _stories_time_clauses {
 # options is that any change to any story necessitates invalidating all
 # memcached data that might now or might previously have referenced
 # that story.  There is no way to delete all memcached keys that match
-# a regex or prefix (and this is by design:  it will never have this
+# a regex or prefix (and this is by design:  it may never have this
 # capability), so by keeping only 1-2 keys for each tid, instead of
-# keeping a key for every possibly option, we make that deletion
+# keeping a key for every possible option, we make that deletion
 # tractable and even easy.
 #
 # There are only two elements to a memcached gSE key:  the tid of the

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.162 2008/01/30 19:44:20 tvroom Exp $
+// $Id: common.js,v 1.163 2008/01/30 21:02:43 tvroom Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -504,7 +504,7 @@ function firehose_set_options(name, value) {
 		["orderdir", 	"ASC", 		"asc",		"desc",		"DESC"],
 		["orderdir", 	"DESC", 	"desc",		"asc",		"ASC"],
 		["mode", 	"full", 	"abbrev",	"full",		"fulltitle"],
-		["mode", 	"fulltitle", 	"full",		"abbrev",	"full"],
+		["mode", 	"fulltitle", 	"full",		"abbrev",	"full"]
 	];
 	var params = [];
 	params['op'] = 'firehose_set_options';

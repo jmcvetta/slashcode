@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1306 2008/01/31 17:38:55 tvroom Exp $
+# $Id: upgrades,v 1.1307 2008/01/31 20:07:02 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5126,3 +5126,7 @@ ALTER TABLE stats_daily MODIFY name varchar(48) NOT NULL DEFAULT '';
 
 # For plugins/FireHose
 INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_media', 'Slash::FireHose', 'ajaxFetchMedia', 'ajax_base', 'createuse');
+
+# 2008-01-31
+UPDATE vars SET value = 'T_2_5_0_192' WHERE name = 'cvs_tag_currentcode';
+

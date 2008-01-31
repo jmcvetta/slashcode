@@ -20,7 +20,7 @@ __name__
 printCommentsMain
 __template__
 [% horiz = 0; rooted = 0;
-   IF gSkin.name == 'idle';
+   IF gSkin.name == 'idle' || user.lowbandwidth;
    	horiz = 1;
    ELSIF user.comments_control;
    	rooted = 1 IF user.comments_control == 'rooted';
@@ -308,4 +308,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.102 2008/01/25 21:55:38 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.103 2008/01/31 19:24:59 pudge Exp $

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.163 2008/01/30 21:02:43 tvroom Exp $
+// $Id: common.js,v 1.164 2008/01/31 17:31:48 tvroom Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -1491,6 +1491,17 @@ function getModalPrefs(section, title, tabbed) {
 	ajax_update(params, 'modal_box_content', handlers);
 
 	return;
+}
+
+function firehose_get_media_popup(id) {
+	if($('preference_title')) {
+		$('preference_title').innerHTML = "Media";
+	}
+	var params = [];
+	params['op'] = 'firehose_get_media';
+	params['id'] = id;
+	var handlers = {onComplete:show_modal_box};
+	ajax_update(params, 'modal_box_content', handlers);
 }
 
 function saveModalPrefs() {

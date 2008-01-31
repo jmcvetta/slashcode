@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.210 2008/01/31 17:37:12 tvroom Exp $
+# $Id: FireHose.pm,v 1.211 2008/01/31 17:57:01 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.210 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.211 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1643,8 +1643,8 @@ sub getAndSetOptions {
 	my $types = { feed => 1, bookmark => 1, submission => 1, journal => 1, story => 1, vendor => 1, misc => 1 }; 
 	my $tabtypes = { tabsection => 1, tabpopular => 1, tabrecent => 1, tabuser => 1};
 	
-	my $tabtype = $tabtypes->{$form->{tabtype}} ? $form->{tabtype} : '';
-
+	my $tabtype = '';
+	$tabtype = $form->{tabtype} if $form->{tabtype} && $tabtypes->{ $form->{tabtype} };
 
 	my $modes = { full => 1, fulltitle => 1 };
 	my $pagesizes = { "small" => 1, "large" => 1 };
@@ -2554,4 +2554,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.210 2008/01/31 17:37:12 tvroom Exp $
+$Id: FireHose.pm,v 1.211 2008/01/31 17:57:01 jamiemccarthy Exp $

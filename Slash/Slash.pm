@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Slash.pm,v 1.344 2008/01/25 21:55:37 pudge Exp $
+# $Id: Slash.pm,v 1.345 2008/01/31 20:16:26 pudge Exp $
 
 package Slash;
 
@@ -81,10 +81,12 @@ sub selectComments {
 	# print_cchp gets messed up with d2, so we just punt and have
 	# selectComments called twice if necessary, the first time doing
 	# print_cchp, then blanking that out so it is not done again -- pudge
+	my $shtml = 0;
 	if ($discussion2 && $form->{ssi} && $form->{ssi} eq 'yes' && $form->{cchp}) {
 		$user->{discussion2} = 'none';
 		selectComments($discussion, $cid, $options);
 		$user->{discussion2} = $discussion2;
+		$shtml = 1;
 		delete $form->{cchp};
 	}
 
@@ -168,6 +170,7 @@ sub selectComments {
 	if ($discussion2 && !$cid && !$options->{no_d2}) {
 		my $limits = $slashdb->getDescriptions('d2_comment_limits');
 		my $max = $d2_comment_q ? $limits->{ $d2_comment_q } : 0;
+		$max = int($max/2) if $shtml;
 		my @new_comments;
 		$options->{existing} ||= {};
 		@$thisComment = sort { $a->{cid} <=> $b->{cid} } @$thisComment;

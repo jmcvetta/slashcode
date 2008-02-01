@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Data.pm,v 1.212 2008/01/31 15:17:45 jamiemccarthy Exp $
+# $Id: Data.pm,v 1.213 2008/02/01 04:22:54 pudge Exp $
 
 package Slash::Utility::Data;
 
@@ -62,7 +62,7 @@ BEGIN {
 	$HTML::Tagset::linkElements{slash} = ['src', 'href'];
 }
 
-($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 	addDomainTags
 	createStoryTopicData
@@ -867,7 +867,7 @@ sub comparePassword {
 		return 1 if md5_hex($passwd) eq $md5;
 		my $slashdb = getCurrentDB();
 		my $vu = $slashdb->{virtual_user};
-		my $salt_ar = Slash::Apache::User::PasswordSalt::getSalts($vu);
+		my $salt_ar = Slash::Apache::User::PasswordSalt::getPwSalts($vu);
 		for my $salt (reverse @$salt_ar) {
 			return 1 if md5_hex("$salt$passwd") eq $md5;
 		}
@@ -4442,4 +4442,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Data.pm,v 1.212 2008/01/31 15:17:45 jamiemccarthy Exp $
+$Id: Data.pm,v 1.213 2008/02/01 04:22:54 pudge Exp $

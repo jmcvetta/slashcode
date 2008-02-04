@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.34 2008/01/31 16:23:28 entweichen Exp $
+# $Id: PLUGIN,v 1.35 2008/02/04 14:50:17 scc Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 mysql_dump=mysql_dump.sql
@@ -26,6 +26,7 @@ htdoc=htdocs/images/sd_autocomplete.js
 htdoc=htdocs/images/sd_calendar.js
 htdoc=htdocs/images/slashbox.js
 htdoc=htdocs/images/common.js
+htdoc=htdocs/images/nodnix.js
 htdoc=htdocs/images/prototype.js
 htdoc=htdocs/images/sectionprefs.js
 requiresplugin=ResKey

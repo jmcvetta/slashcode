@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.212 2008/02/06 02:15:23 tvroom Exp $
+# $Id: FireHose.pm,v 1.213 2008/02/06 21:47:48 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.212 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.213 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1807,9 +1807,9 @@ sub getAndSetOptions {
 		$skin_prefix = "$the_skin->{name} ";
 	}
 	my $system_tabs = [ 
-		{ tabtype => 'tabsection', color => 'black', filter => $skin_prefix . "story"},
-		{ tabtype => 'tabpopular', color => 'black', filter => "$skin_prefix\-story"},
-		{ tabtype => 'tabrecent',  color => 'indigo',  filter => "$skin_prefix\-story"},
+		{ tabtype => 'tabsection', color => 'black', filter => $skin_prefix . "story", orderby => 'createtime'},
+		{ tabtype => 'tabpopular', color => 'black', filter => "$skin_prefix\-story", orderby => 'popularity'},
+		{ tabtype => 'tabrecent',  color => 'indigo',  filter => "$skin_prefix\-story", orderby => 'createtime'},
 	];
 
 	if (!$user->{is_anon}) {
@@ -2560,4 +2560,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.212 2008/02/06 02:15:23 tvroom Exp $
+$Id: FireHose.pm,v 1.213 2008/02/06 21:47:48 tvroom Exp $

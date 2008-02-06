@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.166 2008/02/04 14:50:17 scc Exp $
+// $Id: common.js,v 1.167 2008/02/06 15:48:42 entweichen Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -1452,4 +1452,10 @@ function ajaxRemoveSlashbox( id ) {
 		slashboxes.removeChild(box);
 		ajaxSaveSlashboxes();
 	}
+}
+
+function displayModalPrefHelp(element) {
+        var elem = document.getElementById(element);
+        var vis = elem.style;
+        vis.display = (!vis.display || vis.display == 'block') ? 'none' : 'block';
 }

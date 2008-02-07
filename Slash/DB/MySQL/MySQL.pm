@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1004 2008/02/07 00:51:21 pudge Exp $
+# $Id: MySQL.pm,v 1.1005 2008/02/07 16:52:27 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1004 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1005 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -3411,6 +3411,14 @@ sub markStoryDirty {
 ########################################################
 sub deleteStory {
 	my($self, $id) = @_;
+	my $constants = getCurrentStatic();
+	if ($constants->{plugin}{FireHose}) {
+		my $stoid = $self->getStoidFromSidOrStoid($id);
+		my $firehose = getObject("Slash::FireHose");
+		my $globjid = $self->getGlobjidCreate("stories", $stoid);
+		my $fhid = $firehose->getFireHoseIdFromGlobjid($globjid);
+		$firehose->setFireHose($fhid, { public => "no", rejected => "yes"});
+	}
 	return $self->setStory($id, { in_trash => 'yes' });
 }
 

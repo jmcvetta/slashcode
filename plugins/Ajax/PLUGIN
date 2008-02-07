@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.36 2008/02/06 16:18:35 entweichen Exp $
+# $Id: PLUGIN,v 1.37 2008/02/07 00:51:22 pudge Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 mysql_dump=mysql_dump.sql
@@ -33,15 +33,15 @@ requiresplugin=ResKey
 template=templates/ajax_reskey_signoff;misc;default
 template=templates/ajax_reskey_tag;misc;default
 template=templates/data;ajax;default
-template=templates/sectionpref;ajax;default
 template=templates/datewidget;misc;default
+template=templates/modal_footer;misc;default
 template=templates/prefs_d2;ajax;default
 template=templates/prefs_d2_posting;ajax;default
 template=templates/prefs_messages;ajax;default
-template=templates/modal_footer;misc;default
 template=templates/prefs_user;ajax;default
 template=templates/prefs_sectional;ajax;default
 template=templates/prefs_home;ajax;default
 template=templates/prefs_slashboxes;ajax;default
 template=templates/prefs_authors;ajax;default
 template=templates/prefs_main;ajax;default
+template=templates/sectionpref;ajax;default

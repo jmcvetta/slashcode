@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.229 2008/01/28 14:45:31 jamiemccarthy Exp $
+# $Id: Environment.pm,v 1.230 2008/02/07 00:51:21 pudge Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.229 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.230 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -3299,24 +3299,29 @@ sub get_srcid_vis {
 }
 
 #========================================================================
-{my @prof;
+{my($prof_ok, @prof) = (0);
 sub slashProf {
-	return unless getCurrentStatic('use_profiling');
+	return unless getCurrentStatic('use_profiling') && $prof_ok;
 	my($begin, $end) = @_;
 	$begin ||= '';
 	$end   ||= '';
 	push @prof, [ Time::HiRes::time(), (caller(0))[0, 1, 2, 3], $begin, $end ];
 }
 
+sub slashProfBail {
+	return unless getCurrentStatic('use_profiling') && $prof_ok;
+	$prof_ok = 0;
+}
+
 sub slashProfInit {
 	return unless getCurrentStatic('use_profiling');
+	$prof_ok = 1;
 	@prof = ();
 }
 
 sub slashProfEnd {
 	my $use_profiling = getCurrentStatic('use_profiling');
-	return unless $use_profiling;
-	return unless @prof;
+	return unless $use_profiling && $prof_ok && @prof;
 
 	my $first = $prof[0][0];
 	my $last  = $first;  # Matthew 20:16
@@ -3336,10 +3341,12 @@ sub slashProfEnd {
 
 	local $\;
 
-	print STDERR "\n*** Begin profiling ($$)\n";
-	print STDERR "*** Begin ordered ($$)\n" if $use_profiling > 1;
-	printf STDERR <<"EOT", "PID", "what", "this #", "pct", "tot. #", "pct" if $use_profiling > 1;
-%-6.6s: %-64.64s % 6.6s $unit (%6.6s%%) / % 6.6s $unit (%6.6s%%)
+	my $prefix = sprintf("PROF %d:%d:", $$, getCurrentUser('uid'));
+
+	print STDERR "\n$prefix *** Begin profiling\n";
+	print STDERR "$prefix *** Begin ordered\n" if $use_profiling > 1;
+	printf STDERR <<"EOT", "what", "this #", "pct", "tot. #", "pct" if $use_profiling > 1;
+$prefix %-64.64s % 6.6s $unit (%6.6s%%) / % 6.6s $unit (%6.6s%%)
 EOT
 
 	my(%totals, %begin);
@@ -3388,28 +3395,28 @@ EOT
 		# mark new beginning
 		$begin{$prof->[5]} = $t1 if $prof->[5];
 
-		printf STDERR <<"EOT", $$, $where, $t2, $s2, $t1, $s1 if $use_profiling > 1;
-%-6d: %-64.64s % 6d $unit (%6.6s%%) / % 6d $unit (%6.6s%%)
+		printf STDERR <<"EOT", $where, $t2, $s2, $t1, $s1 if $use_profiling > 1;
+$prefix %-64.64s % 6d $unit (%6.6s%%) / % 6d $unit (%6.6s%%)
 EOT
 	}
 
-	print STDERR "\n*** Begin summary ($$)\n";
-	printf STDERR <<"EOT", "PID", "what", "time", "pct";
-%-6.6s: %-64.64s % 6.6s $unit (%6.6s%%)
+	print STDERR "\n*** Begin summary\n";
+	printf STDERR <<"EOT", "what", "time", "pct";
+$prefix %-64.64s % 6.6s $unit (%6.6s%%)
 EOT
-	printf STDERR <<"EOT", $$, 'total', $total, '100.00';
-%-6d: %-64.64s % 6d $unit (%6.6s%%)
+	printf STDERR <<"EOT", 'total', $total, '100.00';
+$prefix %-64.64s % 6d $unit (%6.6s%%)
 EOT
 	for (sort { $totals{$b} <=> $totals{$a} } keys %totals) {
 		my $p = $totals{$_} / $total * 100;
 		my $s = sprintf('%.2f', $p);
-		printf STDERR <<"EOT", $$, $_, $totals{$_}, $s;
-%-6d: %-64.64s % 6d $unit (%6.6s%%)
+		printf STDERR <<"EOT", $_, $totals{$_}, $s;
+$prefix %-64.64s % 6d $unit (%6.6s%%)
 EOT
 	}
 
 
-	print STDERR "*** End profiling ($$)\n\n";
+	print STDERR "$prefix *** End profiling\n\n";
 
 	@prof = ();
 }
@@ -3504,4 +3511,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.229 2008/01/28 14:45:31 jamiemccarthy Exp $
+$Id: Environment.pm,v 1.230 2008/02/07 00:51:21 pudge Exp $

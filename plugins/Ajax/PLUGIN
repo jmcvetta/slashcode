@@ -1,4 +1,4 @@
-# $Id: PLUGIN,v 1.37 2008/02/07 00:51:22 pudge Exp $
+# $Id: PLUGIN,v 1.38 2008/02/07 17:32:03 entweichen Exp $
 name=Ajax
 description="Ajax (Asynchronous Javascript and XML)"
 mysql_dump=mysql_dump.sql
@@ -11,6 +11,7 @@ image=htdocs/images/yui/callt.gif
 image=htdocs/images/yui/calrt.gif
 image=htdocs/images/yui/calx.gif
 htdoc=htdocs/ajax.pl
+htdoc=htdocs/preferences.pl
 htdoc=htdocs/images/admin.js
 htdoc=htdocs/images/yui/yahoo.js
 htdoc=htdocs/images/yui/dom.js

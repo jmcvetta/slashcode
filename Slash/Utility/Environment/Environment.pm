@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Environment.pm,v 1.232 2008/02/07 21:25:06 pudge Exp $
+# $Id: Environment.pm,v 1.233 2008/02/08 04:27:03 jamiemccarthy Exp $
 
 package Slash::Utility::Environment;
 
@@ -33,7 +33,7 @@ use Socket qw( inet_aton inet_ntoa );
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.232 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.233 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT	   = qw(
 
 	dbAvailable
@@ -88,6 +88,7 @@ use vars qw($VERSION @EXPORT);
 
 	debugHash
 	slashProf
+	slashProfBail
 	slashProfInit
 	slashProfEnd
 
@@ -3351,8 +3352,9 @@ sub slashProfEnd {
 	local $\;
 
 	my $user = getCurrentUser();
+	my $vislen = getCurrentStatic('id_md5_vislength') || 5;
 	my $prefix = sprintf("PROF %d:%d:%s:%s:",
-		$$, $user->{uid}, vislenify($user->{ipid}), ($prefixstr || ''));
+		$$, $user->{uid}, substr($user->{ipid}, 0, $vislen), ($prefixstr || ''));
 
 	print STDERR "\n$prefix *** Begin profiling\n";
 	print STDERR "$prefix *** Begin ordered\n" if $use_profiling > 1;
@@ -3522,4 +3524,4 @@ Slash(3), Slash::Utility(3).
 
 =head1 VERSION
 
-$Id: Environment.pm,v 1.232 2008/02/07 21:25:06 pudge Exp $
+$Id: Environment.pm,v 1.233 2008/02/08 04:27:03 jamiemccarthy Exp $

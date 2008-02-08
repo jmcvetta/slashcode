@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1309 2008/02/07 21:47:18 pudge Exp $
+# $Id: upgrades,v 1.1310 2008/02/08 04:31:16 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5126,10 +5126,10 @@ INSERT INTO ajax_ops VALUES (NULL, 'firehose_get_media', 'Slash::FireHose', 'aja
 # 2008-01-31
 UPDATE vars SET value = 'T_2_5_0_192' WHERE name = 'cvs_tag_currentcode';
 
+# 2008-02-07
+UPDATE vars SET value = 'T_2_5_0_193' WHERE name = 'cvs_tag_currentcode';
+
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
-
-# 2008-02-07
-UPDATE vars SET value = 'T_2_5_0_193' WHERE name = 'cvs_tag_currentcode';
 

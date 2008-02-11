@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.98 2008/02/07 18:12:28 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.99 2008/02/11 20:47:23 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.98 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.99 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -985,15 +985,27 @@ sub setTagsForGlobj {
 	
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
-
 	my $priv_tagnames = $self->getPrivateTagnames();
-	
+
+	$tag_string ||= $form->{tags} || '';
+
+	if ($user->{is_admin}) {
+		my @admin_commands =
+			grep { $tags->adminPseudotagnameSyntaxOK($_) }
+			map { lc }
+			split /[\s,]+/,
+			$tag_string;
+		for my $c (@admin_commands) {
+			$self->processAdminCommand($c, $id, $table);
+		}
+	}
+
 	my %new_tagnames =
 		map { ($_, 1) }
 		grep { $tags->tagnameSyntaxOK($_) }
 		map { lc }
 		split /[\s,]+/,
-		($tag_string || $form->{tags} || '');
+		$tag_string;
 
 	my $uid = $options->{uid} || $user->{uid};
 	my $tags_reader = getObject('Slash::Tags', { db_type => 'reader' });

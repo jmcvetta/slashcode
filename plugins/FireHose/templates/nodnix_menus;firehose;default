@@ -22,7 +22,7 @@ __template__
    IF postags.size %]<div id="nodmenu">
   <input id="nod-input" type="text" updown="+">
   <div class="menu basic" onmouseover="dont_hide_nodnix_menu()" onmouseout="hide_nodnix_menu(750)" onmousedown="hide_nodnix_menu()">
-    <ul>
+    <ul id="static-nod-completions">
     [%- FOR postag IN postags %]
       <li title="Tag this item '[% postag %]', voting it up" onmousedown="nodnix_tag('[% postag %]', '+')">[% postag %]</li>
     [%- END %]
@@ -33,7 +33,7 @@ __template__
 [% END; IF negtags.size %]<div id="nixmenu">
   <input id="nix-input" type="text" updown="-">
   <div class="menu basic" onmouseover="dont_hide_nodnix_menu()" onmouseout="hide_nodnix_menu(750)" onmousedown="hide_nodnix_menu()">
-    <ul>
+    <ul id="static-nix-completions">
     [%- FOR negtag IN negtags %]
       <li title="Tag this item '[% negtag %]', voting it down" onmousedown="nodnix_tag('[% negtag %]', '-')">[% negtag %]</li>
     [%- END %]
@@ -43,4 +43,4 @@ __template__
 </div>
 [% END %]
 __version__
-$Id: nodnix_menus;firehose;default,v 1.10 2008/02/11 10:58:48 scc Exp $
+$Id: nodnix_menus;firehose;default,v 1.11 2008/02/11 13:52:21 scc Exp $

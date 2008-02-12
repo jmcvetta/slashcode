@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.167 2008/02/06 15:48:42 entweichen Exp $
+// $Id: common.js,v 1.168 2008/02/12 17:24:46 tvroom Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -1458,4 +1458,25 @@ function displayModalPrefHelp(element) {
         var elem = document.getElementById(element);
         var vis = elem.style;
         vis.display = (!vis.display || vis.display == 'block') ? 'none' : 'block';
+}
+
+function toggle_filter_prefs() {
+	var fps = $('filter_play_status');
+	var fp  = $('filter_prefs');
+	console.log("toggle_filter_prefs");
+	if (fps) {
+//		console.log("got fps");
+		if (fps.className == "") {
+//			fps.className = "hide";
+			if (fp) {
+				fp.className = "";
+			} 
+		} else if (fps.className == "hide") {
+			fps.className = "";
+			if (fp) {
+				fp.className = "hide";
+			}
+		}
+	}
+
 }

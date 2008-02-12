@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.214 2008/02/08 17:21:21 tvroom Exp $
+# $Id: FireHose.pm,v 1.215 2008/02/12 17:27:16 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.214 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.215 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1758,7 +1758,6 @@ sub getAndSetOptions {
 
 	my $the_skin = $form->{section} ? $self->getSkin($form->{section}) : $gSkin;
 
-
 	if ($tabtype eq 'tabsection') {
 		$form->{fhfilter} = "story";
 		$options->{orderdir} = "DESC";
@@ -2549,6 +2548,37 @@ sub createSectionSelect {
 	
 }
 
+sub linkFireHose {
+	my ($self, $id_or_item) = (@_);
+	my $gSkin 	= getCurrentSkin();
+	my $constants 	= getCurrentStatic();
+	my $link_url;
+	my $item = ref($id_or_item) ? $id_or_item : $self->getFireHose($id_or_item);
+
+
+	if ($item->{type} eq "story") {
+		my $story = $self->getStory($item->{srcid});
+		my $story_link_ar = $self->getStory({
+			sid	=> $story->{sid},
+			link 	=> $story->{title},
+			tid 	=> $story->{tid},
+			skin	=> $story->{primaryskid}
+		}, 0);
+		$link_url = $story_link_ar->[0];
+	} elsif ($item->{type} eq "journal") {
+		my $the_user = $self->getUser($item->{uid});
+		$link_url = $constants->{rootdir} . "/~" . fixparam($the_user->{nickname}) . "/journal/$item->{srcid}"; 
+	} else {
+		$link_url = $gSkin->{rootdir} . '/firehose.pl?op=view&amp;id=' . $item->{id};
+	}
+
+}
+
+sub js_anon_dump {
+	my ($self, $var) = @_;
+	return Data::JavaScript::Anon->anon_dump($var);
+}
+
 1;
 
 __END__
@@ -2560,4 +2590,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.214 2008/02/08 17:21:21 tvroom Exp $
+$Id: FireHose.pm,v 1.215 2008/02/12 17:27:16 tvroom Exp $

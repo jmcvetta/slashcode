@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.68 2008/02/12 15:37:50 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.69 2008/02/12 22:20:44 entweichen Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.68 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -605,6 +605,17 @@ sub getModalPrefs {
                         },
                         { Return => 1 }
                 );
+
+        } elsif ($form->{'section'} eq 'admin') {
+                return if !$user->{is_admin};
+
+                return
+                        slashDisplay('prefs_admin', {
+                                user   => $user,
+                                tabbed => $form->{'tabbed'},
+                        },
+                        { Return => 1 }
+                );
                 
         } else {
                 
@@ -636,7 +647,6 @@ sub saveModalPrefs {
 			nosigs            => ($params{'nosigs'}              ? 1 : 0),
 			noscores          => ($params{'noscores'}            ? 1 : 0),
 			domaintags        => ($params{'domaintags'} != 2     ? $params{'domaintags'} : undef),
-			m2_with_comm_mod  => ($params{'m2_with_mod_on_comm'} ? 1 : undef),
 		};
 	}
 
@@ -652,7 +662,6 @@ sub saveModalPrefs {
 			textarea_cols     => ($params{'textarea_cols'} != $constants->{'textarea_cols'}
 				? $params{'textarea_cols'} : undef),
 			postanon          => ($params{'postanon'} ? 1 : undef),
-			no_spell          => ($params{'no_spell'} ? 1 : undef),
 		};
 	}
 
@@ -744,7 +753,6 @@ sub saveModalPrefs {
                         aim                 => $params{aim},
                         aimdisplay          => $params{aimdisplay},
                         icq                 => $params{icq},
-                        playing             => $params{playing},
                         mobile_text_address => $params{mobile_text_address},
                 };
 
@@ -886,7 +894,19 @@ sub saveModalPrefs {
                 };
 
         }
-        
+
+        if ($params{'formname'} eq "admin") {
+               return if !$user->{is_admin};
+
+              $user_edits_table = {
+                     playing           => $params{playing},
+                     no_spell          => ($params{'no_spell'} ? 1 : undef),
+                     mod_with_comm     => ($params{'mod_with_comm'} ? 1 : undef),
+                     m2_with_mod       => ($params{'m2_with_mod'} ? 1 : undef),
+                     m2_with_comm_mod  => ($params{'m2_with_mod_on_comm'} ? 1 : undef),
+              };
+        }
+
         # Everything but Sections is saved here.
         if ($params{'formname'} ne "sectional") {
                 $slashdb->setUser($params{uid}, $user_edits_table);

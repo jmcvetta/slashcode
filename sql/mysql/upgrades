@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1310 2008/02/08 04:31:16 pudge Exp $
+# $Id: upgrades,v 1.1311 2008/02/12 15:59:44 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5132,4 +5132,7 @@ UPDATE vars SET value = 'T_2_5_0_193' WHERE name = 'cvs_tag_currentcode';
 # SLASHCODE/USEPERL LAST UPDATED HERE
 
 # SLASHDOT LAST UPDATED HERE
+
+ALTER TABLE users MODIFY newpasswd varchar(32) default '', ADD COLUMN newpasswd_ts datetime DEFAULT NULL AFTER newpasswd;
+UPDATE users SET newpasswd=MD5(newpasswd), newpasswd_ts=NOW() WHERE newpasswd IS NOT NULL;
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: preferences.pl,v 1.2 2008/02/07 07:12:55 pudge Exp $
+# $Id: preferences.pl,v 1.3 2008/02/12 23:40:20 entweichen Exp $
 
 use strict;
 
@@ -59,7 +59,7 @@ sub main {
 sub display_prefs {
 	my($form, $slashdb, $user, $constants) = @_;
 
-	slashDisplay('prefs_main', { discussion2 => $user->{discussion2}}, { Page => "ajax" });
+        slashDisplay('prefs_main', { discussion2 => $user->{discussion2}, is_admin => $user->{is_admin}}, { Page => "ajax" });
         
 }
 

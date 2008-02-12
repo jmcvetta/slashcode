@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.171 2008/02/12 15:18:32 jamiemccarthy Exp $
+# $Id: User.pm,v 1.172 2008/02/12 22:09:38 entweichen Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.171 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.172 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -596,6 +596,13 @@ sub userdir_handler {
 		return OK;
 	}
 
+        if ($uri =~ m[^/help (?: /([^?]*) | /? ) $]x) {
+                $r->args("op=displayhelp");
+                $r->uri('/help.pl');
+                $r->filename($constants->{basedir} . '/help.pl');
+                return OK;
+        }
+        
 	# for self-references (/~/ and /my/)
 	if (($saveuri =~ m[^/(?:%7[eE]|~)] && $uri =~ m[^/~ (?: /(.*) | /? ) $]x)
 		# /my/ or /my can match, but not /mything

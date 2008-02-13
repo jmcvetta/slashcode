@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1006 2008/02/12 15:59:44 jamiemccarthy Exp $
+# $Id: MySQL.pm,v 1.1007 2008/02/13 16:37:44 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1006 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1007 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -1737,8 +1737,8 @@ sub getNewPasswd {
 	my($self, $uid) = @_;
 	my $newpasswd = changePassword();
 	$self->sqlUpdate('users', {
-		newpasswd =>		encryptPassword($newpasswd, $uid),
-		-newpasswd_ts =>	'NOW()',
+		newpasswd     => encryptPassword($newpasswd, $uid),
+		-newpasswd_ts => 'NOW()',
 	}, 'uid=' . $self->sqlQuote($uid));
 	return $newpasswd;
 }
@@ -1751,9 +1751,9 @@ sub resetUserAccount {
 	my $newpasswd = changePassword();
 	my $enc = encryptPassword($newpasswd, $uid);
 	$self->sqlUpdate('users', {
-		passwd =>		$enc,
-		newpasswd =>		$enc,
-		newpasswd_ts =>		undef,
+		passwd       => $enc,
+		newpasswd    => $enc,
+		newpasswd_ts => undef,
 	}, 'uid=' . $self->sqlQuote($uid));
 	return $newpasswd;
 }

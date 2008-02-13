@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.170 2008/02/13 17:35:56 scc Exp $
+// $Id: common.js,v 1.171 2008/02/13 20:22:20 scc Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -379,17 +379,17 @@ function createTag(tag, id, type) {
 	var params = [];
 	params['id'] = id;
 	params['type'] = type;
-	if ( fh_is_admin ) {
+	if ( fh_is_admin && ("_#)^*".indexOf(tag[0]) != -1) ) {
 	  params['op'] = 'tags_admin_commands';
 	  params['reskey'] = $('admin_commands-reskey-' + id).value;
 	  params['command'] = tag;
-	  if (tag == "hold") {
-	    firehose_collapse_entry(id);
-	  }
 	} else {
 	  params['op'] = 'tags_create_tag';
 	  params['reskey'] = reskey_static;
 	  params['name'] = tag;
+	  if ( fh_is_admin && (tag == "hold") ) {
+	    firehose_collapse_entry(id);
+	  }
 	}
 	ajax_update(params, '');
 }

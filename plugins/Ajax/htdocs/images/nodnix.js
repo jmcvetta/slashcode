@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.5 2008/02/11 13:52:21 scc Exp $
+// $Id: nodnix.js,v 1.6 2008/02/13 17:35:56 scc Exp $
 
 var nodmenu = null;
 var nixmenu = null;
@@ -47,20 +47,14 @@ proxyDS.doQuery = function( oCallbackFn, sQuery, oParent ) {
 function get_nodnix_listener() {
   if ( !nodnix_listener ) {
     var keylist = new Array(); // must be an actual Array(), not just [], for YUI to do-the-right-thing
-    keylist.push(YAHOO.util.KeyListener.KEY.SPACE);
     keylist.push(YAHOO.util.KeyListener.KEY.ESCAPE);
-    keylist.push('!'.charCodeAt(0));
 
     var a='A'.charCodeAt(0), z='Z'.charCodeAt(0);
     for ( var kc = a; kc <= z; ++kc )
       keylist.push(kc);
-
-    // allow the following when we allow admin commands as well, e.g., #sometag
-    //keylist.push('_'.charCodeAt(0));
-    //keylist.push('#'.charCodeAt(0));
-    //keylist.push('_'.charCodeAt(0));
-    //keylist.push('*'.charCodeAt(0));
-    //keylist.push('+'.charCodeAt(0));
+    var extras = "!_#)^*";
+    for ( var i=0; i<extras.length; ++i )
+      keylist.push(extras.charCodeAt(i));
 
     nodnix_listener = new YAHOO.util.KeyListener(document, {keys:keylist},
                                                            {fn:handle_nodnix_key});

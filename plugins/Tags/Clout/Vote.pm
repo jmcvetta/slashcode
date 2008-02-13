@@ -8,7 +8,7 @@ use base 'Slash::Clout';
 
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub init {
         my($self) = @_;
@@ -35,7 +35,7 @@ sub getUserClout {
 	if (defined($user_stub->{created_at_ut})) {
 		$created_at_ut = $user_stub->{created_at_ut};
 	} else {
-		$created_at_ut = str2time( $user_stub->{created_at} );
+		$created_at_ut = str2time( $user_stub->{created_at} ) || 0;
 	}
 	my $secs_since = time - $created_at_ut;
 	my $frac = $secs_since / (120*86400);

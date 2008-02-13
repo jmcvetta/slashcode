@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1007 2008/02/13 16:37:44 pudge Exp $
+# $Id: MySQL.pm,v 1.1008 2008/02/13 17:00:41 jamiemccarthy Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1007 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1008 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -10808,16 +10808,28 @@ sub _getUser_do_selects {
 		for my $acl (@$acl_ar) {
 			$answer->{acl}{$acl} = 1;
 		}
+		if ($mcddebug > 1) {
+			print STDERR scalar(gmtime) . " $$ mcd gU_ds got all " . scalar(@$acl_ar) . " acls\n";
+		}
+		# Get the clouts from users_clout.  Rows can be missing from
+		# this table and often are, in which case they are filled in
+		# with data from the clout classes' getUserClout methods.
 		my $clout_types = $self->getCloutTypes();
+		my $clout_info = $self->getCloutInfo();
 		my $clout_hr = $self->sqlSelectAllKeyValue(
 			'clid, clout',
 			'users_clout',
 			"uid = $uid_q");
-		for my $clid (keys %$clout_hr) {
-			$answer->{clout}{ $clout_types->{$clid} } = $clout_hr->{$clid};
-		}
-		if ($mcddebug > 1) {
-			print STDERR scalar(gmtime) . " $$ mcd gU_ds got all " . scalar(@$acl_ar) . " acls\n";
+		for my $clid (grep /^\d+$/, keys %$clout_types) {
+			my $this_clout;
+			if (defined($clout_hr->{$clid})) {
+				$this_clout = $clout_hr->{$clid};
+			} else {
+				my $this_info = $clout_info->{$clid};
+				my $clout_obj = getObject($this_info->{class}, { db_type => 'reader' });
+				$this_clout = $clout_obj->getUserClout($answer);
+			}
+			$answer->{clout}{ $clout_types->{$clid} } = $this_clout;
 		}
 	} elsif (ref($params) eq 'ARRAY' && @$params) {
 		my $param_list = join(",", map { $self->sqlQuote($_) } @$params);

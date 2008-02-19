@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.6 2008/02/13 17:35:56 scc Exp $
+// $Id: nodnix.js,v 1.7 2008/02/19 14:01:18 scc Exp $
 
 var nodmenu = null;
 var nixmenu = null;
@@ -234,8 +234,7 @@ function handle_nodnix_select( type, args ) {
   if ( tagname !== undefined && tagname !== null ) {
     if ( typeof tagname != 'string' )
       tagname = tagname[0];
-    nodnix_tag(tagname, current_nodnix_input().getAttribute("updown"));
-      // QUESTION: what if the user is typing a negative tagname in the positive box?
+    nodnix_tag(tagname);
   }
   hide_nodnix_menu();
 }

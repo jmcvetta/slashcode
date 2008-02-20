@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.70 2008/02/20 16:29:29 entweichen Exp $
+# $Id: ajax.pl,v 1.71 2008/02/20 20:54:52 entweichen Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -613,6 +613,20 @@ sub getModalPrefs {
                         slashDisplay('prefs_admin', {
                                 user   => $user,
                                 tabbed => $form->{'tabbed'},
+                        },
+                        { Return => 1 }
+                );
+
+        } elsif ($form->{'section'} eq 'fh') {
+
+                my $firehose = getObject("Slash::FireHose");
+                my $opts = $firehose->getAndSetOptions();
+                $opts->{firehose_usermode} = $user->{firehose_usermode} if $user->{is_admin};
+
+                return
+                        slashDisplay('fhadvprefpane', {
+                                options => $opts,
+                                user    => $user,
                         },
                         { Return => 1 }
                 );

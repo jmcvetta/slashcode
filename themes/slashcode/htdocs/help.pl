@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: help.pl,v 1.1 2008/02/12 22:06:28 entweichen Exp $
+# $Id: help.pl,v 1.2 2008/02/20 17:04:38 entweichen Exp $
 
 use strict;
 
@@ -33,7 +33,8 @@ sub main {
 		# "pause" is special, it does a 302 redirect so we need
 		# to not output any HTML.  Everything else gets this,
 		# header and menu.
-		header("Help") or return;
+                my $helptitle = ($user->{is_anon}) ? 'Help' : 'Help & Preferences';
+		header($helptitle) or return;
 		print createMenu('users', {
 			style =>	'tabbed',
 			justify =>	'right',

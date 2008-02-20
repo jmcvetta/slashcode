@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.69 2008/02/12 22:20:44 entweichen Exp $
+# $Id: ajax.pl,v 1.70 2008/02/20 16:29:29 entweichen Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.69 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.70 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -661,7 +661,6 @@ sub saveModalPrefs {
 				? $params{'textarea_rows'} : undef),
 			textarea_cols     => ($params{'textarea_cols'} != $constants->{'textarea_cols'}
 				? $params{'textarea_cols'} : undef),
-			postanon          => ($params{'postanon'} ? 1 : undef),
 		};
 	}
 

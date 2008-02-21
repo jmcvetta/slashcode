@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1314 2008/02/13 19:45:39 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1315 2008/02/21 01:01:52 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5142,4 +5142,10 @@ UPDATE vars SET value = 'T_2_5_0_194' WHERE name = 'cvs_tag_currentcode';
 
 # For sites *without* plugins/Tags
 DELETE FROM clout_types;
+
+# these have not been used in years
+DELETE FROM templates WHERE page = "comments" AND skin = "default" AND name IN ("newdiscussion","discuss_list","udiscuss_list");
+
+# 2008-02-20
+UPDATE vars SET value = 'T_2_5_0_195' WHERE name = 'cvs_tag_currentcode';
 

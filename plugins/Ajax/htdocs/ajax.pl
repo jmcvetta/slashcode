@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.71 2008/02/20 20:54:52 entweichen Exp $
+# $Id: ajax.pl,v 1.72 2008/02/21 01:01:52 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.71 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.72 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -328,7 +328,7 @@ sub fetchComments {
 		}
 	}
 
-	my($comments) = Slash::selectComments(
+	my($comments) = selectComments(
 		$discussion,
 		$cid,
 		\%select_options,
@@ -456,7 +456,7 @@ sub fetchComments {
 	$form->{mode} = 'archive';
 
 	for my $cid (@hidden_cids) {
-		$html{'comment_' . $cid} = Slash::dispComment($comments->{$cid}, {
+		$html{'comment_' . $cid} = dispComment($comments->{$cid}, {
 			noshow_show => 1,
 			pieces      => $get_pieces_cids{$cid}
 		});
@@ -464,7 +464,7 @@ sub fetchComments {
 
 	for my $cid (@pieces_cids) {
 		@html{'comment_otherdetails_' . $cid, 'comment_sub_' . $cid} =
-			Slash::dispComment($comments->{$cid}, {
+			dispComment($comments->{$cid}, {
 				show_pieces => 1
 			});
 	}

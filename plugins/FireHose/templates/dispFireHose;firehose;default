@@ -127,7 +127,7 @@ END %]
 			<li class="comments[% IF !disc.commentcount || options.nocommentcnt %] nocomment[% END %]">
 				[% skin = gSkin %]
 				[% IF item.type == "story"; skin = Slash.db.getSkin(item.primaryskid); END %]
-				<a href="[% skin.rootdir %]/comments.pl?sid=[% item.discussion %]">[% disc.commentcount %]</a> <span>comment[% IF disc.commentcount != 1 %]s[% END %]</span>
+				<a href="[% skin.rootdir %]/comments.pl?sid=[% item.discussion %]" id="commentcnt-[% item.id %]">[% disc.commentcount %]</a> <span>comment[% IF disc.commentcount != 1 %]s[% END %]</span>
 			</li>
 			[% END %]
 		</ul>
@@ -138,4 +138,4 @@ END %]
 [% END %]
 [% END %]
 __version__
-$Id: dispFireHose;firehose;default,v 1.72 2008/02/20 19:17:16 tvroom Exp $
+$Id: dispFireHose;firehose;default,v 1.73 2008/02/21 21:48:38 tvroom Exp $

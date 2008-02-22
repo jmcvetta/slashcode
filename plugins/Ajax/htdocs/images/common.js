@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.172 2008/02/22 03:38:41 tvroom Exp $
+// $Id: common.js,v 1.173 2008/02/22 15:50:55 tvroom Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -1209,6 +1209,10 @@ function firehose_slider_end(offsetFromStart) {
 	if (fh_slider_init_set) {
 		firehose_set_options("color", color)
 	}
+}
+
+function firehose_slider_set_color(color) {
+	fh_colorslider.setValue(fh_ticksize * fh_colors_hash[color] , 1);
 }
 
 function firehose_change_section_anon(section) {

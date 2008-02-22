@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.218 2008/02/21 21:48:38 tvroom Exp $
+# $Id: FireHose.pm,v 1.219 2008/02/22 05:37:21 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.218 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.219 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1001,6 +1001,7 @@ sub ajaxFireHoseSetOptions {
 	$options->{content_type} = 'application/json';
 	my $firehose = getObject("Slash::FireHose");
 	my $opts = $firehose->getAndSetOptions();
+	
 	my $html = {};
 	$html->{fhtablist} = slashDisplay("firehose_tabs", { nodiv => 1, tabs => $opts->{tabs}, options => $opts, section => $form->{section}  }, { Return => 1});
 	$html->{fhoptions} = slashDisplay("firehose_options", { nowrapper => 1, options => $opts }, { Return => 1});
@@ -1015,7 +1016,7 @@ sub ajaxFireHoseSetOptions {
 
 	my $eval_first = "";
 	for my $o (qw(startdate mode fhfilter orderdir orderby startdate duration color)) {
-		$eval_first .= Data::JavaScript::Anon->var_dump("firehose_settings.$o", $opts->{$o});
+		$eval_first .= "firehose_settings.$o = " . Data::JavaScript::Anon->anon_dump("$opts->{$o}") . "; ";
 	}
 
 	return Data::JavaScript::Anon->anon_dump({
@@ -2121,7 +2122,6 @@ sub getAndSetOptions {
 	if ($form->{not_id} && $form->{not_id} =~ /^\d+$/) {
 		$options->{not_id} = $form->{not_id};
 	}
-
 	return $options;
 }
 
@@ -2614,4 +2614,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.218 2008/02/21 21:48:38 tvroom Exp $
+$Id: FireHose.pm,v 1.219 2008/02/22 05:37:21 tvroom Exp $

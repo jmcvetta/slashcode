@@ -1,4 +1,4 @@
-// $Id: admin.js,v 1.44 2007/12/20 18:46:05 tvroom Exp $
+// $Id: admin.js,v 1.45 2008/03/03 16:56:37 scc Exp $
 
 function um_ajax(the_behaviors, the_events) {
 	var params =[];
@@ -220,7 +220,7 @@ function firehose_usage() {
 	params['op'] = 'firehose_usage'
 	var interval = 300000;
 	ajax_update(params, 'firehose_usage-content');
-	setTimeout("firehose_usage()", interval);
+	setTimeout(firehose_usage, interval);
 }
 
 function make_spelling_correction(misspelled_word, form_element) {

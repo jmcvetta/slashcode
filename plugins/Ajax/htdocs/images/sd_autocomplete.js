@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.47 2008/01/24 19:51:02 pudge Exp $
+// $Id: sd_autocomplete.js,v 1.48 2008/03/03 16:56:37 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -394,7 +394,7 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._show = function( obj, callbackParam
             YAHOO.util.Dom.removeClass(this._spareInput, "hidden");
             this._spareInput.value = "";
             this._spareInput.focus();
-            this._pending_hide = setTimeout("YAHOO.slashdot.gCompleterWidget._hide()", 15000);
+            this._pending_hide = setTimeout(YAHOO.slashdot.gCompleterWidget._hide, 15000);
           }
         else
           YAHOO.util.Dom.addClass(this._spareInput, "hidden");
@@ -517,6 +517,6 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onSdTextboxKeyDown = function( e, m
           if ( me._pending_hide )
             clearTimeout(me._pending_hide);
           if ( me._needsSpareInput() )
-          me._pending_hide = setTimeout("YAHOO.slashdot.gCompleterWidget._hide()", 15000);
+          me._pending_hide = setTimeout(YAHOO.slashdot.gCompleterWidget._hide, 15000);
       }
   }

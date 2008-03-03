@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.12 2008/03/03 16:11:30 scc Exp $
+// $Id: nodnix.js,v 1.13 2008/03/03 16:56:37 scc Exp $
 
 var nod_completer = null;
 var nix_completer = null;
@@ -123,7 +123,7 @@ function hide_nodnix_menu( delay ) {
 	} else {
 		if ( g_pending_hidemenu )
 			clearTimeout(g_pending_hidemenu);
-		g_pending_hidemenu = setTimeout("hide_nodnix_menu()", delay);
+		g_pending_hidemenu = setTimeout(hide_nodnix_menu, delay);
 	}
 }
 
@@ -233,7 +233,7 @@ function begin_nodnix_editing() {
   ajax_update(params, tag_list, {});
 
   (input.getAttribute("updown")=="+" ? nod_completer : nix_completer).sendQuery();
-  setTimeout("soon_is_now()", 225);
+  setTimeout(soon_is_now, 225);
 }
 
 function end_nodnix_editing() {

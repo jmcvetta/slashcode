@@ -13,9 +13,9 @@ __name__
 tagsnodnixuser
 __template__
 [% FOREACH tag = newtagspreloadtext.split(' ') %]
-<li>[% tag %]</li>
+<li>[% tag %]<span class="tag-actions"><span class="not-tag" onclick="nodnix_not_tag('[% tag %]')">!</span> <span class="del-tag" onclick="nodnix_del_tag('[% tag %]')">x</span></span></li>
 [% END %]
 __seclev__
 10000
 __version__
-$Id: tagsnodnixuser;misc;default,v 1.1 2008/03/03 14:11:11 scc Exp $
+$Id: tagsnodnixuser;misc;default,v 1.2 2008/03/03 15:38:39 scc Exp $

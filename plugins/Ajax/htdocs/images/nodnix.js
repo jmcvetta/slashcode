@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.10 2008/03/03 14:11:11 scc Exp $
+// $Id: nodnix.js,v 1.11 2008/03/03 15:38:39 scc Exp $
 
 var nod_completer = null;
 var nix_completer = null;
@@ -98,6 +98,12 @@ function nodnix_tag( tag, up_down ) {
 	createTag(tag, g_nodnix_item_id, "firehose");
 	if ( up_down !== undefined )
 		firehose_up_down(g_nodnix_item_id, up_down);
+}
+
+function nodnix_not_tag( tag ) {
+}
+
+function nodnix_del_tag( tag ) {
 }
 
 function hide_nod_menu() {

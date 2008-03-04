@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.175 2008/03/03 16:56:37 scc Exp $
+// $Id: common.js,v 1.176 2008/03/04 19:17:36 pudge Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -766,6 +766,7 @@ function eval_response(transport) {
 function json_handler(transport) {
 	var response = eval_response(transport);
 	json_update(response);
+	return response;
 }
 
 function json_update(response) {

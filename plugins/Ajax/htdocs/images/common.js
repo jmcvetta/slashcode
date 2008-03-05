@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.176 2008/03/04 19:17:36 pudge Exp $
+// $Id: common.js,v 1.177 2008/03/05 17:22:42 scc Exp $
 
 // global settings, but a firehose might use a local settings object instead
 var firehose_settings = {};
@@ -1129,6 +1129,10 @@ function firehose_play() {
 	if (pause) {
 		pause.className = "show";
 	}
+}
+
+function is_firehose_playing() {
+  return YAHOO.util.Dom.hasClass('play', 'hide');
 }
 
 function firehose_pause() {

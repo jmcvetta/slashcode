@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.224 2008/03/03 14:11:11 scc Exp $
+# $Id: FireHose.pm,v 1.225 2008/03/10 20:39:02 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.224 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.225 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1516,9 +1516,13 @@ sub setSectionTopicsFromTagstring {
 
 }
 
+# Return a positive number if data was altered, 0 if it was not,
+# or undef on error.
+
 sub setFireHose {
 	my($self, $id, $data) = @_;
-	return unless $id && $data;
+	return undef unless $id && $data;
+	return 0 if !%$data;
 	my $id_q = $self->sqlQuote($id);
 	
 	my $mcd = $self->getMCD();
@@ -1547,7 +1551,7 @@ sub setFireHose {
 		$self->setGlobjAdminnote($globjid, $note);
 	}
 
-	return if !keys %$data;
+	return 0 if !keys %$data;
 
 	my $text_data = {};
 
@@ -1556,9 +1560,11 @@ sub setFireHose {
 	$text_data->{bodytext} = delete $data->{bodytext} if exists $data->{bodytext};
 	$text_data->{media} = delete $data->{media} if exists $data->{media};
 
-	$self->sqlUpdate('firehose', $data, "id=$id_q");
-	$self->sqlUpdate('firehose_text', $text_data, "id=$id_q") if keys %$text_data;
-	
+	my $rows = $self->sqlUpdate('firehose', $data, "id=$id_q");
+#{ use Data::Dumper; my $dstr = Dumper($data); $dstr =~ s/\s+/ /g; print STDERR "setFireHose A rows=$rows for id=$id_q data: $dstr\n"; }
+	$rows += $self->sqlUpdate('firehose_text', $text_data, "id=$id_q") if keys %$text_data;
+#{ use Data::Dumper; my $dstr = Dumper($text_data); $dstr =~ s/\s+/ /g; print STDERR "setFireHose B rows=$rows for id=$id_q data: $dstr\n"; }
+
 	if ($mcd) {
 		 $mcd->delete("$mcdkey:$id", 3);
 	}
@@ -1570,6 +1576,8 @@ sub setFireHose {
 #		$status = 'deleted' if $data->{accepted} eq 'yes' || $data->{rejected} eq 'yes';
 		$searchtoo->storeRecords(firehose => $id, { $status => 1 });
 	}
+
+	return $rows;
 }
 
 sub dispFireHose {
@@ -2625,4 +2633,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.224 2008/03/03 14:11:11 scc Exp $
+$Id: FireHose.pm,v 1.225 2008/03/10 20:39:02 jamiemccarthy Exp $

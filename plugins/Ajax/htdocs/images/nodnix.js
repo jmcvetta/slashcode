@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.15 2008/03/05 17:22:42 scc Exp $
+// $Id: nodnix.js,v 1.16 2008/03/11 17:25:52 scc Exp $
 
 var nod_completer = null;
 var nix_completer = null;
@@ -215,6 +215,15 @@ function soon_is_now() {
   YAHOO.util.Dom.removeClass(get_nix_menu(), 'soon');
 }
 
+function refresh_tag_bar( tag_list ) {
+  // ajax request to fill the user tags list
+  var params = [];
+  params['op'] = 'tags_get_user_firehose';
+  params['id'] = g_nodnix_item_id;
+  params['nodnix'] = 1;
+  ajax_update(params, tag_list, {});
+}
+
 function begin_nodnix_editing() {
   if ( is_firehose_playing() ) {
     firehose_pause();
@@ -234,13 +243,7 @@ function begin_nodnix_editing() {
 
   var tag_list = _get_nodnix('ol');
   tag_list.innerHTML = "";
-
-  // ajax request to fill the user tags list
-  var params = [];
-  params['op'] = 'tags_get_user_firehose';
-  params['id'] = g_nodnix_item_id;
-  params['nodnix'] = 1;
-  ajax_update(params, tag_list, {});
+  refresh_tag_bar(tag_list);
 
   (input.getAttribute("updown")=="+" ? nod_completer : nix_completer).sendQuery();
   setTimeout(soon_is_now, 225);

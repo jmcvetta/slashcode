@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: sd_autocomplete.js,v 1.49 2008/03/03 18:27:14 scc Exp $
+// $Id: sd_autocomplete.js,v 1.50 2008/03/11 16:38:18 scc Exp $
 
 YAHOO.namespace("slashdot");
 
@@ -381,9 +381,9 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._show = function( obj, callbackParam
           this._completer.autoHighlight = false;
           
 
-	  // widget must be visible to move
+    // widget must be visible to move
         YAHOO.util.Dom.removeClass(this._widget, "hidden");
-	  // move widget to be near the 'source'
+    // move widget to be near the 'source'
         var pos = YAHOO.util.Dom.getXY(this._sourceEl);
         pos[1] += this._sourceEl.offsetHeight;
         YAHOO.util.Dom.setXY(this._widget, pos);
@@ -508,9 +508,9 @@ YAHOO.slashdot.AutoCompleteWidget.prototype._onSdTextboxKeyDown = function( e, m
           me._hide();
           break;
         case 13:
-        	// I'm sorry to say we have to test first, something somehow somewhere can still leave
-        	//	leave this listener dangling; want to look deeper into this, as this would _still_
-        	//	leave the listener dangling
+          // I'm sorry to say we have to test first, something somehow somewhere can still
+          //  leave this listener dangling; want to look deeper into this, as this would _still_
+          //  leave the listener dangling
           if ( me._completer )
             me._completer.unmatchedItemSelectEvent.fire(me._completer, me, me._completer._sCurQuery);
           break;

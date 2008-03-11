@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.104 2008/03/11 17:27:13 scc Exp $
+# $Id: Tags.pm,v 1.105 2008/03/11 19:57:26 jamiemccarthy Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.105 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1193,27 +1193,27 @@ sub ajaxCreateForStory {
 }
 
 sub ajaxDeactivateTag {
-  my($self, $constants, $user, $form) = @_;
-  my $type = $form->{type} || "stories";
-  my $tags = getObject('Slash::Tags'); # XXX isn't this the same as $self? -Jamie (copied from elsewhere in this file)
+	my($self, $constants, $user, $form) = @_;
+	my $type = $form->{type} || "stories";
+	my $tags = getObject('Slash::Tags'); # XXX isn't this the same as $self? -Jamie
 
-  my ($table, $id);
+	my ($table, $id);
 
-  if ( $type eq "firehose" ) {
-    my $firehose = getObject("Slash::FireHose");
-    my $item = $firehose->getFireHose($form->{id});
-    ($table, $id) = $tags->getGlobjTarget($item->{globjid});
-  } else {
-    # XXX doesn't work yet for stories or urls
-    return;
-  }
+	if ($type eq "firehose") {
+		my $firehose = getObject("Slash::FireHose");
+		my $item = $firehose->getFireHose($form->{id});
+		($table, $id) = $tags->getGlobjTarget($item->{globjid});
+	} else {
+		# XXX doesn't work yet for stories or urls
+		return;
+	}
 
-  $tags->deactivateTag({
-    uid =>    $user->{uid},
-    name =>   $form->{tag},
-    table =>  $table,
-    id =>     $id
-  });
+	$tags->deactivateTag({
+		uid =>		$user->{uid},
+		name =>		$form->{tag},
+		table =>	$table,
+		id =>		$id,
+	});
 }
 
 sub ajaxProcessAdminTags {
@@ -1406,6 +1406,13 @@ sub ajaxListTagnames {
 	$prefix = lc($1) if $form->{prefix} =~ /([A-Za-z0-9]{1,20})/;
 	my $len = length($prefix);
 	my $notize = $form->{prefix} =~ /^([-!])/ ? $1 : '';
+
+	my $minlen = $constants->{tags_prefixlist_minlen} || 3;
+	if ($len < $minlen) {
+		# Too short to give a meaningful suggestion, and the
+		# shorter the prefix the longer the DB query takes.
+		return '';
+	}
 
 	my $tnhr = $tags_reader->listTagnamesByPrefix($prefix);
 

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.103 2008/03/10 20:39:02 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.104 2008/03/11 17:27:13 scc Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.103 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.104 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -1190,6 +1190,30 @@ sub ajaxCreateForStory {
 	}, { Return => 1 });
 #print STDERR scalar(localtime) . " ajaxCreateForStory 4 for stoid=$stoid newtagspreloadtext='$newtagspreloadtext' returning: $retval\n";
 	return $retval;
+}
+
+sub ajaxDeactivateTag {
+  my($self, $constants, $user, $form) = @_;
+  my $type = $form->{type} || "stories";
+  my $tags = getObject('Slash::Tags'); # XXX isn't this the same as $self? -Jamie (copied from elsewhere in this file)
+
+  my ($table, $id);
+
+  if ( $type eq "firehose" ) {
+    my $firehose = getObject("Slash::FireHose");
+    my $item = $firehose->getFireHose($form->{id});
+    ($table, $id) = $tags->getGlobjTarget($item->{globjid});
+  } else {
+    # XXX doesn't work yet for stories or urls
+    return;
+  }
+
+  $tags->deactivateTag({
+    uid =>    $user->{uid},
+    name =>   $form->{tag},
+    table =>  $table,
+    id =>     $id
+  });
 }
 
 sub ajaxProcessAdminTags {

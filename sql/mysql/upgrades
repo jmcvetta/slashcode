@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1320 2008/03/11 19:57:26 jamiemccarthy Exp $
+# $Id: upgrades,v 1.1321 2008/03/12 16:48:57 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5159,4 +5159,7 @@ UPDATE vars SET value = 'T_2_5_0_196' WHERE name = 'cvs_tag_currentcode';
 # for plugins/Tags
 INSERT INTO ajax_ops VALUES (NULL, 'tags_deactivate', 'Slash::Tags', 'ajaxDeactivateTag', 'ajax_tags_write', 'use');
 INSERT INTO vars (name, value, description) VALUES ('tags_prefixlist_minlen', '3', 'Minimum length of a tag prefix to bother looking up suggestions for');
+
+# 2008-03-12
+UPDATE vars SET value = 'T_2_5_0_197' WHERE name = 'cvs_tag_currentcode';
 

@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.113 2008/03/12 06:25:50 pudge Exp $
+// $Id: comments.js,v 1.114 2008/03/12 16:48:57 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1059,6 +1059,12 @@ function replyTo(pid) {
 	var replydiv = $('replyto_' + pid);
 	if (!replydiv)
 		return false; // seems we shouldn't be here ...
+
+	var postercomment = $('postercomment_' + pid);
+	if (postercomment) {
+		postercomment.focus(); // already have one, bail
+		return false;
+	}
 
 	var params = [];
 	params['op']  = 'comments_reply_form';

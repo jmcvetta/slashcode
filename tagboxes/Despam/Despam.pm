@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Despam.pm,v 1.8 2008/03/10 20:39:03 jamiemccarthy Exp $
+# $Id: Despam.pm,v 1.9 2008/03/12 14:27:28 jamiemccarthy Exp $
 
 package Slash::Tagbox::Despam;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.9 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -292,9 +292,9 @@ sub run {
 	# If appropriate, mark the submitter's uid or ipid as a spammer
 	# and mark _all_ their submissions as binspam.
 	if ($mark_srcid && $check_type) {
-		main::tagboxLog(sprintf("%s->run marking spammer AL2 srcid=%d",
+		main::tagboxLog(sprintf("%s->run marking spammer AL2 srcid=%s",
 			ref($self), $srcid));
-		$slashdb->setAL2($srcid, { spammer => 1 });
+		$slashdb->setAL2($srcid, { spammer => 1 }, { adminuid => 1183959 });
 	}
 }
 

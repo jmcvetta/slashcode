@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.16 2008/03/11 17:25:52 scc Exp $
+// $Id: nodnix.js,v 1.17 2008/03/14 15:48:06 scc Exp $
 
 var nod_completer = null;
 var nix_completer = null;
@@ -217,7 +217,7 @@ function soon_is_now() {
 
 function refresh_tag_bar( tag_list ) {
   // ajax request to fill the user tags list
-  var params = [];
+  var params = {};
   params['op'] = 'tags_get_user_firehose';
   params['id'] = g_nodnix_item_id;
   params['nodnix'] = 1;

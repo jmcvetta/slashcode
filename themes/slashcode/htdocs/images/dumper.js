@@ -1,6 +1,6 @@
-// $Id: dumper.js,v 1.3 2008/03/14 15:48:07 scc Exp $
+// $Id: dumper.js,v 1.4 2008/03/14 18:45:51 scc Exp $
 
-// javascript:jQuery('#commentControlBox')[0].innerHTML = Dumper(displaymode)
+// javascript:$dom('commentControlBox').innerHTML = Dumper(displaymode)
 
 // ===================================================================
 // Author: Matt Kruse <matt@mattkruse.com>

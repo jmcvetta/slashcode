@@ -1,4 +1,4 @@
-// $Id: sectionprefs.js,v 1.9 2008/03/14 15:48:06 scc Exp $
+// $Id: sectionprefs.js,v 1.10 2008/03/14 18:45:51 scc Exp $
 
 function configSectionPopup() { 
 	var title = "<a href=\"#\" onclick=\"window.location.reload()\" style=\"color:#fff;\">Sectional&nbsp;Display&nbsp;Prefs</a>&nbsp;";
@@ -30,7 +30,7 @@ function postSectionPrefChanges(el) {
 	params['op'] = 'setSectionNexusPrefs';
 	params[el.name] = el.value;
 	
-	var sec_pref_msg = jQuery("#sectionprefs-message")[0];
+	var sec_pref_msg = $dom("sectionprefs-message");
 	sec_pref_msg.innerHTML = "Saving...";
 	var url = 'ajax.pl';
 	ajax_update(params, 'sectionprefs-message'); 

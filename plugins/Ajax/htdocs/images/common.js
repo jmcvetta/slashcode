@@ -1,9 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.179 2008/03/14 18:45:51 scc Exp $
-
-// by now, both jQuery and prototype have loaded.  Tell jQuery to play nice (for now)
-if ( jQuery !== undefined )
-  jQuery.noConflict();
+// $Id: common.js,v 1.180 2008/03/17 02:17:08 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);

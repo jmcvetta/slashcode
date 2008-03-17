@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.180 2008/03/17 02:17:08 scc Exp $
+// $Id: common.js,v 1.181 2008/03/17 16:08:48 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -46,9 +46,6 @@ var fh_slider_init_set = 0;
 var ua=navigator.userAgent;
 var is_ie = ua.match("/MSIE/");
 
-
-// eventually add site specific constants like this to a separate .js
-var sitename = "Slashdot";
 
 function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 	var body = document.getElementsByTagName("body")[0]; 
@@ -956,11 +953,7 @@ function firehose_reorder() {
 					}
 				}
 			}
-			if (console_updating) {
-				document.title = sitename + " - Console (" + item_count + ")";
-			} else {
-				document.title = sitename + " - Firehose (" + item_count + ")";
-			}
+			document.title = "[% sitename %] - " + (console_updating ? "Console" : "Firehose") + " (" + item_count + ")";
 		}
 	}
 

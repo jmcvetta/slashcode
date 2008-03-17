@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Moderation.pm,v 1.5 2008/03/17 18:56:07 pudge Exp $
+# $Id: Moderation.pm,v 1.6 2008/03/17 20:08:26 pudge Exp $
 
 package Slash::Moderation;
 
@@ -17,7 +17,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -92,7 +92,7 @@ sub ajaxModerateCid {
 			);
 
 			$html->{$score}  = "Score:$points";
-			$html->{$score} = qq[<a href="#" onclick="getModalPrefs('modcommentlog', 'Moderation Comment Log', [% cid %]); return false">$html->{score}</a>];
+			$html->{$score} = qq[<a href="#" onclick="getModalPrefs('modcommentlog', 'Moderation Comment Log', [% cid %]); return false">$html->{score}</a>]
 				if $constants->{modal_prefs_active} && $user->{is_admin};
 			$html->{$score} .= ", $reasons->{$comment->{reason}}{name}"
 				if $comment->{reason} && $reasons->{$comment->{reason}};

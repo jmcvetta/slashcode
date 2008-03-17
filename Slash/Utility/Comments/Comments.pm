@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.5 2008/03/17 18:56:07 pudge Exp $
+# $Id: Comments.pm,v 1.6 2008/03/17 20:09:59 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.5 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.6 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -1883,7 +1883,7 @@ sub _hard_dispComment {
 		$score_to_display .= "Score:";
 		if (length $comment->{points}) {
 			$score_to_display .= $comment->{points};
-			$score_to_display = qq[<a href="#" onclick="getModalPrefs('modcommentlog', 'Moderation Comment Log', [% cid %]); return false">$score_to_display</a>]
+			$score_to_display = qq[<a href="#" onclick="getModalPrefs('modcommentlog', 'Moderation Comment Log', $comment->{cid}); return false">$score_to_display</a>]
 				if $constants->{modal_prefs_active} && $user->{is_admin};
 		} else {
 			$score_to_display .= '?';
@@ -2531,4 +2531,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.5 2008/03/17 18:56:07 pudge Exp $
+$Id: Comments.pm,v 1.6 2008/03/17 20:09:59 pudge Exp $

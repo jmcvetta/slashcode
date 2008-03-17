@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.181 2008/03/17 16:08:48 scc Exp $
+// $Id: common.js,v 1.182 2008/03/17 18:56:07 pudge Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -1419,12 +1419,12 @@ function hide_modal_box() {
 }
 
 function getModalPrefs(section, title, tabbed) {
-        document.getElementById('preference_title').innerHTML = title;
+	document.getElementById('preference_title').innerHTML = title;
 	var params = {};
 	params['op'] = 'getModalPrefs';
 	params['section'] = section;
 	params['reskey'] = reskey_static;
-        params['tabbed'] = tabbed;
+	params['tabbed'] = tabbed;
 	var handlers = {onComplete:show_modal_box};
 	ajax_update(params, 'modal_box_content', handlers);
 

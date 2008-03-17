@@ -44,7 +44,7 @@ bg_toggle = 0;
 %]
 [% IF mods.size > 0  || show_uid_totals %]
 	[% IF user.is_admin and need_m2_form %]
-	<form  method="post" action="[% gSkin.rootdir %]/comments.pl">
+	<form method="post"[% IF constants.modal_prefs_active %] id="modal_prefs"[% END %] action="[% gSkin.rootdir %]/comments.pl">
 	<div>
 	[% END %]
 	[% IF meta_mod_only %]
@@ -203,7 +203,12 @@ bg_toggle = 0;
 	[% IF need_m2_button %]
 		<tr class="data_hl1"><td colspan="[% total_cols %]" align="right">
 		<input type="hidden" name="op" value="moderate">
-		<input type="submit" name="submit" value="MetaModerate"> [%# XXX really? %]
+		[%- IF constants.modal_prefs_active %]
+		<input type="hidden" name="formname" value="metamoderate">
+		<input type="button" value="MetaModerate" onclick="saveModalPrefs()">
+		[%- ELSE %]
+		<input type="submit" name="submit" value="MetaModerate">
+		[%- END %]
 		</td></tr>
 	[% END %]
 [% END %]
@@ -367,4 +372,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: modCommentLog;misc;default,v 1.49 2006/10/26 17:33:09 jamiemccarthy Exp $
+$Id: modCommentLog;misc;default,v 1.50 2008/03/17 18:56:08 pudge Exp $

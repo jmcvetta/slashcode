@@ -71,7 +71,8 @@ __template__
 		[% Slash.linkComment(next, 1) %]&gt;&gt;
 	[% END %]
 	</div>
-	[% m1_classname = "Slash::" _ constants.m1_pluginname;
+	[% UNLESS constants.modal_prefs_active;
+	   m1_classname = "Slash::" _ constants.m1_pluginname;
 	   moddb = Slash.getObject(m1_classname);
 	   IF moddb;
 		   moddb.dispModCommentLog('cid', cid, {
@@ -82,6 +83,7 @@ __template__
 			need_m2_button => constants.m2,
 			title => " " });
 	   END;
+	   END; # constants.modal_prefs_active
 	%]
 [% END %]
 
@@ -157,4 +159,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.65 2008/03/12 06:25:50 pudge Exp $
+$Id: printCommComments;misc;default,v 1.66 2008/03/17 18:56:08 pudge Exp $

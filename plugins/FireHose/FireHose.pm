@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.225 2008/03/10 20:39:02 jamiemccarthy Exp $
+# $Id: FireHose.pm,v 1.226 2008/03/18 16:16:02 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.225 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.226 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -561,7 +561,7 @@ sub getFireHoseEssentials {
 				push @where, "popularity >= $pop_q";
 			}
 		}
-		if ($user->{is_admin}) {
+		if ($user->{is_admin} || $user->{acl}{signoff_allowed}) {
 			my $signoff_label = 'sign' . $user->{uid} . 'ed';
 
 			if ($options->{unsigned}) {
@@ -1603,6 +1603,9 @@ sub getMemoryForItem {
 	return [] unless $item && $user->{is_admin};
 	my $subnotes_ref = [];
 	my $sub_memory = $self->getSubmissionMemory();
+	my $url = "";
+	$url = $self->getUrl($item->{url_id}) if $item->{url_id};
+
 	foreach my $memory (@$sub_memory) {
 		my $match = $memory->{submatch};
 
@@ -1610,7 +1613,8 @@ sub getMemoryForItem {
 		    $item->{name}  =~ m/$match/i ||
 		    $item->{title}  =~ m/$match/i ||
 		    $item->{ipid}  =~ m/$match/i ||
-		    $item->{introtext} =~ m/$match/i) {
+		    $item->{introtext} =~ m/$match/i ||
+		    $url =~ m/$match/i) {
 			push @$subnotes_ref, $memory;
 		}
 	}
@@ -2633,4 +2637,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.225 2008/03/10 20:39:02 jamiemccarthy Exp $
+$Id: FireHose.pm,v 1.226 2008/03/18 16:16:02 tvroom Exp $

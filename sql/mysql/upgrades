@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1325 2008/03/19 08:25:31 pudge Exp $
+# $Id: upgrades,v 1.1326 2008/03/19 14:49:35 jamiemccarthy Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5165,3 +5165,13 @@ UPDATE vars SET value = 'T_2_5_0_197' WHERE name = 'cvs_tag_currentcode';
 
 # for plugins/Ajax
 UPDATE ajax_ops set reskey_name = 'ajax_user_static', reskey_type='createuse' WHERE op='admin_signoff';
+
+# for plugins/Tags
+CREATE TABLE tagname_cache (
+	tagnameid	int UNSIGNED NOT NULL,
+	tagname		VARCHAR(64) NOT NULL,
+	weight		FLOAT UNSIGNED DEFAULT 0.0 NOT NULL,
+	PRIMARY KEY tagnameid (tagnameid),
+	UNIQUE tagname (tagname),
+) TYPE=InnoDB;
+

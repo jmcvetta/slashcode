@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.118 2008/03/19 08:25:31 pudge Exp $
+// $Id: comments.js,v 1.119 2008/03/19 21:09:47 pudge Exp $
 
 var comments;
 var root_comments;
@@ -36,6 +36,7 @@ var boxStatusQueue = [];
 var comment_body_reply = [];
 var root_comment = 0;
 var discussion_id = 0;
+var user_is_subscriber = 0;
 var user_is_admin = 0;
 var user_is_anon = 0;
 var user_uid = 0;
@@ -1913,7 +1914,7 @@ function keyHandler(e, k) {
 			var next_cid = 0;
 			var key = k || String.fromCharCode(c);
 			var keyo = validkeys[key];
-			if (keyo && keyo['reply'] && user.is_subscriber && current_cid) { // XXX
+			if (keyo && keyo['reply'] && user_is_subscriber && current_cid) { // XXX
 				replyTo(current_cid);
 
 			// forward and back between comments, in order of how they were loaded

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.7 2008/03/19 08:25:31 pudge Exp $
+# $Id: Comments.pm,v 1.8 2008/03/19 21:09:47 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.7 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.8 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -405,8 +405,9 @@ sub jsSelectComments {
 	my $anon_thresh   = Data::JavaScript::Anon->anon_dump($thresh_totals || {});
 	s/\s+//g for ($anon_thresh, $anon_roots, $anon_rootsh);
 
-	$user->{is_anon}  ||= 0;
-	$user->{is_admin} ||= 0;
+	$user->{is_anon}       ||= 0;
+	$user->{is_admin}      ||= 0;
+	$user->{is_subscriber} ||= 0;
 
 	my $extra = '';
 	if ($d2_seen_0) {
@@ -442,6 +443,7 @@ max_cid = $max_cid;
 user_uid = $user->{uid};
 user_is_anon = $user->{is_anon};
 user_is_admin = $user->{is_admin};
+user_is_subscriber = $user->{is_subscriber};
 user_threshold = $threshold;
 user_highlightthresh = $highlightthresh;
 
@@ -1978,7 +1980,7 @@ EOT
 			op	=> 'Reply',
 			subject	=> 'Reply to This',
 			subject_only => 1,
-			onclick	=> (($discussion2 && $user->{is_subscriber}) ? "replyTo($comment->{cid}); return false;" : '')
+			onclick	=> (($discussion2 && (!$constants->{subscribe} || $user->{is_subscriber})) ? "replyTo($comment->{cid}); return false;" : '')
 		}) . '</span>') unless $user->{state}{discussion_archived};
 
 		push @link, linkComment({
@@ -2179,6 +2181,7 @@ sub validateComment {
 	# some commonly-used proxy ports to access our own site.
 	# If we can, they're coming from an open HTTP proxy, which
 	# we don't want to allow to post.
+	# XXX : this can become a reskey check -- pudge 2008-03
 	if ($constants->{comments_portscan}
 		&& ( $constants->{comments_portscan} == 2
 			|| $constants->{comments_portscan} == 1 && $user->{is_anon} )
@@ -2531,4 +2534,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.7 2008/03/19 08:25:31 pudge Exp $
+$Id: Comments.pm,v 1.8 2008/03/19 21:09:47 pudge Exp $

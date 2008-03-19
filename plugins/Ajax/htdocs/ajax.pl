@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.76 2008/03/17 18:56:07 pudge Exp $
+# $Id: ajax.pl,v 1.77 2008/03/19 08:25:31 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.76 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -309,6 +309,7 @@ sub previewReply {
 		$html = prevComment($preview, $user);
 	}
 
+	$error_message ||= 'This comment will not be saved until you click the Submit button below.';
 	$options->{content_type} = 'application/json';
 	my %to_dump = (
 		error => $error_message,

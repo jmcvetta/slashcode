@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: comments.pl,v 1.271 2008/03/04 19:17:36 pudge Exp $
+# $Id: comments.pl,v 1.272 2008/03/20 07:30:29 pudge Exp $
 
 use strict;
 use Slash 2.003;	# require Slash 2.3.x
@@ -527,7 +527,7 @@ sub previewForm {
 
 	my $comment = preProcessComment($form, $user, $discussion, $error_message) or return;
 	return $$error_message if $comment eq '-1';
-	my $preview = postProcessComment({ %$comment, %$form, %$user }, 0, $discussion);
+	my $preview = postProcessComment({ %$user, %$form, %$comment }, 0, $discussion);
 
 	if ($constants->{plugin}{Subscribe}) {
 		$preview->{subscriber_bonus} =

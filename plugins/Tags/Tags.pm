@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Tags.pm,v 1.107 2008/03/19 14:49:35 jamiemccarthy Exp $
+# $Id: Tags.pm,v 1.108 2008/03/21 16:52:42 tvroom Exp $
 
 package Slash::Tags;
 
@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.107 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.108 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # FRY: And where would a giant nerd be? THE LIBRARY!
 
@@ -2154,11 +2154,16 @@ sub getRecentTagnamesOfInterest {
 
 sub showRecentTagnamesBox {
 	my($self, $options) = @_;
-	my $rtoi_ar = $self->getRecentTagnamesOfInterest($options);
+	$options ||= {};
 
-	my $text = slashDisplay('recenttagnamesbox', {
-		rtoi => $rtoi_ar,
-	}, { Return => 1 });
+	my $text = " ";
+	
+	unless ($options->{box_only}) {
+		my $rtoi_ar = $self->getRecentTagnamesOfInterest();
+		$text = slashDisplay('recenttagnamesbox', {
+			rtoi => $rtoi_ar,
+		}, { Return => 1 });
+	}
 
 	return $text if $options->{contents_only};
 

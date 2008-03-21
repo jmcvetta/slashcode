@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.183 2008/03/18 16:28:44 tvroom Exp $
+// $Id: common.js,v 1.184 2008/03/21 14:31:41 tvroom Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -1517,7 +1517,7 @@ function toggle_filter_prefs() {
 }
 
 function admin_signoff(stoid, type, id) {
-	var params = [];
+	var params = {};
 	params['op'] = 'admin_signoff';
 	params['stoid'] = stoid;
 	params['reskey'] = reskey_static;

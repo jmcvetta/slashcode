@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1009 2008/03/18 20:39:17 tvroom Exp $
+# $Id: MySQL.pm,v 1.1010 2008/03/21 03:05:35 pudge Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1009 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1010 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7923,7 +7923,7 @@ sub getSignoffCountHashForStoids {
 		"stoid", 
 		"stoid, COUNT(DISTINCT signoff.uid) AS cnt",
 		"signoff, users",
-		"users.uid = signoffs.uid stoid in ($stoid_list) $user_limit_clause",
+		"users.uid = signoff.uid AND stoid IN ($stoid_list) $user_limit_clause",
 		"GROUP BY stoid"
 	);
 	

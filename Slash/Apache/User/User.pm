@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: User.pm,v 1.173 2008/02/13 16:37:18 pudge Exp $
+# $Id: User.pm,v 1.174 2008/03/24 20:18:00 jamiemccarthy Exp $
 
 package Slash::Apache::User;
 
@@ -24,7 +24,7 @@ use vars qw($REVISION $VERSION @ISA @QUOTES $USER_MATCH $request_start_time);
 
 @ISA		= qw(DynaLoader);
 $VERSION   	= '2.003000';  # v2.3.0
-($REVISION)	= ' $Revision: 1.173 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($REVISION)	= ' $Revision: 1.174 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 bootstrap Slash::Apache::User $VERSION;
 
@@ -612,6 +612,7 @@ sub userdir_handler {
 		}
 
 		my($op, $extra) = split /\//, $string, 2;
+		$extra ||= '';
 
 		my $logged_in = $r->header_in('Cookie') =~ $USER_MATCH;
 		my $try_login = !$logged_in && $logtoken;
@@ -634,9 +635,9 @@ sub userdir_handler {
 				$found_the_op = 1;
 				if ($op eq 'journal') {
 					my $args;
-					if ($extra && $extra =~ /^\d+$/) {
+					if ($extra =~ /^\d+$/) {
 						$args = "id=$extra&op=edit";
-					} elsif ($extra && $extra eq 'friends') {
+					} elsif ($extra eq 'friends') {
 						$args = "op=friendview";
 					} else {
 						$args = "op=list";
@@ -703,7 +704,10 @@ sub userdir_handler {
 					$r->filename($constants->{basedir} . '/journal.pl');
 
 				} elsif ($op eq 'tags') {
-					$r->args("op=showtags");
+					my $args = 'op=showtags';
+					# XXX "!" is a 'reserved' char in URI, escape it here?
+					$args .= "&tagname=$extra" if $extra;
+					$r->args($args);
 					$r->uri('/users.pl');
 					$r->filename($constants->{basedir} . '/users.pl');
 
@@ -846,7 +850,10 @@ sub userdir_handler {
 			$r->filename($constants->{basedir} . '/journal.pl');
 
 		} elsif ($op eq 'tags') {
-			$r->args("op=showtags&nick=$nick&uid=$uid");
+			my $args = "op=showtags&nick=$nick&uid=$uid";
+			# XXX "!" is a 'reserved' char in URI, escape it here?
+			$args .= "&tagname=$extra" if $extra;
+			$r->args($args);
 			$r->uri('/users.pl');
 			$r->filename($constants->{basedir} . '/users.pl');
 

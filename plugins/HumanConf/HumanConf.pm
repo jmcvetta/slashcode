@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.12 2007/10/12 07:23:03 jamiemccarthy Exp $
+# $Id: HumanConf.pm,v 1.13 2008/03/24 18:47:43 jamiemccarthy Exp $
 
 package Slash::HumanConf;
 
@@ -16,7 +16,7 @@ use base 'Exporter';
 use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub new {
 	my($class, $user) = @_;
@@ -43,7 +43,7 @@ sub _formnameNeedsHC {
 }
 
 sub createFormkeyHC {
-	my($self, $formname) = @_;
+	my($self, $formname, $options) = @_;
 
 	# Only certain formnames need human confirmation.  From any       
 	# other formname, just return 1, meaning everything is ok
@@ -54,7 +54,7 @@ sub createFormkeyHC {
 	my $form = getCurrentForm();
 	my $user = getCurrentUser();
 	my $constants = getCurrentStatic();
-	my $formkey = $form->{formkey};
+	my $formkey = $options->{frkey} || $form->{formkey};
 	return 0 unless $formkey;
 
 	# Decide which question we're asking.
@@ -122,7 +122,7 @@ sub createFormkeyHC {
 }
 
 sub reloadFormkeyHC {
-	my($self, $formname) = @_;
+	my($self, $formname, $options) = @_;
 
 	my $user = getCurrentUser();
 
@@ -138,7 +138,7 @@ sub reloadFormkeyHC {
 	my $slashdb = getCurrentDB();
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
-	my $formkey = $form->{formkey};
+	my $formkey = $options->{frkey} || $form->{formkey};
 	my $formkey_quoted = $slashdb->sqlQuote($form->{formkey});
 
 	my($hcid, $html, $question, $tries_left) = $slashdb->sqlSelect(
@@ -159,7 +159,7 @@ sub reloadFormkeyHC {
 }
 
 sub validFormkeyHC {
-	my($self, $formname) = @_;
+	my($self, $formname, $options) = @_;
 
 	# Only certain formnames need human confirmation.  Other formnames
 	# won't even have HC data created for them, so there's no need to
@@ -168,7 +168,7 @@ sub validFormkeyHC {
 
 	my $slashdb = getCurrentDB();
 	my $form = getCurrentForm();
-	my $formkey = $form->{formkey};
+	my $formkey = $options->{frkey} || $form->{formkey};
 	return 'invalidhc' unless $formkey;
 
 	my $formkey_quoted = $slashdb->sqlQuote($form->{formkey});

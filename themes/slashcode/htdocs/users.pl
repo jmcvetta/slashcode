@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: users.pl,v 1.346 2008/03/24 20:18:01 jamiemccarthy Exp $
+# $Id: users.pl,v 1.347 2008/03/25 19:54:23 jamiemccarthy Exp $
 
 use strict;
 use Digest::MD5 'md5_hex';
@@ -1594,7 +1594,6 @@ sub saveTags {
 	my $user = getCurrentUser();
 	my $form = getCurrentForm();
 	my $constants = getCurrentStatic();
-	my $tagname = $form->{tagname};
 
 	return if $user->{is_anon}; # shouldn't be, but can't hurt to check
 

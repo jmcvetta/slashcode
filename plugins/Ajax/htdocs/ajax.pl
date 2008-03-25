@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.77 2008/03/19 08:25:31 pudge Exp $
+# $Id: ajax.pl,v 1.78 2008/03/25 18:46:24 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.77 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -40,8 +40,6 @@ sub main {
 	);
 #	print STDERR "AJAX3 $$: $user->{uid}, $op\n";
 
-#$Slash::ResKey::DEBUG = 2;
-
 	$ops->{$op}{function} ||= loadCoderef($ops->{$op}{class}, $ops->{$op}{subroutine});
 	$op = 'default' unless $ops->{$op}{function};
 
@@ -58,7 +56,7 @@ sub main {
 
 	if ($reskey_name ne 'NA') {
 		my $reskey = getObject('Slash::ResKey');
-		my $rkey = $reskey->key($reskey_name);
+		my $rkey = $reskey->key($reskey_name); #, { debug => 1 });
 		if (!$rkey) {
 			print STDERR scalar(localtime) . " ajax.pl main no rkey for op='$op' name='$reskey_name'\n";
 			return;
@@ -287,6 +285,9 @@ sub submitReply {
 		unless $error_message;
 	my $cid = $saved_comment && $saved_comment ne '-1' ? $saved_comment->{cid} : 0;
 
+	# go back to HumanConf is we still have errors left to display
+	$error_message &&= slashDisplay('hc_comment', { pid => $pid });
+
 	$options->{content_type} = 'application/json';
 	my %to_dump = ( cid => $cid, error => $error_message );
 #use Data::Dumper; print STDERR Dumper \%to_dump;
@@ -301,15 +302,18 @@ sub previewReply {
 
 	$user->{state}{ajax_accesslog_op} = 'comments_preview_reply';
 
-	my($error_message, $preview, $html);
+	my $html = my $error_message = '';
 	my $discussion = $slashdb->getDiscussion($sid);
 	my $comment = preProcessComment($form, $user, $discussion, \$error_message);
 	if ($comment && $comment ne '-1') {
-		$preview = postProcessComment({ %$comment, %$form, %$user }, 0, $discussion);
+		my $preview = postProcessComment({ %$comment, %$form, %$user }, 0, $discussion);
 		$html = prevComment($preview, $user);
 	}
 
-	$error_message ||= 'This comment will not be saved until you click the Submit button below.';
+	if ($html) {
+		$error_message .= getData('inline preview warning');
+		$error_message .= slashDisplay('hc_comment', { pid => $pid });
+	}
 	$options->{content_type} = 'application/json';
 	my %to_dump = (
 		error => $error_message,
@@ -339,7 +343,7 @@ sub replyForm {
 	preProcessReplyForm($form, $reply);
 
 	my $reskey = getObject('Slash::ResKey');
-	my $rkey = $reskey->key('comments', { nostate => 1 });
+	my $rkey = $reskey->key('comments', { nostate => 1 }); #, debug => 1 });
 	$rkey->create;
 
 	my %to_dump;

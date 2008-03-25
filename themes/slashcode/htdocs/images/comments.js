@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.119 2008/03/19 21:09:47 pudge Exp $
+// $Id: comments.js,v 1.120 2008/03/25 18:46:26 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1014,6 +1014,10 @@ function replyPreviewOrSubmit (pid, op, handlers) {
 	params['gotmodwarning'] = $dom('gotmodwarning_' + pid).value;
 	params['postersubj'] = $dom('postersubj_' + pid).value;
 	params['postercomment'] = $dom('postercomment_' + pid).value;
+
+	var hcanswer = $dom('hcanswer_' + pid);
+	if (hcanswer)
+		params['hcanswer'] = hcanswer.value;
 
 	var postanon = $dom('postanon_' + pid);
 	if (postanon && postanon.checked)

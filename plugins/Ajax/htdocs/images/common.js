@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.185 2008/03/24 21:46:28 scc Exp $
+// $Id: common.js,v 1.186 2008/03/25 18:46:24 pudge Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -113,7 +113,7 @@ function createPopupButtons() {
 }
 
 function closePopup(id, refresh) {
-	$('#'+id).remove()
+	$('#'+id).remove();
 	if (refresh) {
 		window.location.reload();
 	}

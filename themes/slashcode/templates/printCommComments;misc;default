@@ -112,7 +112,7 @@ __template__
 			op           => 'reply',
 			subject      => 'Reply',
 			subject_only => 1,
-			onclick      => ((discussion2 && (!constants.subscribe || user.is_subscriber)) ? "replyTo(0); return false;" : '')
+			onclick      => ((discussion2 && !user.is_anon) ? "replyTo(0); return false;" : '')
 		});
 	END %]
 </div>
@@ -159,4 +159,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.68 2008/03/19 21:09:47 pudge Exp $
+$Id: printCommComments;misc;default,v 1.69 2008/03/25 18:43:56 pudge Exp $

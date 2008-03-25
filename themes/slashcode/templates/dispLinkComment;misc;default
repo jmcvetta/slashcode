@@ -28,7 +28,7 @@ __template__
 				op	=> 'Reply',
 				subject	=> 'Reply to This',
 				subject_only => 1,
-				onclick	=> ((discussion2 && (!constants.subscribe || user.is_subscriber)) ? "replyTo($cid); return false;" : '')
+				onclick	=> ((discussion2 && !user.is_anon) ? "replyTo($cid); return false;" : '')
 			}) %]</span>
 		[% END %]
 
@@ -68,4 +68,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispLinkComment;misc;default,v 1.44 2008/03/21 02:44:56 pudge Exp $
+$Id: dispLinkComment;misc;default,v 1.45 2008/03/25 18:43:56 pudge Exp $

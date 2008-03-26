@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.186 2008/03/25 18:46:24 pudge Exp $
+// $Id: common.js,v 1.187 2008/03/26 21:43:44 tvroom Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -49,6 +49,7 @@ var firehose_settings = {};
   firehose_settings.is_embedded = 0;
   firehose_settings.not_id = 0;
   firehose_settings.section = 0;
+  firehose_settings.more_num = 0;
 
 // Settings to port out of settings object
   firehose_updates = Array(0);
@@ -1444,6 +1445,8 @@ function firehose_go_next() {
 	var pos = firehose_get_pos_of_id(cur);
 	if (pos < (firehose_ordered.length - 1)) {
 		pos++;
+	} else {
+		firehose_more();
 	}
 	firehose_set_cur(firehose_ordered[pos]);
 	scrollWindowToFirehose(firehose_cur);
@@ -1458,6 +1461,17 @@ function firehose_go_prev() {
 	firehose_set_cur(firehose_ordered[pos]);
 	scrollWindowToFirehose(firehose_cur);
 
+}
+
+function firehose_more() {
+	var increment_by = 10;
+	var max_more = 100;
+	firehose_settings.more_num = firehose_settings.more_num + increment_by;
+	if (firehose_settings.more_num > max_more) {
+		firehose_settings.more_num = max_more;
+		$('#firehose_more').hide();
+	}
+	firehose_get_updates();
 }
 
 

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.79 2008/03/26 00:05:21 jamiemccarthy Exp $
+# $Id: ajax.pl,v 1.80 2008/03/26 05:09:02 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.80 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -286,7 +286,7 @@ sub submitReply {
 	my $cid = $saved_comment && $saved_comment ne '-1' ? $saved_comment->{cid} : 0;
 
 	# go back to HumanConf if we still have errors left to display
-	$error_message &&= slashDisplay('hc_comment', { pid => $pid });
+	$error_message &&= slashDisplay('hc_comment', { pid => $pid }, { Return => 1 });
 
 	$options->{content_type} = 'application/json';
 	my %to_dump = ( cid => $cid, error => $error_message );
@@ -312,7 +312,7 @@ sub previewReply {
 
 	if ($html) {
 		$error_message .= getData('inline preview warning');
-		$error_message .= slashDisplay('hc_comment', { pid => $pid });
+		$error_message .= slashDisplay('hc_comment', { pid => $pid }, { Return => 1 });
 	}
 	$options->{content_type} = 'application/json';
 	my %to_dump = (

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.78 2008/03/25 18:46:24 pudge Exp $
+# $Id: ajax.pl,v 1.79 2008/03/26 00:05:21 jamiemccarthy Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.78 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.79 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -285,7 +285,7 @@ sub submitReply {
 		unless $error_message;
 	my $cid = $saved_comment && $saved_comment ne '-1' ? $saved_comment->{cid} : 0;
 
-	# go back to HumanConf is we still have errors left to display
+	# go back to HumanConf if we still have errors left to display
 	$error_message &&= slashDisplay('hc_comment', { pid => $pid });
 
 	$options->{content_type} = 'application/json';

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.226 2008/03/18 16:16:02 tvroom Exp $
+# $Id: FireHose.pm,v 1.227 2008/03/26 21:44:56 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.226 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.227 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -378,6 +378,9 @@ sub getFireHoseEssentials {
 
 	$options ||= {};
 	$options->{limit} ||= 50;
+	my $ps = $options->{limit};
+	
+	$options->{limit} += $options->{more_num} if $options->{more_num};
 
 	my $pop;
 	$pop = $self->getMinPopularityForColorLevel($colors->{$options->{color}})
@@ -628,7 +631,7 @@ sub getFireHoseEssentials {
 	}
 
 
-	my $page_size = $options->{limit} || 1;
+	my $page_size = $ps || 1;
 	$results->{records_pages} ||= ceil($count / $page_size);
 	$results->{records_page}  ||= (int(($options->{offset} || 0) / $options->{limit}) + 1) || 1;
 
@@ -2145,6 +2148,11 @@ sub getAndSetOptions {
 	if ($form->{not_id} && $form->{not_id} =~ /^\d+$/) {
 		$options->{not_id} = $form->{not_id};
 	}
+	
+	if ($form->{more_num} && $form->{more_num} =~ /^\d+$/) {
+		$options->{more_num} = $form->{more_num};
+	}
+
 	return $options;
 }
 
@@ -2637,4 +2645,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.226 2008/03/18 16:16:02 tvroom Exp $
+$Id: FireHose.pm,v 1.227 2008/03/26 21:44:56 tvroom Exp $

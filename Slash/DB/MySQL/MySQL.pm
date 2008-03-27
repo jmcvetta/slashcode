@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: MySQL.pm,v 1.1011 2008/03/26 21:49:55 tvroom Exp $
+# $Id: MySQL.pm,v 1.1012 2008/03/27 16:56:27 tvroom Exp $
 
 package Slash::DB::MySQL;
 use strict;
@@ -20,7 +20,7 @@ use base 'Slash::DB';
 use base 'Slash::DB::Utility';
 use Slash::Constants ':messages';
 
-($VERSION) = ' $Revision: 1.1011 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.1012 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 # Fry: How can I live my life if I can't tell good from evil?
 
@@ -7877,6 +7877,7 @@ sub createSignoff {
 
 	$signoff_type ||= '';
 	$self->sqlInsert("signoff", { stoid => $stoid, uid => $uid, signoff_type => $signoff_type });
+	$self->setStory($stoid, { thumb_signoff_needed => 0 });
 
 	if ($constants->{plugin}{FireHose}) {
 		my $firehose = getObject("Slash::FireHose");
@@ -7945,6 +7946,19 @@ sub getSignoffsForStory {
 		"signoff, users",
 		"signoff.stoid=$stoid_q AND users.uid=signoff.uid"
 	);
+}
+
+sub deleteSignoffsForStory {
+	my($self, $stoid) = @_;
+	my $constants = getCurrentStatic();
+	my $stoid_q = $self->sqlQuote($stoid);
+	$self->sqlDelete("signoff", "stoid=$stoid_q");
+	if ($constants->{plugin}{FireHose}) {
+		my $firehose = getObject("Slash::FireHose");
+		my ($id) = $self->sqlSelect("id", "firehose", "type='story' and srcid=$stoid_q");
+		$firehose->setFireHose($id, { signoffs => '' });
+
+	}
 }
 
 sub getSignoffsInLastMinutes {

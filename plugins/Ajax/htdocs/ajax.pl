@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.81 2008/03/27 00:44:21 pudge Exp $
+# $Id: ajax.pl,v 1.82 2008/03/27 23:29:45 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.81 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -70,11 +70,14 @@ sub main {
 			$rkey->use;
 		}
 		if (!$rkey->success) {
+			# feel free to send msgdiv => 'thisdivhere' to the ajax call,
+			# and any reskey error messages will be sent to it
 			if ($form->{msgdiv}) {
 				header_ajax({ content_type => 'application/json' });
 				(my $msgdiv = $form->{msgdiv}) =~ s/[^\w-]+//g;
 				print Data::JavaScript::Anon->anon_dump({
-					html	=> { $msgdiv => $rkey->errstr },
+					html	  => { $msgdiv => $rkey->errstr },
+					eval_last => "\$('#$msgdiv').show()"
 				});
 			}
 			$rkey->ERROR($op);

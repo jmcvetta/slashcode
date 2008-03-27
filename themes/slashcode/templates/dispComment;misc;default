@@ -23,7 +23,7 @@ __name__
 dispComment
 __template__
 [% IF !options.noshow_show %]
-<li id="tree_[% cid %]" class="comment">
+<li id="tree_[% cid %]" class="comment[% IF class == 'full' %] contain[% END %]">
 <div id="comment_status_[% cid %]" class="commentstatus"></div>
 <div id="comment_[% cid %]"[% IF discussion2 %] class="[% class %]"[% END %]>
 [% END; IF !options.noshow %]
@@ -81,4 +81,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: dispComment;misc;default,v 1.67 2008/03/27 00:44:21 pudge Exp $
+$Id: dispComment;misc;default,v 1.68 2008/03/27 23:29:45 pudge Exp $

@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.12 2008/03/27 19:02:43 lancelot Exp $
+# $Id: Comments.pm,v 1.13 2008/03/27 23:29:45 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -2015,7 +2015,7 @@ EOT
 		my $link = join(" ", @link);
 
 		if (@link) {
-			$commentsub = "$link";
+			$commentsub = $link;
 		}
 
 	}
@@ -2071,6 +2071,7 @@ EOT
 
 	my $class = $comment->{class}; 
 	my $classattr = $discussion2 ? qq[ class="$class"] : '';
+	my $contain = $class eq 'full' ? ' contain' : '';
 
 	my $head = $discussion2 ? <<EOT1 : <<EOT2;
 			<h4><a id="comment_link_$comment->{cid}" name="comment_link_$comment->{cid}" href="$gSkin->{rootdir}/comments.pl?sid=$comment->{sid}&amp;cid=$comment->{cid}" onclick="return setFocusComment($comment->{cid})">$comment->{subject}</a>
@@ -2080,7 +2081,7 @@ EOT2
 
 	my $return = '';
 	$return = <<EOT if !$options->{noshow_show};
-<li id="tree_$comment->{cid}" class="comment">
+<li id="tree_$comment->{cid}" class="comment$contain">
 <div id="comment_status_$comment->{cid}" class="commentstatus"></div>
 <div id="comment_$comment->{cid}"$classattr>
 EOT
@@ -2506,4 +2507,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.12 2008/03/27 19:02:43 lancelot Exp $
+$Id: Comments.pm,v 1.13 2008/03/27 23:29:45 pudge Exp $

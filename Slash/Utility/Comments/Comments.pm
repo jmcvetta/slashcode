@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.11 2008/03/27 00:44:21 pudge Exp $
+# $Id: Comments.pm,v 1.12 2008/03/27 19:02:43 lancelot Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -1978,23 +1978,23 @@ EOT
 		&& $comment->{nickname} ne "-") { # this last test probably useless
 		my @link = ( );
 
-		push @link, (qq'<span id="reply_link_$comment->{cid}">' . linkComment({
+		push @link, (qq'<span id="reply_link_$comment->{cid}" class="nbutton"><p><b>' . linkComment({
 			sid	=> $comment->{sid},
 			pid	=> $comment->{cid},
 			op	=> 'Reply',
 			subject	=> 'Reply to This',
 			subject_only => 1,
 			onclick	=> (($discussion2 && !$user->{is_anon}) ? "replyTo($comment->{cid}); return false;" : '')
-		}) . '</span>') unless $user->{state}{discussion_archived};
+		}) . '</b></p></span>') unless $user->{state}{discussion_archived};
 
-		push @link, linkComment({
+		push @link, (qq'<span class="nbutton"><p><b>' . linkComment({
 			sid	=> $comment->{sid},
 			cid	=> $comment->{original_pid},
 			pid	=> $comment->{original_pid},
 			subject	=> 'Parent',
 			subject_only => 1,
 			onclick	=> ($discussion2 ? "return selectParent($comment->{original_pid})" : '')
-		}, 1) if $comment->{original_pid};# && !($discussion2 &&
+		}, 1) . '</b></p></span>') if $comment->{original_pid};# && !($discussion2 &&
 #			(!$form->{cid} || $form->{cid} != $comment->{cid})
 #		);
 
@@ -2012,10 +2012,10 @@ EOT
 		push @link, qq|<input type="checkbox" name="del_$comment->{cid}">|
 			if $user->{is_admin};
 
-		my $link = join(" | ", @link);
+		my $link = join(" ", @link);
 
 		if (@link) {
-			$commentsub = "[ $link ]";
+			$commentsub = "$link";
 		}
 
 	}
@@ -2506,4 +2506,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.11 2008/03/27 00:44:21 pudge Exp $
+$Id: Comments.pm,v 1.12 2008/03/27 19:02:43 lancelot Exp $

@@ -1,9 +1,10 @@
 #
-# $Id: mysql_dump.sql,v 1.38 2008/03/25 18:42:41 pudge Exp $
+# $Id: mysql_dump.sql,v 1.39 2008/03/27 00:09:31 jamiemccarthy Exp $
 #
 
 INSERT INTO vars (name, value, description) VALUES ('memcached_exptime_tags', '3600', 'Seconds to cache tag data in memcached');
 INSERT INTO vars (name, value, description) VALUES ('memcached_exptime_tags_brief', '300', 'Seconds to cache tag data that only needs brief caching, in memcached');
+INSERT INTO vars (name, value, description) VALUES ('tags_active_maxshow', '200', 'Maximum number of tagged objects to display on /tags/foo');
 INSERT INTO vars (name, value, description) VALUES ('tags_active_mincare', '5', 'Minimum color slice number to "care" about tags for the Slashdot Recent Tags box (only matters if FireHose installed and if you are Slashdot)');
 INSERT INTO vars (name, value, description) VALUES ('tags_admin_private_tags', '', 'List of tags separated by | that are private for admins');
 INSERT INTO vars (name, value, description) VALUES ('tags_admin_autoaddstorytopics', '1', 'Auto-add tags for story topic keywords?');

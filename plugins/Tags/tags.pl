@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags.pl,v 1.11 2008/03/24 20:16:44 jamiemccarthy Exp $
+# $Id: tags.pl,v 1.12 2008/03/27 00:09:31 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -73,12 +73,18 @@ sub main {
 				push @objects, {
 					url	=> $objs[0]{url},
 					title	=> $objs[0]{title},
-					count	=> $sum_tc,
+					clout	=> $sum_tc,
 				} if $sum_tc >= $mintc;
 			}
-			@objects = sort { $b->{count} <=> $a->{count} || ($a->{title}||'') cmp ($b->{title}||'') } @objects;
+			@objects = sort {
+				    $b->{clout}      <=>  $a->{clout}
+				|| ($a->{title}||'') cmp ($b->{title}||'')
+			} @objects;
+			my $max_display = $constants->{tags_active_maxshow} || 200;
+			if (scalar @objects > $max_display) {
+				$#objects = $max_display-1;
+			}
 			if ($mcd) {
-				my $constants = getCurrentStatic();
 				my $secs = $constants->{memcached_exptime_tags_brief} || 300;
 				$mcd->set("$mcdkey$tagname", \@objects, $secs);
 #print STDERR "tags.pl set '$mcdkey$tagname' to " . scalar(@objects) . " objects\n";

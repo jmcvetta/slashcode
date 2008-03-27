@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.24 2008/03/25 18:46:24 pudge Exp $
+# $Id: Key.pm,v 1.25 2008/03/27 00:44:21 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -118,7 +118,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.24 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.25 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -995,6 +995,15 @@ sub getCurrentSalts {
 	return $salts;
 }
 
+sub ERROR {
+	my($self, $extra, $user) = @_;
+	$extra ||= '';
+	$user ||= getCurrentUser();
+	printf STDERR "AJAXE %d: UID:%d, extra:%s: %s (%s) (%s:%s:%s:%s:%s:%s:%s)\n",
+		$$, $user->{uid}, $extra, $self->errstr, $self->error->[0], $self->reskey,
+		$self->type, $self->resname, $self->rkrid, $self->code, $self->static,
+		$user->{srcids}{ 24 };
+}
 
 1;
 
@@ -1007,4 +1016,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.24 2008/03/25 18:46:24 pudge Exp $
+$Id: Key.pm,v 1.25 2008/03/27 00:44:21 pudge Exp $

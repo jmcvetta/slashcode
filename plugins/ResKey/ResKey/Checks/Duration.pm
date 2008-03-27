@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.11 2008/03/25 18:46:24 pudge Exp $
+# $Id: Duration.pm,v 1.12 2008/03/27 00:44:21 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.11 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.12 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -230,7 +230,6 @@ sub duration {
 				$duration = int($duration + 0.5);
 			}
 		}
-		print STDERR $duration;
 	}
 
 

@@ -19,8 +19,11 @@ __template__
 [% CASE 'inline preview warning' %]
 	<p>This comment will not be saved until you click the Submit button below.</p>
 
+[% CASE 'no modcommentlog' %]
+	<p>No comment history available.</p>
+
 [% END %]
 __seclev__
 1000
 __version__
-$Id: data;ajax;default,v 1.10 2008/03/25 18:46:24 pudge Exp $
+$Id: data;ajax;default,v 1.11 2008/03/27 00:44:21 pudge Exp $

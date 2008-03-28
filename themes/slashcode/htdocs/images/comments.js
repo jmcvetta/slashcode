@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.122 2008/03/27 23:29:45 pudge Exp $
+// $Id: comments.js,v 1.123 2008/03/28 22:10:43 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1923,12 +1923,10 @@ var validkeys = {
 	T: { nav: 1, skip : 1, top    : 1 }, 
 	V: { nav: 1, skip : 1, bottom : 1 }, 
 
-	// these do not work, different codes coming through
-	'[' : { thresh : 1, top    : 1, down: 1 },
-	']' : { thresh : 1, top    : 1, up  : 1 },
-	',' : { thresh : 1, bottom : 1, down: 1 },
-	'.' : { thresh : 1, bottom : 1, up  : 1 },
-
+	219 : { chr: '[', thresh : 1, top    : 1, down: 1 },
+	221 : { chr: ']', thresh : 1, top    : 1, up  : 1 },
+	188 : { chr: ',', thresh : 1, bottom : 1, down: 1 },
+	190 : { chr: '.', thresh : 1, bottom : 1, up  : 1 },
 };
 
 validkeys['H'] = validkeys['A'];
@@ -1970,7 +1968,7 @@ function keyHandler(e, k) {
 
 			var update = 0;
 			var next_cid = 0;
-			var key = k || String.fromCharCode(c);
+			var key = k || validkeys[c] ? c : String.fromCharCode(c);
 			var keyo = validkeys[key];
 			if (keyo) {
 				// keys that rely on current comment

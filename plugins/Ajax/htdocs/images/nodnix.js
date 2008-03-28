@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: nodnix.js,v 1.19 2008/03/28 20:53:43 pudge Exp $
+// $Id: nodnix.js,v 1.20 2008/03/28 22:04:32 pudge Exp $
 
 var nod_completer = null;
 var nix_completer = null;
@@ -20,6 +20,7 @@ function get_predefined_nodnix_tags() {
 	var tags = [];
 	var query = _get_nodnix('input').getAttribute("updown");
 	var listEl = query=="+" ? document.getElementById('static-nod-completions')
+		: document.getElementById('static-nix-completions');
 
 	if ( listEl ) {
 		var itemEls = listEl.getElementsByTagName('li');
@@ -52,7 +53,9 @@ function get_nodnix_listener() {
 		for ( var i=0; i<extras.length; ++i )
 			keylist.push(extras.charCodeAt(i));
 
-		get_nodnix_listener.nodnix_listener = new YAHOO.util.KeyListener(document, {keys:keylist},
+		get_nodnix_listener.nodnix_listener = new YAHOO.util.KeyListener(
+			document, {keys:keylist}, {fn:handle_nodnix_key}
+		);
 
 
 		var keylist2 = new Array();

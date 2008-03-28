@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.82 2008/03/27 23:29:45 pudge Exp $
+# $Id: ajax.pl,v 1.83 2008/03/28 20:54:43 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.82 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -396,15 +396,14 @@ sub readRest {
 sub fetchComments {
 	my($slashdb, $constants, $user, $form, $options) = @_;
 
-	my $cids         = [ grep /^\d+$/, split /,/, ($form->{cids} || '') ];
+	my $cids         = [ grep /^\d+$/, ($form->{_multi}{cids} ? @{$form->{_multi}{cids}} : $form->{cids}) ];
 	my $id           = $form->{discussion_id} || 0;
 	my $cid          = $form->{cid} || 0; # root id
 	my $d2_seen      = $form->{d2_seen};
-	my $placeholders = $form->{placeholders};
-	my @placeholders;
+	my $placeholders = [ grep /^\d+$/, ($form->{_multi}{placeholders} ? @{$form->{_multi}{placeholders}} : $form->{placeholders}) ];
 
 	$user->{state}{ajax_accesslog_op} = "ajax_comments_fetch";
-#use Data::Dumper; print STDERR Dumper [ $cids, $id, $cid, $d2_seen ];
+#use Data::Dumper; print STDERR Dumper [ $form, $cids, $id, $cid, $d2_seen ];
 	# XXX error?
 	return unless $id && (@$cids || $d2_seen);
 
@@ -449,17 +448,16 @@ sub fetchComments {
 	#delete $comments->{0}; # non-comment data
 
 	my %data;
-	if ($d2_seen || $placeholders) {
+	if ($d2_seen || @$placeholders) {
 		my $special_cids;
 		if ($d2_seen) {
 			$special_cids = $cids = [ sort { $a <=> $b } grep { $_ && !$seen{$_} } keys %$comments ];
-		} elsif ($placeholders) {
-			@placeholders = split /[,;]/, $placeholders;
-			$special_cids = [ sort { $a <=> $b } @placeholders ];
+		} elsif (@$placeholders) {
+			$special_cids = [ sort { $a <=> $b } @$placeholders ];
 			if ($form->{d2_seen_ex}) {
 				my @seen;
 				my $lastcid = 0;
-				my %check = (%seen, map { $_ => 1 } @placeholders);
+				my %check = (%seen, map { $_ => 1 } @$placeholders);
 				for my $cid (sort { $a <=> $b } keys(%check)) {
 					push @seen, $lastcid ? $cid - $lastcid : $cid;
 					$lastcid = $cid;
@@ -597,9 +595,9 @@ sub fetchComments {
 		$to_dump{eval_first} ||= '';
 		$to_dump{eval_first} .= "d2_seen = '$d2_seen_0'; updateMoreNum($total);";
 	}
-	if ($placeholders) {
+	if (@$placeholders) {
 		$to_dump{eval_first} ||= '';
-		$to_dump{eval_first} .= "placeholder_no_update = " . Data::JavaScript::Anon->anon_dump({ map { $_ => 1 } @placeholders }) . ';';
+		$to_dump{eval_first} .= "placeholder_no_update = " . Data::JavaScript::Anon->anon_dump({ map { $_ => 1 } @$placeholders }) . ';';
 	}
 	writeLog($id);
 	return Data::JavaScript::Anon->anon_dump(\%to_dump);

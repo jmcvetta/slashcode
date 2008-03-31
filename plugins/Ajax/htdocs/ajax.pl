@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.83 2008/03/28 20:54:43 pudge Exp $
+# $Id: ajax.pl,v 1.84 2008/03/31 21:43:56 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.83 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.84 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -396,11 +396,11 @@ sub readRest {
 sub fetchComments {
 	my($slashdb, $constants, $user, $form, $options) = @_;
 
-	my $cids         = [ grep /^\d+$/, ($form->{_multi}{cids} ? @{$form->{_multi}{cids}} : $form->{cids}) ];
+	my $cids         = [ grep { defined && /^\d+$/ } ($form->{_multi}{cids} ? @{$form->{_multi}{cids}} : $form->{cids}) ];
 	my $id           = $form->{discussion_id} || 0;
 	my $cid          = $form->{cid} || 0; # root id
 	my $d2_seen      = $form->{d2_seen};
-	my $placeholders = [ grep /^\d+$/, ($form->{_multi}{placeholders} ? @{$form->{_multi}{placeholders}} : $form->{placeholders}) ];
+	my $placeholders = [ grep { defined && /^\d+$/ } ($form->{_multi}{placeholders} ? @{$form->{_multi}{placeholders}} : $form->{placeholders}) ];
 
 	$user->{state}{ajax_accesslog_op} = "ajax_comments_fetch";
 #use Data::Dumper; print STDERR Dumper [ $form, $cids, $id, $cid, $d2_seen ];

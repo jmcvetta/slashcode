@@ -179,7 +179,7 @@ __template__
 				}) %]
 				[% END %]
 		<span class="ccw-header-links">
-    [% IF discussion2 && !cid && !pid %]
+    [% IF discussion2 %]
         <a href="#" onclick="ajaxFetchComments(0,1); return false"><span id="more_comments_num_b"></span> More</a> | 
     [% END; IF user.is_admin && user.d2prefs_debug %]
         <a href="#" onclick="showPrefs('reading'); return false">Prefs</a>
@@ -265,7 +265,7 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
       </div>
 		</div>
 		<div class="commentControlFooter">
-    [% IF discussion2 && !cid && !pid %]
+    [% IF discussion2 %]
         <a href="#" onclick="ajaxFetchComments(0,1); return false"><span id="more_comments_num_c"></span> More</a> | 
     [% END; IF user.is_admin && user.d2prefs_debug %]
         <a href="#" onclick="showPrefs('reading'); return false">Prefs</a>
@@ -312,4 +312,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.108 2008/03/27 23:29:45 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.109 2008/03/31 21:43:58 pudge Exp $

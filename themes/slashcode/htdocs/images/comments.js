@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.124 2008/03/31 17:35:29 pudge Exp $
+// $Id: comments.js,v 1.125 2008/03/31 21:43:58 pudge Exp $
 
 var comments;
 var root_comments;
@@ -739,7 +739,8 @@ function ajaxFetchComments(cids, option, thresh, highlight) {
 		params['highlightthresh'] = user_highlightthresh;
 	}
 
-	params['cid']             = root_comment;
+	if (root_comment)
+		params['cid']     = root_comment;
 	params['discussion_id']   = discussion_id;
 //	params['reskey']          = reskey_static;
 
@@ -1015,9 +1016,7 @@ function editReply(pid) {
 }
 
 function setReplyMsg(pid, msg) {
-	if (!pid)
-		return;
-	var msgdiv = $('#replyto_msg_' + pid);
+	var msgdiv = $('#replyto_msg_' + (pid || 0));
 	if (!msgdiv)
 		return;
 

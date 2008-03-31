@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.187 2008/03/26 21:43:44 tvroom Exp $
+// $Id: common.js,v 1.188 2008/03/31 17:35:29 pudge Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -636,7 +636,7 @@ function ajax_update(request_params, id, handlers, request_url) {
 		url: request_url || '/ajax.pl',
 		data: request_params,
 		type: 'POST',
-		contentType: 'application/x-www-form-urlencoded',
+		contentType: 'application/x-www-form-urlencoded'
 	};
 
 	if ( id ) {

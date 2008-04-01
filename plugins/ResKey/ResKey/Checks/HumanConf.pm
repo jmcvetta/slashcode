@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.1 2008/03/25 18:46:24 pudge Exp $
+# $Id: HumanConf.pm,v 1.2 2008/04/01 20:06:28 pudge Exp $
 
 package Slash::ResKey::Checks::HumanConf;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.1 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub updateResKey {
 	my($self) = @_;
@@ -48,7 +48,7 @@ sub doCheckTouch {
 
 	my $hc = getObject('Slash::HumanConf');
 	if (!$hc || !$hc->reloadFormkeyHC($self->resname, { frkey => $self->reskey, needs_hc => 1 })) {
-		return(RESKEY_DEATH, ['hcinvalid']);
+		return(RESKEY_DEATH, ['invalidhc']);
 	}
 
 	return RESKEY_SUCCESS;
@@ -65,11 +65,7 @@ sub doCheckUse {
 	my $return = $hc->validFormkeyHC($self->resname, { frkey => $self->reskey, needs_hc => 1 });
 	if ($return ne 'ok') {
 		$hc->reloadFormkeyHC($self->resname, { frkey => $self->reskey, needs_hc => 1 });
-		if ($return =~ /retry/) {
-			return(RESKEY_FAILURE, [$return]);
-		} else {
-			return(RESKEY_DEATH, [$return]);
-		}
+		return(($return =~ /retry/ ? RESKEY_FAILURE : RESKEY_DEATH), [$return]);
 	}
 
 	return RESKEY_SUCCESS;

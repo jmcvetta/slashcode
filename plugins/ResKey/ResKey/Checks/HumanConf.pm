@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: HumanConf.pm,v 1.2 2008/04/01 20:06:28 pudge Exp $
+# $Id: HumanConf.pm,v 1.3 2008/04/02 15:15:45 pudge Exp $
 
 package Slash::ResKey::Checks::HumanConf;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.2 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 sub updateResKey {
 	my($self) = @_;
@@ -73,11 +73,9 @@ sub doCheckUse {
 
 
 sub useHumanConf {
-	return 1;	# for testing!
 	my($self) = @_;
 	my $constants = getCurrentStatic();
 	my $user = getCurrentUser();
-
 
 	return 0 if
 			# HumanConf is not running...

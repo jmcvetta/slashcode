@@ -35,7 +35,7 @@ __template__
 				[% IF tag.globj_type == "stories" %]
 					[% PROCESS linkStory dynamic=1 sid=tag.story.sid text=tag.story.title title=tag.story.title %]
 				[% ELSIF tag.globj_type == "urls" %]
-					<a href="[% tag.url.url %]">[% tag.url.bookmark.title || tag.url.validtitle || tag.url.initialtitle | strip_literal %]</a>
+					<a href="[% tag.url.url %]" rel="nofollow">[% tag.url.bookmark.title || tag.url.validtitle || tag.url.initialtitle | strip_literal %]</a>
 				[% ELSIF tag.globj_type == "journals" %]
 					[% nick = Slash.db.getUser(tag.journal.uid, 'nickname') %]
 					<a href="[% gSkin.rootdir %]/~[% nick | fixparam %]/journal/[% tag.journal.id %]/">[% tag.journal.description | strip_literal %]</a>
@@ -57,4 +57,4 @@ END %]
 __seclev__
 10000
 __version__
-$Id: usertags;users;default,v 1.10 2008/03/24 20:18:01 jamiemccarthy Exp $
+$Id: usertags;users;default,v 1.11 2008/04/02 15:27:13 jamiemccarthy Exp $

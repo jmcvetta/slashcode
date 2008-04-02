@@ -33,6 +33,8 @@ __template__
 	</p>
 [% END %]
 
+<p>If you have difficulty with this form, please use the <a href="[% gSkin.rootdir %]/comments.pl?op=Reply&amp;sid=[% sid %]&amp;pid=[% pid %]">old form</a>.</p>
+
 [% IF !user.is_anon || constants.allow_anonymous %]
 	<form action="[% gSkin.rootdir %]/comments.pl" method="post">
 		<div id="replyto_preview_[% pid %]" class="replyto_reply" ondblclick="editReply([% pid %])"></div>
@@ -82,4 +84,4 @@ __template__
 __seclev__
 1000
 __version__
-$Id: edit_comment;ajax;default,v 1.9 2008/04/02 18:27:30 pudge Exp $
+$Id: edit_comment;ajax;default,v 1.10 2008/04/02 23:25:38 pudge Exp $

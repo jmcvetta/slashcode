@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.229 2008/04/01 20:06:28 pudge Exp $
+# $Id: FireHose.pm,v 1.230 2008/04/02 15:26:30 jamiemccarthy Exp $
 
 package Slash::FireHose;
 
@@ -41,7 +41,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.229 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.230 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -636,7 +636,7 @@ sub getFireHoseEssentials {
 	$results->{records_pages} ||= ceil($count / $page_size);
 	$results->{records_page}  ||= (int(($options->{offset} || 0) / $options->{limit}) + 1) || 1;
 
-	my $future_count = $count - $options->{limit} - $offset;
+	my $future_count = $count - $options->{limit} - ($options->{offset} || 0);
 
 	if (keys %$filter_globjids) {
 		for my $i (0 .. $#{$hr_ar}) {
@@ -2658,4 +2658,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.229 2008/04/01 20:06:28 pudge Exp $
+$Id: FireHose.pm,v 1.230 2008/04/02 15:26:30 jamiemccarthy Exp $

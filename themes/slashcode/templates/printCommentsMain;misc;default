@@ -214,6 +214,7 @@ YAHOO.slashdot.ThresholdApp = function() {
     init: function() {
       gCommentControlWidget = new YAHOO.slashdot.ThresholdWidget([% "'X'" IF horiz %]);
       gCommentControlWidget.setTHT(user_threshold, user_highlightthresh);
+      updateTotals();
     }
   };
 }();
@@ -312,4 +313,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.109 2008/03/31 21:43:58 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.110 2008/04/02 18:27:30 pudge Exp $

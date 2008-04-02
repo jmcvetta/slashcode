@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.126 2008/04/01 20:06:28 pudge Exp $
+// $Id: comments.js,v 1.127 2008/04/02 18:27:30 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1292,7 +1292,6 @@ function finishLoading() {
 
 	if (more_comments_num)
 		updateMoreNum(more_comments_num);
-	updateTotals();
 	enableControls();
 
 	//setTimeout('ajaxFetchComments()', 10*1000);
@@ -1685,6 +1684,10 @@ YAHOO.slashdot.ThresholdWidget.prototype.setOrientation = function( newAxis ) {
 			this._getEl(prefix+"-count-pos").style.top = 0;
 		}
 		this._setTs();
+		// setOrientation can rewrite our totals for us, even if they
+		// are different from defaults, so let's set them again
+		// sure they are correct
+		updateTotals();
 	}
 }
 

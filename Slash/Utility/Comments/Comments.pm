@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.15 2008/04/01 20:06:27 pudge Exp $
+# $Id: Comments.pm,v 1.16 2008/04/02 18:27:30 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.16 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -319,16 +319,14 @@ sub selectComments {
 			# && !$options->{existing}{ $C->{pid} }
 			while ($C->{pid}) {
 				my $parent = $comments->{ $C->{pid} } || {};
-				# parents of our main cid!
-				if ($cid && $C->{pid} < $cid) {
-					$user->{state}{d2_defaultclass}{$C->{pid}} = 'oneline';
-				}
 
 				if (!$parent || !$parent->{kids} || !$parent->{cid} || !defined($parent->{pid}) || !defined($parent->{points})) {
 					# parents of our main cid, so spend time
 					# finding it ...
 					if ($cid && $C->{pid} < $cid) {
+						$user->{state}{d2_defaultclass}{$C->{pid}} = 'oneline';
 						$parent = $old_comments{ $C->{pid} };
+						$count++;
 					} else {
 						$parent = {
 							cid    => $C->{pid},
@@ -2533,4 +2531,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.15 2008/04/01 20:06:27 pudge Exp $
+$Id: Comments.pm,v 1.16 2008/04/02 18:27:30 pudge Exp $

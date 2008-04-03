@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.192 2008/04/03 19:11:28 scc Exp $
+// $Id: common.js,v 1.193 2008/04/03 19:13:47 tvroom Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -504,6 +504,7 @@ function firehose_set_options(name, value) {
 			}
 		}
 		firehose_settings.page = 0;
+		firehose_settings.more_num = 0;
 	}
 	if (name != "color") {
 	for (i=0; i< pairs.length; i++) {
@@ -559,6 +560,7 @@ function firehose_set_options(name, value) {
 			firehose_settings.startdate = value;
 			firehose_settings.duration = 1;
 			firehose_settings.page = 0;
+			firehose_settings.more_num = 0;
 			var issuedate = firehose_settings.issue.substr(5,2) + "/" + firehose_settings.issue.substr(8,2) + "/" + firehose_settings.issue.substr(10,2);
 
 			$('#fhcalendar, #fhcalendar_pag').each(function(){
@@ -570,6 +572,7 @@ function firehose_set_options(name, value) {
 		}
 		if (name == "pagesize") {
 			firehose_settings.page = 0;
+			firehose_settings.more_num = 0;
 		}
 	}
 

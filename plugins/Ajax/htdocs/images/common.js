@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.191 2008/04/03 16:20:21 scc Exp $
+// $Id: common.js,v 1.192 2008/04/03 19:11:28 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -116,7 +116,7 @@ function createPopup(xy, titlebar, name, contents, message, onmouseout) {
 }
 
 function createPopupButtons() {
-	return '<span class="buttons"><span>' + arguments.join('</span><span>') + '</span></span>';
+	return '<span class="buttons"><span>' + $.makeArray(arguments).join('</span><span>') + '</span></span>';
 }
 
 function closePopup(id, refresh) {

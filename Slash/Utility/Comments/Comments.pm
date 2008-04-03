@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.18 2008/04/02 23:25:38 pudge Exp $
+# $Id: Comments.pm,v 1.19 2008/04/03 00:38:32 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.18 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.19 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -402,7 +402,7 @@ sub jsSelectComments {
 
 	my $d2_seen_0 = $comments->{0}{d2_seen} || '';
 
-	my @roots = @{$comments->{0}{kids}};
+	my @roots = @{$comments->{0}{kids} || []};
 	my %roots_hash = ( map { $_ => 1 } @roots );
 	my $thresh_totals;
 
@@ -2546,4 +2546,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.18 2008/04/02 23:25:38 pudge Exp $
+$Id: Comments.pm,v 1.19 2008/04/03 00:38:32 pudge Exp $

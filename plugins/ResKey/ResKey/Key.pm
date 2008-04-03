@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.27 2008/04/03 02:56:59 pudge Exp $
+# $Id: Key.pm,v 1.28 2008/04/03 21:20:56 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -118,7 +118,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.28 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -323,9 +323,7 @@ sub _createActionMethod {
 		# create is done for use, too.
 		if ($self->type eq 'createuse') {
 			$self->type('use');
-			if ($self->unsaved) {
-				$self->dbCreate;
-			}
+			$self->dbCreate if $self->unsaved;
 		}
 
 		if ($self->type eq 'use' && !$self->static) {
@@ -446,7 +444,8 @@ sub dbCreate {
 	if ($self->static) {
 		$ok = 1;
 	} else {
-		my $reskey = $self->reskey;
+		my $reskey;
+		$reskey = $self->reskey if $self->unsaved;
 		my $srcid = $self->getSrcid;
 
 		my $try_num = 1;
@@ -471,7 +470,6 @@ sub dbCreate {
 			# blank for next try
 			$reskey = '';
 			
-
 			# The INSERT failed because $reskey is already being
 			# used.  Presumably this would be due to a collision
 			# in the randomly-generated string, which indicates
@@ -1017,4 +1015,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.27 2008/04/03 02:56:59 pudge Exp $
+$Id: Key.pm,v 1.28 2008/04/03 21:20:56 pudge Exp $

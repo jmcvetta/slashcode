@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: tags.pl,v 1.12 2008/03/27 00:09:31 jamiemccarthy Exp $
+# $Id: tags.pl,v 1.13 2008/04/03 22:06:52 jamiemccarthy Exp $
 
 use strict;
 use Slash;
@@ -35,11 +35,11 @@ sub main {
 				: 'active';
 
 		if ($type eq 'all') {
-			$index_hr->{tagnames} = $tags_reader->listTagnamesAll('describe');
+			$index_hr->{tagnames} = $tags_reader->listTagnamesAll();
 		} elsif ($type eq 'active') {
-			$index_hr->{tagnames} = $tags_reader->listTagnamesActive('describe');
+			$index_hr->{tagnames} = $tags_reader->listTagnamesActive();
 		} else { # recent
-			$index_hr->{tagnames} = $tags_reader->listTagnamesRecent('describe');
+			$index_hr->{tagnames} = $tags_reader->listTagnamesRecent();
 		}
 
 		$title = getData('head1');

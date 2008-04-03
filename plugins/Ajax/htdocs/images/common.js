@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.193 2008/04/03 19:13:47 tvroom Exp $
+// $Id: common.js,v 1.194 2008/04/03 19:14:51 tvroom Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -1476,7 +1476,7 @@ function firehose_more() {
 	var increment_by = 10;
 	firehose_settings.more_num = firehose_settings.more_num + increment_by;
 	
-	if ((firehose_item_count + increment_by) >= 200) {
+	if (((firehose_item_count + increment_by) >= 200) && !fh_is_admin) {
 		$('#firehose_more').hide();
 	}
 	firehose_set_options('more_num', firehose_settings.more_num);

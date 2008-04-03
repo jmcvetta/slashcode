@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Key.pm,v 1.26 2008/04/03 01:59:21 pudge Exp $
+# $Id: Key.pm,v 1.27 2008/04/03 02:56:59 pudge Exp $
 
 package Slash::ResKey::Key;
 
@@ -118,7 +118,7 @@ use Slash::Constants ':reskey';
 use Slash::Utility;
 
 our($AUTOLOAD);
-our($VERSION) = ' $Revision: 1.26 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.27 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 #========================================================================
 sub new {
@@ -487,6 +487,7 @@ sub dbCreate {
 			Time::HiRes::sleep(rand($try_num));
 		}
 		if ($try_num > 1) {
+			$try_num--;
 			errorLog("Slash::ResKey::Key->create INSERT failed $try_num times: uid=$user->{uid} rkrid=$self->{rkrid} reskey=$reskey");
 			# XXX: this should be more modularized, bad to keep
 			# this all here, but OK to hack in for now -- pudge
@@ -1016,4 +1017,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Key.pm,v 1.26 2008/04/03 01:59:21 pudge Exp $
+$Id: Key.pm,v 1.27 2008/04/03 02:56:59 pudge Exp $

@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.190 2008/04/01 20:06:28 pudge Exp $
+// $Id: common.js,v 1.191 2008/04/03 16:20:21 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -31,7 +31,10 @@ jQuery.fn.extend({
 	},
 
 	toggleClasses: function( c1, c2, force ) {
-		return this.mapClass({c1:c2, c2:c1, '?':force})
+		var map = { '?': force };
+		map[c1]=c2;
+		map[c2]=c1;
+		return this.mapClass(map);
 	}
 
 });

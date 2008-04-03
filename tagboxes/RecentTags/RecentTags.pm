@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: RecentTags.pm,v 1.3 2008/04/03 21:30:58 pudge Exp $
+# $Id: RecentTags.pm,v 1.4 2008/04/03 22:18:39 jamiemccarthy Exp $
 
 package Slash::Tagbox::RecentTags;
 
@@ -28,7 +28,7 @@ use Slash::Tagbox;
 use Data::Dumper;
 
 use vars qw( $VERSION );
-$VERSION = ' $Revision: 1.3 $ ' =~ /\$Revision:\s+([^\s]+)/;
+$VERSION = ' $Revision: 1.4 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 use base 'Slash::DB::Utility';	# first for object init stuff, but really
 				# needs to be second!  figure it out. -- pudge
@@ -168,7 +168,7 @@ sub run {
 	}
 	$block .= '</ul>';
 	main::tagboxLog("RecentTags->run setting Recent Tags to '@$tagnames_ar' (" . length($block) . " chars)");
-	setblock('activetags', $block);
+	$self->setBlock('activetags', { block => $block });
 }
 
 1;

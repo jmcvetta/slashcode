@@ -103,7 +103,7 @@ __template__
 			label = day_count _ " more &raquo;";
 		   ELSIF future_count > 0 ;
 		   	IF options.duration == -1;
-			        label = future_count _ " more in archive &raquo;";
+			        label = future_count _ " more &raquo;";
 			ELSE;
 			        label = future_count _ " more &raquo;";
 			END;
@@ -118,7 +118,7 @@ __template__
 				fh_num   = fh_hash.${options.color};
 				new_color   = fh_array.$fh_num;
 				IF new_color;
-					label = "Lower threshold to $new_color &raquo;";
+					label = "More $new_color &raquo;";
 					extra_onclick = "firehose_slider_set_color('" _ new_color _ "');";
 				END;
 			END;
@@ -133,4 +133,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.26 2008/04/09 19:23:18 tvroom Exp $
+$Id: data;firehose;default,v 1.27 2008/04/10 16:52:49 tvroom Exp $

@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.85 2008/04/10 05:22:29 pudge Exp $
+# $Id: ajax.pl,v 1.86 2008/04/10 18:43:44 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.85 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -331,8 +331,10 @@ sub previewReply {
 		);
 
 	my $max_duration = $options->{rkey}->max_duration;
-	$to_dump{eval_last}  = "submitCountdown($pid,$max_duration,1);"
-		if defined($max_duration) && length($max_duration);
+	if (defined($max_duration) && length($max_duration)) {
+		$max_duration = 0 if $max_duration > 30;
+		$to_dump{eval_last} = "submitCountdown($pid,$max_duration);"
+	}
 
 #use Data::Dumper; print STDERR Dumper \%to_dump; 
 

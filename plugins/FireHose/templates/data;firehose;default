@@ -124,7 +124,11 @@ __template__
 			END;
 		   END;
 		%]
-		<a href="#" onclick="[% extra_onclick %] firehose_more(); return false;">[% label %]</a>
+		[% IF user.is_anon %]
+			<a href="#" onclick="show_login_box(); return false;">[% label %]</a>
+		[% ELSE %]
+			<a href="#" onclick="[% extra_onclick %] firehose_more(); return false;">[% label %]</a>
+		[% END %]
 		[% IF !contentsonly %]
 		</span>
 		[% END %]
@@ -133,4 +137,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.27 2008/04/10 16:52:49 tvroom Exp $
+$Id: data;firehose;default,v 1.28 2008/04/10 16:56:50 tvroom Exp $

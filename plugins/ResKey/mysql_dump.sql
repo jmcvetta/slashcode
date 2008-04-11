@@ -1,5 +1,5 @@
 #
-# $Id: mysql_dump.sql,v 1.23 2008/04/10 05:22:29 pudge Exp $
+# $Id: mysql_dump.sql,v 1.24 2008/04/11 22:29:16 pudge Exp $
 #
 
 ### NOTE: reserved reskey IDs:
@@ -191,6 +191,8 @@ INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Check
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::Spammer',        531);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::AL2::NoSubmit',       551);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::Duration',            601);
+INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::HumanConf',           701);
+INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::ProxyScan',           801);
 
 ### vars
 INSERT INTO reskey_vars VALUES (6, 'adminbypass', 1, 'If admin, bypass checks for duration, proxy, and user');

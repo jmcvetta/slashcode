@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.131 2008/04/11 01:12:38 pudge Exp $
+// $Id: comments.js,v 1.132 2008/04/11 22:28:24 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1147,11 +1147,8 @@ function submitCountdown(pid, countSecs) {
 		return;
 
 	var counter = submitCountdowns[pid];
-	if (counter) {
-		if (countSecs == counter['countSecs'])
-			return;
+	if (counter)
 		clearInterval(counter['counter']); // just in case
-	}
 
 	if (!countSecs || countSecs < 1) { // we're at 0, so let's go home
 		count.html('');
@@ -1527,7 +1524,7 @@ function updateMoreNum(num) { // should be an integer, or empty string
 
 	var num_a;
 	if (!num)
-		num_a = 'Check for more';
+		num_a = 'Get More Comments';
 	else {
 		if (num == 1)
 			num_a = 'Get 1 More Comment';

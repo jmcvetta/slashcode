@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.13 2008/04/10 05:22:29 pudge Exp $
+# $Id: Duration.pm,v 1.14 2008/04/11 00:06:40 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.13 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -239,7 +239,7 @@ sub duration {
 			$where .= ' AND is_alive="no" AND ';
 			$where .= "submit_ts > DATE_SUB(NOW(), INTERVAL $duration[0] SECOND)";
 			my $seconds_left = $slashdb->sqlSelect(
-				"($duration[0] - TIME_TO_SEC(TIMEDIFF(NOW(), submit_ts))) AS diff",
+				"($duration[0] - (TIME_TO_SEC(NOW()) - TIME_TO_SEC(create_ts))) AS diff",
 				'reskeys', $where, "ORDER BY submit_ts DESC LIMIT 1"
 			);
 			$duration[0] = $seconds_left || 0;
@@ -256,7 +256,7 @@ sub duration {
 				# see minDurationBetweenCreateAndUse()
 				my $where = "rkid=$reskey_obj->{rkid}";
 				my $seconds_left = $slashdb->sqlSelect(
-					"($duration[0] - TIME_TO_SEC(TIMEDIFF(NOW(), create_ts))) AS diff",
+					"($duration[0] - (TIME_TO_SEC(NOW()) - TIME_TO_SEC(create_ts))) AS diff",
 					'reskeys', $where
 				);
 				$duration[0] = $seconds_left || 0;

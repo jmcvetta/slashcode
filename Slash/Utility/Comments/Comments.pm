@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.20 2008/04/10 05:22:29 pudge Exp $
+# $Id: Comments.pm,v 1.21 2008/04/11 22:28:45 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.20 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -614,8 +614,7 @@ sub getPoints {
 	my $points = $hr->{score_start} || 0;
 
 	# User can setup to give points based on size.
-#	my $len = length($C->{comment});
-	my $len = $C->{len};
+	my $len = $C->{len} || length($C->{comment});
 	if ($len) {
 		# comments.len should always be > 0, because Slash doesn't
 		# accept zero-length comments.  If it is = 0, something is
@@ -2552,4 +2551,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.20 2008/04/10 05:22:29 pudge Exp $
+$Id: Comments.pm,v 1.21 2008/04/11 22:28:45 pudge Exp $

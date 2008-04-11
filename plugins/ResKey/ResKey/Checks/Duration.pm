@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Duration.pm,v 1.14 2008/04/11 00:06:40 pudge Exp $
+# $Id: Duration.pm,v 1.15 2008/04/11 01:12:38 pudge Exp $
 
 package Slash::ResKey::Checks::Duration;
 
@@ -13,7 +13,7 @@ use Slash::Constants ':reskey';
 
 use base 'Slash::ResKey::Key';
 
-our($VERSION) = ' $Revision: 1.14 $ ' =~ /\$Revision:\s+([^\s]+)/;
+our($VERSION) = ' $Revision: 1.15 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 
 sub doCheckCreate {
@@ -80,10 +80,12 @@ sub doCheckUse {
 	# as not to increase the chance of giving users a rather spurious error
 
 	@return = minDurationBetweenUses($self, $reskey_obj);
+	setMaxDuration($self) if @return;
 	return @return if @return;
 
 	if ($self->origtype ne 'createuse') {
 		@return = minDurationBetweenCreateAndUse($self, $reskey_obj);
+		setMaxDuration($self) if @return;
 		return @return if @return;
 	}
 
@@ -232,14 +234,16 @@ sub duration {
 		}
 
 		if ($do && $duration[0]) {
+			my $reskey_obj = $self->get;
 			my $slashdb = getCurrentDB();
 			# see minDurationBetweenUses()
 			my $where = $self->getWhereUserClause;
 			$where .= ' AND rkrid=' . $self->rkrid;
 			$where .= ' AND is_alive="no" AND ';
+			$where .= "rkid != '$reskey_obj->{rkid}' AND " if $reskey_obj->{rkid};
 			$where .= "submit_ts > DATE_SUB(NOW(), INTERVAL $duration[0] SECOND)";
 			my $seconds_left = $slashdb->sqlSelect(
-				"($duration[0] - (TIME_TO_SEC(NOW()) - TIME_TO_SEC(create_ts))) AS diff",
+				"($duration[0] - (TIME_TO_SEC(NOW()) - TIME_TO_SEC(submit_ts))) AS diff",
 				'reskeys', $where, "ORDER BY submit_ts DESC LIMIT 1"
 			);
 			$duration[0] = $seconds_left || 0;
@@ -254,7 +258,8 @@ sub duration {
 			if ($reskey_obj) {
 				my $slashdb = getCurrentDB();
 				# see minDurationBetweenCreateAndUse()
-				my $where = "rkid=$reskey_obj->{rkid}";
+				my $where = "rkid=$reskey_obj->{rkid} AND ";
+				$where .= "create_ts > DATE_SUB(NOW(), INTERVAL $duration[0] SECOND)";
 				my $seconds_left = $slashdb->sqlSelect(
 					"($duration[0] - (TIME_TO_SEC(NOW()) - TIME_TO_SEC(create_ts))) AS diff",
 					'reskeys', $where

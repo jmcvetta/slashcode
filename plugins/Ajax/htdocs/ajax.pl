@@ -2,7 +2,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: ajax.pl,v 1.86 2008/04/10 18:43:44 pudge Exp $
+# $Id: ajax.pl,v 1.87 2008/04/11 01:12:38 pudge Exp $
 
 use strict;
 use warnings;
@@ -14,7 +14,7 @@ use Slash::Display;
 use Slash::Utility;
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.86 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.87 $ ' =~ /\$Revision:\s+([^\s]+)/;
 
 ##################################################################
 sub main {
@@ -287,15 +287,23 @@ sub submitReply {
 		unless $error_message;
 	my $cid = $saved_comment && $saved_comment ne '-1' ? $saved_comment->{cid} : 0;
 
+	$options->{content_type} = 'application/json';
+	my %to_dump = ( cid => $cid );
+
 	if ($error_message) {
 		$error_message = getData('inline preview warning') . $error_message
 			unless $options->{rkey}->death;
 		# go back to HumanConf if we still have errors left to display
 		$error_message .= slashDisplay('hc_comment', { pid => $pid }, { Return => 1 });
+		$to_dump{error} = $error_message;
+
+		my $max_duration = $options->{rkey}->max_duration;
+		if (defined($max_duration) && length($max_duration)) {
+			$max_duration = 0 if $max_duration > 60;
+			$to_dump{eval_last} = "submitCountdown($pid,$max_duration);"
+		}
 	}
 
-	$options->{content_type} = 'application/json';
-	my %to_dump = ( cid => $cid, error => $error_message );
 #use Data::Dumper; print STDERR Dumper \%to_dump;
 
 	return Data::JavaScript::Anon->anon_dump(\%to_dump);
@@ -332,7 +340,7 @@ sub previewReply {
 
 	my $max_duration = $options->{rkey}->max_duration;
 	if (defined($max_duration) && length($max_duration)) {
-		$max_duration = 0 if $max_duration > 30;
+		$max_duration = 0 if $max_duration > 60;
 		$to_dump{eval_last} = "submitCountdown($pid,$max_duration);"
 	}
 

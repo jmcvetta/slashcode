@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.130 2008/04/10 05:22:29 pudge Exp $
+// $Id: comments.js,v 1.131 2008/04/11 01:12:38 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1153,7 +1153,7 @@ function submitCountdown(pid, countSecs) {
 		clearInterval(counter['counter']); // just in case
 	}
 
-	if (!countSecs) { // we're at 0, so let's go home
+	if (!countSecs || countSecs < 1) { // we're at 0, so let's go home
 		count.html('');
 		return;
 	}

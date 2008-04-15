@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1345 2008/04/15 00:26:45 pudge Exp $
+# $Id: upgrades,v 1.1346 2008/04/15 22:37:59 tvroom Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5290,3 +5290,6 @@ INSERT INTO reskey_vars VALUES (1, 'max_duration_touch', 1, 'boolean for whether
 
 # PUDGE LAST UPDATED HERE
 
+# for plugins/FireHose
+ALTER TABLE firehose_update_log ADD bytes mediumint UNSIGNED DEFAULT 0 NOT NULL;
+ALTER TABLE firehose_setting_log DROP column bytes; 

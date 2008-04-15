@@ -10,7 +10,7 @@
 #      after X started at the same time that X was tagged.
 
 #
-# $Id: upgrades,v 1.1344 2008/04/11 22:29:16 pudge Exp $
+# $Id: upgrades,v 1.1345 2008/04/15 00:26:45 pudge Exp $
 #
 
 # BEGIN tf23's additions 
@@ -5283,6 +5283,10 @@ UPDATE vars SET value = 'T_2_5_0_201' WHERE name = 'cvs_tag_currentcode';
 # for plugins/ResKey (submit)
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::HumanConf',           701);
 INSERT INTO reskey_resource_checks VALUES (NULL, 6, 'all', 'Slash::ResKey::Checks::ProxyScan',           801);
+
+# for plugins/ResKey (comments)
+DELETE FROM reskey_vars WHERE rkrid = 1 AND name = 'max_duration';
+INSERT INTO reskey_vars VALUES (1, 'max_duration_touch', 1, 'boolean for whether to store max duration in reskey object on touch');
 
 # PUDGE LAST UPDATED HERE
 

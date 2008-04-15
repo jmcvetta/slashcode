@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.133 2008/04/15 00:10:50 pudge Exp $
+// $Id: comments.js,v 1.134 2008/04/15 21:20:20 pudge Exp $
 
 var comments;
 var root_comments;
@@ -31,6 +31,7 @@ var currents = { full: 0, oneline: 0, hidden: 0 };
 var commentelements = {};
 var thresh_totals = {};
 var d2_keybindings_off = 0;
+var d2_keybindings_disable = {};
 
 var submitCountdowns = {};
 var ajaxCommentsWaitQueue = [];
@@ -2039,7 +2040,10 @@ function keyHandler(e, k) {
 
 			var update = 0;
 			var next_cid = 0;
-			var key = k || validkeys[c] ? c : String.fromCharCode(c);
+			var key = k || (validkeys[c] ? c : String.fromCharCode(c));
+			if (d2_keybindings_disable[key])
+				return;
+
 			var keyo = validkeys[key];
 			if (keyo) {
 				if (keyo['toggle']) {

@@ -41,6 +41,8 @@ __template__
 	<script src="[% constants.imagedir %]/comments.js?[% constants.cvs_tag_currentcode %]" type="text/javascript"></script>
 	<script type="text/javascript">
 <!--
+[%- IF gSkin.name != 'idle' %]
+	d2_keybindings_disable[191] = 1;[% END # turn off '/' key %]
 	window.onscroll = d2act;
 	boxStatus(1);
 [% Slash.jsSelectComments(Slash.db, constants, user, { sid => sid, cid => cid }, gSkin) %]
@@ -164,4 +166,4 @@ __template__
 __seclev__
 10000
 __version__
-$Id: printCommComments;misc;default,v 1.76 2008/04/15 00:27:37 pudge Exp $
+$Id: printCommComments;misc;default,v 1.77 2008/04/15 21:20:20 pudge Exp $

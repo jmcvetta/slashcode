@@ -41,14 +41,14 @@ __template__
 
 <a name="acomments"></a>
 <div class="commentwrap" id="commentwrap">
-[% IF discussion2 %]
+[% IF discussion2; IF !user.state.d2asp %]
 <div class="commentBox" style="font-size: 120%">
 	<div>
 [% IF this_title %]<span class="escape-link"><a href="[% link | strip_urlattr %]" title="Back to Article - [% this_title | strip_attribute %]">[% this_title %]</a></span>[% END %]
 <span class="commentBoxLinks">[% PROCESS printCommentsLinks commentslinks_id => 'd' %]</span>
 	</div>
 </div>
-[% ELSE %]
+[% END; ELSE %]
 <div class="commentBox">
 [% IF this_title %]
 	<a href="[% link | strip_urlattr %]">[% this_title %]</a>
@@ -227,4 +227,4 @@ YAHOO.util.Event.addListener(window, "load", YAHOO.slashdot.ThresholdApp.init);
 __seclev__
 10000
 __version__
-$Id: printCommentsMain;misc;default,v 1.113 2008/04/15 20:57:46 pudge Exp $
+$Id: printCommentsMain;misc;default,v 1.114 2008/04/15 21:20:21 pudge Exp $

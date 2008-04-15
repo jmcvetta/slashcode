@@ -1,4 +1,4 @@
-// $Id: comments.js,v 1.132 2008/04/11 22:28:24 pudge Exp $
+// $Id: comments.js,v 1.133 2008/04/15 00:10:50 pudge Exp $
 
 var comments;
 var root_comments;
@@ -1078,6 +1078,9 @@ function submitReply(pid) {
 			else if (cid) {
 				cancelReply(pid);
 				addComment(cid, { pid: pid, kids: [] }, '', 1);
+				setDefaultDisplayMode(cid);
+				// add it to the totals (for subtraction in updateComment())
+				currents[displaymode[cid]]++;
 				setFocusComment(cid, 1, 1);
 			}
 		}

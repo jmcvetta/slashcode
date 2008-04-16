@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.196 2008/04/11 04:18:59 tvroom Exp $
+// $Id: common.js,v 1.197 2008/04/16 17:51:52 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -881,7 +881,7 @@ function firehose_get_next_updates() {
 
 
 function firehose_get_updates_handler(transport) {
-	$('#busy').setClass('hide');
+	$('.busy').hide();
 	var response = eval_response(transport);
 	var processed = 0;
 	firehose_removals = response.update_data.removals;
@@ -942,7 +942,7 @@ function firehose_get_updates(options) {
 		params[i] = firehose_settings[i];
 	}
 
-	$('#busy').removeClass();
+	$('.busy').show();
 	ajax_update(params, '', { onComplete: firehose_get_updates_handler });
 }
 

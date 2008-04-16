@@ -130,6 +130,7 @@ __template__
 			<a href="#" onclick="[% extra_onclick %] firehose_more(); return false;">[% label %]</a>
 		[% END %]
 		[% IF !contentsonly %]
+		<span id="busy"></span>
 		</span>
 		[% END %]
 [% CASE 'notavailable' %]
@@ -137,4 +138,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.28 2008/04/10 16:56:50 tvroom Exp $
+$Id: data;firehose;default,v 1.29 2008/04/16 17:51:33 scc Exp $

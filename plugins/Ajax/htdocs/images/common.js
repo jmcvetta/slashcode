@@ -1,5 +1,5 @@
 // _*_ Mode: JavaScript; tab-width: 8; indent-tabs-mode: true _*_
-// $Id: common.js,v 1.198 2008/04/16 17:52:57 scc Exp $
+// $Id: common.js,v 1.199 2008/04/16 18:35:17 scc Exp $
 
 function $dom( id ) {
 	return document.getElementById(id);
@@ -1474,7 +1474,7 @@ function firehose_go_prev() {
 }
 
 function firehose_more() {
-	firehose_settings.more_num = firehose_settings.more_num + increment_by;
+	firehose_settings.more_num = firehose_settings.more_num + firehose_more_increment;
 	
 	if (((firehose_item_count + firehose_more_increment) >= 200) && !fh_is_admin) {
 		$('#firehose_more').hide();

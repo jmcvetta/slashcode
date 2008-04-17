@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: Comments.pm,v 1.21 2008/04/11 22:28:45 pudge Exp $
+# $Id: Comments.pm,v 1.22 2008/04/17 20:01:07 pudge Exp $
 
 package Slash::Utility::Comments;
 
@@ -34,7 +34,7 @@ use Slash::Constants qw(:strip :people :messages);
 use base 'Exporter';
 use vars qw($VERSION @EXPORT);
 
-($VERSION) = ' $Revision: 1.21 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.22 $ ' =~ /\$Revision:\s+([^\s]+)/;
 @EXPORT		= qw(
 	constrain_score dispComment displayThread printComments
 	jsSelectComments commentCountThreshold commentThresholds discussion2
@@ -448,6 +448,7 @@ sub jsSelectComments {
 	$user->{is_anon}       ||= 0;
 	$user->{is_admin}      ||= 0;
 	$user->{is_subscriber} ||= 0;
+	$user->{state}{d2asp}  ||= 0;
 	my $root_comment = $user->{state}{selectComments}{cidorpid} || 0;
 
 	my $extra = '';
@@ -490,6 +491,7 @@ user_is_admin = $user->{is_admin};
 user_is_subscriber = $user->{is_subscriber};
 user_threshold = $threshold;
 user_highlightthresh = $highlightthresh;
+user_d2asp = $user->{state}{d2asp};
 
 discussion_id = $id;
 
@@ -2551,4 +2553,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: Comments.pm,v 1.21 2008/04/11 22:28:45 pudge Exp $
+$Id: Comments.pm,v 1.22 2008/04/17 20:01:07 pudge Exp $

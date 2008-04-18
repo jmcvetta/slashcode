@@ -1,7 +1,7 @@
 # This code is a part of Slash, and is released under the GPL.
 # Copyright 1997-2005 by Open Source Technology Group. See README
 # and COPYING for more information, or see http://slashcode.com/.
-# $Id: FireHose.pm,v 1.235 2008/04/16 17:52:28 scc Exp $
+# $Id: FireHose.pm,v 1.236 2008/04/18 03:05:57 tvroom Exp $
 
 package Slash::FireHose;
 
@@ -42,7 +42,7 @@ use base 'Slash::DB::Utility';
 use base 'Slash::DB::MySQL';
 use vars qw($VERSION);
 
-($VERSION) = ' $Revision: 1.235 $ ' =~ /\$Revision:\s+([^\s]+)/;
+($VERSION) = ' $Revision: 1.236 $ ' =~ /\$Revision:\s+([^\s]+)/;
 sub createFireHose {
 	my($self, $data) = @_;
 	$data->{dept} ||= "";
@@ -1373,6 +1373,9 @@ sub ajaxFireHoseGetUpdates {
 		search_results	=> $results
 	}, { Return => 1 });
 
+	my $recent = $slashdb->getTime({ add_secs => "-300"});
+	$update_time = $recent if $recent gt $update_time;
+
 	$html->{local_last_update_time} = timeCalc($slashdb->getTime(), "%H:%M");
 	$html->{filter_text} = "Filtered to ".strip_literal($opts->{color})." '".strip_literal($opts->{fhfilter})."'";
 	$html->{gmt_update_time} = " (".timeCalc($slashdb->getTime(), "%H:%M", 0)." GMT) " if $user->{is_admin};
@@ -1388,14 +1391,16 @@ sub ajaxFireHoseGetUpdates {
 		future		=> $future,
 	});
 	my $reskey_dump = "";
+	my $update_time_dump;
 	my $reskey = getObject("Slash::ResKey");
 	my $user_rkey = $reskey->key('ajax_user_static', { no_state => 1 });
 	$reskey_dump .= "reskey_static = '" . $user_rkey->reskey() . "';\n" if $user_rkey->create();
 
 	my $duration = Time::HiRes::time() - $start;
 	my $more_num = $options->{more_num} || 0;
-	
-	my $retval =  "$data_dump\n$reskey_dump";
+
+	$update_time_dump = "update_time= ".Data::JavaScript::Anon->anon_dump($update_time);
+	my $retval =  "$data_dump\n$reskey_dump\n$update_time_dump";
 
 	my $updatelog = {
 		uid 		=> $user->{uid},
@@ -2766,4 +2771,4 @@ Slash(3).
 
 =head1 VERSION
 
-$Id: FireHose.pm,v 1.235 2008/04/16 17:52:28 scc Exp $
+$Id: FireHose.pm,v 1.236 2008/04/18 03:05:57 tvroom Exp $

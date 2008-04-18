@@ -102,8 +102,9 @@ __template__
 		[% IF day_label && day_count && options.duration != -1;
 			IF need_day_label;
 				label = $day_label _ " ";
+			ELSE;
+				label = label _ day_count _ " more &raquo;";
 			END;
-			label = label _ day_count _ " more &raquo;";
 		   ELSIF future_count > 0 ;
 		   	IF options.duration == -1;
 			        label = future_count _ " more &raquo;";
@@ -141,4 +142,4 @@ __template__
 [% END %]
 
 __version__
-$Id: data;firehose;default,v 1.30 2008/04/16 19:01:12 scc Exp $
+$Id: data;firehose;default,v 1.31 2008/04/18 02:50:11 tvroom Exp $
